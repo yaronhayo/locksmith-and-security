@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
-import { Clock, Shield, Tool, Key } from "lucide-react";
+import { Clock, Shield, Wrench, Key } from "lucide-react";
 
 const services = [
   {
@@ -14,7 +14,7 @@ const services = [
     description: "We use advanced techniques to unlock your door without causing any damage to your locks or property, saving you money on repairs."
   },
   {
-    icon: Tool,
+    icon: Wrench,
     title: "Lock Rekeying and Replacement",
     description: "Professional lock rekeying and replacement services to ensure your home's security after regaining access."
   },
