@@ -36,10 +36,6 @@ const Header = () => {
       <div className="bg-primary text-white py-2 hidden md:block">
         <div className="container mx-auto px-4">
           <div className="flex justify-end items-center space-x-6">
-            <div className="flex items-center space-x-2">
-              <Clock className="w-4 h-4" />
-              <span className="text-sm">24/7 Emergency Service</span>
-            </div>
             <DropdownMenu>
               <DropdownMenuTrigger className="flex items-center space-x-2 hover:text-secondary transition-colors">
                 <MapPin className="w-4 h-4" />
@@ -59,6 +55,10 @@ const Header = () => {
                 ))}
               </DropdownMenuContent>
             </DropdownMenu>
+            <div className="flex items-center space-x-2">
+              <Clock className="w-4 h-4" />
+              <span className="text-sm">24/7 Emergency Service</span>
+            </div>
           </div>
         </div>
       </div>
