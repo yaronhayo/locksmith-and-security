@@ -35,32 +35,30 @@ const Header = () => {
     <>
       <div className="bg-primary text-white py-2 hidden md:block">
         <div className="container mx-auto px-4">
-          <div className="flex justify-between items-center">
-            <div className="flex items-center space-x-6">
-              <div className="flex items-center space-x-2">
-                <Clock className="w-4 h-4" />
-                <span className="text-sm">24/7 Emergency Service</span>
-              </div>
-              <DropdownMenu>
-                <DropdownMenuTrigger className="flex items-center space-x-2 hover:text-secondary transition-colors">
-                  <MapPin className="w-4 h-4" />
-                  <span className="text-sm">North Bergen, NJ</span>
-                  <ChevronDown className="w-3 h-3" />
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="start" className="w-48">
-                  {serviceAreas.map((area) => (
-                    <DropdownMenuItem key={area.slug}>
-                      <a 
-                        href={`/service-areas/${area.slug}`}
-                        className="w-full"
-                      >
-                        {area.name}
-                      </a>
-                    </DropdownMenuItem>
-                  ))}
-                </DropdownMenuContent>
-              </DropdownMenu>
+          <div className="flex justify-end items-center space-x-6">
+            <div className="flex items-center space-x-2">
+              <Clock className="w-4 h-4" />
+              <span className="text-sm">24/7 Emergency Service</span>
             </div>
+            <DropdownMenu>
+              <DropdownMenuTrigger className="flex items-center space-x-2 hover:text-secondary transition-colors">
+                <MapPin className="w-4 h-4" />
+                <span className="text-sm">North Bergen, NJ</span>
+                <ChevronDown className="w-3 h-3" />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="start" className="w-48">
+                {serviceAreas.map((area) => (
+                  <DropdownMenuItem key={area.slug}>
+                    <a 
+                      href={`/service-areas/${area.slug}`}
+                      className="w-full"
+                    >
+                      {area.name}
+                    </a>
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         </div>
       </div>
