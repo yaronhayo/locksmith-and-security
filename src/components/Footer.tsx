@@ -10,7 +10,7 @@ const Footer = () => {
               <img 
                 src="/lovable-uploads/8df28e35-4d5c-4015-bf99-2eb36af674c5.png" 
                 alt="Locksmith & Security LLC Logo" 
-                className="h-20 w-auto brightness-0 invert"
+                className="h-20 w-auto"
               />
             </div>
             <p className="text-gray-300 mb-4">Professional locksmith services available 24/7 in North Bergen and surrounding areas.</p>
