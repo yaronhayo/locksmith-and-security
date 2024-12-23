@@ -18,7 +18,7 @@ const ContactPage = () => {
 
     try {
       await emailjs.sendForm(
-        'YOUR_SERVICE_ID', // Replace with your EmailJS service ID
+        'YOUR_TITAN_SERVICE_ID', // Replace with your EmailJS service ID after adding Titan email
         'YOUR_TEMPLATE_ID', // Replace with your EmailJS template ID
         form.current,
         'YOUR_PUBLIC_KEY' // Replace with your EmailJS public key
@@ -38,6 +38,7 @@ const ContactPage = () => {
         description: "Failed to send message. Please try again.",
         variant: "destructive",
       });
+      console.error('EmailJS Error:', error);
     }
   };
 
