@@ -35,6 +35,9 @@ const PageLayout = ({
     ...schema
   };
 
+  // Check if the first child is HeroSection
+  const hasHeroSection = React.Children.toArray(children)[0]?.type?.name === 'HeroSection';
+
   return (
     <>
       <Helmet>
@@ -69,13 +72,13 @@ const PageLayout = ({
           </div>
         )}
         <motion.main 
-          className="flex-grow"
+          className={cn("flex-grow", !hasHeroSection && "pt-20")}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: 20 }}
           transition={{ duration: 0.3 }}
         >
-          <div className={cn("py-20", className)}>{children}</div>
+          <div className={cn(className)}>{children}</div>
         </motion.main>
         <Footer />
       </div>
