@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Menu, X, Clock, MapPin, ChevronDown } from 'lucide-react';
+import { Menu, X, Clock, MapPin, ChevronDown, Phone } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -22,6 +22,7 @@ const serviceAreas = [
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const currentCity = "North Bergen"; // This could be dynamic based on route/context
 
   useEffect(() => {
     const handleScroll = () => {
@@ -44,7 +45,10 @@ const Header = () => {
               </DropdownMenuTrigger>
               <DropdownMenuContent align="start" className="w-48">
                 {serviceAreas.map((area) => (
-                  <DropdownMenuItem key={area.slug}>
+                  <DropdownMenuItem 
+                    key={area.slug}
+                    className={`${area.name === currentCity ? 'bg-primary/10 text-primary' : ''} hover:bg-primary/5 hover:text-primary transition-colors`}
+                  >
                     <a 
                       href={`/service-areas/${area.slug}`}
                       className="w-full"
@@ -77,7 +81,6 @@ const Header = () => {
             <nav className={`absolute top-20 left-0 w-full transform transition-transform duration-300 lg:static lg:w-auto lg:translate-y-0 lg:bg-transparent ${isMenuOpen ? 'translate-y-0' : '-translate-y-full'} ${isScrolled ? 'bg-white' : 'bg-primary/90 lg:bg-transparent'} lg:block ${isMenuOpen ? 'block' : 'hidden'}`}>
               <ul className="flex flex-col lg:flex-row space-y-4 lg:space-y-0 lg:space-x-8 p-4 lg:p-0">
                 <li><a href="/services" className="text-lg font-medium hover:text-secondary transition-colors">Services</a></li>
-                <li><a href="/booking" className="text-lg font-medium hover:text-secondary transition-colors">Book Online</a></li>
                 <li><a href="/faq" className="text-lg font-medium hover:text-secondary transition-colors">FAQ</a></li>
                 <li><a href="/reviews" className="text-lg font-medium hover:text-secondary transition-colors">Reviews</a></li>
                 <li><a href="/about" className="text-lg font-medium hover:text-secondary transition-colors">About</a></li>
@@ -86,17 +89,21 @@ const Header = () => {
             </nav>
 
             <div className="flex items-center space-x-4">
-              <div className="hidden md:flex flex-col items-end">
-                <a href="tel:5513037874" className="text-xl font-bold text-primary hover:text-secondary transition-colors">
-                  (551) 303-7874
+              <div className="hidden md:flex items-center space-x-4">
+                <a href="tel:5513037874" className="inline-flex items-center space-x-2 text-xl font-bold text-primary hover:text-secondary transition-colors">
+                  <Phone className="w-5 h-5" />
+                  <span>(551) 303-7874</span>
                 </a>
+                <Button asChild className="bg-secondary hover:bg-secondary-hover text-white">
+                  <a href="/booking">Book Online</a>
+                </Button>
               </div>
               <Button variant="outline" size="icon" className="lg:hidden" onClick={() => setIsMenuOpen(!isMenuOpen)}>
                 {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
               </Button>
               <a href="tel:5513037874" className="md:hidden">
                 <Button size="icon" variant="default">
-                  <Menu className="h-6 w-6" />
+                  <Phone className="h-6 w-6" />
                 </Button>
               </a>
             </div>
