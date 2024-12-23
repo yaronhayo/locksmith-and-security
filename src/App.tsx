@@ -15,6 +15,16 @@ import HouseLockoutPage from "./pages/services/house-lockout";
 import CarLockoutPage from "./pages/services/car-lockout";
 import BusinessLockoutPage from "./pages/services/business-lockout";
 
+// Service Area Pages
+import NorthBergenArea from "./pages/service-areas/north-bergen";
+import JerseyCityArea from "./pages/service-areas/jersey-city";
+import UnionCityArea from "./pages/service-areas/union-city";
+import WestNewYorkArea from "./pages/service-areas/west-new-york";
+import SecaucusArea from "./pages/service-areas/secaucus";
+import WeehawkenArea from "./pages/service-areas/weehawken";
+import HobokenArea from "./pages/service-areas/hoboken";
+import GuttenbergArea from "./pages/service-areas/guttenberg";
+
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -35,6 +45,16 @@ const App = () => (
           <Route path="/services/house-lockout" element={<HouseLockoutPage />} />
           <Route path="/services/car-lockout" element={<CarLockoutPage />} />
           <Route path="/services/business-lockout" element={<BusinessLockoutPage />} />
+          
+          {/* Service Area Routes */}
+          <Route path="/service-areas/north-bergen" element={<NorthBergenArea />} />
+          <Route path="/service-areas/jersey-city" element={<JerseyCityArea />} />
+          <Route path="/service-areas/union-city" element={<UnionCityArea />} />
+          <Route path="/service-areas/west-new-york" element={<WestNewYorkArea />} />
+          <Route path="/service-areas/secaucus" element={<SecaucusArea />} />
+          <Route path="/service-areas/weehawken" element={<WeehawkenArea />} />
+          <Route path="/service-areas/hoboken" element={<HobokenArea />} />
+          <Route path="/service-areas/guttenberg" element={<GuttenbergArea />} />
         </Routes>
       </BrowserRouter>
     </TooltipProvider>

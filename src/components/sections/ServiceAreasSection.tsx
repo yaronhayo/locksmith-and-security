@@ -1,14 +1,39 @@
 import { MapPin } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const areas = [
-  "North Bergen",
-  "Jersey City",
-  "Union City",
-  "West New York",
-  "Secaucus",
-  "Weehawken",
-  "Hoboken",
-  "Guttenberg"
+  {
+    name: "North Bergen",
+    slug: "north-bergen"
+  },
+  {
+    name: "Jersey City",
+    slug: "jersey-city"
+  },
+  {
+    name: "Union City",
+    slug: "union-city"
+  },
+  {
+    name: "West New York",
+    slug: "west-new-york"
+  },
+  {
+    name: "Secaucus",
+    slug: "secaucus"
+  },
+  {
+    name: "Weehawken",
+    slug: "weehawken"
+  },
+  {
+    name: "Hoboken",
+    slug: "hoboken"
+  },
+  {
+    name: "Guttenberg",
+    slug: "guttenberg"
+  }
 ];
 
 const ServiceAreasSection = () => {
@@ -23,11 +48,15 @@ const ServiceAreasSection = () => {
         </div>
         
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-          {areas.map((area, index) => (
-            <div key={index} className="bg-white p-4 rounded-lg shadow-md flex items-center space-x-2">
+          {areas.map((area) => (
+            <Link 
+              key={area.slug}
+              to={`/service-areas/${area.slug}`}
+              className="bg-white p-4 rounded-lg shadow-md flex items-center space-x-2 hover:shadow-lg transition-all"
+            >
               <MapPin className="w-5 h-5 text-primary" />
-              <span className="font-medium">{area}</span>
-            </div>
+              <span className="font-medium">{area.name}</span>
+            </Link>
           ))}
         </div>
       </div>
