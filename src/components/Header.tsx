@@ -40,8 +40,12 @@ const Header = () => {
       <header className={`sticky top-0 w-full z-50 transition-all duration-300 ${isScrolled ? 'bg-white shadow-lg' : 'bg-transparent'}`}>
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-20">
-            <a href="/" className="flex items-center">
-              <span className="text-2xl font-bold text-primary">Locksmith & Security LLC</span>
+            <a href="/" className="flex items-center space-x-3">
+              <img 
+                src="/lovable-uploads/9b00adf3-451e-4d1c-a118-6a6f06293ec0.png" 
+                alt="Locksmith & Security LLC Logo" 
+                className="h-12 w-auto"
+              />
             </a>
 
             <nav className={`absolute top-20 left-0 w-full transform transition-transform duration-300 lg:static lg:w-auto lg:translate-y-0 lg:bg-transparent ${isMenuOpen ? 'translate-y-0' : '-translate-y-full'} ${isScrolled ? 'bg-white' : 'bg-primary/90 lg:bg-transparent'} lg:block ${isMenuOpen ? 'block' : 'hidden'}`}>

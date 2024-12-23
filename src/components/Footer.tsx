@@ -6,7 +6,13 @@ const Footer = () => {
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div>
-            <h3 className="text-xl font-bold mb-4">Locksmith & Security LLC</h3>
+            <div className="mb-6">
+              <img 
+                src="/lovable-uploads/9b00adf3-451e-4d1c-a118-6a6f06293ec0.png" 
+                alt="Locksmith & Security LLC Logo" 
+                className="h-12 w-auto brightness-0 invert"
+              />
+            </div>
             <p className="text-gray-300 mb-4">Professional locksmith services available 24/7 in North Bergen and surrounding areas.</p>
             <div className="flex items-center space-x-2">
               <Phone className="w-5 h-5" />
