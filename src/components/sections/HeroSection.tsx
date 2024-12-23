@@ -4,7 +4,7 @@ import BookingForm from "@/components/BookingForm";
 
 const HeroSection = () => {
   return (
-    <section className="relative min-h-screen bg-gradient-to-br from-primary to-primary-hover pt-24 pb-20">
+    <section className="relative min-h-screen bg-gradient-to-br from-primary to-primary-hover pt-16 pb-20">
       <div className="absolute inset-0 bg-black/30"></div>
       <div className="container mx-auto px-4 relative z-10">
         <div className="flex flex-col lg:flex-row items-center justify-between gap-12">
