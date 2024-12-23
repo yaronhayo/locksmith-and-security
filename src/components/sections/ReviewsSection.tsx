@@ -5,17 +5,23 @@ const reviews = [
   {
     name: "John D.",
     rating: 5,
-    text: "Fast and professional service. Got me back into my car in no time!"
+    text: "Fast and professional service. Got me back into my car in no time!",
+    service: "Car Lockout",
+    location: "North Bergen, NJ"
   },
   {
     name: "Sarah M.",
     rating: 5,
-    text: "Excellent emergency locksmith service. Very responsive and professional."
+    text: "Excellent emergency locksmith service. Very responsive and professional.",
+    service: "House Lockout",
+    location: "Jersey City, NJ"
   },
   {
     name: "Mike R.",
     rating: 5,
-    text: "Great experience with their business locksmith services. Highly recommend!"
+    text: "Great experience with their business locksmith services. Highly recommend!",
+    service: "Business Lock Change",
+    location: "Union City, NJ"
   }
 ];
 
@@ -34,7 +40,11 @@ const ReviewsSection = () => {
                   ))}
                 </div>
                 <p className="text-gray-600 mb-4">{review.text}</p>
-                <p className="font-semibold">{review.name}</p>
+                <div className="space-y-2">
+                  <p className="font-semibold">{review.name}</p>
+                  <p className="text-sm text-gray-500">{review.service}</p>
+                  <p className="text-sm text-gray-500">{review.location}</p>
+                </div>
               </CardContent>
             </Card>
           ))}

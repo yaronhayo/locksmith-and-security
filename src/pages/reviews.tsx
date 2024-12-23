@@ -10,24 +10,32 @@ const ReviewsPage = () => {
       rating: 5,
       text: "Excellent service! The technician arrived quickly and got me back into my car in no time. Very professional and friendly.",
       date: "2 days ago",
+      service: "Car Lockout",
+      location: "North Bergen, NJ"
     },
     {
       name: "Sarah M.",
       rating: 5,
       text: "I was locked out of my house late at night, and they came to help within 30 minutes. Great service and reasonable prices!",
       date: "1 week ago",
+      service: "House Lockout",
+      location: "Jersey City, NJ"
     },
     {
       name: "Mike R.",
       rating: 5,
       text: "Professional and reliable business locksmith services. They installed a new security system in our office, and we're very satisfied.",
       date: "2 weeks ago",
+      service: "Business Lock Change",
+      location: "Union City, NJ"
     },
     {
       name: "Lisa K.",
       rating: 5,
       text: "Fast response time and excellent work. They helped me with a car key replacement, and everything works perfectly.",
       date: "3 weeks ago",
+      service: "New Car Key",
+      location: "Weehawken, NJ"
     },
   ];
 
@@ -54,9 +62,13 @@ const ReviewsPage = () => {
                 </div>
                 <Quote className="w-8 h-8 text-primary/20 mb-4" />
                 <p className="text-gray-600 mb-4">{review.text}</p>
-                <div className="flex justify-between items-center">
-                  <p className="font-semibold">{review.name}</p>
-                  <p className="text-sm text-gray-500">{review.date}</p>
+                <div className="space-y-2">
+                  <div className="flex justify-between items-center">
+                    <p className="font-semibold">{review.name}</p>
+                    <p className="text-sm text-gray-500">{review.date}</p>
+                  </div>
+                  <p className="text-sm text-gray-500">{review.service}</p>
+                  <p className="text-sm text-gray-500">{review.location}</p>
                 </div>
               </CardContent>
             </Card>
