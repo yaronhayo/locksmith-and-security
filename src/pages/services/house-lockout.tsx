@@ -1,8 +1,12 @@
 import PageLayout from "@/components/layouts/PageLayout";
+import HouseLockoutHero from "@/components/sections/HouseLockoutHero";
+import LockoutServices from "@/components/sections/LockoutServices";
+import WhyChooseUs from "@/components/sections/WhyChooseUs";
 import ServiceDescription from "@/components/services/house-lockout/ServiceDescription";
 import RealWorldExamples from "@/components/services/house-lockout/RealWorldExamples";
 import CommonQuestions from "@/components/services/house-lockout/CommonQuestions";
 import EmergencyCallout from "@/components/services/house-lockout/EmergencyCallout";
+import FAQSection from "@/components/sections/FAQSection";
 import { Lock } from "lucide-react";
 
 const schema = {
@@ -55,23 +59,18 @@ const HouseLockoutPage = () => {
       description="Professional house lockout services in North Bergen. Available 24/7 with 15-30 minute response time. Licensed and insured residential locksmith specialists ready to help."
       schema={schema}
     >
+      <HouseLockoutHero />
+      <LockoutServices />
+      <WhyChooseUs />
       <div className="container mx-auto px-4 py-12">
-        <section className="mb-16">
-          <div className="max-w-4xl mx-auto">
-            <div className="flex items-center gap-4 mb-6">
-              <Lock className="text-primary h-8 w-8" />
-              <h1 className="text-4xl md:text-5xl font-bold">
-                24/7 Emergency House Lockout Service in North Bergen
-              </h1>
-            </div>
-            
-            <ServiceDescription />
-            <RealWorldExamples />
-            <CommonQuestions />
-            <EmergencyCallout />
-          </div>
-        </section>
+        <div className="max-w-4xl mx-auto">
+          <ServiceDescription />
+          <RealWorldExamples />
+          <CommonQuestions />
+          <EmergencyCallout />
+        </div>
       </div>
+      <FAQSection />
     </PageLayout>
   );
 };
