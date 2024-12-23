@@ -36,15 +36,31 @@ const Index = () => {
       description="Professional locksmith services in North Bergen. Available 24/7 for residential, commercial, and automotive locksmith needs. Fast response and reliable service."
       schema={schema}
     >
-      <HeroSection />
-      <TrustBadgesSection />
-      <ServicesSection />
-      <EmergencyServicesSection />
-      <ProcessSection />
-      <AboutSection />
-      <ServiceAreasSection />
-      <ReviewsSection />
-      <FAQSection />
+      <div className="flex flex-col">
+        <HeroSection />
+        <TrustBadgesSection />
+        <div className="bg-white">
+          <ServicesSection />
+        </div>
+        <div className="bg-gray-50">
+          <EmergencyServicesSection />
+        </div>
+        <div className="bg-white">
+          <ProcessSection />
+        </div>
+        <div className="bg-gray-50">
+          <AboutSection />
+        </div>
+        <div className="bg-white">
+          <ServiceAreasSection />
+        </div>
+        <div className="bg-gray-50">
+          <ReviewsSection />
+        </div>
+        <div className="bg-white pb-20">
+          <FAQSection />
+        </div>
+      </div>
     </PageLayout>
   );
 };
