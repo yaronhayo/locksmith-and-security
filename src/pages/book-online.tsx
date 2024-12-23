@@ -1,20 +1,18 @@
 import PageLayout from "@/components/layouts/PageLayout";
-import { Button } from "@/components/ui/button";
+import { motion } from "framer-motion";
 import { Clock, Shield, Star, ArrowRight } from "lucide-react";
-
-const schema = {
-  "@context": "https://schema.org",
-  "@type": "WebPage",
-  "name": "Book Online - Professional Locksmith Services",
-  "description": "Book your locksmith service online. Available 24/7 for residential, commercial, and automotive locksmith needs in North Bergen and surrounding areas.",
-};
 
 const BookOnlinePage = () => {
   return (
     <PageLayout
       title="Book Online | Professional Locksmith Services"
-      description="Book your locksmith service online. Available 24/7 for residential, commercial, and automotive locksmith needs."
-      schema={schema}
+      description="Book your locksmith service online. Available 24/7 for residential, commercial, and automotive locksmith needs in North Bergen and surrounding areas."
+      schema={{
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "name": "Book Online - Professional Locksmith Services",
+        "description": "Book your locksmith service online. Available 24/7 for residential, commercial, and automotive locksmith needs in North Bergen and surrounding areas.",
+      }}
     >
       <div className="container mx-auto px-4 py-12">
         <div className="max-w-4xl mx-auto">
@@ -44,14 +42,14 @@ const BookOnlinePage = () => {
           </div>
 
           <div className="bg-white rounded-xl shadow-xl overflow-hidden">
-            <div className="aspect-[16/9] w-full">
-              <iframe 
-                src="YOUR_BOOKING_FORM_URL_HERE"
-                className="w-full h-full border-0"
-                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-              ></iframe>
-            </div>
+            <iframe 
+              src='https://plugin.uleadz.com/pg/1/e8bb3c8575fb40388efd8b1e999e992a' 
+              width='100%' 
+              height='800' 
+              scrolling='no' 
+              style={{ border: 'none' }}
+              title="Booking Form"
+            />
           </div>
 
           <div className="mt-12 text-center">
@@ -81,12 +79,13 @@ const BookOnlinePage = () => {
             <p className="text-lg mb-6">
               For emergency service or immediate assistance, call us directly:
             </p>
-            <Button size="lg" variant="default" asChild>
-              <a href="tel:5513037874" className="text-lg">
-                Call (551) 303-7874
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </a>
-            </Button>
+            <a 
+              href="tel:5513037874" 
+              className="inline-flex items-center px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary-hover transition-colors text-lg"
+            >
+              Call (551) 303-7874
+              <ArrowRight className="ml-2 h-5 w-5" />
+            </a>
           </div>
         </div>
       </div>
