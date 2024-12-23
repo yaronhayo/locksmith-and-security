@@ -1,5 +1,5 @@
 import PageLayout from "@/components/layouts/PageLayout";
-import { Shield, Clock, Check, Building2, Lock, Tool, Key } from "lucide-react";
+import { Shield, Clock, Check, Building2, Lock, Key } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const schema = {
@@ -86,7 +86,7 @@ const BusinessLockoutPage = () => {
                     Master key system installation
                   </li>
                   <li className="flex items-center">
-                    <Tool className="text-primary mr-2" />
+                    <Lock className="text-primary mr-2" />
                     Access control systems
                   </li>
                   <li className="flex items-center">

@@ -1,5 +1,5 @@
 import PageLayout from "@/components/layouts/PageLayout";
-import { Shield, Clock, Check, Key, Lock, Tool } from "lucide-react";
+import { Shield, Clock, Check, Key, Lock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const schema = {
@@ -87,7 +87,7 @@ const HouseLockoutPage = () => {
                     Lock replacement and repair
                   </li>
                   <li className="flex items-center">
-                    <Tool className="text-primary mr-2" />
+                    <Lock className="text-primary mr-2" />
                     Broken key extraction
                   </li>
                   <li className="flex items-center">
