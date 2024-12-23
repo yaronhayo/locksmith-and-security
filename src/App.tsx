@@ -12,6 +12,7 @@ import ReviewsPage from "./pages/reviews";
 import AboutPage from "./pages/about";
 import ContactPage from "./pages/contact";
 import BookingPage from "./pages/booking";
+import BookOnlinePage from "./pages/book-online";
 import HouseLockoutPage from "./pages/services/house-lockout";
 import CarLockoutPage from "./pages/services/car-lockout";
 import BusinessLockoutPage from "./pages/services/business-lockout";
@@ -49,6 +50,7 @@ const App = () => (
           <Route path="/about" element={<AboutPage />} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/booking" element={<BookingPage />} />
+          <Route path="/book-online" element={<BookOnlinePage />} />
           
           {/* Service Routes */}
           <Route path="/services/house-lockout" element={<HouseLockoutPage />} />
