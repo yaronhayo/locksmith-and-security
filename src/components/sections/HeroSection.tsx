@@ -1,69 +1,73 @@
 import { Button } from "@/components/ui/button";
-import { Star, ArrowRight } from "lucide-react";
+import { Star, ArrowRight, Phone, Clock, Shield } from "lucide-react";
+import BookingForm from "@/components/BookingForm";
 
 const HeroSection = () => {
   return (
-    <section className="relative min-h-screen bg-gradient-to-r from-primary to-primary/80 pt-32 pb-20">
-      <div className="absolute inset-0 bg-black/40"></div>
+    <section className="relative min-h-screen bg-gradient-to-br from-primary to-primary-hover pt-24 pb-20">
+      <div className="absolute inset-0 bg-black/30"></div>
       <div className="container mx-auto px-4 relative z-10">
         <div className="flex flex-col lg:flex-row items-center justify-between gap-12">
-          <div className="lg:w-1/2 space-y-6 text-white">
-            <div className="flex items-center space-x-2 bg-secondary/90 text-white px-4 py-2 rounded-full w-fit">
+          <div className="lg:w-1/2 space-y-8 text-white">
+            <div className="flex items-center space-x-2 bg-secondary/90 text-white px-4 py-2 rounded-full w-fit animate-float">
               <Star className="w-5 h-5" />
-              <span className="text-sm font-medium">Trusted by 1000+ customers</span>
+              <span className="text-sm font-medium">Top-Rated Local Locksmith</span>
             </div>
+            
             <h1 className="text-4xl lg:text-6xl font-bold leading-tight">
-              24/7 Emergency Locksmith Services in North Bergen
+              Professional Locksmith Services in North Bergen
             </h1>
-            <p className="text-xl opacity-90">
-              Professional, reliable, and fast locksmith services when you need them most.
+            
+            <p className="text-xl opacity-90 leading-relaxed">
+              Available 24/7 for all your residential, commercial, and automotive locksmith needs. Fast response and reliable service guaranteed.
             </p>
+            
             <div className="flex flex-col sm:flex-row gap-4">
-              <Button size="lg" variant="secondary" asChild>
-                <a href="tel:5513037874">Call Now</a>
+              <Button size="lg" variant="secondary" className="text-lg group" asChild>
+                <a href="tel:5513037874">
+                  <Phone className="mr-2 h-5 w-5 group-hover:animate-bounce" />
+                  Call Now
+                </a>
               </Button>
-              <Button size="lg" variant="outline" className="bg-white/10 hover:bg-white/20" asChild>
+              <Button size="lg" variant="outline" className="text-lg bg-white/10 hover:bg-white/20 group" asChild>
                 <a href="/services">
                   Our Services
-                  <ArrowRight className="ml-2 h-5 w-5" />
+                  <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
                 </a>
               </Button>
             </div>
-          </div>
-          <div className="lg:w-1/2 bg-white rounded-lg p-8 shadow-xl">
-            <div className="text-center mb-6">
-              <h2 className="text-2xl font-bold text-gray-900">Request Service</h2>
-              <p className="text-gray-600">Get a quick response from our team</p>
+
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mt-12">
+              <div className="flex items-center space-x-3 text-white/90">
+                <Clock className="w-8 h-8 text-secondary" />
+                <div>
+                  <h3 className="font-semibold">24/7 Service</h3>
+                  <p className="text-sm">Always available</p>
+                </div>
+              </div>
+              <div className="flex items-center space-x-3 text-white/90">
+                <Shield className="w-8 h-8 text-secondary" />
+                <div>
+                  <h3 className="font-semibold">Licensed & Insured</h3>
+                  <p className="text-sm">Your safety first</p>
+                </div>
+              </div>
+              <div className="flex items-center space-x-3 text-white/90">
+                <Star className="w-8 h-8 text-secondary" />
+                <div>
+                  <h3 className="font-semibold">5-Star Rated</h3>
+                  <p className="text-sm">Trusted service</p>
+                </div>
+              </div>
             </div>
-            <form className="space-y-4">
-              <input
-                type="text"
-                placeholder="Your Name"
-                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-primary"
-                required
-              />
-              <input
-                type="tel"
-                placeholder="Phone Number"
-                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-primary"
-                required
-              />
-              <input
-                type="email"
-                placeholder="Email Address"
-                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-primary"
-                required
-              />
-              <textarea
-                placeholder="How can we help you?"
-                rows={4}
-                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-primary"
-                required
-              ></textarea>
-              <Button type="submit" className="w-full" size="lg">
-                Submit Request
-              </Button>
-            </form>
+          </div>
+          
+          <div className="lg:w-5/12 bg-white rounded-2xl p-8 shadow-2xl transform hover:scale-[1.02] transition-transform duration-300">
+            <div className="text-center mb-8">
+              <h2 className="text-2xl font-bold text-gray-900">Request Service</h2>
+              <p className="text-gray-600 mt-2">Get a quick response from our team</p>
+            </div>
+            <BookingForm />
           </div>
         </div>
       </div>

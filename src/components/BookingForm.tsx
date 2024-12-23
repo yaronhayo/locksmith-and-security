@@ -3,7 +3,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Lock } from "lucide-react";
+import { Lock, Loader2 } from "lucide-react";
 
 const BookingForm = () => {
   const { toast } = useToast();
@@ -17,7 +17,7 @@ const BookingForm = () => {
     await new Promise(resolve => setTimeout(resolve, 1000));
 
     toast({
-      title: "Request Submitted",
+      title: "Request Submitted Successfully",
       description: "We'll contact you shortly to confirm your booking.",
     });
 
@@ -27,43 +27,53 @@ const BookingForm = () => {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      <div className="space-y-2">
+      <div className="space-y-3">
         <Input
           type="text"
           placeholder="Your Name"
           required
-          className="w-full"
+          className="h-12 text-base border-gray-300 focus:border-primary focus:ring-primary"
         />
         <Input
           type="tel"
           placeholder="Phone Number"
           required
-          className="w-full"
+          className="h-12 text-base border-gray-300 focus:border-primary focus:ring-primary"
         />
         <Input
           type="email"
           placeholder="Email Address"
           required
-          className="w-full"
+          className="h-12 text-base border-gray-300 focus:border-primary focus:ring-primary"
         />
         <Textarea
           placeholder="Describe your locksmith needs..."
           required
-          className="w-full min-h-[100px]"
+          className="min-h-[120px] text-base border-gray-300 focus:border-primary focus:ring-primary resize-none"
         />
       </div>
 
       <Button
         type="submit"
-        className="w-full"
+        size="lg"
+        className="w-full text-lg font-semibold h-12"
         disabled={isSubmitting}
       >
-        <Lock className="w-4 h-4 mr-2" />
-        {isSubmitting ? "Submitting..." : "Request Service"}
+        {isSubmitting ? (
+          <>
+            <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+            Submitting...
+          </>
+        ) : (
+          <>
+            <Lock className="w-5 h-5 mr-2" />
+            Request Service
+          </>
+        )}
       </Button>
 
       <p className="text-sm text-gray-500 text-center">
-        We typically respond within 30 minutes
+        Fast Response • Professional Service • 24/7 Available
       </p>
     </form>
   );

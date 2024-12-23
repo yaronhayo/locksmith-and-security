@@ -25,12 +25,14 @@ export default {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         primary: {
-          DEFAULT: "#0F4C81",
+          DEFAULT: "#1E3A8A", // Deeper blue
           foreground: "#FFFFFF",
+          hover: "#1E40AF",
         },
         secondary: {
-          DEFAULT: "#E31837",
+          DEFAULT: "#FFA500", // Warm orange
           foreground: "#FFFFFF",
+          hover: "#F59E0B",
         },
         destructive: {
           DEFAULT: "hsl(var(--destructive))",
@@ -65,10 +67,15 @@ export default {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
+        float: {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-10px)' },
+        }
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        "float": "float 6s ease-in-out infinite",
       },
     },
   },
