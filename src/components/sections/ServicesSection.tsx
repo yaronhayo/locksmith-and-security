@@ -1,4 +1,4 @@
-import { ArrowRight, Lock, Car, Building2, Key, Settings, Wrench } from 'lucide-react';
+import { ArrowRight, Lock, Car, Building2, Key } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 
@@ -7,9 +7,10 @@ const services = [
   { icon: Car, title: "Car Lockout", description: "Fast vehicle lockout assistance", link: "/services/car-lockout" },
   { icon: Building2, title: "Business Lockout", description: "Commercial security solutions", link: "/services/business-lockout" },
   { icon: Key, title: "Lock Change", description: "Complete lock replacement service", link: "/services/lock-change" },
-  { icon: Settings, title: "Lock Rekey", description: "Professional lock rekeying service", link: "/services/lock-rekey" },
+  { icon: Key, title: "Lock Rekey", description: "Professional lock rekeying service", link: "/services/lock-rekey" },
   { icon: Building2, title: "Business Lock Change", description: "Commercial lock replacement", link: "/services/business-lock-change" },
-  { icon: Car, title: "New Car Key", description: "Car key replacement and programming", link: "/services/new-car-key" }
+  { icon: Car, title: "New Car Key", description: "Car key replacement and programming", link: "/services/new-car-key" },
+  { icon: Car, title: "Car Key Program", description: "Professional car key programming service", link: "/services/car-key-program" }
 ];
 
 const ServicesSection = () => {
