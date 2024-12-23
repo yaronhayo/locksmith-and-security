@@ -35,8 +35,6 @@ const Index = () => {
       title="24/7 Locksmith Services in North Bergen"
       description="Professional locksmith services in North Bergen. Available 24/7 for residential, commercial, and automotive locksmith needs. Fast response and reliable service."
       schema={schema}
-      heroTitle="Your Trusted 24/7 Emergency Locksmith in North Bergen"
-      heroDescription="Professional, reliable, and fast locksmith services when you need them most. Licensed and insured experts ready to help."
     >
       <HeroSection />
       <TrustBadgesSection />
