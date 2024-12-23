@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
+import PageLayout from "@/components/layouts/PageLayout";
 
 const ContactPage = () => {
   const { toast } = useToast();
@@ -16,10 +17,11 @@ const ContactPage = () => {
   };
 
   return (
-    <div className="pt-32 pb-20">
+    <PageLayout
+      title="Contact Us"
+      description="Need immediate assistance? Contact our 24/7 emergency locksmith service or fill out the form below, and we'll get back to you as soon as possible."
+    >
       <div className="container mx-auto px-4">
-        <h1 className="text-4xl font-bold mb-8">Contact Us</h1>
-        
         <div className="grid lg:grid-cols-2 gap-12">
           <div>
             <div className="prose max-w-none mb-8">
@@ -97,7 +99,7 @@ const ContactPage = () => {
           </div>
         </div>
       </div>
-    </div>
+    </PageLayout>
   );
 };
 
