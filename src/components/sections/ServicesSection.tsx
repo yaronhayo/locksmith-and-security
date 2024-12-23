@@ -6,56 +6,56 @@ const services = [
   { 
     icon: Lock, 
     title: "House Lockout", 
-    description: "Locked out of your home? Our residential lockout service provides fast, professional access restoration 24/7. We help homeowners and tenants quickly regain entry to their properties with minimal disruption. Our experienced locksmiths use advanced techniques to ensure safe, damage-free entry while maintaining your home's security.", 
+    description: "Locked out of your home? We'll get you back inside quickly and safely. Our expert locksmiths help homeowners and renters regain access to their properties 24/7. We use professional tools to unlock your door without causing any damage, ensuring your home stays secure.", 
     link: "/services/house-lockout", 
     cta: "Unlock Your Home" 
   },
   { 
     icon: Car, 
     title: "Car Lockout", 
-    description: "When you're locked out of your vehicle, our automotive specialists are here to help. We provide rapid assistance for all car makes and models, whether you're at home, work, or on the road. Our professional locksmiths use specialized tools to safely unlock your vehicle without causing damage.", 
+    description: "Can't get into your car? Whether you've lost your keys or locked them inside, we're here to help. Our mobile locksmiths come to your location and unlock your vehicle safely, getting you back on the road fast. Available 24/7 for all car makes and models.", 
     link: "/services/car-lockout", 
     cta: "Unlock Your Car" 
   },
   { 
     icon: Building2, 
     title: "Business Lockout", 
-    description: "Don't let a lockout disrupt your business operations. Our commercial lockout service provides quick, professional assistance to business owners and employees. We understand that time is critical for businesses, so we prioritize fast response times while maintaining the highest security standards.", 
+    description: "Locked out of your business? Our commercial lockout service gets you back to work quickly. We help business owners and employees regain access to offices, stores, and warehouses. Fast response times and professional service to minimize business disruption.", 
     link: "/services/business-lockout", 
     cta: "Unlock Your Business" 
   },
   { 
     icon: Key, 
     title: "Lock Change", 
-    description: "Upgrade your security with our professional lock change service. Whether you're moving into a new home or want to enhance your security, we install high-quality locks that provide superior protection. Perfect for homeowners, landlords, and property managers looking to improve their property's security.", 
+    description: "Need new locks? We install high-quality locks for better security. Perfect for new homeowners, after tenant changes, or when upgrading old locks. We work with all major lock brands and can recommend the best options for your property.", 
     link: "/services/lock-change", 
     cta: "Change Your Locks" 
   },
   { 
     icon: Key, 
     title: "Lock Rekey", 
-    description: "Keep your existing locks while getting new keys with our professional rekeying service. We modify your current locks to work with new keys while invalidating old ones. This cost-effective solution is ideal for landlords, property managers, or anyone who wants to ensure old keys no longer work.", 
+    description: "Want to keep your locks but need new keys? Rekeying is a cost-effective way to ensure old keys won't work anymore. Ideal for landlords, new homeowners, or after losing keys. We rekey all types of locks while maintaining your security.", 
     link: "/services/lock-rekey", 
     cta: "Rekey Your Locks" 
   },
   { 
     icon: Building2, 
     title: "Business Lock Change", 
-    description: "Secure your commercial property with our professional lock change service. We specialize in installing high-security commercial grade locks and master key systems. Our solutions are perfect for retail stores, offices, and industrial facilities requiring enhanced security measures.", 
+    description: "Upgrade your business security with new locks. We install commercial-grade locks and master key systems for offices, stores, and warehouses. Our solutions protect your business assets while making access easy for authorized personnel.", 
     link: "/services/business-lock-change", 
     cta: "Secure Your Business" 
   },
   { 
     icon: Car, 
     title: "New Car Key", 
-    description: "Lost or damaged your car key? We provide comprehensive car key replacement services for all vehicle makes and models. Our service includes cutting and programming transponder keys, smart keys, and traditional keys. We use state-of-the-art equipment to ensure your new key works perfectly.", 
+    description: "Lost your car key? We make new keys for all vehicle types. Our service includes cutting and programming transponder keys and smart keys. We use advanced equipment to ensure your new key works perfectly with your car.", 
     link: "/services/new-car-key", 
     cta: "Get a New Car Key" 
   },
   { 
     icon: Car, 
     title: "Car Key Program", 
-    description: "Need a car key programmed? Our professional programming service covers all types of electronic car keys. We work with transponders, proximity keys, and smart keys for all major vehicle brands. Our technicians use advanced diagnostic equipment to ensure proper programming.", 
+    description: "Need a car key programmed? We program all types of electronic car keys, including transponders and smart keys. Our technicians use professional equipment to ensure your key works correctly with your vehicle's security system.", 
     link: "/services/car-key-program", 
     cta: "Program Your Car Key" 
   }
