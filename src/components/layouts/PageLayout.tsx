@@ -40,8 +40,9 @@ const PageLayout = ({
   const childrenArray = React.Children.toArray(children);
   const firstChild = childrenArray[0] as ReactElement<any, string | JSXElementConstructor<any>>;
   const hasHeroSection = 
-    typeof firstChild?.type === 'function' && 
-    (firstChild.type.displayName === 'HeroSection' || firstChild.type.name === 'HeroSection');
+    firstChild?.type && 
+    typeof firstChild.type === 'function' && 
+    ((firstChild.type as any).displayName === 'HeroSection' || (firstChild.type as any).name === 'HeroSection');
 
   return (
     <>
