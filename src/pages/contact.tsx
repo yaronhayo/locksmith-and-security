@@ -4,16 +4,41 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import PageLayout from "@/components/layouts/PageLayout";
+import emailjs from '@emailjs/browser';
+import { useRef } from "react";
 
 const ContactPage = () => {
   const { toast } = useToast();
+  const form = useRef<HTMLFormElement>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    toast({
-      title: "Message Sent",
-      description: "We'll get back to you as soon as possible.",
-    });
+    
+    if (!form.current) return;
+
+    try {
+      await emailjs.sendForm(
+        'YOUR_SERVICE_ID', // Replace with your EmailJS service ID
+        'YOUR_TEMPLATE_ID', // Replace with your EmailJS template ID
+        form.current,
+        'YOUR_PUBLIC_KEY' // Replace with your EmailJS public key
+      );
+
+      toast({
+        title: "Message Sent",
+        description: "We'll get back to you as soon as possible.",
+      });
+
+      if (form.current) {
+        form.current.reset();
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to send message. Please try again.",
+        variant: "destructive",
+      });
+    }
   };
 
   return (
@@ -62,19 +87,19 @@ const ContactPage = () => {
           </div>
 
           <div>
-            <form onSubmit={handleSubmit} className="space-y-6">
+            <form ref={form} onSubmit={handleSubmit} className="space-y-6">
               <div className="grid md:grid-cols-2 gap-4">
                 <div>
                   <label htmlFor="name" className="block text-sm font-medium mb-2">
                     Name
                   </label>
-                  <Input id="name" required />
+                  <Input id="name" name="user_name" required />
                 </div>
                 <div>
                   <label htmlFor="phone" className="block text-sm font-medium mb-2">
                     Phone
                   </label>
-                  <Input id="phone" type="tel" required />
+                  <Input id="phone" name="user_phone" type="tel" required />
                 </div>
               </div>
 
@@ -82,14 +107,14 @@ const ContactPage = () => {
                 <label htmlFor="email" className="block text-sm font-medium mb-2">
                   Email
                 </label>
-                <Input id="email" type="email" required />
+                <Input id="email" name="user_email" type="email" required />
               </div>
 
               <div>
                 <label htmlFor="message" className="block text-sm font-medium mb-2">
                   Message
                 </label>
-                <Textarea id="message" rows={6} required />
+                <Textarea id="message" name="message" rows={6} required />
               </div>
 
               <Button type="submit" className="w-full">
