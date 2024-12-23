@@ -15,6 +15,11 @@ import BookingPage from "./pages/booking";
 import HouseLockoutPage from "./pages/services/house-lockout";
 import CarLockoutPage from "./pages/services/car-lockout";
 import BusinessLockoutPage from "./pages/services/business-lockout";
+import LockChangePage from "./pages/services/lock-change";
+import LockRepairPage from "./pages/services/lock-repair";
+import SecuritySystemsPage from "./pages/services/security-systems";
+import KeyDuplicationPage from "./pages/services/key-duplication";
+import LockInstallationPage from "./pages/services/lock-installation";
 
 // Service Area Pages
 import NorthBergenArea from "./pages/service-areas/north-bergen";
@@ -44,9 +49,16 @@ const App = () => (
           <Route path="/about" element={<AboutPage />} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/booking" element={<BookingPage />} />
+          
+          {/* Service Routes */}
           <Route path="/services/house-lockout" element={<HouseLockoutPage />} />
           <Route path="/services/car-lockout" element={<CarLockoutPage />} />
           <Route path="/services/business-lockout" element={<BusinessLockoutPage />} />
+          <Route path="/services/lock-change" element={<LockChangePage />} />
+          <Route path="/services/lock-repair" element={<LockRepairPage />} />
+          <Route path="/services/security-systems" element={<SecuritySystemsPage />} />
+          <Route path="/services/key-duplication" element={<KeyDuplicationPage />} />
+          <Route path="/services/lock-installation" element={<LockInstallationPage />} />
           
           {/* Service Area Routes */}
           <Route path="/service-areas/north-bergen" element={<NorthBergenArea />} />
