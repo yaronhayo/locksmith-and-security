@@ -6,7 +6,7 @@ const Footer = () => {
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div>
-            <div className="mb-6">
+            <div className="mb-6 flex items-center">
               <img 
                 src="/lovable-uploads/9b00adf3-451e-4d1c-a118-6a6f06293ec0.png" 
                 alt="Locksmith & Security LLC Logo" 
@@ -45,6 +45,7 @@ const Footer = () => {
               </div>
             </div>
           </div>
+          
         </div>
         
         <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
