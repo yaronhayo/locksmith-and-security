@@ -8,9 +8,9 @@ const Footer = () => {
           <div>
             <div className="mb-6">
               <img 
-                src="/lovable-uploads/902e3258-253f-4148-b84b-427ba1f768cb.png" 
+                src="/lovable-uploads/8df28e35-4d5c-4015-bf99-2eb36af674c5.png" 
                 alt="Locksmith & Security LLC Logo" 
-                className="h-20 w-auto"
+                className="h-20 w-auto brightness-0 invert"
               />
             </div>
             <p className="text-gray-300 mb-4">Professional locksmith services available 24/7 in North Bergen and surrounding areas.</p>
