@@ -9,6 +9,8 @@ interface ServiceLayoutProps {
   children?: React.ReactNode;
   icon?: LucideIcon;
   benefits?: string[];
+  service?: string;
+  callToAction?: string;
 }
 
 const ServiceLayout = ({ title, description, children, icon: Icon, benefits }: ServiceLayoutProps) => {
