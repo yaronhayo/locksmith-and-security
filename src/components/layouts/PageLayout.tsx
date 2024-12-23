@@ -1,3 +1,4 @@
+import React, { ReactElement } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Helmet } from "react-helmet";
@@ -35,8 +36,10 @@ const PageLayout = ({
     ...schema
   };
 
-  // Check if the first child is HeroSection
-  const hasHeroSection = React.Children.toArray(children)[0]?.type?.name === 'HeroSection';
+  // Check if the first child is HeroSection with proper type checking
+  const childrenArray = React.Children.toArray(children);
+  const firstChild = childrenArray[0] as ReactElement;
+  const hasHeroSection = firstChild?.type?.displayName === 'HeroSection' || firstChild?.type?.name === 'HeroSection';
 
   return (
     <>
