@@ -1,6 +1,7 @@
 import { Shield, Clock, DollarSign, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
+import BookingForm from "@/components/BookingForm";
 
 const HouseLockoutHero = () => {
   return (
@@ -51,12 +52,13 @@ const HouseLockoutHero = () => {
             transition={{ duration: 0.5 }}
             className="relative"
           >
-            <img 
-              src="/lovable-uploads/88d354ba-8149-4bb1-9347-d5d0ff65dfe5.png"
-              alt="Professional locksmith unlocking a door"
-              className="rounded-lg shadow-2xl w-full"
-            />
-            <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-transparent rounded-lg" />
+            <div className="bg-white rounded-2xl p-8 shadow-2xl">
+              <div className="text-center mb-6">
+                <h2 className="text-2xl font-bold text-gray-900">Request Emergency Service</h2>
+                <p className="text-gray-600 mt-2">Get help within 15-30 minutes</p>
+              </div>
+              <BookingForm />
+            </div>
           </motion.div>
         </div>
       </div>
