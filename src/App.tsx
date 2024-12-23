@@ -11,6 +11,7 @@ import FAQPage from "./pages/faq";
 import ReviewsPage from "./pages/reviews";
 import AboutPage from "./pages/about";
 import ContactPage from "./pages/contact";
+import BookingPage from "./pages/booking";
 import HouseLockoutPage from "./pages/services/house-lockout";
 import CarLockoutPage from "./pages/services/car-lockout";
 import BusinessLockoutPage from "./pages/services/business-lockout";
@@ -42,6 +43,7 @@ const App = () => (
           <Route path="/reviews" element={<ReviewsPage />} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="/contact" element={<ContactPage />} />
+          <Route path="/booking" element={<BookingPage />} />
           <Route path="/services/house-lockout" element={<HouseLockoutPage />} />
           <Route path="/services/car-lockout" element={<CarLockoutPage />} />
           <Route path="/services/business-lockout" element={<BusinessLockoutPage />} />

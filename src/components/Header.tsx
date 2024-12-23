@@ -48,6 +48,7 @@ const Header = () => {
               <ul className="flex flex-col lg:flex-row space-y-4 lg:space-y-0 lg:space-x-8 p-4 lg:p-0">
                 <li><a href="/services" className="text-lg font-medium hover:text-secondary transition-colors">Services</a></li>
                 <li><a href="/service-areas" className="text-lg font-medium hover:text-secondary transition-colors">Service Areas</a></li>
+                <li><a href="/booking" className="text-lg font-medium hover:text-secondary transition-colors">Book Online</a></li>
                 <li><a href="/faq" className="text-lg font-medium hover:text-secondary transition-colors">FAQ</a></li>
                 <li><a href="/reviews" className="text-lg font-medium hover:text-secondary transition-colors">Reviews</a></li>
                 <li><a href="/about" className="text-lg font-medium hover:text-secondary transition-colors">About</a></li>
