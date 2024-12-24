@@ -24,6 +24,10 @@ const BookingForm = () => {
     setShowVehicleInfo(value.toLowerCase().includes("car"));
   };
 
+  const handleFieldChange = (field: string, value: string) => {
+    setFormData(prev => ({ ...prev, [field]: value }));
+  };
+
   const handleNext = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const form = e.currentTarget;
@@ -67,7 +71,11 @@ const BookingForm = () => {
     <div className="space-y-4">
       {step === 1 ? (
         <form onSubmit={handleNext} className="space-y-3">
-          <BasicFields errors={errors} defaultValues={formData} />
+          <BasicFields 
+            errors={errors} 
+            defaultValues={formData} 
+            onChange={handleFieldChange}
+          />
           <ServiceField 
             errors={errors} 
             onServiceChange={handleServiceChange}
@@ -84,8 +92,17 @@ const BookingForm = () => {
         </form>
       ) : (
         <form onSubmit={handleSubmit} className="space-y-3">
-          {showVehicleInfo && <VehicleFields errors={errors} defaultValues={formData} />}
-          <TimeframeField defaultValue={formData.timeframe} />
+          {showVehicleInfo && (
+            <VehicleFields 
+              errors={errors} 
+              defaultValues={formData}
+              onChange={handleFieldChange}
+            />
+          )}
+          <TimeframeField 
+            defaultValue={formData.timeframe}
+            onChange={(value) => handleFieldChange('timeframe', value)}
+          />
           
           {selectedService === "Other" && (
             <div className="space-y-1.5">
