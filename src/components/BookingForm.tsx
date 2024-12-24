@@ -45,111 +45,63 @@ const BookingForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6 max-w-2xl mx-auto p-6 bg-white rounded-xl shadow-lg">
-      <div className="space-y-4">
-        <div>
-          <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
-            Full Name
-          </label>
-          <Input
-            id="name"
-            type="text"
-            placeholder="Your Full Name"
-            required
-            className="h-12 text-base border-gray-300 focus:border-primary focus:ring-primary"
-          />
-        </div>
-
-        <div>
-          <label htmlFor="address" className="block text-sm font-medium text-gray-700 mb-1">
-            Service Address
-          </label>
-          <Input
-            id="address"
-            type="text"
-            placeholder="Complete Service Address"
-            required
-            className="h-12 text-base border-gray-300 focus:border-primary focus:ring-primary"
-          />
-        </div>
-
-        <div>
-          <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-1">
-            Phone Number
-          </label>
-          <Input
-            id="phone"
-            type="tel"
-            placeholder="Your Phone Number"
-            required
-            className="h-12 text-base border-gray-300 focus:border-primary focus:ring-primary"
-          />
-        </div>
-
-        <div>
-          <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
-            Email Address
-          </label>
-          <Input
-            id="email"
-            type="email"
-            placeholder="Your Email Address"
-            required
-            className="h-12 text-base border-gray-300 focus:border-primary focus:ring-primary"
-          />
-        </div>
-
-        <div>
-          <label htmlFor="service" className="block text-sm font-medium text-gray-700 mb-1">
-            Service Needed
-          </label>
-          <Select name="service" required>
-            <SelectTrigger className="h-12 text-base border-gray-300 focus:border-primary focus:ring-primary">
-              <SelectValue placeholder="Select a service" />
-            </SelectTrigger>
-            <SelectContent>
-              {services.map((service) => (
-                <SelectItem key={service} value={service.toLowerCase().replace(/\s+/g, '-')}>
-                  {service}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-
-        <div>
-          <label htmlFor="comments" className="block text-sm font-medium text-gray-700 mb-1">
-            Additional Comments
-          </label>
-          <Textarea
-            id="comments"
-            placeholder="Please provide any additional details about your service needs..."
-            required
-            className="min-h-[120px] text-base border-gray-300 focus:border-primary focus:ring-primary resize-none"
-          />
-        </div>
+    <form onSubmit={handleSubmit} className="space-y-3">
+      <div className="space-y-3">
+        <Input
+          type="text"
+          placeholder="Your Full Name"
+          required
+          className="h-9 text-sm"
+        />
+        <Input
+          type="text"
+          placeholder="Complete Service Address"
+          required
+          className="h-9 text-sm"
+        />
+        <Input
+          type="tel"
+          placeholder="Your Phone Number"
+          required
+          className="h-9 text-sm"
+        />
+        <Select name="service" required>
+          <SelectTrigger className="h-9 text-sm">
+            <SelectValue placeholder="Select a service" />
+          </SelectTrigger>
+          <SelectContent>
+            {services.map((service) => (
+              <SelectItem key={service} value={service.toLowerCase().replace(/\s+/g, '-')}>
+                {service}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+        <Textarea
+          placeholder="Additional comments..."
+          className="min-h-[60px] text-sm resize-none"
+        />
       </div>
 
       <Button
         type="submit"
-        size="lg"
-        className="w-full text-lg font-semibold h-12"
+        className="w-full text-base font-semibold h-9"
         disabled={isSubmitting}
       >
         {isSubmitting ? (
           <>
-            <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+            <Loader2 className="w-4 h-4 mr-2 animate-spin" />
             Submitting...
           </>
         ) : (
           <>
-            <Lock className="w-5 h-5 mr-2" />
+            <Lock className="w-4 h-4 mr-2" />
             Request Service
           </>
         )}
       </Button>
 
-      <p className="text-sm text-gray-500 text-center">
+      <p className="text-xs text-gray-500 text-center">
         Fast Response • Professional Service • 24/7 Available
       </p>
     </form>

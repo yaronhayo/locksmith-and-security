@@ -5,12 +5,12 @@ import BookingForm from "@/components/BookingForm";
 
 const BusinessLockoutHero = () => {
   return (
-    <div className="grid lg:grid-cols-2 gap-8 items-start min-h-[90vh]">
+    <div className="grid lg:grid-cols-2 gap-6 items-start h-screen">
       <div>
-        <h1 className="text-4xl md:text-5xl font-bold text-white mb-6">
+        <h1 className="text-3xl md:text-4xl font-bold text-white mb-4">
           Business Lockout Solutions
         </h1>
-        <p className="text-xl text-white/90 mb-8">
+        <p className="text-base text-white/90 mb-6">
           Professional commercial locksmith service in North Bergen. 
           Fast response, expert solutions, and minimal business disruption.
         </p>
@@ -25,7 +25,7 @@ const BusinessLockoutHero = () => {
             Get Free Quote
           </Button>
         </div>
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-6 mt-12">
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mt-8">
           <div className="flex items-center gap-3">
             <Building2 className="h-6 w-6 text-secondary" />
             <span className="text-white">All Business Types</span>
@@ -40,10 +40,10 @@ const BusinessLockoutHero = () => {
           </div>
         </div>
       </div>
-      <div className="bg-white rounded-2xl p-6 shadow-2xl">
-        <div className="text-center mb-4">
-          <h2 className="text-2xl font-bold text-gray-900">Request Emergency Service</h2>
-          <p className="text-gray-600 mt-1">Get help within 15-30 minutes</p>
+      <div className="bg-white rounded-2xl p-4 shadow-2xl">
+        <div className="text-center mb-2">
+          <h2 className="text-xl font-bold text-gray-900">Request Emergency Service</h2>
+          <p className="text-sm text-gray-600">Get help within 15-30 minutes</p>
         </div>
         <BookingForm />
       </div>
