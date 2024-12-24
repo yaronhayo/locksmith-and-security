@@ -65,7 +65,7 @@ const AboutPage = () => {
         "mainEntity": {
           "@type": "LocalBusiness",
           "name": "Locksmith & Security LLC",
-          "image": "public/lovable-uploads/902e3258-253f-4148-b84b-427ba1f768cb.png",
+          "image": "https://images.unsplash.com/photo-1581092795360-fd1ca04f0952",
           "address": {
             "@type": "PostalAddress",
             "addressLocality": "North Bergen",
@@ -111,8 +111,8 @@ const AboutPage = () => {
               className="relative"
             >
               <img
-                src="/lovable-uploads/902e3258-253f-4148-b84b-427ba1f768cb.png"
-                alt="Professional locksmith at work"
+                src="https://images.unsplash.com/photo-1581092795360-fd1ca04f0952"
+                alt="Professional locksmith team at work"
                 className="rounded-lg shadow-xl w-full object-cover h-[400px]"
               />
               <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-transparent rounded-lg" />
