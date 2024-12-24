@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
-import { Key, Chip, Car } from "lucide-react";
+import { Key, Cpu, Car } from "lucide-react";
 
 const examples = [
   {
@@ -9,7 +9,7 @@ const examples = [
     description: "Customer lost their only smart key for a 2022 Toyota RAV4. We programmed a new smart key and had them back on the road within an hour."
   },
   {
-    icon: Chip,
+    icon: Cpu,
     title: "Faulty Transponder",
     description: "A client's transponder key stopped working after battery replacement. We reprogrammed the transponder chip and restored full functionality."
   },

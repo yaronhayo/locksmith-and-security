@@ -1,4 +1,4 @@
-import { Shield, Chip } from "lucide-react";
+import { Shield, Cpu } from "lucide-react";
 import { motion } from "framer-motion";
 
 const ServiceDescription = () => {
@@ -82,7 +82,7 @@ const ServiceDescription = () => {
           <span className="font-medium">Licensed & Insured</span>
         </div>
         <div className="flex items-center gap-2 text-primary">
-          <Chip className="h-6 w-6" />
+          <Cpu className="h-6 w-6" />
           <span className="font-medium">Advanced Programming Tools</span>
         </div>
       </div>
