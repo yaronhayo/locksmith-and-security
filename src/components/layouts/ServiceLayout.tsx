@@ -52,8 +52,8 @@ const ServiceLayout = ({
       schema={schema || defaultSchema}
       className="min-h-screen"
     >
-      <div className="hero-gradient relative py-16 md:py-24">
-        <div className="container mx-auto px-4">
+      <div className="hero-gradient">
+        <div className="container mx-auto px-4 py-12 md:py-16">
           <div className="max-w-4xl mx-auto text-center text-white">
             {Icon && <Icon className="w-16 h-16 mx-auto mb-6 text-secondary" />}
             <h1 className="text-4xl md:text-5xl font-bold mb-6">{title}</h1>

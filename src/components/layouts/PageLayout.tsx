@@ -56,7 +56,7 @@ const PageLayout = ({
       <div className="min-h-screen flex flex-col">
         <Header />
         {(heroTitle || heroDescription) && (
-          <div className="hero-gradient py-12">
+          <div className="hero-gradient">
             <div className="container mx-auto px-4">
               <motion.h1 
                 className="text-4xl md:text-5xl font-bold text-white text-center mb-6"
