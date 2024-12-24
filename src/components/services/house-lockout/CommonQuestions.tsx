@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import {
   Accordion,
   AccordionContent,
@@ -30,21 +31,36 @@ const questions = [
 
 const CommonQuestions = () => {
   return (
-    <section className="mb-16">
-      <h2 className="text-3xl font-bold mb-6">Common Questions</h2>
-      <Accordion type="single" collapsible className="w-full">
+    <motion.section 
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+      className="mb-16 bg-white rounded-lg shadow-sm p-8"
+    >
+      <h2 className="text-3xl font-bold mb-8 text-primary">Common Questions</h2>
+      <Accordion type="single" collapsible className="w-full space-y-4">
         {questions.map((item, index) => (
-          <AccordionItem key={index} value={`item-${index}`}>
-            <AccordionTrigger className="text-left">
-              {item.question}
-            </AccordionTrigger>
-            <AccordionContent>
-              {item.answer}
-            </AccordionContent>
-          </AccordionItem>
+          <motion.div
+            key={index}
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3, delay: index * 0.1 }}
+          >
+            <AccordionItem 
+              value={`item-${index}`}
+              className="border rounded-lg px-4 hover:bg-gray-50 transition-colors duration-300"
+            >
+              <AccordionTrigger className="text-left hover:text-primary transition-colors duration-300">
+                {item.question}
+              </AccordionTrigger>
+              <AccordionContent className="text-gray-600">
+                {item.answer}
+              </AccordionContent>
+            </AccordionItem>
+          </motion.div>
         ))}
       </Accordion>
-    </section>
+    </motion.section>
   );
 };
 
