@@ -5,7 +5,7 @@ import BookingForm from "@/components/BookingForm";
 
 const HouseLockoutHero = () => {
   return (
-    <section className="hero-gradient relative min-h-[calc(100vh-80px)] flex items-center -mt-8">
+    <section className="hero-gradient relative min-h-[calc(100vh-80px)] flex items-start pt-12 md:pt-16">
       <div className="container mx-auto px-4 h-full">
         <div className="grid lg:grid-cols-2 gap-12 items-start">
           <motion.div
