@@ -101,8 +101,8 @@ const HeroSection = () => {
           </div>
           
           <div 
-            className="lg:w-[42%] bg-white rounded-2xl p-2.5 sm:p-3.5 shadow-2xl transform hover:scale-[1.02] transition-transform duration-300 overflow-y-auto"
-            style={{ maxHeight: '80vh' }}
+            className="lg:w-[39%] bg-white rounded-2xl p-2.5 sm:p-3.5 shadow-2xl transform hover:scale-[1.02] transition-transform duration-300 overflow-y-auto"
+            style={{ maxHeight: '78vh' }}
             role="complementary"
             aria-label="Request service form"
           >
