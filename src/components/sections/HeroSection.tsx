@@ -9,7 +9,9 @@ const HeroSection = () => {
       <div className="container mx-auto px-4 relative z-10 h-full flex items-center">
         <div className="flex flex-col lg:flex-row items-center justify-between gap-12 py-8">
           <div className="lg:w-1/2 space-y-8 text-white">
-            <div className="flex items-center space-x-2 bg-secondary/90 text-white px-4 py-2 rounded-full w-fit animate-float group hover:bg-secondary transition-all duration-300">
+            <div 
+              className="flex items-center space-x-2 bg-secondary/90 text-white px-4 py-2 rounded-full w-fit group hover:bg-secondary transition-all duration-300 relative bg-[linear-gradient(110deg,#F59E0B,45%,#FFA500,55%,#F59E0B)] bg-[length:200%_100%] animate-shine"
+            >
               <Star className="w-5 h-5 group-hover:rotate-12 transition-transform duration-300" />
               <span className="text-sm font-medium">Top-Rated Local Locksmith</span>
             </div>

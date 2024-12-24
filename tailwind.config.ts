@@ -67,10 +67,6 @@ export default {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
-        float: {
-          '0%, 100%': { transform: 'translateY(0)' },
-          '50%': { transform: 'translateY(-10px)' },
-        },
         "phone-ring": {
           '0%, 3%, 6%, 9%': { transform: 'rotate(0deg)' },
           '1.5%, 4.5%, 7.5%': { transform: 'rotate(-10deg)' },
@@ -84,15 +80,19 @@ export default {
         "slide-up": {
           '0%': { transform: 'translateY(0)' },
           '100%': { transform: 'translateY(-4px)' },
+        },
+        "shine": {
+          '0%': { backgroundPosition: '200% center' },
+          '100%': { backgroundPosition: '-200% center' },
         }
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
-        "float": "float 6s ease-in-out infinite",
         "phone-ring": "phone-ring 4s ease-in-out infinite",
         "scale": "scale 0.3s ease-in-out",
         "slide-up": "slide-up 0.2s ease-out forwards",
+        "shine": "shine 8s ease-in-out infinite"
       },
     },
   },
