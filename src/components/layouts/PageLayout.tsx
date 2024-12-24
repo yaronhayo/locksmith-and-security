@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { ErrorBoundary } from "react-error-boundary";
 import ErrorFallback from "@/components/ErrorFallback";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Analytics } from '@vercel/analytics/react';
 
 interface PageLayoutProps {
   title: string;
@@ -153,6 +154,7 @@ const PageLayout = ({
           <div className={cn(className)}>{children}</div>
         </motion.main>
       </div>
+      <Analytics />
     </ErrorBoundary>
   );
 };
