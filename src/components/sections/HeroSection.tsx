@@ -5,16 +5,17 @@ import BookingForm from "@/components/BookingForm";
 const HeroSection = () => {
   return (
     <section 
-      className="relative min-h-screen bg-gradient-to-br from-primary to-primary-hover py-4"
+      className="relative min-h-screen bg-gradient-to-br from-primary to-primary-hover py-4 md:py-8"
       role="banner"
       aria-label="Hero section"
     >
       <div className="absolute inset-0 bg-black/30" aria-hidden="true"></div>
       <div className="container mx-auto px-4 relative z-10 h-full">
-        <div className="flex flex-col lg:flex-row items-start justify-between gap-6 w-full">
-          <div className="lg:w-1/2 space-y-4">
+        <div className="flex flex-col lg:flex-row items-center justify-between gap-6 w-full">
+          {/* Hero Content - Now centered */}
+          <div className="lg:w-1/2 space-y-4 mx-auto text-center lg:text-left">
             <div 
-              className="flex items-center space-x-2 bg-secondary text-white px-4 py-2 rounded-full w-fit group hover:bg-secondary/90 transition-all duration-300 relative overflow-hidden"
+              className="flex items-center space-x-2 bg-secondary text-white px-4 py-2 rounded-full w-fit group hover:bg-secondary/90 transition-all duration-300 relative overflow-hidden mx-auto lg:mx-0"
               style={{
                 background: 'linear-gradient(90deg, #FFA500, #FFA500)',
                 backgroundSize: '200% 100%',
@@ -31,11 +32,11 @@ const HeroSection = () => {
               Professional Locksmith Services in North Bergen
             </h1>
             
-            <p className="text-lg opacity-90 leading-relaxed text-white">
+            <p className="text-lg opacity-90 leading-relaxed text-white max-w-xl mx-auto lg:mx-0">
               Available 24/7 for all your residential, commercial, and automotive locksmith needs. Fast response and reliable service guaranteed. NJ DCA License #13VH13153100
             </p>
             
-            <div className="flex flex-col sm:flex-row gap-4">
+            <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
               <Button 
                 size="lg" 
                 variant="secondary" 
@@ -68,7 +69,7 @@ const HeroSection = () => {
               aria-label="Key features"
             >
               <div 
-                className="flex items-center space-x-3 text-white/90 group hover:text-white transition-all duration-300 transform hover:translate-y-[-2px] cursor-pointer"
+                className="flex items-center space-x-3 text-white/90 group hover:text-white transition-all duration-300 transform hover:translate-y-[-2px] cursor-pointer justify-center lg:justify-start"
                 role="listitem"
               >
                 <Clock className="w-8 h-8 text-secondary group-hover:scale-110 transition-transform duration-300" aria-hidden="true" />
@@ -78,7 +79,7 @@ const HeroSection = () => {
                 </div>
               </div>
               <div 
-                className="flex items-center space-x-3 text-white/90 group hover:text-white transition-all duration-300 transform hover:translate-y-[-2px] cursor-pointer"
+                className="flex items-center space-x-3 text-white/90 group hover:text-white transition-all duration-300 transform hover:translate-y-[-2px] cursor-pointer justify-center lg:justify-start"
                 role="listitem"
               >
                 <Shield className="w-8 h-8 text-secondary group-hover:scale-110 transition-transform duration-300" aria-hidden="true" />
@@ -88,7 +89,7 @@ const HeroSection = () => {
                 </div>
               </div>
               <div 
-                className="flex items-center space-x-3 text-white/90 group hover:text-white transition-all duration-300 transform hover:translate-y-[-2px] cursor-pointer"
+                className="flex items-center space-x-3 text-white/90 group hover:text-white transition-all duration-300 transform hover:translate-y-[-2px] cursor-pointer justify-center lg:justify-start"
                 role="listitem"
               >
                 <Star className="w-8 h-8 text-secondary group-hover:scale-110 transition-transform duration-300" aria-hidden="true" />
@@ -100,9 +101,9 @@ const HeroSection = () => {
             </div>
           </div>
           
+          {/* Form Container - Adjusted sizing and scrolling */}
           <div 
-            className="lg:w-[39%] bg-white rounded-2xl p-2 sm:p-3 shadow-2xl transform hover:scale-[1.02] transition-transform duration-300 overflow-y-auto"
-            style={{ maxHeight: '78vh' }}
+            className="lg:w-[39%] w-full bg-white rounded-2xl p-2 sm:p-3 shadow-2xl transform hover:scale-[1.02] transition-transform duration-300 max-h-[78vh] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent"
             role="complementary"
             aria-label="Request service form"
           >
