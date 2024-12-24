@@ -1,15 +1,26 @@
+import React, { Suspense } from 'react';
 import PageLayout from "@/components/layouts/PageLayout";
 import HeroSection from "@/components/sections/HeroSection";
-import AboutSection from "@/components/sections/AboutSection";
-import ServicesSection from "@/components/sections/ServicesSection";
-import EmergencyServicesSection from "@/components/sections/EmergencyServicesSection";
-import ProcessSection from "@/components/sections/ProcessSection";
-import ServiceAreasSection from "@/components/sections/ServiceAreasSection";
-import ReviewsSection from "@/components/sections/ReviewsSection";
-import FAQSection from "@/components/sections/FAQSection";
-import TrustBadgesSection from "@/components/sections/TrustBadgesSection";
 import { motion } from "framer-motion";
 import { Helmet } from "react-helmet";
+import { Loader2 } from "lucide-react";
+
+// Lazy load components that are not immediately visible
+const AboutSection = React.lazy(() => import("@/components/sections/AboutSection"));
+const ServicesSection = React.lazy(() => import("@/components/sections/ServicesSection"));
+const EmergencyServicesSection = React.lazy(() => import("@/components/sections/EmergencyServicesSection"));
+const ProcessSection = React.lazy(() => import("@/components/sections/ProcessSection"));
+const ServiceAreasSection = React.lazy(() => import("@/components/sections/ServiceAreasSection"));
+const ReviewsSection = React.lazy(() => import("@/components/sections/ReviewsSection"));
+const FAQSection = React.lazy(() => import("@/components/sections/FAQSection"));
+const TrustBadgesSection = React.lazy(() => import("@/components/sections/TrustBadgesSection"));
+
+// Loading component for Suspense fallback
+const SectionLoader = () => (
+  <div className="w-full h-[400px] flex items-center justify-center">
+    <Loader2 className="w-8 h-8 animate-spin text-primary" />
+  </div>
+);
 
 const schema = {
   "@context": "https://schema.org",
@@ -87,107 +98,125 @@ const Index = () => {
           role="main"
           aria-label="Main content"
         >
+          {/* Hero section is not lazy loaded as it's above the fold */}
           <HeroSection />
-          <motion.section
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            viewport={{ once: true }}
-            role="complementary"
-            aria-label="Trust badges and certifications"
-          >
-            <TrustBadgesSection />
-          </motion.section>
           
-          <div className="bg-white">
+          <Suspense fallback={<SectionLoader />}>
             <motion.section
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
               viewport={{ once: true }}
-              role="region"
-              aria-label="Our services"
+              role="complementary"
+              aria-label="Trust badges and certifications"
             >
-              <ServicesSection />
+              <TrustBadgesSection />
             </motion.section>
+          </Suspense>
+          
+          <div className="bg-white">
+            <Suspense fallback={<SectionLoader />}>
+              <motion.section
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+                viewport={{ once: true }}
+                role="region"
+                aria-label="Our services"
+              >
+                <ServicesSection />
+              </motion.section>
+            </Suspense>
           </div>
           
           <div className="bg-gray-50">
-            <motion.section
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              viewport={{ once: true }}
-              role="region"
-              aria-label="Emergency services"
-            >
-              <EmergencyServicesSection />
-            </motion.section>
+            <Suspense fallback={<SectionLoader />}>
+              <motion.section
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+                viewport={{ once: true }}
+                role="region"
+                aria-label="Emergency services"
+              >
+                <EmergencyServicesSection />
+              </motion.section>
+            </Suspense>
           </div>
           
           <div className="bg-white">
-            <motion.section
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              viewport={{ once: true }}
-              role="region"
-              aria-label="Our process"
-            >
-              <ProcessSection />
-            </motion.section>
+            <Suspense fallback={<SectionLoader />}>
+              <motion.section
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+                viewport={{ once: true }}
+                role="region"
+                aria-label="Our process"
+              >
+                <ProcessSection />
+              </motion.section>
+            </Suspense>
           </div>
           
           <div className="bg-gray-50">
-            <motion.section
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              viewport={{ once: true }}
-              role="region"
-              aria-label="About us"
-            >
-              <AboutSection />
-            </motion.section>
+            <Suspense fallback={<SectionLoader />}>
+              <motion.section
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+                viewport={{ once: true }}
+                role="region"
+                aria-label="About us"
+              >
+                <AboutSection />
+              </motion.section>
+            </Suspense>
           </div>
           
           <div className="bg-white">
-            <motion.section
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              viewport={{ once: true }}
-              role="region"
-              aria-label="Service areas"
-            >
-              <ServiceAreasSection />
-            </motion.section>
+            <Suspense fallback={<SectionLoader />}>
+              <motion.section
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+                viewport={{ once: true }}
+                role="region"
+                aria-label="Service areas"
+              >
+                <ServiceAreasSection />
+              </motion.section>
+            </Suspense>
           </div>
           
           <div className="bg-gray-50">
-            <motion.section
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              viewport={{ once: true }}
-              role="region"
-              aria-label="Customer reviews"
-            >
-              <ReviewsSection />
-            </motion.section>
+            <Suspense fallback={<SectionLoader />}>
+              <motion.section
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+                viewport={{ once: true }}
+                role="region"
+                aria-label="Customer reviews"
+              >
+                <ReviewsSection />
+              </motion.section>
+            </Suspense>
           </div>
           
           <div className="bg-white pb-20">
-            <motion.section
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              viewport={{ once: true }}
-              role="region"
-              aria-label="Frequently asked questions"
-            >
-              <FAQSection />
-            </motion.section>
+            <Suspense fallback={<SectionLoader />}>
+              <motion.section
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+                viewport={{ once: true }}
+                role="region"
+                aria-label="Frequently asked questions"
+              >
+                <FAQSection />
+              </motion.section>
+            </Suspense>
           </div>
         </motion.div>
       </PageLayout>
