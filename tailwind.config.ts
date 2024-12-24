@@ -69,7 +69,7 @@ export default {
         },
         float: {
           '0%, 100%': { transform: 'translateY(0)' },
-          '50%': { transform: 'translateY(-10px)' },
+          '50%': { transform: 'translateY(-5px)' }, // Reduced from -10px to -5px
         },
         "phone-ring": {
           '0%, 3%, 6%, 9%': { transform: 'rotate(0deg)' },
@@ -89,7 +89,7 @@ export default {
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
-        "float": "float 6s ease-in-out infinite",
+        "float": "float 8s ease-in-out infinite", // Increased duration from 6s to 8s
         "phone-ring": "phone-ring 4s ease-in-out infinite",
         "scale": "scale 0.3s ease-in-out",
         "slide-up": "slide-up 0.2s ease-out forwards",
