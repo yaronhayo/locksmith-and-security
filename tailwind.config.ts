@@ -76,6 +76,14 @@ export default {
           '1.5%, 4.5%, 7.5%': { transform: 'rotate(-10deg)' },
           '2.25%, 5.25%, 8.25%': { transform: 'rotate(10deg)' },
           '10%, 100%': { transform: 'rotate(0deg)' }
+        },
+        "scale": {
+          '0%, 100%': { transform: 'scale(1)' },
+          '50%': { transform: 'scale(1.05)' },
+        },
+        "slide-up": {
+          '0%': { transform: 'translateY(0)' },
+          '100%': { transform: 'translateY(-4px)' },
         }
       },
       animation: {
@@ -83,6 +91,8 @@ export default {
         "accordion-up": "accordion-up 0.2s ease-out",
         "float": "float 6s ease-in-out infinite",
         "phone-ring": "phone-ring 4s ease-in-out infinite",
+        "scale": "scale 0.3s ease-in-out",
+        "slide-up": "slide-up 0.2s ease-out forwards",
       },
     },
   },
