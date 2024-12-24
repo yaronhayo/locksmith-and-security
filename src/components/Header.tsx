@@ -53,7 +53,7 @@ const Header = () => {
                 {serviceAreas.map((area) => (
                   <DropdownMenuItem 
                     key={area.slug}
-                    className={`${area.name === currentCity ? 'bg-primary/10 text-primary' : ''} hover:bg-primary/5 hover:text-primary transition-all duration-300 hover:translate-x-1`}
+                    className="transition-all duration-300 hover:bg-primary/5 hover:text-primary hover:translate-x-1"
                   >
                     <a 
                       href={`/service-areas/${area.slug}`}
@@ -70,7 +70,7 @@ const Header = () => {
                 <Clock className="w-4 h-4 group-hover:animate-bounce" />
                 <span className="text-sm">24/7 Emergency Service</span>
               </div>
-              <span className="text-sm hover:text-secondary transition-colors duration-300 ease-in-out">NJ DCA License #13VH13153100</span>
+              <span className="text-sm hover:text-secondary transition-colors duration-300 ease-in-out cursor-pointer">NJ DCA License #13VH13153100</span>
             </div>
           </div>
         </div>
@@ -83,7 +83,7 @@ const Header = () => {
               <img 
                 src="/lovable-uploads/9b00adf3-451e-4d1c-a118-6a6f06293ec0.png" 
                 alt="Locksmith & Security LLC Logo" 
-                className="h-16 w-auto transform transition-transform duration-300 group-hover:scale-105"
+                className="h-16 w-auto transform transition-transform duration-300 group-hover:scale-110"
               />
             </a>
 
@@ -100,10 +100,12 @@ const Header = () => {
                     <a 
                       href={path} 
                       className={`text-lg font-medium transition-all duration-300 relative group overflow-hidden
-                        ${isActivePage(path) ? 'text-secondary' : 'hover:text-secondary'}`}
+                        ${isActivePage(path) ? 'text-secondary' : 'hover:text-secondary'}
+                        after:content-[''] after:absolute after:w-full after:h-0.5 after:bg-secondary 
+                        after:left-0 after:bottom-0 after:rounded-full after:origin-left
+                        after:transform after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:duration-300`}
                     >
                       {label}
-                      <span className="absolute left-0 bottom-0 w-full h-0.5 bg-secondary transform scale-x-0 transition-transform duration-300 group-hover:scale-x-100"></span>
                     </a>
                   </li>
                 ))}
@@ -112,7 +114,7 @@ const Header = () => {
 
             <div className="flex items-center space-x-4">
               <div className="hidden md:flex items-center space-x-4">
-                <a href="tel:5513037874" className="inline-flex items-center space-x-2 text-xl font-bold text-primary hover:text-secondary transition-all duration-300 group">
+                <a href="tel:5513037874" className="inline-flex items-center space-x-2 text-xl font-bold text-primary hover:text-secondary transition-all duration-300 group transform hover:scale-105">
                   <Phone className="w-6 h-6 animate-phone-ring" />
                   <span className="text-2xl transform transition-transform duration-300 group-hover:translate-y-[-2px]">(551) 303-7874</span>
                 </a>

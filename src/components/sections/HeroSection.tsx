@@ -9,8 +9,8 @@ const HeroSection = () => {
       <div className="container mx-auto px-4 relative z-10 h-full flex items-center">
         <div className="flex flex-col lg:flex-row items-center justify-between gap-12 py-8">
           <div className="lg:w-1/2 space-y-8 text-white">
-            <div className="flex items-center space-x-2 bg-secondary/90 text-white px-4 py-2 rounded-full w-fit animate-float">
-              <Star className="w-5 h-5" />
+            <div className="flex items-center space-x-2 bg-secondary/90 text-white px-4 py-2 rounded-full w-fit animate-float group hover:bg-secondary transition-all duration-300">
+              <Star className="w-5 h-5 group-hover:rotate-12 transition-transform duration-300" />
               <span className="text-sm font-medium">Top-Rated Local Locksmith</span>
             </div>
             
@@ -29,8 +29,8 @@ const HeroSection = () => {
                 className="text-lg group transform hover:scale-105 transition-all duration-300 hover:shadow-lg" 
                 asChild
               >
-                <a href="tel:5513037874">
-                  <Phone className="mr-2 h-5 w-5 animate-phone-ring" />
+                <a href="tel:5513037874" className="inline-flex items-center">
+                  <Phone className="mr-2 h-5 w-5 animate-phone-ring group-hover:rotate-12 transition-transform duration-300" />
                   Call Now
                 </a>
               </Button>
@@ -40,7 +40,7 @@ const HeroSection = () => {
                 className="text-lg bg-white/10 hover:bg-white/20 group transform hover:scale-105 transition-all duration-300 hover:shadow-lg" 
                 asChild
               >
-                <a href="/services">
+                <a href="/services" className="inline-flex items-center">
                   Our Services
                   <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform duration-300" />
                 </a>
@@ -48,21 +48,21 @@ const HeroSection = () => {
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mt-12">
-              <div className="flex items-center space-x-3 text-white/90 group hover:text-white transition-all duration-300 transform hover:translate-y-[-2px]">
+              <div className="flex items-center space-x-3 text-white/90 group hover:text-white transition-all duration-300 transform hover:translate-y-[-2px] cursor-pointer">
                 <Clock className="w-8 h-8 text-secondary group-hover:scale-110 transition-transform duration-300" />
                 <div>
                   <h3 className="font-semibold">24/7 Service</h3>
                   <p className="text-sm">Always available</p>
                 </div>
               </div>
-              <div className="flex items-center space-x-3 text-white/90 group hover:text-white transition-all duration-300 transform hover:translate-y-[-2px]">
+              <div className="flex items-center space-x-3 text-white/90 group hover:text-white transition-all duration-300 transform hover:translate-y-[-2px] cursor-pointer">
                 <Shield className="w-8 h-8 text-secondary group-hover:scale-110 transition-transform duration-300" />
                 <div>
                   <h3 className="font-semibold">Licensed & Insured</h3>
                   <p className="text-sm">Your safety first</p>
                 </div>
               </div>
-              <div className="flex items-center space-x-3 text-white/90 group hover:text-white transition-all duration-300 transform hover:translate-y-[-2px]">
+              <div className="flex items-center space-x-3 text-white/90 group hover:text-white transition-all duration-300 transform hover:translate-y-[-2px] cursor-pointer">
                 <Star className="w-8 h-8 text-secondary group-hover:scale-110 transition-transform duration-300" />
                 <div>
                   <h3 className="font-semibold">5-Star Rated</h3>
