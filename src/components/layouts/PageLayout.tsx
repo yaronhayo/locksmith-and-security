@@ -83,7 +83,7 @@ const PageLayout = ({
       </Helmet>
       <div className="min-h-screen flex flex-col">
         <Header />
-        {(heroTitle || heroDescription) && (
+        {hasHeroSection && (
           <div className="hero-gradient py-12 md:py-20">
             <div className="container mx-auto px-4">
               <motion.h1 
