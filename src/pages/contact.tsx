@@ -95,24 +95,12 @@ const ContactPage = () => {
               </div>
             </div>
 
-            <div className="space-y-6">
-              <div className="h-[300px] w-full">
-                <img
-                  src="/lovable-uploads/5769d20e-e251-4e5f-a743-870d5c267bd1.png"
-                  alt="Professional mobile locksmith workspace with key programming equipment and tools"
-                  className="rounded-lg shadow-lg w-full h-full object-cover"
-                />
-              </div>
-              <div className="h-[300px] w-full">
-                <iframe
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d24153.928494694108!2d-74.0266685!3d40.7995864!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c2f8c8b02ac6cd%3A0x449b1c4cd0845e49!2sNorth%20Bergen%2C%20NJ!5e0!3m2!1sen!2sus!4v1647894537183!5m2!1sen!2sus"
-                  className="w-full h-full rounded-lg shadow-lg"
-                  style={{ border: 0 }}
-                  allowFullScreen
-                  loading="lazy"
-                  referrerPolicy="no-referrer-when-downgrade"
-                ></iframe>
-              </div>
+            <div className="h-[300px] w-full">
+              <img
+                src="/lovable-uploads/5769d20e-e251-4e5f-a743-870d5c267bd1.png"
+                alt="Professional mobile locksmith workspace with key programming equipment and tools"
+                className="rounded-lg shadow-lg w-full h-full object-cover"
+              />
             </div>
           </div>
 
