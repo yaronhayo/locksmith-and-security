@@ -74,7 +74,7 @@ const ServicesSection = () => {
                 <h3 className="text-xl font-semibold mb-2">{service.title}</h3>
                 <p className="text-gray-600 mb-4">{service.description}</p>
                 <Button asChild variant="secondary" className="group">
-                  <a href={service.link}>
+                  <a href={service.link} className="inline-flex items-center">
                     {service.cta}
                     <ArrowRight className="ml-2 transition-transform duration-300 group-hover:translate-x-1" />
                   </a>

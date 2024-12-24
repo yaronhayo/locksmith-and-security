@@ -24,7 +24,6 @@ const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const location = useLocation();
-  const currentCity = "North Bergen";
 
   useEffect(() => {
     const handleScroll = () => {
@@ -101,12 +100,16 @@ const Header = () => {
                       href={path} 
                       className={`text-lg font-medium relative block
                         ${isActivePage(path) 
-                          ? 'text-secondary after:w-full after:scale-x-100' 
+                          ? 'text-secondary' 
                           : 'hover:text-secondary'
                         }
                         after:content-[''] after:absolute after:bottom-0 after:left-0 
-                        after:w-full after:h-0.5 after:bg-secondary after:origin-left
-                        after:transform after:scale-x-0 hover:after:scale-x-100 
+                        after:w-full after:h-0.5 after:bg-secondary 
+                        after:transform after:scale-x-0 after:origin-left
+                        ${isActivePage(path) 
+                          ? 'after:scale-x-100' 
+                          : 'hover:after:scale-x-100'
+                        }
                         after:transition-transform after:duration-300`}
                     >
                       {label}
