@@ -72,16 +72,17 @@ export default {
           '50%': { transform: 'translateY(-10px)' },
         },
         "phone-ring": {
-          '0%, 100%': { transform: 'rotate(0deg)' },
-          '25%': { transform: 'rotate(-10deg)' },
-          '75%': { transform: 'rotate(10deg)' }
+          '0%, 3%, 6%, 9%': { transform: 'rotate(0deg)' },
+          '1.5%, 4.5%, 7.5%': { transform: 'rotate(-10deg)' },
+          '2.25%, 5.25%, 8.25%': { transform: 'rotate(10deg)' },
+          '10%, 100%': { transform: 'rotate(0deg)' }
         }
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
         "float": "float 6s ease-in-out infinite",
-        "phone-ring": "phone-ring 0.5s ease-in-out infinite",
+        "phone-ring": "phone-ring 4s ease-in-out infinite",
       },
     },
   },
