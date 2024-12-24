@@ -10,7 +10,14 @@ const HeroSection = () => {
         <div className="flex flex-col lg:flex-row items-center justify-between gap-12 py-8">
           <div className="lg:w-1/2 space-y-8 text-white">
             <div 
-              className="flex items-center space-x-2 bg-secondary/90 text-white px-4 py-2 rounded-full w-fit group hover:bg-secondary transition-all duration-300 relative bg-[linear-gradient(110deg,#F59E0B,45%,#FFA500,55%,#F59E0B)] bg-[length:200%_100%] animate-shine"
+              className="flex items-center space-x-2 bg-secondary text-white px-4 py-2 rounded-full w-fit group hover:bg-secondary/90 transition-all duration-300 relative overflow-hidden"
+              style={{
+                background: 'linear-gradient(90deg, #FFA500, #FFA500), linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.5) 50%, rgba(255,255,255,0) 100%)',
+                backgroundSize: '100% 100%, 50% 100%',
+                backgroundRepeat: 'no-repeat',
+                backgroundPosition: '0 0, -100% 0',
+                animation: 'shine 8s cubic-bezier(0.4, 0, 0.2, 1) infinite'
+              }}
             >
               <Star className="w-5 h-5 group-hover:rotate-12 transition-transform duration-300" />
               <span className="text-sm font-medium">Top-Rated Local Locksmith</span>

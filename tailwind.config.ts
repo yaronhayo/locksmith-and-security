@@ -82,8 +82,9 @@ export default {
           '100%': { transform: 'translateY(-4px)' },
         },
         "shine": {
-          '0%': { backgroundPosition: '200% center' },
-          '100%': { backgroundPosition: '-200% center' },
+          '0%': { backgroundPosition: '-100% center' },
+          '5%': { backgroundPosition: '100% center' },
+          '100%': { backgroundPosition: '100% center' }
         }
       },
       animation: {
