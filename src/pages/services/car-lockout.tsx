@@ -1,5 +1,11 @@
 import PageLayout from "@/components/layouts/PageLayout";
-import ServiceLayout from "@/components/layouts/ServiceLayout";
+import CarLockoutHero from "@/components/sections/CarLockoutHero";
+import LockoutServices from "@/components/sections/LockoutServices";
+import WhyChooseUs from "@/components/sections/WhyChooseUs";
+import ServiceDescription from "@/components/services/car-lockout/ServiceDescription";
+import RealWorldExamples from "@/components/services/car-lockout/RealWorldExamples";
+import EmergencyCallout from "@/components/services/car-lockout/EmergencyCallout";
+import FAQSection from "@/components/sections/FAQSection";
 import { Car } from "lucide-react";
 
 const schema = {
@@ -18,6 +24,20 @@ const schema = {
       "addressRegion": "NJ",
       "postalCode": "07047",
       "addressCountry": "US"
+    },
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": "40.7995",
+      "longitude": "-74.0246"
+    },
+    "areaServed": {
+      "@type": "GeoCircle",
+      "geoMidpoint": {
+        "@type": "GeoCoordinates",
+        "latitude": "40.7995",
+        "longitude": "-74.0246"
+      },
+      "geoRadius": "30mi"
     }
   }
 };
@@ -29,59 +49,17 @@ const CarLockoutPage = () => {
       description="Professional car lockout services in North Bergen. Available 24/7 with 15-30 minute response time. Licensed and insured auto locksmith specialists ready to help."
       schema={schema}
     >
-      <ServiceLayout
-        title="Car Lockout Service"
-        description="Locked out of your car? Our professional auto locksmiths are available 24/7 to help you regain access to your vehicle quickly and safely. We service all car makes and models."
-        icon={Car}
-        service="car-lockout"
-        benefits={[
-          "24/7 Emergency Service Available",
-          "15-30 Minute Response Time",
-          "Licensed & Insured Technicians",
-          "All Car Makes & Models",
-          "Damage-Free Car Opening",
-          "Competitive Pricing"
-        ]}
-      >
-        <div className="prose max-w-none">
-          <h2>Professional Car Lockout Services in North Bergen</h2>
-          <p>
-            Getting locked out of your car can be a stressful experience, especially during late hours or in unfamiliar areas. 
-            Our professional auto locksmiths are available 24/7 to help you regain access to your vehicle quickly and safely.
-          </p>
-          
-          <div className="grid md:grid-cols-2 gap-8 my-12">
-            <div className="bg-white p-6 rounded-lg shadow-lg">
-              <h3>Our Car Lockout Services Include:</h3>
-              <ul className="space-y-2">
-                <li>Emergency car lockout assistance</li>
-                <li>Car key replacement and duplication</li>
-                <li>Broken key extraction</li>
-                <li>Transponder key programming</li>
-                <li>All car makes and models serviced</li>
-                <li>Professional damage-free techniques</li>
-              </ul>
-            </div>
-            
-            <div className="bg-white p-6 rounded-lg shadow-lg">
-              <h3>Service Areas</h3>
-              <p className="mb-4">
-                We provide fast car lockout services throughout:
-              </p>
-              <ul className="space-y-2">
-                <li>North Bergen</li>
-                <li>Jersey City</li>
-                <li>Union City</li>
-                <li>West New York</li>
-                <li>Secaucus</li>
-                <li>Weehawken</li>
-                <li>Hoboken</li>
-                <li>Guttenberg</li>
-              </ul>
-            </div>
-          </div>
+      <CarLockoutHero />
+      <LockoutServices />
+      <WhyChooseUs />
+      <div className="container mx-auto px-4 py-12">
+        <div className="max-w-4xl mx-auto">
+          <ServiceDescription />
+          <RealWorldExamples />
+          <EmergencyCallout />
         </div>
-      </ServiceLayout>
+      </div>
+      <FAQSection />
     </PageLayout>
   );
 };
