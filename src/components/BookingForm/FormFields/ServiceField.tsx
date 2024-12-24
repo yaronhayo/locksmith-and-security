@@ -13,13 +13,14 @@ import { services } from "../constants";
 interface ServiceFieldProps {
   errors: Record<string, string>;
   onServiceChange: (value: string) => void;
+  defaultValue?: string;
 }
 
-export const ServiceField = ({ errors, onServiceChange }: ServiceFieldProps) => {
+export const ServiceField = ({ errors, onServiceChange, defaultValue }: ServiceFieldProps) => {
   return (
     <div className="space-y-1.5">
       <Label htmlFor="service" className="text-sm">Service Needed</Label>
-      <Select onValueChange={onServiceChange} name="service">
+      <Select onValueChange={onServiceChange} name="service" defaultValue={defaultValue}>
         <SelectTrigger 
           id="service"
           className={`h-8 text-sm ${errors.service ? 'border-red-500' : ''}`}

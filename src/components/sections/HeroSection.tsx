@@ -5,14 +5,14 @@ import BookingForm from "@/components/BookingForm";
 const HeroSection = () => {
   return (
     <section 
-      className="relative min-h-screen bg-gradient-to-br from-primary to-primary-hover py-4 md:py-8"
+      className="relative min-h-screen bg-gradient-to-br from-primary to-primary-hover py-4 md:py-8 flex items-center"
       role="banner"
       aria-label="Hero section"
     >
       <div className="absolute inset-0 bg-black/30" aria-hidden="true"></div>
-      <div className="container mx-auto px-4 relative z-10 h-full">
-        <div className="flex flex-col lg:flex-row items-center justify-between gap-6 w-full min-h-[calc(100vh-2rem)]">
-          {/* Hero Content - Now centered */}
+      <div className="container mx-auto px-4 relative z-10">
+        <div className="flex flex-col lg:flex-row items-center justify-between gap-6 w-full">
+          {/* Hero Content */}
           <div className="lg:w-1/2 space-y-4 mx-auto text-center lg:text-left">
             <div 
               className="flex items-center space-x-2 bg-secondary text-white px-4 py-2 rounded-full w-fit group hover:bg-secondary/90 transition-all duration-300 relative overflow-hidden mx-auto lg:mx-0"
@@ -101,19 +101,13 @@ const HeroSection = () => {
             </div>
           </div>
           
-          {/* Form Container - Adjusted sizing and scrolling */}
+          {/* Form Container */}
           <div 
-            className="lg:w-[39%] w-full bg-white rounded-2xl p-2 sm:p-3 shadow-2xl transform hover:scale-[1.02] transition-transform duration-300"
-            style={{ 
-              maxHeight: 'calc(100vh - 4rem)',
-              overflowY: 'auto',
-              scrollbarWidth: 'thin',
-              scrollbarColor: '#CBD5E0 transparent'
-            }}
+            className="lg:w-[39%] w-full bg-white rounded-2xl p-4 shadow-2xl transform hover:scale-[1.02] transition-transform duration-300"
             role="complementary"
             aria-label="Request service form"
           >
-            <div className="text-center mb-1">
+            <div className="text-center mb-2">
               <h2 className="text-base font-bold text-gray-900">Request Service</h2>
               <p className="text-gray-600 mt-0.5 text-xs">Get a quick response from our team</p>
             </div>

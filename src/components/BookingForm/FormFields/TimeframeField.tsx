@@ -8,11 +8,15 @@ import {
 } from "@/components/ui/select";
 import { timeframes } from "../constants";
 
-export const TimeframeField = () => {
+interface TimeframeFieldProps {
+  defaultValue?: string;
+}
+
+export const TimeframeField = ({ defaultValue }: TimeframeFieldProps) => {
   return (
     <div className="space-y-1.5">
       <Label htmlFor="timeframe" className="text-sm">When do you need service?</Label>
-      <Select name="timeframe">
+      <Select name="timeframe" defaultValue={defaultValue}>
         <SelectTrigger id="timeframe" className="h-8 text-sm">
           <SelectValue placeholder="When do you need service?" />
         </SelectTrigger>

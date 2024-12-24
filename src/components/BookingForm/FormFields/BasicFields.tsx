@@ -5,9 +5,10 @@ import { AlertCircle } from "lucide-react";
 
 interface BasicFieldsProps {
   errors: Record<string, string>;
+  defaultValues?: Record<string, string>;
 }
 
-export const BasicFields = ({ errors }: BasicFieldsProps) => {
+export const BasicFields = ({ errors, defaultValues = {} }: BasicFieldsProps) => {
   return (
     <>
       <div className="space-y-1.5">
@@ -16,6 +17,7 @@ export const BasicFields = ({ errors }: BasicFieldsProps) => {
           id="name"
           name="name"
           type="text"
+          defaultValue={defaultValues.name}
           aria-describedby="name-error"
           className={`h-8 text-sm ${errors.name ? 'border-red-500' : ''}`}
         />
@@ -33,6 +35,7 @@ export const BasicFields = ({ errors }: BasicFieldsProps) => {
           id="phone"
           name="phone"
           type="tel"
+          defaultValue={defaultValues.phone}
           aria-describedby="phone-error"
           className={`h-8 text-sm ${errors.phone ? 'border-red-500' : ''}`}
         />
@@ -50,6 +53,7 @@ export const BasicFields = ({ errors }: BasicFieldsProps) => {
           id="address"
           name="address"
           type="text"
+          defaultValue={defaultValues.address}
           aria-describedby="address-error"
           className={`h-8 text-sm ${errors.address ? 'border-red-500' : ''}`}
         />
