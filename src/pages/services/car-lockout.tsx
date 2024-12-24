@@ -57,12 +57,74 @@ const schema = {
 const CarLockoutPage = () => {
   return (
     <PageLayout
-      title="24/7 Car Lockout Service in North Bergen | Locksmith & Security LLC"
-      description="Professional car lockout services in North Bergen. Available 24/7 with fast response times. Licensed and insured car locksmith specialists ready to help."
+      title="24/7 Car Lockout Service North Bergen | Emergency Auto Locksmith"
+      description="Professional car lockout services in North Bergen. Available 24/7 with fast response times. Licensed and insured auto locksmith specialists ready to help."
       schema={schema}
-      heroTitle="24/7 Car Lockout Service"
-      heroDescription="Locked out of your car? Our professional locksmiths are available 24/7 to help you regain access to your vehicle quickly and safely."
     >
+      <div className="hero-gradient relative overflow-hidden">
+        <div className="container mx-auto px-4 py-16">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <div>
+              <h1 className="text-4xl md:text-5xl font-bold text-white mb-6">
+                Locked Out of Your Car? We're Here to Help!
+              </h1>
+              <p className="text-xl text-white/90 mb-8">
+                Professional auto locksmith service in North Bergen available 24/7. 
+                Fast response time, fair pricing, and damage-free entry guaranteed.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4">
+                <Button size="lg" variant="secondary" asChild className="text-lg">
+                  <a href="tel:5513037874" className="flex items-center">
+                    <Phone className="mr-2 h-5 w-5" />
+                    (551) 303-7874
+                  </a>
+                </Button>
+                <Button size="lg" variant="outline" className="text-lg bg-white/10 text-white hover:bg-white/20">
+                  Get Free Quote
+                </Button>
+              </div>
+              <div className="grid grid-cols-2 gap-6 mt-12">
+                <div className="flex items-center gap-3">
+                  <Clock className="h-6 w-6 text-secondary" />
+                  <span className="text-white">15-30 Min Response</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <Shield className="h-6 w-6 text-secondary" />
+                  <span className="text-white">Licensed & Insured</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <Car className="h-6 w-6 text-secondary" />
+                  <span className="text-white">All Vehicle Types</span>
+                </div>
+              </div>
+            </div>
+            <div className="bg-white rounded-2xl p-8 shadow-2xl">
+              <div className="text-center mb-6">
+                <h2 className="text-2xl font-bold text-gray-900">Request Emergency Service</h2>
+                <p className="text-gray-600 mt-2">Get help within 15-30 minutes</p>
+              </div>
+              <div className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700">Car Make</label>
+                    <input type="text" className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary" />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700">Car Model</label>
+                    <input type="text" className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary" />
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Location</label>
+                  <input type="text" className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary" />
+                </div>
+                <Button className="w-full">Request Service Now</Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div className="container mx-auto px-4 py-12">
         <section className="mb-16">
           <h2 className="text-3xl font-bold mb-6">Professional Car Lockout Services in North Bergen</h2>
