@@ -6,18 +6,22 @@ import ScrollToTop from "@/components/ScrollToTop";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Routes from '@/Routes';
+import { ErrorBoundary } from "react-error-boundary";
+import ErrorFallback from "@/components/ErrorFallback";
 
 function App() {
   return (
-    <Router>
-      <ScrollToTop />
-      <Header />
-      <Routes />
-      <Footer />
-      <Toaster />
-      <CookieConsent />
-      <Analytics />
-    </Router>
+    <ErrorBoundary FallbackComponent={ErrorFallback}>
+      <Router>
+        <ScrollToTop />
+        <Header />
+        <Routes />
+        <Footer />
+        <Toaster />
+        <CookieConsent />
+        <Analytics />
+      </Router>
+    </ErrorBoundary>
   );
 }
 

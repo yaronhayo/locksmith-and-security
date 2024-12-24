@@ -1,9 +1,10 @@
-import React, { ReactElement, JSXElementConstructor } from "react";
+import React from "react";
 import { Helmet } from "react-helmet";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 import { ErrorBoundary } from "react-error-boundary";
 import ErrorFallback from "@/components/ErrorFallback";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface PageLayoutProps {
   title: string;
@@ -16,6 +17,7 @@ interface PageLayoutProps {
   canonicalUrl?: string;
   ogImage?: string;
   keywords?: string;
+  isLoading?: boolean;
 }
 
 const PageLayout = ({
@@ -29,6 +31,7 @@ const PageLayout = ({
   canonicalUrl,
   ogImage = "/og-image.png",
   keywords = "locksmith, security, lock services, emergency locksmith, North Bergen",
+  isLoading = false,
 }: PageLayoutProps) => {
   const hasHeroSection = Boolean(heroTitle || heroDescription);
   
@@ -37,7 +40,7 @@ const PageLayout = ({
     "@type": "WebPage",
     "name": title,
     "description": description,
-    "publisher": {
+    "provider": {
       "@type": "Organization",
       "name": "Locksmith & Security LLC",
       "logo": {
@@ -62,9 +65,26 @@ const PageLayout = ({
   const baseUrl = "https://247locksmithandsecurity.com";
   const fullCanonicalUrl = canonicalUrl ? `${baseUrl}${canonicalUrl}` : baseUrl;
 
+  if (isLoading) {
+    return (
+      <div className="min-h-screen">
+        <div className="container mx-auto px-4 py-8">
+          <Skeleton className="h-8 w-3/4 mb-4" />
+          <Skeleton className="h-4 w-1/2 mb-8" />
+          <div className="grid gap-4">
+            {[1, 2, 3].map((i) => (
+              <Skeleton key={i} className="h-32 w-full" />
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <ErrorBoundary FallbackComponent={ErrorFallback}>
       <Helmet>
+        <html lang="en" />
         <title>{`${title} | Locksmith & Security LLC`}</title>
         <meta name="description" content={description} />
         <meta name="keywords" content={keywords} />
@@ -91,13 +111,17 @@ const PageLayout = ({
         <meta name="format-detection" content="telephone=yes" />
         <meta name="robots" content="index, follow" />
         
+        {/* Accessibility Tags */}
+        <meta name="apple-mobile-web-app-title" content="Locksmith & Security LLC" />
+        <meta name="application-name" content="Locksmith & Security LLC" />
+        
         <script type="application/ld+json">
           {JSON.stringify(pageSchema)}
         </script>
       </Helmet>
       <div className="min-h-screen flex flex-col">
         {hasHeroSection && (
-          <div className="hero-gradient py-12 md:py-20">
+          <div className="hero-gradient py-12 md:py-20" role="banner">
             <div className="container mx-auto px-4">
               <motion.h1 
                 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white text-center mb-4 md:mb-6"
@@ -124,6 +148,7 @@ const PageLayout = ({
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: 20 }}
           transition={{ duration: 0.3 }}
+          role="main"
         >
           <div className={cn(className)}>{children}</div>
         </motion.main>
