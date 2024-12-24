@@ -1,6 +1,7 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { Phone, Building2 } from "lucide-react";
+import BookingForm from "@/components/BookingForm";
 
 const BusinessLockoutHero = () => {
   return (
@@ -44,27 +45,7 @@ const BusinessLockoutHero = () => {
           <h2 className="text-2xl font-bold text-gray-900">Request Emergency Service</h2>
           <p className="text-gray-600 mt-2">Get help within 15-30 minutes</p>
         </div>
-        <div className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-700">Business Name</label>
-            <input type="text" className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary" />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700">Business Type</label>
-            <select className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary">
-              <option>Retail Store</option>
-              <option>Office</option>
-              <option>Restaurant</option>
-              <option>Warehouse</option>
-              <option>Other</option>
-            </select>
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700">Location</label>
-            <input type="text" className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary" />
-          </div>
-          <Button className="w-full">Request Service Now</Button>
-        </div>
+        <BookingForm />
       </div>
     </div>
   );
