@@ -1,7 +1,22 @@
 User-agent: *
 Allow: /
-Disallow: /api/
+
+# Sitemaps
+Sitemap: https://247locksmithandsecurity.com/sitemap.xml
+
+# Disallow admin and private areas
 Disallow: /admin/
 Disallow: /private/
+Disallow: /api/
 
-Sitemap: https://247locksmithandsecurity.com/sitemap.xml
+# Allow CSS, JS, and Images
+Allow: /*.css$
+Allow: /*.js$
+Allow: /*.jpg$
+Allow: /*.jpeg$
+Allow: /*.gif$
+Allow: /*.png$
+Allow: /*.svg$
+
+# Crawl-delay
+Crawl-delay: 10

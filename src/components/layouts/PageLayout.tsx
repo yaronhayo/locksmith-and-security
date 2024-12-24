@@ -65,6 +65,7 @@ const PageLayout = ({
 
   const baseUrl = "https://247locksmithandsecurity.com";
   const fullCanonicalUrl = canonicalUrl ? `${baseUrl}${canonicalUrl}` : baseUrl;
+  const fullTitle = `${title} | Locksmith & Security LLC - Professional Locksmith Services in North Bergen, NJ`;
 
   if (isLoading) {
     return (
@@ -86,14 +87,14 @@ const PageLayout = ({
     <ErrorBoundary FallbackComponent={ErrorFallback}>
       <Helmet>
         <html lang="en" />
-        <title>{`${title} | Locksmith & Security LLC`}</title>
+        <title>{fullTitle}</title>
         <meta name="description" content={description} />
         <meta name="keywords" content={keywords} />
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
         <link rel="canonical" href={fullCanonicalUrl} />
         
         {/* Open Graph Tags */}
-        <meta property="og:title" content={title} />
+        <meta property="og:title" content={fullTitle} />
         <meta property="og:description" content={description} />
         <meta property="og:image" content={ogImage} />
         <meta property="og:url" content={fullCanonicalUrl} />
@@ -101,7 +102,7 @@ const PageLayout = ({
         
         {/* Twitter Card Tags */}
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content={title} />
+        <meta name="twitter:title" content={fullTitle} />
         <meta name="twitter:description" content={description} />
         <meta name="twitter:image" content={ogImage} />
         
@@ -111,6 +112,20 @@ const PageLayout = ({
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <meta name="format-detection" content="telephone=yes" />
         <meta name="robots" content="index, follow" />
+        
+        {/* Geo Location Tags */}
+        <meta name="geo.region" content="US-NJ" />
+        <meta name="geo.placename" content="North Bergen" />
+        <meta name="geo.position" content="40.7995;-74.0246" />
+        <meta name="ICBM" content="40.7995, -74.0246" />
+        
+        {/* Business Information */}
+        <meta name="business:contact_data:street_address" content="123 Main Street" />
+        <meta name="business:contact_data:locality" content="North Bergen" />
+        <meta name="business:contact_data:region" content="NJ" />
+        <meta name="business:contact_data:postal_code" content="07047" />
+        <meta name="business:contact_data:country_name" content="United States" />
+        <meta name="business:contact_data:phone_number" content="+15513037874" />
         
         {/* Accessibility Tags */}
         <meta name="apple-mobile-web-app-title" content="Locksmith & Security LLC" />
