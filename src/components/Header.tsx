@@ -92,6 +92,15 @@ const Header = () => {
                 width="64"
                 height="64"
                 fetchPriority="high"
+                decoding="async"
+                style={{
+                  aspectRatio: '1/1',
+                  objectFit: 'contain'
+                }}
+                onError={(e) => {
+                  const img = e.target as HTMLImageElement;
+                  img.src = '/placeholder.svg';
+                }}
               />
             </a>
 
