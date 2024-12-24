@@ -2,11 +2,12 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { AlertCircle } from "lucide-react";
+import { BookingFormData } from "@/types/booking";
 
 interface BasicFieldsProps {
   errors: Record<string, string>;
-  defaultValues: Record<string, string>;
-  onChange: (field: string, value: string) => void;
+  defaultValues: Partial<BookingFormData>;
+  onChange: (field: keyof BookingFormData, value: string) => void;
 }
 
 export const BasicFields = ({ errors, defaultValues, onChange }: BasicFieldsProps) => {
@@ -16,10 +17,8 @@ export const BasicFields = ({ errors, defaultValues, onChange }: BasicFieldsProp
         <Label htmlFor="name">Your Name</Label>
         <Input
           id="name"
-          name="name"
-          type="text"
-          value={defaultValues.name}
-          onChange={e => onChange("name", e.target.value)}
+          value={defaultValues.name || ""}
+          onChange={(e) => onChange("name", e.target.value)}
           aria-describedby="name-error"
           className={`h-10 ${errors.name ? 'border-red-500' : ''}`}
         />
@@ -35,10 +34,9 @@ export const BasicFields = ({ errors, defaultValues, onChange }: BasicFieldsProp
         <Label htmlFor="phone">Phone Number</Label>
         <Input
           id="phone"
-          name="phone"
           type="tel"
-          value={defaultValues.phone}
-          onChange={e => onChange("phone", e.target.value)}
+          value={defaultValues.phone || ""}
+          onChange={(e) => onChange("phone", e.target.value)}
           aria-describedby="phone-error"
           className={`h-10 ${errors.phone ? 'border-red-500' : ''}`}
         />
@@ -54,10 +52,8 @@ export const BasicFields = ({ errors, defaultValues, onChange }: BasicFieldsProp
         <Label htmlFor="address">Service Address</Label>
         <Input
           id="address"
-          name="address"
-          type="text"
-          value={defaultValues.address}
-          onChange={e => onChange("address", e.target.value)}
+          value={defaultValues.address || ""}
+          onChange={(e) => onChange("address", e.target.value)}
           aria-describedby="address-error"
           className={`h-10 ${errors.address ? 'border-red-500' : ''}`}
         />

@@ -16,3 +16,12 @@ export interface FormErrors {
 }
 
 export type FormStep = 1 | 2;
+
+export interface FormAnalytics {
+  startTime: number;
+  stepCompletionTimes: {
+    [key: number]: number;
+  };
+  totalTime?: number;
+  dropOffStep?: number;
+}

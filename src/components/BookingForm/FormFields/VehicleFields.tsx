@@ -2,11 +2,12 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { AlertCircle } from "lucide-react";
+import { BookingFormData } from "@/types/booking";
 
 interface VehicleFieldsProps {
   errors: Record<string, string>;
-  defaultValues: Record<string, string>;
-  onChange: (field: string, value: string) => void;
+  defaultValues: Partial<BookingFormData>;
+  onChange: (field: keyof BookingFormData, value: string) => void;
 }
 
 export const VehicleFields = ({ errors, defaultValues, onChange }: VehicleFieldsProps) => {
@@ -16,10 +17,8 @@ export const VehicleFields = ({ errors, defaultValues, onChange }: VehicleFields
         <Label htmlFor="vehicleYear">Vehicle Year</Label>
         <Input
           id="vehicleYear"
-          name="vehicleYear"
-          type="text"
-          value={defaultValues.vehicleYear}
-          onChange={e => onChange("vehicleYear", e.target.value)}
+          value={defaultValues.vehicleYear || ""}
+          onChange={(e) => onChange("vehicleYear", e.target.value)}
           aria-describedby="vehicleYear-error"
           className={`h-10 ${errors.vehicleYear ? 'border-red-500' : ''}`}
         />
@@ -35,10 +34,8 @@ export const VehicleFields = ({ errors, defaultValues, onChange }: VehicleFields
         <Label htmlFor="vehicleMake">Vehicle Make</Label>
         <Input
           id="vehicleMake"
-          name="vehicleMake"
-          type="text"
-          value={defaultValues.vehicleMake}
-          onChange={e => onChange("vehicleMake", e.target.value)}
+          value={defaultValues.vehicleMake || ""}
+          onChange={(e) => onChange("vehicleMake", e.target.value)}
           aria-describedby="vehicleMake-error"
           className={`h-10 ${errors.vehicleMake ? 'border-red-500' : ''}`}
         />
@@ -54,10 +51,8 @@ export const VehicleFields = ({ errors, defaultValues, onChange }: VehicleFields
         <Label htmlFor="vehicleModel">Vehicle Model</Label>
         <Input
           id="vehicleModel"
-          name="vehicleModel"
-          type="text"
-          value={defaultValues.vehicleModel}
-          onChange={e => onChange("vehicleModel", e.target.value)}
+          value={defaultValues.vehicleModel || ""}
+          onChange={(e) => onChange("vehicleModel", e.target.value)}
           aria-describedby="vehicleModel-error"
           className={`h-10 ${errors.vehicleModel ? 'border-red-500' : ''}`}
         />

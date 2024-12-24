@@ -1,28 +1,46 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useToast } from "@/components/ui/use-toast";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { Lock, Loader2, ArrowLeft, ArrowRight } from "lucide-react";
+import { Lock, Loader2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { BasicFields } from "./FormFields/BasicFields";
 import { ServiceField } from "./FormFields/ServiceField";
 import { VehicleFields } from "./FormFields/VehicleFields";
 import { TimeframeField } from "./FormFields/TimeframeField";
-import type { BookingFormData, FormErrors, FormStep } from "@/types/booking";
+import { FormProgress } from "./FormProgress";
+import { useFormPersistence } from "@/hooks/useFormPersistence";
+import { submitBookingForm } from "@/services/bookingService";
+import type { BookingFormData, FormErrors } from "@/types/booking";
+
+const initialFormData: BookingFormData = {
+  name: "",
+  phone: "",
+  address: "",
+  service: "",
+};
 
 const BookingForm = () => {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [step, setStep] = useState<FormStep>(1);
-  const [formData, setFormData] = useState<BookingFormData>({
-    name: "",
-    phone: "",
-    address: "",
-    service: "",
-  });
+  const [step, setStep] = useState(1);
   const [errors, setErrors] = useState<FormErrors>({});
+  const { formData, setFormData, clearPersistedData } = useFormPersistence(initialFormData);
+
+  // Analytics tracking
+  useEffect(() => {
+    const startTime = Date.now();
+    return () => {
+      const endTime = Date.now();
+      console.log('Form interaction time:', endTime - startTime);
+    };
+  }, []);
+
+  const handleFieldChange = (field: keyof BookingFormData, value: string) => {
+    setFormData(prev => ({ ...prev, [field]: value }));
+  };
 
   const validateStep1 = () => {
     const newErrors: FormErrors = {};
@@ -46,17 +64,12 @@ const BookingForm = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleServiceChange = (value: string) => {
-    setFormData(prev => ({
-      ...prev,
-      service: value
-    }));
-  };
-
   const handleNext = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (validateStep1()) {
       setStep(2);
+      // Track step completion
+      console.log('Step 1 completed:', Date.now());
     }
   };
 
@@ -69,27 +82,23 @@ const BookingForm = () => {
     setIsSubmitting(true);
 
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-
-      toast({
-        title: "Request Submitted Successfully",
-        description: "We'll contact you shortly to confirm your booking.",
-      });
-
-      // Reset form
-      setFormData({
-        name: "",
-        phone: "",
-        address: "",
-        service: "",
-      });
-      setStep(1);
-      setErrors({});
+      const response = await submitBookingForm(formData);
+      
+      if (response.success) {
+        toast({
+          title: "Request Submitted Successfully",
+          description: response.message,
+        });
+        
+        // Clear form after successful submission
+        clearPersistedData();
+        setStep(1);
+        setErrors({});
+      }
     } catch (error) {
       toast({
         title: "Submission Failed",
-        description: "Please try again or contact us directly.",
+        description: error instanceof Error ? error.message : "Please try again later",
         variant: "destructive",
       });
     } finally {
@@ -100,14 +109,9 @@ const BookingForm = () => {
   const showVehicleInfo = formData.service.toLowerCase().includes("car");
 
   return (
-    <div className="w-full max-w-md mx-auto bg-white rounded-xl shadow-lg p-6">
-      <div className="text-center mb-4">
-        <h2 className="text-xl font-bold text-gray-900">Request Service</h2>
-        <p className="text-sm text-gray-600 mt-1">
-          {step === 1 ? "Tell us about yourself" : "Additional details"}
-        </p>
-      </div>
-
+    <div className="w-full max-w-md mx-auto">
+      <FormProgress currentStep={step} totalSteps={2} />
+      
       <AnimatePresence mode="wait">
         <motion.div
           key={step}
@@ -121,13 +125,11 @@ const BookingForm = () => {
               <BasicFields
                 errors={errors}
                 defaultValues={formData}
-                onChange={(field, value) => 
-                  setFormData(prev => ({ ...prev, [field]: value }))
-                }
+                onChange={handleFieldChange}
               />
               <ServiceField
                 errors={errors}
-                onServiceChange={handleServiceChange}
+                onServiceChange={(value) => handleFieldChange('service', value)}
                 defaultValue={formData.service}
               />
               
@@ -136,7 +138,6 @@ const BookingForm = () => {
                 className="w-full h-10 text-sm font-semibold"
               >
                 Next Step
-                <ArrowRight className="w-4 h-4 ml-2" />
               </Button>
             </form>
           ) : (
@@ -145,17 +146,13 @@ const BookingForm = () => {
                 <VehicleFields
                   errors={errors}
                   defaultValues={formData}
-                  onChange={(field, value) =>
-                    setFormData(prev => ({ ...prev, [field]: value }))
-                  }
+                  onChange={handleFieldChange}
                 />
               )}
               
               <TimeframeField
                 defaultValue={formData.timeframe}
-                onChange={value =>
-                  setFormData(prev => ({ ...prev, timeframe: value }))
-                }
+                onChange={(value) => handleFieldChange('timeframe', value)}
               />
 
               {formData.service === "Other" && (
@@ -163,14 +160,8 @@ const BookingForm = () => {
                   <Label htmlFor="otherService">Please specify the service needed</Label>
                   <Input
                     id="otherService"
-                    name="otherService"
                     value={formData.otherService}
-                    onChange={e =>
-                      setFormData(prev => ({
-                        ...prev,
-                        otherService: e.target.value
-                      }))
-                    }
+                    onChange={(e) => handleFieldChange('otherService', e.target.value)}
                     className="h-10"
                   />
                 </div>
@@ -180,11 +171,8 @@ const BookingForm = () => {
                 <Label htmlFor="notes">Additional Notes</Label>
                 <Textarea
                   id="notes"
-                  name="notes"
                   value={formData.notes}
-                  onChange={e =>
-                    setFormData(prev => ({ ...prev, notes: e.target.value }))
-                  }
+                  onChange={(e) => handleFieldChange('notes', e.target.value)}
                   placeholder="Any specific details or requirements..."
                   className="h-20 resize-none"
                 />
@@ -197,7 +185,6 @@ const BookingForm = () => {
                   className="w-1/2 h-10"
                   onClick={handleBack}
                 >
-                  <ArrowLeft className="w-4 h-4 mr-2" />
                   Back
                 </Button>
                 <Button
