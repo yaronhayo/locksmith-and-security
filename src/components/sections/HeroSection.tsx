@@ -101,14 +101,14 @@ const HeroSection = () => {
           </div>
           
           <div 
-            className="lg:w-[39%] bg-white rounded-2xl p-2.5 sm:p-3.5 shadow-2xl transform hover:scale-[1.02] transition-transform duration-300 overflow-y-auto"
+            className="lg:w-[39%] bg-white rounded-2xl p-2 sm:p-3 shadow-2xl transform hover:scale-[1.02] transition-transform duration-300 overflow-y-auto"
             style={{ maxHeight: '78vh' }}
             role="complementary"
             aria-label="Request service form"
           >
-            <div className="text-center mb-1.5">
-              <h2 className="text-lg font-bold text-gray-900">Request Service</h2>
-              <p className="text-gray-600 mt-0.5 text-sm">Get a quick response from our team</p>
+            <div className="text-center mb-1">
+              <h2 className="text-base font-bold text-gray-900">Request Service</h2>
+              <p className="text-gray-600 mt-0.5 text-xs">Get a quick response from our team</p>
             </div>
             <BookingForm />
           </div>

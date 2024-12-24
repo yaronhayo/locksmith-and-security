@@ -85,154 +85,147 @@ const BookingForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-3 relative">
-      {isSubmitting && <FormLoadingOverlay />}
-      
-      <div className="space-y-2">
-        <Label htmlFor="name">Your Name</Label>
+    <form onSubmit={handleSubmit} className="space-y-2">
+      <div className="space-y-1.5">
+        <Label htmlFor="name" className="text-sm">Your Name</Label>
         <Input
           id="name"
           name="name"
           type="text"
           aria-describedby="name-error"
-          className={errors.name ? 'border-red-500' : ''}
-          disabled={isSubmitting}
+          className={`h-9 text-sm ${errors.name ? 'border-red-500' : ''}`}
         />
         {errors.name && (
-          <Alert variant="destructive">
-            <AlertCircle className="h-4 w-4" />
-            <AlertDescription>{errors.name}</AlertDescription>
+          <Alert variant="destructive" className="py-2">
+            <AlertCircle className="h-3 w-3" />
+            <AlertDescription className="text-xs">{errors.name}</AlertDescription>
           </Alert>
         )}
       </div>
 
-      <div className="space-y-2">
-        <Label htmlFor="phone">Phone Number</Label>
+      <div className="space-y-1.5">
+        <Label htmlFor="phone" className="text-sm">Phone Number</Label>
         <Input
           id="phone"
           name="phone"
           type="tel"
           aria-describedby="phone-error"
-          className={`h-10 text-base ${errors.phone ? 'border-red-500' : ''}`}
+          className={`h-9 text-sm ${errors.phone ? 'border-red-500' : ''}`}
         />
         {errors.phone && (
-          <Alert variant="destructive">
-            <AlertCircle className="h-4 w-4" />
-            <AlertDescription>{errors.phone}</AlertDescription>
+          <Alert variant="destructive" className="py-2">
+            <AlertCircle className="h-3 w-3" />
+            <AlertDescription className="text-xs">{errors.phone}</AlertDescription>
           </Alert>
         )}
       </div>
 
-      <div className="space-y-2">
-        <Label htmlFor="address">Address</Label>
+      <div className="space-y-1.5">
+        <Label htmlFor="address" className="text-sm">Address</Label>
         <Input
           id="address"
           name="address"
           type="text"
           aria-describedby="address-error"
-          className={`h-10 text-base ${errors.address ? 'border-red-500' : ''}`}
+          className={`h-9 text-sm ${errors.address ? 'border-red-500' : ''}`}
         />
         {errors.address && (
-          <Alert variant="destructive">
-            <AlertCircle className="h-4 w-4" />
-            <AlertDescription>{errors.address}</AlertDescription>
+          <Alert variant="destructive" className="py-2">
+            <AlertCircle className="h-3 w-3" />
+            <AlertDescription className="text-xs">{errors.address}</AlertDescription>
           </Alert>
         )}
       </div>
-
-      <div className="space-y-2">
-        <Label htmlFor="service">Service Needed</Label>
-        <Select 
-          onValueChange={handleServiceChange} 
-          name="service"
-          disabled={isSubmitting}
-        >
+      
+      <div className="space-y-1.5">
+        <Label htmlFor="service" className="text-sm">Service Needed</Label>
+        <Select onValueChange={handleServiceChange} name="service">
           <SelectTrigger 
             id="service"
-            className={errors.service ? 'border-red-500' : ''}
+            className={`h-9 text-sm ${errors.service ? 'border-red-500' : ''}`}
           >
             <SelectValue placeholder="Select Service Needed" />
           </SelectTrigger>
           <SelectContent>
             {services.map((service) => (
-              <SelectItem key={service} value={service}>
+              <SelectItem key={service} value={service} className="text-sm">
                 {service}
               </SelectItem>
             ))}
           </SelectContent>
         </Select>
         {errors.service && (
-          <Alert variant="destructive">
-            <AlertCircle className="h-4 w-4" />
-            <AlertDescription>{errors.service}</AlertDescription>
+          <Alert variant="destructive" className="py-2">
+            <AlertCircle className="h-3 w-3" />
+            <AlertDescription className="text-xs">{errors.service}</AlertDescription>
           </Alert>
         )}
       </div>
 
       {showVehicleInfo && (
-        <div className="space-y-3">
-          <div className="space-y-2">
-            <Label htmlFor="vehicleYear">Vehicle Year</Label>
+        <div className="space-y-2">
+          <div className="space-y-1.5">
+            <Label htmlFor="vehicleYear" className="text-sm">Vehicle Year</Label>
             <Input
               id="vehicleYear"
               name="vehicleYear"
               type="text"
               aria-describedby="vehicleYear-error"
-              className={`h-10 text-base ${errors.vehicleYear ? 'border-red-500' : ''}`}
+              className={`h-9 text-sm ${errors.vehicleYear ? 'border-red-500' : ''}`}
             />
             {errors.vehicleYear && (
-              <Alert variant="destructive">
-                <AlertCircle className="h-4 w-4" />
-                <AlertDescription>{errors.vehicleYear}</AlertDescription>
+              <Alert variant="destructive" className="py-2">
+                <AlertCircle className="h-3 w-3" />
+                <AlertDescription className="text-xs">{errors.vehicleYear}</AlertDescription>
               </Alert>
             )}
           </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="vehicleMake">Vehicle Make</Label>
+          <div className="space-y-1.5">
+            <Label htmlFor="vehicleMake" className="text-sm">Vehicle Make</Label>
             <Input
               id="vehicleMake"
               name="vehicleMake"
               type="text"
               aria-describedby="vehicleMake-error"
-              className={`h-10 text-base ${errors.vehicleMake ? 'border-red-500' : ''}`}
+              className={`h-9 text-sm ${errors.vehicleMake ? 'border-red-500' : ''}`}
             />
             {errors.vehicleMake && (
-              <Alert variant="destructive">
-                <AlertCircle className="h-4 w-4" />
-                <AlertDescription>{errors.vehicleMake}</AlertDescription>
+              <Alert variant="destructive" className="py-2">
+                <AlertCircle className="h-3 w-3" />
+                <AlertDescription className="text-xs">{errors.vehicleMake}</AlertDescription>
               </Alert>
             )}
           </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="vehicleModel">Vehicle Model</Label>
+          <div className="space-y-1.5">
+            <Label htmlFor="vehicleModel" className="text-sm">Vehicle Model</Label>
             <Input
               id="vehicleModel"
               name="vehicleModel"
               type="text"
               aria-describedby="vehicleModel-error"
-              className={`h-10 text-base ${errors.vehicleModel ? 'border-red-500' : ''}`}
+              className={`h-9 text-sm ${errors.vehicleModel ? 'border-red-500' : ''}`}
             />
             {errors.vehicleModel && (
-              <Alert variant="destructive">
-                <AlertCircle className="h-4 w-4" />
-                <AlertDescription>{errors.vehicleModel}</AlertDescription>
+              <Alert variant="destructive" className="py-2">
+                <AlertCircle className="h-3 w-3" />
+                <AlertDescription className="text-xs">{errors.vehicleModel}</AlertDescription>
               </Alert>
             )}
           </div>
         </div>
       )}
 
-      <div className="space-y-2">
-        <Label htmlFor="timeframe">When do you need service?</Label>
+      <div className="space-y-1.5">
+        <Label htmlFor="timeframe" className="text-sm">When do you need service?</Label>
         <Select name="timeframe">
-          <SelectTrigger id="timeframe" className="h-10 text-base">
+          <SelectTrigger id="timeframe" className="h-9 text-sm">
             <SelectValue placeholder="When do you need service?" />
           </SelectTrigger>
           <SelectContent>
             {timeframes.map((timeframe) => (
-              <SelectItem key={timeframe} value={timeframe}>
+              <SelectItem key={timeframe} value={timeframe} className="text-sm">
                 {timeframe}
               </SelectItem>
             ))}
@@ -241,45 +234,48 @@ const BookingForm = () => {
       </div>
 
       {selectedService === "Other" && (
-        <div className="space-y-2">
-          <Label htmlFor="otherService">Please specify the service needed</Label>
+        <div className="space-y-1.5">
+          <Label htmlFor="otherService" className="text-sm">Please specify the service needed</Label>
           <Input
             id="otherService"
             name="otherService"
             type="text"
             required
-            className="h-10 text-base"
+            className="h-9 text-sm"
           />
         </div>
       )}
 
-      <div className="space-y-2">
-        <Label htmlFor="notes">Additional Notes</Label>
+      <div className="space-y-1.5">
+        <Label htmlFor="notes" className="text-sm">Additional Notes</Label>
         <Textarea
           id="notes"
           name="notes"
           placeholder="Additional Notes..."
-          className="h-20 text-base resize-none"
+          className="h-16 text-sm resize-none"
         />
       </div>
 
       <Button
         type="submit"
-        size="lg"
-        className="w-full text-lg font-semibold h-10"
+        size="default"
+        className="w-full text-sm font-semibold h-9"
         disabled={isSubmitting}
       >
         {isSubmitting ? (
-          <ButtonLoadingState />
+          <>
+            <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+            Submitting...
+          </>
         ) : (
           <>
-            <Lock className="w-5 h-5 mr-2" />
+            <Lock className="w-4 h-4 mr-2" />
             Request Service
           </>
         )}
       </Button>
 
-      <p className="text-sm text-gray-500 text-center">
+      <p className="text-xs text-gray-500 text-center">
         Fast Response • Professional Service • 24/7 Available
       </p>
     </form>
