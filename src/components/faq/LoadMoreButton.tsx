@@ -29,3 +29,5 @@ const LoadMoreButton = ({ loading, hasMore, onLoadMore }: LoadMoreButtonProps) =
     </Button>
   );
 };
+
+export default LoadMoreButton;
