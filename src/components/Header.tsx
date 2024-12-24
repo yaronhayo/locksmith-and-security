@@ -91,7 +91,7 @@ const Header = () => {
                 loading="eager"
                 width="64"
                 height="64"
-                fetchpriority="high"
+                fetchPriority="high"
               />
             </a>
 
