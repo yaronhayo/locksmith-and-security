@@ -5,9 +5,9 @@ import BookingForm from "@/components/BookingForm";
 
 const HouseLockoutHero = () => {
   return (
-    <section className="hero-gradient relative overflow-hidden">
-      <div className="container mx-auto px-4">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
+    <section className="hero-gradient relative min-h-[calc(100vh-80px)]">
+      <div className="container mx-auto px-4 h-full flex items-center">
+        <div className="grid lg:grid-cols-2 gap-12 items-center py-8">
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}

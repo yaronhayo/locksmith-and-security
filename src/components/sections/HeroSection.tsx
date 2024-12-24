@@ -4,10 +4,10 @@ import BookingForm from "@/components/BookingForm";
 
 const HeroSection = () => {
   return (
-    <section className="relative min-h-screen bg-gradient-to-br from-primary to-primary-hover pt-16 pb-20">
+    <section className="relative min-h-[calc(100vh-80px)] bg-gradient-to-br from-primary to-primary-hover">
       <div className="absolute inset-0 bg-black/30"></div>
-      <div className="container mx-auto px-4 relative z-10">
-        <div className="flex flex-col lg:flex-row items-center justify-between gap-12">
+      <div className="container mx-auto px-4 relative z-10 h-full flex items-center">
+        <div className="flex flex-col lg:flex-row items-center justify-between gap-12 py-8">
           <div className="lg:w-1/2 space-y-8 text-white">
             <div className="flex items-center space-x-2 bg-secondary/90 text-white px-4 py-2 rounded-full w-fit animate-float">
               <Star className="w-5 h-5" />
