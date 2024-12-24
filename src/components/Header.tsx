@@ -98,7 +98,7 @@ const Header = () => {
                   <li key={path}>
                     <a 
                       href={path} 
-                      className={`text-lg font-medium relative block
+                      className={`text-lg font-medium relative block transition-colors duration-300
                         ${isActivePage(path) 
                           ? 'text-secondary' 
                           : 'text-gray-900 hover:text-secondary'
@@ -107,8 +107,8 @@ const Header = () => {
                         after:w-full after:h-0.5 after:bg-secondary 
                         after:transform after:scale-x-0 after:origin-left
                         after:transition-transform after:duration-300
-                        hover:after:scale-x-100
-                        ${isActivePage(path) && 'after:scale-x-100'}`}
+                        ${isActivePage(path) ? 'after:scale-x-100' : ''}
+                        hover:after:scale-x-100`}
                     >
                       {label}
                     </a>
