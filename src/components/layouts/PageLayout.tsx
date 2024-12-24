@@ -99,6 +99,8 @@ const PageLayout = ({
         <meta property="og:image" content={ogImage} />
         <meta property="og:url" content={fullCanonicalUrl} />
         <meta property="og:type" content="website" />
+        <meta property="og:site_name" content="Locksmith & Security LLC" />
+        <meta property="og:locale" content="en_US" />
         
         {/* Twitter Card Tags */}
         <meta name="twitter:card" content="summary_large_image" />
@@ -111,7 +113,9 @@ const PageLayout = ({
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <meta name="format-detection" content="telephone=yes" />
-        <meta name="robots" content="index, follow" />
+        <meta name="robots" content="index, follow, max-image-preview:large" />
+        <meta name="author" content="Locksmith & Security LLC" />
+        <meta name="copyright" content="© 2024 Locksmith & Security LLC. All rights reserved." />
         
         {/* Geo Location Tags */}
         <meta name="geo.region" content="US-NJ" />
@@ -126,6 +130,8 @@ const PageLayout = ({
         <meta name="business:contact_data:postal_code" content="07047" />
         <meta name="business:contact_data:country_name" content="United States" />
         <meta name="business:contact_data:phone_number" content="+15513037874" />
+        <meta name="business:contact_data:website" content="https://247locksmithandsecurity.com" />
+        <meta name="business:contact_data:email" content="info@247locksmithandsecurity.com" />
         
         {/* Accessibility Tags */}
         <meta name="apple-mobile-web-app-title" content="Locksmith & Security LLC" />
