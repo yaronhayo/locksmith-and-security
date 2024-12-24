@@ -11,6 +11,7 @@ interface ServiceLayoutProps {
   benefits?: string[];
   service?: string;
   callToAction?: string;
+  schema?: Record<string, any>;
 }
 
 const ServiceLayout = ({ title, description, children, icon: Icon, benefits }: ServiceLayoutProps) => {
