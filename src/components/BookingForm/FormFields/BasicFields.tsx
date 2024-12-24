@@ -5,61 +5,65 @@ import { AlertCircle } from "lucide-react";
 
 interface BasicFieldsProps {
   errors: Record<string, string>;
-  defaultValues?: Record<string, string>;
+  defaultValues: Record<string, string>;
+  onChange: (field: string, value: string) => void;
 }
 
-export const BasicFields = ({ errors, defaultValues = {} }: BasicFieldsProps) => {
+export const BasicFields = ({ errors, defaultValues, onChange }: BasicFieldsProps) => {
   return (
     <>
-      <div className="space-y-1.5">
-        <Label htmlFor="name" className="text-sm">Your Name</Label>
+      <div className="space-y-2">
+        <Label htmlFor="name">Your Name</Label>
         <Input
           id="name"
           name="name"
           type="text"
-          defaultValue={defaultValues.name}
+          value={defaultValues.name}
+          onChange={e => onChange("name", e.target.value)}
           aria-describedby="name-error"
-          className={`h-8 text-sm ${errors.name ? 'border-red-500' : ''}`}
+          className={`h-10 ${errors.name ? 'border-red-500' : ''}`}
         />
         {errors.name && (
-          <Alert variant="destructive" className="py-1.5">
-            <AlertCircle className="h-3 w-3" />
+          <Alert variant="destructive" className="py-2">
+            <AlertCircle className="h-4 w-4" />
             <AlertDescription className="text-xs">{errors.name}</AlertDescription>
           </Alert>
         )}
       </div>
 
-      <div className="space-y-1.5">
-        <Label htmlFor="phone" className="text-sm">Phone Number</Label>
+      <div className="space-y-2">
+        <Label htmlFor="phone">Phone Number</Label>
         <Input
           id="phone"
           name="phone"
           type="tel"
-          defaultValue={defaultValues.phone}
+          value={defaultValues.phone}
+          onChange={e => onChange("phone", e.target.value)}
           aria-describedby="phone-error"
-          className={`h-8 text-sm ${errors.phone ? 'border-red-500' : ''}`}
+          className={`h-10 ${errors.phone ? 'border-red-500' : ''}`}
         />
         {errors.phone && (
-          <Alert variant="destructive" className="py-1.5">
-            <AlertCircle className="h-3 w-3" />
+          <Alert variant="destructive" className="py-2">
+            <AlertCircle className="h-4 w-4" />
             <AlertDescription className="text-xs">{errors.phone}</AlertDescription>
           </Alert>
         )}
       </div>
 
-      <div className="space-y-1.5">
-        <Label htmlFor="address" className="text-sm">Address</Label>
+      <div className="space-y-2">
+        <Label htmlFor="address">Service Address</Label>
         <Input
           id="address"
           name="address"
           type="text"
-          defaultValue={defaultValues.address}
+          value={defaultValues.address}
+          onChange={e => onChange("address", e.target.value)}
           aria-describedby="address-error"
-          className={`h-8 text-sm ${errors.address ? 'border-red-500' : ''}`}
+          className={`h-10 ${errors.address ? 'border-red-500' : ''}`}
         />
         {errors.address && (
-          <Alert variant="destructive" className="py-1.5">
-            <AlertCircle className="h-3 w-3" />
+          <Alert variant="destructive" className="py-2">
+            <AlertCircle className="h-4 w-4" />
             <AlertDescription className="text-xs">{errors.address}</AlertDescription>
           </Alert>
         )}

@@ -1,61 +1,75 @@
 import { useState } from "react";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from "@/components/ui/use-toast";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Lock, Loader2 } from "lucide-react";
 import { Label } from "@/components/ui/label";
+import { Lock, Loader2, ArrowLeft, ArrowRight } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 import { BasicFields } from "./FormFields/BasicFields";
 import { ServiceField } from "./FormFields/ServiceField";
 import { VehicleFields } from "./FormFields/VehicleFields";
 import { TimeframeField } from "./FormFields/TimeframeField";
-import { validateForm, validateVehicleInfo } from "./BookingFormValidation";
+import type { BookingFormData, FormErrors, FormStep } from "@/types/booking";
 
 const BookingForm = () => {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [selectedService, setSelectedService] = useState("");
-  const [showVehicleInfo, setShowVehicleInfo] = useState(false);
-  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [step, setStep] = useState<FormStep>(1);
+  const [formData, setFormData] = useState<BookingFormData>({
+    name: "",
+    phone: "",
+    address: "",
+    service: "",
+  });
+  const [errors, setErrors] = useState<FormErrors>({});
+
+  const validateStep1 = () => {
+    const newErrors: FormErrors = {};
+    
+    if (!formData.name?.trim()) {
+      newErrors.name = "Name is required";
+    }
+    if (!formData.phone?.trim()) {
+      newErrors.phone = "Phone number is required";
+    } else if (!/^[\d\s()-]{10,}$/.test(formData.phone)) {
+      newErrors.phone = "Please enter a valid phone number";
+    }
+    if (!formData.address?.trim()) {
+      newErrors.address = "Address is required";
+    }
+    if (!formData.service) {
+      newErrors.service = "Please select a service";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleServiceChange = (value: string) => {
-    setSelectedService(value);
-    setShowVehicleInfo(value.toLowerCase().includes("car"));
+    setFormData(prev => ({
+      ...prev,
+      service: value
+    }));
+  };
+
+  const handleNext = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (validateStep1()) {
+      setStep(2);
+    }
+  };
+
+  const handleBack = () => {
+    setStep(1);
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const formData = new FormData(e.currentTarget);
-    
-    const { isValid, errors: formErrors } = validateForm(formData);
-    
-    if (showVehicleInfo) {
-      const { isValid: vehicleValid, errors: vehicleErrors } = validateVehicleInfo(formData);
-      if (!vehicleValid) {
-        setErrors({ ...formErrors, ...vehicleErrors });
-        toast({
-          title: "Validation Error",
-          description: "Please check the vehicle information",
-          variant: "destructive",
-        });
-        return;
-      }
-    }
-    
-    if (!isValid) {
-      setErrors(formErrors);
-      toast({
-        title: "Validation Error",
-        description: "Please check all required fields",
-        variant: "destructive",
-      });
-      return;
-    }
-
     setIsSubmitting(true);
 
     try {
-      // Simulate form submission
+      // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 1000));
 
       toast({
@@ -63,9 +77,14 @@ const BookingForm = () => {
         description: "We'll contact you shortly to confirm your booking.",
       });
 
-      (e.target as HTMLFormElement).reset();
-      setSelectedService("");
-      setShowVehicleInfo(false);
+      // Reset form
+      setFormData({
+        name: "",
+        phone: "",
+        address: "",
+        service: "",
+      });
+      setStep(1);
       setErrors({});
     } catch (error) {
       toast({
@@ -78,61 +97,136 @@ const BookingForm = () => {
     }
   };
 
+  const showVehicleInfo = formData.service.toLowerCase().includes("car");
+
   return (
-    <form onSubmit={handleSubmit} className="space-y-2">
-      <BasicFields errors={errors} />
-      <ServiceField errors={errors} onServiceChange={handleServiceChange} />
-      
-      {showVehicleInfo && <VehicleFields errors={errors} />}
-      
-      <TimeframeField />
-
-      {selectedService === "Other" && (
-        <div className="space-y-1.5">
-          <Label htmlFor="otherService" className="text-sm">Please specify the service needed</Label>
-          <Input
-            id="otherService"
-            name="otherService"
-            type="text"
-            required
-            className="h-8 text-sm"
-          />
-        </div>
-      )}
-
-      <div className="space-y-1.5">
-        <Label htmlFor="notes" className="text-sm">Additional Notes</Label>
-        <Textarea
-          id="notes"
-          name="notes"
-          placeholder="Additional Notes..."
-          className="h-16 text-sm resize-none"
-        />
+    <div className="w-full max-w-md mx-auto bg-white rounded-xl shadow-lg p-6">
+      <div className="text-center mb-4">
+        <h2 className="text-xl font-bold text-gray-900">Request Service</h2>
+        <p className="text-sm text-gray-600 mt-1">
+          {step === 1 ? "Tell us about yourself" : "Additional details"}
+        </p>
       </div>
 
-      <Button
-        type="submit"
-        size="default"
-        className="w-full text-sm font-semibold h-8"
-        disabled={isSubmitting}
-      >
-        {isSubmitting ? (
-          <>
-            <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-            Submitting...
-          </>
-        ) : (
-          <>
-            <Lock className="w-4 h-4 mr-2" />
-            Request Service
-          </>
-        )}
-      </Button>
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={step}
+          initial={{ opacity: 0, x: step === 1 ? -20 : 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: step === 1 ? 20 : -20 }}
+          transition={{ duration: 0.2 }}
+        >
+          {step === 1 ? (
+            <form onSubmit={handleNext} className="space-y-4">
+              <BasicFields
+                errors={errors}
+                defaultValues={formData}
+                onChange={(field, value) => 
+                  setFormData(prev => ({ ...prev, [field]: value }))
+                }
+              />
+              <ServiceField
+                errors={errors}
+                onServiceChange={handleServiceChange}
+                defaultValue={formData.service}
+              />
+              
+              <Button
+                type="submit"
+                className="w-full h-10 text-sm font-semibold"
+              >
+                Next Step
+                <ArrowRight className="w-4 h-4 ml-2" />
+              </Button>
+            </form>
+          ) : (
+            <form onSubmit={handleSubmit} className="space-y-4">
+              {showVehicleInfo && (
+                <VehicleFields
+                  errors={errors}
+                  defaultValues={formData}
+                  onChange={(field, value) =>
+                    setFormData(prev => ({ ...prev, [field]: value }))
+                  }
+                />
+              )}
+              
+              <TimeframeField
+                defaultValue={formData.timeframe}
+                onChange={value =>
+                  setFormData(prev => ({ ...prev, timeframe: value }))
+                }
+              />
 
-      <p className="text-xs text-gray-500 text-center">
+              {formData.service === "Other" && (
+                <div className="space-y-2">
+                  <Label htmlFor="otherService">Please specify the service needed</Label>
+                  <Input
+                    id="otherService"
+                    name="otherService"
+                    value={formData.otherService}
+                    onChange={e =>
+                      setFormData(prev => ({
+                        ...prev,
+                        otherService: e.target.value
+                      }))
+                    }
+                    className="h-10"
+                  />
+                </div>
+              )}
+
+              <div className="space-y-2">
+                <Label htmlFor="notes">Additional Notes</Label>
+                <Textarea
+                  id="notes"
+                  name="notes"
+                  value={formData.notes}
+                  onChange={e =>
+                    setFormData(prev => ({ ...prev, notes: e.target.value }))
+                  }
+                  placeholder="Any specific details or requirements..."
+                  className="h-20 resize-none"
+                />
+              </div>
+
+              <div className="flex gap-2">
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="w-1/2 h-10"
+                  onClick={handleBack}
+                >
+                  <ArrowLeft className="w-4 h-4 mr-2" />
+                  Back
+                </Button>
+                <Button
+                  type="submit"
+                  className="w-1/2 h-10"
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? (
+                    <>
+                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                      Submitting...
+                    </>
+                  ) : (
+                    <>
+                      <Lock className="w-4 h-4 mr-2" />
+                      Submit
+                    </>
+                  )}
+                </Button>
+              </div>
+            </form>
+          )}
+        </motion.div>
+      </AnimatePresence>
+
+      <p className="text-xs text-gray-500 text-center mt-4">
         Fast Response • Professional Service • 24/7 Available
       </p>
-    </form>
+    </div>
   );
 };
 

@@ -10,19 +10,24 @@ import { timeframes } from "../constants";
 
 interface TimeframeFieldProps {
   defaultValue?: string;
+  onChange: (value: string) => void;
 }
 
-export const TimeframeField = ({ defaultValue }: TimeframeFieldProps) => {
+export const TimeframeField = ({ defaultValue, onChange }: TimeframeFieldProps) => {
   return (
-    <div className="space-y-1.5">
-      <Label htmlFor="timeframe" className="text-sm">When do you need service?</Label>
-      <Select name="timeframe" defaultValue={defaultValue}>
-        <SelectTrigger id="timeframe" className="h-8 text-sm">
-          <SelectValue placeholder="When do you need service?" />
+    <div className="space-y-2">
+      <Label htmlFor="timeframe">When do you need service?</Label>
+      <Select
+        name="timeframe"
+        defaultValue={defaultValue}
+        onValueChange={onChange}
+      >
+        <SelectTrigger id="timeframe" className="h-10">
+          <SelectValue placeholder="Select timeframe" />
         </SelectTrigger>
         <SelectContent>
           {timeframes.map((timeframe) => (
-            <SelectItem key={timeframe} value={timeframe} className="text-sm">
+            <SelectItem key={timeframe} value={timeframe}>
               {timeframe}
             </SelectItem>
           ))}
