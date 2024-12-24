@@ -36,7 +36,6 @@ const PageLayout = ({
     ...schema
   };
 
-  // Check if the first child is HeroSection with proper type checking
   const childrenArray = React.Children.toArray(children);
   const firstChild = childrenArray[0] as ReactElement<any, string | JSXElementConstructor<any>>;
   const hasHeroSection = 
@@ -49,6 +48,7 @@ const PageLayout = ({
       <Helmet>
         <title>{title} | Locksmith & Security LLC</title>
         <meta name="description" content={description} />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <script type="application/ld+json">
           {JSON.stringify(pageSchema)}
         </script>
@@ -56,10 +56,10 @@ const PageLayout = ({
       <div className="min-h-screen flex flex-col">
         <Header />
         {(heroTitle || heroDescription) && (
-          <div className="hero-gradient">
+          <div className="hero-gradient py-12 md:py-20">
             <div className="container mx-auto px-4">
               <motion.h1 
-                className="text-4xl md:text-5xl font-bold text-white text-center mb-6"
+                className="text-3xl md:text-4xl lg:text-5xl font-bold text-white text-center mb-4 md:mb-6"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2 }}
@@ -67,7 +67,7 @@ const PageLayout = ({
                 {heroTitle || title}
               </motion.h1>
               <motion.p 
-                className="text-xl text-white/90 text-center max-w-2xl mx-auto"
+                className="text-lg md:text-xl text-white/90 text-center max-w-2xl mx-auto"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3 }}

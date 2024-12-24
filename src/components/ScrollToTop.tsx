@@ -29,12 +29,13 @@ const ScrollToTop = () => {
     <Button
       variant="secondary"
       size="icon"
-      className={`fixed bottom-8 right-8 z-50 rounded-full transition-opacity duration-300 ${
-        isVisible ? 'opacity-100' : 'opacity-0 pointer-events-none'
+      className={`fixed bottom-4 right-4 md:bottom-8 md:right-8 z-50 rounded-full transition-all duration-300 transform hover:scale-110 ${
+        isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10 pointer-events-none'
       }`}
       onClick={scrollToTop}
+      aria-label="Scroll to top"
     >
-      <ArrowUp className="h-6 w-6" />
+      <ArrowUp className="h-5 w-5" />
     </Button>
   );
 };

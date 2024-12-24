@@ -33,6 +33,11 @@ const Header = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Close mobile menu when route changes
+  useEffect(() => {
+    setIsMenuOpen(false);
+  }, [location]);
+
   const isActivePage = (path: string) => {
     return location.pathname === path;
   };
@@ -48,7 +53,7 @@ const Header = () => {
                 <span className="text-sm">North Bergen, NJ</span>
                 <ChevronDown className="w-3 h-3 group-hover:rotate-180 transition-transform duration-300" />
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="start" className="w-48">
+              <DropdownMenuContent align="start" className="w-48 bg-white">
                 {serviceAreas.map((area) => (
                   <DropdownMenuItem 
                     key={area.slug}
@@ -86,8 +91,12 @@ const Header = () => {
               />
             </a>
 
-            <nav className={`absolute top-20 left-0 w-full transform transition-transform duration-300 lg:static lg:w-auto lg:translate-y-0 lg:bg-transparent ${isMenuOpen ? 'translate-y-0' : '-translate-y-full'} ${isScrolled ? 'bg-white' : 'bg-primary/90 lg:bg-transparent'} lg:block ${isMenuOpen ? 'block' : 'hidden'}`}>
-              <ul className="flex flex-col lg:flex-row space-y-4 lg:space-y-0 lg:space-x-8 p-4 lg:p-0">
+            <nav className={`fixed inset-0 lg:static transform transition-transform duration-300 lg:transform-none ${
+              isMenuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
+            } ${
+              isScrolled ? 'bg-white/95 backdrop-blur-sm' : 'bg-primary/95 lg:bg-transparent backdrop-blur-sm lg:backdrop-blur-none'
+            } lg:block`}>
+              <ul className="h-full flex flex-col lg:flex-row items-center justify-center space-y-8 lg:space-y-0 lg:space-x-8 p-4 lg:p-0">
                 {[
                   { path: '/services', label: 'Services' },
                   { path: '/faq', label: 'FAQ' },
@@ -100,8 +109,8 @@ const Header = () => {
                       href={path} 
                       className={`text-lg font-medium relative block transition-colors duration-300
                         ${isActivePage(path) 
-                          ? 'text-secondary' 
-                          : 'text-gray-900 hover:text-secondary'
+                          ? 'text-secondary lg:text-secondary' 
+                          : `${isMenuOpen ? 'text-white lg:text-gray-900' : 'text-gray-900'} hover:text-secondary`
                         }
                         after:content-[''] after:absolute after:bottom-0 after:left-0 
                         after:w-full after:h-0.5 after:bg-secondary 
@@ -133,7 +142,7 @@ const Header = () => {
               <Button 
                 variant="outline" 
                 size="icon" 
-                className="lg:hidden hover:bg-primary/5 transition-all duration-300 transform hover:scale-105" 
+                className="lg:hidden hover:bg-primary/5 transition-all duration-300 transform hover:scale-105 z-50" 
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
               >
                 {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
