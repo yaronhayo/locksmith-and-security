@@ -53,7 +53,7 @@ const ServiceLayout = ({
       className="min-h-screen"
     >
       <div className="hero-gradient">
-        <div className="container mx-auto px-4 py-8 md:py-12">
+        <div className="container mx-auto px-4 py-8">
           <div className="max-w-4xl mx-auto text-center text-white">
             {Icon && <Icon className="w-16 h-16 mx-auto mb-4 text-secondary" />}
             <h1 className="text-4xl md:text-5xl font-bold mb-4">{title}</h1>
@@ -73,7 +73,7 @@ const ServiceLayout = ({
         </div>
       </div>
 
-      <div className="container mx-auto px-4 py-16 md:py-24">
+      <div className="container mx-auto px-4 py-12 md:py-16">
         <div className="max-w-4xl mx-auto">
           <div className="bg-white rounded-lg shadow-lg p-8 mb-12">
             {children}
