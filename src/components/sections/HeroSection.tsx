@@ -19,7 +19,7 @@ const HeroSection = () => {
             </h1>
             
             <p className="text-xl opacity-90 leading-relaxed">
-              Available 24/7 for all your residential, commercial, and automotive locksmith needs. Fast response and reliable service guaranteed.
+              Available 24/7 for all your residential, commercial, and automotive locksmith needs. Fast response and reliable service guaranteed. NJ DCA License #13VH13153100
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4">

@@ -54,6 +54,7 @@ const ContactPage = () => {
           <div className="space-y-8">
             <div className="prose max-w-none">
               <h2 className="text-3xl font-bold mb-6">How Can We Help?</h2>
+              <p className="text-lg text-gray-600 mb-4">NJ DCA License #13VH13153100</p>
               <p className="text-lg text-gray-600">
                 Our experienced team provides fast, reliable service for everything from emergency lockouts 
                 to advanced security system installations for homes and businesses. Serving North Bergen 

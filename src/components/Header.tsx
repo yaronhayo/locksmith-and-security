@@ -59,9 +59,12 @@ const Header = () => {
                 ))}
               </DropdownMenuContent>
             </DropdownMenu>
-            <div className="flex items-center space-x-2">
-              <Clock className="w-4 h-4" />
-              <span className="text-sm">24/7 Emergency Service</span>
+            <div className="flex items-center space-x-6">
+              <div className="flex items-center space-x-2">
+                <Clock className="w-4 h-4" />
+                <span className="text-sm">24/7 Emergency Service</span>
+              </div>
+              <span className="text-sm">NJ DCA License #13VH13153100</span>
             </div>
           </div>
         </div>

@@ -90,7 +90,7 @@ const AboutPage = () => {
               <div className="space-y-4">
                 <h2 className="text-3xl font-bold text-primary">Our Mission</h2>
                 <p className="text-lg text-gray-600">
-                  At Locksmith & Security LLC, we provide fast, reliable locksmith services and expert solutions, 
+                  At Locksmith & Security LLC (NJ DCA License #13VH13153100), we provide fast, reliable locksmith services and expert solutions, 
                   prioritizing safety and security for homes, businesses, and vehicles. Our goal is to deliver 
                   tailored solutions with a focus on customer satisfaction and security.
                 </p>
