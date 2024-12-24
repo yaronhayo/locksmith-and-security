@@ -7,33 +7,19 @@ import {
 } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
 import { Phone } from "lucide-react";
+import { generalFaqs } from "@/data/faq/general";
+import { residentialFaqs } from "@/data/faq/residential";
+import { automotiveFaqs } from "@/data/faq/automotive";
+import { commercialFaqs } from "@/data/faq/commercial";
+import { emergencyFaqs } from "@/data/faq/emergency";
 
 const FAQPage = () => {
-  const faqs = [
-    {
-      question: "What areas do you serve?",
-      answer: "We serve North Bergen and surrounding areas including Jersey City, Union City, West New York, Secaucus, Weehawken, Hoboken, and Guttenberg.",
-    },
-    {
-      question: "Are you available 24/7?",
-      answer: "Yes, we provide 24/7 emergency locksmith services for all your residential, commercial, and automotive needs.",
-    },
-    {
-      question: "Are you licensed and insured?",
-      answer: "Yes, we are fully licensed, bonded, and insured for your protection and peace of mind.",
-    },
-    {
-      question: "How quickly can you arrive?",
-      answer: "We typically arrive within 30 minutes for emergency calls in our service area.",
-    },
-    {
-      question: "What forms of payment do you accept?",
-      answer: "We accept all major credit cards, cash, and digital payments for your convenience.",
-    },
-    {
-      question: "Do you provide free estimates?",
-      answer: "Yes, we provide free estimates for all our services. Contact us to get a quote.",
-    },
+  const allFaqs = [
+    ...generalFaqs,
+    ...residentialFaqs,
+    ...automotiveFaqs,
+    ...commercialFaqs,
+    ...emergencyFaqs
   ];
 
   return (
@@ -43,10 +29,10 @@ const FAQPage = () => {
       heroTitle="Common Questions"
       heroDescription="Everything you need to know about our locksmith services"
     >
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto px-4 py-12">
         <div className="max-w-3xl mx-auto">
           <Accordion type="single" collapsible className="mb-12">
-            {faqs.map((faq, index) => (
+            {allFaqs.map((faq, index) => (
               <AccordionItem key={index} value={`item-${index}`}>
                 <AccordionTrigger className="text-left">
                   {faq.question}

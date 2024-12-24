@@ -14,10 +14,10 @@ const FAQSection = () => {
   const loadMoreFaqs = () => {
     setLoading(true);
     setTimeout(() => {
-      const nextBatch = additionalFaqs.slice(currentIndex.current, currentIndex.current + 5);
+      const nextBatch = additionalFaqs.slice(currentIndex.current, currentIndex.current + 10);
       if (nextBatch.length > 0) {
         setDisplayedFaqs(prev => [...prev, ...nextBatch]);
-        currentIndex.current += 5;
+        currentIndex.current += 10;
         if (currentIndex.current >= additionalFaqs.length) {
           setHasMore(false);
         }
@@ -25,7 +25,7 @@ const FAQSection = () => {
         setHasMore(false);
       }
       setLoading(false);
-    }, 1000);
+    }, 500);
   };
 
   useEffect(() => {
@@ -57,11 +57,13 @@ const FAQSection = () => {
           {loading && <LoadingSkeleton />}
           
           <div ref={loadMoreRef} className="text-center pt-8">
-            <LoadMoreButton 
-              loading={loading}
-              hasMore={hasMore}
-              onLoadMore={loadMoreFaqs}
-            />
+            {hasMore && (
+              <LoadMoreButton 
+                loading={loading}
+                hasMore={hasMore}
+                onLoadMore={loadMoreFaqs}
+              />
+            )}
           </div>
         </div>
       </div>
