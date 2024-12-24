@@ -33,7 +33,6 @@ const Header = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Close mobile menu when route changes
   useEffect(() => {
     setIsMenuOpen(false);
   }, [location]);
@@ -43,7 +42,7 @@ const Header = () => {
   };
 
   return (
-    <>
+    <div className="relative z-50">
       <div className="bg-primary text-white py-2 hidden md:block">
         <div className="container mx-auto px-4">
           <div className="flex justify-end items-center space-x-6">
@@ -80,7 +79,7 @@ const Header = () => {
         </div>
       </div>
       
-      <header className={`sticky top-0 w-full z-50 transition-all duration-300 ${isScrolled ? 'bg-white shadow-lg' : 'bg-transparent'}`}>
+      <header className={`fixed top-0 w-full transition-all duration-300 ${isScrolled ? 'bg-white shadow-lg' : 'bg-transparent'}`}>
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-20">
             <a href="/" className="flex items-center space-x-3 group">
@@ -173,7 +172,7 @@ const Header = () => {
           </div>
         </div>
       </header>
-    </>
+    </div>
   );
 };
 
