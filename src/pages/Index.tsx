@@ -8,6 +8,7 @@ import ServiceAreasSection from "@/components/sections/ServiceAreasSection";
 import ReviewsSection from "@/components/sections/ReviewsSection";
 import FAQSection from "@/components/sections/FAQSection";
 import TrustBadgesSection from "@/components/sections/TrustBadgesSection";
+import { motion } from "framer-motion";
 
 const schema = {
   "@context": "https://schema.org",
@@ -25,6 +26,28 @@ const schema = {
       "addressRegion": "NJ",
       "postalCode": "07047",
       "addressCountry": "US"
+    },
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": "40.7795",
+      "longitude": "-74.0324"
+    },
+    "url": "https://247locksmithandsecurity.com",
+    "telephone": "+15513037874",
+    "priceRange": "$$",
+    "openingHoursSpecification": {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+        "Sunday"
+      ],
+      "opens": "00:00",
+      "closes": "23:59"
     }
   }
 };
@@ -35,32 +58,101 @@ const Index = () => {
       title="24/7 Locksmith Services in North Bergen"
       description="Professional locksmith services in North Bergen. Available 24/7 for residential, commercial, and automotive locksmith needs. Fast response and reliable service."
       schema={schema}
+      keywords="locksmith, emergency locksmith, car lockout, house lockout, business lockout, lock change, lock rekey, North Bergen locksmith"
     >
-      <div className="flex flex-col">
+      <motion.div 
+        className="flex flex-col"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5 }}
+      >
         <HeroSection />
-        <TrustBadgesSection />
+        <motion.section
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          viewport={{ once: true }}
+        >
+          <TrustBadgesSection />
+        </motion.section>
+        
         <div className="bg-white">
-          <ServicesSection />
+          <motion.section
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            viewport={{ once: true }}
+          >
+            <ServicesSection />
+          </motion.section>
         </div>
+        
         <div className="bg-gray-50">
-          <EmergencyServicesSection />
+          <motion.section
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            viewport={{ once: true }}
+          >
+            <EmergencyServicesSection />
+          </motion.section>
         </div>
+        
         <div className="bg-white">
-          <ProcessSection />
+          <motion.section
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            viewport={{ once: true }}
+          >
+            <ProcessSection />
+          </motion.section>
         </div>
+        
         <div className="bg-gray-50">
-          <AboutSection />
+          <motion.section
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            viewport={{ once: true }}
+          >
+            <AboutSection />
+          </motion.section>
         </div>
+        
         <div className="bg-white">
-          <ServiceAreasSection />
+          <motion.section
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            viewport={{ once: true }}
+          >
+            <ServiceAreasSection />
+          </motion.section>
         </div>
+        
         <div className="bg-gray-50">
-          <ReviewsSection />
+          <motion.section
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            viewport={{ once: true }}
+          >
+            <ReviewsSection />
+          </motion.section>
         </div>
+        
         <div className="bg-white pb-20">
-          <FAQSection />
+          <motion.section
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            viewport={{ once: true }}
+          >
+            <FAQSection />
+          </motion.section>
         </div>
-      </div>
+      </motion.div>
     </PageLayout>
   );
 };
