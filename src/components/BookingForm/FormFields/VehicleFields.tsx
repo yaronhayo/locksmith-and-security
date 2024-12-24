@@ -5,9 +5,10 @@ import { AlertCircle } from "lucide-react";
 
 interface VehicleFieldsProps {
   errors: Record<string, string>;
+  defaultValues?: Record<string, string>;
 }
 
-export const VehicleFields = ({ errors }: VehicleFieldsProps) => {
+export const VehicleFields = ({ errors, defaultValues = {} }: VehicleFieldsProps) => {
   return (
     <div className="space-y-2">
       <div className="space-y-1.5">
@@ -16,6 +17,7 @@ export const VehicleFields = ({ errors }: VehicleFieldsProps) => {
           id="vehicleYear"
           name="vehicleYear"
           type="text"
+          defaultValue={defaultValues.vehicleYear}
           aria-describedby="vehicleYear-error"
           className={`h-8 text-sm ${errors.vehicleYear ? 'border-red-500' : ''}`}
         />
@@ -33,6 +35,7 @@ export const VehicleFields = ({ errors }: VehicleFieldsProps) => {
           id="vehicleMake"
           name="vehicleMake"
           type="text"
+          defaultValue={defaultValues.vehicleMake}
           aria-describedby="vehicleMake-error"
           className={`h-8 text-sm ${errors.vehicleMake ? 'border-red-500' : ''}`}
         />
@@ -50,6 +53,7 @@ export const VehicleFields = ({ errors }: VehicleFieldsProps) => {
           id="vehicleModel"
           name="vehicleModel"
           type="text"
+          defaultValue={defaultValues.vehicleModel}
           aria-describedby="vehicleModel-error"
           className={`h-8 text-sm ${errors.vehicleModel ? 'border-red-500' : ''}`}
         />
