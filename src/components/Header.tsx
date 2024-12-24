@@ -99,7 +99,7 @@ const Header = () => {
                   <li key={path}>
                     <a 
                       href={path} 
-                      className={`text-lg font-medium transition-all duration-300 relative group overflow-hidden
+                      className={`text-lg font-medium transition-all duration-300 relative group overflow-hidden inline-block
                         ${isActivePage(path) ? 'text-secondary' : 'hover:text-secondary'}
                         after:content-[''] after:absolute after:w-full after:h-0.5 after:bg-secondary 
                         after:left-0 after:bottom-0 after:rounded-full after:origin-left

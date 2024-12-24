@@ -85,6 +85,10 @@ export default {
           '0%': { backgroundPosition: '-100% center' },
           '5%': { backgroundPosition: '100% center' },
           '100%': { backgroundPosition: '100% center' }
+        },
+        "link-underline": {
+          '0%': { width: '0%', left: '0' },
+          '100%': { width: '100%', left: '0' }
         }
       },
       animation: {
@@ -93,7 +97,8 @@ export default {
         "phone-ring": "phone-ring 4s ease-in-out infinite",
         "scale": "scale 0.3s ease-in-out",
         "slide-up": "slide-up 0.2s ease-out forwards",
-        "shine": "shine 8s ease-in-out infinite"
+        "shine": "shine 8s ease-in-out infinite",
+        "link-underline": "link-underline 0.3s ease-out forwards"
       },
     },
   },
