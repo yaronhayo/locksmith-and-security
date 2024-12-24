@@ -6,7 +6,7 @@ import ServiceDescription from "@/components/services/new-car-key/ServiceDescrip
 import RealWorldExamples from "@/components/services/new-car-key/RealWorldExamples";
 import EmergencyCallout from "@/components/services/new-car-key/EmergencyCallout";
 import FAQSection from "@/components/sections/FAQSection";
-import { Key } from "lucide-react";
+import { Key, Smartphone, Car } from "lucide-react";
 
 const schema = {
   "@context": "https://schema.org",
@@ -50,7 +50,28 @@ const NewCarKeyPage = () => {
       schema={schema}
     >
       <NewCarKeyHero />
-      <LockoutServices />
+      <section className="py-20 bg-gray-50">
+        <div className="container mx-auto px-4">
+          <h2 className="text-3xl font-bold text-center mb-12">Car Key Replacement Services</h2>
+          <div className="grid md:grid-cols-3 gap-8">
+            <div className="bg-white p-6 rounded-lg shadow-sm">
+              <Key className="w-12 h-12 text-primary mb-4" />
+              <h3 className="text-xl font-semibold mb-3">Key Cutting</h3>
+              <p className="text-gray-600">Professional key cutting for all vehicle makes and models using state-of-the-art equipment.</p>
+            </div>
+            <div className="bg-white p-6 rounded-lg shadow-sm">
+              <Smartphone className="w-12 h-12 text-primary mb-4" />
+              <h3 className="text-xl font-semibold mb-3">Key Programming</h3>
+              <p className="text-gray-600">Expert programming of transponder keys and key fobs to work seamlessly with your vehicle.</p>
+            </div>
+            <div className="bg-white p-6 rounded-lg shadow-sm">
+              <Car className="w-12 h-12 text-primary mb-4" />
+              <h3 className="text-xl font-semibold mb-3">All Vehicle Types</h3>
+              <p className="text-gray-600">Comprehensive key replacement solutions for cars, trucks, SUVs, and commercial vehicles.</p>
+            </div>
+          </div>
+        </div>
+      </section>
       <WhyChooseUs />
       <div className="container mx-auto px-4 py-12">
         <div className="max-w-4xl mx-auto">
