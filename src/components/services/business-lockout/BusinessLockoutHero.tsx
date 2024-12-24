@@ -5,7 +5,7 @@ import BookingForm from "@/components/BookingForm";
 
 const BusinessLockoutHero = () => {
   return (
-    <div className="grid lg:grid-cols-2 gap-12 items-center">
+    <div className="grid lg:grid-cols-2 gap-8 items-start min-h-[90vh]">
       <div>
         <h1 className="text-4xl md:text-5xl font-bold text-white mb-6">
           Business Lockout Solutions
@@ -40,10 +40,10 @@ const BusinessLockoutHero = () => {
           </div>
         </div>
       </div>
-      <div className="bg-white rounded-2xl p-8 shadow-2xl">
-        <div className="text-center mb-6">
+      <div className="bg-white rounded-2xl p-6 shadow-2xl">
+        <div className="text-center mb-4">
           <h2 className="text-2xl font-bold text-gray-900">Request Emergency Service</h2>
-          <p className="text-gray-600 mt-2">Get help within 15-30 minutes</p>
+          <p className="text-gray-600 mt-1">Get help within 15-30 minutes</p>
         </div>
         <BookingForm />
       </div>
