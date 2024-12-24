@@ -10,9 +10,9 @@ const HeroSection = () => {
       aria-label="Hero section"
     >
       <div className="absolute inset-0 bg-black/30" aria-hidden="true"></div>
-      <div className="container mx-auto px-4 relative z-10 h-full flex items-center">
-        <div className="flex flex-col lg:flex-row items-center justify-between gap-12 py-8">
-          <div className="lg:w-1/2 space-y-8 text-white">
+      <div className="container mx-auto px-4 relative z-10 h-full flex items-start pt-6 md:pt-8">
+        <div className="flex flex-col lg:flex-row items-start justify-between gap-8 w-full">
+          <div className="lg:w-1/2 space-y-6">
             <div 
               className="flex items-center space-x-2 bg-secondary text-white px-4 py-2 rounded-full w-fit group hover:bg-secondary/90 transition-all duration-300 relative overflow-hidden"
               style={{
@@ -27,11 +27,11 @@ const HeroSection = () => {
               <span className="text-sm font-medium">Top-Rated Local Locksmith</span>
             </div>
             
-            <h1 className="text-4xl lg:text-6xl font-bold leading-tight">
+            <h1 className="text-3xl lg:text-5xl font-bold leading-tight text-white">
               Professional Locksmith Services in North Bergen
             </h1>
             
-            <p className="text-xl opacity-90 leading-relaxed">
+            <p className="text-lg opacity-90 leading-relaxed text-white">
               Available 24/7 for all your residential, commercial, and automotive locksmith needs. Fast response and reliable service guaranteed. NJ DCA License #13VH13153100
             </p>
             
@@ -63,7 +63,7 @@ const HeroSection = () => {
             </div>
 
             <div 
-              className="grid grid-cols-1 sm:grid-cols-3 gap-6 mt-12"
+              className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-8"
               role="list"
               aria-label="Key features"
             >
@@ -101,13 +101,13 @@ const HeroSection = () => {
           </div>
           
           <div 
-            className="lg:w-5/12 bg-white rounded-2xl p-8 shadow-2xl transform hover:scale-[1.02] transition-transform duration-300"
+            className="lg:w-5/12 bg-white rounded-2xl p-6 shadow-2xl transform hover:scale-[1.02] transition-transform duration-300"
             role="complementary"
             aria-label="Request service form"
           >
-            <div className="text-center mb-8">
-              <h2 className="text-2xl font-bold text-gray-900">Request Service</h2>
-              <p className="text-gray-600 mt-2">Get a quick response from our team</p>
+            <div className="text-center mb-6">
+              <h2 className="text-xl font-bold text-gray-900">Request Service</h2>
+              <p className="text-gray-600 mt-1 text-sm">Get a quick response from our team</p>
             </div>
             <BookingForm />
           </div>
