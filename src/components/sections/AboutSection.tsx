@@ -11,7 +11,7 @@ const AboutSection = () => {
             With years of experience serving North Bergen and surrounding areas, we provide professional locksmith services for residential, commercial, and automotive needs.
           </p>
           <Button asChild className="group">
-            <a href="/about">
+            <a href="/about" className="inline-flex items-center">
               Learn More About Us 
               <ArrowRight className="ml-2 transition-transform duration-300 group-hover:translate-x-1" />
             </a>
