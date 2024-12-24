@@ -1,5 +1,4 @@
 import React, { ReactElement, JSXElementConstructor } from "react";
-import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Helmet } from "react-helmet";
 import { cn } from "@/lib/utils";
@@ -82,7 +81,6 @@ const PageLayout = ({
         </script>
       </Helmet>
       <div className="min-h-screen flex flex-col">
-        <Header />
         {hasHeroSection && (
           <div className="hero-gradient py-12 md:py-20">
             <div className="container mx-auto px-4">
