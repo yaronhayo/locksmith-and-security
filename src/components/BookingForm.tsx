@@ -4,25 +4,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Lock, Loader2 } from "lucide-react";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-
-const services = [
-  "House Lockout",
-  "Car Lockout",
-  "Business Lockout",
-  "Lock Change",
-  "Lock Rekey",
-  "Business Lock Change",
-  "New Car Key",
-  "Car Key Programming",
-  "Other",
-];
 
 const BookingForm = () => {
   const { toast } = useToast();
@@ -45,63 +26,53 @@ const BookingForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-3">
+    <form onSubmit={handleSubmit} className="space-y-4">
       <div className="space-y-3">
         <Input
           type="text"
-          placeholder="Your Full Name"
+          placeholder="Your Name"
           required
-          className="h-9 text-sm"
-        />
-        <Input
-          type="text"
-          placeholder="Complete Service Address"
-          required
-          className="h-9 text-sm"
+          className="h-12 text-base border-gray-300 focus:border-primary focus:ring-primary"
         />
         <Input
           type="tel"
-          placeholder="Your Phone Number"
+          placeholder="Phone Number"
           required
-          className="h-9 text-sm"
+          className="h-12 text-base border-gray-300 focus:border-primary focus:ring-primary"
         />
-        <Select name="service" required>
-          <SelectTrigger className="h-9 text-sm">
-            <SelectValue placeholder="Select a service" />
-          </SelectTrigger>
-          <SelectContent>
-            {services.map((service) => (
-              <SelectItem key={service} value={service.toLowerCase().replace(/\s+/g, '-')}>
-                {service}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+        <Input
+          type="email"
+          placeholder="Email Address"
+          required
+          className="h-12 text-base border-gray-300 focus:border-primary focus:ring-primary"
+        />
         <Textarea
-          placeholder="Additional comments..."
-          className="min-h-[60px] text-sm resize-none"
+          placeholder="Describe your locksmith needs..."
+          required
+          className="min-h-[120px] text-base border-gray-300 focus:border-primary focus:ring-primary resize-none"
         />
       </div>
 
       <Button
         type="submit"
-        className="w-full text-base font-semibold h-9"
+        size="lg"
+        className="w-full text-lg font-semibold h-12"
         disabled={isSubmitting}
       >
         {isSubmitting ? (
           <>
-            <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+            <Loader2 className="w-5 h-5 mr-2 animate-spin" />
             Submitting...
           </>
         ) : (
           <>
-            <Lock className="w-4 h-4 mr-2" />
+            <Lock className="w-5 h-5 mr-2" />
             Request Service
           </>
         )}
       </Button>
 
-      <p className="text-xs text-gray-500 text-center">
+      <p className="text-sm text-gray-500 text-center">
         Fast Response • Professional Service • 24/7 Available
       </p>
     </form>
