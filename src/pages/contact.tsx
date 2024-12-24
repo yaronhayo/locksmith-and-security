@@ -50,7 +50,6 @@ const ContactPage = () => {
     >
       <div className="container mx-auto px-4 py-12">
         <div className="grid lg:grid-cols-2 gap-12">
-          {/* Contact Information */}
           <div className="space-y-8">
             <div className="prose max-w-none">
               <h2 className="text-3xl font-bold mb-6">How Can We Help?</h2>
@@ -71,6 +70,18 @@ const ContactPage = () => {
                   <h3 className="font-semibold">Phone</h3>
                   <a href="tel:5513037874" className="text-primary hover:text-primary/80">
                     (551) 303-7874
+                  </a>
+                </div>
+              </div>
+
+              <div className="flex items-center space-x-4 p-4 bg-primary/5 rounded-lg">
+                <div className="bg-primary/10 p-3 rounded-full">
+                  <Mail className="w-6 h-6 text-primary" />
+                </div>
+                <div>
+                  <h3 className="font-semibold">Email</h3>
+                  <a href="mailto:support@247locksmithandsecurity.com" className="text-primary hover:text-primary/80">
+                    support@247locksmithandsecurity.com
                   </a>
                 </div>
               </div>

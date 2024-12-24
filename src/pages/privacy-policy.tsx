@@ -76,8 +76,8 @@ const PrivacyPolicyPage = () => {
             <h2 className="text-2xl font-semibold mb-4">6. Contact Us</h2>
             <p>
               For questions about this Privacy Policy, please contact us at:{' '}
-              <a href="mailto:info@locksmithandsecurity.com" className="text-primary hover:text-secondary">
-                info@locksmithandsecurity.com
+              <a href="mailto:support@247locksmithandsecurity.com" className="text-primary hover:text-secondary">
+                support@247locksmithandsecurity.com
               </a>
             </p>
           </section>
