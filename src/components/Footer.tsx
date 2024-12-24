@@ -14,6 +14,7 @@ const Footer = () => {
               />
             </div>
             <p className="text-gray-300 mb-4">Professional locksmith services available 24/7 in North Bergen and surrounding areas.</p>
+            <p className="text-gray-300 mb-4">NJ DCA License #13VH13153100</p>
             <div className="flex items-center space-x-2">
               <Phone className="w-5 h-5" />
               <a href="tel:5513037874" className="hover:text-secondary transition-colors">(551) 303-7874</a>
@@ -47,8 +48,15 @@ const Footer = () => {
           </div>
         </div>
         
-        <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
-          <p>&copy; {new Date().getFullYear()} Locksmith & Security LLC. All rights reserved.</p>
+        <div className="border-t border-gray-800 mt-8 pt-8">
+          <div className="text-center text-gray-400">
+            <p>&copy; {new Date().getFullYear()} Locksmith & Security LLC. All rights reserved.</p>
+            <p className="mt-2">
+              <a href="/privacy-policy" className="hover:text-secondary transition-colors">Privacy Policy</a>
+              {' '}&middot;{' '}
+              <a href="/terms-conditions" className="hover:text-secondary transition-colors">Terms & Conditions</a>
+            </p>
+          </div>
         </div>
       </div>
     </footer>

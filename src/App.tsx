@@ -21,6 +21,8 @@ import LockRekeyPage from "./pages/services/lock-rekey";
 import BusinessLockChangePage from "./pages/services/business-lock-change";
 import NewCarKeyPage from "./pages/services/new-car-key";
 import CarKeyProgramPage from "./pages/services/car-key-program";
+import PrivacyPolicyPage from "./pages/privacy-policy";
+import TermsConditionsPage from "./pages/terms-conditions";
 
 // Service Area Pages
 import NorthBergenArea from "./pages/service-areas/north-bergen";
@@ -51,6 +53,8 @@ const App = () => (
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/booking" element={<BookingPage />} />
           <Route path="/book-online" element={<BookOnlinePage />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
+          <Route path="/terms-conditions" element={<TermsConditionsPage />} />
           
           {/* Service Routes */}
           <Route path="/services/house-lockout" element={<HouseLockoutPage />} />
