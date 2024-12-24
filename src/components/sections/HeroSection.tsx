@@ -5,7 +5,7 @@ import BookingForm from "@/components/BookingForm";
 const HeroSection = () => {
   return (
     <section 
-      className="relative min-h-[90vh] md:min-h-[85vh] bg-gradient-to-br from-primary to-primary-hover"
+      className="relative min-h-[80vh] md:min-h-[75vh] bg-gradient-to-br from-primary to-primary-hover"
       role="banner"
       aria-label="Hero section"
     >
