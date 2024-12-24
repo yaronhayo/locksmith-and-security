@@ -92,7 +92,6 @@ const ReviewsSection = () => {
                       key={i} 
                       className="w-5 h-5 text-secondary" 
                       fill="currentColor"
-                      loading="lazy"
                     />
                   ))}
                 </div>

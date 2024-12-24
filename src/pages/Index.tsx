@@ -61,7 +61,7 @@ const Index = () => {
           rel="preload" 
           href="/lovable-uploads/9b00adf3-451e-4d1c-a118-6a6f06293ec0.png" 
           as="image"
-          fetchpriority="high"
+          fetchPriority="high"
         />
         <link 
           rel="preconnect" 
@@ -156,7 +156,6 @@ const Index = () => {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
               viewport={{ once: true }}
-              loading="lazy"
             >
               <ReviewsSection />
             </motion.section>
@@ -168,7 +167,6 @@ const Index = () => {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
               viewport={{ once: true }}
-              loading="lazy"
             >
               <FAQSection />
             </motion.section>
