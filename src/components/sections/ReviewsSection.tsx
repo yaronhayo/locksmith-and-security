@@ -4,46 +4,52 @@ import { useEffect, useRef } from "react";
 
 const reviews = [
   {
-    name: "John D.",
+    name: "Michael R.",
     rating: 5,
-    text: "Fast and professional service. Got me back into my car in no time!",
-    service: "Car Lockout",
-    location: "North Bergen, NJ"
+    text: "Called them at 2 AM when I was locked out of my car in North Bergen. The technician arrived in 20 minutes and had me back in my car quickly. Extremely professional and reasonable pricing.",
+    service: "Emergency Car Lockout",
+    location: "North Bergen, NJ",
+    date: "Last week"
   },
   {
-    name: "Sarah M.",
+    name: "Sarah Johnson",
     rating: 5,
-    text: "Excellent emergency locksmith service. Very responsive and professional.",
-    service: "House Lockout",
-    location: "Jersey City, NJ"
+    text: "Had all the locks changed in my new home. They were thorough in explaining the security options and completed the work efficiently. Great service!",
+    service: "Residential Lock Change",
+    location: "Jersey City, NJ",
+    date: "2 weeks ago"
   },
   {
-    name: "Mike R.",
+    name: "David Martinez",
     rating: 5,
-    text: "Great experience with their business locksmith services. Highly recommend!",
-    service: "Business Lock Change",
-    location: "Union City, NJ"
+    text: "Installed a complete access control system for our office building. Their expertise in commercial security is impressive. Highly recommend for business security needs.",
+    service: "Commercial Security Installation",
+    location: "Union City, NJ",
+    date: "1 month ago"
   },
   {
-    name: "Lisa K.",
+    name: "Emily Chen",
     rating: 5,
-    text: "They helped me with a car key replacement and everything works perfectly!",
-    service: "Car Key Replacement",
-    location: "Weehawken, NJ"
+    text: "Lost my car keys and needed a replacement. They came to my location, programmed a new key, and had me back on the road in no time. Excellent mobile service!",
+    service: "Car Key Programming",
+    location: "Weehawken, NJ",
+    date: "3 weeks ago"
   },
   {
-    name: "Robert P.",
+    name: "James Wilson",
     rating: 5,
-    text: "Outstanding emergency service at 2 AM. Professional and quick!",
-    service: "Emergency Lockout",
-    location: "Hoboken, NJ"
+    text: "Regular maintenance service for our apartment complex. Always reliable, professional, and thorough. Great team to work with!",
+    service: "Commercial Maintenance",
+    location: "Hoboken, NJ",
+    date: "1 month ago"
   },
   {
-    name: "Emily W.",
+    name: "Lisa Rodriguez",
     rating: 5,
-    text: "Had all my home locks rekeyed. Great service and reasonable prices.",
+    text: "Quick response when I needed my locks rekeyed after losing my keys. Fair pricing and excellent workmanship. Will definitely use again!",
     service: "Lock Rekey",
-    location: "Secaucus, NJ"
+    location: "Secaucus, NJ",
+    date: "2 months ago"
   }
 ];
 

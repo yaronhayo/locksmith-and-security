@@ -1,10 +1,10 @@
-import { Phone, Mail, MapPin } from 'lucide-react';
+import { Phone, Mail, MapPin, Clock } from 'lucide-react';
 
 const Footer = () => {
   return (
     <footer className="bg-gray-900 text-white py-12">
       <div className="container mx-auto px-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           <div>
             <div className="mb-6">
               <img 
@@ -48,7 +48,10 @@ const Footer = () => {
             <div className="space-y-3">
               <div className="flex items-center justify-center md:justify-start space-x-2 group">
                 <Phone className="w-5 h-5 group-hover:animate-bounce text-secondary" />
-                <a href="tel:5513037874" className="hover:text-secondary transition-colors">(551) 303-7874</a>
+                <div>
+                  <a href="tel:5513037874" className="hover:text-secondary transition-colors">(551) 303-7874</a>
+                  <p className="text-sm text-red-400">24/7 Emergency Service</p>
+                </div>
               </div>
               <div className="flex items-center justify-center md:justify-start space-x-2 group">
                 <MapPin className="w-5 h-5 group-hover:animate-bounce text-secondary" />
@@ -59,6 +62,25 @@ const Footer = () => {
                 <a href="mailto:support@247locksmithandsecurity.com" className="hover:text-secondary transition-colors break-all">
                   support@247locksmithandsecurity.com
                 </a>
+              </div>
+            </div>
+          </div>
+
+          <div className="text-center md:text-left">
+            <h3 className="text-xl font-bold mb-4">Business Hours</h3>
+            <div className="space-y-3">
+              <div className="flex items-center justify-center md:justify-start space-x-2">
+                <Clock className="w-5 h-5 text-secondary" />
+                <div>
+                  <p className="font-semibold">Emergency Service</p>
+                  <p>24 Hours / 7 Days</p>
+                </div>
+              </div>
+              <div className="mt-2">
+                <p className="font-semibold">Regular Office Hours:</p>
+                <p>Monday - Friday: 8:00 AM - 6:00 PM</p>
+                <p>Saturday: 9:00 AM - 4:00 PM</p>
+                <p>Sunday: By Appointment</p>
               </div>
             </div>
           </div>
