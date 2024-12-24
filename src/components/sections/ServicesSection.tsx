@@ -73,8 +73,11 @@ const ServicesSection = () => {
                 <service.icon className="w-12 h-12 mx-auto mb-4 text-primary" />
                 <h3 className="text-xl font-semibold mb-2">{service.title}</h3>
                 <p className="text-gray-600 mb-4">{service.description}</p>
-                <Button asChild variant="secondary">
-                  <a href={service.link}>{service.cta} <ArrowRight className="ml-2" /></a>
+                <Button asChild variant="secondary" className="group">
+                  <a href={service.link}>
+                    {service.cta}
+                    <ArrowRight className="ml-2 transition-transform duration-300 group-hover:translate-x-1" />
+                  </a>
                 </Button>
               </CardContent>
             </Card>
