@@ -34,8 +34,8 @@ export const initGoogleAnalytics = () => {
     document.head.appendChild(script);
 
     window.dataLayer = window.dataLayer || [];
-    function gtag() {
-      window.dataLayer.push(arguments);
+    function gtag(...args: any[]) {
+      window.dataLayer.push(args);
     }
     gtag('js', new Date());
     gtag('config', 'YOUR_GA_ID');
@@ -45,7 +45,7 @@ export const initGoogleAnalytics = () => {
 // Type declaration for window object
 declare global {
   interface Window {
-    gtag: any;
+    gtag: (...args: any[]) => void;
     dataLayer: any[];
   }
 }
