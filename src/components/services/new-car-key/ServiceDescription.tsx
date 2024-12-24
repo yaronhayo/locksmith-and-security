@@ -10,9 +10,9 @@ const ServiceDescription = () => {
       className="prose max-w-none bg-white rounded-lg shadow-sm p-8 mb-12"
     >
       <p className="text-lg leading-relaxed text-gray-600 mb-8">
-        Whether you've lost your only car key or need a spare for peace of mind, our professional 
-        automotive locksmiths can help. We specialize in cutting and programming new keys for all 
-        types of vehicles, from basic metal keys to advanced smart keys and key fobs.
+        Lost your car key or need a spare? Our professional automotive locksmiths specialize in cutting 
+        and programming new car keys for all vehicle makes and models. Whether you need a basic metal key 
+        or a sophisticated smart key with transponder programming, we have the expertise and equipment to help.
       </p>
       
       <motion.div 
@@ -24,14 +24,14 @@ const ServiceDescription = () => {
         <p className="text-gray-600 mb-4">We provide comprehensive car key solutions:</p>
         <ul className="grid md:grid-cols-2 gap-4 mb-8">
           {[
-            "Basic car key cutting",
+            "New key cutting for all car brands",
             "Transponder key programming",
-            "Smart key replacement",
-            "Key fob programming",
+            "Smart key & key fob programming",
             "Push-to-start key creation",
-            "Emergency key replacement",
             "Duplicate key creation",
-            "All vehicle makes and models"
+            "High-security vehicle keys",
+            "Laser-cut car keys",
+            "Remote key programming"
           ].map((service, index) => (
             <motion.li 
               key={index}
