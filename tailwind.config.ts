@@ -1,13 +1,14 @@
 import type { Config } from "tailwindcss";
+import { fontFamily } from "tailwindcss/defaultTheme";
 
-export default {
+const config = {
   darkMode: ["class"],
   content: [
-    "./pages/**/*.{ts,tsx}",
-    "./components/**/*.{ts,tsx}",
-    "./app/**/*.{ts,tsx}",
-    "./src/**/*.{ts,tsx}",
-  ],
+    './pages/**/*.{ts,tsx}',
+    './components/**/*.{ts,tsx}',
+    './app/**/*.{ts,tsx}',
+    './src/**/*.{ts,tsx}',
+	],
   prefix: "",
   theme: {
     container: {
@@ -25,13 +26,13 @@ export default {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         primary: {
-          DEFAULT: "#1E3A8A",
-          foreground: "#FFFFFF",
-          hover: "#1E40AF",
+          DEFAULT: "#1e40af",
+          foreground: "hsl(var(--primary-foreground))",
+          hover: "#1e3a8a",
         },
         secondary: {
           DEFAULT: "#FFA500",
-          foreground: "#FFFFFF",
+          foreground: "hsl(var(--secondary-foreground))",
           hover: "#F59E0B",
         },
         destructive: {
@@ -55,8 +56,13 @@ export default {
           foreground: "hsl(var(--card-foreground))",
         },
       },
+      borderRadius: {
+        lg: "var(--radius)",
+        md: "calc(var(--radius) - 2px)",
+        sm: "calc(var(--radius) - 4px)",
+      },
       fontFamily: {
-        sans: ["Outfit", "sans-serif"],
+        sans: ["var(--font-sans)", ...fontFamily.sans],
       },
       keyframes: {
         "accordion-down": {
@@ -68,34 +74,33 @@ export default {
           to: { height: "0" },
         },
         "phone-ring": {
-          '0%, 3%, 6%, 9%': { transform: 'rotate(0deg)' },
-          '1.5%, 4.5%, 7.5%': { transform: 'rotate(-10deg)' },
-          '2.25%, 5.25%, 8.25%': { transform: 'rotate(10deg)' },
-          '10%, 100%': { transform: 'rotate(0deg)' }
+          '0%': { transform: 'rotate(0deg)' },
+          '10%': { transform: 'rotate(25deg)' },
+          '20%': { transform: 'rotate(-25deg)' },
+          '30%': { transform: 'rotate(25deg)' },
+          '40%': { transform: 'rotate(-25deg)' },
+          '50%': { transform: 'rotate(0deg)' },
+          '100%': { transform: 'rotate(0deg)' },
         },
-        "scale": {
-          '0%, 100%': { transform: 'scale(1)' },
-          '50%': { transform: 'scale(1.05)' },
-        },
-        "slide-up": {
-          '0%': { transform: 'translateY(0)' },
-          '100%': { transform: 'translateY(-4px)' },
+        "float": {
+          '0%': { transform: 'translateY(0px)' },
+          '50%': { transform: 'translateY(-4px)' },
+          '100%': { transform: 'translateY(0px)' },
         },
         "shine": {
-          '0%': { backgroundPosition: '-100% center' },
-          '5%': { backgroundPosition: '100% center' },
-          '100%': { backgroundPosition: '100% center' }
+          '0%': { transform: 'translateX(-100%)' },
+          '100%': { transform: 'translateX(100%)' }
         }
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
-        "phone-ring": "phone-ring 4s ease-in-out infinite",
-        "scale": "scale 0.3s ease-in-out",
-        "slide-up": "slide-up 0.2s ease-out forwards",
-        "shine": "shine 8s ease-in-out infinite"
+        "phone-ring": "phone-ring 2s infinite",
+        "float": "float 3s ease-in-out infinite",
       },
     },
   },
   plugins: [require("tailwindcss-animate")],
 } satisfies Config;
+
+export default config;
