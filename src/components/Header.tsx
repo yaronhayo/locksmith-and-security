@@ -101,7 +101,7 @@ const Header = () => {
                       className={`text-lg font-medium relative block
                         ${isActivePage(path) 
                           ? 'text-secondary' 
-                          : 'hover:text-secondary'
+                          : 'text-gray-900 hover:text-secondary'
                         }
                         after:content-[''] after:absolute after:bottom-0 after:left-0 
                         after:w-full after:h-0.5 after:bg-secondary 
