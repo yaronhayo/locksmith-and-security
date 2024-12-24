@@ -106,11 +106,9 @@ const Header = () => {
                         after:content-[''] after:absolute after:bottom-0 after:left-0 
                         after:w-full after:h-0.5 after:bg-secondary 
                         after:transform after:scale-x-0 after:origin-left
-                        ${isActivePage(path) 
-                          ? 'after:scale-x-100' 
-                          : 'hover:after:scale-x-100'
-                        }
-                        after:transition-transform after:duration-300`}
+                        after:transition-transform after:duration-300
+                        hover:after:scale-x-100
+                        ${isActivePage(path) && 'after:scale-x-100'}`}
                     >
                       {label}
                     </a>

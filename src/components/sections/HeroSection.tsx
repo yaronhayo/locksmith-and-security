@@ -49,7 +49,7 @@ const HeroSection = () => {
               >
                 <a href="/services" className="inline-flex items-center">
                   Our Services
-                  <ArrowRight className="ml-2 h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
+                  <ArrowRight className="ml-2 h-5 w-5 transform transition-transform duration-300 group-hover:translate-x-2" />
                 </a>
               </Button>
             </div>

@@ -76,7 +76,7 @@ const ServicesSection = () => {
                 <Button asChild variant="secondary" className="group">
                   <a href={service.link} className="inline-flex items-center">
                     {service.cta}
-                    <ArrowRight className="ml-2 transition-transform duration-300 group-hover:translate-x-1" />
+                    <ArrowRight className="ml-2 transform transition-transform duration-300 group-hover:translate-x-2" />
                   </a>
                 </Button>
               </CardContent>
