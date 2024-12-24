@@ -84,6 +84,8 @@ const Index = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
+          role="main"
+          aria-label="Main content"
         >
           <HeroSection />
           <motion.section
@@ -91,6 +93,8 @@ const Index = () => {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
             viewport={{ once: true }}
+            role="complementary"
+            aria-label="Trust badges and certifications"
           >
             <TrustBadgesSection />
           </motion.section>
@@ -101,6 +105,8 @@ const Index = () => {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
               viewport={{ once: true }}
+              role="region"
+              aria-label="Our services"
             >
               <ServicesSection />
             </motion.section>
@@ -112,6 +118,8 @@ const Index = () => {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
               viewport={{ once: true }}
+              role="region"
+              aria-label="Emergency services"
             >
               <EmergencyServicesSection />
             </motion.section>
@@ -123,6 +131,8 @@ const Index = () => {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
               viewport={{ once: true }}
+              role="region"
+              aria-label="Our process"
             >
               <ProcessSection />
             </motion.section>
@@ -134,6 +144,8 @@ const Index = () => {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
               viewport={{ once: true }}
+              role="region"
+              aria-label="About us"
             >
               <AboutSection />
             </motion.section>
@@ -145,6 +157,8 @@ const Index = () => {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
               viewport={{ once: true }}
+              role="region"
+              aria-label="Service areas"
             >
               <ServiceAreasSection />
             </motion.section>
@@ -156,6 +170,8 @@ const Index = () => {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
               viewport={{ once: true }}
+              role="region"
+              aria-label="Customer reviews"
             >
               <ReviewsSection />
             </motion.section>
@@ -167,6 +183,8 @@ const Index = () => {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
               viewport={{ once: true }}
+              role="region"
+              aria-label="Frequently asked questions"
             >
               <FAQSection />
             </motion.section>
