@@ -3,6 +3,9 @@ import FAQCard from "@/components/faq/FAQCard";
 import LoadMoreButton from "@/components/faq/LoadMoreButton";
 import LoadingSkeleton from "@/components/faq/LoadingSkeleton";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Button } from "@/components/ui/button";
+import { ChevronRight } from "lucide-react";
+import { Link } from "react-router-dom";
 import { initialFaqs, additionalFaqs } from "@/data/faqData";
 
 const FAQSection = () => {
@@ -54,6 +57,14 @@ const FAQSection = () => {
             {loading && <LoadingSkeleton />}
           </div>
         </ScrollArea>
+        <div className="flex justify-center mt-8">
+          <Button asChild variant="outline" size="lg">
+            <Link to="/faq" className="group">
+              See More FAQs
+              <ChevronRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+            </Link>
+          </Button>
+        </div>
       </div>
     </section>
   );
