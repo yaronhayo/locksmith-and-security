@@ -38,7 +38,7 @@ const HouseLockoutHero = () => {
               </div>
               <div className="flex items-center gap-3">
                 <Shield className="h-6 w-6 text-secondary" />
-                <span className="text-white">Licensed & Insured</span>
+                <span className="text-white">Licensed & Insured - NJ DCA #13VH13153100</span>
               </div>
               <div className="flex items-center gap-3">
                 <DollarSign className="h-6 w-6 text-secondary" />

@@ -60,6 +60,9 @@ const HeroSection = () => {
                 </div>
               </div>
             </div>
+            <div className="text-center mt-4">
+              <p className="text-sm text-white/80">Licensed & Insured - NJ DCA #13VH13153100</p>
+            </div>
           </div>
           
           <div className="lg:w-5/12 bg-white rounded-2xl p-8 shadow-2xl transform hover:scale-[1.02] transition-transform duration-300">
@@ -76,3 +79,4 @@ const HeroSection = () => {
 };
 
 export default HeroSection;
+
