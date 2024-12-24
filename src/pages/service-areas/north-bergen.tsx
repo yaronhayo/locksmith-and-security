@@ -1,7 +1,7 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Helmet } from "react-helmet";
-import { Building2, Car, Home, Key, Shield, Tool, Clock, CheckCircle } from "lucide-react";
+import { Building2, Car, Home, Key, Shield, Clock, CheckCircle } from "lucide-react";
 
 const services = [
   {
@@ -33,7 +33,7 @@ const features = [
     description: "NJ DCA License #13VH13153100 - Fully bonded and insured for your peace of mind"
   },
   {
-    icon: Tool,
+    icon: Key,
     title: "Advanced Equipment",
     description: "Latest locksmith tools and technology for efficient, damage-free service"
   },
