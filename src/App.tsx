@@ -10,8 +10,20 @@ import { ErrorBoundary } from "react-error-boundary";
 import ErrorFallback from "@/components/ErrorFallback";
 
 function App() {
+  const handleError = (error: Error) => {
+    // Log to your error tracking service
+    console.error("Application Error:", error);
+  };
+
   return (
-    <ErrorBoundary FallbackComponent={ErrorFallback}>
+    <ErrorBoundary 
+      FallbackComponent={ErrorFallback}
+      onError={handleError}
+      onReset={() => {
+        // Reset application state if needed
+        window.location.href = '/';
+      }}
+    >
       <Router>
         <ScrollToTop />
         <Header />
