@@ -43,63 +43,167 @@ export const initialFaqs = [
 
 export const additionalFaqs = [
   {
-    question: "Do you offer emergency locksmith services in Jersey City?",
-    answer: "Yes, we provide 24/7 emergency locksmith services in Jersey City with typical response times of 20-30 minutes."
+    question: "What's your response time in Jersey City?",
+    answer: "Our average response time in Jersey City is 20-30 minutes for emergency calls."
   },
   {
-    question: "What's your service coverage in Hoboken?",
-    answer: "We offer comprehensive locksmith services throughout Hoboken, including residential, commercial, and automotive services with fast response times."
+    question: "Do you service safes in Hoboken?",
+    answer: "Yes, we provide safe installation, repair, and unlocking services throughout Hoboken."
   },
   {
-    question: "Are your locksmiths certified to work in Union City?",
-    answer: "Yes, all our locksmiths are fully certified and licensed to work in Union City and throughout New Jersey."
+    question: "Are your technicians certified for work in Union City?",
+    answer: "All our technicians are certified and background-checked for work in Union City."
   },
   {
-    question: "What's the typical response time for West New York emergencies?",
-    answer: "For West New York emergency calls, we typically arrive within 25-35 minutes, depending on traffic conditions."
+    question: "What's the warranty on lock installations?",
+    answer: "We offer a 90-day warranty on labor and up to 1-year manufacturer warranty on parts."
   },
   {
-    question: "Do you install high-security locks in Weehawken properties?",
-    answer: "Yes, we specialize in installing and maintaining high-security lock systems for both residential and commercial properties in Weehawken."
+    question: "Do you rekey locks in West New York?",
+    answer: "Yes, we provide professional rekeying services throughout West New York."
   },
   {
-    question: "What types of car keys can you duplicate in North Bergen?",
-    answer: "Our North Bergen service center can duplicate all types of car keys, including transponder keys, smart keys, and traditional keys."
+    question: "Can you program car keys for newer models?",
+    answer: "Yes, we can program keys and fobs for most modern vehicle makes and models."
   },
   {
-    question: "Do you service smart locks in Secaucus?",
-    answer: "Yes, we provide complete smart lock services in Secaucus, including installation, programming, and troubleshooting."
+    question: "What security solutions do you offer for businesses?",
+    answer: "We offer master key systems, access control, CCTV, and high-security locks for businesses."
   },
   {
-    question: "What's your pricing structure for Guttenberg businesses?",
-    answer: "We offer competitive rates for Guttenberg businesses with special packages for regular maintenance and emergency services."
+    question: "Do you install keyless entry systems?",
+    answer: "Yes, we install and service various keyless entry systems for homes and businesses."
   },
   {
-    question: "Can you handle master key systems in commercial buildings?",
-    answer: "Yes, we specialize in designing, installing, and maintaining master key systems for commercial properties across all service areas."
+    question: "What should I do if my key breaks in the lock?",
+    answer: "Don't force it - call us immediately for safe key extraction without damaging the lock."
   },
   {
-    question: "Do you provide written estimates for lock replacement?",
-    answer: "Yes, we provide detailed written estimates for all lock replacement services before beginning any work."
+    question: "Are your rates higher on weekends?",
+    answer: "Our standard rates apply 24/7, with no extra charges for weekends."
   },
   {
-    question: "What brands of locks do you work with?",
-    answer: "We work with all major lock brands including Schlage, Kwikset, Yale, Medeco, and many others."
+    question: "Can you match existing keys?",
+    answer: "Yes, we can duplicate most types of keys, including high-security keys."
   },
   {
-    question: "Do you offer security consultations for businesses?",
-    answer: "Yes, we provide comprehensive security consultations for businesses in all our service areas."
+    question: "Do you work with property managers?",
+    answer: "Yes, we offer special service packages for property managers and real estate professionals."
   },
   {
-    question: "What's your warranty policy on installed locks?",
-    answer: "We offer warranties on all installed locks, typically ranging from 90 days to 1 year depending on the product."
+    question: "What's your service coverage in Weehawken?",
+    answer: "We provide full locksmith services throughout Weehawken, 24/7."
   },
   {
-    question: "Can you rekey multiple locks to work with one key?",
-    answer: "Yes, we can rekey multiple locks to work with a single key, perfect for homes and businesses."
+    question: "Can you install high-security locks?",
+    answer: "Yes, we install and service top brands like Medeco, Mul-T-Lock, and ASSA ABLOY."
   },
   {
-    question: "Do you install keypad entry systems?",
-    answer: "Yes, we install and service various keypad entry systems for both residential and commercial properties."
+    question: "Do you offer free security consultations?",
+    answer: "Yes, we provide free security assessments for both homes and businesses."
+  },
+  {
+    question: "What should I do if I'm locked out late at night?",
+    answer: "Call us immediately - we're available 24/7 with fast response times."
+  },
+  {
+    question: "Can you rekey multiple locks to one key?",
+    answer: "Yes, we can rekey multiple locks to work with a single key for convenience."
+  },
+  {
+    question: "Do you service electronic locks?",
+    answer: "Yes, we install, repair, and program all types of electronic locks."
+  },
+  {
+    question: "What's your coverage in Secaucus?",
+    answer: "We provide complete locksmith services throughout Secaucus with quick response times."
+  },
+  {
+    question: "Can you help with mailbox locks?",
+    answer: "Yes, we service and replace all types of mailbox locks."
+  },
+  {
+    question: "Do you offer emergency car lockout service?",
+    answer: "Yes, we provide 24/7 emergency car lockout service with quick response times."
+  },
+  {
+    question: "What brands of smart locks do you recommend?",
+    answer: "We recommend Yale, Schlage, and August for their reliability and features."
+  },
+  {
+    question: "Can you install panic bars for businesses?",
+    answer: "Yes, we install and service panic bars and emergency exit devices."
+  },
+  {
+    question: "Do you work with antique locks?",
+    answer: "Yes, we have experience repairing and restoring antique locks."
+  },
+  {
+    question: "What's your service area in Guttenberg?",
+    answer: "We cover all of Guttenberg with prompt service and competitive rates."
+  },
+  {
+    question: "Can you rekey locks without the original key?",
+    answer: "Yes, we can rekey locks even without the original key."
+  },
+  {
+    question: "Do you offer bulk pricing for businesses?",
+    answer: "Yes, we provide special rates for large-scale commercial projects."
+  },
+  {
+    question: "What's your response time for emergencies?",
+    answer: "We typically respond to emergencies within 15-30 minutes."
+  },
+  {
+    question: "Can you install keypad locks?",
+    answer: "Yes, we install and program various types of keypad locks."
+  },
+  {
+    question: "Do you provide written estimates?",
+    answer: "Yes, we provide detailed written estimates before starting any work."
+  },
+  {
+    question: "What should I do if my key fob stops working?",
+    answer: "Contact us for diagnostic and repair services for key fobs."
+  },
+  {
+    question: "Can you install master key systems?",
+    answer: "Yes, we design and install master key systems for any size property."
+  },
+  {
+    question: "Do you offer maintenance contracts?",
+    answer: "Yes, we provide maintenance contracts for commercial clients."
+  },
+  {
+    question: "What's your service guarantee?",
+    answer: "We guarantee our workmanship and parts for up to 90 days."
+  },
+  {
+    question: "Can you help with safe combinations?",
+    answer: "Yes, we can change and reset safe combinations."
+  },
+  {
+    question: "Do you install door closers?",
+    answer: "Yes, we install and repair commercial door closers."
+  },
+  {
+    question: "What's your policy on estimates?",
+    answer: "We provide free estimates and upfront pricing for all services."
+  },
+  {
+    question: "Can you repair garage door locks?",
+    answer: "Yes, we service all types of garage door locks and openers."
+  },
+  {
+    question: "Do you offer mobile key cutting?",
+    answer: "Yes, our mobile service includes on-site key cutting."
+  },
+  {
+    question: "What's your coverage in North Bergen?",
+    answer: "We provide comprehensive coverage throughout North Bergen, 24/7."
+  },
+  {
+    question: "Can you install access control systems?",
+    answer: "Yes, we install and maintain various access control systems."
   }
 ];
