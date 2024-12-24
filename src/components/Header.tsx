@@ -33,6 +33,7 @@ const Header = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Close mobile menu when route changes
   useEffect(() => {
     setIsMenuOpen(false);
   }, [location]);
@@ -42,7 +43,7 @@ const Header = () => {
   };
 
   return (
-    <div className="relative z-50">
+    <>
       <div className="bg-primary text-white py-2 hidden md:block">
         <div className="container mx-auto px-4">
           <div className="flex justify-end items-center space-x-6">
@@ -79,21 +80,21 @@ const Header = () => {
         </div>
       </div>
       
-      <header className={`fixed top-0 w-full transition-all duration-300 ${isScrolled ? 'bg-white shadow-lg' : 'bg-transparent'}`}>
+      <header className={`sticky top-0 w-full z-50 transition-all duration-300 ${isScrolled ? 'bg-white shadow-lg' : 'bg-transparent'}`}>
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-20">
             <a href="/" className="flex items-center space-x-3 group">
               <img 
                 src="/lovable-uploads/9b00adf3-451e-4d1c-a118-6a6f06293ec0.png" 
                 alt="Locksmith & Security LLC - Professional 24/7 Locksmith Services in North Bergen, NJ"
-                className="h-[45px] w-auto md:h-[52px] transform transition-transform duration-300 group-hover:scale-110"
+                className="h-16 w-auto transform transition-transform duration-300 group-hover:scale-110"
                 loading="eager"
-                width="208"
-                height="52"
+                width="64"
+                height="64"
                 fetchPriority="high"
                 decoding="async"
                 style={{
-                  aspectRatio: '4/1',
+                  aspectRatio: '1/1',
                   objectFit: 'contain'
                 }}
                 onError={(e) => {
@@ -172,7 +173,7 @@ const Header = () => {
           </div>
         </div>
       </header>
-    </div>
+    </>
   );
 };
 

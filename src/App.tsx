@@ -8,27 +8,11 @@ import Footer from "@/components/Footer";
 import Routes from '@/Routes';
 import { ErrorBoundary } from "react-error-boundary";
 import ErrorFallback from "@/components/ErrorFallback";
-import { useEffect } from 'react';
-import { initClarity, initGoogleAnalytics } from '@/utils/analytics';
 
 function App() {
-  useEffect(() => {
-    // Initialize analytics tools
-    initClarity();
-    initGoogleAnalytics();
-  }, []);
-
   const handleError = (error: Error) => {
-    // Log to error tracking service
+    // Log to your error tracking service
     console.error("Application Error:", error);
-    // Send error to Google Analytics
-    if (window.gtag) {
-      window.gtag('event', 'error', {
-        error_name: error.name,
-        error_message: error.message,
-        error_stack: error.stack,
-      });
-    }
   };
 
   return (
@@ -36,6 +20,7 @@ function App() {
       FallbackComponent={ErrorFallback}
       onError={handleError}
       onReset={() => {
+        // Reset application state if needed
         window.location.href = '/';
       }}
     >
