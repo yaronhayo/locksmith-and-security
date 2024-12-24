@@ -15,6 +15,7 @@ interface PageLayoutProps {
   schema?: object;
   canonicalUrl?: string;
   ogImage?: string;
+  keywords?: string;
 }
 
 const PageLayout = ({
@@ -27,6 +28,7 @@ const PageLayout = ({
   schema,
   canonicalUrl,
   ogImage = "/og-image.png",
+  keywords = "locksmith, security, lock services, emergency locksmith, North Bergen",
 }: PageLayoutProps) => {
   const hasHeroSection = Boolean(heroTitle || heroDescription);
   
@@ -43,6 +45,17 @@ const PageLayout = ({
         "url": "https://247locksmithandsecurity.com/logo.png"
       }
     },
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "North Bergen",
+      "addressRegion": "NJ",
+      "addressCountry": "US"
+    },
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": "40.7795",
+      "longitude": "-74.0324"
+    },
     ...schema
   };
 
@@ -54,6 +67,7 @@ const PageLayout = ({
       <Helmet>
         <title>{`${title} | Locksmith & Security LLC`}</title>
         <meta name="description" content={description} />
+        <meta name="keywords" content={keywords} />
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
         <link rel="canonical" href={fullCanonicalUrl} />
         
@@ -74,6 +88,8 @@ const PageLayout = ({
         <meta name="theme-color" content="#1E3A8A" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <meta name="format-detection" content="telephone=yes" />
+        <meta name="robots" content="index, follow" />
         
         <script type="application/ld+json">
           {JSON.stringify(pageSchema)}

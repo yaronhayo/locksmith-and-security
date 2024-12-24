@@ -1,4 +1,5 @@
 import { BrowserRouter as Router } from 'react-router-dom';
+import { Analytics } from '@vercel/analytics/react';
 import { Toaster } from "@/components/ui/toaster";
 import CookieConsent from "@/components/CookieConsent";
 import ScrollToTop from "@/components/ScrollToTop";
@@ -15,6 +16,7 @@ function App() {
       <Footer />
       <Toaster />
       <CookieConsent />
+      <Analytics />
     </Router>
   );
 }

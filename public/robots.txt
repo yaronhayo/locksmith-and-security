@@ -1,4 +1,16 @@
 User-agent: *
 Allow: /
+Disallow: /api/
+Disallow: /admin/
+Disallow: /private/
+
+# Crawl-delay: 10
+# Allow search engines to crawl JavaScript and CSS files
+Allow: *.js
+Allow: *.css
+Allow: *.jpg
+Allow: *.jpeg
+Allow: *.png
+Allow: *.gif
 
 Sitemap: https://247locksmithandsecurity.com/sitemap.xml
