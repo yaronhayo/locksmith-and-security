@@ -1,7 +1,6 @@
 import { Star } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { useEffect, useRef } from "react";
-import { ScrollArea } from "@/components/ui/scroll-area";
 
 const reviews = [
   {
@@ -89,7 +88,12 @@ const ReviewsSection = () => {
               <CardContent className="p-6">
                 <div className="flex items-center mb-4">
                   {[...Array(review.rating)].map((_, i) => (
-                    <Star key={i} className="w-5 h-5 text-secondary" fill="currentColor" />
+                    <Star 
+                      key={i} 
+                      className="w-5 h-5 text-secondary" 
+                      fill="currentColor"
+                      loading="lazy"
+                    />
                   ))}
                 </div>
                 <p className="text-gray-600 mb-4">{review.text}</p>

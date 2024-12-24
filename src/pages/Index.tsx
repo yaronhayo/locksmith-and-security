@@ -9,6 +9,7 @@ import ReviewsSection from "@/components/sections/ReviewsSection";
 import FAQSection from "@/components/sections/FAQSection";
 import TrustBadgesSection from "@/components/sections/TrustBadgesSection";
 import { motion } from "framer-motion";
+import { Helmet } from "react-helmet";
 
 const schema = {
   "@context": "https://schema.org",
@@ -54,106 +55,127 @@ const schema = {
 
 const Index = () => {
   return (
-    <PageLayout
-      title="24/7 Locksmith Services in North Bergen"
-      description="Professional locksmith services in North Bergen. Available 24/7 for residential, commercial, and automotive locksmith needs. Fast response and reliable service."
-      schema={schema}
-      keywords="locksmith, emergency locksmith, car lockout, house lockout, business lockout, lock change, lock rekey, North Bergen locksmith"
-    >
-      <motion.div 
-        className="flex flex-col"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.5 }}
+    <>
+      <Helmet>
+        <link 
+          rel="preload" 
+          href="/lovable-uploads/9b00adf3-451e-4d1c-a118-6a6f06293ec0.png" 
+          as="image"
+          fetchpriority="high"
+        />
+        <link 
+          rel="preconnect" 
+          href="https://fonts.googleapis.com" 
+        />
+        <link 
+          rel="preconnect" 
+          href="https://fonts.gstatic.com" 
+          crossOrigin="anonymous"
+        />
+      </Helmet>
+      <PageLayout
+        title="24/7 Locksmith Services in North Bergen"
+        description="Professional locksmith services in North Bergen. Available 24/7 for residential, commercial, and automotive locksmith needs. Fast response and reliable service."
+        schema={schema}
+        keywords="locksmith, emergency locksmith, car lockout, house lockout, business lockout, lock change, lock rekey, North Bergen locksmith"
       >
-        <HeroSection />
-        <motion.section
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
+        <motion.div 
+          className="flex flex-col"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
-          viewport={{ once: true }}
         >
-          <TrustBadgesSection />
-        </motion.section>
-        
-        <div className="bg-white">
+          <HeroSection />
           <motion.section
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
             viewport={{ once: true }}
           >
-            <ServicesSection />
+            <TrustBadgesSection />
           </motion.section>
-        </div>
-        
-        <div className="bg-gray-50">
-          <motion.section
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            viewport={{ once: true }}
-          >
-            <EmergencyServicesSection />
-          </motion.section>
-        </div>
-        
-        <div className="bg-white">
-          <motion.section
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            viewport={{ once: true }}
-          >
-            <ProcessSection />
-          </motion.section>
-        </div>
-        
-        <div className="bg-gray-50">
-          <motion.section
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            viewport={{ once: true }}
-          >
-            <AboutSection />
-          </motion.section>
-        </div>
-        
-        <div className="bg-white">
-          <motion.section
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            viewport={{ once: true }}
-          >
-            <ServiceAreasSection />
-          </motion.section>
-        </div>
-        
-        <div className="bg-gray-50">
-          <motion.section
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            viewport={{ once: true }}
-          >
-            <ReviewsSection />
-          </motion.section>
-        </div>
-        
-        <div className="bg-white pb-20">
-          <motion.section
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            viewport={{ once: true }}
-          >
-            <FAQSection />
-          </motion.section>
-        </div>
-      </motion.div>
-    </PageLayout>
+          
+          <div className="bg-white">
+            <motion.section
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              viewport={{ once: true }}
+            >
+              <ServicesSection />
+            </motion.section>
+          </div>
+          
+          <div className="bg-gray-50">
+            <motion.section
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              viewport={{ once: true }}
+            >
+              <EmergencyServicesSection />
+            </motion.section>
+          </div>
+          
+          <div className="bg-white">
+            <motion.section
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              viewport={{ once: true }}
+            >
+              <ProcessSection />
+            </motion.section>
+          </div>
+          
+          <div className="bg-gray-50">
+            <motion.section
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              viewport={{ once: true }}
+            >
+              <AboutSection />
+            </motion.section>
+          </div>
+          
+          <div className="bg-white">
+            <motion.section
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              viewport={{ once: true }}
+            >
+              <ServiceAreasSection />
+            </motion.section>
+          </div>
+          
+          <div className="bg-gray-50">
+            <motion.section
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              viewport={{ once: true }}
+              loading="lazy"
+            >
+              <ReviewsSection />
+            </motion.section>
+          </div>
+          
+          <div className="bg-white pb-20">
+            <motion.section
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              viewport={{ once: true }}
+              loading="lazy"
+            >
+              <FAQSection />
+            </motion.section>
+          </div>
+        </motion.div>
+      </PageLayout>
+    </>
   );
 };
 
