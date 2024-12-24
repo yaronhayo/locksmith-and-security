@@ -58,10 +58,10 @@ const FAQSection = () => {
           </div>
         </ScrollArea>
         <div className="flex justify-center mt-8">
-          <Button asChild variant="outline" size="lg">
-            <Link to="/faq" className="group">
+          <Button asChild variant="outline" size="lg" className="group">
+            <Link to="/faq">
               See More FAQs
-              <ChevronRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+              <ChevronRight className="ml-2 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
             </Link>
           </Button>
         </div>

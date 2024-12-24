@@ -10,9 +10,10 @@ interface LoadMoreButtonProps {
 const LoadMoreButton = ({ loading, hasMore, onLoadMore }: LoadMoreButtonProps) => {
   if (!hasMore) {
     return (
-      <Button asChild variant="default">
+      <Button asChild variant="default" className="group">
         <a href="/faq" className="flex items-center">
-          See All FAQs <ArrowRight className="ml-2" />
+          See All FAQs 
+          <ArrowRight className="ml-2 transition-transform duration-300 group-hover:translate-x-1" />
         </a>
       </Button>
     );
@@ -28,5 +29,3 @@ const LoadMoreButton = ({ loading, hasMore, onLoadMore }: LoadMoreButtonProps) =
     </Button>
   );
 };
-
-export default LoadMoreButton;

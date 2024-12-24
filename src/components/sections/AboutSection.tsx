@@ -10,13 +10,14 @@ const AboutSection = () => {
           <p className="text-lg text-gray-600 mb-8">
             With years of experience serving North Bergen and surrounding areas, we provide professional locksmith services for residential, commercial, and automotive needs.
           </p>
-          <Button asChild>
-            <a href="/about">Learn More About Us <ArrowRight className="ml-2" /></a>
+          <Button asChild className="group">
+            <a href="/about">
+              Learn More About Us 
+              <ArrowRight className="ml-2 transition-transform duration-300 group-hover:translate-x-1" />
+            </a>
           </Button>
         </div>
       </div>
     </section>
   );
 };
-
-export default AboutSection;
