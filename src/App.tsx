@@ -4,7 +4,9 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import ScrollToTop from "./components/ScrollToTop";
+import CookieConsent from "./components/CookieConsent";
 import Index from "./pages/Index";
+import NotFoundPage from "./pages/404";
 import ServicesPage from "./pages/services";
 import ServiceAreasPage from "./pages/service-areas";
 import FAQPage from "./pages/faq";
@@ -34,7 +36,14 @@ import WeehawkenArea from "./pages/service-areas/weehawken";
 import HobokenArea from "./pages/service-areas/hoboken";
 import GuttenbergArea from "./pages/service-areas/guttenberg";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 1000 * 60 * 5, // 5 minutes
+      retry: 1,
+    },
+  },
+});
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
@@ -75,7 +84,9 @@ const App = () => (
           <Route path="/service-areas/weehawken" element={<WeehawkenArea />} />
           <Route path="/service-areas/hoboken" element={<HobokenArea />} />
           <Route path="/service-areas/guttenberg" element={<GuttenbergArea />} />
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
+        <CookieConsent />
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>

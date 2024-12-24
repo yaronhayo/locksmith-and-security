@@ -4,6 +4,8 @@ import Footer from "@/components/Footer";
 import { Helmet } from "react-helmet";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
+import { ErrorBoundary } from "react-error-boundary";
+import ErrorFallback from "@/components/ErrorFallback";
 
 interface PageLayoutProps {
   title: string;
@@ -13,6 +15,8 @@ interface PageLayoutProps {
   heroTitle?: string;
   heroDescription?: string;
   schema?: object;
+  canonicalUrl?: string;
+  ogImage?: string;
 }
 
 const PageLayout = ({
@@ -23,6 +27,8 @@ const PageLayout = ({
   heroTitle,
   heroDescription,
   schema,
+  canonicalUrl,
+  ogImage = "/og-image.png",
 }: PageLayoutProps) => {
   const pageSchema = {
     "@context": "https://schema.org",
@@ -31,24 +37,44 @@ const PageLayout = ({
     "description": description,
     "publisher": {
       "@type": "Organization",
-      "name": "Locksmith & Security LLC"
+      "name": "Locksmith & Security LLC",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://247locksmithandsecurity.com/logo.png"
+      }
     },
     ...schema
   };
 
-  const childrenArray = React.Children.toArray(children);
-  const firstChild = childrenArray[0] as ReactElement<any, string | JSXElementConstructor<any>>;
-  const hasHeroSection = 
-    firstChild?.type && 
-    typeof firstChild.type === 'function' && 
-    ((firstChild.type as any).displayName === 'HeroSection' || (firstChild.type as any).name === 'HeroSection');
+  const baseUrl = "https://247locksmithandsecurity.com";
+  const fullCanonicalUrl = canonicalUrl ? `${baseUrl}${canonicalUrl}` : baseUrl;
 
   return (
-    <>
+    <ErrorBoundary FallbackComponent={ErrorFallback}>
       <Helmet>
-        <title>{title} | Locksmith & Security LLC</title>
+        <title>{`${title} | Locksmith & Security LLC`}</title>
         <meta name="description" content={description} />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+        <link rel="canonical" href={fullCanonicalUrl} />
+        
+        {/* Open Graph Tags */}
+        <meta property="og:title" content={title} />
+        <meta property="og:description" content={description} />
+        <meta property="og:image" content={ogImage} />
+        <meta property="og:url" content={fullCanonicalUrl} />
+        <meta property="og:type" content="website" />
+        
+        {/* Twitter Card Tags */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={title} />
+        <meta name="twitter:description" content={description} />
+        <meta name="twitter:image" content={ogImage} />
+        
+        {/* Additional Meta Tags */}
+        <meta name="theme-color" content="#1E3A8A" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        
         <script type="application/ld+json">
           {JSON.stringify(pageSchema)}
         </script>
@@ -88,7 +114,7 @@ const PageLayout = ({
         </motion.main>
         <Footer />
       </div>
-    </>
+    </ErrorBoundary>
   );
 };
 
