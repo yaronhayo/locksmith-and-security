@@ -112,7 +112,7 @@ const Header = () => {
             <div className="flex items-center space-x-4">
               <div className="hidden md:flex items-center space-x-4">
                 <a href="tel:5513037874" className="inline-flex items-center space-x-2 text-xl font-bold text-primary hover:text-secondary transition-colors group">
-                  <Phone className="w-6 h-6 animate-[move-side-to-side_2s_ease-in-out_infinite]" />
+                  <Phone className="w-6 h-6 animate-phone-ring" />
                   <span className="text-2xl">(551) 303-7874</span>
                 </a>
                 <Button asChild className="bg-secondary hover:bg-secondary-hover text-white text-lg px-6 py-3 shadow-lg hover:shadow-xl transform hover:scale-105 transition-all">
