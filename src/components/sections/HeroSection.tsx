@@ -5,13 +5,13 @@ import BookingForm from "@/components/BookingForm";
 const HeroSection = () => {
   return (
     <section 
-      className="relative min-h-[70vh] md:min-h-[65vh] bg-gradient-to-br from-primary to-primary-hover"
+      className="relative min-h-screen bg-gradient-to-br from-primary to-primary-hover py-4"
       role="banner"
       aria-label="Hero section"
     >
       <div className="absolute inset-0 bg-black/30" aria-hidden="true"></div>
-      <div className="container mx-auto px-4 relative z-10 h-full flex items-start pt-6 md:pt-10">
-        <div className="flex flex-col lg:flex-row items-start justify-between gap-4 w-full">
+      <div className="container mx-auto px-4 relative z-10 h-full">
+        <div className="flex flex-col lg:flex-row items-start justify-between gap-6 w-full">
           <div className="lg:w-1/2 space-y-4">
             <div 
               className="flex items-center space-x-2 bg-secondary text-white px-4 py-2 rounded-full w-fit group hover:bg-secondary/90 transition-all duration-300 relative overflow-hidden"
@@ -101,7 +101,8 @@ const HeroSection = () => {
           </div>
           
           <div 
-            className="lg:w-5/12 bg-white rounded-2xl p-3 sm:p-4 shadow-2xl transform hover:scale-[1.02] transition-transform duration-300 max-h-[calc(100vh-6rem)] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent"
+            className="lg:w-5/12 bg-white rounded-2xl p-3 sm:p-4 shadow-2xl transform hover:scale-[1.02] transition-transform duration-300 overflow-y-auto"
+            style={{ maxHeight: '85vh' }}
             role="complementary"
             aria-label="Request service form"
           >
