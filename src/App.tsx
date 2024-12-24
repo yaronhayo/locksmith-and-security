@@ -3,6 +3,7 @@ import { Toaster } from "@/components/ui/toaster";
 import CookieConsent from "@/components/CookieConsent";
 import ScrollToTop from "@/components/ScrollToTop";
 import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 import Routes from '@/Routes';
 
 function App() {
@@ -11,6 +12,7 @@ function App() {
       <ScrollToTop />
       <Header />
       <Routes />
+      <Footer />
       <Toaster />
       <CookieConsent />
     </Router>

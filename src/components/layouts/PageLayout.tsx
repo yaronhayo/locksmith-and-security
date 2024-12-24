@@ -1,5 +1,4 @@
 import React, { ReactElement, JSXElementConstructor } from "react";
-import Footer from "@/components/Footer";
 import { Helmet } from "react-helmet";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
@@ -112,7 +111,6 @@ const PageLayout = ({
         >
           <div className={cn(className)}>{children}</div>
         </motion.main>
-        <Footer />
       </div>
     </ErrorBoundary>
   );
