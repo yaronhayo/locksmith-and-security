@@ -5,7 +5,7 @@ import BookingForm from "@/components/BookingForm";
 const HeroSection = () => {
   return (
     <section 
-      className="relative min-h-screen bg-gradient-to-br from-primary to-primary-hover py-4 md:py-8 flex items-center -translate-y-[5%]"
+      className="relative min-h-screen bg-gradient-to-br from-primary to-primary-hover py-4 md:py-8 flex items-center -translate-y-[8%]"
       role="banner"
       aria-label="Hero section"
     >
