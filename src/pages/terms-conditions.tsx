@@ -3,82 +3,94 @@ import PageLayout from "@/components/layouts/PageLayout";
 const TermsConditionsPage = () => {
   return (
     <PageLayout
-      title="Terms & Conditions"
-      description="Terms and Conditions for Locksmith & Security LLC - Your trusted locksmith service provider in North Bergen, NJ."
+      title="Terms & Conditions | 24/7 Locksmith & Security LLC"
+      description="Our terms and conditions outline the rules, guidelines, and agreements for using our locksmith services."
     >
       <div className="container mx-auto px-4 py-16">
         <div className="prose prose-lg max-w-4xl mx-auto">
-          <h1 className="text-4xl font-bold mb-8">Terms & Conditions</h1>
+          <h1 className="text-4xl font-bold mb-8" id="terms-heading">Terms & Conditions</h1>
           <p className="mb-4">Last updated: {new Date().toLocaleDateString()}</p>
           
-          <section className="mb-8">
-            <h2 className="text-2xl font-semibold mb-4">1. Introduction</h2>
+          <section className="mb-8" aria-labelledby="acceptance-heading">
+            <h2 className="text-2xl font-semibold mb-4" id="acceptance-heading">1. Acceptance of Terms</h2>
             <p>
-              Welcome to Locksmith & Security LLC (NJ DCA License #13VH13153100). These terms and conditions govern your use of our website and services. By using our website or services, you accept these terms and conditions in full.
+              By accessing and using the services of Locksmith & Security LLC (NJ DCA License #13VH13153100), you agree to be bound by these Terms and Conditions. If you do not agree with any part of these terms, please do not use our services.
             </p>
           </section>
 
-          <section className="mb-8">
-            <h2 className="text-2xl font-semibold mb-4">2. Services</h2>
-            <p>
-              We provide professional locksmith services in North Bergen and surrounding areas. By using our services, you agree to:
-            </p>
+          <section className="mb-8" aria-labelledby="services-heading">
+            <h2 className="text-2xl font-semibold mb-4" id="services-heading">2. Service Terms</h2>
             <ul className="list-disc pl-6 mb-4">
-              <li>Provide accurate and complete information when requesting services</li>
-              <li>Pay the agreed-upon fees for services rendered</li>
-              <li>Allow our licensed technicians to perform necessary work</li>
-              <li>Verify your identity and ownership/authorization when requesting locksmith services</li>
+              <li>All services are provided on an "as is" and "as available" basis</li>
+              <li>Service rates may vary based on time of day, location, and complexity</li>
+              <li>Emergency services are available 24/7 but may incur additional charges</li>
+              <li>We reserve the right to refuse service at our discretion</li>
             </ul>
           </section>
 
-          <section className="mb-8">
-            <h2 className="text-2xl font-semibold mb-4">3. Intellectual Property</h2>
+          <section className="mb-8" aria-labelledby="payment-heading">
+            <h2 className="text-2xl font-semibold mb-4" id="payment-heading">3. Payment Terms</h2>
             <p>
-              All content on this website, including text, graphics, logos, images, and software, is the property of Locksmith & Security LLC or our licensors and is protected by copyright and other intellectual property laws.
+              Payment is due upon completion of service. We accept major credit cards, cash, and approved payment methods. Additional fees may apply for:
             </p>
-          </section>
-
-          <section className="mb-8">
-            <h2 className="text-2xl font-semibold mb-4">4. Advertising and Third-Party Services</h2>
-            <p>Our website uses various third-party services, including:</p>
             <ul className="list-disc pl-6 mb-4">
-              <li>Google Ads and Analytics for advertising and site analytics</li>
-              <li>Microsoft Advertising (Bing Ads) for advertising</li>
-              <li>Meta (Facebook) Advertising for social media advertising</li>
-              <li>Google Maps Platform for location services</li>
+              <li>After-hours service calls</li>
+              <li>Holiday or weekend service</li>
+              <li>Emergency response</li>
+              <li>Travel beyond our standard service area</li>
             </ul>
+          </section>
+
+          <section className="mb-8" aria-labelledby="warranty-heading">
+            <h2 className="text-2xl font-semibold mb-4" id="warranty-heading">4. Warranty & Guarantees</h2>
             <p>
-              These services may collect and process data about your use of our website. By using our website, you consent to the processing of data about you by these third-party services in accordance with their respective privacy policies.
+              Our workmanship is guaranteed for 90 days from the date of service. This warranty:
+            </p>
+            <ul className="list-disc pl-6 mb-4">
+              <li>Covers defects in workmanship</li>
+              <li>Does not cover damage from misuse or normal wear and tear</li>
+              <li>Is non-transferable</li>
+              <li>Requires proof of service</li>
+            </ul>
+          </section>
+
+          <section className="mb-8" aria-labelledby="liability-heading">
+            <h2 className="text-2xl font-semibold mb-4" id="liability-heading">5. Limitation of Liability</h2>
+            <p>
+              Locksmith & Security LLC shall not be liable for any indirect, incidental, special, consequential, or punitive damages resulting from your use or inability to use our services.
             </p>
           </section>
 
-          <section className="mb-8">
-            <h2 className="text-2xl font-semibold mb-4">5. Liability</h2>
+          <section className="mb-8" aria-labelledby="verification-heading">
+            <h2 className="text-2xl font-semibold mb-4" id="verification-heading">6. Identity Verification</h2>
             <p>
-              While we strive to provide accurate information and reliable services, we provide our website and services "as is" without any warranties. We will not be liable for any indirect, incidental, or consequential damages arising from the use of our services.
+              For security purposes, we require proof of identity and ownership/authorization for all locksmith services. This may include:
+            </p>
+            <ul className="list-disc pl-6 mb-4">
+              <li>Government-issued photo ID</li>
+              <li>Proof of residence or vehicle ownership</li>
+              <li>Business authorization documentation</li>
+              <li>Property management credentials</li>
+            </ul>
+          </section>
+
+          <section className="mb-8" aria-labelledby="cancellation-heading">
+            <h2 className="text-2xl font-semibold mb-4" id="cancellation-heading">7. Cancellation Policy</h2>
+            <p>
+              Please provide at least 2 hours notice for cancellations. Late cancellations or no-shows may incur a service charge.
             </p>
           </section>
 
-          <section className="mb-8">
-            <h2 className="text-2xl font-semibold mb-4">6. Dispute Resolution</h2>
-            <p>
-              Any disputes arising from the use of our website or services shall be governed by the laws of New Jersey. You agree to submit to the exclusive jurisdiction of the courts of New Jersey for the resolution of any disputes.
-            </p>
-          </section>
-
-          <section className="mb-8">
-            <h2 className="text-2xl font-semibold mb-4">7. Changes to Terms</h2>
-            <p>
-              We reserve the right to modify these terms and conditions at any time. Changes will be effective immediately upon posting to the website. Your continued use of the website after any changes indicates your acceptance of the modified terms.
-            </p>
-          </section>
-
-          <section className="mb-8">
-            <h2 className="text-2xl font-semibold mb-4">8. Contact Information</h2>
+          <section className="mb-8" aria-labelledby="contact-heading">
+            <h2 className="text-2xl font-semibold mb-4" id="contact-heading">8. Contact Information</h2>
             <p>
               For questions about these Terms & Conditions, please contact us at:{' '}
-              <a href="mailto:info@locksmithandsecurity.com" className="text-primary hover:text-secondary">
-                info@locksmithandsecurity.com
+              <a 
+                href="mailto:support@247locksmithandsecurity.com" 
+                className="text-primary hover:text-secondary transition-colors"
+                aria-label="Email us about terms and conditions"
+              >
+                support@247locksmithandsecurity.com
               </a>
             </p>
           </section>
