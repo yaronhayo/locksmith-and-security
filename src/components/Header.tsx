@@ -99,11 +99,15 @@ const Header = () => {
                   <li key={path}>
                     <a 
                       href={path} 
-                      className={`text-lg font-medium transition-all duration-300 relative group overflow-hidden inline-block
-                        ${isActivePage(path) ? 'text-secondary' : 'hover:text-secondary'}
-                        after:content-[''] after:absolute after:w-full after:h-0.5 after:bg-secondary 
-                        after:left-0 after:bottom-0 after:rounded-full after:origin-left
-                        after:transform after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:duration-300`}
+                      className={`text-lg font-medium relative block
+                        ${isActivePage(path) 
+                          ? 'text-secondary after:w-full after:scale-x-100' 
+                          : 'hover:text-secondary'
+                        }
+                        after:content-[''] after:absolute after:bottom-0 after:left-0 
+                        after:w-full after:h-0.5 after:bg-secondary after:origin-left
+                        after:transform after:scale-x-0 hover:after:scale-x-100 
+                        after:transition-transform after:duration-300`}
                     >
                       {label}
                     </a>
