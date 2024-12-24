@@ -23,37 +23,47 @@ const HeroSection = () => {
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4">
-              <Button size="lg" variant="secondary" className="text-lg group" asChild>
+              <Button 
+                size="lg" 
+                variant="secondary" 
+                className="text-lg group transform hover:scale-105 transition-all duration-300 hover:shadow-lg" 
+                asChild
+              >
                 <a href="tel:5513037874">
-                  <Phone className="mr-2 h-5 w-5 group-hover:animate-bounce" />
+                  <Phone className="mr-2 h-5 w-5 animate-phone-ring" />
                   Call Now
                 </a>
               </Button>
-              <Button size="lg" variant="outline" className="text-lg bg-white/10 hover:bg-white/20 group" asChild>
+              <Button 
+                size="lg" 
+                variant="outline" 
+                className="text-lg bg-white/10 hover:bg-white/20 group transform hover:scale-105 transition-all duration-300 hover:shadow-lg" 
+                asChild
+              >
                 <a href="/services">
                   Our Services
-                  <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                  <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform duration-300" />
                 </a>
               </Button>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mt-12">
-              <div className="flex items-center space-x-3 text-white/90">
-                <Clock className="w-8 h-8 text-secondary" />
+              <div className="flex items-center space-x-3 text-white/90 group hover:text-white transition-all duration-300 transform hover:translate-y-[-2px]">
+                <Clock className="w-8 h-8 text-secondary group-hover:scale-110 transition-transform duration-300" />
                 <div>
                   <h3 className="font-semibold">24/7 Service</h3>
                   <p className="text-sm">Always available</p>
                 </div>
               </div>
-              <div className="flex items-center space-x-3 text-white/90">
-                <Shield className="w-8 h-8 text-secondary" />
+              <div className="flex items-center space-x-3 text-white/90 group hover:text-white transition-all duration-300 transform hover:translate-y-[-2px]">
+                <Shield className="w-8 h-8 text-secondary group-hover:scale-110 transition-transform duration-300" />
                 <div>
                   <h3 className="font-semibold">Licensed & Insured</h3>
                   <p className="text-sm">Your safety first</p>
                 </div>
               </div>
-              <div className="flex items-center space-x-3 text-white/90">
-                <Star className="w-8 h-8 text-secondary" />
+              <div className="flex items-center space-x-3 text-white/90 group hover:text-white transition-all duration-300 transform hover:translate-y-[-2px]">
+                <Star className="w-8 h-8 text-secondary group-hover:scale-110 transition-transform duration-300" />
                 <div>
                   <h3 className="font-semibold">5-Star Rated</h3>
                   <p className="text-sm">Trusted service</p>
