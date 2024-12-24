@@ -4,7 +4,6 @@ import LockoutServices from "@/components/sections/LockoutServices";
 import WhyChooseUs from "@/components/sections/WhyChooseUs";
 import ServiceDescription from "@/components/services/house-lockout/ServiceDescription";
 import RealWorldExamples from "@/components/services/house-lockout/RealWorldExamples";
-import CommonQuestions from "@/components/services/house-lockout/CommonQuestions";
 import EmergencyCallout from "@/components/services/house-lockout/EmergencyCallout";
 import FAQSection from "@/components/sections/FAQSection";
 import { Lock } from "lucide-react";
@@ -66,7 +65,6 @@ const HouseLockoutPage = () => {
         <div className="max-w-4xl mx-auto">
           <ServiceDescription />
           <RealWorldExamples />
-          <CommonQuestions />
           <EmergencyCallout />
         </div>
       </div>
