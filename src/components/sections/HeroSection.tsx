@@ -11,7 +11,7 @@ const HeroSection = () => {
     >
       <div className="absolute inset-0 bg-black/30" aria-hidden="true"></div>
       <div className="container mx-auto px-4 relative z-10 h-full">
-        <div className="flex flex-col lg:flex-row items-center justify-between gap-6 w-full">
+        <div className="flex flex-col lg:flex-row items-center justify-between gap-6 w-full min-h-[calc(100vh-2rem)]">
           {/* Hero Content - Now centered */}
           <div className="lg:w-1/2 space-y-4 mx-auto text-center lg:text-left">
             <div 
@@ -103,7 +103,13 @@ const HeroSection = () => {
           
           {/* Form Container - Adjusted sizing and scrolling */}
           <div 
-            className="lg:w-[39%] w-full bg-white rounded-2xl p-2 sm:p-3 shadow-2xl transform hover:scale-[1.02] transition-transform duration-300 max-h-[78vh] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent"
+            className="lg:w-[39%] w-full bg-white rounded-2xl p-2 sm:p-3 shadow-2xl transform hover:scale-[1.02] transition-transform duration-300"
+            style={{ 
+              maxHeight: 'calc(100vh - 4rem)',
+              overflowY: 'auto',
+              scrollbarWidth: 'thin',
+              scrollbarColor: '#CBD5E0 transparent'
+            }}
             role="complementary"
             aria-label="Request service form"
           >
