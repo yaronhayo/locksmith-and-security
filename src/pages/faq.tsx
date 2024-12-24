@@ -12,7 +12,6 @@ import { residentialFaqs } from "@/data/faq/residential";
 import { automotiveFaqs } from "@/data/faq/automotive";
 import { commercialFaqs } from "@/data/faq/commercial";
 import { emergencyFaqs } from "@/data/faq/emergency";
-import ReviewForm from "@/components/forms/ReviewForm";
 
 const FAQPage = () => {
   const allFaqs = [
@@ -44,22 +43,16 @@ const FAQPage = () => {
           </Accordion>
 
           <div className="text-center bg-gray-50 rounded-lg p-8">
-            <h2 className="text-2xl font-bold mb-4">Share Your Experience</h2>
+            <h2 className="text-2xl font-bold mb-4">Still Have Questions?</h2>
             <p className="text-gray-600 mb-6">
-              Help others by sharing your experience with our services
+              Our team is here to help. Contact us anytime for immediate assistance.
             </p>
-            <div className="space-y-4">
-              <ReviewForm />
-              <div className="pt-4 border-t border-gray-200">
-                <h3 className="text-lg font-semibold mb-4">Still Have Questions?</h3>
-                <Button size="lg" asChild>
-                  <a href="tel:5513037874">
-                    <Phone className="mr-2 h-5 w-5" />
-                    Call (551) 303-7874
-                  </a>
-                </Button>
-              </div>
-            </div>
+            <Button size="lg" asChild>
+              <a href="tel:5513037874">
+                <Phone className="mr-2 h-5 w-5" />
+                Call (551) 303-7874
+              </a>
+            </Button>
           </div>
         </div>
       </div>
