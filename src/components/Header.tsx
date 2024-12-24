@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Menu, X, Clock, MapPin, ChevronDown, Phone, Shield } from 'lucide-react';
+import { Menu, X, Clock, MapPin, ChevronDown, Phone } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -62,10 +62,6 @@ const Header = () => {
             <div className="flex items-center space-x-2">
               <Clock className="w-4 h-4" />
               <span className="text-sm">24/7 Emergency Service</span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <Shield className="w-4 h-4" />
-              <span className="text-sm">NJ DCA #13VH13153100</span>
             </div>
           </div>
         </div>

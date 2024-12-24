@@ -53,9 +53,6 @@ const ServiceLayout = ({ title, description, children, icon: Icon, benefits }: S
             <div className="bg-white rounded-lg shadow-lg p-6 sticky top-24">
               <h2 className="text-2xl font-bold mb-6">Book Now</h2>
               <BookingForm />
-              <div className="mt-4 text-center text-sm text-gray-600">
-                <p>Licensed & Insured - NJ DCA #13VH13153100</p>
-              </div>
             </div>
           </div>
         </div>
