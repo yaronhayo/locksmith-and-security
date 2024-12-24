@@ -53,11 +53,11 @@ const ServiceLayout = ({
       className="min-h-screen"
     >
       <div className="hero-gradient">
-        <div className="container mx-auto px-4 py-12 md:py-16">
+        <div className="container mx-auto px-4 py-8 md:py-12">
           <div className="max-w-4xl mx-auto text-center text-white">
-            {Icon && <Icon className="w-16 h-16 mx-auto mb-6 text-secondary" />}
-            <h1 className="text-4xl md:text-5xl font-bold mb-6">{title}</h1>
-            <p className="text-xl text-white/90 mb-8 leading-relaxed">{description}</p>
+            {Icon && <Icon className="w-16 h-16 mx-auto mb-4 text-secondary" />}
+            <h1 className="text-4xl md:text-5xl font-bold mb-4">{title}</h1>
+            <p className="text-xl text-white/90 mb-6 leading-relaxed">{description}</p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button size="lg" variant="secondary" className="text-lg" asChild>
                 <a href="tel:5513037874" className="flex items-center">
