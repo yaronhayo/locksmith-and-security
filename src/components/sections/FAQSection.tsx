@@ -9,9 +9,11 @@ const FAQSection = () => {
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
   const loadMoreRef = useRef(null);
-  const currentIndex = useRef(0);
+  const currentIndex = useRef(initialFaqs.length);
 
   const loadMoreFaqs = () => {
+    if (loading || !hasMore) return;
+    
     setLoading(true);
     setTimeout(() => {
       const nextBatch = additionalFaqs.slice(currentIndex.current, currentIndex.current + 10);
@@ -35,7 +37,7 @@ const FAQSection = () => {
           loadMoreFaqs();
         }
       },
-      { threshold: 1.0 }
+      { threshold: 0.5 }
     );
 
     if (loadMoreRef.current) {

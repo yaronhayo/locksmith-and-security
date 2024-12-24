@@ -18,5 +18,25 @@ export const emergencyFaqs = [
   {
     question: "Do you respond to business lockouts after hours?",
     answer: "Yes, we provide 24/7 emergency commercial lockout services."
+  },
+  {
+    question: "What's your response time in Guttenberg for emergencies?",
+    answer: "We typically arrive within 25 minutes for emergencies in Guttenberg."
+  },
+  {
+    question: "Do you handle emergency eviction services?",
+    answer: "Yes, we work with property managers for legal eviction lock changes."
+  },
+  {
+    question: "Can you respond to multiple emergencies at once?",
+    answer: "Yes, we have multiple mobile units ready to respond to concurrent emergencies."
+  },
+  {
+    question: "What information do you need for emergency calls?",
+    answer: "Your location, type of emergency, and proof of property ownership/residency."
+  },
+  {
+    question: "Do you provide emergency safe opening services?",
+    answer: "Yes, we can help with emergency safe openings when proper ownership is verified."
   }
 ];

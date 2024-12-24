@@ -18,5 +18,25 @@ export const residentialFaqs = [
   {
     question: "Do you install security systems?",
     answer: "Yes, we offer complete home security system installation and maintenance services."
+  },
+  {
+    question: "What's your response time in Hoboken for home lockouts?",
+    answer: "We typically arrive within 20-30 minutes for home lockouts in Hoboken."
+  },
+  {
+    question: "Do you service apartment buildings in Union City?",
+    answer: "Yes, we work with both apartment residents and property managers in Union City."
+  },
+  {
+    question: "Can you repair damaged locks?",
+    answer: "Yes, we can repair most damaged locks, and if necessary, replace them entirely."
+  },
+  {
+    question: "Do you work with HOAs in North Bergen?",
+    answer: "Yes, we partner with many HOAs in North Bergen for their locksmith needs."
+  },
+  {
+    question: "What's your warranty on residential lock installation?",
+    answer: "We offer a 90-day warranty on parts and labor for residential lock installations."
   }
 ];
