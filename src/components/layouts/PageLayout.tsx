@@ -30,6 +30,8 @@ const PageLayout = ({
   canonicalUrl,
   ogImage = "/og-image.png",
 }: PageLayoutProps) => {
+  const hasHeroSection = Boolean(heroTitle || heroDescription);
+  
   const pageSchema = {
     "@context": "https://schema.org",
     "@type": "WebPage",
