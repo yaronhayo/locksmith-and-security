@@ -10,7 +10,7 @@ const HeroSection = () => {
       aria-label="Hero section"
     >
       <div className="absolute inset-0 bg-black/30" aria-hidden="true"></div>
-      <div className="container mx-auto px-4 relative z-10 h-full flex items-start pt-20 md:pt-24">
+      <div className="container mx-auto px-4 relative z-10 h-full flex items-start pt-12 md:pt-16">
         <div className="flex flex-col lg:flex-row items-start justify-between gap-6 w-full">
           <div className="lg:w-1/2 space-y-5">
             <div 
