@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Menu, X, Clock, MapPin, ChevronDown, Phone } from 'lucide-react';
+import { Menu, X, Clock, MapPin, ChevronDown, Phone, Calendar } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -112,11 +112,14 @@ const Header = () => {
             <div className="flex items-center space-x-4">
               <div className="hidden md:flex items-center space-x-4">
                 <a href="tel:5513037874" className="inline-flex items-center space-x-2 text-xl font-bold text-primary hover:text-secondary transition-colors group">
-                  <Phone className="w-6 h-6 animate-bounce group-hover:animate-none" />
+                  <Phone className="w-6 h-6 animate-[move-side-to-side_2s_ease-in-out_infinite]" />
                   <span className="text-2xl">(551) 303-7874</span>
                 </a>
                 <Button asChild className="bg-secondary hover:bg-secondary-hover text-white text-lg px-6 py-3 shadow-lg hover:shadow-xl transform hover:scale-105 transition-all">
-                  <a href="/booking">Book Online</a>
+                  <a href="/booking" className="inline-flex items-center gap-2">
+                    <Calendar className="w-5 h-5" />
+                    Book Online
+                  </a>
                 </Button>
               </div>
               <Button variant="outline" size="icon" className="lg:hidden" onClick={() => setIsMenuOpen(!isMenuOpen)}>
