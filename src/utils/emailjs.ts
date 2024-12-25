@@ -1,15 +1,15 @@
 import emailjs from '@emailjs/browser';
 
 export const initEmailJS = () => {
-  // Initialize EmailJS with your public key
-  emailjs.init("YOUR_PUBLIC_KEY");
+  // Initialize EmailJS with the public key
+  emailjs.init("tCq71kzBo7QTx975C");
 };
 
 export const sendLeadNotification = async (formData: Record<string, any>) => {
   try {
     const response = await emailjs.send(
-      "YOUR_SERVICE_ID", // Service ID from EmailJS
-      "YOUR_TEMPLATE_ID", // Template ID from EmailJS
+      "service_k76lb88", // Service ID
+      "YOUR_TEMPLATE_ID", // You still need to create an email template and add its ID here
       {
         to_email: "yaronhayo@gmail.com",
         from_name: formData.name || "Website Lead",
