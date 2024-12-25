@@ -16,6 +16,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { validateForm, validateVehicleInfo } from "./BookingFormValidation";
 import { FormLoadingOverlay, ButtonLoadingState } from "./LoadingStates";
 import { services, timeframes } from "./constants";
+import { sendLeadNotification } from "@/utils/emailjs";
 
 const BookingForm = () => {
   const { toast } = useToast();
@@ -61,8 +62,14 @@ const BookingForm = () => {
     setIsSubmitting(true);
 
     try {
-      // Simulate form submission
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      // Convert FormData to a plain object
+      const formDataObj: Record<string, any> = {};
+      formData.forEach((value, key) => {
+        formDataObj[key] = value;
+      });
+
+      // Send email notification
+      await sendLeadNotification(formDataObj);
 
       toast({
         title: "Request Submitted Successfully",
