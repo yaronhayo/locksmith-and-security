@@ -8,25 +8,19 @@ export const initEmailJS = () => {
 export const sendLeadNotification = async (formData: Record<string, any>) => {
   try {
     const response = await emailjs.send(
-      "service_k76lb88", // Service ID
-      "YOUR_TEMPLATE_ID", // You still need to create an email template and add its ID here
+      "service_k76lb88",
+      "template_7aqw0zp", // Replace this with your template ID after creating it
       {
         to_email: "yaronhayo@gmail.com",
         from_name: formData.name || "Website Lead",
-        message: `
-          New lead from: ${formData.name}
-          Phone: ${formData.phone}
-          Address: ${formData.address}
-          Service: ${formData.service}
-          Timeframe: ${formData.timeframe}
-          Notes: ${formData.notes}
-          ${formData.vehicleYear ? `
-          Vehicle Info:
-          Year: ${formData.vehicleYear}
-          Make: ${formData.vehicleMake}
-          Model: ${formData.vehicleModel}
-          ` : ''}
-        `,
+        phone: formData.phone || "Not provided",
+        address: formData.address || "Not provided",
+        service: formData.service || "Not specified",
+        timeframe: formData.timeframe || "Not specified",
+        notes: formData.notes || "No additional notes",
+        vehicleYear: formData.vehicleYear || "",
+        vehicleMake: formData.vehicleMake || "",
+        vehicleModel: formData.vehicleModel || "",
       }
     );
     
