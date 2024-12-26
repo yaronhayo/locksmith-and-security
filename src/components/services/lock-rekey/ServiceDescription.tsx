@@ -1,4 +1,4 @@
-import { Shield, Key } from "lucide-react";
+import { Shield, Key, Building2 } from "lucide-react";
 import { motion } from "framer-motion";
 
 const ServiceDescription = () => {
@@ -10,10 +10,9 @@ const ServiceDescription = () => {
       className="prose max-w-none bg-white rounded-lg shadow-sm p-8 mb-12"
     >
       <p className="text-lg leading-relaxed text-gray-600 mb-8">
-        Lock rekeying is a cost-effective alternative to complete lock replacement. Our professional 
-        locksmiths can modify your existing locks to work with new keys, making all old keys useless. 
-        This service is perfect for new homeowners, after tenant turnover, or when keys have been lost 
-        or stolen.
+        Lock rekeying is a cost-effective security solution that modifies your existing locks to work with new keys, 
+        making all previous keys obsolete. Our professional locksmiths specialize in residential, commercial, and 
+        master key system rekeying, providing enhanced security without the need for complete lock replacement.
       </p>
       
       <motion.div 
@@ -21,18 +20,18 @@ const ServiceDescription = () => {
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.2 }}
       >
-        <h3 className="text-2xl font-semibold mb-6 text-primary">Comprehensive Rekey Solutions</h3>
-        <p className="text-gray-600 mb-4">Our lock rekeying services include:</p>
+        <h3 className="text-2xl font-semibold mb-4 text-primary">Professional Rekey Services</h3>
+        <p className="text-gray-600 mb-4">Our comprehensive rekeying solutions include:</p>
         <ul className="grid md:grid-cols-2 gap-4 mb-8">
           {[
-            "Residential lock rekeying",
-            "Commercial lock rekeying",
-            "Master key system setup",
-            "Security pin replacement",
-            "Lock cylinder reconfiguration",
-            "New key creation",
-            "Security assessment",
-            "Emergency rekey service"
+            "Single lock rekeying",
+            "Master key system rekeying",
+            "Sub-master key creation",
+            "Restricted key systems",
+            "High-security cylinder rekey",
+            "Emergency rekey service",
+            "Key control systems",
+            "Security pin upgrades"
           ].map((service, index) => (
             <motion.li 
               key={index}
@@ -53,16 +52,20 @@ const ServiceDescription = () => {
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.4 }}
       >
-        <h3 className="text-2xl font-semibold mb-6 text-primary">Why Choose Lock Rekeying?</h3>
+        <h3 className="text-2xl font-semibold mb-4 text-primary">Master Key System Rekeying</h3>
         <p className="text-gray-600 mb-4">
-          Lock rekeying offers several advantages over complete lock replacement:
+          Our master key system rekeying process ensures proper key hierarchy and access control:
         </p>
         <ul className="space-y-3 mb-8">
           {[
-            "Cost-effective security solution",
-            "Keeps existing hardware intact",
-            "Quick turnaround time",
-            "Eliminates old key access"
+            "Security level assessment",
+            "Key hierarchy planning",
+            "Master key system design",
+            "Cylinder reconfiguration",
+            "Security pin replacement",
+            "Key control implementation",
+            "Access level verification",
+            "System documentation"
           ].map((item, index) => (
             <motion.li 
               key={index}
@@ -85,7 +88,11 @@ const ServiceDescription = () => {
         </div>
         <div className="flex items-center gap-2 text-primary">
           <Key className="h-6 w-6" />
-          <span className="font-medium">Same-Day Service</span>
+          <span className="font-medium">Expert Rekeying</span>
+        </div>
+        <div className="flex items-center gap-2 text-primary">
+          <Building2 className="h-6 w-6" />
+          <span className="font-medium">All Property Types</span>
         </div>
       </div>
     </motion.div>
