@@ -27,7 +27,7 @@ const Header = () => {
     <>
       <TopBar />
       <header className={`sticky top-0 w-full z-50 transition-all duration-300 ${isScrolled ? 'bg-white shadow-lg' : 'bg-transparent'}`}>
-        <div className="container mx-auto px-4">
+        <div className="container mx-auto px-2 sm:px-4">
           <div className="flex items-center justify-between h-24">
             <a href="/" className="flex items-center">
               <img 
