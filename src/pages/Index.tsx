@@ -10,6 +10,8 @@ import FAQSection from "@/components/sections/FAQSection";
 import TrustBadgesSection from "@/components/sections/TrustBadgesSection";
 import { motion } from "framer-motion";
 import { Helmet } from "react-helmet";
+import { setupPerformanceMonitoring } from "@/utils/performanceMonitoring";
+import { checkAnalytics } from "@/utils/analytics";
 
 // Add console logging for performance monitoring
 console.log('Index page render started:', new Date().toISOString());
@@ -58,36 +60,10 @@ const schema = {
 };
 
 const Index = () => {
-  console.log('Analytics and tracking check:', {
-    gtmAvailable: typeof window.dataLayer !== 'undefined',
-    gaAvailable: typeof window.gtag !== 'undefined',
-    clarityAvailable: typeof window.clarity !== 'undefined'
-  });
-
-  // Log Core Web Vitals
+  // Set up performance monitoring and analytics checking
   if (typeof window !== 'undefined') {
-    // Create observer for CLS
-    new PerformanceObserver((entryList) => {
-      for (const entry of entryList.getEntries()) {
-        console.log('Cumulative Layout Shift:', (entry as LayoutShiftEntry).value);
-      }
-    }).observe({ entryTypes: ['layout-shift'] });
-
-    // Create observer for LCP
-    new PerformanceObserver((entryList) => {
-      for (const entry of entryList.getEntries()) {
-        console.log('Largest Contentful Paint:', (entry as LargestContentfulPaintEntry).startTime);
-      }
-    }).observe({ entryTypes: ['largest-contentful-paint'] });
-
-    // Create observer for FID
-    new PerformanceObserver((entryList) => {
-      for (const entry of entryList.getEntries()) {
-        console.log('First Input Delay:', 
-          (entry as FirstInputEntry).processingStart - (entry as FirstInputEntry).startTime
-        );
-      }
-    }).observe({ entryTypes: ['first-input'] });
+    setupPerformanceMonitoring();
+    checkAnalytics();
   }
 
   return (
