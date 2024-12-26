@@ -28,7 +28,7 @@ const Map = () => {
     if (!mapContainer.current) return;
 
     // Initialize map
-    mapboxgl.accessToken = 'pk.eyJ1IjoibG92YWJsZSIsImEiOiJjbHRwOWYyYmkwMmZqMmlvNjZ5ZWNyaXlsIn0.a9qmZcjHhUNJe3OLrYGDrA';
+    mapboxgl.accessToken = 'pk.eyJ1IjoibG9ja3NtaXRoYW5kc2VjdXJpdHkiLCJhIjoiY201NHR5MGRkMWVhczJrcHF4ZWFvdGQzdiJ9.sZk4Db9u3Q21dXqtXeh2aw';
     
     map.current = new mapboxgl.Map({
       container: mapContainer.current,
