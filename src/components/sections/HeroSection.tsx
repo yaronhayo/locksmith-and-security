@@ -54,7 +54,7 @@ const HeroSection = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
             >
-              <div className="flex items-center">
+              <div className="flex items-center gap-4">
                 <div className="w-[200px]"> {/* Fixed width container for animated words */}
                   <AnimatePresence mode="wait">
                     <motion.span
