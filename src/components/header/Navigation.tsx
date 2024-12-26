@@ -26,13 +26,11 @@ const Navigation = ({ isMenuOpen, isScrolled }: { isMenuOpen: boolean; isScrolle
           <li key={path} className="w-full lg:w-auto">
             <a 
               href={path} 
-              className={`group flex items-center space-x-3 text-lg font-medium relative transition-colors duration-300 ${
+              className={`group flex items-center space-x-3 text-lg font-medium relative transition-all duration-300 ${
                 isActivePage(path) 
-                  ? 'text-secondary lg:text-secondary' 
+                  ? 'text-secondary lg:text-secondary after:scale-x-100' 
                   : `${isMenuOpen ? 'text-white lg:text-gray-900' : 'text-gray-900'} hover:text-secondary`
-              } ${
-                !isMenuOpen && 'lg:after:content-[""] lg:after:absolute lg:after:bottom-0 lg:after:left-0 lg:after:w-full lg:after:h-0.5 lg:after:bg-secondary lg:after:transform lg:after:scale-x-0 lg:after:origin-left lg:after:transition-transform lg:after:duration-300 lg:hover:after:scale-x-100'
-              }`}
+              } after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-secondary after:transform after:scale-x-0 after:origin-left after:transition-transform after:duration-300 hover:after:scale-x-100`}
             >
               <Icon className="w-5 h-5 lg:hidden" />
               <span>{label}</span>
