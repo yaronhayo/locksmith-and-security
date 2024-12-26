@@ -18,7 +18,7 @@ const Footer = () => {
           </div>
           
           <div className="text-center md:text-left">
-            <h3 className="text-xl font-bold mb-4">Quick Links</h3>
+            <h3 className="text-xl font-bold mb-4 text-primary-foreground">Quick Links</h3>
             <ul className="space-y-2">
               <li>
                 <a href="/services" className="hover:text-secondary transition-colors relative inline-block after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-secondary after:transform after:scale-x-0 after:origin-left after:transition-transform after:duration-300 hover:after:scale-x-100">
@@ -44,13 +44,13 @@ const Footer = () => {
           </div>
           
           <div className="text-center md:text-left">
-            <h3 className="text-xl font-bold mb-4">Contact Info</h3>
+            <h3 className="text-xl font-bold mb-4 text-primary-foreground">Contact Info</h3>
             <div className="space-y-3">
               <div className="flex items-center justify-center md:justify-start space-x-2 group">
                 <Phone className="w-5 h-5 group-hover:animate-bounce text-secondary" />
                 <div>
                   <a href="tel:5513037874" className="hover:text-secondary transition-colors">(551) 303-7874</a>
-                  <p className="text-sm text-[#F2FCE2]">24/7 Emergency Service</p>
+                  <p className="text-sm text-[#4ADE80]">24/7 Emergency Service</p>
                 </div>
               </div>
               <div className="flex items-center justify-center md:justify-start space-x-2 group">
@@ -67,7 +67,7 @@ const Footer = () => {
           </div>
 
           <div className="text-center md:text-left">
-            <h3 className="text-xl font-bold mb-4">Business Hours</h3>
+            <h3 className="text-xl font-bold mb-4 text-primary-foreground">Business Hours</h3>
             <div className="space-y-3">
               <div className="flex items-center justify-center md:justify-start space-x-2">
                 <Clock className="w-5 h-5 text-secondary" />
