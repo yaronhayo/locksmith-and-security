@@ -56,7 +56,7 @@ const reviews = [
     location: "Secaucus, NJ",
     date: "2 months ago"
   }
-] as const;
+];
 
 const ReviewCard = memo(({ review, index }: { review: typeof reviews[number]; index: number }) => (
   <Card key={index} className="flex-none w-96 hover:shadow-lg transition-shadow">
