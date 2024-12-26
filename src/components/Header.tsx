@@ -28,17 +28,25 @@ const Header = () => {
       <TopBar />
       <header className={`sticky top-0 w-full z-50 transition-all duration-300 ${isScrolled ? 'bg-white shadow-lg' : 'bg-transparent'}`}>
         <div className="container mx-auto px-4">
-          <div className="flex items-center justify-between h-14 md:h-24">
-            <a href="/" className="flex-shrink-0">
+          <div className="flex items-center justify-between h-24">
+            <a href="/" className="flex items-center space-x-3 group">
               <img 
                 src="/lovable-uploads/9b00adf3-451e-4d1c-a118-6a6f06293ec0.png" 
                 alt="Locksmith & Security LLC - Professional 24/7 Locksmith Services in North Bergen, NJ"
-                className="w-[120px] md:w-[180px] h-auto object-contain transition-transform duration-300 hover:scale-105"
+                className="h-20 w-auto md:h-[180px] lg:h-[240px] transform transition-transform duration-300 group-hover:scale-110"
                 loading="eager"
                 width="180"
                 height="180"
                 fetchPriority="high"
                 decoding="async"
+                style={{
+                  aspectRatio: '1/1',
+                  objectFit: 'contain'
+                }}
+                onError={(e) => {
+                  const img = e.target as HTMLImageElement;
+                  img.src = '/placeholder.svg';
+                }}
               />
             </a>
 

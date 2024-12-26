@@ -8,7 +8,7 @@ interface ActionButtonsProps {
 
 const ActionButtons = ({ isMenuOpen, setIsMenuOpen }: ActionButtonsProps) => {
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex items-center space-x-4">
       <div className="hidden md:flex items-center space-x-4">
         <a href="tel:5513037874" className="inline-flex items-center space-x-2 text-xl font-bold text-primary hover:text-secondary transition-all duration-300 group transform hover:scale-105">
           <Phone className="w-6 h-6 animate-phone-ring" />
@@ -21,25 +21,29 @@ const ActionButtons = ({ isMenuOpen, setIsMenuOpen }: ActionButtonsProps) => {
           </a>
         </Button>
       </div>
-      <div className="flex md:hidden items-center gap-2">
-        <Button asChild size="sm" variant="secondary" className="px-3 py-1.5">
+      <div className="flex md:hidden items-center space-x-2">
+        <Button asChild size="sm" className="bg-secondary hover:bg-secondary-hover text-white shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300">
           <a href="/booking" className="inline-flex items-center gap-1">
             <Calendar className="w-4 h-4" />
             Book
           </a>
         </Button>
-        <Button asChild size="sm" variant="default" className="px-3 py-1.5">
-          <a href="tel:5513037874" className="inline-flex items-center">
-            <Phone className="h-4 w-4" />
-          </a>
-        </Button>
+        <a href="tel:5513037874">
+          <Button 
+            size="icon" 
+            variant="default" 
+            className="hover:bg-primary-hover transition-all duration-300 transform hover:scale-105"
+          >
+            <Phone className="h-6 w-6 animate-phone-ring" />
+          </Button>
+        </a>
         <Button 
           variant="outline" 
-          size="sm"
-          className="p-1.5" 
+          size="icon" 
+          className="hover:bg-primary/5 transition-all duration-300 transform hover:scale-105 z-50" 
           onClick={() => setIsMenuOpen(!isMenuOpen)}
         >
-          {isMenuOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
+          {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
         </Button>
       </div>
     </div>
