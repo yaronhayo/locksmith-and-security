@@ -11,7 +11,7 @@ const ServiceDescription = () => {
     >
       <p className="text-lg leading-relaxed text-gray-600 mb-8">
         A business lockout can be a critical situation that disrupts operations and affects your bottom line. 
-        At Locksmith & Security LLC, we provide rapid, professional commercial lockout services throughout 
+        Our commercial locksmith team provides rapid, professional lockout services for businesses throughout 
         North Bergen and surrounding areas, ensuring minimal downtime for your business.
       </p>
       
@@ -20,7 +20,7 @@ const ServiceDescription = () => {
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.2 }}
       >
-        <h3 className="text-2xl font-semibold mb-6 text-primary">Commercial Lockout Solutions</h3>
+        <h3 className="text-2xl font-semibold mb-4 text-primary">Commercial Lockout Solutions</h3>
         <p className="text-gray-600 mb-4">Our commercial lockout services include:</p>
         <ul className="grid md:grid-cols-2 gap-4 mb-8">
           {[
@@ -30,7 +30,8 @@ const ServiceDescription = () => {
             "High-security commercial locks",
             "Digital lock reprogramming",
             "Safe and vault access",
-            "Security system integration"
+            "Security system integration",
+            "Commercial door repair"
           ].map((service, index) => (
             <motion.li 
               key={index}
@@ -51,18 +52,21 @@ const ServiceDescription = () => {
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.4 }}
       >
-        <h3 className="text-2xl font-semibold mb-6 text-primary">Commercial Expertise</h3>
+        <h3 className="text-2xl font-semibold mb-4 text-primary">Commercial Security Expertise</h3>
         <p className="text-gray-600 mb-4">
-          Our commercial locksmiths are specially trained in business security systems and commercial-grade locks. 
-          We understand the unique security needs of different business types and provide tailored solutions. 
-          Our team is:
+          Our commercial locksmiths specialize in business security systems and commercial-grade locks. 
+          We understand the unique security needs of different business types and provide tailored solutions:
         </p>
         <ul className="space-y-3 mb-8">
           {[
-            "Licensed and certified for commercial work",
-            "Experienced with all types of business locks",
-            "Trained in modern security systems",
-            "Available 24/7 for emergencies"
+            "Office buildings and complexes",
+            "Retail stores and shopping centers",
+            "Warehouses and industrial facilities",
+            "Banks and financial institutions",
+            "Restaurants and hospitality venues",
+            "Medical facilities and clinics",
+            "Educational institutions",
+            "Government facilities"
           ].map((item, index) => (
             <motion.li 
               key={index}
@@ -86,6 +90,10 @@ const ServiceDescription = () => {
         <div className="flex items-center gap-2 text-primary">
           <Clock className="h-6 w-6" />
           <span className="font-medium">15-30 Min Response</span>
+        </div>
+        <div className="flex items-center gap-2 text-primary">
+          <Building2 className="h-6 w-6" />
+          <span className="font-medium">All Business Types</span>
         </div>
       </div>
     </motion.div>
