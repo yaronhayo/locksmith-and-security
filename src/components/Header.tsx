@@ -60,7 +60,7 @@ const Header = () => {
                 className="text-white hover:bg-white/10"
                 onClick={() => setIsMenuOpen(false)}
               >
-                <X className="h-6 w-6" />
+                <X className="h-6 w-6 text-white" />
               </Button>
             </div>
 
