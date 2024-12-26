@@ -33,7 +33,7 @@ const Header = () => {
               <img 
                 src="/lovable-uploads/9b00adf3-451e-4d1c-a118-6a6f06293ec0.png" 
                 alt="Locksmith & Security LLC - Professional 24/7 Locksmith Services in North Bergen, NJ"
-                className="w-[160px] h-[60px] md:w-[180px] md:h-[180px] object-contain transition-transform duration-300 hover:scale-105"
+                className="max-w-[140px] min-w-[140px] h-auto md:max-w-[180px] md:min-w-[180px] object-contain transition-transform duration-300 hover:scale-105"
                 loading="eager"
                 width="180"
                 height="180"
