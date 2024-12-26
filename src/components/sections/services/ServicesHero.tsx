@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Shield, Clock, Tool } from "lucide-react";
+import { Shield, Clock, Wrench } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const ServicesHero = () => {
@@ -44,7 +44,7 @@ const ServicesHero = () => {
               description: "Emergency service available around the clock"
             },
             {
-              icon: Tool,
+              icon: Wrench,
               title: "Expert Solutions",
               description: "Skilled technicians with years of experience"
             }

@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Shield, Clock, DollarSign, Tool, Star, Phone } from "lucide-react";
+import { Shield, Clock, DollarSign, Wrench, Star, Phone } from "lucide-react";
 
 const features = [
   {
@@ -18,7 +18,7 @@ const features = [
     description: "Transparent pricing with no hidden fees"
   },
   {
-    icon: Tool,
+    icon: Wrench,
     title: "Modern Equipment",
     description: "Latest tools and technology for all services"
   },
