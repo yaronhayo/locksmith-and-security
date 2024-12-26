@@ -69,18 +69,7 @@ const HeroSection = () => {
                     </motion.span>
                   </AnimatePresence>
                 </div>
-                <motion.span 
-                  className="whitespace-nowrap"
-                  animate={{ x: 0 }}
-                  transition={{ 
-                    type: "spring",
-                    stiffness: 100,
-                    damping: 15,
-                    mass: 0.8
-                  }}
-                >
-                  Locksmith
-                </motion.span>
+                <span className="whitespace-nowrap">Locksmith</span>
               </div>
               <div className="whitespace-nowrap text-3xl md:text-4xl lg:text-5xl">Services in North Bergen</div>
             </motion.h1>
