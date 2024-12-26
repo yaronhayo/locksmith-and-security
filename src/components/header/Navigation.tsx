@@ -3,7 +3,13 @@ import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 import { useLocation } from "react-router-dom";
 
-const Navigation = ({ className }: { className?: string }) => {
+interface NavigationProps {
+  className?: string;
+  isMenuOpen?: boolean;
+  isScrolled?: boolean;
+}
+
+const Navigation = ({ className, isMenuOpen, isScrolled }: NavigationProps) => {
   const location = useLocation();
   
   const isActive = (path: string) => {
@@ -20,14 +26,19 @@ const Navigation = ({ className }: { className?: string }) => {
   ];
 
   return (
-    <nav className={cn("hidden lg:flex items-center space-x-8", className)}>
+    <nav className={cn(
+      "hidden lg:flex items-center space-x-8",
+      isMenuOpen && "fixed inset-0 top-[65px] bg-primary/95 flex flex-col items-start px-6 py-8 space-y-4 lg:relative lg:top-0 lg:bg-transparent lg:flex-row lg:items-center lg:space-x-8 lg:space-y-0 lg:p-0",
+      className
+    )}>
       {navItems.map(({ path, label }) => (
         <Link
           key={path}
           to={path}
           className={cn(
             "text-base font-medium transition-all duration-300 relative group",
-            isActive(path) ? "text-secondary" : "text-gray-700 hover:text-secondary"
+            isActive(path) ? "text-secondary" : "text-gray-700 hover:text-secondary",
+            isMenuOpen && "text-white lg:text-gray-700"
           )}
         >
           {label}
