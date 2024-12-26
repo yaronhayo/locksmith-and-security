@@ -1,6 +1,6 @@
 import PageLayout from "@/components/layouts/PageLayout";
 import { Button } from "@/components/ui/button";
-import { MapPin, Clock, Shield, Phone, Car, Home, Building2, Star, Tool } from "lucide-react";
+import { MapPin, Clock, Shield, Phone, Car, Home, Building2, Star } from "lucide-react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import BookingForm from "@/components/BookingForm";
@@ -125,9 +125,7 @@ const NorthBergen = () => {
     >
       <div className="container mx-auto px-4 py-12">
         <div className="grid lg:grid-cols-3 gap-12">
-          {/* Main Content Column */}
           <div className="lg:col-span-2 space-y-12">
-            {/* Introduction */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -157,7 +155,6 @@ const NorthBergen = () => {
               </div>
             </motion.div>
 
-            {/* Services Grid */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -181,7 +178,7 @@ const NorthBergen = () => {
                         <div className="grid grid-cols-2 gap-2">
                           {service.features.map((feature, idx) => (
                             <div key={idx} className="flex items-center gap-2">
-                              <Tool className="h-4 w-4 text-primary" />
+                              <Shield className="h-4 w-4 text-primary" />
                               <span className="text-sm">{feature}</span>
                             </div>
                           ))}
@@ -193,7 +190,6 @@ const NorthBergen = () => {
               </div>
             </motion.div>
 
-            {/* Reviews Section */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -228,7 +224,6 @@ const NorthBergen = () => {
               </div>
             </motion.div>
 
-            {/* Features */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -250,7 +245,6 @@ const NorthBergen = () => {
             </motion.div>
           </div>
 
-          {/* Booking Form Column */}
           <div className="lg:col-span-1">
             <div className="sticky top-24">
               <div className="bg-white rounded-lg shadow-lg p-6">
