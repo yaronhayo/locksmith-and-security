@@ -54,6 +54,10 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        success: {
+          DEFAULT: "#4ADE80",
+          foreground: "#FFFFFF",
+        },
       },
       fontFamily: {
         sans: ["Outfit", "sans-serif"],
