@@ -37,18 +37,18 @@ const Navigation = ({ className, isMenuOpen, isScrolled }: NavigationProps) => {
             key={path}
             to={path}
             className={cn(
-              "text-base font-medium transition-all duration-300 relative group no-underline",
+              "text-base font-medium transition-colors duration-300 relative group no-underline",
               isActive(path) ? "text-secondary" : "text-gray-700 hover:text-secondary",
               isMenuOpen && "text-white lg:text-gray-700"
             )}
           >
             {label}
             <motion.div
-              className="absolute bottom-0 left-0 h-0.5 bg-secondary"
-              initial={false}
-              animate={isActive(path) ? { width: "100%" } : { width: "0%" }}
+              className="absolute -bottom-1 left-0 h-0.5 bg-secondary"
+              initial={{ width: isActive(path) ? "100%" : "0%" }}
+              animate={{ width: isActive(path) ? "100%" : "0%" }}
               whileHover={{ width: "100%" }}
-              transition={{ duration: 0.3 }}
+              transition={{ duration: 0.2, ease: "easeInOut" }}
             />
           </Link>
         )
