@@ -1,6 +1,7 @@
 import { Star } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { useEffect, useRef, useCallback, memo, useState } from "react";
+import LoadingSpinner from "@/components/LoadingSpinner";
 
 interface ReviewsSectionProps {
   location?: string;
@@ -86,6 +87,7 @@ ReviewCard.displayName = 'ReviewCard';
 const ReviewsSection = ({ location }: ReviewsSectionProps) => {
   const [displayedReviews, setDisplayedReviews] = useState<typeof reviews[number][]>([]);
   const [page, setPage] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
   const loadingRef = useRef(null);
   const scrollRef = useRef<HTMLDivElement>(null);
 
@@ -94,15 +96,21 @@ const ReviewsSection = ({ location }: ReviewsSectionProps) => {
     : reviews;
 
   const loadMoreReviews = useCallback(() => {
+    if (isLoading) return;
+    
+    setIsLoading(true);
     const startIndex = (page - 1) * 12;
     const endIndex = startIndex + 12;
     const newReviews = filteredReviews.slice(startIndex, endIndex);
     
-    if (newReviews.length > 0) {
-      setDisplayedReviews(prev => [...prev, ...newReviews]);
-      setPage(prev => prev + 1);
-    }
-  }, [page, filteredReviews]);
+    setTimeout(() => {
+      if (newReviews.length > 0) {
+        setDisplayedReviews(prev => [...prev, ...newReviews]);
+        setPage(prev => prev + 1);
+      }
+      setIsLoading(false);
+    }, 1500); // 1.5 seconds delay
+  }, [page, filteredReviews, isLoading]);
 
   useEffect(() => {
     // Reset when location changes
@@ -118,7 +126,7 @@ const ReviewsSection = ({ location }: ReviewsSectionProps) => {
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
-        if (entries[0].isIntersecting) {
+        if (entries[0].isIntersecting && !isLoading) {
           loadMoreReviews();
         }
       },
@@ -130,7 +138,7 @@ const ReviewsSection = ({ location }: ReviewsSectionProps) => {
     }
 
     return () => observer.disconnect();
-  }, [loadMoreReviews]);
+  }, [loadMoreReviews, isLoading]);
 
   const scroll = useCallback(() => {
     const scrollContainer = scrollRef.current;
@@ -168,7 +176,9 @@ const ReviewsSection = ({ location }: ReviewsSectionProps) => {
             <ReviewCard key={index} review={review} index={index} />
           ))}
         </div>
-        <div ref={loadingRef} className="h-10" />
+        <div ref={loadingRef} className="h-10">
+          {isLoading && <LoadingSpinner />}
+        </div>
       </div>
     </section>
   );
