@@ -171,7 +171,7 @@ const AboutPage = () => {
         {/* Contact Section */}
         <section className="mb-20 bg-gray-50 rounded-2xl p-12">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">Get in Touch</h2>
+            <h2 className="text-3xl font-bold text-primary mb-4">Get in Touch</h2>
             <p className="text-lg text-gray-600">
               We're here to help you 24/7. Contact us for any security concerns or questions.
             </p>
