@@ -55,7 +55,7 @@ const HeroSection = () => {
               transition={{ delay: 0.3 }}
             >
               <div className="flex items-center gap-3">
-                <div className="relative h-[1.2em] inline-flex items-center min-w-[100px] md:min-w-[120px]">
+                <div className="relative h-[1.2em] inline-flex items-center min-w-[40px] md:min-w-[110px]">
                   <AnimatePresence mode="wait">
                     <motion.span
                       key={words[currentWord]}
@@ -69,7 +69,7 @@ const HeroSection = () => {
                     </motion.span>
                   </AnimatePresence>
                 </div>
-                <span className="whitespace-nowrap ml-[100px] md:ml-[130px]">Locksmith</span>
+                <span className="whitespace-nowrap ml-[40px] md:ml-[120px]">Locksmith</span>
               </div>
               <div className="whitespace-nowrap text-3xl md:text-4xl lg:text-5xl">Services in North Bergen</div>
             </motion.h1>
