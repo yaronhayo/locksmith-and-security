@@ -48,7 +48,13 @@
     @apply text-lg md:text-xl text-heading-neutral;
   }
   a {
-    @apply transition-colors duration-300 hover:text-secondary;
+    @apply transition-all duration-300 hover:text-secondary relative;
+  }
+  a:not(.no-underline)::after {
+    @apply content-[''] absolute left-0 bottom-0 w-0 h-0.5 bg-secondary transition-all duration-300;
+  }
+  a:not(.no-underline):hover::after {
+    @apply w-full;
   }
 }
 
