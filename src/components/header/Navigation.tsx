@@ -29,21 +29,18 @@ const Navigation = ({ isMenuOpen, isScrolled }: { isMenuOpen: boolean; isScrolle
           <li key={path} className="w-full lg:w-auto">
             <a 
               href={path} 
-              className={`group flex items-center space-x-3 text-lg font-medium relative transition-all duration-300 p-3 lg:p-2 rounded-lg ${
+              className={`group flex items-center space-x-3 text-lg font-medium relative transition-all duration-300 p-3 lg:p-0 rounded-lg ${
                 isActivePage(path) 
                   ? 'text-secondary lg:text-secondary after:scale-x-100 bg-white/10 lg:bg-transparent' 
                   : 'text-white lg:text-gray-900 hover:text-secondary hover:bg-white/10 lg:hover:bg-transparent'
-              } after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-secondary after:transform after:scale-x-0 after:origin-left after:transition-transform after:duration-300 group-hover:after:scale-x-100`}
+              } after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-secondary after:transform after:scale-x-0 after:origin-left after:transition-transform after:duration-300 hover:after:scale-x-100`}
               title={description}
               aria-label={description}
             >
               <span className="lg:hidden">
-                <Icon className="w-5 h-5 transition-colors duration-300 group-hover:text-secondary" />
+                <Icon className="w-5 h-5" />
               </span>
-              <span className="relative">
-                {label}
-                <span className="absolute -bottom-1 left-0 w-full h-0.5 bg-secondary transform scale-x-0 transition-transform duration-300 group-hover:scale-x-100"></span>
-              </span>
+              <span>{label}</span>
             </a>
           </li>
         ))}
