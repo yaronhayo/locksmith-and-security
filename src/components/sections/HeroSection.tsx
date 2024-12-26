@@ -49,13 +49,13 @@ const HeroSection = () => {
             </motion.div>
             
             <motion.h1 
-              className="text-white leading-tight drop-shadow-md flex flex-col gap-2"
+              className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight drop-shadow-md flex flex-col gap-4"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
             >
-              <div className="flex items-baseline gap-2">
-                <div className="relative h-[1.2em] w-[200px]">
+              <div className="flex flex-wrap items-baseline gap-3">
+                <div className="relative h-[1.2em] w-[300px] md:w-[350px]">
                   <AnimatePresence mode="wait">
                     <motion.span
                       key={words[currentWord]}
@@ -71,17 +71,16 @@ const HeroSection = () => {
                 </div>
                 <span className="whitespace-nowrap">Locksmith</span>
               </div>
-              <div className="whitespace-nowrap">Services in North Bergen</div>
+              <div className="whitespace-nowrap text-3xl md:text-4xl lg:text-5xl">Services in North Bergen</div>
             </motion.h1>
 
             <motion.p 
-              className="subtitle text-white/90 leading-relaxed"
+              className="subtitle text-white/90 leading-relaxed text-lg md:text-xl"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4 }}
             >
-              Available 24/7 for all your residential, commercial, and automotive locksmith needs. Fast response and reliable service guaranteed. 
-              <span className="block mt-2 text-secondary font-semibold">NJ DCA License #13VH13153100</span>
+              Available 24/7 for all your residential, commercial, and automotive locksmith needs. Fast response and reliable service guaranteed.
             </motion.p>
             
             <motion.div 
