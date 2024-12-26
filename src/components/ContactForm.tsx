@@ -5,11 +5,13 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { sendContactFormEmail } from "@/utils/emailjs";
 import Recaptcha from "./ui/recaptcha";
+import AddressAutocomplete from "@/components/ui/address-autocomplete";
 
 const ContactForm = () => {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
+  const [address, setAddress] = useState("");
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -34,6 +36,7 @@ const ContactForm = () => {
 
       // Add recaptcha token to form data
       formDataObj.recaptchaToken = recaptchaToken;
+      formDataObj.address = address;
 
       await sendContactFormEmail(formDataObj);
 
@@ -44,6 +47,7 @@ const ContactForm = () => {
 
       (e.target as HTMLFormElement).reset();
       setRecaptchaToken(null);
+      setAddress("");
     } catch (error) {
       toast({
         title: "Submission Failed",
@@ -81,6 +85,16 @@ const ContactForm = () => {
             type="tel"
             name="phone"
             placeholder="Your Phone"
+            required
+            disabled={isSubmitting}
+          />
+        </div>
+        <div>
+          <AddressAutocomplete
+            name="address"
+            value={address}
+            onChange={setAddress}
+            placeholder="Service Address"
             required
             disabled={isSubmitting}
           />
