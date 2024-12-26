@@ -98,35 +98,35 @@ const HeroSection = () => {
               aria-label="Key features"
             >
               <div 
-                className="flex items-center space-x-3 text-white/90 group hover:text-white transition-all duration-300 transform hover:translate-y-[-2px] cursor-pointer backdrop-blur-sm bg-white/5 p-3 rounded-lg"
+                className="flex items-center space-x-3 text-white group hover:text-white transition-all duration-300 transform hover:translate-y-[-2px] cursor-pointer backdrop-blur-sm bg-white/5 p-3 rounded-lg"
                 role="listitem"
               >
                 <Clock className="w-8 h-8 text-secondary group-hover:scale-110 transition-transform duration-300" aria-hidden="true" />
                 <div>
-                  <h3 className="font-semibold">24/7 Service</h3>
-                  <p className="text-sm">Always available</p>
+                  <h3 className="font-semibold text-white">24/7 Service</h3>
+                  <p className="text-sm text-white">Always available</p>
                 </div>
               </div>
               
               <div 
-                className="flex items-center space-x-3 text-white/90 group hover:text-white transition-all duration-300 transform hover:translate-y-[-2px] cursor-pointer backdrop-blur-sm bg-white/5 p-3 rounded-lg"
+                className="flex items-center space-x-3 text-white group hover:text-white transition-all duration-300 transform hover:translate-y-[-2px] cursor-pointer backdrop-blur-sm bg-white/5 p-3 rounded-lg"
                 role="listitem"
               >
                 <Shield className="w-8 h-8 text-secondary group-hover:scale-110 transition-transform duration-300" aria-hidden="true" />
                 <div>
-                  <h3 className="font-semibold">Licensed & Insured</h3>
-                  <p className="text-sm">Your safety first</p>
+                  <h3 className="font-semibold text-white">Licensed & Insured</h3>
+                  <p className="text-sm text-white">Your safety first</p>
                 </div>
               </div>
               
               <div 
-                className="flex items-center space-x-3 text-white/90 group hover:text-white transition-all duration-300 transform hover:translate-y-[-2px] cursor-pointer backdrop-blur-sm bg-white/5 p-3 rounded-lg"
+                className="flex items-center space-x-3 text-white group hover:text-white transition-all duration-300 transform hover:translate-y-[-2px] cursor-pointer backdrop-blur-sm bg-white/5 p-3 rounded-lg"
                 role="listitem"
               >
                 <Star className="w-8 h-8 text-secondary group-hover:scale-110 transition-transform duration-300" aria-hidden="true" />
                 <div>
-                  <h3 className="font-semibold">5-Star Rated</h3>
-                  <p className="text-sm">Trusted service</p>
+                  <h3 className="font-semibold text-white">5-Star Rated</h3>
+                  <p className="text-sm text-white">Trusted service</p>
                 </div>
               </div>
             </motion.div>
