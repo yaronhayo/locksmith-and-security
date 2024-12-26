@@ -1,4 +1,4 @@
-import { ChevronRight, Map, HelpCircle, Star, Info, MessageSquare } from 'lucide-react';
+import { ChevronRight, Map, HelpCircle, Star, Info, MessageSquare, Tool } from 'lucide-react';
 import { useLocation } from 'react-router-dom';
 
 const Navigation = ({ isMenuOpen, isScrolled }: { isMenuOpen: boolean; isScrolled: boolean }) => {
@@ -16,7 +16,7 @@ const Navigation = ({ isMenuOpen, isScrolled }: { isMenuOpen: boolean; isScrolle
     } lg:block lg:flex-1 lg:mx-8`}>
       <ul className="h-full flex flex-col lg:flex-row items-start lg:items-center lg:justify-center space-y-4 lg:space-y-0 lg:space-x-4 p-6 lg:p-0">
         {[
-          { path: '/services', label: 'Services', icon: ChevronRight },
+          { path: '/services', label: 'Services', icon: Tool },
           { path: '/service-areas', label: 'Service Areas', icon: Map },
           { path: '/faq', label: 'FAQ', icon: HelpCircle },
           { path: '/reviews', label: 'Reviews', icon: Star },
