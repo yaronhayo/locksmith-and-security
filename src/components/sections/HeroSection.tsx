@@ -11,7 +11,7 @@ const HeroSection = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       setWordIndex((current) => (current + 1) % words.length);
-    }, 1000);
+    }, 1800);
 
     return () => clearInterval(interval);
   }, []);
@@ -54,18 +54,20 @@ const HeroSection = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
             >
-              <AnimatePresence mode="wait">
-                <motion.span
-                  key={words[wordIndex]}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -20 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  {words[wordIndex]}
-                </motion.span>
-              </AnimatePresence>{" "}
-              Locksmith Services in North Bergen
+              <span className="inline-block min-w-[180px]">
+                <AnimatePresence mode="wait">
+                  <motion.span
+                    key={words[wordIndex]}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -20 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    {words[wordIndex]}
+                  </motion.span>
+                </AnimatePresence>
+              </span>{" "}
+              <span className="text-secondary">Locksmith</span> Services in North Bergen
             </motion.h1>
             
             <motion.p 
