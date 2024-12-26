@@ -1,21 +1,9 @@
 import { Button } from "@/components/ui/button";
 import { Star, ArrowRight, Phone, Clock, Shield } from "lucide-react";
 import BookingForm from "@/components/BookingForm";
-import { motion, AnimatePresence } from "framer-motion";
-import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
 
 const HeroSection = () => {
-  const [wordIndex, setWordIndex] = useState(0);
-  const words = ["Professional", "Reliable", "Fast"];
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setWordIndex((current) => (current + 1) % words.length);
-    }, 1800);
-
-    return () => clearInterval(interval);
-  }, []);
-
   return (
     <section 
       className="relative min-h-screen bg-gradient-to-br from-primary to-primary-hover overflow-hidden pt-20 pb-12 lg:pb-20"
@@ -54,20 +42,7 @@ const HeroSection = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
             >
-              <span className="inline-block min-w-[180px]">
-                <AnimatePresence mode="wait">
-                  <motion.span
-                    key={words[wordIndex]}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -20 }}
-                    transition={{ duration: 0.3 }}
-                  >
-                    {words[wordIndex]}
-                  </motion.span>
-                </AnimatePresence>
-              </span>{" "}
-              <span className="text-secondary">Locksmith</span> Services in North Bergen
+              Professional Locksmith Services in North Bergen
             </motion.h1>
             
             <motion.p 
