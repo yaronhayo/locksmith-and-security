@@ -97,7 +97,6 @@ const Index = () => {
             viewport={{ once: true }}
             className="relative"
           >
-            <div className="absolute inset-0 bg-gradient-to-b from-transparent to-gray-50" />
             <TrustBadgesSection />
           </motion.div>
           
@@ -108,7 +107,6 @@ const Index = () => {
             viewport={{ once: true }}
             className="relative bg-gray-50"
           >
-            <div className="absolute inset-0 bg-[url('/lovable-uploads/9b00adf3-451e-4d1c-a118-6a6f06293ec0.png')] opacity-5" />
             <ServicesSection />
           </motion.section>
           

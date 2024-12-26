@@ -65,13 +65,13 @@ const ServicesSection = () => {
   return (
     <section className="py-20">
       <div className="container mx-auto px-4">
-        <h2 className="text-3xl font-bold text-center mb-12">Our Services</h2>
+        <h2 className="text-3xl font-bold text-primary text-center mb-12">Our Services</h2>
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
           {services.map((service, index) => (
             <Card key={index} className="transition-shadow duration-300 hover:shadow-lg">
               <CardContent className="p-6 text-center">
                 <service.icon className="w-12 h-12 mx-auto mb-4 text-primary" />
-                <h3 className="text-xl font-semibold mb-2">{service.title}</h3>
+                <h3 className="text-xl font-semibold mb-2 text-primary">{service.title}</h3>
                 <p className="text-gray-600 mb-4">{service.description}</p>
                 <Button asChild variant="secondary" className="group">
                   <a href={service.link} className="inline-flex items-center">
