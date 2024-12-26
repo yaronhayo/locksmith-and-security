@@ -1,30 +1,71 @@
-import { Building2 } from "lucide-react";
-import ServiceLayout from "@/components/layouts/ServiceLayout";
+import PageLayout from "@/components/layouts/PageLayout";
+import BusinessLockChangeHero from "@/components/sections/BusinessLockChangeHero";
 import ServiceDescription from "@/components/services/business-lock-change/ServiceDescription";
-import EmergencyCallout from "@/components/services/business-lock-change/EmergencyCallout";
 import RealWorldExamples from "@/components/services/business-lock-change/RealWorldExamples";
+import EmergencyCallout from "@/components/services/business-lock-change/EmergencyCallout";
+import FAQSection from "@/components/sections/FAQSection";
+import { Building2 } from "lucide-react";
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "Service",
+  "name": "Business Lock Change Services in North Bergen",
+  "description": "Professional business lock change services available in North Bergen and surrounding areas. Fast response times and licensed technicians.",
+  "provider": {
+    "@type": "LocalBusiness",
+    "name": "Locksmith & Security LLC",
+    "image": "/og-image.png",
+    "telephone": "+15513037874",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "North Bergen",
+      "addressRegion": "NJ",
+      "postalCode": "07047",
+      "addressCountry": "US"
+    },
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": "40.7995",
+      "longitude": "-74.0246"
+    },
+    "areaServed": {
+      "@type": "GeoCircle",
+      "geoMidpoint": {
+        "@type": "GeoCoordinates",
+        "latitude": "40.7995",
+        "longitude": "-74.0246"
+      },
+      "geoRadius": "30mi"
+    }
+  },
+  "serviceArea": {
+    "@type": "GeoCircle",
+    "geoMidpoint": {
+      "@type": "GeoCoordinates",
+      "latitude": "40.7995",
+      "longitude": "-74.0246"
+    },
+    "geoRadius": "30mi"
+  }
+};
 
 const BusinessLockChangePage = () => {
   return (
-    <ServiceLayout
-      title="Business Lock Change Services"
-      description="Professional commercial lock change solutions for enhanced business security"
-      icon={Building2}
-      service="Business Lock Change"
-      callToAction="Need to Change Your Business Locks?"
-      benefits={[
-        "24/7 Emergency Service",
-        "Licensed & Insured Technicians",
-        "High-Security Lock Options",
-        "Master Key System Setup",
-        "Access Control Integration",
-        "Competitive Business Rates"
-      ]}
+    <PageLayout
+      title="Business Lock Change Services North Bergen | Commercial Lock Change"
+      description="Professional business lock change services in North Bergen. Available 24/7 with fast response time. Licensed and insured commercial locksmith specialists ready to help."
+      schema={schema}
     >
-      <ServiceDescription />
-      <EmergencyCallout />
-      <RealWorldExamples />
-    </ServiceLayout>
+      <BusinessLockChangeHero />
+      <div className="container mx-auto px-4 py-12">
+        <div className="max-w-4xl mx-auto">
+          <ServiceDescription />
+          <RealWorldExamples />
+          <EmergencyCallout />
+        </div>
+      </div>
+      <FAQSection />
+    </PageLayout>
   );
 };
 
