@@ -171,7 +171,7 @@ const ServiceAreasSection = () => {
             <Button 
               size="lg" 
               variant="outline" 
-              className="border-white text-white hover:bg-white/10" 
+              className="border border-white text-white bg-transparent hover:bg-white/10" 
               asChild
             >
               <a href="tel:5513037874" className="flex items-center">
@@ -182,7 +182,7 @@ const ServiceAreasSection = () => {
             <Button 
               size="lg" 
               variant="secondary" 
-              className="text-primary hover:text-black"
+              className="text-white hover:text-black"
               asChild
             >
               <Link to="/book-online">
