@@ -20,7 +20,30 @@ const Footer = () => {
             </p>
           </div>
           
-          <div className="text-center md:text-left">
+          <div className="text-center md:text-left order-3 md:order-none">
+            <h3 className="text-xl font-bold mb-4 text-white">Contact Info</h3>
+            <div className="space-y-3">
+              <div className="flex items-center justify-center md:justify-start space-x-2 group">
+                <Phone className="w-5 h-5 group-hover:animate-bounce text-secondary" />
+                <div>
+                  <a href="tel:5513037874" className="hover:text-secondary transition-colors">(551) 303-7874</a>
+                  <p className="text-sm text-[#90EE90]">24/7 Emergency Service</p>
+                </div>
+              </div>
+              <div className="flex items-center justify-center md:justify-start space-x-2 group">
+                <MapPin className="w-5 h-5 group-hover:animate-bounce text-secondary" />
+                <span>North Bergen, NJ</span>
+              </div>
+              <div className="flex items-center justify-center md:justify-start space-x-2 group">
+                <Mail className="w-5 h-5 group-hover:animate-bounce text-secondary" />
+                <a href="mailto:support@247locksmithandsecurity.com" className="hover:text-secondary transition-colors break-all">
+                  support@247locksmithandsecurity.com
+                </a>
+              </div>
+            </div>
+          </div>
+          
+          <div className="text-center md:text-left order-2 md:order-none">
             <h3 className="text-xl font-bold mb-4 text-white">Quick Links</h3>
             <ul className="space-y-2">
               <li>
@@ -48,29 +71,6 @@ const Footer = () => {
                 </a>
               </li>
             </ul>
-          </div>
-          
-          <div className="text-center md:text-left">
-            <h3 className="text-xl font-bold mb-4 text-white">Contact Info</h3>
-            <div className="space-y-3">
-              <div className="flex items-center justify-center md:justify-start space-x-2 group">
-                <Phone className="w-5 h-5 group-hover:animate-bounce text-secondary" />
-                <div>
-                  <a href="tel:5513037874" className="hover:text-secondary transition-colors">(551) 303-7874</a>
-                  <p className="text-sm text-[#90EE90]">24/7 Emergency Service</p>
-                </div>
-              </div>
-              <div className="flex items-center justify-center md:justify-start space-x-2 group">
-                <MapPin className="w-5 h-5 group-hover:animate-bounce text-secondary" />
-                <span>North Bergen, NJ</span>
-              </div>
-              <div className="flex items-center justify-center md:justify-start space-x-2 group">
-                <Mail className="w-5 h-5 group-hover:animate-bounce text-secondary" />
-                <a href="mailto:support@247locksmithandsecurity.com" className="hover:text-secondary transition-colors break-all">
-                  support@247locksmithandsecurity.com
-                </a>
-              </div>
-            </div>
           </div>
 
           <div className="text-center md:text-left">
