@@ -7,7 +7,6 @@ import { Analytics } from '@vercel/analytics/react';
 import MetaTags from "./MetaTags";
 import PageHero from "./PageHero";
 import PageLoading from "./PageLoading";
-import Breadcrumbs from "@/components/Breadcrumbs";
 
 interface PageLayoutProps {
   title: string;
@@ -59,8 +58,6 @@ const PageLayout = ({
           description={heroDescription || description}
         />
       )}
-      
-      <Breadcrumbs />
       
       <motion.div 
         className={cn("flex-grow", !hasHeroSection && "pt-0")}
