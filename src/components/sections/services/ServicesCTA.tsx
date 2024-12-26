@@ -19,7 +19,12 @@ const ServicesCTA = () => {
             Our professional locksmiths are available 24/7 to help you with any lock-related emergency
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" variant="outline" asChild className="text-white border-white hover:bg-white/10">
+            <Button 
+              size="lg" 
+              variant="outline" 
+              asChild 
+              className="border border-white text-white bg-transparent hover:bg-white/10"
+            >
               <a href="tel:5513037874" className="flex items-center">
                 <Phone className="mr-2 h-5 w-5" />
                 Call (551) 303-7874
