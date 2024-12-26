@@ -1,104 +1,28 @@
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
-import { Helmet } from "react-helmet";
-import { Building2, Car, Home, Key } from "lucide-react";
+import PageLayout from "@/components/layouts/PageLayout";
 
-const services = [
-  {
-    icon: Home,
-    title: "Residential Locksmith Services",
-    description: "Complete home security solutions including lock installation, repair, and emergency lockout services for Union City residents."
-  },
-  {
-    icon: Car,
-    title: "Automotive Locksmith",
-    description: "24/7 car lockout assistance, key replacement, and transponder key programming in Union City and surrounding areas."
-  },
-  {
-    icon: Building2,
-    title: "Commercial Security",
-    description: "Business security solutions including master key systems, access control, and emergency locksmith services for Union City businesses."
-  },
-  {
-    icon: Key,
-    title: "Emergency Services",
-    description: "Round-the-clock emergency locksmith services in Union City, with fast response times and reliable solutions."
-  }
-];
-
-const UnionCityArea = () => {
+const UnionCity = () => {
   return (
-    <>
-      <Helmet>
-        <title>24/7 Locksmith Services in Union City, NJ | Professional Security Solutions</title>
-        <meta 
-          name="description" 
-          content="Expert locksmith services in Union City, NJ. Available 24/7 for residential, commercial, and automotive locksmith needs. Fast response times and professional service." 
-        />
-      </Helmet>
-      <Header />
-      <main className="min-h-screen">
-        <section className="hero-gradient py-20">
-          <div className="container mx-auto px-4">
-            <h1 className="text-4xl md:text-5xl font-bold text-white text-center mb-6">
-              Union City Locksmith Services
-            </h1>
-            <p className="text-xl text-white/90 text-center max-w-2xl mx-auto">
-              Your trusted local locksmith serving Union City and surrounding areas with 24/7 professional security solutions
-            </p>
-          </div>
-        </section>
-
-        <section className="py-20">
-          <div className="container mx-auto px-4">
-            <h2 className="text-3xl font-bold text-center mb-12">Our Services in Union City</h2>
-            <div className="grid md:grid-cols-2 gap-8">
-              {services.map((service, index) => (
-                <div key={index} className="bg-white p-6 rounded-lg shadow-md">
-                  <service.icon className="w-12 h-12 text-primary mb-4" />
-                  <h3 className="text-xl font-semibold mb-3">{service.title}</h3>
-                  <p className="text-gray-600">{service.description}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <section className="bg-gray-50 py-20">
-          <div className="container mx-auto px-4">
-            <h2 className="text-3xl font-bold text-center mb-8">Serving Union City, NJ</h2>
-            <div className="max-w-3xl mx-auto">
-              <p className="text-gray-600 mb-6">
-                Located in Hudson County, Union City is a vibrant community with unique security needs. Our local locksmith team understands the specific requirements of Union City residents and businesses, providing tailored security solutions.
-              </p>
-              <div className="bg-white p-6 rounded-lg shadow-md mt-8">
-                <h3 className="text-xl font-semibold mb-4">Why Choose Our Union City Locksmith Services?</h3>
-                <ul className="space-y-3">
-                  <li className="flex items-start">
-                    <span className="text-primary mr-2">•</span>
-                    24/7 Emergency Response
-                  </li>
-                  <li className="flex items-start">
-                    <span className="text-primary mr-2">•</span>
-                    Licensed and Insured Local Technicians
-                  </li>
-                  <li className="flex items-start">
-                    <span className="text-primary mr-2">•</span>
-                    Competitive Pricing
-                  </li>
-                  <li className="flex items-start">
-                    <span className="text-primary mr-2">•</span>
-                    Familiar with Local Security Requirements
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </section>
-      </main>
-      <Footer />
-    </>
+    <PageLayout
+      title="Union City Locksmith"
+      description="Professional locksmith services in Union City, NJ. Available 24/7 for all your security needs."
+      heroTitle="Union City Locksmith Services"
+      heroDescription="Your trusted local locksmith serving Union City with 24/7 emergency services"
+    >
+      <div className="container mx-auto px-4 py-8">
+        <h2 className="text-2xl font-bold mb-4">Union City Locksmith Services</h2>
+        <p className="mb-4">At Locksmith & Security LLC, we provide a wide range of locksmith services tailored to meet your needs in Union City. Whether you are locked out of your home, need a lock change, or require emergency services, our team is here to help.</p>
+        <h3 className="text-xl font-semibold mb-2">Our Services Include:</h3>
+        <ul className="list-disc list-inside mb-4">
+          <li>Emergency Lockout Services</li>
+          <li>Residential Lock Changes</li>
+          <li>Commercial Lock Solutions</li>
+          <li>Automotive Locksmith Services</li>
+          <li>Key Duplication and Programming</li>
+        </ul>
+        <p>If you need immediate assistance, don't hesitate to contact us at (551) 303-7874. Our professional locksmiths are available 24/7 to ensure your safety and security.</p>
+      </div>
+    </PageLayout>
   );
 };
 
-export default UnionCityArea;
+export default UnionCity;
