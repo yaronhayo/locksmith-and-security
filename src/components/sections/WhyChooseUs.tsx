@@ -48,7 +48,7 @@ const WhyChooseUs = () => {
                   <div className="flex items-start gap-4">
                     <CheckCircle2 className="h-6 w-6 text-secondary flex-shrink-0" />
                     <div>
-                      <h3 className="text-xl font-semibold mb-2">{benefit.title}</h3>
+                      <h3 className="text-xl font-semibold mb-2 text-white">{benefit.title}</h3>
                       <p className="text-white/90">{benefit.description}</p>
                     </div>
                   </div>
