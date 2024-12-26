@@ -52,7 +52,7 @@ const ContactPage = () => {
         <div className="grid lg:grid-cols-2 gap-12">
           <div className="space-y-8">
             <div className="prose max-w-none">
-              <h2 className="text-3xl font-bold text-primary">How Can We Help?</h2>
+              <h2 className="text-3xl font-bold mb-6">How Can We Help?</h2>
               <p className="text-lg text-gray-600 mb-4">NJ DCA License #13VH13153100</p>
               <p className="text-lg text-gray-600">
                 Our experienced team provides fast, reliable service for everything from emergency lockouts 
@@ -118,7 +118,7 @@ const ContactPage = () => {
 
           {/* Contact Form */}
           <div className="bg-white p-8 rounded-xl shadow-lg">
-            <h2 className="text-2xl font-bold text-primary mb-6">Send Us a Message</h2>
+            <h2 className="text-2xl font-bold mb-6">Send Us a Message</h2>
             <form ref={form} onSubmit={handleSubmit} className="space-y-6">
               <div className="grid md:grid-cols-2 gap-4">
                 <div>

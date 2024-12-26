@@ -8,18 +8,18 @@ const PrivacyPolicyPage = () => {
     >
       <div className="container mx-auto px-4 py-16">
         <div className="prose prose-lg max-w-4xl mx-auto">
-          <h1 className="text-4xl font-bold mb-8 text-primary">Privacy Policy</h1>
+          <h1 className="text-4xl font-bold mb-8">Privacy Policy</h1>
           <p className="mb-4">Last updated: {new Date().toLocaleDateString()}</p>
           
           <section className="mb-8">
-            <h2 className="text-2xl font-semibold mb-4 text-primary">1. Introduction</h2>
+            <h2 className="text-2xl font-semibold mb-4">1. Introduction</h2>
             <p>
               Locksmith & Security LLC (NJ DCA License #13VH13153100) ("we," "our," or "us") values your privacy and is committed to protecting your personal data. This privacy policy explains how we collect, use, and safeguard your information when you use our services or visit our website.
             </p>
           </section>
 
           <section className="mb-8">
-            <h2 className="text-2xl font-semibold mb-4 text-primary">2. Information We Collect</h2>
+            <h2 className="text-2xl font-semibold mb-4">2. Information We Collect</h2>
             <p>We collect and process the following types of personal data:</p>
             <ul className="list-disc pl-6 mb-4">
               <li>Identity Data: Full name, title, business name (if applicable)</li>
@@ -32,7 +32,7 @@ const PrivacyPolicyPage = () => {
           </section>
 
           <section className="mb-8">
-            <h2 className="text-2xl font-semibold mb-4 text-primary">3. How We Use Your Information</h2>
+            <h2 className="text-2xl font-semibold mb-4">3. How We Use Your Information</h2>
             <p>We use your personal data for the following purposes:</p>
             <ul className="list-disc pl-6 mb-4">
               <li>To provide and manage our locksmith services</li>
@@ -45,7 +45,7 @@ const PrivacyPolicyPage = () => {
           </section>
 
           <section className="mb-8">
-            <h2 className="text-2xl font-semibold mb-4 text-primary">4. Data Security</h2>
+            <h2 className="text-2xl font-semibold mb-4">4. Data Security</h2>
             <p>
               We implement appropriate security measures to protect your personal information against unauthorized access, alteration, disclosure, or destruction. These measures include:
             </p>
@@ -58,7 +58,7 @@ const PrivacyPolicyPage = () => {
           </section>
 
           <section className="mb-8">
-            <h2 className="text-2xl font-semibold mb-4 text-primary">5. Your Rights</h2>
+            <h2 className="text-2xl font-semibold mb-4">5. Your Rights</h2>
             <p>Under applicable data protection laws, you have the right to:</p>
             <ul className="list-disc pl-6 mb-4">
               <li>Access your personal data</li>
@@ -72,7 +72,7 @@ const PrivacyPolicyPage = () => {
           </section>
 
           <section className="mb-8">
-            <h2 className="text-2xl font-semibold mb-4 text-primary">6. Contact Us</h2>
+            <h2 className="text-2xl font-semibold mb-4">6. Contact Us</h2>
             <p>
               For questions about this Privacy Policy or to exercise your rights, please contact us at:{' '}
               <a 

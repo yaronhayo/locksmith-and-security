@@ -50,7 +50,7 @@ const ServiceAreasSection = () => {
     <section className="py-20 bg-gradient-to-b from-white to-gray-50">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4 text-primary">
+          <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary">
             Service Areas
           </h1>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
@@ -60,7 +60,7 @@ const ServiceAreasSection = () => {
 
         <div className="grid lg:grid-cols-2 gap-8 mb-16">
           <div className="bg-white rounded-xl shadow-lg p-8">
-            <h2 className="text-2xl font-semibold mb-6 text-primary">Areas We Serve</h2>
+            <h2 className="text-2xl font-semibold mb-6">Areas We Serve</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {areas.map((area) => (
                 <Link
@@ -92,7 +92,7 @@ const ServiceAreasSection = () => {
         </div>
 
         <div className="bg-primary/5 rounded-xl p-8 text-center">
-          <h2 className="text-2xl font-semibold mb-4 text-primary">
+          <h2 className="text-2xl font-semibold mb-4">
             Need Emergency Locksmith Service?
           </h2>
           <p className="text-gray-600 mb-6">

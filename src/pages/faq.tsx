@@ -34,7 +34,7 @@ const FAQPage = () => {
           <Accordion type="single" collapsible className="mb-12">
             {allFaqs.map((faq, index) => (
               <AccordionItem key={index} value={`item-${index}`}>
-                <AccordionTrigger className="text-left text-primary">
+                <AccordionTrigger className="text-left">
                   {faq.question}
                 </AccordionTrigger>
                 <AccordionContent>{faq.answer}</AccordionContent>
@@ -43,7 +43,7 @@ const FAQPage = () => {
           </Accordion>
 
           <div className="text-center bg-gray-50 rounded-lg p-8">
-            <h2 className="text-2xl font-bold text-primary mb-4">Still Have Questions?</h2>
+            <h2 className="text-2xl font-bold mb-4">Still Have Questions?</h2>
             <p className="text-gray-600 mb-6">
               Our team is here to help. Contact us anytime for immediate assistance.
             </p>

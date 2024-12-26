@@ -8,7 +8,6 @@ import ServiceAreasSection from "@/components/sections/ServiceAreasSection";
 import ReviewsSection from "@/components/sections/ReviewsSection";
 import FAQSection from "@/components/sections/FAQSection";
 import TrustBadgesSection from "@/components/sections/TrustBadgesSection";
-import WhyChooseUs from "@/components/sections/WhyChooseUs";
 import { motion } from "framer-motion";
 import { Helmet } from "react-helmet";
 
@@ -89,96 +88,107 @@ const Index = () => {
           aria-label="Main content"
         >
           <HeroSection />
-          
-          <motion.div
+          <motion.section
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
             viewport={{ once: true }}
-            className="relative"
+            role="complementary"
+            aria-label="Trust badges and certifications"
           >
             <TrustBadgesSection />
-          </motion.div>
-          
-          <motion.section
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            viewport={{ once: true }}
-            className="relative bg-gray-50"
-          >
-            <ServicesSection />
           </motion.section>
           
-          <motion.section
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            viewport={{ once: true }}
-            className="relative bg-white"
-          >
-            <EmergencyServicesSection />
-          </motion.section>
+          <div className="bg-white">
+            <motion.section
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              viewport={{ once: true }}
+              role="region"
+              aria-label="Our services"
+            >
+              <ServicesSection />
+            </motion.section>
+          </div>
           
-          <motion.section
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            viewport={{ once: true }}
-            className="relative bg-gradient-to-b from-white to-gray-50"
-          >
-            <ProcessSection />
-          </motion.section>
+          <div className="bg-gray-50">
+            <motion.section
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              viewport={{ once: true }}
+              role="region"
+              aria-label="Emergency services"
+            >
+              <EmergencyServicesSection />
+            </motion.section>
+          </div>
           
-          <motion.section
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            viewport={{ once: true }}
-            className="relative bg-gray-50"
-          >
-            <WhyChooseUs />
-          </motion.section>
+          <div className="bg-white">
+            <motion.section
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              viewport={{ once: true }}
+              role="region"
+              aria-label="Our process"
+            >
+              <ProcessSection />
+            </motion.section>
+          </div>
           
-          <motion.section
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            viewport={{ once: true }}
-            className="relative bg-white"
-          >
-            <AboutSection />
-          </motion.section>
+          <div className="bg-gray-50">
+            <motion.section
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              viewport={{ once: true }}
+              role="region"
+              aria-label="About us"
+            >
+              <AboutSection />
+            </motion.section>
+          </div>
           
-          <motion.section
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            viewport={{ once: true }}
-            className="relative bg-gradient-to-b from-white to-gray-50"
-          >
-            <ServiceAreasSection />
-          </motion.section>
+          <div className="bg-white">
+            <motion.section
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              viewport={{ once: true }}
+              role="region"
+              aria-label="Service areas"
+            >
+              <ServiceAreasSection />
+            </motion.section>
+          </div>
           
-          <motion.section
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            viewport={{ once: true }}
-            className="relative bg-gray-50"
-          >
-            <ReviewsSection />
-          </motion.section>
+          <div className="bg-gray-50">
+            <motion.section
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              viewport={{ once: true }}
+              role="region"
+              aria-label="Customer reviews"
+            >
+              <ReviewsSection />
+            </motion.section>
+          </div>
           
-          <motion.section
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            viewport={{ once: true }}
-            className="relative bg-white"
-          >
-            <FAQSection />
-          </motion.section>
+          <div className="bg-white pb-20">
+            <motion.section
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              viewport={{ once: true }}
+              role="region"
+              aria-label="Frequently asked questions"
+            >
+              <FAQSection />
+            </motion.section>
+          </div>
         </motion.div>
       </PageLayout>
     </>

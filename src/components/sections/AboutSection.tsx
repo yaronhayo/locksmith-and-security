@@ -1,29 +1,21 @@
-import { useEffect } from "react";
+import { ArrowRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 const AboutSection = () => {
   return (
-    <section className="py-20">
+    <section className="py-20 bg-gray-50">
       <div className="container mx-auto px-4">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold mb-4 text-primary">About Us</h2>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Your trusted local locksmith serving North Bergen and surrounding areas
+        <div className="max-w-3xl mx-auto text-center">
+          <h2 className="text-3xl font-bold mb-6">Your Trusted Local Locksmith</h2>
+          <p className="text-lg text-gray-600 mb-8">
+            With years of experience serving North Bergen and surrounding areas, we provide professional locksmith services for residential, commercial, and automotive needs.
           </p>
-        </div>
-        
-        <div className="grid md:grid-cols-2 gap-8">
-          <div className="bg-white p-6 rounded-lg shadow-lg">
-            <h3 className="text-xl font-semibold mb-4 text-primary">Our Mission</h3>
-            <p className="text-gray-600">
-              To provide fast, reliable, and professional locksmith services to our community.
-            </p>
-          </div>
-          <div className="bg-white p-6 rounded-lg shadow-lg">
-            <h3 className="text-xl font-semibold mb-4 text-primary">Our Values</h3>
-            <p className="text-gray-600">
-              Integrity, professionalism, and customer satisfaction are at the core of our business.
-            </p>
-          </div>
+          <Button asChild className="group">
+            <a href="/about" className="inline-flex items-center">
+              Learn More About Us 
+              <ArrowRight className="ml-2 transition-transform duration-300 group-hover:translate-x-1" />
+            </a>
+          </Button>
         </div>
       </div>
     </section>
