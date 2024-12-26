@@ -1,5 +1,5 @@
 import { useLocation } from 'react-router-dom';
-import { Home, Wrench, MapPin, HelpCircle, Star, Users, Phone } from 'lucide-react';
+import { Home, Wrench, MapPin, HelpCircle, Star, Users, Phone, Shield, Clock } from 'lucide-react';
 
 const Navigation = ({ isMenuOpen, isScrolled }: { isMenuOpen: boolean; isScrolled: boolean }) => {
   const location = useLocation();
@@ -9,6 +9,7 @@ const Navigation = ({ isMenuOpen, isScrolled }: { isMenuOpen: boolean; isScrolle
   };
 
   const menuItems = [
+    { path: '/', label: 'Home', icon: Home },
     { path: '/services', label: 'Services', icon: Wrench },
     { path: '/service-areas', label: 'Service Areas', icon: MapPin },
     { path: '/faq', label: 'FAQ', icon: HelpCircle },
@@ -34,7 +35,6 @@ const Navigation = ({ isMenuOpen, isScrolled }: { isMenuOpen: boolean; isScrolle
                   : `${isMenuOpen ? 'text-white lg:text-gray-900' : 'text-gray-900'} hover:text-secondary hover:bg-white/10 lg:hover:bg-transparent`
               } after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-secondary after:transform after:scale-x-0 after:origin-left after:transition-transform after:duration-300 hover:after:scale-x-100`}
             >
-              {/* Only show icons on mobile */}
               <span className="lg:hidden">
                 <Icon className="w-5 h-5" />
               </span>
@@ -43,6 +43,48 @@ const Navigation = ({ isMenuOpen, isScrolled }: { isMenuOpen: boolean; isScrolle
           </li>
         ))}
       </ul>
+
+      {/* Mobile-only trust badges and copy */}
+      <div className="lg:hidden px-6 pb-6 space-y-6">
+        <div className="border-t border-white/20 pt-6">
+          <h3 className="text-white text-lg font-semibold mb-4">Why Choose Us?</h3>
+          <div className="space-y-4">
+            <div className="flex items-center space-x-3">
+              <div className="p-2 rounded-full bg-white/10">
+                <Shield className="w-5 h-5 text-white" />
+              </div>
+              <div>
+                <p className="text-white font-medium">Licensed & Insured</p>
+                <p className="text-white/70 text-sm">Your security is our priority</p>
+              </div>
+            </div>
+            <div className="flex items-center space-x-3">
+              <div className="p-2 rounded-full bg-white/10">
+                <Clock className="w-5 h-5 text-white" />
+              </div>
+              <div>
+                <p className="text-white font-medium">24/7 Service</p>
+                <p className="text-white/70 text-sm">Always here when you need us</p>
+              </div>
+            </div>
+            <div className="flex items-center space-x-3">
+              <div className="p-2 rounded-full bg-white/10">
+                <Star className="w-5 h-5 text-white" />
+              </div>
+              <div>
+                <p className="text-white font-medium">5-Star Rated</p>
+                <p className="text-white/70 text-sm">Trusted by local customers</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="border-t border-white/20 pt-6">
+          <p className="text-white/90 text-sm">
+            Your trusted local locksmith serving North Bergen and surrounding areas. Fast response, fair prices, and professional service.
+          </p>
+        </div>
+      </div>
     </nav>
   );
 };
