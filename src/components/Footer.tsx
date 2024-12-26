@@ -1,4 +1,4 @@
-import { Phone, Mail, MapPin, Clock, Shield } from 'lucide-react';
+import { Phone, Mail, MapPin, Clock, Shield, ChevronRight, Map, HelpCircle, Star, Info, MessageSquare } from 'lucide-react';
 
 const Footer = () => {
   return (
@@ -24,16 +24,28 @@ const Footer = () => {
             <h3 className="text-xl font-bold mb-4 text-white">Quick Links</h3>
             <ul className="space-y-2">
               <li>
-                <a href="/services" className="hover:text-secondary transition-colors">Services</a>
+                <a href="/services" className="hover:text-secondary transition-colors flex items-center gap-2">
+                  <ChevronRight className="w-4 h-4 text-secondary" />
+                  Services
+                </a>
               </li>
               <li>
-                <a href="/service-areas" className="hover:text-secondary transition-colors">Service Areas</a>
+                <a href="/service-areas" className="hover:text-secondary transition-colors flex items-center gap-2">
+                  <Map className="w-4 h-4 text-secondary" />
+                  Service Areas
+                </a>
               </li>
               <li>
-                <a href="/about" className="hover:text-secondary transition-colors">About Us</a>
+                <a href="/about" className="hover:text-secondary transition-colors flex items-center gap-2">
+                  <Info className="w-4 h-4 text-secondary" />
+                  About Us
+                </a>
               </li>
               <li>
-                <a href="/contact" className="hover:text-secondary transition-colors">Contact</a>
+                <a href="/contact" className="hover:text-secondary transition-colors flex items-center gap-2">
+                  <MessageSquare className="w-4 h-4 text-secondary" />
+                  Contact
+                </a>
               </li>
             </ul>
           </div>
