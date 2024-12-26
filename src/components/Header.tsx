@@ -29,11 +29,11 @@ const Header = () => {
       <header className={`sticky top-0 w-full z-50 transition-all duration-300 ${isScrolled ? 'bg-white shadow-lg' : 'bg-transparent'}`}>
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-24">
-            <a href="/" className="flex items-center space-x-3">
+            <a href="/" className="flex items-center">
               <img 
                 src="/lovable-uploads/9b00adf3-451e-4d1c-a118-6a6f06293ec0.png" 
                 alt="Locksmith & Security LLC - Professional 24/7 Locksmith Services in North Bergen, NJ"
-                className="w-[120px] h-[120px] md:w-[180px] md:h-[180px] object-contain transition-transform duration-300 hover:scale-110"
+                className="w-[160px] h-[60px] md:w-[180px] md:h-[180px] object-contain transition-transform duration-300 hover:scale-105"
                 loading="eager"
                 width="180"
                 height="180"
