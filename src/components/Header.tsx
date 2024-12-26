@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Menu, X, Clock, MapPin, ChevronDown, Phone, Calendar, Home, HelpCircle, Star, Info, MessageSquare, ChevronRight } from 'lucide-react';
+import { Menu, X, Clock, MapPin, ChevronDown, Phone, Calendar, Home, HelpCircle, Star, Info, MessageSquare, ChevronRight, Map } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -123,6 +123,7 @@ const Header = () => {
                 {[
                   { path: '/', label: 'Home', icon: Home },
                   { path: '/services', label: 'Services', icon: ChevronRight },
+                  { path: '/service-areas', label: 'Service Areas', icon: Map },
                   { path: '/faq', label: 'FAQ', icon: HelpCircle },
                   { path: '/reviews', label: 'Reviews', icon: Star },
                   { path: '/about', label: 'About', icon: Info },
