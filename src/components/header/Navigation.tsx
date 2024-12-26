@@ -32,7 +32,7 @@ const Navigation = ({ isMenuOpen, isScrolled }: { isMenuOpen: boolean; isScrolle
                   : `${isMenuOpen ? 'text-white lg:text-gray-900' : 'text-gray-900'} hover:text-secondary`
               } after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-secondary after:transform after:scale-x-0 after:origin-left after:transition-transform after:duration-300 hover:after:scale-x-100`}
             >
-              <Icon className="w-5 h-5 lg:hidden" />
+              <Icon className="w-5 h-5" />
               <span>{label}</span>
             </a>
           </li>

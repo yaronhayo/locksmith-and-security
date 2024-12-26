@@ -1,4 +1,4 @@
-import { Clock, MapPin, ChevronDown } from 'lucide-react';
+import { Clock, MapPin, ChevronDown, Shield } from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -36,8 +36,9 @@ const TopBar = () => {
                 >
                   <a 
                     href={`/service-areas/${area.slug}`}
-                    className="w-full"
+                    className="w-full flex items-center gap-2"
                   >
+                    <MapPin className="w-4 h-4 text-primary" />
                     {area.name}
                   </a>
                 </DropdownMenuItem>
@@ -49,9 +50,10 @@ const TopBar = () => {
               <Clock className="w-4 h-4 group-hover:animate-bounce" />
               <span className="text-sm">24/7 Emergency Service</span>
             </div>
-            <span className="text-sm hover:text-secondary transition-colors duration-300 ease-in-out cursor-pointer">
-              NJ DCA License #13VH13153100
-            </span>
+            <div className="flex items-center space-x-2 hover:text-secondary transition-colors duration-300 ease-in-out cursor-pointer">
+              <Shield className="w-4 h-4" />
+              <span className="text-sm">NJ DCA License #13VH13153100</span>
+            </div>
           </div>
         </div>
       </div>
