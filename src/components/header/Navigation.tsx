@@ -11,13 +11,13 @@ const Navigation = ({ isMenuOpen, isScrolled }: { isMenuOpen: boolean; isScrolle
   };
 
   const menuItems = [
-    ...(isMobile ? [{ path: '/', label: 'Home', icon: Home }] : []),
-    { path: '/services', label: 'Services', icon: Wrench },
-    { path: '/service-areas', label: 'Service Areas', icon: MapPin },
-    { path: '/faq', label: 'FAQ', icon: HelpCircle },
-    { path: '/reviews', label: 'Reviews', icon: Star },
-    { path: '/about', label: 'About', icon: Users },
-    { path: '/contact', label: 'Contact', icon: Phone }
+    ...(isMobile ? [{ path: '/', label: 'Home', icon: Home, description: 'Return to homepage' }] : []),
+    { path: '/services', label: 'Services', icon: Wrench, description: 'View our locksmith services' },
+    { path: '/service-areas', label: 'Service Areas', icon: MapPin, description: 'Areas we serve in New Jersey' },
+    { path: '/faq', label: 'FAQ', icon: HelpCircle, description: 'Frequently asked questions' },
+    { path: '/reviews', label: 'Reviews', icon: Star, description: 'Customer testimonials and reviews' },
+    { path: '/about', label: 'About', icon: Users, description: 'Learn about our company' },
+    { path: '/contact', label: 'Contact', icon: Phone, description: 'Get in touch with us' }
   ];
 
   return (
@@ -25,7 +25,7 @@ const Navigation = ({ isMenuOpen, isScrolled }: { isMenuOpen: boolean; isScrolle
       isMenuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
     } bg-primary/95 lg:bg-transparent backdrop-blur-sm lg:backdrop-blur-none lg:block lg:flex-1 lg:mx-8`}>
       <ul className="h-full flex flex-col lg:flex-row items-start lg:items-center lg:justify-center space-y-2 lg:space-y-0 lg:space-x-4 p-6 lg:p-0 mt-20 lg:mt-0">
-        {menuItems.map(({ path, label, icon: Icon }) => (
+        {menuItems.map(({ path, label, icon: Icon, description }) => (
           <li key={path} className="w-full lg:w-auto">
             <a 
               href={path} 
@@ -34,6 +34,8 @@ const Navigation = ({ isMenuOpen, isScrolled }: { isMenuOpen: boolean; isScrolle
                   ? 'text-secondary lg:text-secondary after:scale-x-100 bg-white/10 lg:bg-transparent' 
                   : 'text-white lg:text-gray-900 hover:text-secondary hover:bg-white/10 lg:hover:bg-transparent'
               } after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-secondary after:transform after:scale-x-0 after:origin-left after:transition-transform after:duration-300 hover:after:scale-x-100`}
+              title={description}
+              aria-label={description}
             >
               <span className="lg:hidden">
                 <Icon className="w-5 h-5" />

@@ -17,46 +17,46 @@ const NotFound = lazy(() => import("@/pages/404"));
 export const mainRoutes = [
   {
     path: "/",
-    element: <PageLayout title="Home" description="24/7 Locksmith & Security Services"><Index /></PageLayout>
+    element: <Index />
   },
   {
     path: "/about",
-    element: <PageLayout title="About Us" description="Learn about our locksmith services and expertise"><About /></PageLayout>
+    element: <About />
   },
   {
     path: "/contact",
-    element: <PageLayout title="Contact Us" description="Get in touch with our professional locksmith team"><Contact /></PageLayout>
+    element: <Contact />
   },
   {
     path: "/services",
-    element: <PageLayout title="Our Services" description="Explore our comprehensive locksmith services"><Services /></PageLayout>
+    element: <Services />
   },
   {
     path: "/reviews",
-    element: <PageLayout title="Customer Reviews" description="See what our customers say about our services"><Reviews /></PageLayout>
+    element: <Reviews />
   },
   {
     path: "/faq",
-    element: <PageLayout title="FAQ" description="Frequently asked questions about our locksmith services"><FAQ /></PageLayout>
+    element: <FAQ />
   },
   {
     path: "/book-online",
-    element: <PageLayout title="Book Online" description="Schedule your locksmith service appointment online"><BookOnline /></PageLayout>
+    element: <BookOnline />
   },
   {
     path: "/service-areas",
-    element: <PageLayout title="Service Areas" description="Areas we serve with our locksmith services"><ServiceAreas /></PageLayout>
+    element: <ServiceAreas />
   },
   {
     path: "/privacy-policy",
-    element: <PageLayout title="Privacy Policy" description="Our privacy policy and data protection practices"><PrivacyPolicy /></PageLayout>
+    element: <PrivacyPolicy />
   },
   {
     path: "/terms-conditions",
-    element: <PageLayout title="Terms & Conditions" description="Terms and conditions for using our services"><TermsConditions /></PageLayout>
+    element: <TermsConditions />
   },
   {
     path: "*",
-    element: <PageLayout title="Page Not Found" description="The page you're looking for doesn't exist"><NotFound /></PageLayout>
+    element: <NotFound />
   }
 ];
