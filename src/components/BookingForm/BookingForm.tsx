@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { FormLoadingOverlay } from "./LoadingStates";
 import { validateForm, validateVehicleInfo } from "./BookingFormValidation";
-import { sendLeadNotification } from "@/utils/emailjs";
+import { sendLeadNotification, sendErrorReport } from "@/utils/emailjs";
 import FormFields from "./FormFields";
 import SubmitButton from "./SubmitButton";
 import Recaptcha from "../ui/recaptcha";
@@ -23,51 +23,35 @@ const BookingForm = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (!recaptchaToken) {
-      toast({
-        title: "Validation Error",
-        description: "Please complete the reCAPTCHA verification",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    const formData = new FormData(e.currentTarget);
-    
-    const { isValid, errors: formErrors } = validateForm(formData);
-    
-    if (showVehicleInfo) {
-      const { isValid: vehicleValid, errors: vehicleErrors } = validateVehicleInfo(formData);
-      if (!vehicleValid) {
-        setErrors({ ...formErrors, ...vehicleErrors });
-        toast({
-          title: "Validation Error",
-          description: "Please check the vehicle information",
-          variant: "destructive",
-        });
-        return;
-      }
-    }
-    
-    if (!isValid) {
-      setErrors(formErrors);
-      toast({
-        title: "Validation Error",
-        description: "Please check all required fields",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    setIsSubmitting(true);
-
     try {
+      if (!recaptchaToken) {
+        throw new Error("reCAPTCHA verification required");
+      }
+
+      const formData = new FormData(e.currentTarget);
+      
+      const { isValid, errors: formErrors } = validateForm(formData);
+      
+      if (showVehicleInfo) {
+        const { isValid: vehicleValid, errors: vehicleErrors } = validateVehicleInfo(formData);
+        if (!vehicleValid) {
+          setErrors({ ...formErrors, ...vehicleErrors });
+          throw new Error("Vehicle information validation failed");
+        }
+      }
+      
+      if (!isValid) {
+        setErrors(formErrors);
+        throw new Error("Form validation failed");
+      }
+
+      setIsSubmitting(true);
+
       const formDataObj: Record<string, any> = {};
       formData.forEach((value, key) => {
         formDataObj[key] = value;
       });
 
-      // Add recaptcha token to form data
       formDataObj.recaptchaToken = recaptchaToken;
 
       await sendLeadNotification(formDataObj);
@@ -83,11 +67,22 @@ const BookingForm = () => {
       setErrors({});
       setRecaptchaToken(null);
     } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred";
+      
+      // Send error report to admin
+      await sendErrorReport(error, {
+        formData: Object.fromEntries(new FormData(e.target as HTMLFormElement)),
+        timestamp: new Date().toISOString(),
+        userAgent: navigator.userAgent,
+      });
+
       toast({
         title: "Submission Failed",
-        description: "Please try again or contact us directly.",
+        description: "Please try again or contact us directly. Our team has been notified.",
         variant: "destructive",
       });
+
+      console.error("Form submission error:", error);
     } finally {
       setIsSubmitting(false);
     }

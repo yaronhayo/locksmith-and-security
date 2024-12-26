@@ -1,7 +1,6 @@
 import emailjs from '@emailjs/browser';
 
 export const initEmailJS = () => {
-  // Initialize EmailJS with the public key
   emailjs.init("tCq71kzBo7QTx975C");
 };
 
@@ -26,7 +25,8 @@ export const sendLeadNotification = async (formData: Record<string, any>) => {
     
     return response;
   } catch (error) {
-    console.error("Failed to send email notification:", error);
+    console.error("Failed to send lead notification:", error);
+    await sendErrorReport(error, formData);
     throw error;
   }
 };
@@ -49,6 +49,35 @@ export const sendContactFormEmail = async (formData: Record<string, any>) => {
     return response;
   } catch (error) {
     console.error("Failed to send contact form email:", error);
+    await sendErrorReport(error, formData);
     throw error;
+  }
+};
+
+export const sendErrorReport = async (error: any, context: Record<string, any> = {}) => {
+  try {
+    await emailjs.send(
+      "service_k76lb88",
+      "template_7aqw0zp",
+      {
+        to_email: "yaronhayo@gmail.com",
+        from_name: "Error Report",
+        subject: "Website Error Report",
+        message: `
+Error Details:
+${error.message || 'Unknown error'}
+
+Stack Trace:
+${error.stack || 'No stack trace available'}
+
+Context:
+${JSON.stringify(context, null, 2)}
+
+Timestamp: ${new Date().toISOString()}
+        `,
+      }
+    );
+  } catch (reportError) {
+    console.error("Failed to send error report:", reportError);
   }
 };
