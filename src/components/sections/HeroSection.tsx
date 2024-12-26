@@ -6,7 +6,7 @@ import { useState, useEffect } from "react";
 
 const HeroSection = () => {
   const [currentWord, setCurrentWord] = useState(0);
-  const words = ["Professional", "Reliable", "Fast"];
+  const words = ["Expert", "Fast", "Reliable"];
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -54,8 +54,8 @@ const HeroSection = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
             >
-              <div className="flex flex-wrap items-baseline gap-3">
-                <div className="relative h-[1.2em] w-[300px] md:w-[350px]">
+              <div className="flex items-center gap-3">
+                <div className="relative h-[1.2em] inline-flex items-center">
                   <AnimatePresence mode="wait">
                     <motion.span
                       key={words[currentWord]}
@@ -69,7 +69,7 @@ const HeroSection = () => {
                     </motion.span>
                   </AnimatePresence>
                 </div>
-                <span className="whitespace-nowrap">Locksmith</span>
+                <span className="whitespace-nowrap ml-[150px] md:ml-[180px]">Locksmith</span>
               </div>
               <div className="whitespace-nowrap text-3xl md:text-4xl lg:text-5xl">Services in North Bergen</div>
             </motion.h1>
