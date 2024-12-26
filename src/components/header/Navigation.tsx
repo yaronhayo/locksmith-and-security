@@ -1,4 +1,3 @@
-import { ChevronRight, Map, HelpCircle, Star, Info, MessageSquare, Wrench } from 'lucide-react';
 import { useLocation } from 'react-router-dom';
 
 const Navigation = ({ isMenuOpen, isScrolled }: { isMenuOpen: boolean; isScrolled: boolean }) => {
@@ -16,13 +15,13 @@ const Navigation = ({ isMenuOpen, isScrolled }: { isMenuOpen: boolean; isScrolle
     } lg:block lg:flex-1 lg:mx-8`}>
       <ul className="h-full flex flex-col lg:flex-row items-start lg:items-center lg:justify-center space-y-4 lg:space-y-0 lg:space-x-4 p-6 lg:p-0">
         {[
-          { path: '/services', label: 'Services', icon: Wrench },
-          { path: '/service-areas', label: 'Service Areas', icon: Map },
-          { path: '/faq', label: 'FAQ', icon: HelpCircle },
-          { path: '/reviews', label: 'Reviews', icon: Star },
-          { path: '/about', label: 'About', icon: Info },
-          { path: '/contact', label: 'Contact', icon: MessageSquare }
-        ].map(({ path, label, icon: Icon }) => (
+          { path: '/services', label: 'Services' },
+          { path: '/service-areas', label: 'Service Areas' },
+          { path: '/faq', label: 'FAQ' },
+          { path: '/reviews', label: 'Reviews' },
+          { path: '/about', label: 'About' },
+          { path: '/contact', label: 'Contact' }
+        ].map(({ path, label }) => (
           <li key={path} className="w-full lg:w-auto">
             <a 
               href={path} 
@@ -32,7 +31,6 @@ const Navigation = ({ isMenuOpen, isScrolled }: { isMenuOpen: boolean; isScrolle
                   : `${isMenuOpen ? 'text-white lg:text-gray-900' : 'text-gray-900'} hover:text-secondary`
               } after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-secondary after:transform after:scale-x-0 after:origin-left after:transition-transform after:duration-300 hover:after:scale-x-100`}
             >
-              <Icon className="w-5 h-5" />
               <span>{label}</span>
             </a>
           </li>
