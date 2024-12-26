@@ -26,15 +26,15 @@ const Header = () => {
   return (
     <>
       <TopBar />
-      <header className={`sticky top-0 w-full z-50 transition-all duration-300 backdrop-blur-sm bg-opacity-80 ${isScrolled ? 'bg-white/80 shadow-lg' : 'bg-transparent'}`}>
+      <header className={`sticky top-0 w-full z-50 transition-all duration-300 ${isScrolled ? 'bg-white shadow-lg' : 'bg-transparent'}`}>
         <div className="container mx-auto px-4">
-          <div className="flex items-center justify-between min-h-[120px]">
+          <div className="flex items-center justify-between min-h-[100px]">
             {/* Logo */}
             <a href="/" className="flex items-center space-x-3 group">
               <img 
                 src="/lovable-uploads/9b00adf3-451e-4d1c-a118-6a6f06293ec0.png" 
                 alt="Locksmith & Security LLC - Professional 24/7 Locksmith Services in North Bergen, NJ"
-                className={`h-[120px] w-auto md:h-[216px] lg:h-[288px] transform transition-transform duration-300 group-hover:scale-110 ${
+                className={`h-[100px] w-auto md:h-[180px] lg:h-[240px] transform transition-transform duration-300 group-hover:scale-110 ${
                   isMenuOpen ? 'brightness-0 invert' : ''
                 }`}
                 style={{
@@ -57,7 +57,7 @@ const Header = () => {
             <Navigation isMenuOpen={isMenuOpen} isScrolled={isScrolled} />
 
             {/* Mobile Menu Header - Only visible when menu is open */}
-            <div className={`lg:hidden fixed top-0 left-0 right-0 z-50 flex items-center justify-between p-4 border-b border-white/10 bg-primary/95 backdrop-blur-sm ${
+            <div className={`lg:hidden fixed top-0 left-0 right-0 z-50 flex items-center justify-between p-4 border-b border-white/10 bg-primary/95 ${
               isMenuOpen ? 'block' : 'hidden'
             }`}>
               <span className="text-white text-lg font-semibold">Menu</span>
