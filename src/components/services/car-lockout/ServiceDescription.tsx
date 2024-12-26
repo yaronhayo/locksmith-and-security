@@ -32,11 +32,25 @@ const ServiceDescription = () => {
       <h3 className="text-2xl font-semibold mb-4">Our Car Lockout Services Include:</h3>
       <ul className="list-disc pl-6 space-y-2 mb-8">
         <li>Emergency car lockout assistance</li>
-        <li>Broken key extraction</li>
+        <li>Broken car key extraction</li>
         <li>Car key replacement</li>
         <li>Transponder key programming</li>
         <li>Smart key reprogramming</li>
         <li>Damage-free car opening techniques</li>
+        <li>Car door lock repair</li>
+        <li>Ignition lock repair and replacement</li>
+      </ul>
+
+      <h3 className="text-2xl font-semibold mb-4">Why Choose Our Auto Locksmith Service:</h3>
+      <ul className="list-disc pl-6 space-y-2 mb-8">
+        <li>Specialized in automotive lock systems</li>
+        <li>Advanced diagnostic equipment</li>
+        <li>Factory-level programming tools</li>
+        <li>Experience with all vehicle makes and models</li>
+        <li>24/7 emergency response</li>
+        <li>Competitive and transparent pricing</li>
+        <li>Mobile service - we come to you</li>
+        <li>Licensed and insured professionals</li>
       </ul>
     </div>
   );
