@@ -1,34 +1,124 @@
 import PageLayout from "@/components/layouts/PageLayout";
+import { Clock, Shield, Phone } from "lucide-react";
+import { motion } from "framer-motion";
+import BookingForm from "@/components/BookingForm";
+import ServiceAreaHero from "@/components/service-areas/guttenberg/ServiceAreaHero";
+import ServicesList from "@/components/service-areas/guttenberg/ServicesList";
+import ReviewsSection from "@/components/sections/ReviewsSection";
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "Service",
+  "name": "24/7 Locksmith Services in Guttenberg, NJ",
+  "description": "Professional locksmith services in Guttenberg, NJ. Available 24/7 for residential, commercial, and automotive locksmith needs.",
+  "provider": {
+    "@type": "LocalBusiness",
+    "name": "Locksmith & Security LLC",
+    "telephone": "+15513037874",
+    "areaServed": {
+      "@type": "City",
+      "name": "Guttenberg",
+      "containedIn": {
+        "@type": "State",
+        "name": "New Jersey"
+      }
+    }
+  },
+  "serviceArea": {
+    "@type": "GeoCircle",
+    "geoMidpoint": {
+      "@type": "GeoCoordinates",
+      "latitude": "40.7920",
+      "longitude": "-74.0037"
+    },
+    "geoRadius": "5mi"
+  },
+  "review": {
+    "@type": "Review",
+    "reviewRating": {
+      "@type": "Rating",
+      "ratingValue": "5",
+      "bestRating": "5"
+    },
+    "author": {
+      "@type": "Person",
+      "name": "Robert M."
+    },
+    "reviewBody": "Excellent emergency locksmith service in Guttenberg. Fast response and professional work."
+  }
+};
+
+const features = [
+  {
+    icon: Clock,
+    title: "24/7 Emergency Service",
+    description: "Available around the clock for all your locksmith needs in Guttenberg."
+  },
+  {
+    icon: Shield,
+    title: "Licensed & Insured",
+    description: "Fully licensed and insured professional locksmith services."
+  },
+  {
+    icon: Phone,
+    title: "Fast Response",
+    description: "15-30 minute response time throughout Guttenberg."
+  }
+];
 
 const Guttenberg = () => {
   return (
     <PageLayout
-      title="Guttenberg Locksmith"
-      description="Professional locksmith services in Guttenberg, NJ. Available 24/7 for all your security needs."
+      title="Guttenberg Locksmith Services | 24/7 Emergency Locksmith"
+      description="Professional locksmith services in Guttenberg, NJ. Available 24/7 for residential, commercial, and automotive locksmith needs. Fast response times and competitive rates."
+      schema={schema}
       heroTitle="Guttenberg Locksmith Services"
       heroDescription="Your trusted local locksmith serving Guttenberg with 24/7 emergency services"
     >
-      <div className="container mx-auto px-4 py-8">
-        <h2 className="text-2xl font-bold mb-4">Guttenberg Locksmith Services</h2>
-        <p className="mb-4">At Locksmith & Security LLC, we provide a wide range of locksmith services in Guttenberg, NJ. Our team of experienced professionals is available 24/7 to assist you with any lock and key issues you may encounter.</p>
-        
-        <h3 className="text-xl font-semibold mb-2">Our Services Include:</h3>
-        <ul className="list-disc list-inside mb-4">
-          <li>Emergency lockout services</li>
-          <li>Residential locksmith services</li>
-          <li>Commercial locksmith services</li>
-          <li>Automotive locksmith services</li>
-          <li>Lock installation and repair</li>
-          <li>Key duplication and cutting</li>
-          <li>Security system installation</li>
-        </ul>
+      <div className="container mx-auto px-4 py-12">
+        <div className="grid lg:grid-cols-3 gap-12">
+          <div className="lg:col-span-2">
+            <ServiceAreaHero />
+          </div>
+          
+          <div className="lg:col-span-1">
+            <div className="sticky top-24">
+              <div className="bg-white rounded-lg shadow-lg p-6">
+                <h2 className="text-2xl font-bold mb-6">Request Service</h2>
+                <BookingForm />
+              </div>
+            </div>
+          </div>
+        </div>
 
-        <p className="mb-4">Whether you are locked out of your home, need to change your locks, or require a new set of keys, our team is here to help. We pride ourselves on our quick response times and exceptional customer service.</p>
+        <div className="mt-16">
+          <ServicesList />
+        </div>
 
-        <h3 className="text-xl font-semibold mb-2">Why Choose Us?</h3>
-        <p className="mb-4">Locksmith & Security LLC is your trusted locksmith in Guttenberg. We are fully licensed and insured, and our technicians are highly trained to handle any locksmith situation. We use the latest tools and techniques to ensure that your security needs are met efficiently and effectively.</p>
+        <div className="mt-16">
+          <ReviewsSection location="Guttenberg" />
+        </div>
 
-        <p className="mb-4">Contact us today for all your locksmith needs in Guttenberg, NJ. We are available 24/7 to assist you!</p>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.6 }}
+          className="mt-16"
+        >
+          <h2 className="text-2xl md:text-3xl font-bold mb-8">Why Choose Us</h2>
+          <div className="grid md:grid-cols-3 gap-6">
+            {features.map((feature, index) => (
+              <div
+                key={index}
+                className="p-6 bg-white rounded-lg shadow-sm"
+              >
+                <feature.icon className="h-10 w-10 text-primary mb-4" />
+                <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
+                <p className="text-gray-600">{feature.description}</p>
+              </div>
+            ))}
+          </div>
+        </motion.div>
       </div>
     </PageLayout>
   );
