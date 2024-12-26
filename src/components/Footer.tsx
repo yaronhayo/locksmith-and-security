@@ -21,24 +21,16 @@ const Footer = () => {
             <h3 className="text-xl font-bold mb-4 text-white">Quick Links</h3>
             <ul className="space-y-2">
               <li>
-                <a href="/services" className="hover:text-secondary transition-colors relative inline-block after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-secondary after:transform after:scale-x-0 after:origin-left after:transition-transform after:duration-300 hover:after:scale-x-100">
-                  Services
-                </a>
+                <a href="/services" className="hover:text-secondary transition-colors">Services</a>
               </li>
               <li>
-                <a href="/service-areas" className="hover:text-secondary transition-colors relative inline-block after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-secondary after:transform after:scale-x-0 after:origin-left after:transition-transform after:duration-300 hover:after:scale-x-100">
-                  Service Areas
-                </a>
+                <a href="/service-areas" className="hover:text-secondary transition-colors">Service Areas</a>
               </li>
               <li>
-                <a href="/about" className="hover:text-secondary transition-colors relative inline-block after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-secondary after:transform after:scale-x-0 after:origin-left after:transition-transform after:duration-300 hover:after:scale-x-100">
-                  About Us
-                </a>
+                <a href="/about" className="hover:text-secondary transition-colors">About Us</a>
               </li>
               <li>
-                <a href="/contact" className="hover:text-secondary transition-colors relative inline-block after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-secondary after:transform after:scale-x-0 after:origin-left after:transition-transform after:duration-300 hover:after:scale-x-100">
-                  Contact
-                </a>
+                <a href="/contact" className="hover:text-secondary transition-colors">Contact</a>
               </li>
             </ul>
           </div>
@@ -76,12 +68,6 @@ const Footer = () => {
                   <p>24 Hours / 7 Days</p>
                 </div>
               </div>
-              <div className="mt-2">
-                <p className="font-semibold">Regular Office Hours:</p>
-                <p>Monday - Friday: 8:00 AM - 6:00 PM</p>
-                <p>Saturday: 9:00 AM - 4:00 PM</p>
-                <p>Sunday: By Appointment</p>
-              </div>
             </div>
           </div>
         </div>
@@ -90,13 +76,12 @@ const Footer = () => {
           <div className="text-center text-gray-400">
             <p>&copy; {new Date().getFullYear()} Locksmith & Security LLC. All rights reserved.</p>
             <p className="mt-2 space-x-4">
-              <a href="/privacy-policy" className="hover:text-secondary transition-colors relative inline-block after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-secondary after:transform after:scale-x-0 after:origin-left after:transition-transform after:duration-300 hover:after:scale-x-100">
-                Privacy Policy
-              </a>
+              <a href="/privacy-policy" className="hover:text-secondary transition-colors">Privacy Policy</a>
               <span>&middot;</span>
-              <a href="/terms-conditions" className="hover:text-secondary transition-colors relative inline-block after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-secondary after:transform after:scale-x-0 after:origin-left after:transition-transform after:duration-300 hover:after:scale-x-100">
-                Terms & Conditions
-              </a>
+              <a href="/terms-conditions" className="hover:text-secondary transition-colors">Terms & Conditions</a>
+            </p>
+            <p className="mt-4">
+              Designed with ❤️ by <a href="https://gettmarketing.com" target="_blank" rel="noopener noreferrer" className="hover:text-secondary transition-colors">Gett Marketing</a>
             </p>
           </div>
         </div>
