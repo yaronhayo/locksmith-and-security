@@ -1,4 +1,4 @@
-import { Shield, Lock } from "lucide-react";
+import { Shield, Lock, Building2 } from "lucide-react";
 import { motion } from "framer-motion";
 
 const ServiceDescription = () => {
@@ -10,9 +10,9 @@ const ServiceDescription = () => {
       className="prose max-w-none bg-white rounded-lg shadow-sm p-8 mb-12"
     >
       <p className="text-lg leading-relaxed text-gray-600 mb-8">
-        Whether you've recently moved into a new home, lost your keys, or simply want to upgrade 
-        your security, our professional lock change service ensures your property remains secure. 
-        We work with all major lock brands and can recommend the best security solutions for your needs.
+        Professional lock change services to enhance your property's security. Whether you need to upgrade 
+        outdated locks, replace damaged ones, or secure a new property, our expert locksmiths provide 
+        high-quality lock replacement solutions using industry-leading products and techniques.
       </p>
       
       <motion.div 
@@ -20,17 +20,18 @@ const ServiceDescription = () => {
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.2 }}
       >
-        <h3 className="text-2xl font-semibold mb-6 text-primary">Comprehensive Lock Change Solutions</h3>
-        <p className="text-gray-600 mb-4">Our lock change services include:</p>
+        <h3 className="text-2xl font-semibold mb-4 text-primary">Lock Change Solutions</h3>
+        <p className="text-gray-600 mb-4">Our comprehensive lock change services include:</p>
         <ul className="grid md:grid-cols-2 gap-4 mb-8">
           {[
-            "Residential lock replacement",
-            "High-security lock installation",
-            "Smart lock upgrades",
             "Deadbolt installation",
+            "High-security lock upgrades",
+            "Smart lock installation",
+            "Mortise lock replacement",
+            "Cylinder lock changes",
             "Master key system setup",
-            "Security assessment",
-            "Lock grade upgrades"
+            "Lock grade upgrades",
+            "Security assessment"
           ].map((service, index) => (
             <motion.li 
               key={index}
@@ -51,17 +52,20 @@ const ServiceDescription = () => {
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.4 }}
       >
-        <h3 className="text-2xl font-semibold mb-6 text-primary">Professional Lock Change Process</h3>
+        <h3 className="text-2xl font-semibold mb-4 text-primary">Lock Change Process</h3>
         <p className="text-gray-600 mb-4">
-          Our lock change service follows a systematic approach to ensure your security:
+          Our professional lock change service follows a systematic approach:
         </p>
         <ul className="space-y-3 mb-8">
           {[
-            "Security assessment and consultation",
+            "Initial security assessment",
             "Lock type and grade recommendation",
-            "Professional installation",
+            "Professional removal of old locks",
+            "Expert installation of new locks",
             "Quality testing and verification",
-            "Key management setup"
+            "Key management setup",
+            "Security system integration (if applicable)",
+            "User training and documentation"
           ].map((item, index) => (
             <motion.li 
               key={index}
@@ -85,6 +89,10 @@ const ServiceDescription = () => {
         <div className="flex items-center gap-2 text-primary">
           <Lock className="h-6 w-6" />
           <span className="font-medium">High-Security Solutions</span>
+        </div>
+        <div className="flex items-center gap-2 text-primary">
+          <Building2 className="h-6 w-6" />
+          <span className="font-medium">All Property Types</span>
         </div>
       </div>
     </motion.div>
