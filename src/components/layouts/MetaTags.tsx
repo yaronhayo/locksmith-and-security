@@ -45,6 +45,23 @@ const MetaTags = ({
       "latitude": "40.7795",
       "longitude": "-74.0324"
     },
+    "breadcrumb": {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": baseUrl
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": title,
+          "item": fullCanonicalUrl
+        }
+      ]
+    },
     ...schema
   };
 
