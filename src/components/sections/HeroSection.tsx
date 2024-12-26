@@ -49,26 +49,28 @@ const HeroSection = () => {
             </motion.div>
             
             <motion.h1 
-              className="text-white leading-tight drop-shadow-md flex items-center gap-2 flex-wrap"
+              className="text-white leading-tight drop-shadow-md"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
             >
-              <div className="relative inline-block min-w-[200px]">
-                <AnimatePresence mode="wait">
-                  <motion.span
-                    key={words[currentWord]}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -20 }}
-                    transition={{ duration: 0.3 }}
-                    className="text-secondary absolute"
-                  >
-                    {words[currentWord]}
-                  </motion.span>
-                </AnimatePresence>
+              <div className="flex items-baseline gap-2">
+                <div className="relative h-[1.2em] min-w-[200px]">
+                  <AnimatePresence mode="wait">
+                    <motion.span
+                      key={words[currentWord]}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -20 }}
+                      transition={{ duration: 0.3 }}
+                      className="text-secondary absolute"
+                    >
+                      {words[currentWord]}
+                    </motion.span>
+                  </AnimatePresence>
+                </div>
+                Locksmith Services in North Bergen
               </div>
-              <span>Locksmith Services in North Bergen</span>
             </motion.h1>
             
             <motion.p 
