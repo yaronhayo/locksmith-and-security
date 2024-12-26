@@ -84,31 +84,46 @@ const ReviewsSection = ({ location }: ReviewsSectionProps) => {
     return () => clearInterval(intervalId);
   }, []);
 
-  // Filter reviews by location if provided
   const filteredReviews = location 
     ? reviews.filter(review => review.location.includes(location))
     : reviews;
 
   return (
-    <section className="py-20 overflow-hidden">
+    <section 
+      className="py-20 overflow-hidden"
+      aria-labelledby="reviews-heading"
+    >
       <div className="container mx-auto px-4">
-        <h2 className="text-3xl font-bold text-center mb-12">
+        <h2 
+          id="reviews-heading"
+          className="text-3xl font-bold text-center mb-12"
+        >
           {location ? `Customer Reviews in ${location}` : 'Customer Reviews'}
         </h2>
         <div 
           ref={scrollRef}
           className="flex gap-8 overflow-x-hidden"
           style={{ WebkitOverflowScrolling: 'touch' }}
+          role="region"
+          aria-label="Customer reviews carousel"
         >
           {[...filteredReviews, ...filteredReviews].map((review, index) => (
-            <Card key={index} className="flex-none w-96 hover:shadow-lg transition-shadow">
+            <Card 
+              key={index} 
+              className="flex-none w-96 hover:shadow-lg transition-shadow focus-within:ring-2 focus-within:ring-primary"
+            >
               <CardContent className="p-6">
-                <div className="flex items-center mb-4">
+                <div 
+                  className="flex items-center mb-4"
+                  role="img" 
+                  aria-label={`Rating: ${review.rating} out of 5 stars`}
+                >
                   {[...Array(review.rating)].map((_, i) => (
                     <Star 
                       key={i} 
                       className="w-5 h-5 text-secondary" 
                       fill="currentColor"
+                      aria-hidden="true"
                     />
                   ))}
                 </div>
