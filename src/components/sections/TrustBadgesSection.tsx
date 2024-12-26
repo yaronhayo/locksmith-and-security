@@ -1,4 +1,5 @@
-import { Shield, Clock, Star, motion } from "lucide-react";
+import { Shield, Clock, Star } from "lucide-react";
+import { motion } from "framer-motion";
 
 const TrustBadgesSection = () => {
   return (
