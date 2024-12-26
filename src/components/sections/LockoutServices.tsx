@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
-import { Clock, Shield, Car, Key, Home, Building2, Lock } from "lucide-react";
+import { Clock, Shield, Building2, Key, Lock } from "lucide-react";
 
 interface LockoutServicesProps {
   title?: string;
@@ -13,6 +13,32 @@ interface LockoutServicesProps {
 }
 
 const defaultServices = {
+  'business-lock-change': {
+    title: "Professional Lock Change Solutions",
+    description: "Expert commercial lock change services for businesses of all sizes, delivered with professionalism and precision.",
+    services: [
+      {
+        icon: Clock,
+        title: "24/7 Lock Change Service",
+        description: "Available around the clock for immediate response to your business lock change needs. Our team arrives within 15-30 minutes in North Bergen area."
+      },
+      {
+        icon: Shield,
+        title: "High-Security Solutions",
+        description: "Installation of premium grade commercial locks from trusted manufacturers, ensuring maximum security for your business."
+      },
+      {
+        icon: Building2,
+        title: "All Business Types",
+        description: "Professional service for all types of commercial properties, including retail stores, offices, and industrial facilities."
+      },
+      {
+        icon: Lock,
+        title: "Master Key Systems",
+        description: "Expert implementation of master key systems and access control solutions tailored to your business needs."
+      }
+    ]
+  },
   'car-lockout': {
     title: "Car Lockout Services",
     description: "Professional auto locksmith services tailored to your emergency needs, delivered with expertise and care.",
@@ -28,12 +54,12 @@ const defaultServices = {
         description: "We use advanced techniques to unlock your car without causing any damage to your locks or vehicle, protecting your investment."
       },
       {
-        icon: Car,
+        icon: Key,
         title: "All Vehicle Types",
         description: "Professional service for all car makes and models, including luxury vehicles and modern cars with advanced security systems."
       },
       {
-        icon: Key,
+        icon: Lock,
         title: "Key Programming",
         description: "Expert key programming services for transponder keys, smart keys, and remote fobs to get you back on the road."
       }
@@ -54,7 +80,7 @@ const defaultServices = {
         description: "We use advanced techniques to unlock your door without causing any damage to your locks, protecting your home security."
       },
       {
-        icon: Home,
+        icon: Building2,
         title: "All Door Types",
         description: "Professional service for all types of residential doors, including front doors, back doors, garage doors, and more."
       },
@@ -62,32 +88,6 @@ const defaultServices = {
         icon: Key,
         title: "Lock Solutions",
         description: "Expert lock repair, replacement, and rekeying services to ensure your home's security after the lockout."
-      }
-    ]
-  },
-  'business-lockout': {
-    title: "Commercial Lockout Services",
-    description: "Professional commercial locksmith services for your business security needs, delivered with expertise and care.",
-    services: [
-      {
-        icon: Clock,
-        title: "24/7 Emergency Business Lockout",
-        description: "Available around the clock for immediate response to your commercial lockout emergency. Our team arrives within 15-30 minutes."
-      },
-      {
-        icon: Shield,
-        title: "Damage-Free Entry",
-        description: "We use advanced techniques to unlock your business doors without causing any damage to your security systems."
-      },
-      {
-        icon: Building2,
-        title: "All Business Types",
-        description: "Professional service for all types of commercial properties, including offices, retail stores, and warehouses."
-      },
-      {
-        icon: Key,
-        title: "Security Solutions",
-        description: "Expert security system management, master key systems, and access control solutions for your business."
       }
     ]
   },
@@ -153,7 +153,7 @@ const defaultServices = {
         description: "Quick and efficient car key cutting and programming service, often completed within an hour."
       },
       {
-        icon: Car,
+        icon: Building2,
         title: "All Vehicle Types",
         description: "Service for all car brands including luxury vehicles and modern cars with advanced key systems."
       },
@@ -179,7 +179,7 @@ const defaultServices = {
         description: "Efficient key programming service using advanced diagnostic equipment."
       },
       {
-        icon: Car,
+        icon: Building2,
         title: "All Makes & Models",
         description: "Programming capabilities for all vehicle brands, including luxury and imported cars."
       },

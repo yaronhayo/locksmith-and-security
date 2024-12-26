@@ -1,10 +1,12 @@
 import PageLayout from "@/components/layouts/PageLayout";
 import BusinessLockChangeHero from "@/components/sections/BusinessLockChangeHero";
+import LockoutServices from "@/components/sections/LockoutServices";
+import WhyChooseUs from "@/components/sections/WhyChooseUs";
 import ServiceDescription from "@/components/services/business-lock-change/ServiceDescription";
 import RealWorldExamples from "@/components/services/business-lock-change/RealWorldExamples";
 import EmergencyCallout from "@/components/services/business-lock-change/EmergencyCallout";
 import FAQSection from "@/components/sections/FAQSection";
-import { Building2 } from "lucide-react";
+import { Lock } from "lucide-react";
 
 const schema = {
   "@context": "https://schema.org",
@@ -57,6 +59,8 @@ const BusinessLockChangePage = () => {
       schema={schema}
     >
       <BusinessLockChangeHero />
+      <LockoutServices />
+      <WhyChooseUs />
       <div className="container mx-auto px-4 py-12">
         <div className="max-w-4xl mx-auto">
           <ServiceDescription />
