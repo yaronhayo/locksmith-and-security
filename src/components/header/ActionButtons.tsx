@@ -1,5 +1,6 @@
 import { Phone, Calendar, Menu, X } from 'lucide-react';
 import { Button } from "@/components/ui/button";
+import BookingDialog from '@/components/BookingDialog';
 
 interface ActionButtonsProps {
   isMenuOpen: boolean;
@@ -14,20 +15,24 @@ const ActionButtons = ({ isMenuOpen, setIsMenuOpen }: ActionButtonsProps) => {
           <Phone className="w-6 h-6 animate-phone-ring" />
           <span className="text-2xl transform transition-transform duration-300 group-hover:translate-y-[-2px]">(551) 303-7874</span>
         </a>
-        <Button asChild className="bg-secondary hover:bg-secondary-hover text-white text-lg px-6 py-3 shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300">
-          <a href="/booking" className="inline-flex items-center gap-2">
-            <Calendar className="w-5 h-5" />
-            Book Online
-          </a>
-        </Button>
+        <BookingDialog 
+          variant="secondary"
+          className="bg-secondary hover:bg-secondary-hover text-white text-lg px-6 py-3 shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
+        />
       </div>
       <div className="flex md:hidden items-center space-x-2">
-        <Button asChild size="sm" className="bg-secondary hover:bg-secondary-hover text-white shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300">
-          <a href="/booking" className="inline-flex items-center gap-1">
-            <Calendar className="w-4 h-4" />
-            Book
-          </a>
-        </Button>
+        <BookingDialog 
+          variant="secondary"
+          size="sm"
+          className="bg-secondary hover:bg-secondary-hover text-white shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
+        >
+          <Button asChild size="sm" className="bg-secondary hover:bg-secondary-hover text-white shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300">
+            <span className="inline-flex items-center gap-1">
+              <Calendar className="w-4 h-4" />
+              Book
+            </span>
+          </Button>
+        </BookingDialog>
         <a href="tel:5513037874">
           <Button 
             size="icon" 
