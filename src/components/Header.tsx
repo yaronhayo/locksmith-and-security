@@ -28,12 +28,13 @@ const Header = () => {
       <TopBar />
       <header className={`sticky top-0 w-full z-50 transition-all duration-300 ${isScrolled ? 'bg-white shadow-lg' : 'bg-transparent'}`}>
         <div className="container mx-auto px-4">
-          <div className="flex items-center justify-between h-24">
+          <div className="flex items-center justify-between min-h-[100px]">
+            {/* Logo */}
             <a href="/" className="flex items-center space-x-3 group">
               <img 
                 src="/lovable-uploads/9b00adf3-451e-4d1c-a118-6a6f06293ec0.png" 
                 alt="Locksmith & Security LLC - Professional 24/7 Locksmith Services in North Bergen, NJ"
-                className={`h-[120px] w-auto md:h-[180px] lg:h-[240px] transform transition-transform duration-300 group-hover:scale-110 ${
+                className={`h-[100px] w-auto md:h-[180px] lg:h-[240px] transform transition-transform duration-300 group-hover:scale-110 ${
                   isMenuOpen ? 'brightness-0 invert' : ''
                 }`}
                 style={{
@@ -55,7 +56,10 @@ const Header = () => {
 
             <Navigation isMenuOpen={isMenuOpen} isScrolled={isScrolled} />
 
-            <div className="lg:hidden flex items-center justify-between p-4 border-b border-white/10">
+            {/* Mobile Menu Header - Only visible when menu is open */}
+            <div className={`lg:hidden fixed top-0 left-0 right-0 z-50 flex items-center justify-between p-4 border-b border-white/10 bg-primary/95 ${
+              isMenuOpen ? 'block' : 'hidden'
+            }`}>
               <span className="text-white text-lg font-semibold">Menu</span>
               <Button 
                 variant="ghost" 
@@ -67,7 +71,10 @@ const Header = () => {
               </Button>
             </div>
 
-            <ActionButtons isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />
+            {/* Action Buttons */}
+            <div className="flex items-center">
+              <ActionButtons isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />
+            </div>
           </div>
         </div>
       </header>
