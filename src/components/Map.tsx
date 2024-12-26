@@ -27,30 +27,38 @@ const Map = () => {
   useEffect(() => {
     if (!mapContainer.current) return;
 
-    // Initialize map
     mapboxgl.accessToken = 'pk.eyJ1IjoibG9ja3NtaXRoYW5kc2VjdXJpdHkiLCJhIjoiY201NHR5MGRkMWVhczJrcHF4ZWFvdGQzdiJ9.sZk4Db9u3Q21dXqtXeh2aw';
     
     map.current = new mapboxgl.Map({
       container: mapContainer.current,
       style: 'mapbox://styles/mapbox/streets-v12',
-      center: [-74.0246, 40.7995], // North Bergen coordinates
-      zoom: 12
+      center: [-74.0246, 40.7995],
+      zoom: 12,
+      keyboard: true, // Enable keyboard controls
+      interactive: true // Enable all interactive controls
     });
 
-    // Add navigation controls
+    // Add navigation controls with keyboard support
     map.current.addControl(
-      new mapboxgl.NavigationControl(),
+      new mapboxgl.NavigationControl({
+        showCompass: true,
+        showZoom: true,
+        visualizePitch: true
+      }),
       'top-right'
     );
 
-    // Add markers for each location
+    // Add markers for each location with improved accessibility
     locations.forEach((location) => {
       const markerElement = document.createElement('div');
       markerElement.className = 'cursor-pointer';
+      markerElement.setAttribute('role', 'button');
+      markerElement.setAttribute('aria-label', `View services in ${location.name}`);
+      markerElement.setAttribute('tabindex', '0');
       markerElement.innerHTML = `
         <div class="relative group">
           <div class="w-6 h-6 bg-primary rounded-full flex items-center justify-center transform transition-transform group-hover:scale-110">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="Location marker">
               <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
               <circle cx="12" cy="10" r="3"></circle>
             </svg>
@@ -61,13 +69,21 @@ const Map = () => {
         </div>
       `;
 
-      const marker = new mapboxgl.Marker({ element: markerElement })
-        .setLngLat(location.coordinates)
-        .addTo(map.current);
+      // Add keyboard support for markers
+      markerElement.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          window.location.href = `/service-areas/${location.slug}`;
+        }
+      });
 
       markerElement.addEventListener('click', () => {
         window.location.href = `/service-areas/${location.slug}`;
       });
+
+      const marker = new mapboxgl.Marker({ element: markerElement })
+        .setLngLat(location.coordinates)
+        .addTo(map.current);
 
       markers.current.push(marker);
     });
@@ -81,7 +97,20 @@ const Map = () => {
 
   return (
     <div className="relative w-full h-[600px] rounded-lg overflow-hidden shadow-lg">
-      <div ref={mapContainer} className="absolute inset-0" />
+      <div ref={mapContainer} className="absolute inset-0" role="application" aria-label="Service areas map" />
+      {/* Text alternative for screen readers */}
+      <div className="sr-only">
+        <h3>Our Service Areas</h3>
+        <ul>
+          {locations.map((location) => (
+            <li key={location.slug}>
+              <a href={`/service-areas/${location.slug}`}>
+                {location.name} - Click to view services
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 };

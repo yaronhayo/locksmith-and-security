@@ -7,6 +7,7 @@ import { Analytics } from '@vercel/analytics/react';
 import MetaTags from "./MetaTags";
 import PageHero from "./PageHero";
 import PageLoading from "./PageLoading";
+import SkipLink from "@/components/SkipLink";
 
 interface PageLayoutProps {
   title: string;
@@ -43,6 +44,7 @@ const PageLayout = ({
 
   return (
     <ErrorBoundary FallbackComponent={ErrorFallback}>
+      <SkipLink />
       <MetaTags
         title={title}
         description={description}
@@ -52,23 +54,25 @@ const PageLayout = ({
         keywords={keywords}
       />
       
-      {hasHeroSection && (
-        <PageHero 
-          title={heroTitle || title}
-          description={heroDescription || description}
-        />
-      )}
+      <div role="banner">
+        {hasHeroSection && (
+          <PageHero 
+            title={heroTitle || title}
+            description={heroDescription || description}
+          />
+        )}
+      </div>
       
-      <motion.div 
+      <motion.main 
+        id="main-content"
         className={cn("flex-grow", !hasHeroSection && "pt-0")}
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: 20 }}
         transition={{ duration: 0.3 }}
-        role="main"
       >
         <div className={cn(className)}>{children}</div>
-      </motion.div>
+      </motion.main>
       <Analytics />
     </ErrorBoundary>
   );
