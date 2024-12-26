@@ -66,7 +66,7 @@ const ServiceAreasSection = () => {
                 <Link
                   key={area.slug}
                   to={`/service-areas/${area.slug}`}
-                  className="group flex items-start space-x-3 p-4 rounded-lg hover:bg-gray-50 transition-all"
+                  className="group flex items-start space-x-3 p-4 rounded-lg hover:bg-[#FEC6A1]/20 transition-all"
                 >
                   <div className="flex-shrink-0">
                     <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center group-hover:bg-primary/20 transition-colors">
