@@ -37,7 +37,7 @@ const HeroSection = () => {
             </motion.div>
             
             <motion.h1 
-              className="text-4xl lg:text-6xl font-bold leading-tight drop-shadow-md"
+              className="text-white leading-tight drop-shadow-md"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
@@ -46,7 +46,7 @@ const HeroSection = () => {
             </motion.h1>
             
             <motion.p 
-              className="text-xl opacity-90 leading-relaxed"
+              className="subtitle text-white/90 leading-relaxed"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4 }}

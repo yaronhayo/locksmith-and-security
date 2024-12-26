@@ -27,10 +27,25 @@
 
 @layer base {
   * {
-    @apply border-border;
+    @apply border-border font-sans;
   }
   body {
-    @apply bg-background text-foreground font-sans;
+    @apply bg-background text-foreground;
+  }
+  h1 {
+    @apply text-4xl md:text-5xl lg:text-6xl font-bold text-heading-dark;
+  }
+  h2 {
+    @apply text-3xl md:text-4xl font-bold text-heading-primary;
+  }
+  h3 {
+    @apply text-2xl md:text-3xl font-semibold text-heading-secondary;
+  }
+  h4 {
+    @apply text-xl md:text-2xl font-semibold text-heading-dark;
+  }
+  .subtitle {
+    @apply text-lg md:text-xl text-heading-neutral;
   }
 }
 
@@ -39,5 +54,5 @@
 }
 
 .main-heading {
-  @apply text-[#1EAEDB];
+  @apply text-heading-primary;
 }
