@@ -3,7 +3,10 @@ import { useToast } from "@/hooks/use-toast";
 import { FormLoadingOverlay } from "./LoadingStates";
 import { validateForm, validateVehicleInfo } from "./BookingFormValidation";
 import { sendLeadNotification } from "@/utils/emailjs";
-import FormFields from "./FormFields";
+import PersonalInfoFields from "./PersonalInfoFields";
+import ServiceFields from "./ServiceFields";
+import VehicleInfoFields from "./VehicleInfoFields";
+import AdditionalInfoFields from "./AdditionalInfoFields";
 import SubmitButton from "./SubmitButton";
 import Recaptcha from "../ui/recaptcha";
 
@@ -67,7 +70,6 @@ const BookingForm = () => {
         formDataObj[key] = value;
       });
 
-      // Add recaptcha token to form data
       formDataObj.recaptchaToken = recaptchaToken;
 
       await sendLeadNotification(formDataObj);
@@ -94,15 +96,24 @@ const BookingForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-3 relative">
+    <form onSubmit={handleSubmit} className="space-y-3 relative" role="form" aria-label="Service booking form">
       {isSubmitting && <FormLoadingOverlay />}
       
-      <FormFields
+      <PersonalInfoFields errors={errors} isSubmitting={isSubmitting} />
+      
+      <ServiceFields 
         errors={errors}
-        showVehicleInfo={showVehicleInfo}
+        handleServiceChange={handleServiceChange}
+        isSubmitting={isSubmitting}
+      />
+
+      {showVehicleInfo && (
+        <VehicleInfoFields errors={errors} isSubmitting={isSubmitting} />
+      )}
+
+      <AdditionalInfoFields 
         selectedService={selectedService}
         isSubmitting={isSubmitting}
-        handleServiceChange={handleServiceChange}
       />
 
       <Recaptcha onChange={setRecaptchaToken} />
