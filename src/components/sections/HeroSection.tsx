@@ -1,9 +1,21 @@
 import { Button } from "@/components/ui/button";
 import { Star, ArrowRight, Phone, Clock, Shield } from "lucide-react";
 import BookingForm from "@/components/BookingForm";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
+import { useState, useEffect } from "react";
 
 const HeroSection = () => {
+  const [currentWord, setCurrentWord] = useState(0);
+  const words = ["Professional", "Reliable", "Fast"];
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentWord((prev) => (prev + 1) % words.length);
+    }, 1800);
+
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <section 
       className="relative min-h-screen bg-gradient-to-br from-primary to-primary-hover overflow-hidden pt-20 pb-12 lg:pb-20"
@@ -37,12 +49,26 @@ const HeroSection = () => {
             </motion.div>
             
             <motion.h1 
-              className="text-white leading-tight drop-shadow-md"
+              className="text-white leading-tight drop-shadow-md flex items-center gap-2 flex-wrap"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
             >
-              Professional Locksmith Services in North Bergen
+              <div className="relative inline-block min-w-[200px]">
+                <AnimatePresence mode="wait">
+                  <motion.span
+                    key={words[currentWord]}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -20 }}
+                    transition={{ duration: 0.3 }}
+                    className="text-secondary absolute"
+                  >
+                    {words[currentWord]}
+                  </motion.span>
+                </AnimatePresence>
+              </div>
+              <span>Locksmith Services in North Bergen</span>
             </motion.h1>
             
             <motion.p 
