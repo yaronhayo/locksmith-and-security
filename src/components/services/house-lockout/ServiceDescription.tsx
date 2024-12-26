@@ -11,8 +11,8 @@ const ServiceDescription = () => {
     >
       <p className="text-lg leading-relaxed text-gray-600 mb-8">
         Being locked out of your home can be a stressful and potentially dangerous situation, 
-        especially during late hours or severe weather. At Locksmith & Security LLC, we provide 
-        rapid, professional house lockout services throughout North Bergen and surrounding areas, 
+        especially during late hours or severe weather. Our professional locksmiths provide 
+        rapid, reliable house lockout services throughout North Bergen and surrounding areas, 
         ensuring you regain access to your home quickly and safely.
       </p>
       
@@ -21,17 +21,17 @@ const ServiceDescription = () => {
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.2 }}
       >
-        <h3 className="text-2xl font-semibold mb-6 text-primary">Comprehensive Lockout Solutions</h3>
+        <h3 className="text-2xl font-semibold mb-6 text-primary">Professional House Lockout Solutions</h3>
         <p className="text-gray-600 mb-4">Our residential lockout services include:</p>
         <ul className="grid md:grid-cols-2 gap-4 mb-8">
           {[
-            "Emergency lockout assistance",
-            "Lock picking and non-destructive entry",
+            "Emergency house lockout assistance",
+            "Non-destructive lock picking",
             "Broken key extraction",
             "Lock repair and replacement",
-            "Key duplication and replacement",
-            "Smart lock installation and programming",
-            "Security assessment and upgrades"
+            "Key duplication on-site",
+            "Smart lock installation",
+            "Security assessment"
           ].map((service, index) => (
             <motion.li 
               key={index}
@@ -52,18 +52,18 @@ const ServiceDescription = () => {
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.4 }}
       >
-        <h3 className="text-2xl font-semibold mb-6 text-primary">Professional Expertise</h3>
+        <h3 className="text-2xl font-semibold mb-6 text-primary">Why Choose Our House Lockout Service</h3>
         <p className="text-gray-600 mb-4">
-          Our technicians are highly trained professionals with years of experience in residential 
-          locksmith services. We stay up-to-date with the latest lock technologies and security 
-          solutions to provide you with the best possible service. All our locksmiths are:
+          Our residential locksmith specialists are highly trained professionals with extensive experience 
+          in home lockout situations. We understand the urgency of being locked out of your house and 
+          provide fast, reliable service to get you back inside safely. Our technicians are:
         </p>
         <ul className="space-y-3 mb-8">
           {[
-            "Licensed and certified",
-            "Background checked",
-            "Fully insured",
-            "Continuously trained on new technologies"
+            "Licensed and certified residential locksmiths",
+            "Background checked and fully insured",
+            "Equipped with advanced residential lock tools",
+            "Trained in the latest home security technologies"
           ].map((item, index) => (
             <motion.li 
               key={index}
