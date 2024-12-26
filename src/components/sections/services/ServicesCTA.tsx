@@ -30,7 +30,7 @@ const ServicesCTA = () => {
                 Call (551) 303-7874
               </a>
             </Button>
-            <Button size="lg" variant="secondary" asChild className="text-primary">
+            <Button size="lg" variant="secondary" asChild className="text-primary hover:text-black">
               <a href="/book-online" className="flex items-center">
                 Book Online
                 <ArrowRight className="ml-2 h-5 w-5" />
