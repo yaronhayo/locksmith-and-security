@@ -5,13 +5,14 @@ import BookingForm from "@/components/BookingForm";
 
 const CarKeyProgramHero = () => {
   return (
-    <section className="hero-gradient relative min-h-[calc(100vh-80px)]">
-      <div className="container mx-auto px-4 h-full flex items-center">
-        <div className="grid lg:grid-cols-2 gap-12 items-center py-8">
+    <section className="hero-gradient relative min-h-screen pt-20 pb-12 lg:pb-20">
+      <div className="container mx-auto px-4 h-full">
+        <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-start lg:items-center">
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5 }}
+            className="space-y-6"
           >
             <h1 className="text-4xl md:text-5xl font-bold text-white mb-6">
               Professional Car Key Programming Services
@@ -52,9 +53,9 @@ const CarKeyProgramHero = () => {
             transition={{ duration: 0.5 }}
             className="relative"
           >
-            <div className="bg-white rounded-2xl p-8 shadow-2xl">
+            <div className="bg-white rounded-2xl p-6 lg:p-8 shadow-2xl">
               <div className="text-center mb-6">
-                <h2 className="text-2xl font-bold text-gray-900">Request Car Key Programming</h2>
+                <h2 className="text-xl lg:text-2xl font-bold text-gray-900">Request Car Key Programming</h2>
                 <p className="text-gray-600 mt-2">Professional programming for all vehicle types</p>
               </div>
               <BookingForm />

@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 const HeroSection = () => {
   return (
     <section 
-      className="relative min-h-[calc(100vh-80px)] bg-gradient-to-br from-primary to-primary-hover overflow-hidden"
+      className="relative min-h-screen bg-gradient-to-br from-primary to-primary-hover overflow-hidden pt-20 pb-12 lg:pb-20"
       role="banner"
       aria-label="Hero section"
     >
@@ -16,13 +16,13 @@ const HeroSection = () => {
       />
       
       <motion.div 
-        className="container mx-auto px-4 relative z-10 h-full flex items-center py-12 lg:py-20"
+        className="container mx-auto px-4 relative z-10 h-full flex items-start lg:items-center"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
-        <div className="flex flex-col lg:flex-row items-center justify-between gap-12">
-          <div className="lg:w-1/2 space-y-8 text-white">
+        <div className="flex flex-col lg:flex-row items-start justify-between gap-8 lg:gap-12 w-full">
+          <div className="lg:w-1/2 space-y-6 lg:space-y-8 text-white">
             <motion.div 
               className="flex items-center space-x-2 bg-secondary/90 backdrop-blur-sm text-white px-4 py-2 rounded-full w-fit group hover:bg-secondary transition-all duration-300 relative overflow-hidden shadow-lg hover:shadow-xl"
               initial={{ opacity: 0, x: -20 }}
@@ -133,15 +133,15 @@ const HeroSection = () => {
           </div>
           
           <motion.div 
-            className="lg:w-5/12 bg-white rounded-2xl p-8 shadow-2xl transform hover:scale-[1.02] transition-transform duration-300 backdrop-blur-sm"
+            className="lg:w-5/12 w-full bg-white rounded-2xl p-6 lg:p-8 shadow-2xl transform hover:scale-[1.02] transition-transform duration-300 backdrop-blur-sm"
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.7 }}
             role="complementary"
             aria-label="Request service form"
           >
-            <div className="text-center mb-8">
-              <h2 className="text-2xl font-bold text-gray-900">Request Service</h2>
+            <div className="text-center mb-6">
+              <h2 className="text-xl lg:text-2xl font-bold text-gray-900">Request Service</h2>
               <p className="text-gray-600 mt-2">Get a quick response from our team</p>
             </div>
             <BookingForm />
