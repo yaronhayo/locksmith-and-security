@@ -29,7 +29,7 @@ const ActionButtons = ({ isMenuOpen, setIsMenuOpen }: ActionButtonsProps) => {
           <Button asChild size="sm" className="bg-secondary hover:bg-secondary-hover text-white shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300">
             <span className="inline-flex items-center gap-1">
               <Calendar className="w-4 h-4" />
-              Book
+              Book Online
             </span>
           </Button>
         </BookingDialog>
