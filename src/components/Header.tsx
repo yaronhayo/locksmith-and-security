@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Menu, X, Clock, MapPin, ChevronDown, Phone, Calendar } from 'lucide-react';
+import { Menu, X, Clock, MapPin, ChevronDown, Phone, Calendar, Home, HelpCircle, Star, Info, MessageSquare, ChevronRight } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -33,7 +33,6 @@ const Header = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Close mobile menu when route changes
   useEffect(() => {
     setIsMenuOpen(false);
   }, [location]);
@@ -109,30 +108,39 @@ const Header = () => {
             } ${
               isScrolled ? 'bg-white/95 backdrop-blur-sm' : 'bg-primary/95 lg:bg-transparent backdrop-blur-sm lg:backdrop-blur-none'
             } lg:block`}>
-              <ul className="h-full flex flex-col lg:flex-row items-center justify-center space-y-8 lg:space-y-0 lg:space-x-8 p-4 lg:p-0">
+              <div className="lg:hidden flex items-center justify-between p-4 border-b border-white/10">
+                <span className="text-white text-lg font-semibold">Menu</span>
+                <Button 
+                  variant="ghost" 
+                  size="icon"
+                  className="text-white hover:bg-white/10"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  <X className="h-6 w-6" />
+                </Button>
+              </div>
+              <ul className="h-full flex flex-col lg:flex-row items-start lg:items-center justify-start lg:justify-center space-y-4 lg:space-y-0 lg:space-x-8 p-6 lg:p-0">
                 {[
-                  { path: '/services', label: 'Services' },
-                  { path: '/faq', label: 'FAQ' },
-                  { path: '/reviews', label: 'Reviews' },
-                  { path: '/about', label: 'About' },
-                  { path: '/contact', label: 'Contact' }
-                ].map(({ path, label }) => (
-                  <li key={path}>
+                  { path: '/', label: 'Home', icon: Home },
+                  { path: '/services', label: 'Services', icon: ChevronRight },
+                  { path: '/faq', label: 'FAQ', icon: HelpCircle },
+                  { path: '/reviews', label: 'Reviews', icon: Star },
+                  { path: '/about', label: 'About', icon: Info },
+                  { path: '/contact', label: 'Contact', icon: MessageSquare }
+                ].map(({ path, label, icon: Icon }) => (
+                  <li key={path} className="w-full lg:w-auto">
                     <a 
                       href={path} 
-                      className={`text-lg font-medium relative block transition-colors duration-300
-                        ${isActivePage(path) 
+                      className={`group flex items-center space-x-3 text-lg font-medium relative transition-colors duration-300 ${
+                        isActivePage(path) 
                           ? 'text-secondary lg:text-secondary' 
                           : `${isMenuOpen ? 'text-white lg:text-gray-900' : 'text-gray-900'} hover:text-secondary`
-                        }
-                        after:content-[''] after:absolute after:bottom-0 after:left-0 
-                        after:w-full after:h-0.5 after:bg-secondary 
-                        after:transform after:scale-x-0 after:origin-left
-                        after:transition-transform after:duration-300
-                        ${isActivePage(path) ? 'after:scale-x-100' : ''}
-                        hover:after:scale-x-100`}
+                      } ${
+                        !isMenuOpen && 'lg:after:content-[""] lg:after:absolute lg:after:bottom-0 lg:after:left-0 lg:after:w-full lg:after:h-0.5 lg:after:bg-secondary lg:after:transform lg:after:scale-x-0 lg:after:origin-left lg:after:transition-transform lg:after:duration-300 lg:hover:after:scale-x-100'
+                      }`}
                     >
-                      {label}
+                      <Icon className="w-5 h-5 lg:hidden" />
+                      <span>{label}</span>
                     </a>
                   </li>
                 ))}
@@ -159,14 +167,6 @@ const Header = () => {
                     Book
                   </a>
                 </Button>
-                <Button 
-                  variant="outline" 
-                  size="icon" 
-                  className="hover:bg-primary/5 transition-all duration-300 transform hover:scale-105 z-50" 
-                  onClick={() => setIsMenuOpen(!isMenuOpen)}
-                >
-                  {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-                </Button>
                 <a href="tel:5513037874">
                   <Button 
                     size="icon" 
@@ -176,6 +176,14 @@ const Header = () => {
                     <Phone className="h-6 w-6 animate-phone-ring" />
                   </Button>
                 </a>
+                <Button 
+                  variant="outline" 
+                  size="icon" 
+                  className="hover:bg-primary/5 transition-all duration-300 transform hover:scale-105 z-50" 
+                  onClick={() => setIsMenuOpen(!isMenuOpen)}
+                >
+                  {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+                </Button>
               </div>
             </div>
           </div>
