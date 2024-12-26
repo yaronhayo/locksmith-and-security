@@ -37,3 +37,7 @@
 .hero-gradient {
   background: linear-gradient(135deg, #0F4C81 0%, #072442 100%);
 }
+
+.main-heading {
+  @apply text-[#1EAEDB];
+}

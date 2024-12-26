@@ -56,7 +56,7 @@ const Header = () => {
                 {serviceAreas.map((area) => (
                   <DropdownMenuItem 
                     key={area.slug}
-                    className="transition-all duration-300 hover:bg-primary/5 hover:text-primary hover:translate-x-1"
+                    className="transition-all duration-300 hover:bg-[#D3E4FD] hover:text-primary hover:translate-x-1"
                   >
                     <a 
                       href={`/service-areas/${area.slug}`}
