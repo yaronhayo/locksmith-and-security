@@ -62,14 +62,25 @@ const HeroSection = () => {
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -20 }}
-                      transition={{ duration: 0.3 }}
+                      transition={{ duration: 0.5, ease: "easeInOut" }}
                       className="text-secondary whitespace-nowrap"
                     >
                       {words[currentWord]}
                     </motion.span>
                   </AnimatePresence>
                 </div>
-                <span className="whitespace-nowrap">Locksmith</span>
+                <motion.span 
+                  className="whitespace-nowrap"
+                  animate={{ x: 0 }}
+                  transition={{ 
+                    type: "spring",
+                    stiffness: 100,
+                    damping: 15,
+                    mass: 0.8
+                  }}
+                >
+                  Locksmith
+                </motion.span>
               </div>
               <div className="whitespace-nowrap text-3xl md:text-4xl lg:text-5xl">Services in North Bergen</div>
             </motion.h1>
