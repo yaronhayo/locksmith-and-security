@@ -30,9 +30,7 @@
     @apply border-border font-sans;
   }
   body {
-    @apply bg-background text-foreground min-h-screen;
-    font-size: 16px;
-    line-height: 1.5;
+    @apply bg-background text-foreground;
   }
   h1 {
     @apply text-4xl md:text-5xl lg:text-6xl font-bold text-heading-dark;
@@ -48,26 +46,6 @@
   }
   .subtitle {
     @apply text-lg md:text-xl text-heading-neutral;
-  }
-  
-  /* Accessibility Improvements */
-  :focus {
-    @apply outline-2 outline-offset-2 outline-primary;
-  }
-  
-  .skip-link {
-    @apply sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 
-           focus:px-4 focus:py-2 focus:bg-white focus:text-primary focus:shadow-lg 
-           focus:rounded-lg focus:outline-none;
-  }
-  
-  /* High contrast focus states */
-  button:focus-visible,
-  a:focus-visible,
-  input:focus-visible,
-  select:focus-visible,
-  textarea:focus-visible {
-    @apply outline-2 outline-offset-2 outline-primary ring-2 ring-primary ring-offset-2;
   }
 }
 

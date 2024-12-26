@@ -1,85 +1,86 @@
+import { ArrowRight, Lock, Car, Building2, Key } from 'lucide-react';
 import { Button } from "@/components/ui/button";
-import { motion } from "framer-motion";
+import { Card, CardContent } from "@/components/ui/card";
 
 const services = [
-  {
-    title: "Residential",
-    description: "Home lockout assistance, lock installation, and rekeying services",
-    link: "/services#residential",
-    icon: "🏠",
+  { 
+    icon: Lock, 
+    title: "House Lockout", 
+    description: "Locked out of your home? Our expert locksmiths will help you regain access quickly and safely, without damaging your locks. Available 24/7 for homeowners and renters.", 
+    link: "/services/house-lockout", 
+    cta: "Unlock Your Home" 
   },
-  {
-    title: "Commercial",
-    description: "Business security solutions, master key systems, and access control",
-    link: "/services#commercial",
-    icon: "🏢",
+  { 
+    icon: Car, 
+    title: "Car Lockout", 
+    description: "Lost your car keys or locked them inside? Our mobile locksmiths come to your location and safely unlock your vehicle. Available 24/7 for all car makes and models.", 
+    link: "/services/car-lockout", 
+    cta: "Unlock Your Car" 
   },
-  {
-    title: "Automotive",
-    description: "Car lockout help, key programming, and replacement services",
-    link: "/services#automotive",
-    icon: "🚗",
+  { 
+    icon: Building2, 
+    title: "Business Lockout", 
+    description: "Can't access your business? We provide fast commercial lockout service to get you back to work quickly. Available for offices, stores, and warehouses.", 
+    link: "/services/business-lockout", 
+    cta: "Unlock Your Business" 
   },
+  { 
+    icon: Key, 
+    title: "Lock Change", 
+    description: "Need new locks? We install high-quality locks for better security. Perfect for new homeowners or when upgrading old locks. We work with all major brands.", 
+    link: "/services/lock-change", 
+    cta: "Change Your Locks" 
+  },
+  { 
+    icon: Key, 
+    title: "Lock Rekey", 
+    description: "Want to keep your locks but need new keys? We'll rekey your existing locks to work with new keys, making old ones useless. Ideal for landlords and new homeowners.", 
+    link: "/services/lock-rekey", 
+    cta: "Rekey Your Locks" 
+  },
+  { 
+    icon: Building2, 
+    title: "Business Lock Change", 
+    description: "Upgrade your business security with new commercial-grade locks. We install master key systems and high-security locks for offices, stores, and warehouses.", 
+    link: "/services/business-lock-change", 
+    cta: "Secure Your Business" 
+  },
+  { 
+    icon: Car, 
+    title: "New Car Key", 
+    description: "Lost your car key? We make and program new keys for all vehicle types, including transponder and smart keys. Fast service with professional equipment.", 
+    link: "/services/new-car-key", 
+    cta: "Get a New Car Key" 
+  },
+  { 
+    icon: Car, 
+    title: "Car Key Program", 
+    description: "Need a car key programmed? We program all types of electronic car keys and key fobs. Our technicians use professional equipment for all vehicle makes.", 
+    link: "/services/car-key-program", 
+    cta: "Program Your Car Key" 
+  }
 ];
 
 const ServicesSection = () => {
   return (
-    <section 
-      aria-labelledby="services-heading"
-      className="py-20 bg-white"
-    >
+    <section className="py-20">
       <div className="container mx-auto px-4">
-        <div className="text-center mb-12">
-          <h2 
-            id="services-heading"
-            className="text-3xl font-bold mb-4"
-          >
-            Our Services
-          </h2>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Professional locksmith services for all your security needs
-          </p>
-        </div>
-        
-        <div 
-          className="grid md:grid-cols-3 gap-8"
-          role="list"
-        >
+        <h2 className="text-3xl font-bold text-center mb-12">Our Services</h2>
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
           {services.map((service, index) => (
-            <motion.div
-              key={service.title}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.2 }}
-              className="bg-white p-6 rounded-lg shadow-lg"
-              role="listitem"
-            >
-              <span 
-                className="text-4xl mb-4 block"
-                role="img"
-                aria-label={`${service.title} service icon`}
-              >
-                {service.icon}
-              </span>
-              <h3 className="text-xl font-semibold mb-2">
-                {service.title}
-              </h3>
-              <p className="text-gray-600 mb-4">
-                {service.description}
-              </p>
-              <Button 
-                asChild
-                variant="secondary"
-                className="w-full"
-              >
-                <a 
-                  href={service.link}
-                  aria-label={`Learn more about our ${service.title.toLowerCase()} services`}
-                >
-                  Learn More
-                </a>
-              </Button>
-            </motion.div>
+            <Card key={index} className="transition-shadow duration-300 hover:shadow-lg">
+              <CardContent className="p-6 text-center">
+                <service.icon className="w-12 h-12 mx-auto mb-4 text-primary" />
+                <h3 className="text-xl font-semibold mb-2">{service.title}</h3>
+                <p className="text-gray-600 mb-4">{service.description}</p>
+                <Button asChild variant="secondary" className="group">
+                  <a href={service.link} className="inline-flex items-center">
+                    {service.cta}
+                    <ArrowRight className="ml-2 transform transition-transform duration-300 group-hover:translate-x-2" />
+                  </a>
+                </Button>
+              </CardContent>
+            </Card>
           ))}
         </div>
       </div>
