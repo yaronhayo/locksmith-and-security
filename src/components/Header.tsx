@@ -33,16 +33,23 @@ const Header = () => {
               <img 
                 src="/lovable-uploads/9b00adf3-451e-4d1c-a118-6a6f06293ec0.png" 
                 alt="Locksmith & Security LLC - Professional 24/7 Locksmith Services in North Bergen, NJ"
-                className={`h-20 w-auto md:h-[180px] lg:h-[240px] transform transition-transform duration-300 group-hover:scale-110 ${isMenuOpen ? 'brightness-0 invert' : ''}`}
+                className={`h-16 w-auto md:h-[180px] lg:h-[240px] transform transition-transform duration-300 group-hover:scale-110 ${
+                  isMenuOpen ? 'brightness-0 invert' : ''
+                }`}
+                style={{
+                  aspectRatio: '1/1',
+                  objectFit: 'contain',
+                  maxWidth: 'none',
+                  '@media (max-width: 768px)': {
+                    height: '120px',
+                    width: 'auto'
+                  }
+                }}
                 loading="eager"
                 width="180"
                 height="180"
                 fetchPriority="high"
                 decoding="async"
-                style={{
-                  aspectRatio: '1/1',
-                  objectFit: 'contain'
-                }}
                 onError={(e) => {
                   const img = e.target as HTMLImageElement;
                   img.src = '/placeholder.svg';
