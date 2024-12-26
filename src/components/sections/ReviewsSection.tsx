@@ -2,6 +2,10 @@ import { Star } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { useEffect, useRef } from "react";
 
+interface ReviewsSectionProps {
+  location?: string;
+}
+
 const reviews = [
   {
     name: "Michael R.",
@@ -53,7 +57,7 @@ const reviews = [
   }
 ];
 
-const ReviewsSection = () => {
+const ReviewsSection = ({ location }: ReviewsSectionProps) => {
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -80,16 +84,23 @@ const ReviewsSection = () => {
     return () => clearInterval(intervalId);
   }, []);
 
+  // Filter reviews by location if provided
+  const filteredReviews = location 
+    ? reviews.filter(review => review.location.includes(location))
+    : reviews;
+
   return (
     <section className="py-20 overflow-hidden">
       <div className="container mx-auto px-4">
-        <h2 className="text-3xl font-bold text-center mb-12">Customer Reviews</h2>
+        <h2 className="text-3xl font-bold text-center mb-12">
+          {location ? `Customer Reviews in ${location}` : 'Customer Reviews'}
+        </h2>
         <div 
           ref={scrollRef}
           className="flex gap-8 overflow-x-hidden"
           style={{ WebkitOverflowScrolling: 'touch' }}
         >
-          {[...reviews, ...reviews].map((review, index) => (
+          {[...filteredReviews, ...filteredReviews].map((review, index) => (
             <Card key={index} className="flex-none w-96 hover:shadow-lg transition-shadow">
               <CardContent className="p-6">
                 <div className="flex items-center mb-4">
