@@ -27,13 +27,13 @@ const Header = () => {
     <>
       <TopBar />
       <header className={`sticky top-0 w-full z-50 transition-all duration-300 ${isScrolled ? 'bg-white shadow-lg' : 'bg-transparent'}`}>
-        <div className="max-w-[1400px] mx-auto px-2 sm:px-4">
-          <div className="flex items-center justify-between h-16 md:h-24">
-            <a href="/" className="flex items-center flex-shrink-0">
+        <div className="container mx-auto px-4">
+          <div className="flex items-center justify-between h-14 md:h-24">
+            <a href="/" className="flex-shrink-0">
               <img 
                 src="/lovable-uploads/9b00adf3-451e-4d1c-a118-6a6f06293ec0.png" 
                 alt="Locksmith & Security LLC - Professional 24/7 Locksmith Services in North Bergen, NJ"
-                className="w-[140px] md:w-[180px] h-auto object-contain transition-transform duration-300 hover:scale-105"
+                className="w-[120px] md:w-[180px] h-auto object-contain transition-transform duration-300 hover:scale-105"
                 loading="eager"
                 width="180"
                 height="180"
