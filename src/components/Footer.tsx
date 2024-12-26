@@ -50,7 +50,7 @@ const Footer = () => {
                 <Phone className="w-5 h-5 group-hover:animate-bounce text-secondary" />
                 <div>
                   <a href="tel:5513037874" className="hover:text-secondary transition-colors">(551) 303-7874</a>
-                  <p className="text-sm text-red-400">24/7 Emergency Service</p>
+                  <p className="text-sm text-[#F2FCE2]">24/7 Emergency Service</p>
                 </div>
               </div>
               <div className="flex items-center justify-center md:justify-start space-x-2 group">
