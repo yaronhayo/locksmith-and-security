@@ -20,7 +20,7 @@ const Footer = () => {
             </p>
           </div>
           
-          <div className="text-center md:text-left order-3 md:order-none">
+          <div className="text-center md:text-left order-1 md:order-none">
             <h3 className="text-xl font-bold mb-4 text-white">Contact Info</h3>
             <div className="space-y-3">
               <div className="flex items-center justify-center md:justify-start space-x-2 group">
@@ -43,7 +43,7 @@ const Footer = () => {
             </div>
           </div>
           
-          <div className="text-center md:text-left order-2 md:order-none">
+          <div className="text-center md:text-left order-3 md:order-none">
             <h3 className="text-xl font-bold mb-4 text-white">Quick Links</h3>
             <ul className="space-y-2">
               <li>
@@ -73,7 +73,7 @@ const Footer = () => {
             </ul>
           </div>
 
-          <div className="text-center md:text-left">
+          <div className="text-center md:text-left order-2 md:order-none">
             <h3 className="text-xl font-bold mb-4 text-white">Business Hours</h3>
             <div className="space-y-3">
               <div className="flex items-center justify-center md:justify-start space-x-2">
