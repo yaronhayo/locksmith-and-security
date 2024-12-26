@@ -1,10 +1,11 @@
-import ReCAPTCHA from "react-google-recaptcha";
+import React from 'react';
+import ReCAPTCHA from 'react-google-recaptcha';
 
 interface RecaptchaProps {
   onChange: (token: string | null) => void;
 }
 
-const Recaptcha = ({ onChange }: RecaptchaProps) => {
+const Recaptcha: React.FC<RecaptchaProps> = ({ onChange }) => {
   return (
     <div className="flex justify-center my-4">
       <ReCAPTCHA
