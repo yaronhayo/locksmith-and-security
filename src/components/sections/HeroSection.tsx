@@ -54,7 +54,7 @@ const HeroSection = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
             >
-              <div className="flex flex-wrap items-center gap-2">
+              <div className="flex items-center gap-2">
                 <div className="relative h-[1.2em] inline-flex items-center">
                   <AnimatePresence mode="wait">
                     <motion.span
@@ -63,13 +63,13 @@ const HeroSection = () => {
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -20 }}
                       transition={{ duration: 0.5, ease: "easeInOut" }}
-                      className="text-secondary whitespace-nowrap"
+                      className="text-secondary absolute"
                     >
                       {words[currentWord]}
                     </motion.span>
                   </AnimatePresence>
                 </div>
-                <span className="whitespace-nowrap">Locksmith</span>
+                <span className="whitespace-nowrap ml-[120px]">Locksmith</span>
               </div>
               <div className="whitespace-nowrap text-3xl md:text-4xl lg:text-5xl">Services in North Bergen</div>
             </motion.h1>
