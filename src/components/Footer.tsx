@@ -32,7 +32,7 @@ const Footer = () => {
               </div>
               <div className="flex items-center justify-center md:justify-start space-x-2 group">
                 <MapPin className="w-5 h-5 group-hover:animate-bounce text-secondary" />
-                <span>North Bergen, NJ</span>
+                <span>Serving North Bergen, NJ and surrounding areas</span>
               </div>
               <div className="flex items-center justify-center md:justify-start space-x-2 group">
                 <Mail className="w-5 h-5 group-hover:animate-bounce text-secondary" />

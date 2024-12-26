@@ -32,10 +32,6 @@ export const generalFaqs = [
     answer: "Yes, all our locksmiths are licensed, bonded, and insured in New Jersey."
   },
   {
-    question: "Do you have a physical location?",
-    answer: "Yes, we have a storefront in North Bergen and mobile units throughout our service area."
-  },
-  {
     question: "What's your service guarantee?",
     answer: "We offer a 100% satisfaction guarantee on all our work and a 90-day warranty on parts."
   }

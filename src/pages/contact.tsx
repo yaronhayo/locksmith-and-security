@@ -91,8 +91,8 @@ const ContactPage = () => {
                   <MapPin className="w-6 h-6 text-primary" />
                 </div>
                 <div>
-                  <h3 className="font-semibold">Location</h3>
-                  <p>North Bergen, NJ</p>
+                  <h3 className="font-semibold">Service Area</h3>
+                  <p>Serving North Bergen, NJ and surrounding areas</p>
                 </div>
               </div>
 
