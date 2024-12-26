@@ -6,7 +6,7 @@ import { useState, useEffect } from "react";
 
 const HeroSection = () => {
   const [currentWord, setCurrentWord] = useState(0);
-  const words = ["Expert", "Fast", "Reliable"];
+  const words = ["Expert", "Quick", "Reliable"];
 
   useEffect(() => {
     const interval = setInterval(() => {
