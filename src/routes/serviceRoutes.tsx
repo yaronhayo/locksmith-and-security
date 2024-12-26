@@ -9,6 +9,7 @@ const HouseLockout = lazy(() => import("@/pages/services/house-lockout"));
 const LockChange = lazy(() => import("@/pages/services/lock-change"));
 const LockRekey = lazy(() => import("@/pages/services/lock-rekey"));
 const NewCarKey = lazy(() => import("@/pages/services/new-car-key"));
+const BusinessLockChange = lazy(() => import("@/pages/services/business-lock-change"));
 
 export const serviceRoutes = [
   {
@@ -38,5 +39,9 @@ export const serviceRoutes = [
   {
     path: "/services/new-car-key",
     element: <PageLayout title="New Car Key Services" description="New car key cutting and programming"><NewCarKey /></PageLayout>
+  },
+  {
+    path: "/services/business-lock-change",
+    element: <PageLayout title="Business Lock Change Services" description="Professional commercial lock change solutions"><BusinessLockChange /></PageLayout>
   }
 ];
