@@ -11,6 +11,10 @@ import TrustBadgesSection from "@/components/sections/TrustBadgesSection";
 import { motion } from "framer-motion";
 import { Helmet } from "react-helmet";
 
+// Add console logging for performance monitoring
+console.log('Index page render started:', new Date().toISOString());
+console.time('Index page render');
+
 const schema = {
   "@context": "https://schema.org",
   "@type": "WebPage",
@@ -54,6 +58,36 @@ const schema = {
 };
 
 const Index = () => {
+  console.log('Analytics and tracking check:', {
+    gtmAvailable: typeof window.dataLayer !== 'undefined',
+    gaAvailable: typeof window.gtag !== 'undefined',
+    clarityAvailable: typeof window.clarity !== 'undefined'
+  });
+
+  // Log Core Web Vitals
+  if (typeof window !== 'undefined') {
+    // Create observer for CLS
+    new PerformanceObserver((entryList) => {
+      for (const entry of entryList.getEntries()) {
+        console.log('Cumulative Layout Shift:', entry.value);
+      }
+    }).observe({ entryTypes: ['layout-shift'] });
+
+    // Create observer for LCP
+    new PerformanceObserver((entryList) => {
+      for (const entry of entryList.getEntries()) {
+        console.log('Largest Contentful Paint:', entry.startTime);
+      }
+    }).observe({ entryTypes: ['largest-contentful-paint'] });
+
+    // Create observer for FID
+    new PerformanceObserver((entryList) => {
+      for (const entry of entryList.getEntries()) {
+        console.log('First Input Delay:', entry.processingStart - entry.startTime);
+      }
+    }).observe({ entryTypes: ['first-input'] });
+  }
+
   return (
     <>
       <Helmet>
@@ -86,6 +120,10 @@ const Index = () => {
           transition={{ duration: 0.5 }}
           role="main"
           aria-label="Main content"
+          onAnimationComplete={() => {
+            console.timeEnd('Index page render');
+            console.log('Index page render completed:', new Date().toISOString());
+          }}
         >
           <HeroSection />
           <motion.section
