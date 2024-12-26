@@ -1,15 +1,17 @@
 import { useLocation } from 'react-router-dom';
 import { Home, Wrench, MapPin, HelpCircle, Star, Users, Phone, Shield, Clock } from 'lucide-react';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const Navigation = ({ isMenuOpen, isScrolled }: { isMenuOpen: boolean; isScrolled: boolean }) => {
   const location = useLocation();
+  const isMobile = useIsMobile();
   
   const isActivePage = (path: string) => {
     return location.pathname === path;
   };
 
   const menuItems = [
-    { path: '/', label: 'Home', icon: Home },
+    ...(isMobile ? [{ path: '/', label: 'Home', icon: Home }] : []),
     { path: '/services', label: 'Services', icon: Wrench },
     { path: '/service-areas', label: 'Service Areas', icon: MapPin },
     { path: '/faq', label: 'FAQ', icon: HelpCircle },
