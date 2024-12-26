@@ -1,5 +1,6 @@
 import { MapPin } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import Map from '../Map';
 
 const areas = [
   {
@@ -61,6 +62,10 @@ const ServiceAreasSection = () => {
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
             We provide professional locksmith services throughout North Bergen and surrounding areas in New Jersey.
           </p>
+        </div>
+
+        <div className="mb-12">
+          <Map />
         </div>
         
         <div 
