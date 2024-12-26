@@ -1,6 +1,6 @@
 import { Star } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
-import { useEffect, useRef, useCallback, memo } from "react";
+import { useEffect, useRef, useCallback, memo, useState } from "react";
 
 interface ReviewsSectionProps {
   location?: string;
@@ -84,7 +84,53 @@ const ReviewCard = memo(({ review, index }: { review: typeof reviews[number]; in
 ReviewCard.displayName = 'ReviewCard';
 
 const ReviewsSection = ({ location }: ReviewsSectionProps) => {
+  const [displayedReviews, setDisplayedReviews] = useState<typeof reviews[number][]>([]);
+  const [page, setPage] = useState(1);
+  const loadingRef = useRef(null);
   const scrollRef = useRef<HTMLDivElement>(null);
+
+  const filteredReviews = location 
+    ? reviews.filter(review => review.location.includes(location))
+    : reviews;
+
+  const loadMoreReviews = useCallback(() => {
+    const startIndex = (page - 1) * 12;
+    const endIndex = startIndex + 12;
+    const newReviews = filteredReviews.slice(startIndex, endIndex);
+    
+    if (newReviews.length > 0) {
+      setDisplayedReviews(prev => [...prev, ...newReviews]);
+      setPage(prev => prev + 1);
+    }
+  }, [page, filteredReviews]);
+
+  useEffect(() => {
+    // Reset when location changes
+    setDisplayedReviews([]);
+    setPage(1);
+  }, [location]);
+
+  useEffect(() => {
+    // Load initial reviews
+    loadMoreReviews();
+  }, [loadMoreReviews]);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          loadMoreReviews();
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (loadingRef.current) {
+      observer.observe(loadingRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, [loadMoreReviews]);
 
   const scroll = useCallback(() => {
     const scrollContainer = scrollRef.current;
@@ -92,19 +138,15 @@ const ReviewsSection = ({ location }: ReviewsSectionProps) => {
 
     const cardWidth = 384; // w-96 = 24rem = 384px
     const gap = 32; // gap-8 = 2rem = 32px
-    const totalWidth = (cardWidth + gap) * reviews.length;
+    const totalWidth = (cardWidth + gap) * displayedReviews.length;
 
     scrollContainer.scrollLeft = (scrollContainer.scrollLeft + 1) % totalWidth;
-  }, []);
+  }, [displayedReviews.length]);
 
   useEffect(() => {
     const intervalId = setInterval(scroll, 50);
     return () => clearInterval(intervalId);
   }, [scroll]);
-
-  const filteredReviews = location 
-    ? reviews.filter(review => review.location.includes(location))
-    : reviews;
 
   return (
     <section 
@@ -122,10 +164,11 @@ const ReviewsSection = ({ location }: ReviewsSectionProps) => {
           role="region"
           aria-label="Reviews carousel"
         >
-          {[...filteredReviews, ...filteredReviews].map((review, index) => (
+          {[...displayedReviews, ...displayedReviews].map((review, index) => (
             <ReviewCard key={index} review={review} index={index} />
           ))}
         </div>
+        <div ref={loadingRef} className="h-10" />
       </div>
     </section>
   );
