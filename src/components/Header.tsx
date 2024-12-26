@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Menu, X, Clock, MapPin, ChevronDown, Phone, Calendar, Home, HelpCircle, Star, Info, MessageSquare, ChevronRight, Map } from 'lucide-react';
+import { Menu, X, Clock, MapPin, ChevronDown, Phone, Calendar, HelpCircle, Star, Info, MessageSquare, ChevronRight, Map } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -107,7 +107,7 @@ const Header = () => {
               isMenuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
             } ${
               isScrolled ? 'bg-white/95 backdrop-blur-sm' : 'bg-primary/95 lg:bg-transparent backdrop-blur-sm lg:backdrop-blur-none'
-            } lg:block`}>
+            } lg:block lg:flex-1 lg:mx-8`}>
               <div className="lg:hidden flex items-center justify-between p-4 border-b border-white/10">
                 <span className="text-white text-lg font-semibold">Menu</span>
                 <Button 
@@ -119,9 +119,8 @@ const Header = () => {
                   <X className="h-6 w-6" />
                 </Button>
               </div>
-              <ul className="h-full flex flex-col lg:flex-row items-start lg:items-center justify-start lg:justify-center space-y-4 lg:space-y-0 lg:space-x-8 p-6 lg:p-0">
+              <ul className="h-full flex flex-col lg:flex-row items-start lg:items-center lg:justify-center space-y-4 lg:space-y-0 lg:space-x-4 p-6 lg:p-0">
                 {[
-                  { path: '/', label: 'Home', icon: Home },
                   { path: '/services', label: 'Services', icon: ChevronRight },
                   { path: '/service-areas', label: 'Service Areas', icon: Map },
                   { path: '/faq', label: 'FAQ', icon: HelpCircle },
