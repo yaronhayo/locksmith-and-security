@@ -1,105 +1,58 @@
-import { Shield, Key, Building2, Lock } from "lucide-react";
-import { motion } from "framer-motion";
+import { Building2, Shield, Lock } from "lucide-react";
 
 const ServiceDescription = () => {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      className="prose max-w-none bg-white rounded-lg shadow-sm p-8 mb-12"
-    >
-      <p className="text-lg leading-relaxed text-gray-600 mb-8">
-        Professional commercial lock change services for businesses of all sizes. Our expert locksmiths 
-        specialize in installing and replacing high-security commercial grade locks, ensuring your 
-        business premises remain secure. We work with retail stores, office buildings, warehouses, 
-        and industrial facilities.
+    <div className="prose max-w-none">
+      <h2 className="text-3xl font-bold mb-6">Professional Business Lock Change Services</h2>
+      <p className="text-lg text-gray-600 mb-8">
+        Our commercial lock change service provides comprehensive security solutions for businesses of all sizes. 
+        We understand the importance of protecting your business assets and ensuring the safety of your employees and customers.
       </p>
       
-      <motion.div 
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.2 }}
-      >
-        <h3 className="text-2xl font-semibold mb-4 text-primary">Commercial Lock Change Solutions</h3>
-        <p className="text-gray-600 mb-4">Our comprehensive commercial lock services include:</p>
-        <ul className="grid md:grid-cols-2 gap-4 mb-8">
-          {[
-            "High-security commercial locks",
-            "Master key system installation",
-            "Panic bar replacement",
-            "Electronic access control",
-            "Storefront door locks",
-            "Exit device installation",
-            "Restricted key systems",
-            "Emergency exit locks"
-          ].map((service, index) => (
-            <motion.li 
-              key={index}
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ delay: index * 0.1 }}
-              className="flex items-center gap-2"
-            >
-              <div className="h-2 w-2 rounded-full bg-primary" />
-              {service}
-            </motion.li>
-          ))}
-        </ul>
-      </motion.div>
-
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.4 }}
-      >
-        <h3 className="text-2xl font-semibold mb-4 text-primary">Commercial Grade Security</h3>
-        <p className="text-gray-600 mb-4">
-          Our commercial lock change process ensures maximum security for your business:
-        </p>
-        <ul className="space-y-3 mb-8">
-          {[
-            "Security assessment and consultation",
-            "Commercial grade lock selection",
-            "Professional installation",
-            "Master key system setup",
-            "Access control integration",
-            "Quality assurance testing",
-            "Staff training and handover",
-            "Ongoing maintenance support"
-          ].map((item, index) => (
-            <motion.li 
-              key={index}
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ delay: index * 0.1 }}
-              className="flex items-center gap-2"
-            >
-              <div className="h-2 w-2 rounded-full bg-primary" />
-              {item}
-            </motion.li>
-          ))}
-        </ul>
-      </motion.div>
-
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <div className="flex items-center gap-2 text-primary">
-          <Shield className="h-6 w-6" />
-          <span className="font-medium">Licensed & Insured</span>
+      <div className="grid md:grid-cols-3 gap-8 my-12">
+        <div className="flex flex-col items-center text-center p-6 bg-primary/5 rounded-lg">
+          <Building2 className="w-12 h-12 text-primary mb-4" />
+          <h3 className="text-xl font-semibold mb-2">All Business Types</h3>
+          <p>Solutions for retail, office, industrial, and more</p>
         </div>
-        <div className="flex items-center gap-2 text-primary">
-          <Lock className="h-6 w-6" />
-          <span className="font-medium">Commercial Grade</span>
+        
+        <div className="flex flex-col items-center text-center p-6 bg-primary/5 rounded-lg">
+          <Shield className="w-12 h-12 text-primary mb-4" />
+          <h3 className="text-xl font-semibold mb-2">Licensed & Insured</h3>
+          <p>Professional commercial locksmiths you can trust</p>
         </div>
-        <div className="flex items-center gap-2 text-primary">
-          <Key className="h-6 w-6" />
-          <span className="font-medium">Master Systems</span>
-        </div>
-        <div className="flex items-center gap-2 text-primary">
-          <Building2 className="h-6 w-6" />
-          <span className="font-medium">All Business Types</span>
+        
+        <div className="flex flex-col items-center text-center p-6 bg-primary/5 rounded-lg">
+          <Lock className="w-12 h-12 text-primary mb-4" />
+          <h3 className="text-xl font-semibold mb-2">Advanced Security</h3>
+          <p>High-security locks and master key systems</p>
         </div>
       </div>
-    </motion.div>
+
+      <h3 className="text-2xl font-semibold mb-4">Our Commercial Lock Change Services Include:</h3>
+      <ul className="list-disc pl-6 space-y-2 mb-8">
+        <li>High-security lock installation</li>
+        <li>Master key system setup and management</li>
+        <li>Emergency lock replacement</li>
+        <li>Access control system integration</li>
+        <li>Restricted key systems</li>
+        <li>Lock standardization across multiple locations</li>
+        <li>Security consultation and recommendations</li>
+        <li>24/7 emergency service availability</li>
+      </ul>
+
+      <h3 className="text-2xl font-semibold mb-4">Why Choose Our Commercial Lock Change Service:</h3>
+      <ul className="list-disc pl-6 space-y-2 mb-8">
+        <li>Experienced in commercial security systems</li>
+        <li>Fast response times for emergency situations</li>
+        <li>Professional grade hardware and equipment</li>
+        <li>Comprehensive security solutions</li>
+        <li>Competitive pricing for businesses</li>
+        <li>Fully licensed and insured service</li>
+        <li>Expert technical support</li>
+        <li>Warranty on parts and labor</li>
+      </ul>
+    </div>
   );
 };
 
