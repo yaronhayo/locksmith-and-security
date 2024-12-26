@@ -2,19 +2,21 @@ import { Button } from "@/components/ui/button";
 import { Star, ArrowRight, Phone, Clock, Shield } from "lucide-react";
 import BookingForm from "@/components/BookingForm";
 import { motion, AnimatePresence } from "framer-motion";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback, memo } from "react";
+
+const words = ["Expert", "Quick", "Reliable"] as const;
 
 const HeroSection = () => {
   const [currentWord, setCurrentWord] = useState(0);
-  const words = ["Expert", "Quick", "Reliable"];
+
+  const rotateWords = useCallback(() => {
+    setCurrentWord((prev) => (prev + 1) % words.length);
+  }, []);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentWord((prev) => (prev + 1) % words.length);
-    }, 1800);
-
+    const interval = setInterval(rotateWords, 1800);
     return () => clearInterval(interval);
-  }, []);
+  }, [rotateWords]);
 
   return (
     <section 
@@ -179,4 +181,4 @@ const HeroSection = () => {
   );
 };
 
-export default HeroSection;
+export default memo(HeroSection);

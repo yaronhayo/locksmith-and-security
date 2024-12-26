@@ -10,7 +10,13 @@ interface NavigationProps {
   isScrolled?: boolean;
 }
 
-const navItems = [
+type NavItem = {
+  path: string;
+  label: string;
+  showMobileOnly?: boolean;
+};
+
+const navItems: readonly NavItem[] = [
   { path: "/", label: "Home", showMobileOnly: true },
   { path: "/services", label: "Services" },
   { path: "/service-areas", label: "Service Areas" },
@@ -19,17 +25,19 @@ const navItems = [
   { path: "/contact", label: "Contact" },
 ] as const;
 
+interface NavigationLinkProps {
+  path: string;
+  label: string;
+  isActive: boolean;
+  isMenuOpen: boolean;
+}
+
 const NavigationLink = memo(({ 
   path, 
   label, 
   isActive, 
   isMenuOpen 
-}: { 
-  path: string; 
-  label: string; 
-  isActive: boolean; 
-  isMenuOpen: boolean;
-}) => (
+}: NavigationLinkProps) => (
   <Link
     to={path}
     className={cn(

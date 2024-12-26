@@ -1,6 +1,6 @@
 import { Star } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useCallback, memo } from "react";
 
 interface ReviewsSectionProps {
   location?: string;
@@ -55,42 +55,62 @@ const reviews = [
     location: "Secaucus, NJ",
     date: "2 months ago"
   }
-];
+] as const;
+
+const ReviewCard = memo(({ review, index }: { review: typeof reviews[number]; index: number }) => (
+  <Card key={index} className="flex-none w-96 hover:shadow-lg transition-shadow">
+    <CardContent className="p-6">
+      <div className="flex items-center mb-4">
+        {[...Array(review.rating)].map((_, i) => (
+          <Star 
+            key={i} 
+            className="w-5 h-5 text-secondary" 
+            fill="currentColor"
+            aria-hidden="true"
+          />
+        ))}
+        <span className="sr-only">{review.rating} out of 5 stars</span>
+      </div>
+      <p className="text-gray-600 mb-4">{review.text}</p>
+      <div className="space-y-2">
+        <p className="font-semibold">{review.name}</p>
+        <p className="text-sm text-gray-500">{review.service}</p>
+        <p className="text-sm text-gray-500">{review.location}</p>
+      </div>
+    </CardContent>
+  </Card>
+));
+
+ReviewCard.displayName = 'ReviewCard';
 
 const ReviewsSection = ({ location }: ReviewsSectionProps) => {
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
+  const scroll = useCallback(() => {
     const scrollContainer = scrollRef.current;
     if (!scrollContainer) return;
 
-    let scrollPosition = 0;
     const cardWidth = 384; // w-96 = 24rem = 384px
     const gap = 32; // gap-8 = 2rem = 32px
     const totalWidth = (cardWidth + gap) * reviews.length;
 
-    const scroll = () => {
-      scrollPosition += 1;
-      if (scrollPosition >= totalWidth) {
-        scrollPosition = 0;
-      }
-      if (scrollContainer) {
-        scrollContainer.scrollLeft = scrollPosition;
-      }
-    };
-
-    const intervalId = setInterval(scroll, 50);
-
-    return () => clearInterval(intervalId);
+    scrollContainer.scrollLeft = (scrollContainer.scrollLeft + 1) % totalWidth;
   }, []);
 
-  // Filter reviews by location if provided
+  useEffect(() => {
+    const intervalId = setInterval(scroll, 50);
+    return () => clearInterval(intervalId);
+  }, [scroll]);
+
   const filteredReviews = location 
     ? reviews.filter(review => review.location.includes(location))
     : reviews;
 
   return (
-    <section className="py-20 overflow-hidden">
+    <section 
+      className="py-20 overflow-hidden"
+      aria-label="Customer Reviews"
+    >
       <div className="container mx-auto px-4">
         <h2 className="text-3xl font-bold text-center mb-12">
           {location ? `Customer Reviews in ${location}` : 'Customer Reviews'}
@@ -99,27 +119,11 @@ const ReviewsSection = ({ location }: ReviewsSectionProps) => {
           ref={scrollRef}
           className="flex gap-8 overflow-x-hidden"
           style={{ WebkitOverflowScrolling: 'touch' }}
+          role="region"
+          aria-label="Reviews carousel"
         >
           {[...filteredReviews, ...filteredReviews].map((review, index) => (
-            <Card key={index} className="flex-none w-96 hover:shadow-lg transition-shadow">
-              <CardContent className="p-6">
-                <div className="flex items-center mb-4">
-                  {[...Array(review.rating)].map((_, i) => (
-                    <Star 
-                      key={i} 
-                      className="w-5 h-5 text-secondary" 
-                      fill="currentColor"
-                    />
-                  ))}
-                </div>
-                <p className="text-gray-600 mb-4">{review.text}</p>
-                <div className="space-y-2">
-                  <p className="font-semibold">{review.name}</p>
-                  <p className="text-sm text-gray-500">{review.service}</p>
-                  <p className="text-sm text-gray-500">{review.location}</p>
-                </div>
-              </CardContent>
-            </Card>
+            <ReviewCard key={index} review={review} index={index} />
           ))}
         </div>
       </div>
@@ -127,4 +131,4 @@ const ReviewsSection = ({ location }: ReviewsSectionProps) => {
   );
 };
 
-export default ReviewsSection;
+export default memo(ReviewsSection);
