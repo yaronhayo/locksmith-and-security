@@ -18,7 +18,7 @@ const HeroSection = () => {
 
   return (
     <section 
-      className="relative min-h-screen bg-gradient-to-br from-primary to-primary-hover overflow-hidden pt-20 pb-12 lg:pb-20"
+      className="relative min-h-screen bg-gradient-to-br from-primary to-primary-hover overflow-hidden pt-16 pb-8 md:pt-20 md:pb-12 lg:pb-20"
       role="banner"
       aria-label="Hero section"
     >
@@ -34,7 +34,7 @@ const HeroSection = () => {
         transition={{ duration: 0.5 }}
       >
         <div className="flex flex-col lg:flex-row items-start justify-between gap-8 lg:gap-12 w-full">
-          <div className="lg:w-1/2 space-y-6 lg:space-y-8 text-white">
+          <div className="w-full lg:w-1/2 space-y-4 md:space-y-6 lg:space-y-8">
             <motion.div 
               className="flex items-center space-x-2 bg-secondary/90 backdrop-blur-sm text-white px-4 py-2 rounded-full w-fit group hover:bg-secondary transition-all duration-300 relative overflow-hidden shadow-lg hover:shadow-xl"
               initial={{ opacity: 0, x: -20 }}
@@ -49,13 +49,13 @@ const HeroSection = () => {
             </motion.div>
             
             <motion.h1 
-              className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight drop-shadow-md flex flex-col gap-4"
+              className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight drop-shadow-md"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
             >
-              <div className="flex items-center gap-4 lg:gap-8">
-                <div className="w-[200px]">
+              <div className="flex items-center gap-2 lg:gap-4">
+                <div className="w-[120px] sm:w-[150px] md:w-[180px] lg:w-[200px]">
                   <AnimatePresence mode="wait">
                     <motion.span
                       key={words[currentWord]}
@@ -71,11 +71,11 @@ const HeroSection = () => {
                 </div>
                 <span className="text-white">Locksmith</span>
               </div>
-              <div className="whitespace-nowrap text-3xl md:text-4xl lg:text-5xl">Services in North Bergen</div>
+              <div className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl mt-2">Services in North Bergen</div>
             </motion.h1>
 
             <motion.p 
-              className="subtitle text-white/90 leading-relaxed text-lg md:text-xl"
+              className="text-base sm:text-lg md:text-xl text-white/90 leading-relaxed max-w-2xl"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4 }}
@@ -92,7 +92,7 @@ const HeroSection = () => {
               <Button 
                 size="lg" 
                 variant="secondary" 
-                className="text-lg group transform hover:scale-105 transition-all duration-300 hover:shadow-lg relative overflow-hidden" 
+                className="text-base sm:text-lg group transform hover:scale-105 transition-all duration-300 hover:shadow-lg relative overflow-hidden" 
                 asChild
                 aria-label="Call us now"
               >
@@ -106,7 +106,7 @@ const HeroSection = () => {
               <Button 
                 size="lg" 
                 variant="outline" 
-                className="text-lg bg-white/10 hover:bg-white/20 group transform hover:scale-105 transition-all duration-300 hover:shadow-lg backdrop-blur-sm" 
+                className="text-base sm:text-lg bg-white/10 hover:bg-white/20 group transform hover:scale-105 transition-all duration-300 hover:shadow-lg backdrop-blur-sm" 
                 asChild
                 aria-label="View our services"
               >
@@ -118,7 +118,7 @@ const HeroSection = () => {
             </motion.div>
 
             <motion.div 
-              className="grid grid-cols-1 sm:grid-cols-3 gap-6 mt-12"
+              className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-8"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.6 }}
@@ -129,10 +129,10 @@ const HeroSection = () => {
                 className="flex items-center space-x-3 text-white group hover:text-white transition-all duration-300 transform hover:translate-y-[-2px] cursor-pointer backdrop-blur-sm bg-white/5 p-3 rounded-lg"
                 role="listitem"
               >
-                <Clock className="w-8 h-8 text-secondary group-hover:scale-110 transition-transform duration-300" aria-hidden="true" />
+                <Clock className="w-6 h-6 sm:w-8 sm:h-8 text-secondary group-hover:scale-110 transition-transform duration-300" aria-hidden="true" />
                 <div>
-                  <h3 className="font-semibold text-white">24/7 Service</h3>
-                  <p className="text-sm text-white">Always available</p>
+                  <h3 className="font-semibold text-white text-sm sm:text-base">24/7 Service</h3>
+                  <p className="text-xs sm:text-sm text-white/80">Always available</p>
                 </div>
               </div>
               
@@ -140,10 +140,10 @@ const HeroSection = () => {
                 className="flex items-center space-x-3 text-white group hover:text-white transition-all duration-300 transform hover:translate-y-[-2px] cursor-pointer backdrop-blur-sm bg-white/5 p-3 rounded-lg"
                 role="listitem"
               >
-                <Shield className="w-8 h-8 text-secondary group-hover:scale-110 transition-transform duration-300" aria-hidden="true" />
+                <Shield className="w-6 h-6 sm:w-8 sm:h-8 text-secondary group-hover:scale-110 transition-transform duration-300" aria-hidden="true" />
                 <div>
-                  <h3 className="font-semibold text-white">Licensed & Insured</h3>
-                  <p className="text-sm text-white">Your safety first</p>
+                  <h3 className="font-semibold text-white text-sm sm:text-base">Licensed & Insured</h3>
+                  <p className="text-xs sm:text-sm text-white/80">Your safety first</p>
                 </div>
               </div>
               
@@ -151,16 +151,16 @@ const HeroSection = () => {
                 className="flex items-center space-x-3 text-white group hover:text-white transition-all duration-300 transform hover:translate-y-[-2px] cursor-pointer backdrop-blur-sm bg-white/5 p-3 rounded-lg"
                 role="listitem"
               >
-                <Star className="w-8 h-8 text-secondary group-hover:scale-110 transition-transform duration-300" aria-hidden="true" />
+                <Star className="w-6 h-6 sm:w-8 sm:h-8 text-secondary group-hover:scale-110 transition-transform duration-300" aria-hidden="true" />
                 <div>
-                  <h3 className="font-semibold text-white">5-Star Rated</h3>
-                  <p className="text-sm text-white">Trusted service</p>
+                  <h3 className="font-semibold text-white text-sm sm:text-base">5-Star Rated</h3>
+                  <p className="text-xs sm:text-sm text-white/80">Trusted service</p>
                 </div>
               </div>
             </motion.div>
           </div>
           <motion.div 
-            className="lg:w-5/12 w-full bg-white rounded-2xl p-6 lg:p-8 shadow-2xl transform hover:scale-[1.02] transition-transform duration-300 backdrop-blur-sm"
+            className="w-full lg:w-5/12 bg-white rounded-2xl p-4 sm:p-6 lg:p-8 shadow-2xl transform hover:scale-[1.02] transition-transform duration-300 backdrop-blur-sm"
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.7 }}
@@ -168,8 +168,8 @@ const HeroSection = () => {
             aria-label="Request service form"
           >
             <div className="text-center mb-6">
-              <h2 className="text-xl lg:text-2xl font-bold text-gray-900">Request Service</h2>
-              <p className="text-gray-600 mt-2">Get a quick response from our team</p>
+              <h2 className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-900">Request Service</h2>
+              <p className="text-sm sm:text-base text-gray-600 mt-2">Get a quick response from our team</p>
             </div>
             <BookingForm />
           </motion.div>
