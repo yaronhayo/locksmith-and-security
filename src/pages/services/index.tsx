@@ -1,17 +1,20 @@
 import PageLayout from "@/components/layouts/PageLayout";
-import ServicesSection from "@/components/sections/ServicesSection";
-import EmergencyServicesSection from "@/components/sections/EmergencyServicesSection";
-import TrustBadgesSection from "@/components/sections/TrustBadgesSection";
+import ServicesHero from "@/components/sections/services/ServicesHero";
+import ServicesFeatures from "@/components/sections/services/ServicesFeatures";
+import ServicesGrid from "@/components/sections/services/ServicesGrid";
+import ServicesCTA from "@/components/sections/services/ServicesCTA";
+import { motion } from "framer-motion";
 
 const ServicesPage = () => {
   return (
     <PageLayout
-      title="Professional Locksmith Services"
-      description="Expert locksmith services in North Bergen including residential, commercial, and automotive solutions. Available 24/7 for all your security needs."
+      title="Professional Locksmith Services in North Bergen"
+      description="Expert locksmith services including residential, commercial, and automotive solutions. Available 24/7 for all your security needs."
     >
-      <ServicesSection />
-      <EmergencyServicesSection />
-      <TrustBadgesSection />
+      <ServicesHero />
+      <ServicesFeatures />
+      <ServicesGrid />
+      <ServicesCTA />
     </PageLayout>
   );
 };
