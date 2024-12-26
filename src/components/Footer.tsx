@@ -1,4 +1,4 @@
-import { Phone, Mail, MapPin, Clock } from 'lucide-react';
+import { Phone, Mail, MapPin, Clock, Shield } from 'lucide-react';
 
 const Footer = () => {
   return (
@@ -14,7 +14,10 @@ const Footer = () => {
               />
             </div>
             <p className="text-gray-300 mb-4 text-center md:text-left">Professional locksmith services available 24/7 in North Bergen and surrounding areas.</p>
-            <p className="text-gray-300 mb-4 text-center md:text-left">NJ DCA License #13VH13153100</p>
+            <p className="text-gray-300 mb-4 text-center md:text-left flex items-center justify-center md:justify-start gap-2">
+              <Shield className="w-4 h-4 text-secondary" />
+              NJ DCA License #13VH13153100
+            </p>
           </div>
           
           <div className="text-center md:text-left">
