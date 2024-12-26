@@ -1,4 +1,4 @@
-import { Phone, Mail, MapPin, Clock, Shield, Tool, Map, HelpCircle, Star, Info, MessageSquare } from 'lucide-react';
+import { Phone, Mail, MapPin, Clock, Shield, Wrench, Map, HelpCircle, Star, Info, MessageSquare } from 'lucide-react';
 
 const Footer = () => {
   return (
@@ -25,7 +25,7 @@ const Footer = () => {
             <ul className="space-y-2">
               <li>
                 <a href="/services" className="hover:text-secondary transition-colors flex items-center gap-2">
-                  <Tool className="w-4 h-4 text-secondary" />
+                  <Wrench className="w-4 h-4 text-secondary" />
                   Services
                 </a>
               </li>
