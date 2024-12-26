@@ -1,5 +1,4 @@
 import { lazy } from 'react';
-import PageLayout from "@/components/layouts/PageLayout";
 
 // Lazy load service area pages
 const NorthBergen = lazy(() => import("@/pages/service-areas/north-bergen"));
@@ -14,34 +13,34 @@ const Secaucus = lazy(() => import("@/pages/service-areas/secaucus"));
 export const serviceAreaRoutes = [
   {
     path: "/service-areas/north-bergen",
-    element: <PageLayout title="North Bergen Locksmith" description="Locksmith services in North Bergen"><NorthBergen /></PageLayout>
+    element: <NorthBergen />
   },
   {
     path: "/service-areas/union-city",
-    element: <PageLayout title="Union City Locksmith" description="Locksmith services in Union City"><UnionCity /></PageLayout>
+    element: <UnionCity />
   },
   {
     path: "/service-areas/west-new-york",
-    element: <PageLayout title="West New York Locksmith" description="Locksmith services in West New York"><WestNewYork /></PageLayout>
+    element: <WestNewYork />
   },
   {
     path: "/service-areas/guttenberg",
-    element: <PageLayout title="Guttenberg Locksmith" description="Locksmith services in Guttenberg"><Guttenberg /></PageLayout>
+    element: <Guttenberg />
   },
   {
     path: "/service-areas/weehawken",
-    element: <PageLayout title="Weehawken Locksmith" description="Locksmith services in Weehawken"><Weehawken /></PageLayout>
+    element: <Weehawken />
   },
   {
     path: "/service-areas/jersey-city",
-    element: <PageLayout title="Jersey City Locksmith" description="Locksmith services in Jersey City"><JerseyCity /></PageLayout>
+    element: <JerseyCity />
   },
   {
     path: "/service-areas/hoboken",
-    element: <PageLayout title="Hoboken Locksmith" description="Locksmith services in Hoboken"><Hoboken /></PageLayout>
+    element: <Hoboken />
   },
   {
     path: "/service-areas/secaucus",
-    element: <PageLayout title="Secaucus Locksmith" description="Locksmith services in Secaucus"><Secaucus /></PageLayout>
+    element: <Secaucus />
   }
 ];

@@ -141,40 +141,38 @@ const PageLayout = ({
           {JSON.stringify(pageSchema)}
         </script>
       </Helmet>
-      <div className="min-h-screen flex flex-col">
-        {hasHeroSection && (
-          <div className="hero-gradient py-12 md:py-20" role="banner">
-            <div className="container mx-auto px-4">
-              <motion.h1 
-                className="text-3xl md:text-4xl lg:text-5xl font-bold text-white text-center mb-4 md:mb-6"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 }}
-              >
-                {heroTitle || title}
-              </motion.h1>
-              <motion.p 
-                className="text-lg md:text-xl text-white/90 text-center max-w-2xl mx-auto"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3 }}
-              >
-                {heroDescription || description}
-              </motion.p>
-            </div>
+      {hasHeroSection && (
+        <div className="hero-gradient py-12 md:py-20" role="banner">
+          <div className="container mx-auto px-4">
+            <motion.h1 
+              className="text-3xl md:text-4xl lg:text-5xl font-bold text-white text-center mb-4 md:mb-6"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+            >
+              {heroTitle || title}
+            </motion.h1>
+            <motion.p 
+              className="text-lg md:text-xl text-white/90 text-center max-w-2xl mx-auto"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+            >
+              {heroDescription || description}
+            </motion.p>
           </div>
-        )}
-        <motion.main 
-          className={cn("flex-grow", !hasHeroSection && "pt-0")}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: 20 }}
-          transition={{ duration: 0.3 }}
-          role="main"
-        >
-          <div className={cn(className)}>{children}</div>
-        </motion.main>
-      </div>
+        </div>
+      )}
+      <motion.div 
+        className={cn("flex-grow", !hasHeroSection && "pt-0")}
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: 20 }}
+        transition={{ duration: 0.3 }}
+        role="main"
+      >
+        <div className={cn(className)}>{children}</div>
+      </motion.div>
       <Analytics />
     </ErrorBoundary>
   );
