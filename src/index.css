@@ -48,7 +48,7 @@
     @apply text-lg md:text-xl text-heading-neutral;
   }
   a {
-    @apply transition-colors duration-200 hover:text-secondary relative;
+    @apply transition-colors duration-300 hover:text-secondary;
   }
 }
 
