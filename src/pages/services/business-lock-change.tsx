@@ -6,7 +6,6 @@ import ServiceDescription from "@/components/services/business-lock-change/Servi
 import RealWorldExamples from "@/components/services/business-lock-change/RealWorldExamples";
 import EmergencyCallout from "@/components/services/business-lock-change/EmergencyCallout";
 import FAQSection from "@/components/sections/FAQSection";
-import { Lock } from "lucide-react";
 
 const schema = {
   "@context": "https://schema.org",
