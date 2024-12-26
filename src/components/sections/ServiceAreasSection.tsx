@@ -60,7 +60,7 @@ const ServiceAreasSection = () => {
 
         <div className="grid lg:grid-cols-2 gap-8 mb-16">
           <div className="bg-white rounded-xl shadow-lg p-8">
-            <h2 className="text-2xl font-semibold mb-6">Areas We Serve</h2>
+            <h2 className="text-2xl font-semibold mb-6 text-primary">Areas We Serve</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {areas.map((area) => (
                 <Link
@@ -92,7 +92,7 @@ const ServiceAreasSection = () => {
         </div>
 
         <div className="bg-primary/5 rounded-xl p-8 text-center">
-          <h2 className="text-2xl font-semibold mb-4">
+          <h2 className="text-2xl font-semibold mb-4 text-primary">
             Need Emergency Locksmith Service?
           </h2>
           <p className="text-gray-600 mb-6">
@@ -100,7 +100,7 @@ const ServiceAreasSection = () => {
           </p>
           <Link
             to="/contact"
-            className="inline-flex items-center justify-center px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors"
+            className="inline-flex items-center justify-center px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary-hover transition-colors"
           >
             Contact Us Now
           </Link>

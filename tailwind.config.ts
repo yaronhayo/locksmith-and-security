@@ -55,10 +55,10 @@ export default {
           foreground: "hsl(var(--card-foreground))",
         },
         heading: {
-          primary: "#9b87f5",
-          secondary: "#7E69AB",
+          primary: "#1E3A8A",
+          secondary: "#1E40AF",
           dark: "#1A1F2C",
-          light: "#D6BCFA",
+          light: "#FFFFFF",
           neutral: "#8E9196",
         },
       },
