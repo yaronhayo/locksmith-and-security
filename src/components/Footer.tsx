@@ -21,6 +21,27 @@ const Footer = () => {
               <Shield className="w-4 h-4 text-secondary" />
               NJ DCA License #13VH13153100
             </p>
+            <p className="text-xs text-gray-400 text-center md:text-left">
+              This site is protected by reCAPTCHA and the Google{' '}
+              <a 
+                href="https://policies.google.com/privacy" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-secondary hover:text-secondary-hover"
+              >
+                Privacy Policy
+              </a>{' '}
+              and{' '}
+              <a 
+                href="https://policies.google.com/terms" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-secondary hover:text-secondary-hover"
+              >
+                Terms of Service
+              </a>{' '}
+              apply.
+            </p>
           </div>
           
           <div className="text-center md:text-left order-1 md:order-none">
