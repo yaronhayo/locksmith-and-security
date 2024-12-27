@@ -34,30 +34,31 @@ const Header = () => {
         role="banner"
       >
         <div className="container mx-auto px-4">
-          <div className="flex items-center justify-between py-2 lg:py-3">
+          <div className="flex items-center justify-between min-h-[100px] lg:min-h-[35px]">
             <a 
               href="/" 
-              className="flex items-center space-x-3 group no-underline"
+              className="flex items-center space-x-3 group"
               aria-label="Go to homepage"
             >
               <img 
-                src="/logo.png" 
+                src="/lovable-uploads/9b00adf3-451e-4d1c-a118-6a6f06293ec0.png" 
                 alt="Locksmith & Security LLC - Professional 24/7 Locksmith Services in North Bergen, NJ"
-                className={`w-auto h-16 sm:h-20 md:h-24 lg:h-20 transition-transform duration-300 group-hover:scale-105 ${
+                className={`h-[100px] w-auto md:h-[180px] lg:h-[84px] transform transition-transform duration-300 group-hover:scale-110 ${
                   isMenuOpen ? 'brightness-0 invert' : ''
                 }`}
                 style={{
-                  objectFit: 'contain'
+                  aspectRatio: '1/1',
+                  objectFit: 'contain',
+                  maxWidth: 'none'
                 }}
                 loading="eager"
-                width="200"
-                height="80"
+                width="180"
+                height="180"
                 fetchPriority="high"
                 decoding="async"
                 onError={(e) => {
                   const img = e.target as HTMLImageElement;
                   img.src = '/placeholder.svg';
-                  console.error('Logo failed to load:', e);
                 }}
               />
             </a>
