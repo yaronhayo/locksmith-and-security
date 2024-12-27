@@ -3,7 +3,7 @@ import PageLayout from "@/components/layouts/PageLayout";
 
 // Lazy load service pages
 const BusinessLockout = lazy(() => import("@/pages/services/business-lockout"));
-const CarKeyProgram = lazy(() => import("@/pages/services/car-key-programming"));
+const CarKeyProgram = lazy(() => import("@/pages/services/car-key-program"));
 const CarLockout = lazy(() => import("@/pages/services/car-lockout"));
 const HouseLockout = lazy(() => import("@/pages/services/house-lockout"));
 const LockChange = lazy(() => import("@/pages/services/lock-change"));
