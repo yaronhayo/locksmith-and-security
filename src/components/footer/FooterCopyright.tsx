@@ -33,6 +33,27 @@ const FooterCopyright = () => {
           Gett Marketing
         </a>
       </p>
+      <p className="mt-4 text-xs">
+        This site is protected by reCAPTCHA and the Google{' '}
+        <a 
+          href="https://policies.google.com/privacy" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          className="text-secondary hover:text-secondary-hover"
+        >
+          Privacy Policy
+        </a>{' '}
+        and{' '}
+        <a 
+          href="https://policies.google.com/terms" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          className="text-secondary hover:text-secondary-hover"
+        >
+          Terms of Service
+        </a>{' '}
+        apply.
+      </p>
     </div>
   );
 };
