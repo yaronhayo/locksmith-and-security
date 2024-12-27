@@ -3,13 +3,12 @@ import PageLayout from "@/components/layouts/PageLayout";
 
 // Lazy load service pages
 const BusinessLockout = lazy(() => import("@/pages/services/business-lockout"));
-const CarKeyProgram = lazy(() => import("@/pages/services/car-key-program"));
+const CarKeyProgram = lazy(() => import("@/pages/services/car-key-programming"));
 const CarLockout = lazy(() => import("@/pages/services/car-lockout"));
 const HouseLockout = lazy(() => import("@/pages/services/house-lockout"));
 const LockChange = lazy(() => import("@/pages/services/lock-change"));
 const LockRekey = lazy(() => import("@/pages/services/lock-rekey"));
 const NewCarKey = lazy(() => import("@/pages/services/new-car-key"));
-const BusinessLockChange = lazy(() => import("@/pages/services/business-lock-change"));
 
 export const serviceRoutes = [
   {
@@ -17,7 +16,7 @@ export const serviceRoutes = [
     element: <PageLayout title="Business Lockout Services" description="Professional business lockout solutions"><BusinessLockout /></PageLayout>
   },
   {
-    path: "/services/car-key-program",
+    path: "/services/car-key-programming",
     element: <PageLayout title="Car Key Programming" description="Expert car key programming services"><CarKeyProgram /></PageLayout>
   },
   {
@@ -39,9 +38,5 @@ export const serviceRoutes = [
   {
     path: "/services/new-car-key",
     element: <PageLayout title="New Car Key Services" description="New car key cutting and programming"><NewCarKey /></PageLayout>
-  },
-  {
-    path: "/services/business-lock-change",
-    element: <PageLayout title="Business Lock Change Services" description="Professional commercial lock change solutions"><BusinessLockChange /></PageLayout>
   }
 ];
