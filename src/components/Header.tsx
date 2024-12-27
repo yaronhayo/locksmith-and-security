@@ -37,27 +37,27 @@ const Header = () => {
           <div className="flex items-center justify-between py-2 lg:py-3">
             <a 
               href="/" 
-              className="flex items-center space-x-3 group"
+              className="flex items-center space-x-3 group no-underline"
               aria-label="Go to homepage"
             >
               <img 
                 src="/logo.png" 
                 alt="Locksmith & Security LLC - Professional 24/7 Locksmith Services in North Bergen, NJ"
-                className={`w-auto h-12 sm:h-16 md:h-20 lg:h-16 transform transition-transform duration-300 group-hover:scale-105 ${
+                className={`w-auto h-16 sm:h-20 md:h-24 lg:h-20 transition-transform duration-300 group-hover:scale-105 ${
                   isMenuOpen ? 'brightness-0 invert' : ''
                 }`}
                 style={{
-                  objectFit: 'contain',
-                  maxWidth: 'none'
+                  objectFit: 'contain'
                 }}
                 loading="eager"
-                width="auto"
-                height="64"
+                width="200"
+                height="80"
                 fetchPriority="high"
                 decoding="async"
                 onError={(e) => {
                   const img = e.target as HTMLImageElement;
                   img.src = '/placeholder.svg';
+                  console.error('Logo failed to load:', e);
                 }}
               />
             </a>
