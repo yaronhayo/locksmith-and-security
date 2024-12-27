@@ -81,8 +81,33 @@ const TermsConditionsPage = () => {
             </p>
           </section>
 
+          <section className="mb-8" aria-labelledby="recaptcha-heading">
+            <h2 className="text-2xl font-semibold mb-4" id="recaptcha-heading">9. Google reCAPTCHA</h2>
+            <p>
+              This site is protected by reCAPTCHA and the Google{' '}
+              <a 
+                href="https://policies.google.com/privacy" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-primary hover:text-secondary transition-colors"
+              >
+                Privacy Policy
+              </a>
+              {' '}and{' '}
+              <a 
+                href="https://policies.google.com/terms" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-primary hover:text-secondary transition-colors"
+              >
+                Terms of Service
+              </a>
+              {' '}apply.
+            </p>
+          </section>
+
           <section className="mb-8" aria-labelledby="contact-heading">
-            <h2 className="text-2xl font-semibold mb-4" id="contact-heading">8. Contact Information</h2>
+            <h2 className="text-2xl font-semibold mb-4" id="contact-heading">10. Contact Information</h2>
             <p>
               For questions about these Terms & Conditions, please contact us at:{' '}
               <a 

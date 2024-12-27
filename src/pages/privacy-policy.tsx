@@ -72,12 +72,37 @@ const PrivacyPolicyPage = () => {
           </section>
 
           <section className="mb-8">
-            <h2 className="text-2xl font-semibold mb-4">6. Contact Us</h2>
+            <h2 className="text-2xl font-semibold mb-4">7. Google reCAPTCHA</h2>
+            <p>
+              We use Google reCAPTCHA on our website to help prevent spam and abuse. By using reCAPTCHA, you agree to the Google{' '}
+              <a 
+                href="https://policies.google.com/privacy" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-primary hover:text-secondary transition-colors"
+              >
+                Privacy Policy
+              </a>
+              {' '}and{' '}
+              <a 
+                href="https://policies.google.com/terms" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-primary hover:text-secondary transition-colors"
+              >
+                Terms of Service
+              </a>
+              .
+            </p>
+          </section>
+
+          <section className="mb-8">
+            <h2 className="text-2xl font-semibold mb-4">8. Contact Us</h2>
             <p>
               For questions about this Privacy Policy or to exercise your rights, please contact us at:{' '}
               <a 
                 href="mailto:support@247locksmithandsecurity.com" 
-                className="text-primary hover:text-secondary"
+                className="text-primary hover:text-secondary transition-colors"
                 aria-label="Email us about privacy concerns"
               >
                 support@247locksmithandsecurity.com
