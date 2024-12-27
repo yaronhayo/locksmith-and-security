@@ -90,6 +90,12 @@
   .btn-hover {
     @apply transition-all duration-300 hover:shadow-lg hover:translate-y-[-2px];
   }
+
+  /* Secondary button hover text color */
+  .bg-secondary:hover,
+  [class*="bg-secondary"]:hover {
+    @apply text-black;
+  }
 }
 
 .hero-gradient {
