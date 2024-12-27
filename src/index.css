@@ -96,6 +96,12 @@
   [class*="bg-secondary"]:hover {
     @apply text-black;
   }
+
+  /* Secondary button icon hover color */
+  .bg-secondary:hover svg,
+  [class*="bg-secondary"]:hover svg {
+    @apply text-black;
+  }
 }
 
 .hero-gradient {
