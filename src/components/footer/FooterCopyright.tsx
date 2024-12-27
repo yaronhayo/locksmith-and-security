@@ -4,7 +4,28 @@ const FooterCopyright = () => {
   return (
     <div className="text-center text-gray-400">
       <p>&copy; {new Date().getFullYear()} Locksmith & Security LLC. All rights reserved.</p>
-      <p className="mt-2 space-x-4">
+      <p className="mt-2 text-sm">
+        This site is protected by reCAPTCHA and the Google{' '}
+        <a 
+          href="https://policies.google.com/privacy" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          className="text-secondary hover:text-secondary-hover"
+        >
+          Privacy Policy
+        </a>{' '}
+        and{' '}
+        <a 
+          href="https://policies.google.com/terms" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          className="text-secondary hover:text-secondary-hover"
+        >
+          Terms of Service
+        </a>{' '}
+        apply.
+      </p>
+      <p className="mt-4 space-x-4">
         <Link 
           to="/privacy-policy" 
           className="hover:text-secondary transition-colors" 
@@ -32,27 +53,6 @@ const FooterCopyright = () => {
         >
           Gett Marketing
         </a>
-      </p>
-      <p className="mt-4 text-xs">
-        This site is protected by reCAPTCHA and the Google{' '}
-        <a 
-          href="https://policies.google.com/privacy" 
-          target="_blank" 
-          rel="noopener noreferrer"
-          className="text-secondary hover:text-secondary-hover"
-        >
-          Privacy Policy
-        </a>{' '}
-        and{' '}
-        <a 
-          href="https://policies.google.com/terms" 
-          target="_blank" 
-          rel="noopener noreferrer"
-          className="text-secondary hover:text-secondary-hover"
-        >
-          Terms of Service
-        </a>{' '}
-        apply.
       </p>
     </div>
   );
