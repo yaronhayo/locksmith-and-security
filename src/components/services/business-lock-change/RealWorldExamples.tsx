@@ -5,18 +5,18 @@ import { Building2, Shield, Lock } from "lucide-react";
 const examples = [
   {
     icon: Building2,
-    title: "Retail Chain Security",
-    description: "A retail chain needed to upgrade their storefront locks after a security incident. We installed high-security locks across multiple locations while maintaining master key access."
+    title: "Office Complex Security",
+    description: "Implemented a master key system for a 20-story office building, improving access control while maintaining security protocols."
   },
   {
     icon: Shield,
-    title: "Office Complex Upgrade",
-    description: "An office complex required standardization of their locking system. We implemented a comprehensive master key system for efficient access management."
+    title: "Retail Chain Upgrade",
+    description: "Upgraded locks across multiple retail locations with high-security cylinders and restricted key systems."
   },
   {
     icon: Lock,
-    title: "Security Enhancement",
-    description: "A growing business needed to integrate traditional locks with modern access control. We designed and implemented a hybrid solution for maximum security."
+    title: "Industrial Facility",
+    description: "Installed heavy-duty commercial locks and electronic access control systems for a manufacturing plant."
   }
 ];
 
@@ -29,7 +29,7 @@ const RealWorldExamples = () => {
         transition={{ duration: 0.5 }}
         className="text-3xl font-bold mb-8 text-primary"
       >
-        Real Business Solutions
+        Recent Projects
       </motion.h2>
       <div className="grid md:grid-cols-3 gap-6">
         {examples.map((example, index) => {

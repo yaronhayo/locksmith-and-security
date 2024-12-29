@@ -15,11 +15,11 @@ const BusinessLockChangeHero = () => {
             className="space-y-6"
           >
             <h1 className="text-4xl md:text-5xl font-bold text-white mb-6">
-              Professional Business Lock Change Services
+              Professional Commercial Lock Change Services
             </h1>
             <p className="text-xl text-white/90 mb-8">
-              Expert commercial lock change and security upgrade services in North Bergen. 
-              Fast response time, fair pricing, and professional installation guaranteed.
+              Expert commercial lock replacement and security upgrade solutions for businesses. 
+              We provide professional installation, master key systems, and high-security lock solutions.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <Button size="lg" variant="secondary" asChild className="text-lg">
@@ -29,13 +29,13 @@ const BusinessLockChangeHero = () => {
                 </a>
               </Button>
               <Button size="lg" variant="outline" className="text-lg bg-white/10 text-white hover:bg-white/20">
-                Get Free Quote
+                Schedule Service
               </Button>
             </div>
             <div className="grid grid-cols-2 gap-6 mt-12">
               <div className="flex items-center gap-3">
                 <Clock className="h-6 w-6 text-secondary" />
-                <span className="text-white">Fast Response</span>
+                <span className="text-white">Same-Day Service</span>
               </div>
               <div className="flex items-center gap-3">
                 <Shield className="h-6 w-6 text-secondary" />
@@ -43,7 +43,7 @@ const BusinessLockChangeHero = () => {
               </div>
               <div className="flex items-center gap-3">
                 <DollarSign className="h-6 w-6 text-secondary" />
-                <span className="text-white">Upfront Pricing</span>
+                <span className="text-white">Competitive Rates</span>
               </div>
             </div>
           </motion.div>
@@ -55,8 +55,8 @@ const BusinessLockChangeHero = () => {
           >
             <div className="bg-white rounded-2xl p-6 lg:p-8 shadow-2xl">
               <div className="text-center mb-6">
-                <h2 className="text-xl lg:text-2xl font-bold text-gray-900">Request Business Lock Service</h2>
-                <p className="text-gray-600 mt-2">Professional commercial lock solutions</p>
+                <h2 className="text-xl lg:text-2xl font-bold text-gray-900">Schedule Lock Change Service</h2>
+                <p className="text-gray-600 mt-2">Professional commercial security solutions</p>
               </div>
               <BookingForm />
             </div>
