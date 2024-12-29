@@ -14,6 +14,10 @@ import {
 import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 
+interface BookingFormProps {
+  service?: string;
+}
+
 const services = [
   "Car Lockout",
   "Car Key Programming",
@@ -33,11 +37,11 @@ const timeframes = [
   "Just Curious"
 ];
 
-const BookingForm = () => {
+const BookingForm = ({ service }: BookingFormProps) => {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [selectedService, setSelectedService] = useState("");
-  const [showVehicleInfo, setShowVehicleInfo] = useState(false);
+  const [selectedService, setSelectedService] = useState(service || "");
+  const [showVehicleInfo, setShowVehicleInfo] = useState(service?.toLowerCase().includes("car") || false);
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   const handleServiceChange = (value: string) => {
@@ -173,7 +177,7 @@ const BookingForm = () => {
       
       <div className="space-y-2">
         <Label htmlFor="service">Service Needed</Label>
-        <Select onValueChange={handleServiceChange} name="service">
+        <Select onValueChange={handleServiceChange} name="service" defaultValue={service}>
           <SelectTrigger 
             id="service"
             className={`h-10 text-base ${errors.service ? 'border-red-500' : ''}`}
