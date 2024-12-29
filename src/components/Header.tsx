@@ -7,6 +7,7 @@ import SettingsDialog from "./SettingsDialog";
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -29,7 +30,10 @@ const Header = () => {
           <Navigation />
           
           <div className="flex items-center space-x-4">
-            <ActionButtons />
+            <ActionButtons 
+              isMenuOpen={isMenuOpen}
+              setIsMenuOpen={setIsMenuOpen}
+            />
             <SettingsDialog />
           </div>
         </div>
