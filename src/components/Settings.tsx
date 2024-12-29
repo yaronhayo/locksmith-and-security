@@ -37,7 +37,7 @@ export const Settings = () => {
                 type="password"
                 value={apiKey}
                 onChange={(e) => setApiKey(e.target.value)}
-                placeholder="Enter your reCAPTCHA Enterprise site key"
+                placeholder="6LeQE6YqAAAAAPQkLboESEwCMnnKVkaGTbj63EPN"
                 required
               />
               <p className="text-sm text-gray-500">
