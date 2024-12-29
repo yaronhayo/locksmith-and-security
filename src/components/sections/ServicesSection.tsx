@@ -1,6 +1,7 @@
 import { ArrowRight, Lock, Car, Building2, Key } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { Link } from 'react-router-dom';
 
 const services = [
   { 
@@ -74,10 +75,10 @@ const ServicesSection = () => {
                 <h3 className="text-xl font-semibold mb-2">{service.title}</h3>
                 <p className="text-gray-600 mb-4">{service.description}</p>
                 <Button asChild variant="secondary" className="group">
-                  <a href={service.link} className="inline-flex items-center">
+                  <Link to={service.link} className="inline-flex items-center">
                     {service.cta}
                     <ArrowRight className="ml-2 transform transition-transform duration-300 group-hover:translate-x-2" />
-                  </a>
+                  </Link>
                 </Button>
               </CardContent>
             </Card>
