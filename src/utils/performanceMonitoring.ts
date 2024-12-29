@@ -1,23 +1,3 @@
-interface LayoutShiftEntry extends PerformanceEntry {
-  value: number;
-  hadRecentInput: boolean;
-}
-
-interface FirstInputEntry extends PerformanceEntry {
-  processingStart: number;
-  startTime: number;
-}
-
-interface LargestContentfulPaintEntry extends PerformanceEntry {
-  element: Element;
-  id: string;
-  loadTime: number;
-  renderTime: number;
-  size: number;
-  startTime: number;
-  url: string;
-}
-
 export const setupPerformanceMonitoring = () => {
   // Monitor Largest Contentful Paint
   new PerformanceObserver((entryList) => {
@@ -64,8 +44,9 @@ export const setupPerformanceMonitoring = () => {
   // Monitor resource timing
   new PerformanceObserver((entryList) => {
     for (const entry of entryList.getEntries()) {
-      if (entry.initiatorType === 'script' || entry.initiatorType === 'css') {
-        console.log(`Resource ${entry.name} took ${entry.duration}ms to load`);
+      const resource = entry as PerformanceResourceTiming;
+      if (resource.initiatorType === 'script' || resource.initiatorType === 'css') {
+        console.log(`Resource ${resource.name} took ${resource.duration}ms to load`);
       }
     }
   }).observe({ entryTypes: ['resource'] });
