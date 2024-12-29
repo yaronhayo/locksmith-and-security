@@ -1,6 +1,10 @@
 import { Link } from 'react-router-dom';
 
 const FooterCopyright = () => {
+  const handleClick = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   return (
     <div className="text-center text-gray-400">
       <p>&copy; {new Date().getFullYear()} Locksmith & Security LLC. All rights reserved.</p>
@@ -30,6 +34,7 @@ const FooterCopyright = () => {
           to="/privacy-policy" 
           className="hover:text-secondary transition-colors" 
           aria-label="Read our privacy policy"
+          onClick={handleClick}
         >
           Privacy Policy
         </Link>
@@ -38,6 +43,7 @@ const FooterCopyright = () => {
           to="/terms-conditions" 
           className="hover:text-secondary transition-colors" 
           aria-label="View our terms and conditions"
+          onClick={handleClick}
         >
           Terms & Conditions
         </Link>

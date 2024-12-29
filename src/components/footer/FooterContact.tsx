@@ -2,6 +2,10 @@ import { Phone, Mail, MapPin } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const FooterContact = () => {
+  const handleClick = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   return (
     <div className="text-center md:text-left order-1 md:order-none">
       <h3 className="text-xl font-bold mb-4 text-white">Contact Info</h3>
@@ -25,6 +29,7 @@ const FooterContact = () => {
             to="/service-areas" 
             className="hover:text-secondary transition-colors" 
             aria-label="View our service areas"
+            onClick={handleClick}
           >
             Serving North Bergen, NJ and surrounding areas
           </Link>
