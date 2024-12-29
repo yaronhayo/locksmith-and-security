@@ -17,7 +17,7 @@ export const serviceRoutes = [
     element: <PageLayout title="Business Lockout Services" description="Professional business lockout solutions"><BusinessLockout /></PageLayout>
   },
   {
-    path: "/services/car-key-programming",
+    path: "/services/car-key-program",
     element: <PageLayout title="Car Key Programming" description="Expert car key programming services"><CarKeyProgram /></PageLayout>
   },
   {
