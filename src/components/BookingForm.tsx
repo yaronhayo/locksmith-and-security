@@ -77,6 +77,7 @@ const BookingForm = () => {
         errors={errors}
         showVehicleInfo={showVehicleInfo}
         selectedService={selectedService}
+        isSubmitting={isSubmitting}
         handleServiceChange={handleServiceChange}
       />
       
