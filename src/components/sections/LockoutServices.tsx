@@ -13,29 +13,29 @@ interface LockoutServicesProps {
 }
 
 const defaultServices = {
-  'business-lock-change': {
-    title: "Professional Lock Change Solutions",
-    description: "Expert commercial lock change services for businesses of all sizes, delivered with professionalism and precision.",
+  'business-lockout': {
+    title: "Commercial Lockout Solutions",
+    description: "Professional business lockout services available 24/7 for all types of commercial properties. Fast response and secure entry by licensed locksmiths.",
     services: [
       {
         icon: Clock,
-        title: "24/7 Lock Change Service",
-        description: "Available around the clock for immediate response to your business lock change needs. Our team arrives within 15-30 minutes in North Bergen area."
+        title: "24/7 Emergency Response",
+        description: "Available around the clock for immediate response to your business lockout emergency. Our team arrives within 15-30 minutes in North Bergen area."
       },
       {
         icon: Shield,
-        title: "High-Security Solutions",
-        description: "Installation of premium grade commercial locks from trusted manufacturers, ensuring maximum security for your business."
+        title: "Licensed & Insured Service",
+        description: "Our commercial locksmiths are fully licensed, bonded, and insured, ensuring professional and liability-protected service for your business."
       },
       {
         icon: Building2,
-        title: "All Business Types",
-        description: "Professional service for all types of commercial properties, including retail stores, offices, and industrial facilities."
+        title: "All Commercial Properties",
+        description: "Expert service for offices, retail stores, warehouses, and industrial facilities. We handle all types of commercial locks and security systems."
       },
       {
         icon: Lock,
-        title: "Master Key Systems",
-        description: "Expert implementation of master key systems and access control solutions tailored to your business needs."
+        title: "Non-Destructive Entry",
+        description: "Advanced techniques and professional tools to gain entry without damaging your locks or door, preserving your property's security."
       }
     ]
   },
