@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import Navigation from "./header/Navigation";
 import ActionButtons from "./header/ActionButtons";
 import TopBar from "./header/TopBar";
-import SettingsDialog from "./SettingsDialog";
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -27,14 +26,13 @@ const Header = () => {
             <span className="text-xl font-bold">Locksmith & Security</span>
           </Link>
           
-          <Navigation />
+          <Navigation isMenuOpen={isMenuOpen} />
           
           <div className="flex items-center space-x-4">
             <ActionButtons 
               isMenuOpen={isMenuOpen}
               setIsMenuOpen={setIsMenuOpen}
             />
-            <SettingsDialog />
           </div>
         </div>
       </div>
