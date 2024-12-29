@@ -4,6 +4,9 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight, Lock, Car, Building2, Key } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useToast } from "@/components/ui/use-toast";
+import LoadingSpinner from "@/components/LoadingSpinner";
+import { ErrorBoundary } from "react-error-boundary";
+import ErrorFallback from "@/components/ErrorFallback";
 
 const services = [
   { 
@@ -76,63 +79,65 @@ const ServicesGrid = () => {
   };
 
   return (
-    <section className="py-12 lg:py-20 bg-gray-50" aria-labelledby="services-title">
-      <div className="container mx-auto px-4">
-        <motion.h2 
-          id="services-title"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="text-3xl md:text-4xl font-bold text-center mb-8 lg:mb-12"
-        >
-          Our Professional Services
-        </motion.h2>
-        
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 lg:gap-8">
-          {services.map((service, index) => {
-            const Icon = service.icon;
-            return (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="h-full"
-              >
-                <Card className="h-full hover:shadow-lg transition-all duration-300 group">
-                  <CardContent className="p-6 flex flex-col h-full">
-                    <div className="mb-4">
-                      <Icon className="w-12 h-12 text-primary group-hover:text-secondary transition-colors duration-300" />
-                    </div>
-                    <h3 className="text-xl font-semibold mb-3 group-hover:text-primary transition-colors duration-300">
-                      {service.title}
-                    </h3>
-                    <p className="text-gray-600 mb-6 flex-grow">
-                      {service.description}
-                    </p>
-                    <Button 
-                      asChild 
-                      variant="secondary" 
-                      className="w-full group mt-auto"
-                      onClick={() => handleServiceClick(service.title)}
-                    >
-                      <Link 
-                        to={service.link} 
-                        className="inline-flex items-center justify-center"
-                        aria-label={`Learn more about ${service.title}`}
+    <ErrorBoundary FallbackComponent={ErrorFallback}>
+      <section className="py-12 lg:py-20 bg-gray-50" aria-labelledby="services-title">
+        <div className="container mx-auto px-4">
+          <motion.h2 
+            id="services-title"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="text-3xl md:text-4xl font-bold text-center mb-8 lg:mb-12"
+          >
+            Our Professional Services
+          </motion.h2>
+          
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 lg:gap-8">
+            {services.map((service, index) => {
+              const Icon = service.icon;
+              return (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  className="h-full"
+                >
+                  <Card className="h-full hover:shadow-lg transition-all duration-300 group">
+                    <CardContent className="p-6 flex flex-col h-full">
+                      <div className="mb-4">
+                        <Icon className="w-12 h-12 text-primary group-hover:text-secondary transition-colors duration-300" />
+                      </div>
+                      <h3 className="text-xl font-semibold mb-3 group-hover:text-primary transition-colors duration-300">
+                        {service.title}
+                      </h3>
+                      <p className="text-gray-600 mb-6 flex-grow">
+                        {service.description}
+                      </p>
+                      <Button 
+                        asChild 
+                        variant="secondary" 
+                        className="w-full group mt-auto"
+                        onClick={() => handleServiceClick(service.title)}
                       >
-                        {service.cta}
-                        <ArrowRight className="ml-2 w-4 h-4 transform transition-transform duration-300 group-hover:translate-x-1" />
-                      </Link>
-                    </Button>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            );
-          })}
+                        <Link 
+                          to={service.link} 
+                          className="inline-flex items-center justify-center"
+                          aria-label={`Learn more about ${service.title}`}
+                        >
+                          {service.cta}
+                          <ArrowRight className="ml-2 w-4 h-4 transform transition-transform duration-300 group-hover:translate-x-1" />
+                        </Link>
+                      </Button>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              );
+            })}
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </ErrorBoundary>
   );
 };
 
