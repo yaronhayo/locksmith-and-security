@@ -37,7 +37,7 @@ export default defineConfig(({ mode }) => ({
       ext: '.gz',
     }),
     compression({
-      algorithm: 'brotli',
+      algorithm: 'gzip',
       ext: '.br',
     }),
   ].filter(Boolean),

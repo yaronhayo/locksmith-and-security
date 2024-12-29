@@ -2,6 +2,8 @@
 
 interface Window {
   gtag: (command: string, action: string, params: any) => void;
+  dataLayer: any[];
+  clarity: (action: string, ...args: any[]) => void;
 }
 
 interface LayoutShiftEntry extends PerformanceEntry {
