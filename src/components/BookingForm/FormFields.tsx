@@ -16,15 +16,13 @@ interface FormFieldsProps {
   errors: Record<string, string>;
   showVehicleInfo: boolean;
   selectedService: string;
-  isSubmitting: boolean;
   handleServiceChange: (value: string) => void;
 }
 
-const FormFields = ({
+export const FormFields = ({
   errors,
   showVehicleInfo,
   selectedService,
-  isSubmitting,
   handleServiceChange,
 }: FormFieldsProps) => {
   return (
@@ -36,8 +34,7 @@ const FormFields = ({
           name="name"
           type="text"
           aria-describedby="name-error"
-          className={errors.name ? 'border-red-500' : ''}
-          disabled={isSubmitting}
+          className={`h-10 text-base ${errors.name ? 'border-red-500' : ''}`}
         />
         {errors.name && (
           <Alert variant="destructive">
@@ -80,17 +77,13 @@ const FormFields = ({
           </Alert>
         )}
       </div>
-
+      
       <div className="space-y-2">
         <Label htmlFor="service">Service Needed</Label>
-        <Select 
-          onValueChange={handleServiceChange} 
-          name="service"
-          disabled={isSubmitting}
-        >
+        <Select onValueChange={handleServiceChange} name="service">
           <SelectTrigger 
             id="service"
-            className={errors.service ? 'border-red-500' : ''}
+            className={`h-10 text-base ${errors.service ? 'border-red-500' : ''}`}
           >
             <SelectValue placeholder="Select Service Needed" />
           </SelectTrigger>
@@ -206,5 +199,3 @@ const FormFields = ({
     </>
   );
 };
-
-export default FormFields;
