@@ -54,7 +54,6 @@ const Header = () => {
                 loading="eager"
                 width="180"
                 height="180"
-                fetchPriority="high"
                 decoding="async"
               />
             </a>

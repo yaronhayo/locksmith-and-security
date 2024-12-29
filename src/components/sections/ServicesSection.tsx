@@ -8,57 +8,49 @@ const services = [
     icon: Lock, 
     title: "House Lockout", 
     description: "Locked out of your home? Our expert locksmiths will help you regain access quickly and safely, without damaging your locks. Available 24/7 for homeowners and renters.", 
-    link: "/services/house-lockout", 
-    cta: "Unlock Your Home" 
+    link: "/services/house-lockout"
   },
   { 
     icon: Car, 
     title: "Car Lockout", 
     description: "Lost your car keys or locked them inside? Our mobile locksmiths come to your location and safely unlock your vehicle. Available 24/7 for all car makes and models.", 
-    link: "/services/car-lockout", 
-    cta: "Unlock Your Car" 
+    link: "/services/car-lockout"
   },
   { 
     icon: Building2, 
     title: "Business Lockout", 
     description: "Can't access your business? We provide fast commercial lockout service to get you back to work quickly. Available for offices, stores, and warehouses.", 
-    link: "/services/business-lockout", 
-    cta: "Unlock Your Business" 
+    link: "/services/business-lockout"
   },
   { 
     icon: Key, 
     title: "Lock Change", 
     description: "Need new locks? We install high-quality locks for better security. Perfect for new homeowners or when upgrading old locks. We work with all major brands.", 
-    link: "/services/lock-change", 
-    cta: "Change Your Locks" 
+    link: "/services/lock-change"
   },
   { 
     icon: Key, 
     title: "Lock Rekey", 
     description: "Want to keep your locks but need new keys? We'll rekey your existing locks to work with new keys, making old ones useless. Ideal for landlords and new homeowners.", 
-    link: "/services/lock-rekey", 
-    cta: "Rekey Your Locks" 
+    link: "/services/lock-rekey"
   },
   { 
     icon: Building2, 
     title: "Business Lock Change", 
     description: "Upgrade your business security with new commercial-grade locks. We install master key systems and high-security locks for offices, stores, and warehouses.", 
-    link: "/services/business-lock-change", 
-    cta: "Secure Your Business" 
+    link: "/services/business-lock-change"
   },
   { 
     icon: Car, 
     title: "New Car Key", 
     description: "Lost your car key? We make and program new keys for all vehicle types, including transponder and smart keys. Fast service with professional equipment.", 
-    link: "/services/new-car-key", 
-    cta: "Get a New Car Key" 
+    link: "/services/new-car-key"
   },
   { 
     icon: Car, 
     title: "Car Key Program", 
     description: "Need a car key programmed? We program all types of electronic car keys and key fobs. Our technicians use professional equipment for all vehicle makes.", 
-    link: "/services/car-key-program", 
-    cta: "Program Your Car Key" 
+    link: "/services/car-key-program"
   }
 ];
 
@@ -82,7 +74,7 @@ const ServicesSection = () => {
                   <p className="text-gray-600 mb-4">{service.description}</p>
                   <Button variant="secondary" className="group w-full">
                     <span className="inline-flex items-center justify-center">
-                      {service.cta}
+                      Learn More
                       <ArrowRight className="ml-2 transform transition-transform duration-300 group-hover:translate-x-2" />
                     </span>
                   </Button>
