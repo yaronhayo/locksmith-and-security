@@ -69,7 +69,6 @@ const BookingForm = () => {
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred";
       
-      // Send error report to admin
       await sendErrorReport(error, {
         formData: Object.fromEntries(new FormData(e.target as HTMLFormElement)),
         timestamp: new Date().toISOString(),
@@ -78,7 +77,7 @@ const BookingForm = () => {
 
       toast({
         title: "Submission Failed",
-        description: "Please try again or contact us directly. Our team has been notified.",
+        description: errorMessage,
         variant: "destructive",
       });
 
