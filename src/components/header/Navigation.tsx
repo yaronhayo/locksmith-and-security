@@ -45,7 +45,7 @@ const NavigationLink = memo(({
       isActive ? "text-secondary" : "text-gray-700 hover:text-secondary",
       isMenuOpen && "text-white lg:text-gray-700"
     )}
-    onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+    onClick={() => window.scrollTo({ top: 0, behavior: 'instant' })}
   >
     {label}
     <motion.div
