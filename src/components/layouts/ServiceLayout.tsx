@@ -13,7 +13,13 @@ interface ServiceLayoutProps {
   callToAction?: string;
 }
 
-const ServiceLayout = ({ title, description, children, icon: Icon, benefits }: ServiceLayoutProps) => {
+const ServiceLayout = ({ 
+  title = "Service", 
+  description = "", 
+  children, 
+  icon: Icon, 
+  benefits = [] 
+}: ServiceLayoutProps) => {
   return (
     <div className="pt-32 pb-20">
       <div className="container mx-auto px-4">
@@ -33,7 +39,7 @@ const ServiceLayout = ({ title, description, children, icon: Icon, benefits }: S
               <h1 className="text-4xl font-bold">{title}</h1>
             </div>
             <p className="text-lg text-gray-600 mb-8">{description}</p>
-            {benefits && (
+            {benefits && benefits.length > 0 && (
               <div className="mb-8">
                 <h2 className="text-2xl font-semibold mb-4">Service Benefits</h2>
                 <ul className="space-y-2">
