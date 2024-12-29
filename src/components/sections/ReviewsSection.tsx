@@ -1,7 +1,8 @@
 import { Star } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
-import { useEffect, useRef, useCallback, memo, useState } from "react";
+import { useEffect, useRef, useCallback, memo, useState, useMemo } from "react";
 import LoadingSpinner from "@/components/LoadingSpinner";
+import { useInView } from "react-intersection-observer";
 
 interface ReviewsSectionProps {
   location?: string;
@@ -58,42 +59,54 @@ const reviews = [
   }
 ];
 
-const ReviewCard = memo(({ review, index }: { review: typeof reviews[number]; index: number }) => (
-  <Card key={index} className="flex-none w-96 hover:shadow-lg transition-shadow">
-    <CardContent className="p-6">
-      <div className="flex items-center mb-4">
-        {[...Array(review.rating)].map((_, i) => (
-          <Star 
-            key={i} 
-            className="w-5 h-5 text-secondary" 
-            fill="currentColor"
-            aria-hidden="true"
-          />
-        ))}
-        <span className="sr-only">{review.rating} out of 5 stars</span>
-      </div>
-      <p className="text-gray-600 mb-4">{review.text}</p>
-      <div className="space-y-2">
-        <p className="font-semibold">{review.name}</p>
-        <p className="text-sm text-gray-500">{review.service}</p>
-        <p className="text-sm text-gray-500">{review.location}</p>
-      </div>
-    </CardContent>
-  </Card>
-));
+const ReviewCard = memo(({ review, index }: { review: typeof reviews[number]; index: number }) => {
+  const { ref, inView } = useInView({
+    triggerOnce: true,
+    threshold: 0.1,
+  });
+
+  return (
+    <div ref={ref}>
+      {inView && (
+        <Card className="flex-none w-96 hover:shadow-lg transition-shadow">
+          <CardContent className="p-6">
+            <div className="flex items-center mb-4">
+              {[...Array(review.rating)].map((_, i) => (
+                <Star 
+                  key={i} 
+                  className="w-5 h-5 text-secondary" 
+                  fill="currentColor"
+                  aria-hidden="true"
+                />
+              ))}
+              <span className="sr-only">{review.rating} out of 5 stars</span>
+            </div>
+            <p className="text-gray-600 mb-4">{review.text}</p>
+            <div className="space-y-2">
+              <p className="font-semibold">{review.name}</p>
+              <p className="text-sm text-gray-500">{review.service}</p>
+              <p className="text-sm text-gray-500">{review.location}</p>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+    </div>
+  );
+});
 
 ReviewCard.displayName = 'ReviewCard';
 
-const ReviewsSection = ({ location }: ReviewsSectionProps) => {
+const ReviewsSection = memo(({ location }: ReviewsSectionProps) => {
   const [displayedReviews, setDisplayedReviews] = useState<typeof reviews[number][]>([]);
   const [page, setPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const loadingRef = useRef(null);
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  const filteredReviews = location 
-    ? reviews.filter(review => review.location.includes(location))
-    : reviews;
+  const filteredReviews = useMemo(() => 
+    location ? reviews.filter(review => review.location.includes(location)) : reviews,
+    [location]
+  );
 
   const loadMoreReviews = useCallback(() => {
     if (isLoading) return;
@@ -103,23 +116,21 @@ const ReviewsSection = ({ location }: ReviewsSectionProps) => {
     const endIndex = startIndex + 12;
     const newReviews = filteredReviews.slice(startIndex, endIndex);
     
-    setTimeout(() => {
+    requestAnimationFrame(() => {
       if (newReviews.length > 0) {
         setDisplayedReviews(prev => [...prev, ...newReviews]);
         setPage(prev => prev + 1);
       }
       setIsLoading(false);
-    }, 1500); // 1.5 seconds delay
+    });
   }, [page, filteredReviews, isLoading]);
 
   useEffect(() => {
-    // Reset when location changes
     setDisplayedReviews([]);
     setPage(1);
   }, [location]);
 
   useEffect(() => {
-    // Load initial reviews
     loadMoreReviews();
   }, [loadMoreReviews]);
 
@@ -144,16 +155,17 @@ const ReviewsSection = ({ location }: ReviewsSectionProps) => {
     const scrollContainer = scrollRef.current;
     if (!scrollContainer) return;
 
-    const cardWidth = 384; // w-96 = 24rem = 384px
-    const gap = 32; // gap-8 = 2rem = 32px
-    const totalWidth = (cardWidth + gap) * displayedReviews.length;
-
-    scrollContainer.scrollLeft = (scrollContainer.scrollLeft + 1) % totalWidth;
+    const scrollAmount = 1;
+    scrollContainer.scrollLeft = (scrollContainer.scrollLeft + scrollAmount) % 
+      ((384 + 32) * displayedReviews.length); // cardWidth + gap
   }, [displayedReviews.length]);
 
   useEffect(() => {
-    const intervalId = setInterval(scroll, 50);
-    return () => clearInterval(intervalId);
+    const intervalId = requestAnimationFrame(function animate() {
+      scroll();
+      requestAnimationFrame(animate);
+    });
+    return () => cancelAnimationFrame(intervalId);
   }, [scroll]);
 
   return (
@@ -182,6 +194,8 @@ const ReviewsSection = ({ location }: ReviewsSectionProps) => {
       </div>
     </section>
   );
-};
+});
 
-export default memo(ReviewsSection);
+ReviewsSection.displayName = 'ReviewsSection';
+
+export default ReviewsSection;

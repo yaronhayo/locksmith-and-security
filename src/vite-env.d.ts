@@ -1,13 +1,12 @@
 /// <reference types="vite/client" />
 
 interface Window {
-  dataLayer?: any[];
-  gtag?: (...args: any[]) => void;
-  clarity?: (...args: any[]) => void;
+  gtag: (command: string, action: string, params: any) => void;
 }
 
 interface LayoutShiftEntry extends PerformanceEntry {
   value: number;
+  hadRecentInput: boolean;
 }
 
 interface FirstInputEntry extends PerformanceEntry {
@@ -17,4 +16,9 @@ interface FirstInputEntry extends PerformanceEntry {
 
 interface LargestContentfulPaintEntry extends PerformanceEntry {
   startTime: number;
+}
+
+interface PerformanceNavigationTiming extends PerformanceEntry {
+  responseStart: number;
+  requestStart: number;
 }
