@@ -19,13 +19,13 @@ const MetaTags = ({
 }: MetaTagsProps) => {
   const baseUrl = "https://247locksmithandsecurity.com";
   const fullCanonicalUrl = canonicalUrl ? `${baseUrl}${canonicalUrl}` : baseUrl;
-  const fullTitle = `${title} | 24/7 Locksmith & Security LLC - Professional Locksmith Services in North Bergen, NJ`;
+  const fullTitle = `${title} | Locksmith & Security LLC - Professional Locksmith Services in North Bergen, NJ`;
 
   const defaultSchema = {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
     "@id": baseUrl,
-    "name": "24/7 Locksmith & Security LLC",
+    "name": "Locksmith & Security LLC",
     "image": `${baseUrl}/company-og-image.png`,
     "logo": `${baseUrl}/logo.png`,
     "description": description,
@@ -34,7 +34,7 @@ const MetaTags = ({
     "priceRange": "$$",
     "address": {
       "@type": "PostalAddress",
-      "streetAddress": "7912 Bergenline Avenue",
+      "streetAddress": "123 Main Street",
       "addressLocality": "North Bergen",
       "addressRegion": "NJ",
       "postalCode": "07047",
@@ -79,7 +79,29 @@ const MetaTags = ({
     "sameAs": [
       "https://www.facebook.com/247locksmithandsecurity",
       "https://www.yelp.com/biz/247-locksmith-and-security-north-bergen"
-    ]
+    ],
+    "hasOfferCatalog": {
+      "@type": "OfferCatalog",
+      "name": "Locksmith Services",
+      "itemListElement": [
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Emergency Lockout Service",
+            "description": "24/7 emergency lockout services for homes, businesses, and vehicles"
+          }
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Lock Installation",
+            "description": "Professional installation of high-security locks"
+          }
+        }
+      ]
+    }
   };
 
   const pageSchema = {
@@ -108,7 +130,7 @@ const MetaTags = ({
       <meta property="og:image" content={`${baseUrl}${ogImage}`} />
       <meta property="og:url" content={fullCanonicalUrl} />
       <meta property="og:type" content="website" />
-      <meta property="og:site_name" content="24/7 Locksmith & Security LLC" />
+      <meta property="og:site_name" content="Locksmith & Security LLC" />
       <meta property="og:locale" content="en_US" />
       
       {/* Twitter Card Tags */}
@@ -123,8 +145,8 @@ const MetaTags = ({
       <meta name="apple-mobile-web-app-status-bar-style" content="default" />
       <meta name="format-detection" content="telephone=yes" />
       <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
-      <meta name="author" content="24/7 Locksmith & Security LLC" />
-      <meta name="copyright" content="© 2024 24/7 Locksmith & Security LLC. All rights reserved." />
+      <meta name="author" content="Locksmith & Security LLC" />
+      <meta name="copyright" content="© 2024 Locksmith & Security LLC. All rights reserved." />
       
       {/* Geo Location Tags */}
       <meta name="geo.region" content="US-NJ" />
@@ -133,7 +155,7 @@ const MetaTags = ({
       <meta name="ICBM" content="40.7995, -74.0246" />
       
       {/* Business Information */}
-      <meta name="business:contact_data:street_address" content="7912 Bergenline Avenue" />
+      <meta name="business:contact_data:street_address" content="123 Main Street" />
       <meta name="business:contact_data:locality" content="North Bergen" />
       <meta name="business:contact_data:region" content="NJ" />
       <meta name="business:contact_data:postal_code" content="07047" />
@@ -143,8 +165,8 @@ const MetaTags = ({
       <meta name="business:contact_data:email" content="info@247locksmithandsecurity.com" />
       
       {/* Accessibility Tags */}
-      <meta name="apple-mobile-web-app-title" content="24/7 Locksmith & Security LLC" />
-      <meta name="application-name" content="24/7 Locksmith & Security LLC" />
+      <meta name="apple-mobile-web-app-title" content="Locksmith & Security LLC" />
+      <meta name="application-name" content="Locksmith & Security LLC" />
       
       <script type="application/ld+json">
         {JSON.stringify(defaultSchema)}

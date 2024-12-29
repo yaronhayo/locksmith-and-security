@@ -3,13 +3,9 @@ import { useToast } from "@/hooks/use-toast";
 import { FormLoadingOverlay } from "./LoadingStates";
 import { validateForm, validateVehicleInfo } from "./BookingFormValidation";
 import { sendLeadNotification, sendErrorReport } from "@/utils/emailjs";
+import FormFields from "./FormFields";
 import SubmitButton from "./SubmitButton";
 import Recaptcha from "../ui/recaptcha";
-import PersonalInfo from "./PersonalInfo";
-import ServiceSelection from "./ServiceSelection";
-import VehicleInfo from "./VehicleInfo";
-import TimeframeSelection from "./TimeframeSelection";
-import AdditionalNotes from "./AdditionalNotes";
 
 const BookingForm = () => {
   const { toast } = useToast();
@@ -21,7 +17,7 @@ const BookingForm = () => {
 
   const handleServiceChange = (value: string) => {
     setSelectedService(value);
-    setShowVehicleInfo(value.toLowerCase().includes('car'));
+    setShowVehicleInfo(value.toLowerCase().includes("car"));
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -73,6 +69,7 @@ const BookingForm = () => {
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred";
       
+      // Send error report to admin
       await sendErrorReport(error, {
         formData: Object.fromEntries(new FormData(e.target as HTMLFormElement)),
         timestamp: new Date().toISOString(),
@@ -81,7 +78,7 @@ const BookingForm = () => {
 
       toast({
         title: "Submission Failed",
-        description: errorMessage,
+        description: "Please try again or contact us directly. Our team has been notified.",
         variant: "destructive",
       });
 
@@ -95,21 +92,13 @@ const BookingForm = () => {
     <form onSubmit={handleSubmit} className="space-y-3 relative">
       {isSubmitting && <FormLoadingOverlay />}
       
-      <PersonalInfo errors={errors} isSubmitting={isSubmitting} />
-      
-      <ServiceSelection 
+      <FormFields
         errors={errors}
+        showVehicleInfo={showVehicleInfo}
+        selectedService={selectedService}
         isSubmitting={isSubmitting}
         handleServiceChange={handleServiceChange}
       />
-
-      {showVehicleInfo && (
-        <VehicleInfo errors={errors} isSubmitting={isSubmitting} />
-      )}
-
-      <TimeframeSelection isSubmitting={isSubmitting} />
-      
-      <AdditionalNotes isSubmitting={isSubmitting} />
 
       <Recaptcha onChange={setRecaptchaToken} />
       

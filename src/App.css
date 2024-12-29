@@ -1,14 +1,8 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
 #root {
   max-width: 1280px;
   margin: 0 auto;
   padding: 1rem;
   text-align: center;
-  contain: content;
-  content-visibility: auto;
 }
 
 @media (min-width: 768px) {
@@ -17,16 +11,11 @@
   }
 }
 
-/* Optimize animation performance */
 .logo {
   height: 6em;
   padding: 1.5em;
   will-change: filter;
   transition: filter 300ms;
-  transform: translateZ(0);
-  backface-visibility: hidden;
-  width: 6em;
-  aspect-ratio: 1/1;
 }
 
 .logo:hover {
@@ -35,21 +24,6 @@
 
 .logo.react:hover {
   filter: drop-shadow(0 0 2em #61dafbaa);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .logo {
-    animation: none !important;
-    transition: none !important;
-  }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-    transform: translateZ(0);
-    backface-visibility: hidden;
-  }
 }
 
 @keyframes logo-spin {
@@ -61,9 +35,14 @@
   }
 }
 
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}
+
 .card {
   padding: 1em;
-  contain: content;
 }
 
 @media (min-width: 768px) {
@@ -74,44 +53,4 @@
 
 .read-the-docs {
   color: #888;
-}
-
-/* Add performance optimizations for images */
-img {
-  content-visibility: auto;
-  contain: content;
-  width: 100%;
-  height: auto;
-  aspect-ratio: attr(width) / attr(height);
-  loading: lazy;
-  decoding: async;
-}
-
-/* Optimize layout shifts */
-main {
-  min-height: 100vh;
-  contain: layout size;
-}
-
-/* Reduce DOM size by hiding offscreen content */
-.offscreen {
-  content-visibility: auto;
-  contain: strict;
-}
-
-/* Cache static assets */
-:root {
-  --cache-control: 'public, max-age=31536000';
-}
-
-/* Optimize for paint performance */
-* {
-  transform: translateZ(0);
-  backface-visibility: hidden;
-}
-
-/* Reduce repaints */
-.no-repaint {
-  transform: translate3d(0, 0, 0);
-  will-change: transform;
 }

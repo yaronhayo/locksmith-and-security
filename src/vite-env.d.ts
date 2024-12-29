@@ -8,7 +8,6 @@ interface Window {
 
 interface LayoutShiftEntry extends PerformanceEntry {
   value: number;
-  hadRecentInput: boolean;
 }
 
 interface FirstInputEntry extends PerformanceEntry {
@@ -17,17 +16,5 @@ interface FirstInputEntry extends PerformanceEntry {
 }
 
 interface LargestContentfulPaintEntry extends PerformanceEntry {
-  element: Element;
-  id: string;
-  loadTime: number;
-  renderTime: number;
-  size: number;
   startTime: number;
-  url: string;
-}
-
-interface PerformanceResourceTiming extends PerformanceEntry {
-  initiatorType: string;
-  duration: number;
-  name: string;
 }
