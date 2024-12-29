@@ -3,6 +3,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Lock, Car, Building2, Key } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useToast } from "@/components/ui/use-toast";
 
 const services = [
   { 
@@ -64,46 +65,71 @@ const services = [
 ];
 
 const ServicesGrid = () => {
-  return (
-    <section className="py-20 bg-gray-50">
-      <div className="container mx-auto px-4">
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="text-center max-w-2xl mx-auto mb-12"
-        >
-          <h2 className="text-3xl font-bold mb-4">Our Services</h2>
-          <p className="text-lg text-muted-foreground">
-            Comprehensive locksmith solutions for all your security needs
-          </p>
-        </motion.div>
+  const { toast } = useToast();
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {services.map((service, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-            >
-              <Card className="h-full hover:shadow-lg transition-all duration-300 group">
-                <CardContent className="p-6">
-                  <service.icon className="w-12 h-12 text-primary mb-4" />
-                  <h3 className="text-xl font-semibold mb-2 group-hover:text-primary transition-colors">
-                    {service.title}
-                  </h3>
-                  <p className="text-muted-foreground mb-4">{service.description}</p>
-                  <Button asChild variant="secondary" className="w-full group">
-                    <Link to={service.link} className="flex items-center justify-center">
-                      {service.cta}
-                      <ArrowRight className="ml-2 w-4 h-4 transform transition-transform duration-300 group-hover:translate-x-1" />
-                    </Link>
-                  </Button>
-                </CardContent>
-              </Card>
-            </motion.div>
-          ))}
+  const handleServiceClick = (serviceName: string) => {
+    console.log(`Service clicked: ${serviceName}`);
+    toast({
+      title: "Service Selected",
+      description: `You've selected our ${serviceName} service. Redirecting you to more information.`,
+    });
+  };
+
+  return (
+    <section className="py-12 lg:py-20 bg-gray-50" aria-labelledby="services-title">
+      <div className="container mx-auto px-4">
+        <motion.h2 
+          id="services-title"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="text-3xl md:text-4xl font-bold text-center mb-8 lg:mb-12"
+        >
+          Our Professional Services
+        </motion.h2>
+        
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 lg:gap-8">
+          {services.map((service, index) => {
+            const Icon = service.icon;
+            return (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                className="h-full"
+              >
+                <Card className="h-full hover:shadow-lg transition-all duration-300 group">
+                  <CardContent className="p-6 flex flex-col h-full">
+                    <div className="mb-4">
+                      <Icon className="w-12 h-12 text-primary group-hover:text-secondary transition-colors duration-300" />
+                    </div>
+                    <h3 className="text-xl font-semibold mb-3 group-hover:text-primary transition-colors duration-300">
+                      {service.title}
+                    </h3>
+                    <p className="text-gray-600 mb-6 flex-grow">
+                      {service.description}
+                    </p>
+                    <Button 
+                      asChild 
+                      variant="secondary" 
+                      className="w-full group mt-auto"
+                      onClick={() => handleServiceClick(service.title)}
+                    >
+                      <Link 
+                        to={service.link} 
+                        className="inline-flex items-center justify-center"
+                        aria-label={`Learn more about ${service.title}`}
+                      >
+                        {service.cta}
+                        <ArrowRight className="ml-2 w-4 h-4 transform transition-transform duration-300 group-hover:translate-x-1" />
+                      </Link>
+                    </Button>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            );
+          })}
         </div>
       </div>
     </section>
