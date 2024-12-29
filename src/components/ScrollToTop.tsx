@@ -1,43 +1,18 @@
-import { useState, useEffect } from 'react';
-import { ArrowUp } from 'lucide-react';
-import { Button } from './ui/button';
+import { useEffect } from "react";
+import { useLocation } from "react-router-dom";
 
 const ScrollToTop = () => {
-  const [isVisible, setIsVisible] = useState(false);
+  const { pathname } = useLocation();
 
   useEffect(() => {
-    const toggleVisibility = () => {
-      if (window.pageYOffset > 300) {
-        setIsVisible(true);
-      } else {
-        setIsVisible(false);
-      }
-    };
-
-    window.addEventListener('scroll', toggleVisibility);
-    return () => window.removeEventListener('scroll', toggleVisibility);
-  }, []);
-
-  const scrollToTop = () => {
     window.scrollTo({
       top: 0,
-      behavior: 'smooth',
+      left: 0,
+      behavior: "instant"
     });
-  };
+  }, [pathname]);
 
-  return (
-    <Button
-      variant="secondary"
-      size="icon"
-      className={`fixed bottom-48 right-4 md:bottom-64 md:right-8 z-50 rounded-full transition-all duration-300 transform hover:scale-110 ${
-        isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10 pointer-events-none'
-      }`}
-      onClick={scrollToTop}
-      aria-label="Scroll to top"
-    >
-      <ArrowUp className="h-5 w-5" />
-    </Button>
-  );
+  return null;
 };
 
 export default ScrollToTop;
