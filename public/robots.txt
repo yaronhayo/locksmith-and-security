@@ -1,29 +1,10 @@
 User-agent: *
 Allow: /
-Allow: /services/
-Allow: /about/
-Allow: /contact/
-Allow: /faq/
-Allow: /reviews/
-Allow: /service-areas/
-Allow: /privacy-policy/
-Allow: /terms-conditions/
 
-# Block access to admin and API routes
-Disallow: /api/
-Disallow: /admin/
-Disallow: /private/
-
-# Block access to development-specific files
-Disallow: /*.js$
-Disallow: /*.css$
-Disallow: /*.json$
-
-# Crawl delay to prevent server overload
-Crawl-delay: 1
-
-# Host directive for canonical domain
-Host: https://247locksmithandsecurity.com
-
-# Sitemap location
+# Sitemaps
 Sitemap: https://247locksmithandsecurity.com/sitemap.xml
+
+# Disallow admin and API routes
+Disallow: /admin/
+Disallow: /api/
+Disallow: /private/

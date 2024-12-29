@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from "framer-motion";
-import { X } from 'lucide-react';
+import { X } from "lucide-react";
+import { Link } from 'react-router-dom';
 
 const CookieConsent = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -18,6 +19,11 @@ const CookieConsent = () => {
     setIsVisible(false);
   };
 
+  const handleDecline = () => {
+    localStorage.setItem('cookieConsent', 'declined');
+    setIsVisible(false);
+  };
+
   return (
     <AnimatePresence>
       {isVisible && (
@@ -25,31 +31,36 @@ const CookieConsent = () => {
           initial={{ y: 100, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: 100, opacity: 0 }}
-          className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-lg z-50"
+          className="fixed bottom-0 left-0 right-0 bg-white shadow-lg z-50 p-4 md:p-6"
+          role="dialog"
+          aria-labelledby="cookie-consent-title"
         >
-          <div className="container mx-auto px-4 py-4 flex flex-col sm:flex-row items-center justify-between gap-4">
-            <div className="text-sm text-gray-600 flex-grow">
-              We use cookies to enhance your experience. By continuing to visit this site you agree to our use of cookies.
-              <a href="/privacy-policy" className="text-primary hover:text-primary-hover underline ml-1">
-                Learn more
-              </a>
+          <div className="container mx-auto max-w-4xl flex flex-col md:flex-row items-center justify-between gap-4">
+            <div className="flex-1">
+              <h2 id="cookie-consent-title" className="text-lg font-semibold mb-2">Cookie Consent</h2>
+              <p className="text-gray-600">
+                We use cookies to enhance your experience. By continuing to visit this site you agree to our use of cookies.
+                Learn more in our{' '}
+                <Link to="/privacy-policy" className="text-primary hover:underline">
+                  Privacy Policy
+                </Link>
+                .
+              </p>
             </div>
-            <div className="flex items-center gap-4">
-              <Button 
-                variant="default"
-                onClick={handleAccept}
-                className="whitespace-nowrap"
-              >
+            <div className="flex gap-2">
+              <Button variant="outline" onClick={handleDecline}>
+                Decline
+              </Button>
+              <Button onClick={handleAccept}>
                 Accept All
               </Button>
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={handleAccept}
-                className="rounded-full"
+              <button
+                onClick={handleDecline}
+                className="p-2 hover:bg-gray-100 rounded-full"
+                aria-label="Close cookie consent"
               >
-                <X className="h-4 w-4" />
-              </Button>
+                <X className="w-4 h-4" />
+              </button>
             </div>
           </div>
         </motion.div>
