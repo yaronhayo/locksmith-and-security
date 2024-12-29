@@ -27,11 +27,21 @@
 
 @layer base {
   * {
-    @apply border-border font-sans;
+    @apply border-border font-sans touch-manipulation;
+    -webkit-tap-highlight-color: transparent;
   }
+  
+  html {
+    @apply overflow-x-hidden;
+    touch-action: manipulation;
+    -webkit-text-size-adjust: 100%;
+  }
+  
   body {
     @apply bg-background text-foreground min-h-screen w-full overflow-x-hidden;
+    touch-action: manipulation;
   }
+
   h1 {
     @apply text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-heading-dark;
   }
