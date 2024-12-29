@@ -19,20 +19,35 @@ export const RecaptchaSettings = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
+    <div className="space-y-6">
       <div className="space-y-2">
-        <Label htmlFor="apiKey">reCAPTCHA Enterprise API Key</Label>
-        <Input
-          id="apiKey"
-          type="password"
-          value={apiKey}
-          onChange={(e) => setApiKey(e.target.value)}
-          placeholder="Enter your reCAPTCHA Enterprise API key"
-          required
-        />
+        <h2 className="text-2xl font-bold">reCAPTCHA Settings</h2>
+        <p className="text-gray-600">
+          To get your reCAPTCHA API key:
+          1. Go to the <a href="https://www.google.com/recaptcha/admin" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">Google reCAPTCHA Admin Console</a>
+          2. Sign in with your Google account
+          3. Create a new site registration
+          4. Choose reCAPTCHA v2 "I'm not a robot"
+          5. Add your domain
+          6. Copy the Site Key
+        </p>
       </div>
-      <Button type="submit">Save API Key</Button>
-    </form>
+      
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <div className="space-y-2">
+          <Label htmlFor="apiKey">reCAPTCHA Site Key</Label>
+          <Input
+            id="apiKey"
+            type="password"
+            value={apiKey}
+            onChange={(e) => setApiKey(e.target.value)}
+            placeholder="Enter your reCAPTCHA site key"
+            required
+          />
+        </div>
+        <Button type="submit">Save API Key</Button>
+      </form>
+    </div>
   );
 };
 
