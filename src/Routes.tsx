@@ -11,13 +11,22 @@ const Routes = () => {
     <>
       <Breadcrumbs />
       <RouterRoutes>
-        {mainRoutes.map(({ path, element }) => (
-          <Route
-            key={path}
-            path={path}
-            element={path === "/" ? element : <Suspense fallback={<LoadingSpinner />}>{element}</Suspense>}
-          />
-        ))}
+        {/* Explicitly define the root route first */}
+        <Route
+          path="/"
+          element={mainRoutes.find(route => route.path === "/")?.element}
+        />
+        
+        {/* Then map through the rest of the main routes, excluding the root route */}
+        {mainRoutes
+          .filter(route => route.path !== "/")
+          .map(({ path, element }) => (
+            <Route
+              key={path}
+              path={path}
+              element={<Suspense fallback={<LoadingSpinner />}>{element}</Suspense>}
+            />
+          ))}
         
         {serviceRoutes.map(({ path, element }) => (
           <Route
