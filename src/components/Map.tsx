@@ -31,7 +31,6 @@ const Map = () => {
     }
 
     try {
-      // Initialize map with public token
       mapboxgl.accessToken = 'pk.eyJ1IjoibG9ja3NtaXRoYW5kc2VjdXJpdHkiLCJhIjoiY201NHR5MGRkMWVhczJrcHF4ZWFvdGQzdiJ9.sZk4Db9u3Q21dXqtXeh2aw';
       
       if (!mapboxgl.accessToken) {
@@ -78,7 +77,6 @@ const Map = () => {
 
         markerElement.addEventListener('click', () => {
           window.location.href = `/service-areas/${location.slug}`;
-          window.scrollTo({ top: 0, behavior: 'smooth' });
         });
 
         markers.current.push(marker);
@@ -107,7 +105,7 @@ const Map = () => {
   }, []);
 
   return (
-    <div className="relative w-full h-[600px] rounded-lg overflow-hidden shadow-lg">
+    <div className="relative w-full h-[600px] rounded-lg overflow-hidden">
       <div ref={mapContainer} className="absolute inset-0" />
     </div>
   );
