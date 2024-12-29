@@ -1,27 +1,19 @@
-import React, { useEffect, useCallback } from 'react';
-import { getRecaptchaApiKey, executeRecaptcha } from '@/utils/recaptcha';
+import React from 'react';
+import ReCAPTCHA from 'react-google-recaptcha';
 
 interface RecaptchaProps {
   onChange: (token: string | null) => void;
-  action?: string;
 }
 
-const Recaptcha: React.FC<RecaptchaProps> = ({ onChange, action = 'submit' }) => {
-  const executeAction = useCallback(async () => {
-    try {
-      const token = await executeRecaptcha(action);
-      onChange(token);
-    } catch (error) {
-      console.error('reCAPTCHA execution failed:', error);
-      onChange(null);
-    }
-  }, [action, onChange]);
-
-  useEffect(() => {
-    executeAction();
-  }, [executeAction]);
-
-  return null; // Enterprise reCAPTCHA doesn't need a visible component
+const Recaptcha: React.FC<RecaptchaProps> = ({ onChange }) => {
+  return (
+    <div className="flex justify-center my-4">
+      <ReCAPTCHA
+        sitekey="6LeQE6YqAAAAAPQkLboESEwCMnnKVkaGTbj63EPN"
+        onChange={onChange}
+      />
+    </div>
+  );
 };
 
 export default Recaptcha;

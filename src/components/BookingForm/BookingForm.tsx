@@ -6,7 +6,6 @@ import { sendLeadNotification, sendErrorReport } from "@/utils/emailjs";
 import FormFields from "./FormFields";
 import SubmitButton from "./SubmitButton";
 import Recaptcha from "../ui/recaptcha";
-import { verifyRecaptcha } from "@/utils/recaptcha";
 
 const BookingForm = () => {
   const { toast } = useToast();
@@ -26,28 +25,12 @@ const BookingForm = () => {
 
     try {
       if (!recaptchaToken) {
-        toast({
-          title: "Validation Error",
-          description: "Please complete the reCAPTCHA verification",
-          variant: "destructive",
-        });
-        return;
-      }
-
-      // Verify reCAPTCHA token
-      const isValid = await verifyRecaptcha(recaptchaToken, "BOOKING");
-      if (!isValid) {
-        toast({
-          title: "Validation Error",
-          description: "reCAPTCHA verification failed. Please try again.",
-          variant: "destructive",
-        });
-        return;
+        throw new Error("reCAPTCHA verification required");
       }
 
       const formData = new FormData(e.currentTarget);
       
-      const { isValid: formValid, errors: formErrors } = validateForm(formData);
+      const { isValid, errors: formErrors } = validateForm(formData);
       
       if (showVehicleInfo) {
         const { isValid: vehicleValid, errors: vehicleErrors } = validateVehicleInfo(formData);
@@ -57,7 +40,7 @@ const BookingForm = () => {
         }
       }
       
-      if (!formValid) {
+      if (!isValid) {
         setErrors(formErrors);
         throw new Error("Form validation failed");
       }

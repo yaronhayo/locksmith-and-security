@@ -4,9 +4,6 @@ export const initEmailJS = () => {
   emailjs.init("tCq71kzBo7QTx975C");
 };
 
-// Call initEmailJS when the file is loaded
-initEmailJS();
-
 export const sendLeadNotification = async (formData: Record<string, any>) => {
   try {
     const response = await emailjs.send(
@@ -26,7 +23,6 @@ export const sendLeadNotification = async (formData: Record<string, any>) => {
       }
     );
     
-    console.log("Email sent successfully:", response);
     return response;
   } catch (error) {
     console.error("Failed to send lead notification:", error);
@@ -50,7 +46,6 @@ export const sendContactFormEmail = async (formData: Record<string, any>) => {
       }
     );
     
-    console.log("Contact form email sent successfully:", response);
     return response;
   } catch (error) {
     console.error("Failed to send contact form email:", error);
