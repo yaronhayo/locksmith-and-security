@@ -41,7 +41,7 @@ export const RecaptchaSettings = () => {
             type="password"
             value={apiKey}
             onChange={(e) => setApiKey(e.target.value)}
-            placeholder="Enter your reCAPTCHA site key"
+            placeholder="6LeQE6YqAAAAAPQkLboESEwCMnnKVkaGTbj63EPN"
             required
           />
         </div>
