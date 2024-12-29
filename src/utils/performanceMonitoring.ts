@@ -1,26 +1,29 @@
 export const setupPerformanceMonitoring = () => {
-  if (typeof window !== 'undefined') {
-    // Create observer for CLS
-    new PerformanceObserver((entryList) => {
-      for (const entry of entryList.getEntries()) {
-        console.log('Cumulative Layout Shift:', (entry as LayoutShiftEntry).value);
-      }
-    }).observe({ entryTypes: ['layout-shift'] });
+  // Monitor Largest Contentful Paint
+  new PerformanceObserver((entryList) => {
+    for (const entry of entryList.getEntries()) {
+      console.log('LCP:', entry.startTime, entry);
+    }
+  }).observe({ entryTypes: ['largest-contentful-paint'] });
 
-    // Create observer for LCP
-    new PerformanceObserver((entryList) => {
-      for (const entry of entryList.getEntries()) {
-        console.log('Largest Contentful Paint:', (entry as LargestContentfulPaintEntry).startTime);
-      }
-    }).observe({ entryTypes: ['largest-contentful-paint'] });
+  // Monitor First Input Delay
+  new PerformanceObserver((entryList) => {
+    for (const entry of entryList.getEntries()) {
+      console.log('FID:', entry.processingStart - entry.startTime, entry);
+    }
+  }).observe({ entryTypes: ['first-input'] });
 
-    // Create observer for FID
-    new PerformanceObserver((entryList) => {
-      for (const entry of entryList.getEntries()) {
-        console.log('First Input Delay:', 
-          (entry as FirstInputEntry).processingStart - (entry as FirstInputEntry).startTime
-        );
-      }
-    }).observe({ entryTypes: ['first-input'] });
-  }
+  // Monitor Cumulative Layout Shift
+  new PerformanceObserver((entryList) => {
+    for (const entry of entryList.getEntries()) {
+      console.log('CLS:', entry.value, entry);
+    }
+  }).observe({ entryTypes: ['layout-shift'] });
+
+  // Monitor long tasks
+  new PerformanceObserver((entryList) => {
+    for (const entry of entryList.getEntries()) {
+      console.log('Long task:', entry.duration, entry);
+    }
+  }).observe({ entryTypes: ['longtask'] });
 };

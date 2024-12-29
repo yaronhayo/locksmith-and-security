@@ -7,7 +7,8 @@
   margin: 0 auto;
   padding: 1rem;
   text-align: center;
-  contain: content; /* Add content containment */
+  contain: content;
+  content-visibility: auto;
 }
 
 @media (min-width: 768px) {
@@ -22,8 +23,10 @@
   padding: 1.5em;
   will-change: filter;
   transition: filter 300ms;
-  transform: translateZ(0); /* Force GPU acceleration */
+  transform: translateZ(0);
   backface-visibility: hidden;
+  width: auto;
+  aspect-ratio: 1/1;
 }
 
 .logo:hover {
@@ -34,7 +37,6 @@
   filter: drop-shadow(0 0 2em #61dafbaa);
 }
 
-/* Optimize animation performance */
 @media (prefers-reduced-motion: no-preference) {
   a:nth-of-type(2) .logo {
     animation: logo-spin infinite 20s linear;
@@ -54,7 +56,7 @@
 
 .card {
   padding: 1em;
-  contain: content; /* Add content containment */
+  contain: content;
 }
 
 @media (min-width: 768px) {
@@ -71,10 +73,25 @@
 img {
   content-visibility: auto;
   contain: content;
+  width: auto;
+  height: auto;
+  aspect-ratio: attr(width) / attr(height);
+  loading: lazy;
 }
 
 /* Optimize layout shifts */
 main {
   min-height: 100vh;
   contain: layout size;
+}
+
+/* Reduce DOM size by hiding offscreen content */
+.offscreen {
+  content-visibility: auto;
+  contain: strict;
+}
+
+/* Cache static assets */
+:root {
+  --cache-control: 'public, max-age=31536000';
 }
