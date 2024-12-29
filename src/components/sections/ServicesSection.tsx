@@ -1,7 +1,7 @@
 import { ArrowRight, Lock, Car, Building2, Key } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const services = [
   { 
@@ -63,19 +63,30 @@ const services = [
 ];
 
 const ServicesSection = () => {
+  const navigate = useNavigate();
+
+  const handleCardClick = (link: string) => {
+    navigate(link);
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  };
+
   return (
     <section className="py-20">
       <div className="container mx-auto px-4">
         <h2 className="text-3xl font-bold text-center mb-12">Our Services</h2>
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
           {services.map((service, index) => (
-            <Card key={index} className="transition-shadow duration-300 hover:shadow-lg">
+            <Card 
+              key={index} 
+              className="transition-shadow duration-300 hover:shadow-lg cursor-pointer"
+              onClick={() => handleCardClick(service.link)}
+            >
               <CardContent className="p-6 text-center">
                 <service.icon className="w-12 h-12 mx-auto mb-4 text-primary" />
                 <h3 className="text-xl font-semibold mb-2">{service.title}</h3>
                 <p className="text-gray-600 mb-4">{service.description}</p>
-                <Button asChild variant="secondary" className="group">
-                  <Link to={service.link} className="inline-flex items-center">
+                <Button asChild variant="secondary" className="group w-full">
+                  <Link to={service.link} className="inline-flex items-center justify-center">
                     {service.cta}
                     <ArrowRight className="ml-2 transform transition-transform duration-300 group-hover:translate-x-2" />
                   </Link>

@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Lock, Car, Building2, Key } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const services = [
   { 
@@ -64,6 +64,13 @@ const services = [
 ];
 
 const ServicesGrid = () => {
+  const navigate = useNavigate();
+
+  const handleCardClick = (link: string) => {
+    navigate(link);
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  };
+
   return (
     <section className="py-20 bg-gray-50">
       <div className="container mx-auto px-4">
@@ -87,7 +94,10 @@ const ServicesGrid = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
             >
-              <Card className="h-full hover:shadow-lg transition-all duration-300 group">
+              <Card 
+                className="h-full hover:shadow-lg transition-all duration-300 group cursor-pointer"
+                onClick={() => handleCardClick(service.link)}
+              >
                 <CardContent className="p-6">
                   <service.icon className="w-12 h-12 text-primary mb-4" />
                   <h3 className="text-xl font-semibold mb-2 group-hover:text-primary transition-colors">
