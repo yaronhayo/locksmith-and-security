@@ -51,6 +51,19 @@ const schema = {
   }
 };
 
+const serviceData = {
+  title: "House Lockout Service",
+  description: "Professional house lockout services in North Bergen. Fast response and damage-free entry.",
+  benefits: [
+    "24/7 Emergency Service",
+    "15-30 Minute Response Time",
+    "Licensed & Insured Technicians",
+    "Damage-Free Entry Methods",
+    "Upfront Pricing",
+    "All Types of Residential Locks"
+  ]
+};
+
 const HouseLockoutPage = () => {
   return (
     <PageLayout

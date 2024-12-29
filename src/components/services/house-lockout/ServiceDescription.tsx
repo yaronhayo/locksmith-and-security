@@ -1,95 +1,27 @@
-import { Shield, Clock } from "lucide-react";
-import { motion } from "framer-motion";
+import { Lock } from "lucide-react";
 
 const ServiceDescription = () => {
   return (
-    <motion.div 
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
-      className="prose max-w-none bg-white rounded-lg shadow-sm p-8 mb-12"
-    >
-      <p className="text-lg leading-relaxed text-gray-600 mb-8">
-        Being locked out of your home can be a stressful and potentially dangerous situation, 
-        especially during late hours or severe weather. Our professional locksmiths provide 
-        rapid, reliable house lockout services throughout North Bergen and surrounding areas, 
-        ensuring you regain access to your home quickly and safely.
+    <div className="prose max-w-none">
+      <h2 className="flex items-center gap-2 text-2xl font-bold mb-4">
+        <Lock className="h-6 w-6 text-primary" />
+        Professional House Lockout Service
+      </h2>
+      <p>
+        Our professional house lockout service in North Bergen provides fast, reliable assistance when you're locked out of your home. Available 24/7, our licensed locksmiths arrive within 15-30 minutes to help you regain access to your property safely and without damage.
       </p>
-      
-      <motion.div 
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.2 }}
-      >
-        <h3 className="text-2xl font-semibold mb-6 text-primary">Professional House Lockout Solutions</h3>
-        <p className="text-gray-600 mb-4">Our residential lockout services include:</p>
-        <ul className="grid md:grid-cols-2 gap-4 mb-8">
-          {[
-            "Emergency house lockout assistance",
-            "Non-destructive lock picking",
-            "Broken key extraction",
-            "Lock repair and replacement",
-            "Key duplication on-site",
-            "Smart lock installation",
-            "Security assessment"
-          ].map((service, index) => (
-            <motion.li 
-              key={index}
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.3, delay: index * 0.1 }}
-              className="flex items-center gap-2 bg-gray-50 p-3 rounded-lg hover:bg-gray-100 transition-colors"
-            >
-              <div className="h-2 w-2 rounded-full bg-secondary flex-shrink-0" />
-              <span>{service}</span>
-            </motion.li>
-          ))}
+      <div className="mt-6">
+        <h3 className="text-xl font-semibold mb-3">Why Choose Our House Lockout Service?</h3>
+        <ul className="list-disc pl-6 space-y-2">
+          <li>24/7 emergency availability</li>
+          <li>Fast 15-30 minute response time</li>
+          <li>Licensed and insured technicians</li>
+          <li>Damage-free entry methods</li>
+          <li>Upfront, transparent pricing</li>
+          <li>Experience with all types of residential locks</li>
         </ul>
-      </motion.div>
-
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.4 }}
-      >
-        <h3 className="text-2xl font-semibold mb-6 text-primary">Why Choose Our House Lockout Service</h3>
-        <p className="text-gray-600 mb-4">
-          Our residential locksmith specialists are highly trained professionals with extensive experience 
-          in home lockout situations. We understand the urgency of being locked out of your house and 
-          provide fast, reliable service to get you back inside safely. Our technicians are:
-        </p>
-        <ul className="space-y-3 mb-8">
-          {[
-            "Licensed and certified residential locksmiths",
-            "Background checked and fully insured",
-            "Equipped with advanced residential lock tools",
-            "Trained in the latest home security technologies"
-          ].map((item, index) => (
-            <motion.li 
-              key={index}
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.3, delay: index * 0.1 }}
-              className="flex items-center gap-3 text-gray-600"
-            >
-              <div className="h-2 w-2 rounded-full bg-primary flex-shrink-0" />
-              <span>{item}</span>
-            </motion.li>
-          ))}
-        </ul>
-      </motion.div>
-
-      <div className="flex items-center gap-6 mt-8 p-4 bg-gray-50 rounded-lg">
-        <div className="flex items-center gap-2 text-primary">
-          <Shield className="h-6 w-6" />
-          <span className="font-medium">Licensed & Insured</span>
-        </div>
-        <div className="flex items-center gap-2 text-primary">
-          <Clock className="h-6 w-6" />
-          <span className="font-medium">15-30 Min Response</span>
-        </div>
       </div>
-    </motion.div>
+    </div>
   );
 };
 
