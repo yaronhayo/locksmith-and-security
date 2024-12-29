@@ -4,8 +4,8 @@ import BookingForm from "@/components/BookingForm";
 import { LucideIcon } from "lucide-react";
 
 interface ServiceLayoutProps {
-  title: string;
-  description: string;
+  title?: string;
+  description?: string;
   children?: React.ReactNode;
   icon?: LucideIcon;
   benefits?: string[];
@@ -18,7 +18,9 @@ const ServiceLayout = ({
   description = "", 
   children, 
   icon: Icon, 
-  benefits = [] 
+  benefits = [],
+  service,
+  callToAction
 }: ServiceLayoutProps) => {
   return (
     <div className="pt-32 pb-20">
@@ -58,7 +60,7 @@ const ServiceLayout = ({
           <div className="lg:col-span-1">
             <div className="bg-white rounded-lg shadow-lg p-6 sticky top-24">
               <h2 className="text-2xl font-bold mb-6">Book Now</h2>
-              <BookingForm />
+              <BookingForm service={service} />
             </div>
           </div>
         </div>
