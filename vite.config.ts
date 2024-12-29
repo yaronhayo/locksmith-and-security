@@ -4,6 +4,10 @@ import path from 'path';
 import viteCompression from 'vite-plugin-compression';
 
 export default defineConfig({
+  server: {
+    host: "::",
+    port: 8080
+  },
   plugins: [
     react(),
     viteCompression({
@@ -29,7 +33,6 @@ export default defineConfig({
       output: {
         manualChunks: {
           vendor: ['react', 'react-dom'],
-          utils: ['@/utils'],
           ui: ['@/components/ui']
         }
       }
