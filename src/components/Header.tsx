@@ -1,10 +1,13 @@
-import { useState, useEffect, useCallback, memo } from 'react';
+import { useState, useEffect, useCallback, memo, lazy, Suspense } from 'react';
 import { X } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { useLocation } from 'react-router-dom';
-import TopBar from './header/TopBar';
-import Navigation from './header/Navigation';
-import ActionButtons from './header/ActionButtons';
+import LoadingSpinner from './LoadingSpinner';
+
+// Lazy load sub-components
+const TopBar = lazy(() => import('./header/TopBar'));
+const Navigation = lazy(() => import('./header/Navigation'));
+const ActionButtons = lazy(() => import('./header/ActionButtons'));
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -12,11 +15,15 @@ const Header = () => {
   const location = useLocation();
 
   const handleScroll = useCallback(() => {
-    setIsScrolled(window.scrollY > 0);
-  }, []);
+    const scrolled = window.scrollY > 0;
+    if (isScrolled !== scrolled) {
+      setIsScrolled(scrolled);
+    }
+  }, [isScrolled]);
 
   useEffect(() => {
-    window.addEventListener('scroll', handleScroll, { passive: true });
+    const options = { passive: true };
+    window.addEventListener('scroll', handleScroll, options);
     return () => window.removeEventListener('scroll', handleScroll);
   }, [handleScroll]);
 
@@ -26,7 +33,9 @@ const Header = () => {
 
   return (
     <>
-      <TopBar />
+      <Suspense fallback={<LoadingSpinner />}>
+        <TopBar />
+      </Suspense>
       <header 
         className={`sticky top-0 w-full z-50 transition-all duration-300 ${
           isScrolled ? 'bg-white shadow-lg' : 'bg-transparent'
@@ -59,7 +68,9 @@ const Header = () => {
               />
             </a>
 
-            <Navigation isMenuOpen={isMenuOpen} isScrolled={isScrolled} />
+            <Suspense fallback={<LoadingSpinner />}>
+              <Navigation isMenuOpen={isMenuOpen} isScrolled={isScrolled} />
+            </Suspense>
 
             <div 
               className={`lg:hidden fixed top-0 left-0 right-0 z-50 flex items-center justify-between p-4 border-b border-white/10 bg-primary/95 ${
@@ -80,7 +91,9 @@ const Header = () => {
             </div>
 
             <div className="flex items-center">
-              <ActionButtons isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />
+              <Suspense fallback={<LoadingSpinner />}>
+                <ActionButtons isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />
+              </Suspense>
             </div>
           </div>
         </div>
