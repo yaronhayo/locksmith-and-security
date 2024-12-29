@@ -5,12 +5,10 @@ import { mainRoutes } from "./routes/mainRoutes";
 import { serviceRoutes } from "./routes/serviceRoutes";
 import { serviceAreaRoutes } from "./routes/serviceAreaRoutes";
 import Breadcrumbs from "@/components/Breadcrumbs";
-import ScrollToTop from "@/components/ScrollToTop";
 
 const Routes = () => {
   return (
     <>
-      <ScrollToTop />
       <Breadcrumbs />
       <RouterRoutes>
         {mainRoutes.map(({ path, element }) => (

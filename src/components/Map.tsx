@@ -1,116 +1,116 @@
-import { useEffect, useRef, useState, useCallback, memo } from 'react';
+import { useEffect, useRef } from 'react';
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
-import { useNavigate } from 'react-router-dom';
-import { serviceAreaLocations } from '@/data/serviceAreaLocations';
 
-const MAPBOX_ACCESS_TOKEN = 'pk.eyJ1IjoibG9ja3NtaXRoYW5kc2VjdXJpdHkiLCJhIjoiY201NHR5MGRkMWVhczJrcHF4ZWFvdGQzdiJ9.sZk4Db9u3Q21dXqtXeh2aw';
+interface Location {
+  name: string;
+  slug: string;
+  coordinates: [number, number];
+}
+
+const locations: Location[] = [
+  { name: "North Bergen", slug: "north-bergen", coordinates: [-74.0246, 40.7995] },
+  { name: "Jersey City", slug: "jersey-city", coordinates: [-74.0776, 40.7282] },
+  { name: "Union City", slug: "union-city", coordinates: [-74.0243, 40.7795] },
+  { name: "West New York", slug: "west-new-york", coordinates: [-74.0143, 40.7857] },
+  { name: "Secaucus", slug: "secaucus", coordinates: [-74.0565, 40.7799] },
+  { name: "Weehawken", slug: "weehawken", coordinates: [-74.0246, 40.7684] },
+  { name: "Hoboken", slug: "hoboken", coordinates: [-74.0323, 40.7439] },
+  { name: "Guttenberg", slug: "guttenberg", coordinates: [-74.0043, 40.7920] }
+];
 
 const Map = () => {
   const mapContainer = useRef<HTMLDivElement>(null);
   const map = useRef<mapboxgl.Map | null>(null);
   const markers = useRef<mapboxgl.Marker[]>([]);
-  const navigate = useNavigate();
-  const [error, setError] = useState<string | null>(null);
-  const [isMapInitialized, setIsMapInitialized] = useState(false);
 
-  const initializeMap = useCallback(() => {
-    if (!mapContainer.current || isMapInitialized) return;
+  useEffect(() => {
+    if (!mapContainer.current) {
+      console.error('Map container not found');
+      return;
+    }
 
     try {
-      mapboxgl.accessToken = MAPBOX_ACCESS_TOKEN;
+      // Initialize map
+      mapboxgl.accessToken = 'pk.eyJ1IjoibG9ja3NtaXRoYW5kc2VjdXJpdHkiLCJhIjoiY2x0NHR5MGRkMWVhczJrcHF4ZWFvdGQzdiJ9.sZk4Db9u3Q21dXqtXeh2aw';
+      
+      if (!mapboxgl.accessToken) {
+        console.error('Mapbox token not found');
+        return;
+      }
 
       map.current = new mapboxgl.Map({
         container: mapContainer.current,
         style: 'mapbox://styles/mapbox/streets-v12',
-        center: [-74.0060, 40.7128],
-        zoom: 11,
-        maxZoom: 16,
-        minZoom: 9,
-        attributionControl: false,
+        center: [-74.0246, 40.7995], // North Bergen coordinates
+        zoom: 12,
+        pitchWithRotate: false,
+        dragRotate: false
       });
 
-      map.current.on('load', () => {
-        if (!map.current) return;
-        
-        setIsMapInitialized(true);
-        serviceAreaLocations.forEach((location) => {
-          const marker = new mapboxgl.Marker({
-            element: createCustomMarker(),
-          })
-            .setLngLat([location.longitude, location.latitude])
-            .setPopup(
-              new mapboxgl.Popup({ offset: 25, closeButton: false })
-                .setHTML(`
-                  <h3 class="font-semibold">${location.name}</h3>
-                  <p class="text-sm">${location.description}</p>
-                `)
-            )
-            .addTo(map.current!);
+      // Add navigation controls
+      map.current.addControl(
+        new mapboxgl.NavigationControl(),
+        'top-right'
+      );
 
-          marker.getElement().addEventListener('click', () => {
-            navigate(`/service-areas/${location.slug}`);
-          });
+      // Add markers for each location
+      locations.forEach((location) => {
+        const markerElement = document.createElement('div');
+        markerElement.className = 'cursor-pointer';
+        markerElement.innerHTML = `
+          <div class="relative group">
+            <div class="w-6 h-6 bg-primary rounded-full flex items-center justify-center transform transition-transform group-hover:scale-110">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                <circle cx="12" cy="10" r="3"></circle>
+              </svg>
+            </div>
+            <div class="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-white rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+              ${location.name}
+            </div>
+          </div>
+        `;
 
-          markers.current.push(marker);
+        const marker = new mapboxgl.Marker({ element: markerElement })
+          .setLngLat(location.coordinates)
+          .addTo(map.current);
+
+        markerElement.addEventListener('click', () => {
+          window.location.href = `/service-areas/${location.slug}`;
+          window.scrollTo({ top: 0, behavior: 'smooth' });
         });
+
+        markers.current.push(marker);
       });
 
-    } catch (err) {
-      console.error('Map initialization error:', err);
-      setError('Failed to load map. Please try again later.');
+      // Handle map errors
+      map.current.on('error', (e) => {
+        console.error('Mapbox error:', e);
+      });
+
+    } catch (error) {
+      console.error('Error initializing map:', error);
     }
-  }, [navigate, isMapInitialized]);
 
-  const createCustomMarker = () => {
-    const el = document.createElement('div');
-    el.className = 'custom-marker';
-    el.style.width = '24px';
-    el.style.height = '24px';
-    el.style.backgroundImage = 'url(/lovable-uploads/9b00adf3-451e-4d1c-a118-6a6f06293ec0.png)';
-    el.style.backgroundSize = 'cover';
-    el.style.cursor = 'pointer';
-    return el;
-  };
-
-  useEffect(() => {
-    initializeMap();
-
+    // Cleanup
     return () => {
-      // Clean up markers first
-      markers.current.forEach(marker => {
-        if (marker) marker.remove();
-      });
-      markers.current = [];
-
-      // Clean up map instance
-      if (map.current) {
-        try {
-          map.current.remove();
-        } catch (err) {
-          console.error('Error during map cleanup:', err);
-        }
+      if (markers.current) {
+        markers.current.forEach(marker => marker.remove());
+        markers.current = [];
       }
-      map.current = null;
-      setIsMapInitialized(false);
+      if (map.current) {
+        map.current.remove();
+        map.current = null;
+      }
     };
-  }, [initializeMap]);
-
-  if (error) {
-    return (
-      <div className="h-[600px] flex items-center justify-center bg-gray-100 rounded-lg">
-        <p className="text-red-500">{error}</p>
-      </div>
-    );
-  }
+  }, []);
 
   return (
-    <div 
-      ref={mapContainer} 
-      className="h-[600px] w-full rounded-lg overflow-hidden"
-      style={{ position: 'relative' }}
-    />
+    <div className="relative w-full h-[600px] rounded-lg overflow-hidden shadow-lg">
+      <div ref={mapContainer} className="absolute inset-0" />
+    </div>
   );
 };
 
-export default memo(Map);
+export default Map;

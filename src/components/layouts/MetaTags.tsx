@@ -13,7 +13,7 @@ const MetaTags = ({
   title,
   description,
   canonicalUrl,
-  ogImage = "/company-og-image.png",
+  ogImage = "/og-image.png",
   keywords = "locksmith, security, lock services, emergency locksmith, North Bergen",
   schema,
 }: MetaTagsProps) => {
@@ -26,7 +26,7 @@ const MetaTags = ({
     "@type": "LocalBusiness",
     "@id": baseUrl,
     "name": "Locksmith & Security LLC",
-    "image": `${baseUrl}/company-og-image.png`,
+    "image": `${baseUrl}/og-image.png`,
     "logo": `${baseUrl}/logo.png`,
     "description": description,
     "url": baseUrl,
@@ -42,8 +42,8 @@ const MetaTags = ({
     },
     "geo": {
       "@type": "GeoCoordinates",
-      "latitude": "40.7995",
-      "longitude": "-74.0246"
+      "latitude": "40.7795",
+      "longitude": "-74.0324"
     },
     "areaServed": [
       {

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 const FooterLinks = () => {
   const handleClick = () => {
-    window.scrollTo({ top: 0, behavior: 'instant' });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   return (
