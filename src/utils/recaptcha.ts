@@ -18,33 +18,34 @@ export const setRecaptchaApiKey = (apiKey: string): void => {
   localStorage.setItem(RECAPTCHA_API_KEY_STORAGE_KEY, apiKey);
 };
 
-export const createAssessmentRequest = (token: string, action?: string): RecaptchaAssessmentRequest => {
+export const executeRecaptcha = async (action: string): Promise<string> => {
   const siteKey = getRecaptchaApiKey();
   if (!siteKey) {
-    throw new Error('reCAPTCHA site key not found. Please configure it in the settings.');
+    throw new Error('reCAPTCHA site key not found');
   }
-  
-  return {
-    event: {
-      token,
-      expectedAction: action,
-      siteKey,
-    }
-  };
+
+  try {
+    // @ts-ignore - grecaptcha.enterprise is added by the script
+    await grecaptcha.enterprise.ready();
+    // @ts-ignore
+    const token = await grecaptcha.enterprise.execute(siteKey, { action });
+    return token;
+  } catch (error) {
+    console.error('reCAPTCHA execution failed:', error);
+    throw error;
+  }
 };
 
 export const verifyRecaptcha = async (token: string, action?: string): Promise<boolean> => {
   const siteKey = getRecaptchaApiKey();
   
   if (!siteKey) {
-    throw new Error('reCAPTCHA site key not found. Please configure it in the settings.');
+    throw new Error('reCAPTCHA site key not found');
   }
 
   try {
-    const request = createAssessmentRequest(token, action);
-    
-    // For now, we'll return true since we're just storing the key
-    // In a production environment, you would want to verify the token with Google's API
+    // Here you would typically make an API call to your backend to verify the token
+    // For now, we'll return true since we're just implementing the frontend part
     return true;
   } catch (error) {
     console.error('reCAPTCHA verification failed:', error);

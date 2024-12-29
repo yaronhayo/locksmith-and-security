@@ -19,7 +19,7 @@ const ContactForm = () => {
     if (!recaptchaToken) {
       toast({
         title: "Validation Error",
-        description: "Please complete the reCAPTCHA verification",
+        description: "Please wait while we verify your request",
         variant: "destructive",
       });
       return;
@@ -34,7 +34,6 @@ const ContactForm = () => {
         formDataObj[key] = value;
       });
 
-      // Add recaptcha token to form data
       formDataObj.recaptchaToken = recaptchaToken;
       formDataObj.address = address;
 
@@ -110,7 +109,7 @@ const ContactForm = () => {
         </div>
       </div>
 
-      <Recaptcha onChange={setRecaptchaToken} />
+      <Recaptcha onChange={setRecaptchaToken} action="contact_form" />
 
       <Button 
         type="submit" 
