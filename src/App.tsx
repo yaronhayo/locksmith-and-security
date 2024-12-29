@@ -16,7 +16,7 @@ function App() {
         <ScrollToTop />
         <div className="flex min-h-screen flex-col">
           <Header />
-          <main className="flex-grow">
+          <main className="flex-grow w-full">
             <Routes />
           </main>
           <Footer />
