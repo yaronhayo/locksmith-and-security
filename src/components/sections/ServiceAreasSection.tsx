@@ -103,6 +103,7 @@ const ServiceAreasSection = () => {
                   <Link
                     to={`/service-areas/${area.slug}`}
                     className="group flex items-start space-x-3 p-4 rounded-lg hover:bg-primary/5 transition-all"
+                    onClick={() => window.scrollTo(0, 0)}
                   >
                     <div className="flex-shrink-0">
                       <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center group-hover:bg-primary/20 transition-colors">

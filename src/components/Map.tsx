@@ -67,6 +67,7 @@ const Map = () => {
 
       markerElement.addEventListener('click', () => {
         window.location.href = `/service-areas/${location.slug}`;
+        window.scrollTo(0, 0);
       });
 
       markers.current.push(marker);
