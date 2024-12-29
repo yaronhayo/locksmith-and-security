@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
-import { LoadingOverlay } from "./LoadingStates";
+import { FormLoadingOverlay } from "./LoadingStates";
 import { validateForm, validateVehicleInfo } from "./BookingFormValidation";
 import { sendLeadNotification, sendErrorReport } from "@/utils/emailjs";
-import { FormFields } from "./FormFields";
-import { SubmitButton } from "./SubmitButton";
+import FormFields from "./FormFields";
+import SubmitButton from "./SubmitButton";
 import Recaptcha from "../ui/recaptcha";
 import { verifyRecaptcha } from "@/utils/recaptcha";
 
@@ -106,7 +106,7 @@ const BookingForm = () => {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-3 relative">
-      {isSubmitting && <LoadingOverlay />}
+      {isSubmitting && <FormLoadingOverlay />}
       
       <FormFields
         errors={errors}

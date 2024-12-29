@@ -14,9 +14,9 @@ function App() {
     <ErrorBoundary FallbackComponent={ErrorFallback}>
       <Router>
         <ScrollToTop />
-        <div className="flex min-h-screen flex-col w-full overflow-x-hidden">
+        <div className="flex min-h-screen flex-col">
           <Header />
-          <main className="flex-grow w-full overflow-x-hidden">
+          <main className="flex-grow">
             <Routes />
           </main>
           <Footer />

@@ -20,7 +20,7 @@ interface FormFieldsProps {
   handleServiceChange: (value: string) => void;
 }
 
-export const FormFields = ({
+const FormFields = ({
   errors,
   showVehicleInfo,
   selectedService,
@@ -35,9 +35,9 @@ export const FormFields = ({
           id="name"
           name="name"
           type="text"
-          disabled={isSubmitting}
           aria-describedby="name-error"
-          className={`h-10 text-base ${errors.name ? 'border-red-500' : ''}`}
+          className={errors.name ? 'border-red-500' : ''}
+          disabled={isSubmitting}
         />
         {errors.name && (
           <Alert variant="destructive">
@@ -53,7 +53,6 @@ export const FormFields = ({
           id="phone"
           name="phone"
           type="tel"
-          disabled={isSubmitting}
           aria-describedby="phone-error"
           className={`h-10 text-base ${errors.phone ? 'border-red-500' : ''}`}
         />
@@ -71,7 +70,6 @@ export const FormFields = ({
           id="address"
           name="address"
           type="text"
-          disabled={isSubmitting}
           aria-describedby="address-error"
           className={`h-10 text-base ${errors.address ? 'border-red-500' : ''}`}
         />
@@ -82,13 +80,17 @@ export const FormFields = ({
           </Alert>
         )}
       </div>
-      
+
       <div className="space-y-2">
         <Label htmlFor="service">Service Needed</Label>
-        <Select onValueChange={handleServiceChange} name="service" disabled={isSubmitting}>
+        <Select 
+          onValueChange={handleServiceChange} 
+          name="service"
+          disabled={isSubmitting}
+        >
           <SelectTrigger 
             id="service"
-            className={`h-10 text-base ${errors.service ? 'border-red-500' : ''}`}
+            className={errors.service ? 'border-red-500' : ''}
           >
             <SelectValue placeholder="Select Service Needed" />
           </SelectTrigger>
@@ -116,7 +118,6 @@ export const FormFields = ({
               id="vehicleYear"
               name="vehicleYear"
               type="text"
-              disabled={isSubmitting}
               aria-describedby="vehicleYear-error"
               className={`h-10 text-base ${errors.vehicleYear ? 'border-red-500' : ''}`}
             />
@@ -134,7 +135,6 @@ export const FormFields = ({
               id="vehicleMake"
               name="vehicleMake"
               type="text"
-              disabled={isSubmitting}
               aria-describedby="vehicleMake-error"
               className={`h-10 text-base ${errors.vehicleMake ? 'border-red-500' : ''}`}
             />
@@ -152,7 +152,6 @@ export const FormFields = ({
               id="vehicleModel"
               name="vehicleModel"
               type="text"
-              disabled={isSubmitting}
               aria-describedby="vehicleModel-error"
               className={`h-10 text-base ${errors.vehicleModel ? 'border-red-500' : ''}`}
             />
@@ -168,7 +167,7 @@ export const FormFields = ({
 
       <div className="space-y-2">
         <Label htmlFor="timeframe">When do you need service?</Label>
-        <Select name="timeframe" disabled={isSubmitting}>
+        <Select name="timeframe">
           <SelectTrigger id="timeframe" className="h-10 text-base">
             <SelectValue placeholder="When do you need service?" />
           </SelectTrigger>
@@ -189,7 +188,6 @@ export const FormFields = ({
             id="otherService"
             name="otherService"
             type="text"
-            disabled={isSubmitting}
             required
             className="h-10 text-base"
           />
@@ -201,7 +199,6 @@ export const FormFields = ({
         <Textarea
           id="notes"
           name="notes"
-          disabled={isSubmitting}
           placeholder="Additional Notes..."
           className="h-20 text-base resize-none"
         />
@@ -209,3 +206,5 @@ export const FormFields = ({
     </>
   );
 };
+
+export default FormFields;

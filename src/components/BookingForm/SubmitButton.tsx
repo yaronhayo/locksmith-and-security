@@ -1,11 +1,12 @@
 import { Button } from "@/components/ui/button";
-import { Lock, Loader2 } from "lucide-react";
+import { Lock } from "lucide-react";
+import { ButtonLoadingState } from "./LoadingStates";
 
 interface SubmitButtonProps {
   isSubmitting: boolean;
 }
 
-export const SubmitButton = ({ isSubmitting }: SubmitButtonProps) => {
+const SubmitButton = ({ isSubmitting }: SubmitButtonProps) => {
   return (
     <Button
       type="submit"
@@ -14,10 +15,7 @@ export const SubmitButton = ({ isSubmitting }: SubmitButtonProps) => {
       disabled={isSubmitting}
     >
       {isSubmitting ? (
-        <>
-          <Loader2 className="w-5 h-5 mr-2 animate-spin" />
-          Submitting...
-        </>
+        <ButtonLoadingState />
       ) : (
         <>
           <Lock className="w-5 h-5 mr-2" />
@@ -27,3 +25,5 @@ export const SubmitButton = ({ isSubmitting }: SubmitButtonProps) => {
     </Button>
   );
 };
+
+export default SubmitButton;

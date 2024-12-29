@@ -1,83 +1,92 @@
-import { useState, useEffect } from "react";
-import { cn } from "@/lib/utils";
-import Navigation from "./header/Navigation";
-import TopBar from "./header/TopBar";
-import ActionButtons from "./header/ActionButtons";
-import { Menu, X } from "lucide-react";
+import { useState, useEffect, useCallback, memo } from 'react';
+import { X } from 'lucide-react';
+import { Button } from "@/components/ui/button";
+import { useLocation } from 'react-router-dom';
+import TopBar from './header/TopBar';
+import Navigation from './header/Navigation';
+import ActionButtons from './header/ActionButtons';
 
 const Header = () => {
-  const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+  const location = useLocation();
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 0);
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+  const handleScroll = useCallback(() => {
+    setIsScrolled(window.scrollY > 0);
   }, []);
 
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [handleScroll]);
+
+  useEffect(() => {
+    setIsMenuOpen(false);
+  }, [location]);
+
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 w-full">
+    <>
       <TopBar />
-      <div
-        className={cn(
-          "relative bg-white transition-all duration-300",
-          isScrolled && "shadow-md",
-          isMenuOpen && "bg-primary lg:bg-white"
-        )}
+      <header 
+        className={`sticky top-0 w-full z-50 transition-all duration-300 ${
+          isScrolled ? 'bg-white shadow-lg' : 'bg-transparent'
+        }`}
+        role="banner"
       >
         <div className="container mx-auto px-4">
-          <div className="flex items-center justify-between py-4">
-            <a href="/" className="flex items-center space-x-2">
-              <img
-                src="/company-logo.png"
-                alt="Locksmith & Security LLC"
-                className="h-10 w-auto"
+          <div className="flex items-center justify-between min-h-[100px] lg:min-h-[35px]">
+            <a 
+              href="/" 
+              className="flex items-center space-x-3 group"
+              aria-label="Go to homepage"
+            >
+              <img 
+                src="/lovable-uploads/9b00adf3-451e-4d1c-a118-6a6f06293ec0.png" 
+                alt="Locksmith & Security LLC - Professional 24/7 Locksmith Services in North Bergen, NJ"
+                className={`h-[100px] w-auto md:h-[180px] lg:h-[84px] transform transition-transform duration-300 group-hover:scale-110 ${
+                  isMenuOpen ? 'brightness-0 invert' : ''
+                }`}
+                style={{
+                  aspectRatio: '1/1',
+                  objectFit: 'contain',
+                  maxWidth: 'none'
+                }}
+                loading="eager"
+                width="180"
+                height="180"
+                fetchPriority="high"
+                decoding="async"
               />
             </a>
 
-            <div className="hidden lg:flex items-center space-x-8">
-              <Navigation isScrolled={isScrolled} setIsMenuOpen={setIsMenuOpen} />
-              <ActionButtons />
-            </div>
+            <Navigation isMenuOpen={isMenuOpen} isScrolled={isScrolled} />
 
-            <button
-              className="lg:hidden text-gray-600 hover:text-gray-900 focus:outline-none"
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-              aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+            <div 
+              className={`lg:hidden fixed top-0 left-0 right-0 z-50 flex items-center justify-between p-4 border-b border-white/10 bg-primary/95 ${
+                isMenuOpen ? 'block' : 'hidden'
+              }`}
+              aria-hidden={!isMenuOpen}
             >
-              {isMenuOpen ? (
-                <X className="h-6 w-6 text-white lg:text-gray-600" />
-              ) : (
-                <Menu className="h-6 w-6" />
-              )}
-            </button>
-          </div>
-        </div>
+              <span className="text-white text-lg font-semibold">Menu</span>
+              <Button 
+                variant="ghost" 
+                size="icon"
+                className="text-white hover:bg-white/10"
+                onClick={() => setIsMenuOpen(false)}
+                aria-label="Close menu"
+              >
+                <X className="h-6 w-6 text-white" strokeWidth={2.5} />
+              </Button>
+            </div>
 
-        {/* Mobile menu */}
-        <div
-          className={cn(
-            "fixed inset-0 top-[98px] z-50 bg-primary transform transition-transform duration-300 lg:hidden",
-            isMenuOpen ? "translate-x-0" : "translate-x-full"
-          )}
-        >
-          <div className="container mx-auto px-4 py-6">
-            <Navigation
-              isMenuOpen={isMenuOpen}
-              setIsMenuOpen={setIsMenuOpen}
-              className="flex flex-col space-y-4"
-            />
-            <div className="mt-6">
-              <ActionButtons className="flex flex-col space-y-4" />
+            <div className="flex items-center">
+              <ActionButtons isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />
             </div>
           </div>
         </div>
-      </div>
-    </header>
+      </header>
+    </>
   );
 };
 
-export default Header;
+export default memo(Header);

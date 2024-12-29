@@ -8,7 +8,6 @@ interface NavigationProps {
   className?: string;
   isMenuOpen?: boolean;
   isScrolled?: boolean;
-  setIsMenuOpen?: (isOpen: boolean) => void;
 }
 
 type NavItem = {
@@ -31,15 +30,13 @@ interface NavigationLinkProps {
   label: string;
   isActive: boolean;
   isMenuOpen: boolean;
-  setIsMenuOpen?: (isOpen: boolean) => void;
 }
 
 const NavigationLink = memo(({ 
   path, 
   label, 
   isActive, 
-  isMenuOpen,
-  setIsMenuOpen 
+  isMenuOpen 
 }: NavigationLinkProps) => (
   <Link
     to={path}
@@ -48,12 +45,7 @@ const NavigationLink = memo(({
       isActive ? "text-secondary" : "text-gray-700 hover:text-secondary",
       isMenuOpen && "text-white lg:text-gray-700"
     )}
-    onClick={() => {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      if (setIsMenuOpen) {
-        setIsMenuOpen(false);
-      }
-    }}
+    onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
   >
     {label}
     <motion.div
@@ -68,7 +60,7 @@ const NavigationLink = memo(({
 
 NavigationLink.displayName = 'NavigationLink';
 
-const Navigation = ({ className, isMenuOpen = false, isScrolled = false, setIsMenuOpen }: NavigationProps) => {
+const Navigation = ({ className, isMenuOpen = false, isScrolled = false }: NavigationProps) => {
   const location = useLocation();
   
   const isActive = (path: string) => location.pathname === path;
@@ -91,7 +83,6 @@ const Navigation = ({ className, isMenuOpen = false, isScrolled = false, setIsMe
             label={label}
             isActive={isActive(path)}
             isMenuOpen={isMenuOpen}
-            setIsMenuOpen={setIsMenuOpen}
           />
         )
       ))}
