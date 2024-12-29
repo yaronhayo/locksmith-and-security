@@ -3,9 +3,13 @@ import { useToast } from "@/hooks/use-toast";
 import { FormLoadingOverlay } from "./LoadingStates";
 import { validateForm, validateVehicleInfo } from "./BookingFormValidation";
 import { sendLeadNotification, sendErrorReport } from "@/utils/emailjs";
-import FormFields from "./FormFields";
 import SubmitButton from "./SubmitButton";
 import Recaptcha from "../ui/recaptcha";
+import PersonalInfo from "./PersonalInfo";
+import ServiceSelection from "./ServiceSelection";
+import VehicleInfo from "./VehicleInfo";
+import TimeframeSelection from "./TimeframeSelection";
+import AdditionalNotes from "./AdditionalNotes";
 
 const BookingForm = () => {
   const { toast } = useToast();
@@ -17,7 +21,7 @@ const BookingForm = () => {
 
   const handleServiceChange = (value: string) => {
     setSelectedService(value);
-    setShowVehicleInfo(value.toLowerCase().includes("car"));
+    setShowVehicleInfo(value.toLowerCase().includes('car'));
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -91,13 +95,21 @@ const BookingForm = () => {
     <form onSubmit={handleSubmit} className="space-y-3 relative">
       {isSubmitting && <FormLoadingOverlay />}
       
-      <FormFields
+      <PersonalInfo errors={errors} isSubmitting={isSubmitting} />
+      
+      <ServiceSelection 
         errors={errors}
-        showVehicleInfo={showVehicleInfo}
-        selectedService={selectedService}
         isSubmitting={isSubmitting}
         handleServiceChange={handleServiceChange}
       />
+
+      {showVehicleInfo && (
+        <VehicleInfo errors={errors} isSubmitting={isSubmitting} />
+      )}
+
+      <TimeframeSelection isSubmitting={isSubmitting} />
+      
+      <AdditionalNotes isSubmitting={isSubmitting} />
 
       <Recaptcha onChange={setRecaptchaToken} />
       

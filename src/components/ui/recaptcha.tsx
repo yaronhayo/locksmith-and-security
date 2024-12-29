@@ -1,15 +1,14 @@
-import React from 'react';
-import ReCAPTCHA from 'react-google-recaptcha';
+import ReCAPTCHA from "react-google-recaptcha";
 
 interface RecaptchaProps {
   onChange: (token: string | null) => void;
 }
 
-const Recaptcha: React.FC<RecaptchaProps> = ({ onChange }) => {
+const Recaptcha = ({ onChange }: RecaptchaProps) => {
   return (
     <div className="flex justify-center my-4">
       <ReCAPTCHA
-        sitekey="6LeQE6YqAAAAAPQkLboESEwCMnnKVkaGTbj63EPN"
+        sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY || '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI'}
         onChange={onChange}
       />
     </div>
