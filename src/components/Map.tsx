@@ -31,6 +31,8 @@ const Map = () => {
       });
 
       map.current.on('load', () => {
+        if (!map.current) return;
+        
         setIsMapInitialized(true);
         serviceAreaLocations.forEach((location) => {
           const marker = new mapboxgl.Marker({
@@ -75,10 +77,22 @@ const Map = () => {
     initializeMap();
 
     return () => {
-      markers.current.forEach(marker => marker.remove());
+      // Clean up markers first
+      markers.current.forEach(marker => {
+        if (marker) marker.remove();
+      });
+      markers.current = [];
+
+      // Clean up map instance
       if (map.current) {
-        map.current.remove();
+        try {
+          map.current.remove();
+        } catch (err) {
+          console.error('Error during map cleanup:', err);
+        }
       }
+      map.current = null;
+      setIsMapInitialized(false);
     };
   }, [initializeMap]);
 
