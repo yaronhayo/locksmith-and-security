@@ -25,58 +25,84 @@ const Map = () => {
   const markers = useRef<mapboxgl.Marker[]>([]);
 
   useEffect(() => {
-    if (!mapContainer.current) return;
+    if (!mapContainer.current) {
+      console.error('Map container not found');
+      return;
+    }
 
-    // Initialize map
-    mapboxgl.accessToken = 'pk.eyJ1IjoibG9ja3NtaXRoYW5kc2VjdXJpdHkiLCJhIjoiY2x0NHR5MGRkMWVhczJrcHF4ZWFvdGQzdiJ9.sZk4Db9u3Q21dXqtXeh2aw';
-    
-    map.current = new mapboxgl.Map({
-      container: mapContainer.current,
-      style: 'mapbox://styles/mapbox/streets-v12',
-      center: [-74.0246, 40.7995], // North Bergen coordinates
-      zoom: 12
-    });
+    try {
+      // Initialize map
+      mapboxgl.accessToken = 'pk.eyJ1IjoibG9ja3NtaXRoYW5kc2VjdXJpdHkiLCJhIjoiY2x0NHR5MGRkMWVhczJrcHF4ZWFvdGQzdiJ9.sZk4Db9u3Q21dXqtXeh2aw';
+      
+      if (!mapboxgl.accessToken) {
+        console.error('Mapbox token not found');
+        return;
+      }
 
-    // Add navigation controls
-    map.current.addControl(
-      new mapboxgl.NavigationControl(),
-      'top-right'
-    );
-
-    // Add markers for each location
-    locations.forEach((location) => {
-      const markerElement = document.createElement('div');
-      markerElement.className = 'cursor-pointer';
-      markerElement.innerHTML = `
-        <div class="relative group">
-          <div class="w-6 h-6 bg-primary rounded-full flex items-center justify-center transform transition-transform group-hover:scale-110">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-              <circle cx="12" cy="10" r="3"></circle>
-            </svg>
-          </div>
-          <div class="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-white rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
-            ${location.name}
-          </div>
-        </div>
-      `;
-
-      const marker = new mapboxgl.Marker({ element: markerElement })
-        .setLngLat(location.coordinates)
-        .addTo(map.current);
-
-      markerElement.addEventListener('click', () => {
-        window.location.href = `/service-areas/${location.slug}`;
-        window.scrollTo(0, 0);
+      map.current = new mapboxgl.Map({
+        container: mapContainer.current,
+        style: 'mapbox://styles/mapbox/streets-v12',
+        center: [-74.0246, 40.7995], // North Bergen coordinates
+        zoom: 12,
+        pitchWithRotate: false,
+        dragRotate: false
       });
 
-      markers.current.push(marker);
-    });
+      // Add navigation controls
+      map.current.addControl(
+        new mapboxgl.NavigationControl(),
+        'top-right'
+      );
+
+      // Add markers for each location
+      locations.forEach((location) => {
+        const markerElement = document.createElement('div');
+        markerElement.className = 'cursor-pointer';
+        markerElement.innerHTML = `
+          <div class="relative group">
+            <div class="w-6 h-6 bg-primary rounded-full flex items-center justify-center transform transition-transform group-hover:scale-110">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                <circle cx="12" cy="10" r="3"></circle>
+              </svg>
+            </div>
+            <div class="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-white rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+              ${location.name}
+            </div>
+          </div>
+        `;
+
+        const marker = new mapboxgl.Marker({ element: markerElement })
+          .setLngLat(location.coordinates)
+          .addTo(map.current);
+
+        markerElement.addEventListener('click', () => {
+          window.location.href = `/service-areas/${location.slug}`;
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        markers.current.push(marker);
+      });
+
+      // Handle map errors
+      map.current.on('error', (e) => {
+        console.error('Mapbox error:', e);
+      });
+
+    } catch (error) {
+      console.error('Error initializing map:', error);
+    }
 
     // Cleanup
     return () => {
-      markers.current.forEach(marker => marker.remove());
-      map.current?.remove();
+      if (markers.current) {
+        markers.current.forEach(marker => marker.remove());
+        markers.current = [];
+      }
+      if (map.current) {
+        map.current.remove();
+        map.current = null;
+      }
     };
   }, []);
 
