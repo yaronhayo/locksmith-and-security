@@ -1,118 +1,100 @@
-import { motion } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Lock, Car, Building2, Key } from "lucide-react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
 
 const services = [
   { 
     icon: Lock, 
     title: "House Lockout", 
-    description: "Locked out of your home? Our expert locksmiths will help you regain access quickly and safely, without damaging your locks.", 
-    link: "/services/house-lockout", 
-    cta: "Unlock Your Home" 
+    description: "Professional locksmith services for residential lockouts. Available 24/7.", 
+    link: "/services/house-lockout" 
   },
   { 
     icon: Car, 
     title: "Car Lockout", 
-    description: "Lost your car keys or locked them inside? Our mobile locksmiths come to your location and safely unlock your vehicle.", 
-    link: "/services/car-lockout", 
-    cta: "Unlock Your Car" 
+    description: "Emergency car lockout services for all vehicle makes and models.", 
+    link: "/services/car-lockout" 
   },
   { 
     icon: Building2, 
     title: "Business Lockout", 
-    description: "Can't access your business? We provide fast commercial lockout service to get you back to work quickly.", 
-    link: "/services/business-lockout", 
-    cta: "Unlock Your Business" 
+    description: "Commercial lockout solutions for offices, stores, and warehouses.", 
+    link: "/services/business-lockout" 
   },
   { 
     icon: Key, 
     title: "Lock Change", 
-    description: "Need new locks? We install high-quality locks for better security. Perfect for new homeowners or when upgrading old locks.", 
-    link: "/services/lock-change", 
-    cta: "Change Your Locks" 
+    description: "Professional lock replacement services for enhanced security.", 
+    link: "/services/lock-change" 
   },
   { 
     icon: Key, 
     title: "Lock Rekey", 
-    description: "Want to keep your locks but need new keys? We'll rekey your existing locks to work with new keys.", 
-    link: "/services/lock-rekey", 
-    cta: "Rekey Your Locks" 
+    description: "Rekey your existing locks for improved security.", 
+    link: "/services/lock-rekey" 
   },
   { 
     icon: Building2, 
     title: "Business Lock Change", 
-    description: "Upgrade your business security with new commercial-grade locks. We install master key systems and high-security locks.", 
-    link: "/services/business-lock-change", 
-    cta: "Secure Your Business" 
+    description: "Commercial lock replacement and master key systems.", 
+    link: "/services/business-lock-change" 
   },
   { 
     icon: Car, 
     title: "New Car Key", 
-    description: "Lost your car key? We make and program new keys for all vehicle types, including transponder and smart keys.", 
-    link: "/services/new-car-key", 
-    cta: "Get a New Car Key" 
+    description: "Car key cutting and programming for all vehicle types.", 
+    link: "/services/new-car-key" 
   },
   { 
     icon: Car, 
     title: "Car Key Program", 
-    description: "Need a car key programmed? We program all types of electronic car keys and key fobs.", 
-    link: "/services/car-key-program", 
-    cta: "Program Your Car Key" 
+    description: "Professional car key programming services.", 
+    link: "/services/car-key-program" 
   }
 ];
 
 const ServicesGrid = () => {
-  const navigate = useNavigate();
-
-  const handleCardClick = (link: string) => {
-    navigate(link);
-    window.scrollTo({ top: 0, behavior: 'instant' });
-  };
-
   return (
     <section className="py-20 bg-gray-50">
       <div className="container mx-auto px-4">
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="text-center max-w-2xl mx-auto mb-12"
-        >
-          <h2 className="text-3xl font-bold mb-4">Our Services</h2>
-          <p className="text-lg text-muted-foreground">
-            Comprehensive locksmith solutions for all your security needs
+        <div className="max-w-4xl mx-auto text-center mb-12">
+          <h2 className="text-3xl font-bold mb-4">Our Locksmith Services</h2>
+          <p className="text-lg text-gray-600">
+            Professional locksmith services for residential, commercial, and automotive needs. 
+            Available 24/7 for emergencies.
           </p>
-        </motion.div>
-
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+        </div>
+        
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {services.map((service, index) => (
-            <motion.div
+            <Link
               key={index}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
+              to={service.link}
+              className="no-underline"
+              onClick={() => window.scrollTo({ top: 0, behavior: 'instant' })}
             >
-              <Card 
-                className="h-full hover:shadow-lg transition-all duration-300 group cursor-pointer"
-                onClick={() => handleCardClick(service.link)}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
               >
-                <CardContent className="p-6">
-                  <service.icon className="w-12 h-12 text-primary mb-4" />
-                  <h3 className="text-xl font-semibold mb-2 group-hover:text-primary transition-colors">
-                    {service.title}
-                  </h3>
-                  <p className="text-muted-foreground mb-4">{service.description}</p>
-                  <Button asChild variant="secondary" className="w-full group">
-                    <Link to={service.link} className="flex items-center justify-center">
-                      {service.cta}
-                      <ArrowRight className="ml-2 w-4 h-4 transform transition-transform duration-300 group-hover:translate-x-1" />
-                    </Link>
-                  </Button>
-                </CardContent>
-              </Card>
-            </motion.div>
+                <Card className="h-full hover:shadow-lg transition-all duration-300 group">
+                  <CardContent className="p-6">
+                    <service.icon className="w-12 h-12 text-primary mb-4" />
+                    <h3 className="text-xl font-semibold mb-2 group-hover:text-primary transition-colors">
+                      {service.title}
+                    </h3>
+                    <p className="text-gray-600 mb-4">{service.description}</p>
+                    <Button variant="secondary" className="w-full group">
+                      Learn More
+                      <ArrowRight className="ml-2 h-4 w-4 transform transition-transform duration-300 group-hover:translate-x-2" />
+                    </Button>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            </Link>
           ))}
         </div>
       </div>
