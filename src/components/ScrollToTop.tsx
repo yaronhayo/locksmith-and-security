@@ -8,8 +8,14 @@ const ScrollToTop = () => {
     window.scrollTo({
       top: 0,
       left: 0,
-      behavior: "instant"
+      behavior: "instant",
     });
+    
+    // Prevent mobile viewport issues
+    document.documentElement.style.scrollBehavior = 'auto';
+    setTimeout(() => {
+      document.documentElement.style.scrollBehavior = 'smooth';
+    }, 0);
   }, [pathname]);
 
   return null;

@@ -32,93 +32,28 @@
   }
   
   html {
-    @apply overflow-x-hidden;
+    @apply overflow-x-hidden scroll-smooth;
     touch-action: manipulation;
     -webkit-text-size-adjust: 100%;
+    width: 100vw;
   }
   
   body {
     @apply bg-background text-foreground min-h-screen w-full overflow-x-hidden;
     touch-action: manipulation;
+    width: 100vw;
   }
 
-  h1 {
-    @apply text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-heading-dark;
-  }
-  h2 {
-    @apply text-2xl sm:text-3xl md:text-4xl font-bold text-heading-primary;
-  }
-  h3 {
-    @apply text-xl sm:text-2xl md:text-3xl font-semibold text-heading-secondary;
-  }
-  h4 {
-    @apply text-lg sm:text-xl md:text-2xl font-semibold text-heading-dark;
-  }
-  .subtitle {
-    @apply text-base sm:text-lg md:text-xl text-heading-neutral;
-  }
-  
-  a {
-    @apply transition-all duration-300 hover:text-secondary relative group-hover:text-secondary;
-  }
-  a:not(.no-underline)::after {
-    @apply content-[''] absolute left-0 bottom-0 w-0 h-0.5 bg-secondary transition-all duration-300 group-hover:w-full;
-  }
-  a:not(.no-underline):hover::after {
-    @apply w-full;
-  }
-  
-  /* Interactive elements hover states */
-  button:not([disabled]),
-  [role="button"]:not([disabled]) {
-    @apply hover:opacity-90 transition-opacity duration-300;
-  }
-  
-  /* Navigation specific hover effects */
-  .nav-link {
-    @apply relative hover:text-secondary transition-colors duration-300;
-  }
-  
-  .nav-link::after {
-    @apply content-[''] absolute left-0 bottom-0 w-0 h-0.5 bg-secondary transition-all duration-300;
-  }
-  
-  .nav-link:hover::after {
-    @apply w-full;
-  }
-  
-  /* Footer specific hover effects */
-  .footer-link {
-    @apply hover:text-secondary transition-colors duration-300;
-  }
-  
-  /* Card hover effects */
-  .hover-card {
-    @apply transition-transform duration-300 hover:scale-105;
-  }
-  
-  /* Button hover effects */
-  .btn-hover {
-    @apply transition-all duration-300 hover:shadow-lg hover:translate-y-[-2px];
-  }
-
-  /* Secondary button hover text color */
+  /* Improved CTA hover states */
   .bg-secondary:hover,
   [class*="bg-secondary"]:hover {
-    @apply text-black;
+    @apply text-black font-medium;
   }
 
-  /* Secondary button icon hover color */
-  .bg-secondary:hover svg,
-  [class*="bg-secondary"]:hover svg {
-    @apply text-black;
+  /* Enhanced button hover states */
+  button:not([disabled]),
+  [role="button"]:not([disabled]) {
+    @apply hover:opacity-90 transition-all duration-300;
   }
 }
 
-.hero-gradient {
-  background: linear-gradient(135deg, #0F4C81 0%, #072442 100%);
-}
-
-.main-heading {
-  @apply text-heading-primary;
-}
