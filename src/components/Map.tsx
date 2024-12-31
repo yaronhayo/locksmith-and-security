@@ -21,7 +21,7 @@ const locations: Location[] = [
 
 const Map = () => {
   const [selectedLocation, setSelectedLocation] = useState<Location | null>(null);
-  const [mapLoaded, setMapLoaded] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
   const mapRef = useRef<google.maps.Map | null>(null);
 
   const mapContainerStyle = {
@@ -50,11 +50,13 @@ const Map = () => {
 
   const onLoad = (map: google.maps.Map) => {
     mapRef.current = map;
-    setMapLoaded(true);
+    setIsLoaded(true);
   };
 
   const getMarkerIcon = () => {
-    if (!window.google || !window.google.maps) return null;
+    if (typeof window === 'undefined' || !window.google || !window.google.maps) {
+      return null;
+    }
     
     return {
       url: `data:image/svg+xml;utf-8,${encodeURIComponent(`
@@ -71,7 +73,7 @@ const Map = () => {
     <div className="relative w-full h-[600px] rounded-lg overflow-hidden shadow-lg">
       <LoadScript 
         googleMapsApiKey="AIzaSyA836rCuy6AkrT3L2yT_rfxUPUphH_b6lw"
-        onLoad={() => console.log("Script loaded successfully")}
+        onLoad={() => console.log("Google Maps script loaded successfully")}
       >
         <GoogleMap
           mapContainerStyle={mapContainerStyle}
@@ -80,7 +82,7 @@ const Map = () => {
           options={options}
           onLoad={onLoad}
         >
-          {mapLoaded && locations.map((location) => (
+          {isLoaded && locations.map((location) => (
             <Marker
               key={location.slug}
               position={{ lat: location.coordinates[1], lng: location.coordinates[0] }}
