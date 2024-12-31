@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { LoadScript, GoogleMap, Marker } from '@react-google-maps/api';
+import { useNavigate } from 'react-router-dom';
 
 interface MapProps {
   center?: { lat: number; lng: number };
@@ -9,14 +10,14 @@ interface MapProps {
 
 // Service area coordinates
 const serviceAreaLocations = [
-  { lat: 40.7828, lng: -74.0297, title: "North Bergen" },
-  { lat: 40.7282, lng: -74.0776, title: "Jersey City" },
-  { lat: 40.7795, lng: -74.0246, title: "Union City" },
-  { lat: 40.7857, lng: -74.0143, title: "West New York" },
-  { lat: 40.7799, lng: -74.0566, title: "Secaucus" },
-  { lat: 40.7684, lng: -74.0287, title: "Weehawken" },
-  { lat: 40.7453, lng: -74.0279, title: "Hoboken" },
-  { lat: 40.7920, lng: -74.0037, title: "Guttenberg" }
+  { lat: 40.7828, lng: -74.0297, title: "North Bergen", slug: "north-bergen" },
+  { lat: 40.7282, lng: -74.0776, title: "Jersey City", slug: "jersey-city" },
+  { lat: 40.7795, lng: -74.0246, title: "Union City", slug: "union-city" },
+  { lat: 40.7857, lng: -74.0143, title: "West New York", slug: "west-new-york" },
+  { lat: 40.7799, lng: -74.0566, title: "Secaucus", slug: "secaucus" },
+  { lat: 40.7684, lng: -74.0287, title: "Weehawken", slug: "weehawken" },
+  { lat: 40.7453, lng: -74.0279, title: "Hoboken", slug: "hoboken" },
+  { lat: 40.7920, lng: -74.0037, title: "Guttenberg", slug: "guttenberg" }
 ];
 
 const Map = ({ 
@@ -24,6 +25,7 @@ const Map = ({
   zoom = 12, // Adjusted zoom to show more area
   markers = serviceAreaLocations // Use service area locations as default markers
 }: MapProps) => {
+  const navigate = useNavigate();
   const [isLoaded, setIsLoaded] = useState(false);
   const [map, setMap] = useState<google.maps.Map | null>(null);
 
@@ -87,6 +89,13 @@ const Map = ({
     setIsLoaded(false);
   };
 
+  const handleMarkerClick = (marker: any) => {
+    if (marker.slug) {
+      navigate(`/service-areas/${marker.slug}`);
+      window.scrollTo(0, 0);
+    }
+  };
+
   return (
     <div className="relative w-full h-[600px] rounded-lg overflow-hidden shadow-lg">
       <LoadScript 
@@ -108,6 +117,8 @@ const Map = ({
               position={{ lat: marker.lat, lng: marker.lng }}
               icon={getMarkerIcon()}
               title={marker.title}
+              onClick={() => handleMarkerClick(marker)}
+              cursor="pointer"
             />
           ))}
         </GoogleMap>
