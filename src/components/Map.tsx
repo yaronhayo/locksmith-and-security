@@ -7,10 +7,22 @@ interface MapProps {
   markers?: Array<{ lat: number; lng: number; title?: string }>;
 }
 
+// Service area coordinates
+const serviceAreaLocations = [
+  { lat: 40.7828, lng: -74.0297, title: "North Bergen" },
+  { lat: 40.7282, lng: -74.0776, title: "Jersey City" },
+  { lat: 40.7795, lng: -74.0246, title: "Union City" },
+  { lat: 40.7857, lng: -74.0143, title: "West New York" },
+  { lat: 40.7799, lng: -74.0566, title: "Secaucus" },
+  { lat: 40.7684, lng: -74.0287, title: "Weehawken" },
+  { lat: 40.7453, lng: -74.0279, title: "Hoboken" },
+  { lat: 40.7920, lng: -74.0037, title: "Guttenberg" }
+];
+
 const Map = ({ 
   center = { lat: 40.7828, lng: -74.0297 }, // Default to North Bergen
-  zoom = 13,
-  markers = [{ lat: 40.7828, lng: -74.0297, title: "Locksmith & Security LLC" }]
+  zoom = 12, // Adjusted zoom to show more area
+  markers = serviceAreaLocations // Use service area locations as default markers
 }: MapProps) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [map, setMap] = useState<google.maps.Map | null>(null);
@@ -59,6 +71,15 @@ const Map = ({
     console.log('Map loaded successfully');
     setMap(map);
     setIsLoaded(true);
+
+    // Fit bounds to show all markers
+    if (markers.length > 1) {
+      const bounds = new window.google.maps.LatLngBounds();
+      markers.forEach(marker => {
+        bounds.extend({ lat: marker.lat, lng: marker.lng });
+      });
+      map.fitBounds(bounds);
+    }
   };
 
   const onUnmount = () => {
