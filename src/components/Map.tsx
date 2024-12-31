@@ -58,22 +58,35 @@ const Map = () => {
       return null;
     }
     
-    return {
-      url: `data:image/svg+xml;utf-8,${encodeURIComponent(`
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
-          <path fill="#1E3A8A" d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
-        </svg>
-      `)}`,
-      scaledSize: new window.google.maps.Size(36, 36),
-      anchor: new window.google.maps.Point(18, 36),
-    };
+    try {
+      return {
+        url: `data:image/svg+xml;utf-8,${encodeURIComponent(`
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+            <path fill="#1E3A8A" d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+          </svg>
+        `)}`,
+        scaledSize: new window.google.maps.Size(36, 36),
+        anchor: new window.google.maps.Point(18, 36),
+      };
+    } catch (error) {
+      console.error('Error creating marker icon:', error);
+      return null;
+    }
   };
 
   return (
     <div className="relative w-full h-[600px] rounded-lg overflow-hidden shadow-lg">
       <LoadScript 
         googleMapsApiKey="AIzaSyA836rCuy6AkrT3L2yT_rfxUPUphH_b6lw"
-        onLoad={() => console.log("Google Maps script loaded successfully")}
+        onLoad={() => {
+          console.log("Google Maps script loaded successfully");
+          if (typeof window !== 'undefined' && window.google) {
+            setIsLoaded(true);
+          }
+        }}
+        onError={(error) => {
+          console.error('Error loading Google Maps script:', error);
+        }}
       >
         <GoogleMap
           mapContainerStyle={mapContainerStyle}
