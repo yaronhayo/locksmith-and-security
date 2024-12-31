@@ -4,6 +4,7 @@ interface Window {
   dataLayer?: any[];
   gtag?: (...args: any[]) => void;
   clarity?: (...args: any[]) => void;
+  google: any;
 }
 
 interface LayoutShiftEntry extends PerformanceEntry {
