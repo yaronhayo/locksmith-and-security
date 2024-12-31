@@ -98,7 +98,7 @@ const HeroSection = () => {
                 asChild
                 aria-label="Call us now"
               >
-                <a href="tel:5513037874" className="inline-flex items-center">
+                <a href="tel:2017482070" className="inline-flex items-center">
                   <Phone className="mr-2 h-5 w-5 animate-phone-ring group-hover:rotate-12 transition-transform duration-300" aria-hidden="true" />
                   <span className="relative z-10">Call Now</span>
                   <div className="absolute inset-0 bg-gradient-to-r from-secondary to-secondary-hover opacity-0 group-hover:opacity-100 transition-opacity duration-300" />

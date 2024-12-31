@@ -13,7 +13,7 @@ const ActionButtons = ({ isMenuOpen, setIsMenuOpen }: ActionButtonsProps) => {
       <div className="hidden md:flex items-center space-x-4">
         <a href="tel:2017482070" className="inline-flex items-center space-x-2 text-xl font-bold text-primary hover:text-secondary transition-all duration-300 group transform hover:scale-105">
           <Phone className="w-6 h-6 animate-phone-ring" />
-          <span className="text-2xl transform transition-transform duration-300 group-hover:translate-y-[-2px]">(551) 303-7874</span>
+          <span className="text-2xl transform transition-transform duration-300 group-hover:translate-y-[-2px]">(201) 748-2070</span>
         </a>
         <BookingDialog 
           variant="secondary"
