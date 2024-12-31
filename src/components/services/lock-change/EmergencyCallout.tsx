@@ -24,7 +24,7 @@ const EmergencyCallout = () => {
         <Button size="lg" variant="secondary" asChild className="whitespace-nowrap">
           <a href="tel:5513037874" className="flex items-center gap-2">
             <Phone className="w-5 h-5" />
-            Call (551) 303-7874
+            Call (201) 748-2070
           </a>
         </Button>
       </div>

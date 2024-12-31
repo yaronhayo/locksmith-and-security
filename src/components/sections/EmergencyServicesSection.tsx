@@ -34,7 +34,7 @@ const EmergencyServicesSection = () => {
         
         <div className="text-center">
           <Button asChild size="lg">
-            <a href="tel:5513037874">Call Now for Emergency Service</a>
+            <a href="tel:2017482070">Call Now for Emergency Service</a>
           </Button>
         </div>
       </div>

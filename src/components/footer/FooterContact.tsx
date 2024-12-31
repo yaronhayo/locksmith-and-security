@@ -14,11 +14,11 @@ const FooterContact = () => {
           <Phone className="w-5 h-5 group-hover:animate-bounce text-secondary" />
           <div>
             <a 
-              href="tel:5513037874" 
+              href="tel:2017482070" 
               className="hover:text-secondary transition-colors" 
               aria-label="Call our 24/7 emergency service"
             >
-              (551) 303-7874
+              (201) 748-2070
             </a>
             <p className="text-sm text-[#90EE90]">24/7 Emergency Service</p>
           </div>
