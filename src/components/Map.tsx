@@ -22,6 +22,7 @@ const locations: Location[] = [
 const Map = () => {
   const [selectedLocation, setSelectedLocation] = useState<Location | null>(null);
   const [mapLoaded, setMapLoaded] = useState(false);
+  const [googleMapsLoaded, setGoogleMapsLoaded] = useState(false);
 
   const mapContainerStyle = {
     width: '100%',
@@ -47,23 +48,30 @@ const Map = () => {
     ]
   };
 
-  const svgMarker = {
-    url: `data:image/svg+xml;utf-8,${encodeURIComponent(`
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
-        <path fill="#1E3A8A" d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
-      </svg>
-    `)}`,
-    scaledSize: new google.maps.Size(36, 36),
-    anchor: new google.maps.Point(18, 36),
+  const getMarkerIcon = () => {
+    if (!googleMapsLoaded) return null;
+    
+    return {
+      url: `data:image/svg+xml;utf-8,${encodeURIComponent(`
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+          <path fill="#1E3A8A" d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+        </svg>
+      `)}`,
+      scaledSize: new window.google.maps.Size(36, 36),
+      anchor: new window.google.maps.Point(18, 36),
+    };
   };
 
   return (
     <div className="relative w-full h-[600px] rounded-lg overflow-hidden shadow-lg">
       <LoadScript 
         googleMapsApiKey="AIzaSyDxRw7-lukZWyTTPd7hr1i1rvmaUEzl_Ns"
-        onLoad={() => setMapLoaded(true)}
+        onLoad={() => {
+          setGoogleMapsLoaded(true);
+          setMapLoaded(true);
+        }}
       >
-        {mapLoaded && (
+        {mapLoaded && googleMapsLoaded && (
           <GoogleMap
             mapContainerStyle={mapContainerStyle}
             zoom={12}
@@ -75,7 +83,7 @@ const Map = () => {
                 key={location.slug}
                 position={{ lat: location.coordinates[1], lng: location.coordinates[0] }}
                 onClick={() => setSelectedLocation(location)}
-                icon={svgMarker}
+                icon={getMarkerIcon()}
               />
             ))}
 
