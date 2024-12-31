@@ -9,6 +9,13 @@ import Routes from '@/Routes';
 import { ErrorBoundary } from "react-error-boundary";
 import ErrorFallback from "@/components/ErrorFallback";
 
+// Ensure Google Maps is defined globally
+declare global {
+  interface Window {
+    google: any;
+  }
+}
+
 function App() {
   return (
     <ErrorBoundary FallbackComponent={ErrorFallback}>
