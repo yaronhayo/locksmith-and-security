@@ -22,7 +22,7 @@ const locations: Location[] = [
 const Map = () => {
   const [selectedLocation, setSelectedLocation] = useState<Location | null>(null);
   const [mapLoaded, setMapLoaded] = useState(false);
-  const [googleMapsLoaded, setGoogleMapsLoaded] = useState(false);
+  const mapRef = useRef<google.maps.Map | null>(null);
 
   const mapContainerStyle = {
     width: '100%',
@@ -48,8 +48,13 @@ const Map = () => {
     ]
   };
 
+  const onLoad = (map: google.maps.Map) => {
+    mapRef.current = map;
+    setMapLoaded(true);
+  };
+
   const getMarkerIcon = () => {
-    if (!googleMapsLoaded) return null;
+    if (!window.google || !window.google.maps) return null;
     
     return {
       url: `data:image/svg+xml;utf-8,${encodeURIComponent(`
@@ -66,49 +71,45 @@ const Map = () => {
     <div className="relative w-full h-[600px] rounded-lg overflow-hidden shadow-lg">
       <LoadScript 
         googleMapsApiKey="AIzaSyA836rCuy6AkrT3L2yT_rfxUPUphH_b6lw"
-        onLoad={() => {
-          setGoogleMapsLoaded(true);
-          setMapLoaded(true);
-        }}
+        onLoad={() => console.log("Script loaded successfully")}
       >
-        {mapLoaded && googleMapsLoaded && (
-          <GoogleMap
-            mapContainerStyle={mapContainerStyle}
-            zoom={12}
-            center={center}
-            options={options}
-          >
-            {locations.map((location) => (
-              <Marker
-                key={location.slug}
-                position={{ lat: location.coordinates[1], lng: location.coordinates[0] }}
-                onClick={() => setSelectedLocation(location)}
-                icon={getMarkerIcon()}
-              />
-            ))}
+        <GoogleMap
+          mapContainerStyle={mapContainerStyle}
+          zoom={12}
+          center={center}
+          options={options}
+          onLoad={onLoad}
+        >
+          {mapLoaded && locations.map((location) => (
+            <Marker
+              key={location.slug}
+              position={{ lat: location.coordinates[1], lng: location.coordinates[0] }}
+              onClick={() => setSelectedLocation(location)}
+              icon={getMarkerIcon()}
+            />
+          ))}
 
-            {selectedLocation && (
-              <InfoWindow
-                position={{
-                  lat: selectedLocation.coordinates[1],
-                  lng: selectedLocation.coordinates[0]
-                }}
-                onCloseClick={() => setSelectedLocation(null)}
-              >
-                <div className="p-2">
-                  <h3 className="font-semibold text-gray-900">{selectedLocation.name}</h3>
-                  <a
-                    href={`/service-areas/${selectedLocation.slug}`}
-                    className="text-sm text-primary hover:underline mt-1 block"
-                    onClick={() => window.scrollTo(0, 0)}
-                  >
-                    View Details
-                  </a>
-                </div>
-              </InfoWindow>
-            )}
-          </GoogleMap>
-        )}
+          {selectedLocation && (
+            <InfoWindow
+              position={{
+                lat: selectedLocation.coordinates[1],
+                lng: selectedLocation.coordinates[0]
+              }}
+              onCloseClick={() => setSelectedLocation(null)}
+            >
+              <div className="p-2">
+                <h3 className="font-semibold text-gray-900">{selectedLocation.name}</h3>
+                <a
+                  href={`/service-areas/${selectedLocation.slug}`}
+                  className="text-sm text-primary hover:underline mt-1 block"
+                  onClick={() => window.scrollTo(0, 0)}
+                >
+                  View Details
+                </a>
+              </div>
+            </InfoWindow>
+          )}
+        </GoogleMap>
       </LoadScript>
     </div>
   );
