@@ -60,15 +60,6 @@ const Map = () => {
               key={location.slug}
               position={{ lat: location.coordinates[1], lng: location.coordinates[0] }}
               onClick={() => setSelectedLocation(location)}
-              icon={{
-                path: "M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z M12 7a3 3 0 1 0 0 6 3 3 0 0 0 0-6z",
-                fillColor: "#0f172a",
-                fillOpacity: 1,
-                strokeWeight: 1,
-                strokeColor: "#ffffff",
-                scale: 1.5,
-                anchor: new google.maps.Point(12, 23),
-              }}
             />
           ))}
 
