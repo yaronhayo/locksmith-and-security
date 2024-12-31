@@ -65,7 +65,7 @@ const Map = () => {
   return (
     <div className="relative w-full h-[600px] rounded-lg overflow-hidden shadow-lg">
       <LoadScript 
-        googleMapsApiKey="AIzaSyDxRw7-lukZWyTTPd7hr1i1rvmaUEzl_Ns"
+        googleMapsApiKey="AIzaSyA836rCuy6AkrT3L2yT_rfxUPUphH_b6lw"
         onLoad={() => {
           setGoogleMapsLoaded(true);
           setMapLoaded(true);
