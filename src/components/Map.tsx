@@ -71,16 +71,12 @@ const Map = ({
   };
 
   const getMarkerIcon = (isHovered: boolean) => ({
-    url: `data:image/svg+xml,${encodeURIComponent(`
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="12" cy="12" r="${isHovered ? '10' : '8'}" 
-                fill="${isHovered ? '#2563EB' : '#1E3A8A'}"
-                stroke="${isHovered ? 'white' : 'none'}"
-                stroke-width="${isHovered ? '2' : '0'}"/>
-      </svg>
-    `)}`,
-    scaledSize: new google.maps.Size(24, 24),
-    anchor: new google.maps.Point(12, 12)
+    path: google.maps.SymbolPath.CIRCLE,
+    fillColor: isHovered ? '#2563EB' : '#1E3A8A',
+    fillOpacity: 1,
+    strokeWeight: isHovered ? 2 : 0,
+    strokeColor: '#ffffff',
+    scale: isHovered ? 12 : 10
   });
 
   const onLoad = (map: google.maps.Map) => {
