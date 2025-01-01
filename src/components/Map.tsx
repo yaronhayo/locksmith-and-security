@@ -30,6 +30,10 @@ const Map = ({
   const [isLoaded, setIsLoaded] = useState(false);
   const [mapInstance, setMapInstance] = useState<google.maps.Map | null>(null);
   const [mapHeight, setMapHeight] = useState('600px');
+  const [loadError, setLoadError] = useState<string | null>(null);
+
+  console.log('Map component rendering, isLoaded:', isLoaded);
+  console.log('Google Maps available:', !!window.google);
 
   const mapContainerStyle = {
     width: '100%',
@@ -77,6 +81,7 @@ const Map = ({
   };
 
   const onLoad = (map: google.maps.Map) => {
+    console.log('Map onLoad called');
     setMapInstance(map);
     setIsLoaded(true);
 
@@ -89,12 +94,27 @@ const Map = ({
     }
   };
 
+  const onLoadError = (error: Error) => {
+    console.error('Error loading Google Maps:', error);
+    setLoadError(error.message);
+  };
+
   const handleMarkerClick = (marker: any) => {
     if (marker.slug) {
       navigate(`/service-areas/${marker.slug}`);
       window.scrollTo(0, 0);
     }
   };
+
+  if (loadError) {
+    return (
+      <div className="w-full h-[400px] md:h-[500px] lg:h-[600px] flex items-center justify-center bg-gray-50 rounded-lg">
+        <div className="flex flex-col items-center gap-2 text-red-500">
+          <p>Error loading map: {loadError}</p>
+        </div>
+      </div>
+    );
+  }
 
   if (!window.google) {
     return (
@@ -109,7 +129,10 @@ const Map = ({
 
   return (
     <div className="relative w-full rounded-lg overflow-hidden shadow-lg" style={{ height: mapHeight }}>
-      <LoadScript googleMapsApiKey="AIzaSyA836rCuy6AkrT3L2yT_rfxUPUphH_b6lw">
+      <LoadScript 
+        googleMapsApiKey="AIzaSyA836rCuy6AkrT3L2yT_rfxUPUphH_b6lw"
+        onError={onLoadError}
+      >
         <GoogleMap
           mapContainerStyle={mapContainerStyle}
           center={center}
