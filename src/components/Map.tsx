@@ -7,9 +7,9 @@ interface MapProps {
   center?: { lat: number; lng: number };
   zoom?: number;
   markers?: Array<{ lat: number; lng: number; title?: string; slug?: string }>;
+  hoveredMarker?: string | null;
 }
 
-// Service area coordinates
 const serviceAreaLocations = [
   { lat: 40.7828, lng: -74.0297, title: "North Bergen", slug: "north-bergen" },
   { lat: 40.7282, lng: -74.0776, title: "Jersey City", slug: "jersey-city" },
@@ -24,7 +24,8 @@ const serviceAreaLocations = [
 const Map = ({ 
   center = { lat: 40.7828, lng: -74.0297 },
   zoom = 12,
-  markers = serviceAreaLocations
+  markers = serviceAreaLocations,
+  hoveredMarker = null
 }: MapProps) => {
   const navigate = useNavigate();
   const [isLoaded, setIsLoaded] = useState(false);
@@ -70,13 +71,14 @@ const Map = ({
     ]
   };
 
-  const getMarkerIcon = () => {
+  const getMarkerIcon = (isHovered: boolean) => {
     return {
       path: google.maps.SymbolPath.CIRCLE,
-      fillColor: '#1E3A8A',
+      fillColor: isHovered ? '#2563EB' : '#1E3A8A',
       fillOpacity: 1,
-      strokeWeight: 0,
-      scale: 10
+      strokeWeight: isHovered ? 2 : 0,
+      strokeColor: '#ffffff',
+      scale: isHovered ? 12 : 10
     };
   };
 
@@ -144,10 +146,11 @@ const Map = ({
             <Marker
               key={index}
               position={{ lat: marker.lat, lng: marker.lng }}
-              icon={getMarkerIcon()}
+              icon={getMarkerIcon(hoveredMarker === marker.slug)}
               title={marker.title}
               onClick={() => handleMarkerClick(marker)}
               cursor="pointer"
+              animation={hoveredMarker === marker.slug ? google.maps.Animation.BOUNCE : undefined}
             />
           ))}
         </GoogleMap>

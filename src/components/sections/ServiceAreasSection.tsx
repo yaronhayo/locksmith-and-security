@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { MapPin, Phone, Shield, Clock } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
@@ -82,6 +83,8 @@ const features = [
 ];
 
 const ServiceAreasSection = () => {
+  const [hoveredArea, setHoveredArea] = useState<string | null>(null);
+  
   const markers = areas.map(area => ({
     lat: area.lat,
     lng: area.lng,
@@ -122,19 +125,27 @@ const ServiceAreasSection = () => {
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.3, delay: index * 0.1 }}
+                  onMouseEnter={() => setHoveredArea(area.slug)}
+                  onMouseLeave={() => setHoveredArea(null)}
                 >
                   <Link
                     to={`/service-areas/${area.slug}`}
-                    className="group flex items-start space-x-3 p-4 rounded-lg hover:bg-primary/5 transition-all"
+                    className={`group flex items-start space-x-3 p-4 rounded-lg transition-all ${
+                      hoveredArea === area.slug ? 'bg-primary/10' : 'hover:bg-primary/5'
+                    }`}
                     onClick={() => window.scrollTo(0, 0)}
                   >
                     <div className="flex-shrink-0">
-                      <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center group-hover:bg-primary/20 transition-colors">
+                      <div className={`w-10 h-10 rounded-full flex items-center justify-center transition-colors ${
+                        hoveredArea === area.slug ? 'bg-primary/20' : 'bg-primary/10 group-hover:bg-primary/20'
+                      }`}>
                         <MapPin className="w-5 h-5 text-primary" />
                       </div>
                     </div>
                     <div>
-                      <h3 className="font-medium text-gray-900 group-hover:text-primary transition-colors">
+                      <h3 className={`font-medium transition-colors ${
+                        hoveredArea === area.slug ? 'text-primary' : 'text-gray-900 group-hover:text-primary'
+                      }`}>
                         {area.name}
                       </h3>
                       <p className="text-sm text-gray-500 mt-1">
@@ -153,7 +164,7 @@ const ServiceAreasSection = () => {
             transition={{ duration: 0.5 }}
             className="bg-white rounded-xl shadow-lg overflow-hidden"
           >
-            <Map markers={markers} />
+            <Map markers={markers} hoveredMarker={hoveredArea} />
           </motion.div>
         </div>
 
