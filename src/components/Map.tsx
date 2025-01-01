@@ -21,18 +21,35 @@ const serviceAreaLocations = [
 ];
 
 const Map = ({ 
-  center = { lat: 40.7828, lng: -74.0297 }, // Default to North Bergen
-  zoom = 12, // Adjusted zoom to show more area
-  markers = serviceAreaLocations // Use service area locations as default markers
+  center = { lat: 40.7828, lng: -74.0297 },
+  zoom = 12,
+  markers = serviceAreaLocations
 }: MapProps) => {
   const navigate = useNavigate();
   const [isLoaded, setIsLoaded] = useState(false);
   const [map, setMap] = useState<google.maps.Map | null>(null);
+  const [mapHeight, setMapHeight] = useState('600px');
 
   const mapContainerStyle = {
     width: '100%',
-    height: '100%'
+    height: mapHeight
   };
+
+  useEffect(() => {
+    const updateMapHeight = () => {
+      if (window.innerWidth < 640) { // sm
+        setMapHeight('400px');
+      } else if (window.innerWidth < 768) { // md
+        setMapHeight('500px');
+      } else {
+        setMapHeight('600px');
+      }
+    };
+
+    updateMapHeight();
+    window.addEventListener('resize', updateMapHeight);
+    return () => window.removeEventListener('resize', updateMapHeight);
+  }, []);
 
   const options = {
     disableDefaultUI: false,
@@ -97,7 +114,7 @@ const Map = ({
   };
 
   return (
-    <div className="relative w-full h-[600px] rounded-lg overflow-hidden shadow-lg">
+    <div className="relative w-full rounded-lg overflow-hidden shadow-lg" style={{ height: mapHeight }}>
       <LoadScript 
         googleMapsApiKey="AIzaSyA836rCuy6AkrT3L2yT_rfxUPUphH_b6lw"
         onLoad={() => console.log("Script loaded")}

@@ -34,7 +34,7 @@ const Header = () => {
         role="banner"
       >
         <div className="container mx-auto px-4">
-          <div className="flex items-center justify-between min-h-[100px] lg:min-h-[35px]">
+          <div className="flex items-center justify-between py-2 lg:py-4">
             <a 
               href="/" 
               className="flex items-center space-x-3 group"
@@ -43,7 +43,7 @@ const Header = () => {
               <img 
                 src="/lovable-uploads/9b00adf3-451e-4d1c-a118-6a6f06293ec0.png" 
                 alt="Locksmith & Security LLC - Professional 24/7 Locksmith Services in North Bergen, NJ"
-                className={`h-[100px] w-auto md:h-[180px] lg:h-[84px] transform transition-transform duration-300 group-hover:scale-110 ${
+                className={`h-12 w-auto sm:h-16 md:h-20 lg:h-16 transform transition-transform duration-300 group-hover:scale-110 ${
                   isMenuOpen ? 'brightness-0 invert' : ''
                 }`}
                 style={{
