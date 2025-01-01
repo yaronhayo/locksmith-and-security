@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
 import { LoadScript, GoogleMap, Marker } from '@react-google-maps/api';
 import { useNavigate } from 'react-router-dom';
+import { Loader2 } from "lucide-react";
 
 interface MapProps {
   center?: { lat: number; lng: number };
   zoom?: number;
-  markers?: Array<{ lat: number; lng: number; title?: string }>;
+  markers?: Array<{ lat: number; lng: number; title?: string; slug?: string }>;
 }
 
 // Service area coordinates
@@ -27,19 +28,20 @@ const Map = ({
 }: MapProps) => {
   const navigate = useNavigate();
   const [isLoaded, setIsLoaded] = useState(false);
-  const [map, setMap] = useState<google.maps.Map | null>(null);
+  const [mapInstance, setMapInstance] = useState<google.maps.Map | null>(null);
   const [mapHeight, setMapHeight] = useState('600px');
 
   const mapContainerStyle = {
     width: '100%',
-    height: mapHeight
+    height: mapHeight,
+    borderRadius: '0.5rem'
   };
 
   useEffect(() => {
     const updateMapHeight = () => {
-      if (window.innerWidth < 640) { // sm
+      if (window.innerWidth < 640) {
         setMapHeight('400px');
-      } else if (window.innerWidth < 768) { // md
+      } else if (window.innerWidth < 768) {
         setMapHeight('500px');
       } else {
         setMapHeight('600px');
@@ -65,33 +67,19 @@ const Map = ({
   };
 
   const getMarkerIcon = () => {
-    if (typeof window === 'undefined' || !window.google) {
-      console.log('Google Maps not yet loaded');
-      return null;
-    }
-
-    try {
-      return {
-        url: `data:image/svg+xml;utf-8,${encodeURIComponent(`
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
-            <path fill="#1E3A8A" d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
-          </svg>
-        `)}`,
-        scaledSize: new window.google.maps.Size(36, 36),
-        anchor: new window.google.maps.Point(18, 36),
-      };
-    } catch (error) {
-      console.error('Error creating marker icon:', error);
-      return null;
-    }
+    return {
+      path: google.maps.SymbolPath.CIRCLE,
+      fillColor: '#1E3A8A',
+      fillOpacity: 1,
+      strokeWeight: 0,
+      scale: 10
+    };
   };
 
   const onLoad = (map: google.maps.Map) => {
-    console.log('Map loaded successfully');
-    setMap(map);
+    setMapInstance(map);
     setIsLoaded(true);
 
-    // Fit bounds to show all markers
     if (markers.length > 1) {
       const bounds = new window.google.maps.LatLngBounds();
       markers.forEach(marker => {
@@ -101,11 +89,6 @@ const Map = ({
     }
   };
 
-  const onUnmount = () => {
-    setMap(null);
-    setIsLoaded(false);
-  };
-
   const handleMarkerClick = (marker: any) => {
     if (marker.slug) {
       navigate(`/service-areas/${marker.slug}`);
@@ -113,33 +96,37 @@ const Map = ({
     }
   };
 
+  if (!isLoaded) {
+    return (
+      <div className="w-full h-[400px] md:h-[500px] lg:h-[600px] flex items-center justify-center bg-gray-50 rounded-lg">
+        <div className="flex flex-col items-center gap-2">
+          <Loader2 className="h-8 w-8 animate-spin text-primary" />
+          <p className="text-gray-600">Loading map...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="relative w-full rounded-lg overflow-hidden shadow-lg" style={{ height: mapHeight }}>
-      <LoadScript 
-        googleMapsApiKey="AIzaSyA836rCuy6AkrT3L2yT_rfxUPUphH_b6lw"
-        onLoad={() => console.log("Script loaded")}
-        onError={(error) => console.error('Script loading error:', error)}
+      <GoogleMap
+        mapContainerStyle={mapContainerStyle}
+        center={center}
+        zoom={zoom}
+        options={options}
+        onLoad={onLoad}
       >
-        <GoogleMap
-          mapContainerStyle={mapContainerStyle}
-          center={center}
-          zoom={zoom}
-          options={options}
-          onLoad={onLoad}
-          onUnmount={onUnmount}
-        >
-          {isLoaded && markers.map((marker, index) => (
-            <Marker
-              key={index}
-              position={{ lat: marker.lat, lng: marker.lng }}
-              icon={getMarkerIcon()}
-              title={marker.title}
-              onClick={() => handleMarkerClick(marker)}
-              cursor="pointer"
-            />
-          ))}
-        </GoogleMap>
-      </LoadScript>
+        {isLoaded && markers.map((marker, index) => (
+          <Marker
+            key={index}
+            position={{ lat: marker.lat, lng: marker.lng }}
+            icon={getMarkerIcon()}
+            title={marker.title}
+            onClick={() => handleMarkerClick(marker)}
+            cursor="pointer"
+          />
+        ))}
+      </GoogleMap>
     </div>
   );
 };
