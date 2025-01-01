@@ -96,7 +96,7 @@ const Map = ({
     }
   };
 
-  if (!isLoaded) {
+  if (!window.google) {
     return (
       <div className="w-full h-[400px] md:h-[500px] lg:h-[600px] flex items-center justify-center bg-gray-50 rounded-lg">
         <div className="flex flex-col items-center gap-2">
@@ -109,24 +109,26 @@ const Map = ({
 
   return (
     <div className="relative w-full rounded-lg overflow-hidden shadow-lg" style={{ height: mapHeight }}>
-      <GoogleMap
-        mapContainerStyle={mapContainerStyle}
-        center={center}
-        zoom={zoom}
-        options={options}
-        onLoad={onLoad}
-      >
-        {isLoaded && markers.map((marker, index) => (
-          <Marker
-            key={index}
-            position={{ lat: marker.lat, lng: marker.lng }}
-            icon={getMarkerIcon()}
-            title={marker.title}
-            onClick={() => handleMarkerClick(marker)}
-            cursor="pointer"
-          />
-        ))}
-      </GoogleMap>
+      <LoadScript googleMapsApiKey="AIzaSyA836rCuy6AkrT3L2yT_rfxUPUphH_b6lw">
+        <GoogleMap
+          mapContainerStyle={mapContainerStyle}
+          center={center}
+          zoom={zoom}
+          options={options}
+          onLoad={onLoad}
+        >
+          {markers.map((marker, index) => (
+            <Marker
+              key={index}
+              position={{ lat: marker.lat, lng: marker.lng }}
+              icon={getMarkerIcon()}
+              title={marker.title}
+              onClick={() => handleMarkerClick(marker)}
+              cursor="pointer"
+            />
+          ))}
+        </GoogleMap>
+      </LoadScript>
     </div>
   );
 };
