@@ -71,7 +71,7 @@ const Map = ({
   };
 
   const getMarkerIcon = (isHovered: boolean) => ({
-    path: google.maps.SymbolPath.CIRCLE,
+    path: window.google?.maps?.SymbolPath?.CIRCLE || 0,
     fillColor: isHovered ? '#2563EB' : '#1E3A8A',
     fillOpacity: 1,
     strokeWeight: isHovered ? 2 : 0,
@@ -115,17 +115,6 @@ const Map = ({
     );
   }
 
-  if (!window.google) {
-    return (
-      <div className="w-full h-[400px] md:h-[500px] lg:h-[600px] flex items-center justify-center bg-gray-50 rounded-lg">
-        <div className="flex flex-col items-center gap-2">
-          <Loader2 className="h-8 w-8 animate-spin text-primary" />
-          <p className="text-gray-600">Loading map...</p>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="relative w-full rounded-lg overflow-hidden shadow-lg" style={{ height: mapHeight }}>
       <LoadScript 
@@ -139,7 +128,7 @@ const Map = ({
           options={options}
           onLoad={onLoad}
         >
-          {markers.map((marker, index) => (
+          {isLoaded && markers.map((marker, index) => (
             <Marker
               key={index}
               position={{ lat: marker.lat, lng: marker.lng }}
