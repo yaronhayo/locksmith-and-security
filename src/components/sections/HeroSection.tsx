@@ -84,14 +84,13 @@ const HeroSection = () => {
             >
               Available 24/7 for all your residential, commercial, and automotive locksmith needs. Fast response and reliable service guaranteed.
             </motion.p>
-            
+
             <motion.div 
               className="flex flex-col sm:flex-row gap-4"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5 }}
             >
-
               <Button 
                 size="lg" 
                 variant="secondary" 
@@ -101,8 +100,7 @@ const HeroSection = () => {
               >
                 <a href="tel:2017482070" className="inline-flex items-center">
                   <Phone className="mr-2 h-5 w-5 animate-phone-ring group-hover:rotate-12 transition-transform duration-300 group-hover:text-black" aria-hidden="true" />
-                  <span className="relative z-10">Call Now</span>
-                  <div className="absolute inset-0 bg-gradient-to-r from-secondary to-secondary-hover opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  <span className="relative z-10 group-hover:text-black">Call Now</span>
                 </a>
               </Button>
               
@@ -118,7 +116,6 @@ const HeroSection = () => {
                   <ArrowRight className="ml-2 h-5 w-5 transform transition-transform duration-300 group-hover:translate-x-2 group-hover:text-white" aria-hidden="true" />
                 </a>
               </Button>
-
             </motion.div>
 
             <motion.div 
