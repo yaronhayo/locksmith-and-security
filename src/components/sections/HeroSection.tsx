@@ -91,6 +91,7 @@ const HeroSection = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5 }}
             >
+
               <Button 
                 size="lg" 
                 variant="secondary" 
@@ -99,7 +100,7 @@ const HeroSection = () => {
                 aria-label="Call us now"
               >
                 <a href="tel:2017482070" className="inline-flex items-center">
-                  <Phone className="mr-2 h-5 w-5 animate-phone-ring group-hover:rotate-12 transition-transform duration-300" aria-hidden="true" />
+                  <Phone className="mr-2 h-5 w-5 animate-phone-ring group-hover:rotate-12 transition-transform duration-300 group-hover:text-black" aria-hidden="true" />
                   <span className="relative z-10">Call Now</span>
                   <div className="absolute inset-0 bg-gradient-to-r from-secondary to-secondary-hover opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 </a>
@@ -108,15 +109,16 @@ const HeroSection = () => {
               <Button 
                 size="lg" 
                 variant="outline" 
-                className="text-base sm:text-lg bg-white/10 hover:bg-white/20 text-white border-white group transform hover:scale-105 transition-all duration-300 hover:shadow-lg backdrop-blur-sm" 
+                className="text-base sm:text-lg bg-white/10 hover:bg-white/20 text-white border-white group transform hover:scale-105 transition-all duration-300 hover:shadow-lg backdrop-blur-sm hover:text-white" 
                 asChild
                 aria-label="View our services"
               >
                 <a href="/services" className="inline-flex items-center">
                   Our Services
-                  <ArrowRight className="ml-2 h-5 w-5 transform transition-transform duration-300 group-hover:translate-x-2" aria-hidden="true" />
+                  <ArrowRight className="ml-2 h-5 w-5 transform transition-transform duration-300 group-hover:translate-x-2 group-hover:text-white" aria-hidden="true" />
                 </a>
               </Button>
+
             </motion.div>
 
             <motion.div 

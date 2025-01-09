@@ -29,7 +29,7 @@ const ScrollToTop = () => {
     <Button
       variant="secondary"
       size="icon"
-      className={`fixed bottom-4 right-4 sm:bottom-8 sm:right-8 md:bottom-12 md:right-12 z-50 rounded-full transition-all duration-300 transform hover:scale-110 ${
+      className={`fixed bottom-20 right-4 sm:bottom-24 sm:right-8 md:bottom-28 md:right-12 z-50 rounded-full transition-all duration-300 transform hover:scale-110 ${
         isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10 pointer-events-none'
       }`}
       onClick={scrollToTop}
