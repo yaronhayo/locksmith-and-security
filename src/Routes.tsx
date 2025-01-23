@@ -6,41 +6,47 @@ import { serviceRoutes } from "./routes/serviceRoutes";
 import { serviceAreaRoutes } from "./routes/serviceAreaRoutes";
 import Breadcrumbs from "@/components/Breadcrumbs";
 
+const SuspenseRoute = ({ element }: { element: React.ReactNode }) => (
+  <Suspense fallback={<LoadingSpinner />}>{element}</Suspense>
+);
+
 const Routes = () => {
   return (
     <>
       <Breadcrumbs />
       <RouterRoutes>
-        {/* Explicitly define the root route first */}
+        {/* Root route */}
         <Route
           path="/"
           element={mainRoutes.find(route => route.path === "/")?.element}
         />
         
-        {/* Then map through the rest of the main routes, excluding the root route */}
+        {/* Main routes excluding root */}
         {mainRoutes
           .filter(route => route.path !== "/")
           .map(({ path, element }) => (
             <Route
               key={path}
               path={path}
-              element={<Suspense fallback={<LoadingSpinner />}>{element}</Suspense>}
+              element={<SuspenseRoute element={element} />}
             />
           ))}
         
+        {/* Service routes */}
         {serviceRoutes.map(({ path, element }) => (
           <Route
             key={path}
             path={path}
-            element={<Suspense fallback={<LoadingSpinner />}>{element}</Suspense>}
+            element={<SuspenseRoute element={element} />}
           />
         ))}
         
+        {/* Service area routes */}
         {serviceAreaRoutes.map(({ path, element }) => (
           <Route
             key={path}
             path={path}
-            element={<Suspense fallback={<LoadingSpinner />}>{element}</Suspense>}
+            element={<SuspenseRoute element={element} />}
           />
         ))}
       </RouterRoutes>
