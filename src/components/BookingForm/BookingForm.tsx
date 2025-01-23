@@ -1,30 +1,28 @@
-import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { FormLoadingOverlay } from "./LoadingStates";
 import { validateForm, validateVehicleInfo } from "./BookingFormValidation";
 import { sendLeadNotification, sendErrorReport } from "@/utils/emailjs";
 import FormFields from "./FormFields";
+import FormHeader from "./FormHeader";
+import FormFooter from "./FormFooter";
 import SubmitButton from "./SubmitButton";
 import Recaptcha from "../ui/recaptcha";
+import { useBookingForm } from "./useBookingForm";
 
 const BookingForm = () => {
   const { toast } = useToast();
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [selectedService, setSelectedService] = useState("");
-  const [showVehicleInfo, setShowVehicleInfo] = useState(false);
-  const [errors, setErrors] = useState<Record<string, string>>({});
-  const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
+  const [state, actions] = useBookingForm();
 
   const handleServiceChange = (value: string) => {
-    setSelectedService(value);
-    setShowVehicleInfo(value.toLowerCase().includes("car"));
+    actions.setSelectedService(value);
+    actions.setShowVehicleInfo(value.toLowerCase().includes("car"));
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     try {
-      if (!recaptchaToken) {
+      if (!state.recaptchaToken) {
         throw new Error("reCAPTCHA verification required");
       }
 
@@ -32,27 +30,27 @@ const BookingForm = () => {
       
       const { isValid, errors: formErrors } = validateForm(formData);
       
-      if (showVehicleInfo) {
+      if (state.showVehicleInfo) {
         const { isValid: vehicleValid, errors: vehicleErrors } = validateVehicleInfo(formData);
         if (!vehicleValid) {
-          setErrors({ ...formErrors, ...vehicleErrors });
+          actions.setErrors({ ...formErrors, ...vehicleErrors });
           throw new Error("Vehicle information validation failed");
         }
       }
       
       if (!isValid) {
-        setErrors(formErrors);
+        actions.setErrors(formErrors);
         throw new Error("Form validation failed");
       }
 
-      setIsSubmitting(true);
+      actions.setIsSubmitting(true);
 
       const formDataObj: Record<string, any> = {};
       formData.forEach((value, key) => {
         formDataObj[key] = value;
       });
 
-      formDataObj.recaptchaToken = recaptchaToken;
+      formDataObj.recaptchaToken = state.recaptchaToken;
 
       await sendLeadNotification(formDataObj);
 
@@ -62,14 +60,13 @@ const BookingForm = () => {
       });
 
       (e.target as HTMLFormElement).reset();
-      setSelectedService("");
-      setShowVehicleInfo(false);
-      setErrors({});
-      setRecaptchaToken(null);
+      actions.setSelectedService("");
+      actions.setShowVehicleInfo(false);
+      actions.setErrors({});
+      actions.setRecaptchaToken(null);
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred";
       
-      // Send error report to admin
       await sendErrorReport(error, {
         formData: Object.fromEntries(new FormData(e.target as HTMLFormElement)),
         timestamp: new Date().toISOString(),
@@ -84,29 +81,29 @@ const BookingForm = () => {
 
       console.error("Form submission error:", error);
     } finally {
-      setIsSubmitting(false);
+      actions.setIsSubmitting(false);
     }
   };
 
   return (
     <form onSubmit={handleSubmit} className="space-y-3 relative">
-      {isSubmitting && <FormLoadingOverlay />}
+      {state.isSubmitting && <FormLoadingOverlay />}
+      
+      <FormHeader isSubmitting={state.isSubmitting} />
       
       <FormFields
-        errors={errors}
-        showVehicleInfo={showVehicleInfo}
-        selectedService={selectedService}
-        isSubmitting={isSubmitting}
+        errors={state.errors}
+        showVehicleInfo={state.showVehicleInfo}
+        selectedService={state.selectedService}
+        isSubmitting={state.isSubmitting}
         handleServiceChange={handleServiceChange}
       />
 
-      <Recaptcha onChange={setRecaptchaToken} />
+      <Recaptcha onChange={actions.setRecaptchaToken} />
       
-      <SubmitButton isSubmitting={isSubmitting} />
+      <SubmitButton isSubmitting={state.isSubmitting} />
 
-      <p className="text-sm text-gray-500 text-center">
-        Fast Response • Professional Service • 24/7 Available
-      </p>
+      <FormFooter />
     </form>
   );
 };
