@@ -6,7 +6,7 @@ const FooterLogo = () => {
       <div className="mb-6">
         <a href="/" aria-label="Go to homepage">
           <img 
-            src="/lovable-uploads/8df28e35-4d5c-4015-bf99-2eb36af674c5.png" 
+            src="/uploads/8df28e35-4d5c-4015-bf99-2eb36af674c5.png" 
             alt="Locksmith & Security LLC Logo" 
             className="h-20 w-auto mx-auto md:mx-0"
             loading="lazy"
