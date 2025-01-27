@@ -1,7 +1,7 @@
-import { Star } from "lucide-react";
-import { Card, CardContent } from "@/components/ui/card";
 import { useEffect, useRef, useCallback, memo, useState } from "react";
 import LoadingSpinner from "@/components/LoadingSpinner";
+import ReviewsList from "@/components/reviews/ReviewsList";
+import ReviewsHeader from "@/components/reviews/ReviewsHeader";
 
 interface ReviewsSectionProps {
   location?: string;
@@ -58,32 +58,6 @@ const reviews = [
   }
 ];
 
-const ReviewCard = memo(({ review, index }: { review: typeof reviews[number]; index: number }) => (
-  <Card key={index} className="flex-none w-96 hover:shadow-lg transition-shadow">
-    <CardContent className="p-6">
-      <div className="flex items-center mb-4">
-        {[...Array(review.rating)].map((_, i) => (
-          <Star 
-            key={i} 
-            className="w-5 h-5 text-secondary" 
-            fill="currentColor"
-            aria-hidden="true"
-          />
-        ))}
-        <span className="sr-only">{review.rating} out of 5 stars</span>
-      </div>
-      <p className="text-gray-600 mb-4">{review.text}</p>
-      <div className="space-y-2">
-        <p className="font-semibold">{review.name}</p>
-        <p className="text-sm text-gray-500">{review.service}</p>
-        <p className="text-sm text-gray-500">{review.location}</p>
-      </div>
-    </CardContent>
-  </Card>
-));
-
-ReviewCard.displayName = 'ReviewCard';
-
 const ReviewsSection = ({ location }: ReviewsSectionProps) => {
   const [displayedReviews, setDisplayedReviews] = useState<typeof reviews[number][]>([]);
   const [page, setPage] = useState(1);
@@ -109,17 +83,15 @@ const ReviewsSection = ({ location }: ReviewsSectionProps) => {
         setPage(prev => prev + 1);
       }
       setIsLoading(false);
-    }, 1500); // 1.5 seconds delay
+    }, 1500);
   }, [page, filteredReviews, isLoading]);
 
   useEffect(() => {
-    // Reset when location changes
     setDisplayedReviews([]);
     setPage(1);
   }, [location]);
 
   useEffect(() => {
-    // Load initial reviews
     loadMoreReviews();
   }, [loadMoreReviews]);
 
@@ -140,42 +112,14 @@ const ReviewsSection = ({ location }: ReviewsSectionProps) => {
     return () => observer.disconnect();
   }, [loadMoreReviews, isLoading]);
 
-  const scroll = useCallback(() => {
-    const scrollContainer = scrollRef.current;
-    if (!scrollContainer) return;
-
-    const cardWidth = 384; // w-96 = 24rem = 384px
-    const gap = 32; // gap-8 = 2rem = 32px
-    const totalWidth = (cardWidth + gap) * displayedReviews.length;
-
-    scrollContainer.scrollLeft = (scrollContainer.scrollLeft + 1) % totalWidth;
-  }, [displayedReviews.length]);
-
-  useEffect(() => {
-    const intervalId = setInterval(scroll, 50);
-    return () => clearInterval(intervalId);
-  }, [scroll]);
-
   return (
     <section 
       className="py-20 overflow-hidden"
       aria-label="Customer Reviews"
     >
       <div className="container mx-auto px-4">
-        <h2 className="text-3xl font-bold text-center mb-12">
-          {location ? `Customer Reviews in ${location}` : 'Customer Reviews'}
-        </h2>
-        <div 
-          ref={scrollRef}
-          className="flex gap-8 overflow-x-hidden"
-          style={{ WebkitOverflowScrolling: 'touch' }}
-          role="region"
-          aria-label="Reviews carousel"
-        >
-          {[...displayedReviews, ...displayedReviews].map((review, index) => (
-            <ReviewCard key={index} review={review} index={index} />
-          ))}
-        </div>
+        <ReviewsHeader location={location} />
+        <ReviewsList reviews={reviews} displayedReviews={displayedReviews} />
         <div ref={loadingRef} className="h-10">
           {isLoading && <LoadingSpinner />}
         </div>

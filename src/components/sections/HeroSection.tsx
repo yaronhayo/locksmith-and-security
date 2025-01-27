@@ -1,8 +1,10 @@
-import { Button } from "@/components/ui/button";
-import { Star, ArrowRight, Phone, Clock, Shield } from "lucide-react";
-import BookingForm from "@/components/BookingForm";
-import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect, useCallback, memo } from "react";
+import { motion } from "framer-motion";
+import { Star } from "lucide-react";
+import BookingForm from "@/components/BookingForm";
+import HeroTitle from "@/components/hero/HeroTitle";
+import HeroFeatures from "@/components/hero/HeroFeatures";
+import HeroActions from "@/components/hero/HeroActions";
 
 const words = ["Expert", "Quick", "Reliable"] as const;
 
@@ -50,31 +52,7 @@ const HeroSection = () => {
               <span className="text-sm font-medium">Top-Rated Local Locksmith</span>
             </motion.div>
             
-            <motion.h1 
-              className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight drop-shadow-md"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 }}
-            >
-              <div className="flex items-center gap-2 lg:gap-4">
-                <div className="w-[120px] sm:w-[150px] md:w-[180px] lg:w-[200px]">
-                  <AnimatePresence mode="wait">
-                    <motion.span
-                      key={words[currentWord]}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -20 }}
-                      transition={{ duration: 0.5, ease: "easeInOut" }}
-                      className="text-secondary block"
-                    >
-                      {words[currentWord]}
-                    </motion.span>
-                  </AnimatePresence>
-                </div>
-                <span className="text-white">Locksmith</span>
-              </div>
-              <div className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl mt-2">Services in North Bergen</div>
-            </motion.h1>
+            <HeroTitle currentWord={currentWord} words={words} />
 
             <motion.p 
               className="text-base sm:text-lg md:text-xl text-white/90 leading-relaxed max-w-2xl"
@@ -85,81 +63,10 @@ const HeroSection = () => {
               Available 24/7 for all your residential, commercial, and automotive locksmith needs. Fast response and reliable service guaranteed.
             </motion.p>
 
-            <motion.div 
-              className="flex flex-col sm:flex-row gap-4"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.5 }}
-            >
-              <Button 
-                size="lg" 
-                variant="secondary" 
-                className="text-base sm:text-lg group transform hover:scale-105 transition-all duration-300 hover:shadow-lg relative overflow-hidden" 
-                asChild
-                aria-label="Call us now"
-              >
-                <a href="tel:2017482070" className="inline-flex items-center">
-                  <Phone className="mr-2 h-5 w-5 animate-phone-ring group-hover:rotate-12 transition-transform duration-300 group-hover:text-black" aria-hidden="true" />
-                  <span className="relative z-10 group-hover:text-black">Call Now</span>
-                </a>
-              </Button>
-              
-              <Button 
-                size="lg" 
-                variant="outline" 
-                className="text-base sm:text-lg bg-white/10 hover:bg-white/20 text-white border-white group transform hover:scale-105 transition-all duration-300 hover:shadow-lg backdrop-blur-sm hover:text-white" 
-                asChild
-                aria-label="View our services"
-              >
-                <a href="/services" className="inline-flex items-center">
-                  Our Services
-                  <ArrowRight className="ml-2 h-5 w-5 transform transition-transform duration-300 group-hover:translate-x-2 group-hover:text-white" aria-hidden="true" />
-                </a>
-              </Button>
-            </motion.div>
-
-            <motion.div 
-              className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-8"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.6 }}
-              role="list"
-              aria-label="Key features"
-            >
-              <div 
-                className="flex items-center space-x-3 text-white group hover:text-white transition-all duration-300 transform hover:translate-y-[-2px] cursor-pointer backdrop-blur-sm bg-white/5 p-3 rounded-lg"
-                role="listitem"
-              >
-                <Clock className="w-6 h-6 sm:w-8 sm:h-8 text-secondary group-hover:scale-110 transition-transform duration-300" aria-hidden="true" />
-                <div>
-                  <h3 className="font-semibold text-white text-sm sm:text-base">24/7 Service</h3>
-                  <p className="text-xs sm:text-sm text-white/80">Always available</p>
-                </div>
-              </div>
-              
-              <div 
-                className="flex items-center space-x-3 text-white group hover:text-white transition-all duration-300 transform hover:translate-y-[-2px] cursor-pointer backdrop-blur-sm bg-white/5 p-3 rounded-lg"
-                role="listitem"
-              >
-                <Shield className="w-6 h-6 sm:w-8 sm:h-8 text-secondary group-hover:scale-110 transition-transform duration-300" aria-hidden="true" />
-                <div>
-                  <h3 className="font-semibold text-white text-sm sm:text-base">Licensed & Insured</h3>
-                  <p className="text-xs sm:text-sm text-white/80">Your safety first</p>
-                </div>
-              </div>
-              
-              <div 
-                className="flex items-center space-x-3 text-white group hover:text-white transition-all duration-300 transform hover:translate-y-[-2px] cursor-pointer backdrop-blur-sm bg-white/5 p-3 rounded-lg"
-                role="listitem"
-              >
-                <Star className="w-6 h-6 sm:w-8 sm:h-8 text-secondary group-hover:scale-110 transition-transform duration-300" aria-hidden="true" />
-                <div>
-                  <h3 className="font-semibold text-white text-sm sm:text-base">5-Star Rated</h3>
-                  <p className="text-xs sm:text-sm text-white/80">Trusted service</p>
-                </div>
-              </div>
-            </motion.div>
+            <HeroActions />
+            <HeroFeatures />
           </div>
+
           <motion.div 
             className="w-full lg:w-5/12 bg-white rounded-2xl p-4 sm:p-6 lg:p-8 shadow-2xl transform hover:scale-[1.02] transition-transform duration-300 backdrop-blur-sm"
             initial={{ opacity: 0, x: 20 }}
