@@ -5,7 +5,7 @@ const FooterLogo = () => {
   return (
     <div>
       <div className="mb-6">
-        <a href="/" aria-label="Go to homepage">
+        <a href="/" className="no-underline" aria-label="Go to homepage">
           <ImageOptimized
             src="https://locksmithandsecurity.s3.us-east-2.amazonaws.com/Locksmithandsecuritylogo.jpg"
             alt="Locksmith & Security LLC Logo"

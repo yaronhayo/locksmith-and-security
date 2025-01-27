@@ -38,7 +38,7 @@ const Header = () => {
           <div className="flex items-center justify-between py-2 lg:py-4">
             <a 
               href="/" 
-              className="flex items-center space-x-3 group"
+              className="flex items-center space-x-3 no-underline group"
               aria-label="Go to homepage"
             >
               <ImageOptimized
