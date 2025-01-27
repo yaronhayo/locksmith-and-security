@@ -1,16 +1,15 @@
 import { Star, Quote } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
+import { Review } from "@/types/reviews";
 
 interface ReviewCardProps {
-  name: string;
-  rating: number;
-  text: string;
-  date: string;
-  service: string;
-  location: string;
+  review: Review;
+  index: number;
 }
 
-const ReviewCard = ({ name, rating, text, date, service, location }: ReviewCardProps) => {
+const ReviewCard = ({ review, index }: ReviewCardProps) => {
+  const { name, rating, text, date, service, location } = review;
+  
   return (
     <Card className="hover:shadow-lg transition-shadow">
       <CardContent className="p-6">
