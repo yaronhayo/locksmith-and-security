@@ -13,7 +13,7 @@ const ReviewsPage = () => {
       <div className="container mx-auto px-4">
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
           {reviews.map((review, index) => (
-            <ReviewCard key={index} {...review} />
+            <ReviewCard key={index} review={review} index={index} />
           ))}
         </div>
       </div>
