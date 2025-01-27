@@ -40,27 +40,9 @@ const Header = () => {
               className="flex items-center space-x-3 group"
               aria-label="Go to homepage"
             >
-              <img 
-                src="/lovable-uploads/9b00adf3-451e-4d1c-a118-6a6f06293ec0.png" 
-                alt="Locksmith & Security LLC - Professional 24/7 Locksmith Services in North Bergen, NJ"
-                className={`h-12 w-auto sm:h-16 md:h-20 lg:h-16 transform transition-transform duration-300 group-hover:scale-110 ${
-                  isMenuOpen ? 'brightness-0 invert' : ''
-                }`}
-                style={{
-                  aspectRatio: '1/1',
-                  objectFit: 'contain',
-                  maxWidth: 'none'
-                }}
-                loading="eager"
-                width="180"
-                height="180"
-                fetchPriority="high"
-                decoding="async"
-                onError={(e) => {
-                  const img = e.target as HTMLImageElement;
-                  img.src = '/placeholder.svg';
-                }}
-              />
+              <span className="text-2xl font-bold text-primary">
+                Locksmith & Security LLC
+              </span>
             </a>
 
             <Navigation isMenuOpen={isMenuOpen} isScrolled={isScrolled} />
