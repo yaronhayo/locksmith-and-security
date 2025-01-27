@@ -1,58 +1,46 @@
-import { useToast } from "@/hooks/use-toast";
-import { FormLoadingOverlay } from "./LoadingStates";
-import { validateForm, validateVehicleInfo } from "./BookingFormValidation";
-import { sendLeadNotification, sendErrorReport } from "@/utils/emailjs";
-import FormFields from "./FormFields";
-import FormHeader from "./FormHeader";
-import FormFooter from "./FormFooter";
+import { useState } from "react";
+import { useToast } from "@/components/ui/use-toast";
+import PersonalInfoFields from "./FormFields/PersonalInfoFields";
+import ServiceSelection from "./FormFields/ServiceSelection";
+import TimeframeSelection from "./FormFields/TimeframeSelection";
+import AdditionalNotes from "./FormFields/AdditionalNotes";
+import OtherServiceField from "./FormFields/OtherServiceField";
+import VehicleFields from "./fields/VehicleFields";
 import SubmitButton from "./SubmitButton";
-import Recaptcha from "../ui/recaptcha";
-import { useBookingForm } from "./useBookingForm";
+import { validateForm } from "./validation";
 
 const BookingForm = () => {
   const { toast } = useToast();
-  const [state, actions] = useBookingForm();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [selectedService, setSelectedService] = useState("");
+  const [showVehicleInfo, setShowVehicleInfo] = useState(false);
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
   const handleServiceChange = (value: string) => {
-    actions.setSelectedService(value);
-    actions.setShowVehicleInfo(value.toLowerCase().includes("car"));
+    setSelectedService(value);
+    setShowVehicleInfo(value.toLowerCase().includes("car"));
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    
+    const validationResult = validateForm(formData, showVehicleInfo);
+    if (!validationResult.isValid) {
+      setErrors(validationResult.errors);
+      toast({
+        title: "Validation Error",
+        description: "Please check the form for errors",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsSubmitting(true);
 
     try {
-      if (!state.recaptchaToken) {
-        throw new Error("reCAPTCHA verification required");
-      }
-
-      const formData = new FormData(e.currentTarget);
-      
-      const { isValid, errors: formErrors } = validateForm(formData);
-      
-      if (state.showVehicleInfo) {
-        const { isValid: vehicleValid, errors: vehicleErrors } = validateVehicleInfo(formData);
-        if (!vehicleValid) {
-          actions.setErrors({ ...formErrors, ...vehicleErrors });
-          throw new Error("Vehicle information validation failed");
-        }
-      }
-      
-      if (!isValid) {
-        actions.setErrors(formErrors);
-        throw new Error("Form validation failed");
-      }
-
-      actions.setIsSubmitting(true);
-
-      const formDataObj: Record<string, any> = {};
-      formData.forEach((value, key) => {
-        formDataObj[key] = value;
-      });
-
-      formDataObj.recaptchaToken = state.recaptchaToken;
-
-      await sendLeadNotification(formDataObj);
+      // Simulate form submission
+      await new Promise(resolve => setTimeout(resolve, 1000));
 
       toast({
         title: "Request Submitted Successfully",
@@ -60,50 +48,47 @@ const BookingForm = () => {
       });
 
       (e.target as HTMLFormElement).reset();
-      actions.setSelectedService("");
-      actions.setShowVehicleInfo(false);
-      actions.setErrors({});
-      actions.setRecaptchaToken(null);
+      setSelectedService("");
+      setShowVehicleInfo(false);
+      setErrors({});
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred";
-      
-      await sendErrorReport(error, {
-        formData: Object.fromEntries(new FormData(e.target as HTMLFormElement)),
-        timestamp: new Date().toISOString(),
-        userAgent: navigator.userAgent,
-      });
-
       toast({
         title: "Submission Failed",
-        description: "Please try again or contact us directly. Our team has been notified.",
+        description: "Please try again or contact us directly.",
         variant: "destructive",
       });
-
-      console.error("Form submission error:", error);
     } finally {
-      actions.setIsSubmitting(false);
+      setIsSubmitting(false);
     }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-3 relative">
-      {state.isSubmitting && <FormLoadingOverlay />}
+    <form onSubmit={handleSubmit} className="space-y-3">
+      <PersonalInfoFields errors={errors} isSubmitting={isSubmitting} />
       
-      <FormHeader isSubmitting={state.isSubmitting} />
-      
-      <FormFields
-        errors={state.errors}
-        showVehicleInfo={state.showVehicleInfo}
-        selectedService={state.selectedService}
-        isSubmitting={state.isSubmitting}
-        handleServiceChange={handleServiceChange}
+      <ServiceSelection 
+        error={errors.service}
+        isSubmitting={isSubmitting}
+        onServiceChange={handleServiceChange}
       />
 
-      <Recaptcha onChange={actions.setRecaptchaToken} />
-      
-      <SubmitButton isSubmitting={state.isSubmitting} />
+      {showVehicleInfo && (
+        <VehicleFields errors={errors} isSubmitting={isSubmitting} />
+      )}
 
-      <FormFooter />
+      <TimeframeSelection isSubmitting={isSubmitting} />
+
+      {selectedService === "Other" && (
+        <OtherServiceField isSubmitting={isSubmitting} />
+      )}
+
+      <AdditionalNotes isSubmitting={isSubmitting} />
+
+      <SubmitButton isSubmitting={isSubmitting} />
+
+      <p className="text-sm text-gray-500 text-center">
+        Fast Response • Professional Service • 24/7 Available
+      </p>
     </form>
   );
 };

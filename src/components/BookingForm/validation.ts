@@ -1,7 +1,5 @@
-import { FormErrors } from "@/types/booking";
-
 export const validateForm = (formData: FormData, showVehicleInfo: boolean) => {
-  const errors: FormErrors = {};
+  const errors: Record<string, string> = {};
   
   const name = formData.get("name") as string;
   const phone = formData.get("phone") as string;
