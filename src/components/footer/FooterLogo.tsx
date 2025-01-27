@@ -1,13 +1,18 @@
 import { Shield } from 'lucide-react';
+import ImageOptimized from '../ui/image-optimized';
 
 const FooterLogo = () => {
   return (
     <div>
       <div className="mb-6">
         <a href="/" aria-label="Go to homepage">
-          <span className="text-2xl font-bold text-white">
-            Locksmith & Security LLC
-          </span>
+          <ImageOptimized
+            src="https://locksmithandsecurity.s3.us-east-2.amazonaws.com/Locksmithandsecuritylogo.jpg"
+            alt="Locksmith & Security LLC Logo"
+            width={150}
+            height={50}
+            className="h-[50px] w-auto object-contain mb-4"
+          />
         </a>
       </div>
       <p className="text-gray-300 mb-4 text-center md:text-left">

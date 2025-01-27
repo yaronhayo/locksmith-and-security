@@ -5,6 +5,7 @@ import { useLocation } from 'react-router-dom';
 import TopBar from './header/TopBar';
 import Navigation from './header/Navigation';
 import ActionButtons from './header/ActionButtons';
+import ImageOptimized from './ui/image-optimized';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -40,9 +41,14 @@ const Header = () => {
               className="flex items-center space-x-3 group"
               aria-label="Go to homepage"
             >
-              <span className="text-2xl font-bold text-primary">
-                Locksmith & Security LLC
-              </span>
+              <ImageOptimized
+                src="https://locksmithandsecurity.s3.us-east-2.amazonaws.com/Locksmithandsecuritylogo.jpg"
+                alt="Locksmith & Security LLC Logo"
+                width={180}
+                height={60}
+                className="h-[60px] w-auto object-contain"
+                priority={true}
+              />
             </a>
 
             <Navigation isMenuOpen={isMenuOpen} isScrolled={isScrolled} />
