@@ -1,9 +1,7 @@
 import { useState, useEffect } from 'react';
-import { LoadScript } from '@react-google-maps/api';
+import { LoadScript, GoogleMap, Marker } from '@react-google-maps/api';
 import { useNavigate } from 'react-router-dom';
-import MapContainer from './map/MapContainer';
-import MapMarker from './map/MapMarker';
-import MapError from './map/MapError';
+import { Loader2 } from "lucide-react";
 
 interface MapProps {
   center?: { lat: number; lng: number };
@@ -35,6 +33,14 @@ const Map = ({
   const [mapHeight, setMapHeight] = useState('600px');
   const [loadError, setLoadError] = useState<string | null>(null);
 
+  console.log('Map component rendering with markers:', markers);
+
+  const mapContainerStyle = {
+    width: '100%',
+    height: mapHeight,
+    borderRadius: '0.5rem'
+  };
+
   useEffect(() => {
     const updateMapHeight = () => {
       if (window.innerWidth < 640) {
@@ -51,7 +57,30 @@ const Map = ({
     return () => window.removeEventListener('resize', updateMapHeight);
   }, []);
 
+  const options = {
+    disableDefaultUI: false,
+    zoomControl: true,
+    scrollwheel: true,
+    styles: [
+      {
+        featureType: "poi",
+        elementType: "labels",
+        stylers: [{ visibility: "off" }]
+      }
+    ]
+  };
+
+  const getMarkerIcon = (isHovered: boolean) => ({
+    path: window.google?.maps?.SymbolPath?.CIRCLE || 0,
+    fillColor: isHovered ? '#2563EB' : '#1E3A8A',
+    fillOpacity: 1,
+    strokeWeight: isHovered ? 2 : 0,
+    strokeColor: '#ffffff',
+    scale: isHovered ? 12 : 10
+  });
+
   const onLoad = (map: google.maps.Map) => {
+    console.log('Map loaded successfully');
     setMapInstance(map);
     setIsLoaded(true);
 
@@ -64,6 +93,11 @@ const Map = ({
     }
   };
 
+  const onLoadError = (error: Error) => {
+    console.error('Error loading Google Maps:', error);
+    setLoadError(error.message);
+  };
+
   const handleMarkerClick = (marker: any) => {
     if (marker.slug) {
       navigate(`/service-areas/${marker.slug}`);
@@ -72,32 +106,40 @@ const Map = ({
   };
 
   if (loadError) {
-    return <MapError error={loadError} />;
+    return (
+      <div className="w-full h-[400px] md:h-[500px] lg:h-[600px] flex items-center justify-center bg-gray-50 rounded-lg">
+        <div className="flex flex-col items-center gap-2 text-red-500">
+          <p>Error loading map: {loadError}</p>
+        </div>
+      </div>
+    );
   }
 
   return (
     <div className="relative w-full rounded-lg overflow-hidden shadow-lg" style={{ height: mapHeight }}>
       <LoadScript 
         googleMapsApiKey="AIzaSyA836rCuy6AkrT3L2yT_rfxUPUphH_b6lw"
-        onError={(error: Error) => setLoadError(error.message)}
+        onError={onLoadError}
       >
-        <MapContainer
+        <GoogleMap
+          mapContainerStyle={mapContainerStyle}
           center={center}
           zoom={zoom}
+          options={options}
           onLoad={onLoad}
         >
           {isLoaded && markers.map((marker, index) => (
-            <MapMarker
+            <Marker
               key={index}
-              lat={marker.lat}
-              lng={marker.lng}
+              position={{ lat: marker.lat, lng: marker.lng }}
+              icon={getMarkerIcon(hoveredMarker === marker.slug)}
               title={marker.title}
-              slug={marker.slug}
-              isHovered={hoveredMarker === marker.slug}
               onClick={() => handleMarkerClick(marker)}
+              cursor="pointer"
+              animation={hoveredMarker === marker.slug ? google.maps.Animation.BOUNCE : undefined}
             />
           ))}
-        </MapContainer>
+        </GoogleMap>
       </LoadScript>
     </div>
   );

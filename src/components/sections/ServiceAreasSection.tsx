@@ -1,11 +1,10 @@
 import { useState } from 'react';
 import { Clock, Phone, Shield } from 'lucide-react';
+import { motion } from 'framer-motion';
 import Map from '../Map';
 import AreasList from './service-areas/AreasList';
 import ServiceFeatures from './service-areas/ServiceFeatures';
 import EmergencyCallout from './service-areas/EmergencyCallout';
-import AreaHeader from './service-areas/AreaHeader';
-import AreaFeature from './service-areas/AreaFeature';
 import { Area, Feature, MapMarker } from './service-areas/types';
 
 const areas: Area[] = [
@@ -98,7 +97,20 @@ const ServiceAreasSection = () => {
   return (
     <section className="py-20">
       <div className="container mx-auto px-4">
-        <AreaHeader />
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="text-center mb-16"
+        >
+          <h1 className="text-4xl md:text-5xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/80">
+            Service Areas
+          </h1>
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            Professional locksmith services available throughout North Bergen and surrounding areas in New Jersey. 
+            Fast response times and reliable service, available 24/7 for your security needs.
+          </p>
+        </motion.div>
 
         <div className="grid lg:grid-cols-2 gap-12 mb-16">
           <AreasList 
@@ -107,23 +119,17 @@ const ServiceAreasSection = () => {
             setHoveredArea={setHoveredArea} 
           />
           
-          <div className="bg-white rounded-xl shadow-lg overflow-hidden">
+          <motion.div 
+            initial={{ opacity: 0, x: 20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5 }}
+            className="bg-white rounded-xl shadow-lg overflow-hidden"
+          >
             <Map markers={markers} hoveredMarker={hoveredArea} />
-          </div>
+          </motion.div>
         </div>
 
-        <div className="grid sm:grid-cols-3 gap-6 mb-16">
-          {features.map((feature, index) => (
-            <AreaFeature
-              key={index}
-              icon={feature.icon}
-              title={feature.title}
-              description={feature.description}
-              index={index}
-            />
-          ))}
-        </div>
-
+        <ServiceFeatures features={features} />
         <EmergencyCallout />
       </div>
     </section>
