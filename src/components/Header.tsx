@@ -43,7 +43,7 @@ const Header = () => {
               <img 
                 src="https://locksmithandsecurityuploads.s3.us-east-2.amazonaws.com/Locksmithandsecuritylogo.jpg" 
                 alt="Locksmith & Security LLC - Professional 24/7 Locksmith Services in North Bergen, NJ"
-                className={`h-16 w-auto sm:h-20 md:h-24 lg:h-20 transform transition-transform duration-300 group-hover:scale-110 ${
+                className={`h-12 w-auto sm:h-16 md:h-20 lg:h-16 transform transition-transform duration-300 group-hover:scale-110 ${
                   isMenuOpen ? 'brightness-0 invert' : ''
                 }`}
                 style={{
