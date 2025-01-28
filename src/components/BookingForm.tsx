@@ -4,8 +4,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Lock, Loader2, AlertCircle } from "lucide-react";
-import { Label } from "@/components/ui/label";
-import { Alert, AlertDescription } from "@/components/ui/alert";
 import {
   Select,
   SelectContent,
@@ -13,10 +11,19 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import FormHeader from "./BookingForm/FormHeader";
-import FormFooter from "./BookingForm/FormFooter";
-import VehicleInfoFields from "./BookingForm/VehicleInfoFields";
-import ServiceSelection from "./BookingForm/ServiceSelection";
+import { Label } from "@/components/ui/label";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+
+const services = [
+  "Car Lockout",
+  "Car Key Programming",
+  "House Lockout",
+  "Lock Change",
+  "Lock Repair",
+  "Lock Installation",
+  "Key Duplication",
+  "Other"
+];
 
 const timeframes = [
   "ASAP",
@@ -113,8 +120,6 @@ const BookingForm = () => {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-3">
-      <FormHeader />
-
       <div className="space-y-2">
         <Label htmlFor="name">Your Name</Label>
         <Input
@@ -123,7 +128,6 @@ const BookingForm = () => {
           type="text"
           aria-describedby="name-error"
           className={`h-10 text-base ${errors.name ? 'border-red-500' : ''}`}
-          disabled={isSubmitting}
         />
         {errors.name && (
           <Alert variant="destructive">
@@ -141,7 +145,6 @@ const BookingForm = () => {
           type="tel"
           aria-describedby="phone-error"
           className={`h-10 text-base ${errors.phone ? 'border-red-500' : ''}`}
-          disabled={isSubmitting}
         />
         {errors.phone && (
           <Alert variant="destructive">
@@ -159,7 +162,6 @@ const BookingForm = () => {
           type="text"
           aria-describedby="address-error"
           className={`h-10 text-base ${errors.address ? 'border-red-500' : ''}`}
-          disabled={isSubmitting}
         />
         {errors.address && (
           <Alert variant="destructive">
@@ -168,20 +170,90 @@ const BookingForm = () => {
           </Alert>
         )}
       </div>
-
-      <ServiceSelection 
-        error={errors.service}
-        isSubmitting={isSubmitting}
-        onServiceChange={handleServiceChange}
-      />
+      
+      <div className="space-y-2">
+        <Label htmlFor="service">Service Needed</Label>
+        <Select onValueChange={handleServiceChange} name="service">
+          <SelectTrigger 
+            id="service"
+            className={`h-10 text-base ${errors.service ? 'border-red-500' : ''}`}
+          >
+            <SelectValue placeholder="Select Service Needed" />
+          </SelectTrigger>
+          <SelectContent>
+            {services.map((service) => (
+              <SelectItem key={service} value={service}>
+                {service}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+        {errors.service && (
+          <Alert variant="destructive">
+            <AlertCircle className="h-4 w-4" />
+            <AlertDescription>{errors.service}</AlertDescription>
+          </Alert>
+        )}
+      </div>
 
       {showVehicleInfo && (
-        <VehicleInfoFields errors={errors} isSubmitting={isSubmitting} />
+        <div className="space-y-3">
+          <div className="space-y-2">
+            <Label htmlFor="vehicleYear">Vehicle Year</Label>
+            <Input
+              id="vehicleYear"
+              name="vehicleYear"
+              type="text"
+              aria-describedby="vehicleYear-error"
+              className={`h-10 text-base ${errors.vehicleYear ? 'border-red-500' : ''}`}
+            />
+            {errors.vehicleYear && (
+              <Alert variant="destructive">
+                <AlertCircle className="h-4 w-4" />
+                <AlertDescription>{errors.vehicleYear}</AlertDescription>
+              </Alert>
+            )}
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="vehicleMake">Vehicle Make</Label>
+            <Input
+              id="vehicleMake"
+              name="vehicleMake"
+              type="text"
+              aria-describedby="vehicleMake-error"
+              className={`h-10 text-base ${errors.vehicleMake ? 'border-red-500' : ''}`}
+            />
+            {errors.vehicleMake && (
+              <Alert variant="destructive">
+                <AlertCircle className="h-4 w-4" />
+                <AlertDescription>{errors.vehicleMake}</AlertDescription>
+              </Alert>
+            )}
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="vehicleModel">Vehicle Model</Label>
+            <Input
+              id="vehicleModel"
+              name="vehicleModel"
+              type="text"
+              aria-describedby="vehicleModel-error"
+              className={`h-10 text-base ${errors.vehicleModel ? 'border-red-500' : ''}`}
+            />
+            {errors.vehicleModel && (
+              <Alert variant="destructive">
+                <AlertCircle className="h-4 w-4" />
+                <AlertDescription>{errors.vehicleModel}</AlertDescription>
+              </Alert>
+            )}
+          </div>
+        </div>
       )}
 
       <div className="space-y-2">
         <Label htmlFor="timeframe">When do you need service?</Label>
-        <Select name="timeframe" disabled={isSubmitting}>
+        <Select name="timeframe">
           <SelectTrigger id="timeframe" className="h-10 text-base">
             <SelectValue placeholder="When do you need service?" />
           </SelectTrigger>
@@ -204,7 +276,6 @@ const BookingForm = () => {
             type="text"
             required
             className="h-10 text-base"
-            disabled={isSubmitting}
           />
         </div>
       )}
@@ -216,7 +287,6 @@ const BookingForm = () => {
           name="notes"
           placeholder="Additional Notes..."
           className="h-20 text-base resize-none"
-          disabled={isSubmitting}
         />
       </div>
 
@@ -239,7 +309,9 @@ const BookingForm = () => {
         )}
       </Button>
 
-      <FormFooter />
+      <p className="text-sm text-gray-500 text-center">
+        Fast Response • Professional Service • 24/7 Available
+      </p>
     </form>
   );
 };
