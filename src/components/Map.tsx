@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { LoadScript, GoogleMap, Marker } from '@react-google-maps/api';
+import { useState, useEffect, useMemo } from 'react';
+import { LoadScript, GoogleMap, MarkerF } from '@react-google-maps/api';
 import { useNavigate } from 'react-router-dom';
 import { Loader2 } from "lucide-react";
 
@@ -33,13 +33,24 @@ const Map = ({
   const [mapHeight, setMapHeight] = useState('600px');
   const [loadError, setLoadError] = useState<string | null>(null);
 
-  console.log('Map component rendering with markers:', markers);
-
-  const mapContainerStyle = {
+  const mapContainerStyle = useMemo(() => ({
     width: '100%',
     height: mapHeight,
     borderRadius: '0.5rem'
-  };
+  }), [mapHeight]);
+
+  const options = useMemo(() => ({
+    disableDefaultUI: false,
+    zoomControl: true,
+    scrollwheel: true,
+    styles: [
+      {
+        featureType: "poi",
+        elementType: "labels",
+        stylers: [{ visibility: "off" }]
+      }
+    ]
+  }), []);
 
   useEffect(() => {
     const updateMapHeight = () => {
@@ -57,57 +68,43 @@ const Map = ({
     return () => window.removeEventListener('resize', updateMapHeight);
   }, []);
 
-  const options = {
-    disableDefaultUI: false,
-    zoomControl: true,
-    scrollwheel: true,
-    styles: [
-      {
-        featureType: "poi",
-        elementType: "labels",
-        stylers: [{ visibility: "off" }]
-      }
-    ]
-  };
-
-  const getMarkerIcon = (isHovered: boolean) => ({
-    path: window.google?.maps?.SymbolPath?.CIRCLE || 0,
+  const getMarkerIcon = useCallback((isHovered: boolean) => ({
+    path: google.maps.SymbolPath.CIRCLE,
     fillColor: isHovered ? '#2563EB' : '#1E3A8A',
     fillOpacity: 1,
     strokeWeight: isHovered ? 2 : 0,
     strokeColor: '#ffffff',
     scale: isHovered ? 12 : 10
-  });
+  }), []);
 
-  const onLoad = (map: google.maps.Map) => {
-    console.log('Map loaded successfully');
+  const onLoad = useCallback((map: google.maps.Map) => {
     setMapInstance(map);
     setIsLoaded(true);
 
     if (markers.length > 1) {
-      const bounds = new window.google.maps.LatLngBounds();
+      const bounds = new google.maps.LatLngBounds();
       markers.forEach(marker => {
         bounds.extend({ lat: marker.lat, lng: marker.lng });
       });
       map.fitBounds(bounds);
     }
-  };
+  }, [markers]);
 
   const onLoadError = (error: Error) => {
     console.error('Error loading Google Maps:', error);
     setLoadError(error.message);
   };
 
-  const handleMarkerClick = (marker: any) => {
+  const handleMarkerClick = useCallback((marker: any) => {
     if (marker.slug) {
       navigate(`/service-areas/${marker.slug}`);
       window.scrollTo(0, 0);
     }
-  };
+  }, [navigate]);
 
   if (loadError) {
     return (
-      <div className="w-full h-[400px] md:h-[500px] lg:h-[600px] flex items-center justify-center bg-gray-50 rounded-lg">
+      <div className="w-full h-[400px] md:h-[500px] lg:h-[600px] flex items-center justify-center bg-gray-50 rounded-lg" role="alert" aria-label="Map loading error">
         <div className="flex flex-col items-center gap-2 text-red-500">
           <p>Error loading map: {loadError}</p>
         </div>
@@ -116,7 +113,12 @@ const Map = ({
   }
 
   return (
-    <div className="relative w-full rounded-lg overflow-hidden shadow-lg" style={{ height: mapHeight }}>
+    <div 
+      className="relative w-full rounded-lg overflow-hidden shadow-lg" 
+      style={{ height: mapHeight }}
+      role="region" 
+      aria-label="Service areas map"
+    >
       <LoadScript 
         googleMapsApiKey="AIzaSyA836rCuy6AkrT3L2yT_rfxUPUphH_b6lw"
         onError={onLoadError}
@@ -129,13 +131,12 @@ const Map = ({
           onLoad={onLoad}
         >
           {isLoaded && markers.map((marker, index) => (
-            <Marker
-              key={index}
+            <MarkerF
+              key={`${marker.slug}-${index}`}
               position={{ lat: marker.lat, lng: marker.lng }}
               icon={getMarkerIcon(hoveredMarker === marker.slug)}
               title={marker.title}
               onClick={() => handleMarkerClick(marker)}
-              cursor="pointer"
               animation={hoveredMarker === marker.slug ? google.maps.Animation.BOUNCE : undefined}
             />
           ))}
