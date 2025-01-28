@@ -1,5 +1,3 @@
-import { Text } from "@/components/ui/text";
-
 const FormHeader = () => {
   return (
     <div className="text-center mb-6">
