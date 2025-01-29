@@ -16,6 +16,10 @@ interface ServiceLayoutProps {
   isLoading?: boolean;
   serviceName: string;
   serviceUrl: string;
+  faqSchema?: Array<{ question: string; answer: string }>;
+  serviceArea?: string;
+  servicePrice?: string;
+  availability?: string;
 }
 
 const ServiceLayout = ({
@@ -31,12 +35,19 @@ const ServiceLayout = ({
   isLoading = false,
   serviceName,
   serviceUrl,
+  faqSchema,
+  serviceArea = "North Bergen, NJ and surrounding areas",
+  servicePrice = "Varies based on service requirements",
+  availability = "24/7 Emergency Service Available"
 }: ServiceLayoutProps) => {
   const serviceSchema = createServiceSchema({
     serviceName,
     serviceDescription: description,
     serviceUrl,
-    imageUrl: ogImage
+    imageUrl: ogImage,
+    serviceArea,
+    servicePrice,
+    availability
   });
 
   const breadcrumbs = [
@@ -44,6 +55,8 @@ const ServiceLayout = ({
     { name: "Services", item: "/services" },
     { name: serviceName, item: serviceUrl }
   ];
+
+  const defaultKeywords = `${serviceName.toLowerCase()}, locksmith ${serviceArea.toLowerCase()}, 24/7 locksmith, emergency locksmith, professional locksmith services`;
 
   return (
     <PageLayout
@@ -55,9 +68,10 @@ const ServiceLayout = ({
       schema={serviceSchema}
       canonicalUrl={canonicalUrl}
       ogImage={ogImage}
-      keywords={keywords}
+      keywords={keywords || defaultKeywords}
       isLoading={isLoading}
       breadcrumbs={breadcrumbs}
+      faqSchema={faqSchema}
     >
       {children}
     </PageLayout>

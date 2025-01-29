@@ -3,13 +3,19 @@ interface ServiceSchemaProps {
   serviceDescription: string;
   serviceUrl: string;
   imageUrl?: string;
+  serviceArea?: string;
+  servicePrice?: string;
+  availability?: string;
 }
 
 export const createServiceSchema = ({
   serviceName,
   serviceDescription,
   serviceUrl,
-  imageUrl = "/lovable-uploads/950b5c4c-f0b8-4d22-beb0-66a7d7554476.png"
+  imageUrl = "/lovable-uploads/950b5c4c-f0b8-4d22-beb0-66a7d7554476.png",
+  serviceArea = "North Bergen, NJ and surrounding areas",
+  servicePrice = "Varies based on service requirements",
+  availability = "24/7 Emergency Service Available"
 }: ServiceSchemaProps) => ({
   "@context": "https://schema.org",
   "@type": "Service",
@@ -34,7 +40,23 @@ export const createServiceSchema = ({
       "longitude": "-74.0324"
     },
     "url": "https://247locksmithandsecurity.com",
-    "telephone": "+15513037874"
+    "telephone": "+15513037874",
+    "areaServed": serviceArea,
+    "priceRange": servicePrice,
+    "openingHoursSpecification": {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+        "Sunday"
+      ],
+      "opens": "00:00",
+      "closes": "23:59"
+    }
   },
   "areaServed": {
     "@type": "GeoCircle",
@@ -45,22 +67,27 @@ export const createServiceSchema = ({
     },
     "geoRadius": "30000"
   },
-  "hasOfferCatalog": {
-    "@type": "OfferCatalog",
-    "name": "Locksmith Services",
-    "itemListElement": [
-      {
-        "@type": "Offer",
-        "itemOffered": {
-          "@type": "Service",
-          "name": serviceName,
-          "description": serviceDescription
-        },
-        "priceSpecification": {
-          "@type": "PriceSpecification",
-          "priceCurrency": "USD"
-        }
-      }
-    ]
+  "availableChannel": {
+    "@type": "ServiceChannel",
+    "serviceUrl": `https://247locksmithandsecurity.com${serviceUrl}`,
+    "servicePhone": "+15513037874",
+    "availabilityStarts": "00:00",
+    "availabilityEnds": "23:59"
+  },
+  "serviceOutput": {
+    "@type": "Thing",
+    "name": serviceName,
+    "description": serviceDescription
+  },
+  "offers": {
+    "@type": "Offer",
+    "availability": "https://schema.org/InStock",
+    "availabilityStarts": "00:00",
+    "availabilityEnds": "23:59",
+    "priceSpecification": {
+      "@type": "PriceSpecification",
+      "priceCurrency": "USD",
+      "description": servicePrice
+    }
   }
 });
