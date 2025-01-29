@@ -90,20 +90,6 @@ const MetaTags = ({
         "sameAs": "https://en.wikipedia.org/wiki/Guttenberg,_New_Jersey"
       }
     ],
-    "openingHoursSpecification": {
-      "@type": "OpeningHoursSpecification",
-      "dayOfWeek": [
-        "Monday",
-        "Tuesday",
-        "Wednesday",
-        "Thursday",
-        "Friday",
-        "Saturday",
-        "Sunday"
-      ],
-      "opens": "00:00",
-      "closes": "23:59"
-    },
     "sameAs": [
       "https://www.facebook.com/247locksmithandsecurity",
       "https://www.yelp.com/biz/247-locksmith-and-security-north-bergen",
@@ -158,7 +144,7 @@ const MetaTags = ({
         "@type": "Person",
         "name": "Michael R."
       },
-      "reviewBody": "Called them at 2 AM when I was locked out of my car in North Bergen. The technician arrived in 20 minutes and had me back in my car quickly. Extremely professional service."
+      "reviewBody": "Called them at 2 AM when I was locked out of my car in North Bergen. The technician arrived quickly and had me back in my car in no time. Extremely professional service."
     },
     "aggregateRating": {
       "@type": "AggregateRating",
@@ -168,32 +154,6 @@ const MetaTags = ({
       "worstRating": "1"
     }
   };
-
-  // Generate breadcrumb schema if breadcrumbs are provided
-  const breadcrumbSchema = breadcrumbs ? {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    "itemListElement": breadcrumbs.map((item, index) => ({
-      "@type": "ListItem",
-      "position": index + 1,
-      "name": item.name,
-      "item": `${baseUrl}${item.item}`
-    }))
-  } : null;
-
-  // Generate FAQ schema if FAQs are provided
-  const faqSchemaObj = faqSchema ? {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "mainEntity": faqSchema.map(faq => ({
-      "@type": "Question",
-      "name": faq.question,
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": faq.answer
-      }
-    }))
-  } : null;
 
   return (
     <Helmet>
@@ -243,34 +203,43 @@ const MetaTags = ({
       <meta name="business:contact_data:phone_number" content="+15513037874" />
       <meta name="business:contact_data:website" content={baseUrl} />
       <meta name="business:contact_data:email" content="info@247locksmithandsecurity.com" />
-      
-      {/* Accessibility Tags */}
-      <meta name="apple-mobile-web-app-title" content="Locksmith & Security LLC" />
-      <meta name="application-name" content="Locksmith & Security LLC" />
 
       {/* Schema.org Markup */}
       <script type="application/ld+json">
-        {JSON.stringify(defaultSchema)}
+        {JSON.stringify(schema || defaultSchema)}
       </script>
 
-      {/* Additional Schema if provided */}
-      {schema && (
-        <script type="application/ld+json">
-          {JSON.stringify(schema)}
-        </script>
-      )}
-
       {/* Breadcrumb Schema */}
-      {breadcrumbSchema && (
+      {breadcrumbs && (
         <script type="application/ld+json">
-          {JSON.stringify(breadcrumbSchema)}
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": breadcrumbs.map((item, index) => ({
+              "@type": "ListItem",
+              "position": index + 1,
+              "name": item.name,
+              "item": `${baseUrl}${item.item}`
+            }))
+          })}
         </script>
       )}
 
       {/* FAQ Schema */}
-      {faqSchemaObj && (
+      {faqSchema && (
         <script type="application/ld+json">
-          {JSON.stringify(faqSchemaObj)}
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            "mainEntity": faqSchema.map(faq => ({
+              "@type": "Question",
+              "name": faq.question,
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": faq.answer
+              }
+            }))
+          })}
         </script>
       )}
     </Helmet>
