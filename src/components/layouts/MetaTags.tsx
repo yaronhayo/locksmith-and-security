@@ -1,4 +1,9 @@
 import { Helmet } from "react-helmet";
+import { createLocalBusinessSchema } from "@/schemas/localBusinessSchema";
+import { createOfferCatalogSchema } from "@/schemas/offerCatalogSchema";
+import { createReviewSchema } from "@/schemas/reviewSchema";
+import { createBreadcrumbSchema } from "@/schemas/breadcrumbSchema";
+import { createFAQSchema } from "@/schemas/faqSchema";
 
 interface MetaTagsProps {
   title: string;
@@ -25,135 +30,16 @@ const MetaTags = ({
   const fullCanonicalUrl = canonicalUrl ? `${baseUrl}${canonicalUrl}` : baseUrl;
   const fullTitle = `${title} | Locksmith & Security LLC - Professional Locksmith Services in North Bergen, NJ`;
 
+  const localBusinessSchema = createLocalBusinessSchema({
+    baseUrl,
+    description,
+    ogImage
+  });
+
   const defaultSchema = {
-    "@context": "https://schema.org",
-    "@type": "LocalBusiness",
-    "@id": baseUrl,
-    "name": "Locksmith & Security LLC",
-    "image": `${baseUrl}${ogImage}`,
-    "logo": `${baseUrl}${ogImage}`,
-    "description": description,
-    "url": baseUrl,
-    "telephone": "+15513037874",
-    "priceRange": "$$",
-    "address": {
-      "@type": "PostalAddress",
-      "streetAddress": "123 Main Street",
-      "addressLocality": "North Bergen",
-      "addressRegion": "NJ",
-      "postalCode": "07047",
-      "addressCountry": "US"
-    },
-    "geo": {
-      "@type": "GeoCoordinates",
-      "latitude": "40.7795",
-      "longitude": "-74.0324"
-    },
-    "areaServed": [
-      {
-        "@type": "City",
-        "name": "North Bergen",
-        "sameAs": "https://en.wikipedia.org/wiki/North_Bergen,_New_Jersey"
-      },
-      {
-        "@type": "City",
-        "name": "Union City",
-        "sameAs": "https://en.wikipedia.org/wiki/Union_City,_New_Jersey"
-      },
-      {
-        "@type": "City",
-        "name": "West New York",
-        "sameAs": "https://en.wikipedia.org/wiki/West_New_York,_New_Jersey"
-      },
-      {
-        "@type": "City",
-        "name": "Weehawken",
-        "sameAs": "https://en.wikipedia.org/wiki/Weehawken,_New_Jersey"
-      },
-      {
-        "@type": "City",
-        "name": "Hoboken",
-        "sameAs": "https://en.wikipedia.org/wiki/Hoboken,_New_Jersey"
-      },
-      {
-        "@type": "City",
-        "name": "Jersey City",
-        "sameAs": "https://en.wikipedia.org/wiki/Jersey_City,_New_Jersey"
-      },
-      {
-        "@type": "City",
-        "name": "Secaucus",
-        "sameAs": "https://en.wikipedia.org/wiki/Secaucus,_New_Jersey"
-      },
-      {
-        "@type": "City",
-        "name": "Guttenberg",
-        "sameAs": "https://en.wikipedia.org/wiki/Guttenberg,_New_Jersey"
-      }
-    ],
-    "sameAs": [
-      "https://www.facebook.com/247locksmithandsecurity",
-      "https://www.yelp.com/biz/247-locksmith-and-security-north-bergen",
-      "https://www.google.com/maps?cid=your-google-business-id"
-    ],
-    "hasOfferCatalog": {
-      "@type": "OfferCatalog",
-      "name": "Locksmith Services",
-      "itemListElement": [
-        {
-          "@type": "Offer",
-          "itemOffered": {
-            "@type": "Service",
-            "name": "Emergency Lockout Service",
-            "description": "24/7 emergency lockout services for homes, businesses, and vehicles"
-          }
-        },
-        {
-          "@type": "Offer",
-          "itemOffered": {
-            "@type": "Service",
-            "name": "Lock Installation",
-            "description": "Professional installation of high-security locks"
-          }
-        },
-        {
-          "@type": "Offer",
-          "itemOffered": {
-            "@type": "Service",
-            "name": "Car Key Programming",
-            "description": "Professional car key programming and replacement services"
-          }
-        },
-        {
-          "@type": "Offer",
-          "itemOffered": {
-            "@type": "Service",
-            "name": "Business Security Solutions",
-            "description": "Complete commercial security system solutions"
-          }
-        }
-      ]
-    },
-    "review": {
-      "@type": "Review",
-      "reviewRating": {
-        "@type": "Rating",
-        "ratingValue": "5",
-        "bestRating": "5"
-      },
-      "author": {
-        "@type": "Person",
-        "name": "Michael R."
-      },
-      "reviewBody": "Called them at 2 AM when I was locked out of my car in North Bergen. The technician arrived quickly and had me back in my car in no time. Extremely professional service."
-    },
-    "aggregateRating": {
-      "@type": "AggregateRating",
-      "ratingValue": "5",
-      "reviewCount": "50",
-      "bestRating": "5",
-      "worstRating": "1"
-    }
+    ...localBusinessSchema,
+    hasOfferCatalog: createOfferCatalogSchema(),
+    ...createReviewSchema()
   };
 
   return (
@@ -213,34 +99,14 @@ const MetaTags = ({
       {/* Breadcrumb Schema */}
       {breadcrumbs && (
         <script type="application/ld+json">
-          {JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "BreadcrumbList",
-            "itemListElement": breadcrumbs.map((item, index) => ({
-              "@type": "ListItem",
-              "position": index + 1,
-              "name": item.name,
-              "item": `${baseUrl}${item.item}`
-            }))
-          })}
+          {JSON.stringify(createBreadcrumbSchema(breadcrumbs))}
         </script>
       )}
 
       {/* FAQ Schema */}
       {faqSchema && (
         <script type="application/ld+json">
-          {JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "FAQPage",
-            "mainEntity": faqSchema.map(faq => ({
-              "@type": "Question",
-              "name": faq.question,
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": faq.answer
-              }
-            }))
-          })}
+          {JSON.stringify(createFAQSchema(faqSchema))}
         </script>
       )}
     </Helmet>
