@@ -1,18 +1,16 @@
 import { useState } from "react";
-import { useToast } from "@/components/ui/use-toast";
 import { useNavigate } from "react-router-dom";
-import { supabase } from "@/lib/supabase";
 import PersonalInfoFields from "./PersonalInfoFields";
 import ServiceSelection from "./ServiceSelection";
 import VehicleFields from "./VehicleFields";
 import TimeframeSelection from "./TimeframeSelection";
 import { validateForm } from "./validation";
 import SubmitButton from "./SubmitButton";
+import { useServiceRequests } from "@/hooks/useServiceRequests";
 
 const BookingForm = () => {
-  const { toast } = useToast();
   const navigate = useNavigate();
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { createServiceRequest } = useServiceRequests();
   const [selectedService, setSelectedService] = useState("");
   const [showVehicleInfo, setShowVehicleInfo] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -31,55 +29,28 @@ const BookingForm = () => {
     const validationResult = validateForm(formData, showVehicleInfo);
     if (!validationResult.isValid) {
       setErrors(validationResult.errors);
-      toast({
-        title: "Validation Error",
-        description: "Please check the form for errors",
-        variant: "destructive",
-      });
       return;
     }
 
-    setIsSubmitting(true);
-
+    const formDataObj = Object.fromEntries(formData.entries());
+    
     try {
-      const formDataObj = Object.fromEntries(formData.entries());
-      
-      const { error } = await supabase
-        .from('service_requests')
-        .insert([
-          {
-            name: formDataObj.name,
-            phone: formDataObj.phone,
-            address: formDataObj.address,
-            service: formDataObj.service,
-            timeframe: formDataObj.timeframe,
-            vehicle_year: formDataObj.vehicleYear || null,
-            vehicle_make: formDataObj.vehicleMake || null,
-            vehicle_model: formDataObj.vehicleModel || null,
-            other_service: formDataObj.otherService || null,
-            notes: formDataObj.notes || null,
-            status: 'pending',
-            created_at: new Date().toISOString(),
-          }
-        ]);
-
-      if (error) throw error;
-
-      toast({
-        title: "Request Submitted Successfully",
-        description: "We'll contact you shortly to confirm your booking.",
+      await createServiceRequest.mutateAsync({
+        name: formDataObj.name as string,
+        phone: formDataObj.phone as string,
+        address: formDataObj.address as string,
+        service: formDataObj.service as string,
+        timeframe: formDataObj.timeframe as string,
+        vehicle_year: formDataObj.vehicleYear as string,
+        vehicle_make: formDataObj.vehicleMake as string,
+        vehicle_model: formDataObj.vehicleModel as string,
+        other_service: formDataObj.otherService as string,
+        notes: formDataObj.notes as string,
       });
 
       navigate("/thank-you");
     } catch (error) {
-      console.error("Submission error:", error);
-      toast({
-        title: "Submission Failed",
-        description: "Please try again or contact us directly.",
-        variant: "destructive",
-      });
-    } finally {
-      setIsSubmitting(false);
+      console.error("Form submission error:", error);
     }
   };
 
@@ -87,24 +58,24 @@ const BookingForm = () => {
     <form onSubmit={handleSubmit} className="space-y-3">
       <PersonalInfoFields 
         errors={errors}
-        isSubmitting={isSubmitting}
+        isSubmitting={createServiceRequest.isPending}
         address={address}
         setAddress={setAddress}
       />
       
       <ServiceSelection 
         error={errors.service}
-        isSubmitting={isSubmitting}
+        isSubmitting={createServiceRequest.isPending}
         onServiceChange={handleServiceChange}
       />
 
       {showVehicleInfo && (
-        <VehicleFields errors={errors} isSubmitting={isSubmitting} />
+        <VehicleFields errors={errors} isSubmitting={createServiceRequest.isPending} />
       )}
 
-      <TimeframeSelection isSubmitting={isSubmitting} />
+      <TimeframeSelection isSubmitting={createServiceRequest.isPending} />
 
-      <SubmitButton isSubmitting={isSubmitting} />
+      <SubmitButton isSubmitting={createServiceRequest.isPending} />
 
       <p className="text-sm text-gray-500 text-center">
         Fast Response • Professional Service • 24/7 Available
