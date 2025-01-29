@@ -1,33 +1,33 @@
 import ServiceLayout from "@/components/layouts/ServiceLayout";
-import CarLockoutHero from "@/components/sections/CarLockoutHero";
 import ServiceDescription from "@/components/services/car-lockout/ServiceDescription";
-import RealWorldExamples from "@/components/services/car-lockout/RealWorldExamples";
 import EmergencyCallout from "@/components/services/car-lockout/EmergencyCallout";
+import RealWorldExamples from "@/components/services/car-lockout/RealWorldExamples";
+import CarLockoutHero from "@/components/sections/CarLockoutHero";
 
 const CarLockout = () => {
-  const serviceName = "Car Lockout Service";
-  const serviceUrl = "/services/car-lockout";
-  const description = "24/7 emergency car lockout service in North Bergen, NJ. Professional automotive locksmith providing fast response within 15-30 minutes. Licensed & insured experts for all vehicle makes and models.";
-  const keywords = "car lockout service, automotive locksmith, car key replacement, vehicle locksmith, emergency car lockout, North Bergen car locksmith, 24/7 car lockout service, locked keys in car";
-
   return (
     <ServiceLayout
-      title="24/7 Emergency Car Lockout Service"
-      description={description}
-      keywords={keywords}
-      serviceName={serviceName}
-      serviceUrl={serviceUrl}
-      heroTitle="Professional Car Lockout Service"
-      heroDescription="Locked out of your car? Our expert automotive locksmiths provide fast, reliable service 24/7. We'll get you back in your vehicle quickly and safely."
-      canonicalUrl={serviceUrl}
-      ogImage="/lovable-uploads/950b5c4c-f0b8-4d22-beb0-66a7d7554476.png"
+      title="24/7 Car Lockout Service in North Bergen, NJ | Professional Auto Locksmith"
+      description="Professional car lockout service in North Bergen, NJ. Available 24/7 for emergency auto locksmith needs. Fast response time and reliable service."
+      serviceName="Car Lockout Service"
+      serviceUrl="/services/car-lockout"
+      keywords="car lockout service, auto locksmith, car key replacement, vehicle lockout, emergency car locksmith"
+      ogImage="/lovable-uploads/car-lockout-service.jpg"
+      faqSchema={[
+        {
+          question: "How long does it take to unlock a car?",
+          answer: "Our professional locksmiths typically unlock cars within 5-15 minutes of arrival."
+        },
+        {
+          question: "Do you provide 24/7 car lockout service?",
+          answer: "Yes, we provide 24/7 emergency car lockout service in North Bergen and surrounding areas."
+        }
+      ]}
     >
-      <main className="flex flex-col">
-        <CarLockoutHero />
-        <ServiceDescription />
-        <RealWorldExamples />
-        <EmergencyCallout />
-      </main>
+      <CarLockoutHero />
+      <ServiceDescription />
+      <EmergencyCallout />
+      <RealWorldExamples />
     </ServiceLayout>
   );
 };
