@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
 import { LoadScript, GoogleMap, MarkerF } from '@react-google-maps/api';
 import { useNavigate } from 'react-router-dom';
 import { Loader2 } from "lucide-react";
