@@ -1,24 +1,19 @@
 import React from "react";
 import PageLayout from "./PageLayout";
 import { createServiceSchema } from "@/schemas/servicesSchema";
-import { cn } from "@/lib/utils";
 
 interface ServiceLayoutProps {
   title: string;
   description: string;
   children: React.ReactNode;
-  className?: string;
-  heroTitle?: string;
-  heroDescription?: string;
+  keywords?: string;
   canonicalUrl?: string;
   ogImage?: string;
-  keywords?: string;
   isLoading?: boolean;
   serviceName: string;
   serviceUrl: string;
   faqSchema?: Array<{ question: string; answer: string }>;
   serviceArea?: string;
-  servicePrice?: string;
   availability?: string;
 }
 
@@ -26,18 +21,14 @@ const ServiceLayout = ({
   title,
   description,
   children,
-  className,
-  heroTitle,
-  heroDescription,
+  keywords,
   canonicalUrl,
   ogImage,
-  keywords,
   isLoading = false,
   serviceName,
   serviceUrl,
   faqSchema,
   serviceArea = "North Bergen, NJ and surrounding areas",
-  servicePrice = "Varies based on service requirements",
   availability = "24/7 Emergency Service Available"
 }: ServiceLayoutProps) => {
   const serviceSchema = createServiceSchema({
@@ -46,7 +37,6 @@ const ServiceLayout = ({
     serviceUrl,
     imageUrl: ogImage,
     serviceArea,
-    servicePrice,
     availability
   });
 
@@ -60,11 +50,8 @@ const ServiceLayout = ({
 
   return (
     <PageLayout
-      title={`${title} | Professional Locksmith Services in North Bergen, NJ`}
+      title={title}
       description={description}
-      className={cn(className)}
-      heroTitle={heroTitle}
-      heroDescription={heroDescription}
       schema={serviceSchema}
       canonicalUrl={canonicalUrl}
       ogImage={ogImage}

@@ -4,7 +4,6 @@ interface ServiceSchemaProps {
   serviceUrl: string;
   imageUrl?: string;
   serviceArea?: string;
-  servicePrice?: string;
   availability?: string;
 }
 
@@ -14,7 +13,6 @@ export const createServiceSchema = ({
   serviceUrl,
   imageUrl = "/lovable-uploads/950b5c4c-f0b8-4d22-beb0-66a7d7554476.png",
   serviceArea = "North Bergen, NJ and surrounding areas",
-  servicePrice = "Varies based on service requirements",
   availability = "24/7 Emergency Service Available"
 }: ServiceSchemaProps) => ({
   "@context": "https://schema.org",
@@ -42,7 +40,6 @@ export const createServiceSchema = ({
     "url": "https://247locksmithandsecurity.com",
     "telephone": "+15513037874",
     "areaServed": serviceArea,
-    "priceRange": servicePrice,
     "openingHoursSpecification": {
       "@type": "OpeningHoursSpecification",
       "dayOfWeek": [
@@ -78,16 +75,5 @@ export const createServiceSchema = ({
     "@type": "Thing",
     "name": serviceName,
     "description": serviceDescription
-  },
-  "offers": {
-    "@type": "Offer",
-    "availability": "https://schema.org/InStock",
-    "availabilityStarts": "00:00",
-    "availabilityEnds": "23:59",
-    "priceSpecification": {
-      "@type": "PriceSpecification",
-      "priceCurrency": "USD",
-      "description": servicePrice
-    }
   }
 });
