@@ -15,6 +15,9 @@ interface MetaTagsProps {
   breadcrumbs?: Array<{ name: string; item: string }>;
   faqSchema?: Array<{ question: string; answer: string }>;
   alternateLanguages?: Array<{ hrefLang: string; href: string }>;
+  publishedTime?: string;
+  modifiedTime?: string;
+  type?: string;
 }
 
 const MetaTags = ({
@@ -26,7 +29,10 @@ const MetaTags = ({
   schema,
   breadcrumbs,
   faqSchema,
-  alternateLanguages
+  alternateLanguages,
+  publishedTime = new Date().toISOString(),
+  modifiedTime = new Date().toISOString(),
+  type = "website"
 }: MetaTagsProps) => {
   const baseUrl = "https://247locksmithandsecurity.com";
   const fullCanonicalUrl = canonicalUrl ? `${baseUrl}${canonicalUrl}` : baseUrl;
@@ -58,15 +64,19 @@ const MetaTags = ({
       <meta property="og:description" content={description} />
       <meta property="og:image" content={`${baseUrl}${ogImage}`} />
       <meta property="og:url" content={fullCanonicalUrl} />
-      <meta property="og:type" content="website" />
+      <meta property="og:type" content={type} />
       <meta property="og:site_name" content="Locksmith & Security LLC" />
       <meta property="og:locale" content="en_US" />
+      <meta property="article:published_time" content={publishedTime} />
+      <meta property="article:modified_time" content={modifiedTime} />
       
       {/* Twitter Card Tags */}
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:title" content={fullTitle} />
       <meta name="twitter:description" content={description} />
       <meta name="twitter:image" content={`${baseUrl}${ogImage}`} />
+      <meta name="twitter:site" content="@247locksmith" />
+      <meta name="twitter:creator" content="@247locksmith" />
       
       {/* Additional Meta Tags */}
       <meta name="theme-color" content="#1E3A8A" />

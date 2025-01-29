@@ -70,6 +70,9 @@ const Index = () => {
         { hrefLang: "en", href: "https://247locksmithandsecurity.com" },
         { hrefLang: "es", href: "https://247locksmithandsecurity.com/es" }
       ]}
+      publishedTime="2024-01-01T00:00:00Z"
+      modifiedTime={new Date().toISOString()}
+      type="website"
     >
       <main className="flex flex-col" role="main" aria-label="Main content">
         <HeroSection />
