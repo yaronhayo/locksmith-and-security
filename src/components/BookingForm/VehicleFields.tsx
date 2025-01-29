@@ -20,8 +20,6 @@ const VehicleFields = ({ errors, isSubmitting }: VehicleFieldsProps) => {
           aria-describedby="vehicleYear-error"
           className={`h-10 text-base ${errors.vehicleYear ? 'border-red-500' : ''}`}
           disabled={isSubmitting}
-          aria-label="Enter vehicle year"
-          required
         />
         {errors.vehicleYear && (
           <Alert variant="destructive">
@@ -40,8 +38,6 @@ const VehicleFields = ({ errors, isSubmitting }: VehicleFieldsProps) => {
           aria-describedby="vehicleMake-error"
           className={`h-10 text-base ${errors.vehicleMake ? 'border-red-500' : ''}`}
           disabled={isSubmitting}
-          aria-label="Enter vehicle make"
-          required
         />
         {errors.vehicleMake && (
           <Alert variant="destructive">
@@ -60,8 +56,6 @@ const VehicleFields = ({ errors, isSubmitting }: VehicleFieldsProps) => {
           aria-describedby="vehicleModel-error"
           className={`h-10 text-base ${errors.vehicleModel ? 'border-red-500' : ''}`}
           disabled={isSubmitting}
-          aria-label="Enter vehicle model"
-          required
         />
         {errors.vehicleModel && (
           <Alert variant="destructive">

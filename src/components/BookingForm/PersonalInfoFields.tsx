@@ -2,13 +2,16 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { AlertCircle } from "lucide-react";
+import AddressAutocomplete from "@/components/ui/address-autocomplete";
 
 interface PersonalInfoFieldsProps {
   errors: Record<string, string>;
   isSubmitting: boolean;
+  address: string;
+  setAddress: (address: string) => void;
 }
 
-const PersonalInfoFields = ({ errors, isSubmitting }: PersonalInfoFieldsProps) => {
+const PersonalInfoFields = ({ errors, isSubmitting, address, setAddress }: PersonalInfoFieldsProps) => {
   return (
     <>
       <div className="space-y-2">
@@ -20,8 +23,6 @@ const PersonalInfoFields = ({ errors, isSubmitting }: PersonalInfoFieldsProps) =
           aria-describedby="name-error"
           className={`h-10 text-base ${errors.name ? 'border-red-500' : ''}`}
           disabled={isSubmitting}
-          aria-label="Enter your full name"
-          required
         />
         {errors.name && (
           <Alert variant="destructive">
@@ -40,8 +41,6 @@ const PersonalInfoFields = ({ errors, isSubmitting }: PersonalInfoFieldsProps) =
           aria-describedby="phone-error"
           className={`h-10 text-base ${errors.phone ? 'border-red-500' : ''}`}
           disabled={isSubmitting}
-          aria-label="Enter your phone number"
-          required
         />
         {errors.phone && (
           <Alert variant="destructive">
@@ -53,15 +52,14 @@ const PersonalInfoFields = ({ errors, isSubmitting }: PersonalInfoFieldsProps) =
 
       <div className="space-y-2">
         <Label htmlFor="address">Address</Label>
-        <Input
+        <AddressAutocomplete
           id="address"
-          name="address"
-          type="text"
-          aria-describedby="address-error"
+          value={address}
+          onChange={setAddress}
           className={`h-10 text-base ${errors.address ? 'border-red-500' : ''}`}
+          placeholder="Enter your address"
           disabled={isSubmitting}
-          aria-label="Enter your service address"
-          required
+          aria-describedby="address-error"
         />
         {errors.address && (
           <Alert variant="destructive">
