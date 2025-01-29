@@ -1,12 +1,25 @@
-export const servicesSchema = {
+interface ServiceSchemaProps {
+  serviceName: string;
+  serviceDescription: string;
+  serviceUrl: string;
+  imageUrl?: string;
+}
+
+export const createServiceSchema = ({
+  serviceName,
+  serviceDescription,
+  serviceUrl,
+  imageUrl = "/lovable-uploads/950b5c4c-f0b8-4d22-beb0-66a7d7554476.png"
+}: ServiceSchemaProps) => ({
   "@context": "https://schema.org",
   "@type": "Service",
-  "name": "Professional Locksmith Services",
-  "description": "Expert locksmith services including residential, commercial, and automotive solutions. Available 24/7 for all your security needs.",
+  "@id": `https://247locksmithandsecurity.com${serviceUrl}#service`,
+  "name": serviceName,
+  "description": serviceDescription,
   "provider": {
     "@type": "LocalBusiness",
     "name": "Locksmith & Security LLC",
-    "image": "/og-image.png",
+    "image": imageUrl,
     "address": {
       "@type": "PostalAddress",
       "streetAddress": "123 Main Street",
@@ -20,25 +33,34 @@ export const servicesSchema = {
       "latitude": "40.7795",
       "longitude": "-74.0324"
     },
-    "areaServed": {
-      "@type": "GeoCircle",
-      "geoMidpoint": {
-        "@type": "GeoCoordinates",
-        "latitude": "40.7795",
-        "longitude": "-74.0324"
-      },
-      "geoRadius": "30mi"
-    }
+    "url": "https://247locksmithandsecurity.com",
+    "telephone": "+15513037874"
   },
-  "serviceType": [
-    "Residential Locksmith",
-    "Commercial Locksmith",
-    "Automotive Locksmith",
-    "Emergency Locksmith"
-  ],
-  "availableChannel": {
-    "@type": "ServiceChannel",
-    "serviceUrl": "https://247locksmithandsecurity.com/book-online",
-    "servicePhone": "+15513037874"
+  "areaServed": {
+    "@type": "GeoCircle",
+    "geoMidpoint": {
+      "@type": "GeoCoordinates",
+      "latitude": "40.7795",
+      "longitude": "-74.0324"
+    },
+    "geoRadius": "30000"
+  },
+  "hasOfferCatalog": {
+    "@type": "OfferCatalog",
+    "name": "Locksmith Services",
+    "itemListElement": [
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": serviceName,
+          "description": serviceDescription
+        },
+        "priceSpecification": {
+          "@type": "PriceSpecification",
+          "priceCurrency": "USD"
+        }
+      }
+    ]
   }
-};
+});

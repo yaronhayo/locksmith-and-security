@@ -1,67 +1,35 @@
-import PageLayout from "@/components/layouts/PageLayout";
+import ServiceLayout from "@/components/layouts/ServiceLayout";
 import CarLockoutHero from "@/components/sections/CarLockoutHero";
-import LockoutServices from "@/components/sections/LockoutServices";
-import WhyChooseUs from "@/components/sections/WhyChooseUs";
 import ServiceDescription from "@/components/services/car-lockout/ServiceDescription";
 import RealWorldExamples from "@/components/services/car-lockout/RealWorldExamples";
 import EmergencyCallout from "@/components/services/car-lockout/EmergencyCallout";
-import FAQSection from "@/components/sections/FAQSection";
-import { Car } from "lucide-react";
 
-const schema = {
-  "@context": "https://schema.org",
-  "@type": "Service",
-  "name": "24/7 Car Lockout Service in North Bergen",
-  "description": "Professional car lockout services available 24/7 in North Bergen and surrounding areas. Fast response times and licensed technicians.",
-  "provider": {
-    "@type": "LocalBusiness",
-    "name": "Locksmith & Security LLC",
-    "image": "/og-image.png",
-    "telephone": "+15513037874",
-    "address": {
-      "@type": "PostalAddress",
-      "addressLocality": "North Bergen",
-      "addressRegion": "NJ",
-      "postalCode": "07047",
-      "addressCountry": "US"
-    },
-    "geo": {
-      "@type": "GeoCoordinates",
-      "latitude": "40.7995",
-      "longitude": "-74.0246"
-    },
-    "areaServed": {
-      "@type": "GeoCircle",
-      "geoMidpoint": {
-        "@type": "GeoCoordinates",
-        "latitude": "40.7995",
-        "longitude": "-74.0246"
-      },
-      "geoRadius": "30mi"
-    }
-  }
-};
+const CarLockout = () => {
+  const serviceName = "Car Lockout Service";
+  const serviceUrl = "/services/car-lockout";
+  const description = "24/7 emergency car lockout service in North Bergen, NJ. Professional automotive locksmith providing fast response within 15-30 minutes. Licensed & insured experts for all vehicle makes and models.";
+  const keywords = "car lockout service, automotive locksmith, car key replacement, vehicle locksmith, emergency car lockout, North Bergen car locksmith, 24/7 car lockout service, locked keys in car";
 
-const CarLockoutPage = () => {
   return (
-    <PageLayout
-      title="24/7 Car Lockout Service North Bergen | Emergency Auto Locksmith"
-      description="Professional car lockout services in North Bergen. Available 24/7 with 15-30 minute response time. Licensed and insured auto locksmith specialists ready to help."
-      schema={schema}
+    <ServiceLayout
+      title="24/7 Emergency Car Lockout Service"
+      description={description}
+      keywords={keywords}
+      serviceName={serviceName}
+      serviceUrl={serviceUrl}
+      heroTitle="Professional Car Lockout Service"
+      heroDescription="Locked out of your car? Our expert automotive locksmiths provide fast, reliable service 24/7. We'll get you back in your vehicle quickly and safely."
+      canonicalUrl={serviceUrl}
+      ogImage="/lovable-uploads/950b5c4c-f0b8-4d22-beb0-66a7d7554476.png"
     >
-      <CarLockoutHero />
-      <LockoutServices />
-      <WhyChooseUs />
-      <div className="container mx-auto px-4 py-12">
-        <div className="max-w-4xl mx-auto">
-          <ServiceDescription />
-          <RealWorldExamples />
-          <EmergencyCallout />
-        </div>
-      </div>
-      <FAQSection />
-    </PageLayout>
+      <main className="flex flex-col">
+        <CarLockoutHero />
+        <ServiceDescription />
+        <RealWorldExamples />
+        <EmergencyCallout />
+      </main>
+    </ServiceLayout>
   );
 };
 
-export default CarLockoutPage;
+export default CarLockout;
