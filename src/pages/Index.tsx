@@ -66,6 +66,10 @@ const Index = () => {
       keywords="emergency locksmith, 24/7 locksmith, North Bergen locksmith, car lockout, house lockout, business lockout, lock change, lock rekey, commercial locksmith, residential locksmith, automotive locksmith"
       faqSchema={faqSchema}
       breadcrumbs={breadcrumbs}
+      alternateLanguages={[
+        { hrefLang: "en", href: "https://247locksmithandsecurity.com" },
+        { hrefLang: "es", href: "https://247locksmithandsecurity.com/es" }
+      ]}
     >
       <main className="flex flex-col" role="main" aria-label="Main content">
         <HeroSection />

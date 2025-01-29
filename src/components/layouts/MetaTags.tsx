@@ -14,6 +14,7 @@ interface MetaTagsProps {
   schema?: object;
   breadcrumbs?: Array<{ name: string; item: string }>;
   faqSchema?: Array<{ question: string; answer: string }>;
+  alternateLanguages?: Array<{ hrefLang: string; href: string }>;
 }
 
 const MetaTags = ({
@@ -24,7 +25,8 @@ const MetaTags = ({
   keywords = "locksmith, security, lock services, emergency locksmith, North Bergen",
   schema,
   breadcrumbs,
-  faqSchema
+  faqSchema,
+  alternateLanguages
 }: MetaTagsProps) => {
   const baseUrl = "https://247locksmithandsecurity.com";
   const fullCanonicalUrl = canonicalUrl ? `${baseUrl}${canonicalUrl}` : baseUrl;
@@ -90,6 +92,11 @@ const MetaTags = ({
       <meta name="business:contact_data:phone_number" content="+15513037874" />
       <meta name="business:contact_data:website" content={baseUrl} />
       <meta name="business:contact_data:email" content="info@247locksmithandsecurity.com" />
+
+      {/* Alternate Language Tags */}
+      {alternateLanguages?.map(({ hrefLang, href }) => (
+        <link key={hrefLang} rel="alternate" hrefLang={hrefLang} href={href} />
+      ))}
 
       {/* Schema.org Markup */}
       <script type="application/ld+json">
