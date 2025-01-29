@@ -2,10 +2,10 @@ import React from "react";
 import PageLayout from "./PageLayout";
 import { createServiceSchema } from "@/schemas/servicesSchema";
 
-interface ServiceLayoutProps {
+export interface ServiceLayoutProps {
   title: string;
   description: string;
-  children: React.ReactNode;
+  children?: React.ReactNode;
   keywords?: string;
   canonicalUrl?: string;
   ogImage?: string;
@@ -15,6 +15,7 @@ interface ServiceLayoutProps {
   faqSchema?: Array<{ question: string; answer: string }>;
   serviceArea?: string;
   availability?: string;
+  benefits?: string[];
 }
 
 const ServiceLayout = ({
@@ -29,7 +30,8 @@ const ServiceLayout = ({
   serviceUrl,
   faqSchema,
   serviceArea = "North Bergen, NJ and surrounding areas",
-  availability = "24/7 Emergency Service Available"
+  availability = "24/7 Emergency Service Available",
+  benefits
 }: ServiceLayoutProps) => {
   const serviceSchema = createServiceSchema({
     serviceName,
@@ -58,9 +60,18 @@ const ServiceLayout = ({
       keywords={keywords || defaultKeywords}
       isLoading={isLoading}
       breadcrumbs={breadcrumbs}
-      faqSchema={faqSchema}
     >
       {children}
+      {benefits && (
+        <div className="mt-8">
+          <h3 className="text-xl font-semibold mb-4">Service Benefits</h3>
+          <ul className="list-disc pl-5 space-y-2">
+            {benefits.map((benefit, index) => (
+              <li key={index}>{benefit}</li>
+            ))}
+          </ul>
+        </div>
+      )}
     </PageLayout>
   );
 };

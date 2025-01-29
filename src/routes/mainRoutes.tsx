@@ -1,13 +1,13 @@
 import React from "react";
 import { Navigate } from "react-router-dom";
-import HomePage from "@/pages/HomePage";
+import Index from "@/pages/Index";
 import BookingPage from "@/pages/booking";
 import ThankYouPage from "@/pages/thank-you";
 
-const mainRoutes = [
+export const mainRoutes = [
   {
     path: "/",
-    element: <HomePage />,
+    element: <Index />,
   },
   {
     path: "/booking",
