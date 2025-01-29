@@ -1,6 +1,7 @@
 import React from "react";
 import PageLayout from "./PageLayout";
 import { createServiceSchema } from "@/schemas/servicesSchema";
+import { LucideIcon } from "lucide-react";
 
 export interface ServiceLayoutProps {
   title: string;
@@ -16,6 +17,7 @@ export interface ServiceLayoutProps {
   serviceArea?: string;
   availability?: string;
   benefits?: string[];
+  icon?: LucideIcon;
 }
 
 const ServiceLayout = ({

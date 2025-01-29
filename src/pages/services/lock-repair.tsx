@@ -7,6 +7,8 @@ const LockRepairPage = () => {
       title="Lock Repair Services"
       description="Expert lock repair services to fix any lock issues. We diagnose and repair all types of locks to ensure your security is maintained."
       icon={Settings}
+      serviceName="Lock Repair"
+      serviceUrl="/services/lock-repair"
       benefits={[
         "Professional lock repair service",
         "Fast response times",

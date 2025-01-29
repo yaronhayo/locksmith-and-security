@@ -7,6 +7,8 @@ const SecuritySystemsPage = () => {
       title="Security System Installation"
       description="Advanced security system installation services to protect your property. We provide cutting-edge security solutions tailored to your needs."
       icon={Shield}
+      serviceName="Security Systems"
+      serviceUrl="/services/security-systems"
       benefits={[
         "Advanced security system installation",
         "Modern security solutions",
