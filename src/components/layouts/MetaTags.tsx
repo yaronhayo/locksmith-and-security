@@ -35,6 +35,7 @@ const MetaTags = ({
     "description": description,
     "url": baseUrl,
     "telephone": "+15513037874",
+    "priceRange": "$$",
     "address": {
       "@type": "PostalAddress",
       "streetAddress": "123 Main Street",
