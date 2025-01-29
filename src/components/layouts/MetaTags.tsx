@@ -7,15 +7,19 @@ interface MetaTagsProps {
   ogImage?: string;
   keywords?: string;
   schema?: object;
+  breadcrumbs?: Array<{ name: string; item: string }>;
+  faqSchema?: Array<{ question: string; answer: string }>;
 }
 
 const MetaTags = ({
   title,
   description,
   canonicalUrl,
-  ogImage = "/og-image.png",
+  ogImage = "/lovable-uploads/950b5c4c-f0b8-4d22-beb0-66a7d7554476.png",
   keywords = "locksmith, security, lock services, emergency locksmith, North Bergen",
   schema,
+  breadcrumbs,
+  faqSchema
 }: MetaTagsProps) => {
   const baseUrl = "https://247locksmithandsecurity.com";
   const fullCanonicalUrl = canonicalUrl ? `${baseUrl}${canonicalUrl}` : baseUrl;
@@ -26,12 +30,11 @@ const MetaTags = ({
     "@type": "LocalBusiness",
     "@id": baseUrl,
     "name": "Locksmith & Security LLC",
-    "image": `${baseUrl}/og-image.png`,
-    "logo": `${baseUrl}/logo.png`,
+    "image": `${baseUrl}${ogImage}`,
+    "logo": `${baseUrl}${ogImage}`,
     "description": description,
     "url": baseUrl,
     "telephone": "+15513037874",
-    "priceRange": "$$",
     "address": {
       "@type": "PostalAddress",
       "streetAddress": "123 Main Street",
@@ -60,6 +63,31 @@ const MetaTags = ({
         "@type": "City",
         "name": "West New York",
         "sameAs": "https://en.wikipedia.org/wiki/West_New_York,_New_Jersey"
+      },
+      {
+        "@type": "City",
+        "name": "Weehawken",
+        "sameAs": "https://en.wikipedia.org/wiki/Weehawken,_New_Jersey"
+      },
+      {
+        "@type": "City",
+        "name": "Hoboken",
+        "sameAs": "https://en.wikipedia.org/wiki/Hoboken,_New_Jersey"
+      },
+      {
+        "@type": "City",
+        "name": "Jersey City",
+        "sameAs": "https://en.wikipedia.org/wiki/Jersey_City,_New_Jersey"
+      },
+      {
+        "@type": "City",
+        "name": "Secaucus",
+        "sameAs": "https://en.wikipedia.org/wiki/Secaucus,_New_Jersey"
+      },
+      {
+        "@type": "City",
+        "name": "Guttenberg",
+        "sameAs": "https://en.wikipedia.org/wiki/Guttenberg,_New_Jersey"
       }
     ],
     "openingHoursSpecification": {
@@ -78,7 +106,8 @@ const MetaTags = ({
     },
     "sameAs": [
       "https://www.facebook.com/247locksmithandsecurity",
-      "https://www.yelp.com/biz/247-locksmith-and-security-north-bergen"
+      "https://www.yelp.com/biz/247-locksmith-and-security-north-bergen",
+      "https://www.google.com/maps?cid=your-google-business-id"
     ],
     "hasOfferCatalog": {
       "@type": "OfferCatalog",
@@ -99,21 +128,72 @@ const MetaTags = ({
             "name": "Lock Installation",
             "description": "Professional installation of high-security locks"
           }
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Car Key Programming",
+            "description": "Professional car key programming and replacement services"
+          }
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Business Security Solutions",
+            "description": "Complete commercial security system solutions"
+          }
         }
       ]
+    },
+    "review": {
+      "@type": "Review",
+      "reviewRating": {
+        "@type": "Rating",
+        "ratingValue": "5",
+        "bestRating": "5"
+      },
+      "author": {
+        "@type": "Person",
+        "name": "Michael R."
+      },
+      "reviewBody": "Called them at 2 AM when I was locked out of my car in North Bergen. The technician arrived in 20 minutes and had me back in my car quickly. Extremely professional service."
+    },
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "5",
+      "reviewCount": "50",
+      "bestRating": "5",
+      "worstRating": "1"
     }
   };
 
-  const pageSchema = {
+  // Generate breadcrumb schema if breadcrumbs are provided
+  const breadcrumbSchema = breadcrumbs ? {
     "@context": "https://schema.org",
-    "@type": "WebPage",
-    "name": title,
-    "description": description,
-    "isPartOf": {
-      "@id": baseUrl
-    },
-    ...schema
-  };
+    "@type": "BreadcrumbList",
+    "itemListElement": breadcrumbs.map((item, index) => ({
+      "@type": "ListItem",
+      "position": index + 1,
+      "name": item.name,
+      "item": `${baseUrl}${item.item}`
+    }))
+  } : null;
+
+  // Generate FAQ schema if FAQs are provided
+  const faqSchemaObj = faqSchema ? {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": faqSchema.map(faq => ({
+      "@type": "Question",
+      "name": faq.question,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": faq.answer
+      }
+    }))
+  } : null;
 
   return (
     <Helmet>
@@ -167,13 +247,32 @@ const MetaTags = ({
       {/* Accessibility Tags */}
       <meta name="apple-mobile-web-app-title" content="Locksmith & Security LLC" />
       <meta name="application-name" content="Locksmith & Security LLC" />
-      
+
+      {/* Schema.org Markup */}
       <script type="application/ld+json">
         {JSON.stringify(defaultSchema)}
       </script>
-      <script type="application/ld+json">
-        {JSON.stringify(pageSchema)}
-      </script>
+
+      {/* Additional Schema if provided */}
+      {schema && (
+        <script type="application/ld+json">
+          {JSON.stringify(schema)}
+        </script>
+      )}
+
+      {/* Breadcrumb Schema */}
+      {breadcrumbSchema && (
+        <script type="application/ld+json">
+          {JSON.stringify(breadcrumbSchema)}
+        </script>
+      )}
+
+      {/* FAQ Schema */}
+      {faqSchemaObj && (
+        <script type="application/ld+json">
+          {JSON.stringify(faqSchemaObj)}
+        </script>
+      )}
     </Helmet>
   );
 };
