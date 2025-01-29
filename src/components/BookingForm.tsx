@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Lock, Loader2, AlertCircle } from "lucide-react";
+import AddressAutocomplete from "@/components/ui/address-autocomplete";
 import {
   Select,
   SelectContent,
@@ -39,6 +40,7 @@ const BookingForm = () => {
   const [selectedService, setSelectedService] = useState("");
   const [showVehicleInfo, setShowVehicleInfo] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [address, setAddress] = useState("");
 
   const handleServiceChange = (value: string) => {
     setSelectedService(value);
@@ -50,7 +52,6 @@ const BookingForm = () => {
     
     const name = formData.get("name") as string;
     const phone = formData.get("phone") as string;
-    const address = formData.get("address") as string;
     
     if (!name || name.trim().length < 2) {
       newErrors.name = "Please enter a valid name (minimum 2 characters)";
@@ -91,6 +92,7 @@ const BookingForm = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
+    formData.append("address", address); // Ensure address is included in form data
     
     if (!validateForm(formData)) {
       toast({
@@ -103,19 +105,29 @@ const BookingForm = () => {
 
     setIsSubmitting(true);
 
-    // Simulate form submission
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    try {
+      // Simulate form submission
+      await new Promise(resolve => setTimeout(resolve, 1000));
 
-    toast({
-      title: "Request Submitted Successfully",
-      description: "We'll contact you shortly to confirm your booking.",
-    });
+      toast({
+        title: "Request Submitted Successfully",
+        description: "We'll contact you shortly to confirm your booking.",
+      });
 
-    setIsSubmitting(false);
-    (e.target as HTMLFormElement).reset();
-    setSelectedService("");
-    setShowVehicleInfo(false);
-    setErrors({});
+      (e.target as HTMLFormElement).reset();
+      setSelectedService("");
+      setShowVehicleInfo(false);
+      setErrors({});
+      setAddress("");
+    } catch (error) {
+      toast({
+        title: "Submission Failed",
+        description: "Please try again or contact us directly.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -128,6 +140,7 @@ const BookingForm = () => {
           type="text"
           aria-describedby="name-error"
           className={`h-10 text-base ${errors.name ? 'border-red-500' : ''}`}
+          disabled={isSubmitting}
         />
         {errors.name && (
           <Alert variant="destructive">
@@ -145,6 +158,7 @@ const BookingForm = () => {
           type="tel"
           aria-describedby="phone-error"
           className={`h-10 text-base ${errors.phone ? 'border-red-500' : ''}`}
+          disabled={isSubmitting}
         />
         {errors.phone && (
           <Alert variant="destructive">
@@ -156,12 +170,14 @@ const BookingForm = () => {
 
       <div className="space-y-2">
         <Label htmlFor="address">Address</Label>
-        <Input
+        <AddressAutocomplete
           id="address"
-          name="address"
-          type="text"
-          aria-describedby="address-error"
+          value={address}
+          onChange={setAddress}
           className={`h-10 text-base ${errors.address ? 'border-red-500' : ''}`}
+          placeholder="Enter your address"
+          disabled={isSubmitting}
+          aria-describedby="address-error"
         />
         {errors.address && (
           <Alert variant="destructive">
