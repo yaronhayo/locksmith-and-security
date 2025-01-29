@@ -1,19 +1,12 @@
-export const generateServiceSchema = (service: {
-  name: string;
-  description: string;
-  price?: string;
-  area: string;
-}) => ({
+export const servicesSchema = {
   "@context": "https://schema.org",
   "@type": "Service",
-  "name": service.name,
-  "description": service.description,
+  "name": "Professional Locksmith Services",
+  "description": "Expert locksmith services including residential, commercial, and automotive solutions. Available 24/7 for all your security needs.",
   "provider": {
     "@type": "LocalBusiness",
     "name": "Locksmith & Security LLC",
-    "image": "https://247locksmithandsecurity.com/og-image.png",
-    "telephone": "+15513037874",
-    "priceRange": "$$",
+    "image": "/og-image.png",
     "address": {
       "@type": "PostalAddress",
       "streetAddress": "123 Main Street",
@@ -21,50 +14,31 @@ export const generateServiceSchema = (service: {
       "addressRegion": "NJ",
       "postalCode": "07047",
       "addressCountry": "US"
-    }
-  },
-  "areaServed": {
-    "@type": "City",
-    "name": service.area
-  },
-  "offers": {
-    "@type": "Offer",
-    "price": service.price || "Call for pricing",
-    "priceCurrency": "USD"
-  }
-});
-
-export const servicesSchema = {
-  "@context": "https://schema.org",
-  "@type": "ItemList",
-  "itemListElement": [
-    {
-      "@type": "ListItem",
-      "position": 1,
-      "item": {
-        "@type": "Service",
-        "name": "Emergency Lockout Service",
-        "description": "24/7 emergency lockout services for homes, businesses, and vehicles",
-        "offers": {
-          "@type": "Offer",
-          "price": "Call for pricing",
-          "priceCurrency": "USD"
-        }
-      }
     },
-    {
-      "@type": "ListItem",
-      "position": 2,
-      "item": {
-        "@type": "Service",
-        "name": "Lock Installation",
-        "description": "Professional installation of high-security locks",
-        "offers": {
-          "@type": "Offer",
-          "price": "Call for pricing",
-          "priceCurrency": "USD"
-        }
-      }
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": "40.7795",
+      "longitude": "-74.0324"
+    },
+    "areaServed": {
+      "@type": "GeoCircle",
+      "geoMidpoint": {
+        "@type": "GeoCoordinates",
+        "latitude": "40.7795",
+        "longitude": "-74.0324"
+      },
+      "geoRadius": "30mi"
     }
-  ]
+  },
+  "serviceType": [
+    "Residential Locksmith",
+    "Commercial Locksmith",
+    "Automotive Locksmith",
+    "Emergency Locksmith"
+  ],
+  "availableChannel": {
+    "@type": "ServiceChannel",
+    "serviceUrl": "https://247locksmithandsecurity.com/book-online",
+    "servicePhone": "+15513037874"
+  }
 };

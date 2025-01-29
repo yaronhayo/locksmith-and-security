@@ -22,7 +22,6 @@ export const homePageSchema = {
     },
     "url": "https://247locksmithandsecurity.com",
     "telephone": "+15513037874",
-    "priceRange": "$$",
     "openingHoursSpecification": {
       "@type": "OpeningHoursSpecification",
       "dayOfWeek": [
@@ -36,6 +35,32 @@ export const homePageSchema = {
       ],
       "opens": "00:00",
       "closes": "23:59"
+    },
+    "sameAs": [
+      "https://www.facebook.com/247locksmithandsecurity",
+      "https://www.yelp.com/biz/247-locksmith-and-security-north-bergen"
+    ],
+    "hasOfferCatalog": {
+      "@type": "OfferCatalog",
+      "name": "Locksmith Services",
+      "itemListElement": [
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Emergency Lockout Service",
+            "description": "24/7 emergency lockout services for homes, businesses, and vehicles"
+          }
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Lock Installation",
+            "description": "Professional installation of high-security locks"
+          }
+        }
+      ]
     }
   }
 };
