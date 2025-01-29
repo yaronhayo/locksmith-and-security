@@ -6,9 +6,15 @@ const FooterLogo = () => {
       <div className="mb-6">
         <a href="/" aria-label="Go to homepage">
           <img 
-            src="/uploads/8df28e35-4d5c-4015-bf99-2eb36af674c5.png" 
+            src="/lovable-uploads/950b5c4c-f0b8-4d22-beb0-66a7d7554476.png" 
             alt="Locksmith & Security LLC Logo" 
-            className="h-20 w-auto mx-auto md:mx-0"
+            className="h-20 w-auto mx-auto md:mx-0 transform transition-transform duration-300 hover:scale-105"
+            style={{
+              objectFit: 'contain',
+              maxWidth: 'none'
+            }}
+            width="400"
+            height="80"
             loading="lazy"
           />
         </a>
