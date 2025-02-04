@@ -108,6 +108,7 @@ const Map = ({
         googleMapsApiKey={apiKey}
         onLoad={() => {
           console.log('Google Maps script loaded successfully');
+          setLoadError(null);
         }}
         onError={(error) => {
           console.error('LoadScript error:', error);
@@ -129,10 +130,6 @@ const Map = ({
             console.log('Map component loaded successfully');
             setMap(map);
             setIsLoaded(true);
-          }}
-          onError={(error) => {
-            console.error('GoogleMap error:', error);
-            setLoadError(`Map initialization error: ${error.message}`);
           }}
         >
           {isLoaded && markers.map((marker, index) => (
