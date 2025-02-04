@@ -15,6 +15,7 @@ const BookingForm = () => {
   const [selectedService, setSelectedService] = useState("");
   const [showVehicleInfo, setShowVehicleInfo] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [address, setAddress] = useState("");
 
   const handleServiceChange = (value: string) => {
     setSelectedService(value);
@@ -24,6 +25,7 @@ const BookingForm = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
+    formData.append("address", address);
     
     const validationResult = validateForm(formData, showVehicleInfo);
     if (!validationResult.isValid) {
@@ -51,6 +53,7 @@ const BookingForm = () => {
       setSelectedService("");
       setShowVehicleInfo(false);
       setErrors({});
+      setAddress("");
     } catch (error) {
       toast({
         title: "Submission Failed",
@@ -64,7 +67,12 @@ const BookingForm = () => {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-3">
-      <PersonalInfoFields errors={errors} isSubmitting={isSubmitting} />
+      <PersonalInfoFields 
+        errors={errors}
+        isSubmitting={isSubmitting}
+        address={address}
+        setAddress={setAddress}
+      />
       
       <ServiceSelection 
         error={errors.service}
