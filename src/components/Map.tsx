@@ -44,8 +44,8 @@ const Map = ({
 
   useEffect(() => {
     const fetchApiKey = async () => {
+      console.log('Starting to fetch Google Maps API key...');
       try {
-        console.log('Fetching Google Maps API key from Supabase...');
         const { data, error } = await supabase
           .from('settings')
           .select('value')
@@ -53,21 +53,23 @@ const Map = ({
           .single();
 
         if (error) {
-          console.error('Error fetching Google Maps API key:', error);
-          setLoadError('Failed to load map configuration');
+          console.error('Supabase error:', error);
+          setLoadError(`Database error: ${error.message}`);
           return;
         }
 
-        if (data) {
-          console.log('Successfully retrieved API key from Supabase');
-          setApiKey(data.value);
-        } else {
-          console.error('No API key found in settings table');
-          setLoadError('No API key configuration found');
+        if (!data) {
+          console.error('No API key found in settings');
+          setLoadError('API key not found in configuration');
+          return;
         }
+
+        console.log('API key retrieved successfully');
+        setApiKey(data.value);
+        setLoadError(null);
       } catch (error) {
-        console.error('Error:', error);
-        setLoadError('Failed to load map configuration');
+        console.error('Fetch error:', error);
+        setLoadError('Failed to fetch API key');
       }
     };
 
@@ -109,7 +111,7 @@ const Map = ({
         }}
         onError={(error) => {
           console.error('LoadScript error:', error);
-          setLoadError(error.message);
+          setLoadError(`Failed to load Google Maps: ${error.message}`);
         }}
       >
         {!isLoaded && (
@@ -124,9 +126,13 @@ const Map = ({
           zoom={zoom}
           options={mapOptions}
           onLoad={(map) => {
-            console.log('Map loaded successfully');
+            console.log('Map component loaded successfully');
             setMap(map);
             setIsLoaded(true);
+          }}
+          onError={(error) => {
+            console.error('GoogleMap error:', error);
+            setLoadError(`Map initialization error: ${error.message}`);
           }}
         >
           {isLoaded && markers.map((marker, index) => (
