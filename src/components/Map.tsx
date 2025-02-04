@@ -38,6 +38,7 @@ const Map = ({
   const [mapInstance, setMapInstance] = useState<google.maps.Map | null>(null);
   const [loadError, setLoadError] = useState<string | null>(null);
   const [retryCount, setRetryCount] = useState(0);
+  const [scriptLoaded, setScriptLoaded] = useState(false);
 
   const mapHeight = useMemo(() => {
     if (typeof window === 'undefined') return '600px';
@@ -84,6 +85,8 @@ const Map = ({
   const handleRetry = useCallback(() => {
     setLoadError(null);
     setRetryCount(prev => prev + 1);
+    setIsLoaded(false);
+    setScriptLoaded(false);
   }, []);
 
   const onLoad = useCallback((map: google.maps.Map) => {
@@ -103,14 +106,11 @@ const Map = ({
   const handleLoadError = useCallback((error: Error) => {
     console.error('Google Maps loading error:', error);
     setLoadError(error.message);
+    setIsLoaded(false);
   }, []);
 
   if (loadError) {
     return <MapErrorState error={loadError} onRetry={handleRetry} />;
-  }
-
-  if (!isLoaded) {
-    return <MapLoadingState />;
   }
 
   return (
@@ -124,8 +124,12 @@ const Map = ({
         <LoadScript 
           googleMapsApiKey={GOOGLE_MAPS_API_KEY}
           onError={handleLoadError}
-          onLoad={() => console.log('Google Maps script loaded')}
+          onLoad={() => {
+            console.log('Google Maps script loaded');
+            setScriptLoaded(true);
+          }}
         >
+          {!isLoaded && <MapLoadingState />}
           <GoogleMap
             mapContainerStyle={mapContainerStyle}
             center={center}
