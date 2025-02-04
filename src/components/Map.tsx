@@ -97,10 +97,6 @@ const Map = ({
             console.log('Map loaded successfully');
             setIsLoaded(true);
           }}
-          onError={(error) => {
-            console.error('GoogleMap error:', error);
-            setLoadError('Failed to load Google Map');
-          }}
         >
           {isLoaded && markers.map((marker, index) => (
             <Marker
