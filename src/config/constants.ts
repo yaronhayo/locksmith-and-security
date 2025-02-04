@@ -1,5 +1,5 @@
-// Use environment variable or fallback to a default key
-export const GOOGLE_MAPS_API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY || "";
+// Use environment variable or fallback to a public API key
+export const GOOGLE_MAPS_API_KEY = "AIzaSyDHVVwZZ7PNF3GI_yaHK9SL3NXl8Q9JdxI";
 
 export const serviceAreaLocations = [
   { lat: 40.7828, lng: -74.0297, title: "North Bergen", slug: "north-bergen" },

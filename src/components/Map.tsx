@@ -46,18 +46,6 @@ const Map = ({
     }
   }, [navigate]);
 
-  if (!GOOGLE_MAPS_API_KEY) {
-    console.error('Google Maps API key is missing');
-    return (
-      <div className="w-full h-[600px] flex items-center justify-center bg-gray-50 rounded-lg">
-        <div className="text-center space-y-4">
-          <p className="text-red-500">Error: Google Maps API key is not configured</p>
-          <p className="text-sm text-gray-600">Please check your environment variables</p>
-        </div>
-      </div>
-    );
-  }
-
   if (loadError) {
     console.error('Map loading error:', loadError);
     return (
