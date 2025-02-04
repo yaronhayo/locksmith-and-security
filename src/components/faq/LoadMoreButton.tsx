@@ -5,10 +5,10 @@ import { Link } from "react-router-dom";
 interface LoadMoreButtonProps {
   loading: boolean;
   hasMore: boolean;
-  onLoadMore: () => void;
+  onClick: () => void;
 }
 
-const LoadMoreButton = ({ loading, hasMore, onLoadMore }: LoadMoreButtonProps) => {
+const LoadMoreButton = ({ loading, hasMore, onClick }: LoadMoreButtonProps) => {
   if (!hasMore) {
     return (
       <Button asChild variant="default" className="group">
@@ -22,11 +22,12 @@ const LoadMoreButton = ({ loading, hasMore, onLoadMore }: LoadMoreButtonProps) =
 
   return (
     <Button 
-      variant="outline" 
-      onClick={onLoadMore}
+      onClick={onClick} 
       disabled={loading}
+      className="group"
     >
-      {loading ? "Loading..." : "Show More"}
+      {loading ? 'Loading...' : 'Load More'}
+      <ArrowRight className="ml-2 transition-transform duration-300 group-hover:translate-x-1" />
     </Button>
   );
 };
