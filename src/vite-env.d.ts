@@ -8,13 +8,15 @@ interface Window {
 
 interface LayoutShiftEntry extends PerformanceEntry {
   value: number;
+  sources: Array<{
+    node?: Node;
+    currentRect?: DOMRectReadOnly;
+    previousRect?: DOMRectReadOnly;
+  }>;
 }
 
-interface FirstInputEntry extends PerformanceEntry {
-  processingStart: number;
-  startTime: number;
-}
-
-interface LargestContentfulPaintEntry extends PerformanceEntry {
-  startTime: number;
+declare module '@tanstack/react-query' {
+  interface Register {
+    defaultError: Error;
+  }
 }
