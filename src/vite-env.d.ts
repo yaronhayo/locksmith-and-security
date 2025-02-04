@@ -4,16 +4,6 @@ interface Window {
   dataLayer?: any[];
   gtag?: (...args: any[]) => void;
   clarity?: (...args: any[]) => void;
-  google: {
-    maps: {
-      places: {
-        Autocomplete: new (
-          input: HTMLInputElement,
-          options?: google.maps.places.AutocompleteOptions
-        ) => google.maps.places.Autocomplete;
-      };
-    };
-  };
 }
 
 interface LayoutShiftEntry extends PerformanceEntry {
