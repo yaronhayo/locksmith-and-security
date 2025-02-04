@@ -1,26 +1,58 @@
+type LogLevel = 'info' | 'warn' | 'error';
+
+const logToService = (level: LogLevel, message: string, data?: any) => {
+  // In a real application, this would send logs to a service like DataDog, New Relic, etc.
+  // For now, we'll only log errors to console in production
+  if (process.env.NODE_ENV === 'production' && level === 'error') {
+    console.error(message, data);
+  } else if (process.env.NODE_ENV !== 'production') {
+    switch (level) {
+      case 'info':
+        console.log(message, data);
+        break;
+      case 'warn':
+        console.warn(message, data);
+        break;
+      case 'error':
+        console.error(message, data);
+        break;
+    }
+  }
+};
+
 export const setupPerformanceMonitoring = () => {
-  if (typeof window !== 'undefined') {
-    // Create observer for CLS
-    new PerformanceObserver((entryList) => {
-      for (const entry of entryList.getEntries()) {
-        console.log('Cumulative Layout Shift:', (entry as LayoutShiftEntry).value);
-      }
-    }).observe({ entryTypes: ['layout-shift'] });
+  try {
+    if (typeof window === 'undefined') return;
 
-    // Create observer for LCP
-    new PerformanceObserver((entryList) => {
-      for (const entry of entryList.getEntries()) {
-        console.log('Largest Contentful Paint:', (entry as LargestContentfulPaintEntry).startTime);
+    const observer = new PerformanceObserver((list) => {
+      for (const entry of list.getEntries()) {
+        logToService('info', 'Performance Entry:', {
+          name: entry.name,
+          startTime: entry.startTime,
+          duration: entry.duration,
+          entryType: entry.entryType
+        });
       }
-    }).observe({ entryTypes: ['largest-contentful-paint'] });
+    });
 
-    // Create observer for FID
-    new PerformanceObserver((entryList) => {
-      for (const entry of entryList.getEntries()) {
-        console.log('First Input Delay:', 
-          (entry as FirstInputEntry).processingStart - (entry as FirstInputEntry).startTime
-        );
-      }
-    }).observe({ entryTypes: ['first-input'] });
+    observer.observe({ entryTypes: ['navigation', 'resource', 'paint'] });
+
+    window.addEventListener('error', (event) => {
+      logToService('error', 'Runtime Error:', {
+        message: event.message,
+        filename: event.filename,
+        lineno: event.lineno,
+        colno: event.colno,
+        error: event.error
+      });
+    });
+
+    window.addEventListener('unhandledrejection', (event) => {
+      logToService('error', 'Unhandled Promise Rejection:', {
+        reason: event.reason
+      });
+    });
+  } catch (error) {
+    logToService('error', 'Error setting up performance monitoring:', error);
   }
 };

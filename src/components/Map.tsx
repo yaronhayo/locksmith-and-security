@@ -1,7 +1,11 @@
 import { useState, useEffect, useMemo, useCallback } from 'react';
-import { LoadScript, GoogleMap, MarkerF } from '@react-google-maps/api';
+import { LoadScript, GoogleMap } from '@react-google-maps/api';
 import { useNavigate } from 'react-router-dom';
-import { Loader2 } from "lucide-react";
+import MapMarker from './map/MapMarker';
+import MapLoadingState from './map/MapLoadingState';
+import MapErrorState from './map/MapErrorState';
+import { ErrorBoundary } from 'react-error-boundary';
+import ErrorFallback from './ErrorFallback';
 
 interface MapProps {
   center?: { lat: number; lng: number };
@@ -19,7 +23,7 @@ const serviceAreaLocations = [
   { lat: 40.7684, lng: -74.0287, title: "Weehawken", slug: "weehawken" },
   { lat: 40.7453, lng: -74.0279, title: "Hoboken", slug: "hoboken" },
   { lat: 40.7920, lng: -74.0037, title: "Guttenberg", slug: "guttenberg" }
-];
+] as const;
 
 const Map = ({ 
   center = { lat: 40.7828, lng: -74.0297 },
@@ -30,8 +34,15 @@ const Map = ({
   const navigate = useNavigate();
   const [isLoaded, setIsLoaded] = useState(false);
   const [mapInstance, setMapInstance] = useState<google.maps.Map | null>(null);
-  const [mapHeight, setMapHeight] = useState('600px');
   const [loadError, setLoadError] = useState<string | null>(null);
+  const [retryCount, setRetryCount] = useState(0);
+
+  const mapHeight = useMemo(() => {
+    if (typeof window === 'undefined') return '600px';
+    if (window.innerWidth < 640) return '400px';
+    if (window.innerWidth < 768) return '500px';
+    return '600px';
+  }, []);
 
   const mapContainerStyle = useMemo(() => ({
     width: '100%',
@@ -52,22 +63,6 @@ const Map = ({
     ]
   }), []);
 
-  useEffect(() => {
-    const updateMapHeight = () => {
-      if (window.innerWidth < 640) {
-        setMapHeight('400px');
-      } else if (window.innerWidth < 768) {
-        setMapHeight('500px');
-      } else {
-        setMapHeight('600px');
-      }
-    };
-
-    updateMapHeight();
-    window.addEventListener('resize', updateMapHeight);
-    return () => window.removeEventListener('resize', updateMapHeight);
-  }, []);
-
   const getMarkerIcon = useCallback((isHovered: boolean) => ({
     path: google.maps.SymbolPath.CIRCLE,
     fillColor: isHovered ? '#2563EB' : '#1E3A8A',
@@ -76,6 +71,18 @@ const Map = ({
     strokeColor: '#ffffff',
     scale: isHovered ? 12 : 10
   }), []);
+
+  const handleMarkerClick = useCallback((marker: typeof serviceAreaLocations[number]) => {
+    if (marker.slug) {
+      navigate(`/service-areas/${marker.slug}`);
+      window.scrollTo(0, 0);
+    }
+  }, [navigate]);
+
+  const handleRetry = useCallback(() => {
+    setLoadError(null);
+    setRetryCount(prev => prev + 1);
+  }, []);
 
   const onLoad = useCallback((map: google.maps.Map) => {
     setMapInstance(map);
@@ -90,59 +97,49 @@ const Map = ({
     }
   }, [markers]);
 
-  const onLoadError = (error: Error) => {
-    console.error('Error loading Google Maps:', error);
-    setLoadError(error.message);
-  };
-
-  const handleMarkerClick = useCallback((marker: any) => {
-    if (marker.slug) {
-      navigate(`/service-areas/${marker.slug}`);
-      window.scrollTo(0, 0);
-    }
-  }, [navigate]);
-
   if (loadError) {
-    return (
-      <div className="w-full h-[400px] md:h-[500px] lg:h-[600px] flex items-center justify-center bg-gray-50 rounded-lg" role="alert" aria-label="Map loading error">
-        <div className="flex flex-col items-center gap-2 text-red-500">
-          <p>Error loading map: {loadError}</p>
-        </div>
-      </div>
-    );
+    return <MapErrorState error={loadError} onRetry={handleRetry} />;
+  }
+
+  if (!isLoaded) {
+    return <MapLoadingState />;
   }
 
   return (
-    <div 
-      className="relative w-full rounded-lg overflow-hidden shadow-lg" 
-      style={{ height: mapHeight }}
-      role="region" 
-      aria-label="Service areas map"
-    >
-      <LoadScript 
-        googleMapsApiKey="AIzaSyA836rCuy6AkrT3L2yT_rfxUPUphH_b6lw"
-        onError={onLoadError}
+    <ErrorBoundary FallbackComponent={ErrorFallback}>
+      <div 
+        className="relative w-full rounded-lg overflow-hidden shadow-lg" 
+        style={{ height: mapHeight }}
+        role="region" 
+        aria-label="Service areas map"
       >
-        <GoogleMap
-          mapContainerStyle={mapContainerStyle}
-          center={center}
-          zoom={zoom}
-          options={options}
-          onLoad={onLoad}
+        <LoadScript 
+          googleMapsApiKey="AIzaSyA836rCuy6AkrT3L2yT_rfxUPUphH_b6lw"
+          onError={(error) => setLoadError(error.message)}
         >
-          {isLoaded && markers.map((marker, index) => (
-            <MarkerF
-              key={`${marker.slug}-${index}`}
-              position={{ lat: marker.lat, lng: marker.lng }}
-              icon={getMarkerIcon(hoveredMarker === marker.slug)}
-              title={marker.title}
-              onClick={() => handleMarkerClick(marker)}
-              animation={hoveredMarker === marker.slug ? google.maps.Animation.BOUNCE : undefined}
-            />
-          ))}
-        </GoogleMap>
-      </LoadScript>
-    </div>
+          <GoogleMap
+            mapContainerStyle={mapContainerStyle}
+            center={center}
+            zoom={zoom}
+            options={options}
+            onLoad={onLoad}
+          >
+            {isLoaded && markers.map((marker, index) => (
+              <MapMarker
+                key={`${marker.slug}-${index}`}
+                lat={marker.lat}
+                lng={marker.lng}
+                title={marker.title}
+                slug={marker.slug}
+                isHovered={hoveredMarker === marker.slug}
+                onClick={() => handleMarkerClick(marker)}
+                getMarkerIcon={getMarkerIcon}
+              />
+            ))}
+          </GoogleMap>
+        </LoadScript>
+      </div>
+    </ErrorBoundary>
   );
 };
 

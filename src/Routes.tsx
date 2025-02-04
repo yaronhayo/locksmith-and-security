@@ -1,14 +1,16 @@
 import { Routes as RouterRoutes, Route } from 'react-router-dom';
+import { Suspense } from "react";
+import { ErrorBoundary } from "react-error-boundary";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import { mainRoutes } from "./routes/mainRoutes";
 import { serviceRoutes } from "./routes/serviceRoutes";
 import { serviceAreaRoutes } from "./routes/serviceAreaRoutes";
-import { Suspense } from "react";
 import LoadingSpinner from "./components/LoadingSpinner";
+import ErrorFallback from "./components/ErrorFallback";
 
 const Routes = () => {
   return (
-    <>
+    <ErrorBoundary FallbackComponent={ErrorFallback}>
       <Breadcrumbs />
       <RouterRoutes>
         {mainRoutes.map(({ path, element }) => (
@@ -19,9 +21,11 @@ const Routes = () => {
               path === "/" ? (
                 element
               ) : (
-                <Suspense fallback={<LoadingSpinner />}>
-                  {element}
-                </Suspense>
+                <ErrorBoundary FallbackComponent={ErrorFallback}>
+                  <Suspense fallback={<LoadingSpinner />}>
+                    {element}
+                  </Suspense>
+                </ErrorBoundary>
               )
             }
           />
@@ -32,9 +36,11 @@ const Routes = () => {
             key={path}
             path={path}
             element={
-              <Suspense fallback={<LoadingSpinner />}>
-                {element}
-              </Suspense>
+              <ErrorBoundary FallbackComponent={ErrorFallback}>
+                <Suspense fallback={<LoadingSpinner />}>
+                  {element}
+                </Suspense>
+              </ErrorBoundary>
             }
           />
         ))}
@@ -44,14 +50,16 @@ const Routes = () => {
             key={path}
             path={path}
             element={
-              <Suspense fallback={<LoadingSpinner />}>
-                {element}
-              </Suspense>
+              <ErrorBoundary FallbackComponent={ErrorFallback}>
+                <Suspense fallback={<LoadingSpinner />}>
+                  {element}
+                </Suspense>
+              </ErrorBoundary>
             }
           />
         ))}
       </RouterRoutes>
-    </>
+    </ErrorBoundary>
   );
 };
 
