@@ -16,15 +16,16 @@ export const defaultMapOptions = {
       featureType: "all",
       elementType: "labels",
       stylers: [{ visibility: "on" }]
+    },
+    {
+      featureType: "landscape",
+      elementType: "geometry",
+      stylers: [{ visibility: "on" }]
+    },
+    {
+      featureType: "road",
+      elementType: "geometry",
+      stylers: [{ visibility: "on" }]
     }
   ]
 };
-
-export const getMarkerIcon = (isHovered: boolean) => ({
-  path: google.maps.SymbolPath.CIRCLE,
-  fillColor: isHovered ? '#2563EB' : '#1E3A8A',
-  fillOpacity: 1,
-  strokeWeight: isHovered ? 2 : 0,
-  strokeColor: '#ffffff',
-  scale: isHovered ? 12 : 10
-});

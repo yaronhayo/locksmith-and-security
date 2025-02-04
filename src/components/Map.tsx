@@ -27,7 +27,6 @@ const Map = ({
   const [mapInstance, setMapInstance] = useState<google.maps.Map | null>(null);
   const [loadError, setLoadError] = useState<string | null>(null);
   const [retryCount, setRetryCount] = useState(0);
-  const [isScriptLoaded, setIsScriptLoaded] = useState(false);
 
   const mapHeight = useMemo(() => {
     if (typeof window === 'undefined') return '600px';
@@ -53,11 +52,10 @@ const Map = ({
     setLoadError(null);
     setRetryCount(prev => prev + 1);
     setIsLoaded(false);
-    setIsScriptLoaded(false);
   }, []);
 
   const getMarkerIcon = useCallback((isHovered: boolean) => ({
-    path: window.google?.maps?.SymbolPath?.CIRCLE || 0,
+    path: google.maps.SymbolPath.CIRCLE,
     fillColor: isHovered ? '#2563EB' : '#1E3A8A',
     fillOpacity: 1,
     strokeWeight: isHovered ? 2 : 0,
@@ -83,12 +81,6 @@ const Map = ({
     console.error('Google Maps loading error:', error);
     setLoadError(error.message);
     setIsLoaded(false);
-    setIsScriptLoaded(false);
-  }, []);
-
-  const handleScriptLoad = useCallback(() => {
-    console.log('Google Maps script loaded successfully');
-    setIsScriptLoaded(true);
   }, []);
 
   if (loadError) {
@@ -106,35 +98,28 @@ const Map = ({
         <LoadScript 
           googleMapsApiKey={GOOGLE_MAPS_API_KEY}
           onError={handleLoadError}
-          onLoad={handleScriptLoad}
         >
           {!isLoaded && <MapLoadingState />}
-          {isScriptLoaded && (
-            <GoogleMap
-              mapContainerStyle={mapContainerStyle}
-              center={center}
-              zoom={zoom}
-              options={{
-                ...defaultMapOptions,
-                backgroundColor: '#e5e7eb',
-                mapTypeId: google.maps.MapTypeId.ROADMAP
-              }}
-              onLoad={onLoad}
-            >
-              {isLoaded && markers.map((marker, index) => (
-                <MapMarker
-                  key={`${marker.slug}-${index}`}
-                  lat={marker.lat}
-                  lng={marker.lng}
-                  title={marker.title}
-                  slug={marker.slug}
-                  isHovered={hoveredMarker === marker.slug}
-                  onClick={() => handleMarkerClick(marker)}
-                  getMarkerIcon={getMarkerIcon}
-                />
-              ))}
-            </GoogleMap>
-          )}
+          <GoogleMap
+            mapContainerStyle={mapContainerStyle}
+            center={center}
+            zoom={zoom}
+            options={defaultMapOptions}
+            onLoad={onLoad}
+          >
+            {isLoaded && markers.map((marker, index) => (
+              <MapMarker
+                key={`${marker.slug}-${index}`}
+                lat={marker.lat}
+                lng={marker.lng}
+                title={marker.title}
+                slug={marker.slug}
+                isHovered={hoveredMarker === marker.slug}
+                onClick={() => handleMarkerClick(marker)}
+                getMarkerIcon={getMarkerIcon}
+              />
+            ))}
+          </GoogleMap>
         </LoadScript>
       </div>
     </ErrorBoundary>
