@@ -1,7 +1,6 @@
 import { cn } from "@/lib/utils";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
-import { useLocation } from "react-router-dom";
 import { memo } from "react";
 
 interface NavigationProps {
@@ -46,7 +45,6 @@ const NavigationLink = memo(({
       isActive ? "text-secondary" : "text-gray-700 hover:text-secondary",
       isMenuOpen && "text-white lg:text-gray-700"
     )}
-    onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
   >
     {label}
     <motion.div
@@ -68,11 +66,7 @@ const Navigation = ({ className, isMenuOpen = false, isScrolled = false }: Navig
     if (path === "/") {
       return location.pathname === "/";
     }
-    // Handle nested routes
-    if (path === "/services" || path === "/service-areas") {
-      return location.pathname.startsWith(path);
-    }
-    return location.pathname === path;
+    return location.pathname.startsWith(path);
   };
 
   return (

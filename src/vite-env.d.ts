@@ -1,9 +1,7 @@
 /// <reference types="vite/client" />
 
 interface Window {
-  dataLayer?: any[];
-  gtag?: (...args: any[]) => void;
-  clarity?: (...args: any[]) => void;
+  google: any;
 }
 
 interface LayoutShiftEntry extends PerformanceEntry {
@@ -13,6 +11,21 @@ interface LayoutShiftEntry extends PerformanceEntry {
     currentRect?: DOMRectReadOnly;
     previousRect?: DOMRectReadOnly;
   }>;
+}
+
+interface FirstInputEntry extends PerformanceEntry {
+  processingStart: number;
+  startTime: number;
+}
+
+interface LargestContentfulPaint extends PerformanceEntry {
+  element: Element;
+  id: string;
+  loadTime: number;
+  renderTime: number;
+  size: number;
+  startTime: number;
+  url: string;
 }
 
 declare module '@tanstack/react-query' {

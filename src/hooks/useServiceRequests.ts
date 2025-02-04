@@ -1,4 +1,4 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import { supabase } from '@/lib/supabase-client';
 import { toast } from '@/components/ui/use-toast';
 
@@ -19,8 +19,6 @@ export interface ServiceRequest {
 }
 
 export const useServiceRequests = () => {
-  const queryClient = useQueryClient();
-
   const createServiceRequest = useMutation({
     mutationFn: async (data: Omit<ServiceRequest, 'id' | 'created_at' | 'status'>) => {
       const { data: result, error } = await supabase
@@ -33,7 +31,6 @@ export const useServiceRequests = () => {
       return result;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['serviceRequests'] });
       toast({
         title: "Request Submitted Successfully",
         description: "We'll contact you shortly to confirm your booking.",
