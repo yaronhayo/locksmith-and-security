@@ -1,26 +1,62 @@
-import React from "react";
-import { Navigate } from "react-router-dom";
+import { lazy } from 'react';
 import Index from "@/pages/Index";
-import BookingPage from "@/pages/booking";
-import ThankYouPage from "@/pages/thank-you";
+import PageLayout from "@/components/layouts/PageLayout";
+
+// Lazy load main pages
+const About = lazy(() => import("@/pages/about"));
+const Contact = lazy(() => import("@/pages/contact"));
+const Services = lazy(() => import("@/pages/services"));
+const Reviews = lazy(() => import("@/pages/reviews"));
+const FAQ = lazy(() => import("@/pages/faq"));
+const BookOnline = lazy(() => import("@/pages/book-online"));
+const ServiceAreas = lazy(() => import("@/pages/service-areas"));
+const PrivacyPolicy = lazy(() => import("@/pages/privacy-policy"));
+const TermsConditions = lazy(() => import("@/pages/terms-conditions"));
+const NotFound = lazy(() => import("@/pages/404"));
 
 export const mainRoutes = [
   {
     path: "/",
-    element: <Index />,
+    element: <Index />
   },
   {
-    path: "/booking",
-    element: <BookingPage />,
+    path: "/about",
+    element: <About />
   },
   {
-    path: "/thank-you",
-    element: <ThankYouPage />,
+    path: "/contact",
+    element: <Contact />
+  },
+  {
+    path: "/services",
+    element: <Services />
+  },
+  {
+    path: "/reviews",
+    element: <Reviews />
+  },
+  {
+    path: "/faq",
+    element: <FAQ />
+  },
+  {
+    path: "/book-online",
+    element: <BookOnline />
+  },
+  {
+    path: "/service-areas",
+    element: <ServiceAreas />
+  },
+  {
+    path: "/privacy-policy",
+    element: <PrivacyPolicy />
+  },
+  {
+    path: "/terms-conditions",
+    element: <TermsConditions />
   },
   {
     path: "*",
-    element: <Navigate to="/" />,
-  },
+    element: <NotFound />
+  }
 ];
-
-export default mainRoutes;

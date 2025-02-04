@@ -8,7 +8,7 @@ import MetaTags from "./MetaTags";
 import PageHero from "./PageHero";
 import PageLoading from "./PageLoading";
 
-export interface PageLayoutProps {
+interface PageLayoutProps {
   title: string;
   description: string;
   children: React.ReactNode;
@@ -20,12 +20,6 @@ export interface PageLayoutProps {
   ogImage?: string;
   keywords?: string;
   isLoading?: boolean;
-  breadcrumbs?: Array<{ name: string; item: string }>;
-  faqSchema?: Array<{ question: string; answer: string }>;
-  alternateLanguages?: Array<{ hrefLang: string; href: string }>;
-  publishedTime?: string;
-  modifiedTime?: string;
-  type?: string;
 }
 
 const PageLayout = ({

@@ -1,18 +1,14 @@
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { AlertCircle } from "lucide-react";
-import AddressAutocomplete from "@/components/ui/address-autocomplete";
-import { Dispatch, SetStateAction } from "react";
 
 interface PersonalInfoFieldsProps {
   errors: Record<string, string>;
   isSubmitting: boolean;
-  address: string;
-  setAddress: Dispatch<SetStateAction<string>>;
 }
 
-const PersonalInfoFields = ({ errors, isSubmitting, address, setAddress }: PersonalInfoFieldsProps) => {
+const PersonalInfoFields = ({ errors, isSubmitting }: PersonalInfoFieldsProps) => {
   return (
     <>
       <div className="space-y-2">
@@ -53,14 +49,13 @@ const PersonalInfoFields = ({ errors, isSubmitting, address, setAddress }: Perso
 
       <div className="space-y-2">
         <Label htmlFor="address">Address</Label>
-        <AddressAutocomplete
+        <Input
           id="address"
-          value={address}
-          onChange={setAddress}
-          className={`h-10 text-base ${errors.address ? 'border-red-500' : ''}`}
-          placeholder="Enter your address"
-          disabled={isSubmitting}
+          name="address"
+          type="text"
           aria-describedby="address-error"
+          className={`h-10 text-base ${errors.address ? 'border-red-500' : ''}`}
+          disabled={isSubmitting}
         />
         {errors.address && (
           <Alert variant="destructive">

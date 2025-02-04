@@ -1,4 +1,3 @@
-import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectContent,
@@ -6,6 +5,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Label } from "@/components/ui/label";
 import { timeframes } from "./constants";
 
 interface TimeframeSelectionProps {
@@ -17,7 +17,11 @@ const TimeframeSelection = ({ isSubmitting }: TimeframeSelectionProps) => {
     <div className="space-y-2">
       <Label htmlFor="timeframe">When do you need service?</Label>
       <Select name="timeframe" disabled={isSubmitting}>
-        <SelectTrigger id="timeframe" className="h-10 text-base">
+        <SelectTrigger 
+          id="timeframe" 
+          className="h-10 text-base"
+          aria-label="Select when you need the service"
+        >
           <SelectValue placeholder="When do you need service?" />
         </SelectTrigger>
         <SelectContent>

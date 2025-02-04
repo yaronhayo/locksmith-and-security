@@ -7,7 +7,7 @@ export const services = [
   "Lock Installation",
   "Key Duplication",
   "Other"
-] as const;
+];
 
 export const timeframes = [
   "ASAP",
@@ -15,4 +15,4 @@ export const timeframes = [
   "Within Couple of Days",
   "Within Couple of Weeks",
   "Just Curious"
-] as const;
+];

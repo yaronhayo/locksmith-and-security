@@ -1,12 +1,10 @@
-export const createServiceAreaSchema = (city: string, latitude: string, longitude: string) => ({
+export const createServiceAreaSchema = (city: string) => ({
   "@context": "https://schema.org",
   "@type": "LocalBusiness",
   "name": `Locksmith & Security LLC - ${city}`,
   "description": `Professional locksmith services in ${city}, NJ. Available 24/7 for residential, commercial, and automotive locksmith needs.`,
-  "image": "/lovable-uploads/950b5c4c-f0b8-4d22-beb0-66a7d7554476.png",
-  "logo": "/lovable-uploads/950b5c4c-f0b8-4d22-beb0-66a7d7554476.png",
+  "image": "/og-image.png",
   "telephone": "+15513037874",
-  "url": "https://247locksmithandsecurity.com",
   "address": {
     "@type": "PostalAddress",
     "addressLocality": city,
@@ -15,8 +13,8 @@ export const createServiceAreaSchema = (city: string, latitude: string, longitud
   },
   "geo": {
     "@type": "GeoCoordinates",
-    "latitude": latitude,
-    "longitude": longitude
+    "latitude": "40.7795", // This should be updated per city
+    "longitude": "-74.0324" // This should be updated per city
   },
   "areaServed": {
     "@type": "City",
@@ -56,35 +54,7 @@ export const createServiceAreaSchema = (city: string, latitude: string, longitud
           "name": "Lock Installation",
           "description": "Professional installation of high-security locks"
         }
-      },
-      {
-        "@type": "Offer",
-        "itemOffered": {
-          "@type": "Service",
-          "name": "Car Key Services",
-          "description": "Professional car key cutting and programming services"
-        }
       }
     ]
-  },
-  "review": {
-    "@type": "Review",
-    "reviewRating": {
-      "@type": "Rating",
-      "ratingValue": "5",
-      "bestRating": "5"
-    },
-    "author": {
-      "@type": "Person",
-      "name": "Local Customer"
-    },
-    "reviewBody": `Excellent locksmith service in ${city}. Fast response and professional work.`
-  },
-  "aggregateRating": {
-    "@type": "AggregateRating",
-    "ratingValue": "5",
-    "reviewCount": "25",
-    "bestRating": "5",
-    "worstRating": "1"
   }
 });

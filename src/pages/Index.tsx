@@ -1,34 +1,70 @@
-import { useEffect } from 'react';
+import { Suspense, lazy } from 'react';
 import PageLayout from "@/components/layouts/PageLayout";
-import HomeContent from "@/components/home/HomeContent";
-import { getHomeMetadata } from "@/components/home/HomeMetadata";
+import HeroSection from "@/components/sections/HeroSection";
+import LoadingSpinner from "@/components/LoadingSpinner";
 import { setupPerformanceMonitoring } from "@/utils/performanceMonitoring";
 import { checkAnalytics } from "@/utils/analytics";
+import { homePageSchema } from "@/schemas/homePageSchema";
+
+// Lazy load sections to improve initial page load
+const TrustBadgesSection = lazy(() => import("@/components/sections/TrustBadgesSection"));
+const ServicesSection = lazy(() => import("@/components/sections/ServicesSection"));
+const EmergencyServicesSection = lazy(() => import("@/components/sections/EmergencyServicesSection"));
+const ProcessSection = lazy(() => import("@/components/sections/ProcessSection"));
+const AboutSection = lazy(() => import("@/components/sections/AboutSection"));
+const ServiceAreasSection = lazy(() => import("@/components/sections/ServiceAreasSection"));
+const ReviewsSection = lazy(() => import("@/components/sections/ReviewsSection"));
+const FAQSection = lazy(() => import("@/components/sections/FAQSection"));
 
 const Index = () => {
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      setupPerformanceMonitoring();
-      checkAnalytics();
-    }
-  }, []);
-
-  const metadata = getHomeMetadata();
+  // Set up performance monitoring and analytics checking
+  if (typeof window !== 'undefined') {
+    setupPerformanceMonitoring();
+    checkAnalytics();
+  }
 
   return (
     <PageLayout
-      title={metadata.title}
-      description={metadata.description}
-      schema={metadata.schema}
-      keywords={metadata.keywords}
-      faqSchema={metadata.faqSchema}
-      breadcrumbs={metadata.breadcrumbs}
-      alternateLanguages={metadata.alternateLanguages}
-      publishedTime="2024-01-01T00:00:00Z"
-      modifiedTime={new Date().toISOString()}
-      type="website"
+      title="24/7 Locksmith Services in North Bergen"
+      description="Professional locksmith services in North Bergen. Available 24/7 for residential, commercial, and automotive locksmith needs. Fast response and reliable service."
+      schema={homePageSchema}
+      keywords="locksmith, emergency locksmith, car lockout, house lockout, business lockout, lock change, lock rekey, North Bergen locksmith"
     >
-      <HomeContent />
+      <main className="flex flex-col" role="main" aria-label="Main content">
+        <HeroSection />
+        
+        <Suspense fallback={<LoadingSpinner />}>
+          <TrustBadgesSection />
+          
+          <div className="bg-white">
+            <ServicesSection />
+          </div>
+          
+          <div className="bg-gray-50">
+            <EmergencyServicesSection />
+          </div>
+          
+          <div className="bg-white">
+            <ProcessSection />
+          </div>
+          
+          <div className="bg-gray-50">
+            <AboutSection />
+          </div>
+          
+          <div className="bg-white">
+            <ServiceAreasSection />
+          </div>
+          
+          <div className="bg-gray-50">
+            <ReviewsSection />
+          </div>
+          
+          <div className="bg-white pb-20">
+            <FAQSection />
+          </div>
+        </Suspense>
+      </main>
     </PageLayout>
   );
 };

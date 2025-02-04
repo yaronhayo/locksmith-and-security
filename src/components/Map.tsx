@@ -1,8 +1,7 @@
 import { useState, useEffect, useMemo, useCallback } from 'react';
 import { LoadScript, GoogleMap, MarkerF } from '@react-google-maps/api';
 import { useNavigate } from 'react-router-dom';
-import { AlertCircle } from "lucide-react";
-import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Loader2 } from "lucide-react";
 
 interface MapProps {
   center?: { lat: number; lng: number };
@@ -33,7 +32,6 @@ const Map = ({
   const [mapInstance, setMapInstance] = useState<google.maps.Map | null>(null);
   const [mapHeight, setMapHeight] = useState('600px');
   const [loadError, setLoadError] = useState<string | null>(null);
-  const [scriptLoaded, setScriptLoaded] = useState(false);
 
   const mapContainerStyle = useMemo(() => ({
     width: '100%',
@@ -82,7 +80,6 @@ const Map = ({
   const onLoad = useCallback((map: google.maps.Map) => {
     setMapInstance(map);
     setIsLoaded(true);
-    setScriptLoaded(true);
 
     if (markers.length > 1) {
       const bounds = new google.maps.LatLngBounds();
@@ -93,11 +90,10 @@ const Map = ({
     }
   }, [markers]);
 
-  const onLoadError = useCallback((error: Error) => {
+  const onLoadError = (error: Error) => {
     console.error('Error loading Google Maps:', error);
     setLoadError(error.message);
-    setScriptLoaded(false);
-  }, []);
+  };
 
   const handleMarkerClick = useCallback((marker: any) => {
     if (marker.slug) {
@@ -108,12 +104,11 @@ const Map = ({
 
   if (loadError) {
     return (
-      <Alert variant="destructive" className="my-4">
-        <AlertCircle className="h-4 w-4" />
-        <AlertDescription>
-          Error loading map: {loadError}. Please refresh the page or try again later.
-        </AlertDescription>
-      </Alert>
+      <div className="w-full h-[400px] md:h-[500px] lg:h-[600px] flex items-center justify-center bg-gray-50 rounded-lg" role="alert" aria-label="Map loading error">
+        <div className="flex flex-col items-center gap-2 text-red-500">
+          <p>Error loading map: {loadError}</p>
+        </div>
+      </div>
     );
   }
 
@@ -126,37 +121,26 @@ const Map = ({
     >
       <LoadScript 
         googleMapsApiKey="AIzaSyA836rCuy6AkrT3L2yT_rfxUPUphH_b6lw"
-        onLoad={() => setScriptLoaded(true)}
         onError={onLoadError}
-        loadingElement={
-          <div className="w-full h-full flex items-center justify-center bg-gray-50">
-            <div className="text-center">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
-              <p className="text-gray-600">Loading map...</p>
-            </div>
-          </div>
-        }
       >
-        {scriptLoaded && (
-          <GoogleMap
-            mapContainerStyle={mapContainerStyle}
-            center={center}
-            zoom={zoom}
-            options={options}
-            onLoad={onLoad}
-          >
-            {isLoaded && markers.map((marker, index) => (
-              <MarkerF
-                key={`${marker.slug}-${index}`}
-                position={{ lat: marker.lat, lng: marker.lng }}
-                icon={getMarkerIcon(hoveredMarker === marker.slug)}
-                title={marker.title}
-                onClick={() => handleMarkerClick(marker)}
-                animation={hoveredMarker === marker.slug ? google.maps.Animation.BOUNCE : undefined}
-              />
-            ))}
-          </GoogleMap>
-        )}
+        <GoogleMap
+          mapContainerStyle={mapContainerStyle}
+          center={center}
+          zoom={zoom}
+          options={options}
+          onLoad={onLoad}
+        >
+          {isLoaded && markers.map((marker, index) => (
+            <MarkerF
+              key={`${marker.slug}-${index}`}
+              position={{ lat: marker.lat, lng: marker.lng }}
+              icon={getMarkerIcon(hoveredMarker === marker.slug)}
+              title={marker.title}
+              onClick={() => handleMarkerClick(marker)}
+              animation={hoveredMarker === marker.slug ? google.maps.Animation.BOUNCE : undefined}
+            />
+          ))}
+        </GoogleMap>
       </LoadScript>
     </div>
   );

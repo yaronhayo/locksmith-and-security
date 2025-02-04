@@ -1,6 +1,7 @@
 import { cn } from "@/lib/utils";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
+import { useLocation } from "react-router-dom";
 import { memo } from "react";
 
 interface NavigationProps {
@@ -21,7 +22,6 @@ const navItems: readonly NavItem[] = [
   { path: "/service-areas", label: "Service Areas" },
   { path: "/about", label: "About" },
   { path: "/reviews", label: "Reviews" },
-  { path: "/book-online", label: "Book Online" },
   { path: "/contact", label: "Contact" },
 ] as const;
 
@@ -45,6 +45,7 @@ const NavigationLink = memo(({
       isActive ? "text-secondary" : "text-gray-700 hover:text-secondary",
       isMenuOpen && "text-white lg:text-gray-700"
     )}
+    onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
   >
     {label}
     <motion.div
@@ -62,12 +63,7 @@ NavigationLink.displayName = 'NavigationLink';
 const Navigation = ({ className, isMenuOpen = false, isScrolled = false }: NavigationProps) => {
   const location = useLocation();
   
-  const isActive = (path: string) => {
-    if (path === "/") {
-      return location.pathname === "/";
-    }
-    return location.pathname.startsWith(path);
-  };
+  const isActive = (path: string) => location.pathname === path;
 
   return (
     <nav 

@@ -1,5 +1,5 @@
 import { Input } from "@/components/ui/input";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { useLoadScript } from "@react-google-maps/api";
 
 interface AddressAutocompleteProps {
@@ -14,90 +14,42 @@ interface AddressAutocompleteProps {
   "aria-describedby"?: string;
 }
 
-declare global {
-  interface Window {
-    google: {
-      maps: {
-        places: {
-          Autocomplete: new (
-            input: HTMLInputElement,
-            options?: google.maps.places.AutocompleteOptions
-          ) => google.maps.places.Autocomplete;
-        };
-      };
-    };
-  }
-}
-
 const AddressAutocomplete = ({
   value,
   onChange,
   className,
   placeholder = "Enter your address",
-  required,
-  disabled,
+  required = false,
+  disabled = false,
   id,
   name,
   "aria-describedby": ariaDescribedby,
 }: AddressAutocompleteProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
-  const [isInitialized, setIsInitialized] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  
-  const { isLoaded, loadError } = useLoadScript({
+  const { isLoaded } = useLoadScript({
     googleMapsApiKey: "AIzaSyBWC79s2TOCQPRUKSlG8J-yYfQqeKsPuVk",
     libraries: ["places"],
   });
 
   useEffect(() => {
-    if (!isLoaded || !inputRef.current || isInitialized || !window.google?.maps?.places) {
-      return;
-    }
+    if (!isLoaded || !inputRef.current) return;
 
-    try {
-      const autocomplete = new window.google.maps.places.Autocomplete(inputRef.current, {
-        componentRestrictions: { country: "us" },
-        fields: ["formatted_address"],
-      });
+    const autocomplete = new google.maps.places.Autocomplete(inputRef.current, {
+      componentRestrictions: { country: "us" },
+      fields: ["formatted_address"],
+    });
 
-      autocomplete.addListener("place_changed", () => {
-        const place = autocomplete.getPlace();
-        if (place.formatted_address) {
-          onChange(place.formatted_address);
-          setError(null);
-        }
-      });
+    autocomplete.addListener("place_changed", () => {
+      const place = autocomplete.getPlace();
+      if (place.formatted_address) {
+        onChange(place.formatted_address);
+      }
+    });
 
-      setIsInitialized(true);
-      
-      return () => {
-        if (window.google?.maps?.event) {
-          window.google.maps.event.clearInstanceListeners(autocomplete);
-        }
-      };
-    } catch (error) {
-      console.error("Error initializing Google Maps Autocomplete:", error);
-      setError("Failed to initialize address autocomplete");
-    }
-  }, [isLoaded, onChange, isInitialized]);
-
-  if (loadError || error) {
-    console.error("Error loading Google Maps API:", loadError || error);
-    return (
-      <Input
-        type="text"
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        className={className}
-        placeholder={placeholder}
-        required={required}
-        disabled={disabled}
-        id={id}
-        name={name}
-        aria-describedby={ariaDescribedby}
-      />
-    );
-  }
+    return () => {
+      google.maps.event.clearInstanceListeners(autocomplete);
+    };
+  }, [isLoaded, onChange]);
 
   return (
     <Input
@@ -106,9 +58,9 @@ const AddressAutocomplete = ({
       value={value}
       onChange={(e) => onChange(e.target.value)}
       className={className}
-      placeholder={isLoaded ? placeholder : "Loading address autocomplete..."}
+      placeholder={placeholder}
       required={required}
-      disabled={disabled || !isLoaded}
+      disabled={disabled}
       id={id}
       name={name}
       aria-describedby={ariaDescribedby}
