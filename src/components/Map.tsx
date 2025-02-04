@@ -57,6 +57,8 @@ const Map = ({
     disableDefaultUI: false,
     zoomControl: true,
     scrollwheel: true,
+    mapTypeControl: true,
+    streetViewControl: true,
     styles: [
       {
         featureType: "poi",
