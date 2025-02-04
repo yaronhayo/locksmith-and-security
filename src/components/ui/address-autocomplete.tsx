@@ -14,19 +14,35 @@ interface AddressAutocompleteProps {
   "aria-describedby"?: string;
 }
 
+declare global {
+  interface Window {
+    google: {
+      maps: {
+        places: {
+          Autocomplete: new (
+            input: HTMLInputElement,
+            options?: google.maps.places.AutocompleteOptions
+          ) => google.maps.places.Autocomplete;
+        };
+      };
+    };
+  }
+}
+
 const AddressAutocomplete = ({
   value,
   onChange,
   className,
   placeholder = "Enter your address",
-  required = false,
-  disabled = false,
+  required,
+  disabled,
   id,
   name,
   "aria-describedby": ariaDescribedby,
 }: AddressAutocompleteProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [isInitialized, setIsInitialized] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: "AIzaSyBWC79s2TOCQPRUKSlG8J-yYfQqeKsPuVk",
@@ -34,7 +50,9 @@ const AddressAutocomplete = ({
   });
 
   useEffect(() => {
-    if (!isLoaded || !inputRef.current || isInitialized) return;
+    if (!isLoaded || !inputRef.current || isInitialized || !window.google?.maps?.places) {
+      return;
+    }
 
     try {
       const autocomplete = new window.google.maps.places.Autocomplete(inputRef.current, {
@@ -46,18 +64,25 @@ const AddressAutocomplete = ({
         const place = autocomplete.getPlace();
         if (place.formatted_address) {
           onChange(place.formatted_address);
+          setError(null);
         }
       });
 
       setIsInitialized(true);
+      
+      return () => {
+        if (window.google?.maps?.event) {
+          window.google.maps.event.clearInstanceListeners(autocomplete);
+        }
+      };
     } catch (error) {
       console.error("Error initializing Google Maps Autocomplete:", error);
+      setError("Failed to initialize address autocomplete");
     }
   }, [isLoaded, onChange, isInitialized]);
 
-  if (loadError) {
-    console.error("Error loading Google Maps API:", loadError);
-    // Fallback to regular input if Google Maps fails to load
+  if (loadError || error) {
+    console.error("Error loading Google Maps API:", loadError || error);
     return (
       <Input
         type="text"
@@ -81,7 +106,7 @@ const AddressAutocomplete = ({
       value={value}
       onChange={(e) => onChange(e.target.value)}
       className={className}
-      placeholder={isLoaded ? placeholder : "Loading..."}
+      placeholder={isLoaded ? placeholder : "Loading address autocomplete..."}
       required={required}
       disabled={disabled || !isLoaded}
       id={id}

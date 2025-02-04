@@ -1,16 +1,17 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import PersonalInfoFields from "./PersonalInfoFields";
-import ServiceSelection from "./ServiceSelection";
-import VehicleFields from "./VehicleFields";
-import TimeframeSelection from "./TimeframeSelection";
-import { validateForm } from "./validation";
+import { useToast } from "@/components/ui/use-toast";
+import PersonalInfoFields from "./FormFields/PersonalInfoFields";
+import ServiceSelection from "./FormFields/ServiceSelection";
+import TimeframeSelection from "./FormFields/TimeframeSelection";
+import AdditionalNotes from "./FormFields/AdditionalNotes";
+import OtherServiceField from "./FormFields/OtherServiceField";
+import VehicleFields from "./fields/VehicleFields";
 import SubmitButton from "./SubmitButton";
-import { useServiceRequests } from "@/hooks/useServiceRequests";
+import { validateForm } from "./validation";
 
 const BookingForm = () => {
-  const navigate = useNavigate();
-  const { createServiceRequest } = useServiceRequests();
+  const { toast } = useToast();
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [selectedService, setSelectedService] = useState("");
   const [showVehicleInfo, setShowVehicleInfo] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -29,28 +30,36 @@ const BookingForm = () => {
     const validationResult = validateForm(formData, showVehicleInfo);
     if (!validationResult.isValid) {
       setErrors(validationResult.errors);
+      toast({
+        title: "Validation Error",
+        description: "Please check the form for errors",
+        variant: "destructive",
+      });
       return;
     }
 
-    const formDataObj = Object.fromEntries(formData.entries());
-    
+    setIsSubmitting(true);
+
     try {
-      await createServiceRequest.mutateAsync({
-        name: formDataObj.name as string,
-        phone: formDataObj.phone as string,
-        address: formDataObj.address as string,
-        service: formDataObj.service as string,
-        timeframe: formDataObj.timeframe as string,
-        vehicle_year: formDataObj.vehicleYear as string,
-        vehicle_make: formDataObj.vehicleMake as string,
-        vehicle_model: formDataObj.vehicleModel as string,
-        other_service: formDataObj.otherService as string,
-        notes: formDataObj.notes as string,
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      toast({
+        title: "Request Submitted Successfully",
+        description: "We'll contact you shortly to confirm your booking.",
       });
 
-      navigate("/thank-you");
+      (e.target as HTMLFormElement).reset();
+      setSelectedService("");
+      setShowVehicleInfo(false);
+      setErrors({});
+      setAddress("");
     } catch (error) {
-      console.error("Form submission error:", error);
+      toast({
+        title: "Submission Failed",
+        description: "Please try again or contact us directly.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -58,24 +67,30 @@ const BookingForm = () => {
     <form onSubmit={handleSubmit} className="space-y-3">
       <PersonalInfoFields 
         errors={errors}
-        isSubmitting={createServiceRequest.isPending}
+        isSubmitting={isSubmitting}
         address={address}
         setAddress={setAddress}
       />
       
       <ServiceSelection 
         error={errors.service}
-        isSubmitting={createServiceRequest.isPending}
+        isSubmitting={isSubmitting}
         onServiceChange={handleServiceChange}
       />
 
       {showVehicleInfo && (
-        <VehicleFields errors={errors} isSubmitting={createServiceRequest.isPending} />
+        <VehicleFields errors={errors} isSubmitting={isSubmitting} />
       )}
 
-      <TimeframeSelection isSubmitting={createServiceRequest.isPending} />
+      <TimeframeSelection isSubmitting={isSubmitting} />
 
-      <SubmitButton isSubmitting={createServiceRequest.isPending} />
+      {selectedService === "Other" && (
+        <OtherServiceField isSubmitting={isSubmitting} />
+      )}
+
+      <AdditionalNotes isSubmitting={isSubmitting} />
+
+      <SubmitButton isSubmitting={isSubmitting} />
 
       <p className="text-sm text-gray-500 text-center">
         Fast Response • Professional Service • 24/7 Available

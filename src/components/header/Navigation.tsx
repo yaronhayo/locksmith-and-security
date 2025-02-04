@@ -68,7 +68,11 @@ const Navigation = ({ className, isMenuOpen = false, isScrolled = false }: Navig
     if (path === "/") {
       return location.pathname === "/";
     }
-    return location.pathname.startsWith(path);
+    // Handle nested routes
+    if (path === "/services" || path === "/service-areas") {
+      return location.pathname.startsWith(path);
+    }
+    return location.pathname === path;
   };
 
   return (
