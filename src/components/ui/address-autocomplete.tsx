@@ -38,6 +38,7 @@ const AddressAutocomplete = ({
   useEffect(() => {
     const fetchApiKey = async () => {
       try {
+        console.log('Fetching Google Maps API key for address autocomplete...');
         const { data, error } = await supabase
           .from('settings')
           .select('value')
@@ -50,7 +51,10 @@ const AddressAutocomplete = ({
         }
 
         if (data) {
+          console.log('Successfully retrieved API key for address autocomplete');
           setApiKey(data.value);
+        } else {
+          console.error('No API key found in settings table');
         }
       } catch (error) {
         console.error('Error:', error);
@@ -64,6 +68,7 @@ const AddressAutocomplete = ({
     if (!isLoaded || !inputRef.current || isInitialized || !apiKey) return;
 
     try {
+      console.log('Initializing Places Autocomplete...');
       const autocomplete = new google.maps.places.Autocomplete(inputRef.current, {
         componentRestrictions: { country: "us" },
         fields: ["formatted_address", "address_components"],
@@ -79,6 +84,7 @@ const AddressAutocomplete = ({
       });
 
       setIsInitialized(true);
+      console.log('Places Autocomplete initialized successfully');
 
       return () => {
         google.maps.event.clearInstanceListeners(autocomplete);

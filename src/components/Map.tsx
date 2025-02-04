@@ -45,6 +45,7 @@ const Map = ({
   useEffect(() => {
     const fetchApiKey = async () => {
       try {
+        console.log('Fetching Google Maps API key from Supabase...');
         const { data, error } = await supabase
           .from('settings')
           .select('value')
@@ -58,7 +59,11 @@ const Map = ({
         }
 
         if (data) {
+          console.log('Successfully retrieved API key from Supabase');
           setApiKey(data.value);
+        } else {
+          console.error('No API key found in settings table');
+          setLoadError('No API key configuration found');
         }
       } catch (error) {
         console.error('Error:', error);
