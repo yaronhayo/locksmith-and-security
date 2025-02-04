@@ -10,44 +10,29 @@ const SuspenseRoute = ({ element }: { element: React.ReactNode }) => (
   <Suspense fallback={<LoadingSpinner />}>{element}</Suspense>
 );
 
+const RouteWithSuspense = ({ path, element }: { path: string; element: React.ReactNode }) => (
+  <Route
+    key={path}
+    path={path}
+    element={path === "/" ? element : <SuspenseRoute element={element} />}
+  />
+);
+
 const Routes = () => {
   return (
     <>
       <Breadcrumbs />
       <RouterRoutes>
-        {/* Root route */}
-        <Route
-          path="/"
-          element={mainRoutes.find(route => route.path === "/")?.element}
-        />
-        
-        {/* Main routes excluding root */}
-        {mainRoutes
-          .filter(route => route.path !== "/")
-          .map(({ path, element }) => (
-            <Route
-              key={path}
-              path={path}
-              element={<SuspenseRoute element={element} />}
-            />
-          ))}
-        
-        {/* Service routes */}
-        {serviceRoutes.map(({ path, element }) => (
-          <Route
-            key={path}
-            path={path}
-            element={<SuspenseRoute element={element} />}
-          />
+        {mainRoutes.map(({ path, element }) => (
+          <RouteWithSuspense key={path} path={path} element={element} />
         ))}
         
-        {/* Service area routes */}
+        {serviceRoutes.map(({ path, element }) => (
+          <RouteWithSuspense key={path} path={path} element={element} />
+        ))}
+        
         {serviceAreaRoutes.map(({ path, element }) => (
-          <Route
-            key={path}
-            path={path}
-            element={<SuspenseRoute element={element} />}
-          />
+          <RouteWithSuspense key={path} path={path} element={element} />
         ))}
       </RouterRoutes>
     </>

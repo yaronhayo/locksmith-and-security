@@ -14,7 +14,7 @@ const HeroTitle = ({ currentWord, words }: HeroTitleProps) => {
       transition={{ delay: 0.3 }}
     >
       <div className="flex items-center gap-2 lg:gap-4">
-        <div className="w-[120px] sm:w-[150px] md:w-[180px] lg:w-[200px]">
+        <div className="w-[120px] sm:w-[150px] md:w-[180px] lg:w-[200px] h-[40px] sm:h-[50px] md:h-[60px] lg:h-[70px] relative">
           <AnimatePresence mode="wait">
             <motion.span
               key={words[currentWord]}
@@ -22,7 +22,7 @@ const HeroTitle = ({ currentWord, words }: HeroTitleProps) => {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.5, ease: "easeInOut" }}
-              className="text-secondary block"
+              className="text-secondary absolute inset-0 flex items-center"
             >
               {words[currentWord]}
             </motion.span>

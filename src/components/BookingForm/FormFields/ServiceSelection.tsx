@@ -1,4 +1,3 @@
-import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectContent,
@@ -6,6 +5,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { AlertCircle } from "lucide-react";
 import { services } from "../constants";
@@ -24,6 +24,7 @@ const ServiceSelection = ({ error, isSubmitting, onServiceChange }: ServiceSelec
         <SelectTrigger 
           id="service"
           className={`h-10 text-base ${error ? 'border-red-500' : ''}`}
+          aria-label="Select the service you need"
         >
           <SelectValue placeholder="Select Service Needed" />
         </SelectTrigger>

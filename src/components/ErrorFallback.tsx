@@ -7,14 +7,29 @@ interface ErrorFallbackProps {
   resetErrorBoundary: () => void;
 }
 
+const getErrorMessage = (error: Error) => {
+  if (error.message.includes("network")) {
+    return "Network error: Please check your internet connection";
+  }
+  if (error.message.includes("timeout")) {
+    return "Request timeout: The server took too long to respond";
+  }
+  if (error.message.includes("404")) {
+    return "Resource not found: The requested data is unavailable";
+  }
+  return error.message || "An unexpected error occurred. Please try again.";
+};
+
 const ErrorFallback = ({ error, resetErrorBoundary }: ErrorFallbackProps) => {
   const { toast } = useToast();
 
   const handleReset = () => {
-    // Log the error for tracking
-    console.error('Application error:', error);
+    console.error('Application error:', {
+      message: error.message,
+      stack: error.stack,
+      timestamp: new Date().toISOString()
+    });
     
-    // Show toast notification
     toast({
       title: "Attempting to recover",
       description: "We're trying to restore the application state.",
@@ -31,15 +46,16 @@ const ErrorFallback = ({ error, resetErrorBoundary }: ErrorFallbackProps) => {
       aria-live="assertive"
     >
       <div className="text-center max-w-md">
-        <AlertTriangle className="h-12 w-12 text-red-500 mx-auto mb-4" />
+        <AlertTriangle className="h-12 w-12 text-red-500 mx-auto mb-4" aria-hidden="true" />
         <h2 className="text-2xl font-bold mb-2">Something went wrong</h2>
         <p className="text-gray-600 mb-4">
-          {error.message || "An unexpected error occurred. Please try again."}
+          {getErrorMessage(error)}
         </p>
         <div className="space-y-4">
           <Button 
             onClick={handleReset}
             className="w-full"
+            aria-label="Try again"
           >
             Try again
           </Button>

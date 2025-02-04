@@ -2,7 +2,7 @@ import { cn } from "@/lib/utils";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useLocation } from "react-router-dom";
-import { memo } from "react";
+import { memo, useEffect, useState } from "react";
 
 interface NavigationProps {
   className?: string;
@@ -62,27 +62,32 @@ NavigationLink.displayName = 'NavigationLink';
 
 const Navigation = ({ className, isMenuOpen = false, isScrolled = false }: NavigationProps) => {
   const location = useLocation();
+  const [isOpen, setIsOpen] = useState(isMenuOpen);
   
+  useEffect(() => {
+    setIsOpen(false);
+  }, [location]);
+
   const isActive = (path: string) => location.pathname === path;
 
   return (
     <nav 
       className={cn(
         "hidden lg:flex items-center space-x-8",
-        isMenuOpen && "fixed inset-0 top-[65px] bg-primary/95 flex flex-col items-start px-6 py-8 space-y-4 lg:relative lg:top-0 lg:bg-transparent lg:flex-row lg:items-center lg:space-x-8 lg:space-y-0 lg:p-0",
+        isOpen && "fixed inset-0 top-[65px] bg-primary/95 flex flex-col items-start px-6 py-8 space-y-4 lg:relative lg:top-0 lg:bg-transparent lg:flex-row lg:items-center lg:space-x-8 lg:space-y-0 lg:p-0",
         className
       )}
       role="navigation"
       aria-label="Main navigation"
     >
       {navItems.map(({ path, label, showMobileOnly }) => (
-        (!showMobileOnly || (showMobileOnly && isMenuOpen)) && (
+        (!showMobileOnly || (showMobileOnly && isOpen)) && (
           <NavigationLink
             key={path}
             path={path}
             label={label}
             isActive={isActive(path)}
-            isMenuOpen={isMenuOpen}
+            isMenuOpen={isOpen}
           />
         )
       ))}
