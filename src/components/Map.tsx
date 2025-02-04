@@ -10,7 +10,7 @@ import ErrorFallback from './ErrorFallback';
 interface MapProps {
   center?: { lat: number; lng: number };
   zoom?: number;
-  markers?: Array<{ lat: number; lng: number; title?: string; slug?: string }>;
+  markers?: ReadonlyArray<{ lat: number; lng: number; title?: string; slug?: string }>;
   hoveredMarker?: string | null;
 }
 
@@ -72,7 +72,7 @@ const Map = ({
     scale: isHovered ? 12 : 10
   }), []);
 
-  const handleMarkerClick = useCallback((marker: typeof serviceAreaLocations[number]) => {
+  const handleMarkerClick = useCallback((marker: typeof markers[number]) => {
     if (marker.slug) {
       navigate(`/service-areas/${marker.slug}`);
       window.scrollTo(0, 0);

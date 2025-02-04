@@ -2,17 +2,11 @@ import { memo } from "react";
 import ReviewsList from "./ReviewsList";
 import ReviewsHeader from "./ReviewsHeader";
 import LoadingSpinner from "@/components/LoadingSpinner";
+import { Review } from "@/types/reviews";
 
 interface ReviewsContainerProps {
   location?: string;
-  displayedReviews: Array<{
-    name: string;
-    rating: number;
-    text: string;
-    service: string;
-    location: string;
-    date: string;
-  }>;
+  displayedReviews: Review[];
   isLoading: boolean;
 }
 
@@ -28,7 +22,10 @@ const ReviewsContainer = memo(({
     >
       <div className="container mx-auto px-4">
         <ReviewsHeader location={location} />
-        <ReviewsList reviews={displayedReviews} />
+        <ReviewsList 
+          reviews={displayedReviews} 
+          displayedReviews={displayedReviews}
+        />
         <div className="h-10">
           {isLoading && <LoadingSpinner />}
         </div>
