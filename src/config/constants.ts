@@ -1,4 +1,4 @@
-export const GOOGLE_MAPS_API_KEY = "AIzaSyBWC79s2TOCQPRUKSlG8J-yYfQqeKsPuVk";
+export const GOOGLE_MAPS_API_KEY = "AIzaSyBWC79s2TOCQPRUKSlG8J-yYqeKsPuVk";
 
 export const serviceAreaLocations = [
   { lat: 40.7828, lng: -74.0297, title: "North Bergen", slug: "north-bergen" },

@@ -55,6 +55,7 @@ const Map = ({
   }), []);
 
   if (loadError) {
+    console.error('Map loading error:', loadError);
     return (
       <div className="w-full h-[400px] md:h-[500px] lg:h-[600px] flex items-center justify-center bg-gray-50 rounded-lg">
         <div className="text-center space-y-4">
@@ -73,7 +74,11 @@ const Map = ({
     >
       <LoadScript 
         googleMapsApiKey={GOOGLE_MAPS_API_KEY}
-        onError={(error) => setLoadError(error.message)}
+        onError={(error) => {
+          console.error('LoadScript error:', error);
+          setLoadError(error.message);
+        }}
+        libraries={["places"]}
       >
         {!isLoaded && (
           <div className="absolute inset-0 flex items-center justify-center bg-gray-50">
@@ -93,7 +98,10 @@ const Map = ({
             ...mapOptions,
             backgroundColor: '#e5e7eb'
           }}
-          onLoad={() => setIsLoaded(true)}
+          onLoad={() => {
+            console.log('Map loaded successfully');
+            setIsLoaded(true);
+          }}
         >
           {isLoaded && markers.map((marker, index) => (
             <Marker
