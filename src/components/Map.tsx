@@ -48,9 +48,11 @@ const Map = ({
     try {
       const { data, error } = await supabase
         .from('settings')
-        .select('value')
+        .select('*')
         .eq('key', 'GOOGLE_MAPS_API_KEY')
         .maybeSingle();
+
+      console.log('Supabase response:', { data, error });
 
       if (error) {
         console.error('Supabase error:', error);
@@ -62,7 +64,7 @@ const Map = ({
         throw new Error('Google Maps API key not found in database');
       }
 
-      console.log('API key retrieved successfully');
+      console.log('API key retrieved:', data.value ? 'Key exists' : 'No key found');
       setApiKey(data.value);
       setLoadError(null);
       setIsRetrying(false);
