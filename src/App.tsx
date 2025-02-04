@@ -8,8 +8,8 @@ import Footer from "@/components/Footer";
 import Routes from '@/Routes';
 import { ErrorBoundary } from "react-error-boundary";
 import ErrorFallback from "@/components/ErrorFallback";
+import { MobileMenuProvider } from "@/contexts/MobileMenuContext";
 
-// Ensure Google Maps is defined globally
 declare global {
   interface Window {
     google: any;
@@ -20,17 +20,19 @@ function App() {
   return (
     <ErrorBoundary FallbackComponent={ErrorFallback}>
       <Router>
-        <ScrollToTop />
-        <div className="flex min-h-screen flex-col">
-          <Header />
-          <main className="flex-grow">
-            <Routes />
-          </main>
-          <Footer />
-        </div>
-        <Toaster />
-        <CookieConsent />
-        <Analytics />
+        <MobileMenuProvider>
+          <ScrollToTop />
+          <div className="flex min-h-screen flex-col">
+            <Header />
+            <main className="flex-grow">
+              <Routes />
+            </main>
+            <Footer />
+          </div>
+          <Toaster />
+          <CookieConsent />
+          <Analytics />
+        </MobileMenuProvider>
       </Router>
     </ErrorBoundary>
   );

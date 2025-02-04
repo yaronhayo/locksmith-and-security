@@ -1,10 +1,9 @@
-import { Routes as RouterRoutes, Route } from 'react-router-dom';
-import { Suspense } from 'react';
-import LoadingSpinner from "@/components/LoadingSpinner";
+import { Routes as RouterRoutes } from 'react-router-dom';
+import Breadcrumbs from "@/components/Breadcrumbs";
+import RouteWrapper from "@/components/RouteWrapper";
 import { mainRoutes } from "./routes/mainRoutes";
 import { serviceRoutes } from "./routes/serviceRoutes";
 import { serviceAreaRoutes } from "./routes/serviceAreaRoutes";
-import Breadcrumbs from "@/components/Breadcrumbs";
 
 const Routes = () => {
   return (
@@ -12,42 +11,27 @@ const Routes = () => {
       <Breadcrumbs />
       <RouterRoutes>
         {mainRoutes.map(({ path, element }) => (
-          <Route
+          <RouteWrapper
             key={path}
             path={path}
-            element={
-              path === "/" ? (
-                element
-              ) : (
-                <Suspense fallback={<LoadingSpinner />}>
-                  {element}
-                </Suspense>
-              )
-            }
+            element={element}
+            isHome={path === "/"}
           />
         ))}
         
         {serviceRoutes.map(({ path, element }) => (
-          <Route
+          <RouteWrapper
             key={path}
             path={path}
-            element={
-              <Suspense fallback={<LoadingSpinner />}>
-                {element}
-              </Suspense>
-            }
+            element={element}
           />
         ))}
         
         {serviceAreaRoutes.map(({ path, element }) => (
-          <Route
+          <RouteWrapper
             key={path}
             path={path}
-            element={
-              <Suspense fallback={<LoadingSpinner />}>
-                {element}
-              </Suspense>
-            }
+            element={element}
           />
         ))}
       </RouterRoutes>

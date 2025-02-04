@@ -1,35 +1,62 @@
-export const validatePhoneNumber = (phone: string): boolean => {
-  // Matches formats: (123) 456-7890, 123-456-7890, 1234567890
-  const phoneRegex = /^(\+?1\s?)?((\([0-9]{3}\))|[0-9]{3})[\s-]?[0-9]{3}[\s-]?[0-9]{4}$/;
-  return phoneRegex.test(phone);
-};
+export interface ValidationRule {
+  test: (value: any) => boolean;
+  message: string;
+}
 
-export const validateZipCode = (zipCode: string): boolean => {
-  // Matches 5-digit and 5+4 ZIP code formats
-  const zipRegex = /^\d{5}(-\d{4})?$/;
-  return zipRegex.test(zipCode);
-};
+export interface FieldValidation {
+  [key: string]: ValidationRule[];
+}
 
-export const validateEmail = (email: string): boolean => {
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return emailRegex.test(email);
-};
-
-export const validateAddress = (address: string): boolean => {
-  return address.length >= 5 && address.includes(' ');
-};
-
-export const getValidationError = (field: string, value: string): string | null => {
-  switch (field) {
-    case 'phone':
-      return validatePhoneNumber(value) ? null : 'Please enter a valid phone number';
-    case 'zipCode':
-      return validateZipCode(value) ? null : 'Please enter a valid ZIP code';
-    case 'email':
-      return validateEmail(value) ? null : 'Please enter a valid email address';
-    case 'address':
-      return validateAddress(value) ? null : 'Please enter a complete address';
-    default:
-      return null;
+export const validateField = (value: any, rules: ValidationRule[]): string | null => {
+  for (const rule of rules) {
+    if (!rule.test(value)) {
+      return rule.message;
+    }
   }
+  return null;
+};
+
+export const bookingValidationRules: FieldValidation = {
+  name: [
+    {
+      test: (value) => value && value.trim().length >= 2,
+      message: "Please enter your full name (minimum 2 characters)"
+    }
+  ],
+  phone: [
+    {
+      test: (value) => value && /^[\d\s()-]{10,}$/.test(value),
+      message: "Please enter a valid phone number (minimum 10 digits)"
+    }
+  ],
+  address: [
+    {
+      test: (value) => value && value.trim().length >= 5,
+      message: "Please enter your complete service address"
+    }
+  ],
+  service: [
+    {
+      test: (value) => Boolean(value),
+      message: "Please select a service"
+    }
+  ],
+  vehicleYear: [
+    {
+      test: (value) => !value || /^\d{4}$/.test(value),
+      message: "Please enter a valid 4-digit year"
+    }
+  ],
+  vehicleMake: [
+    {
+      test: (value) => !value || value.trim().length >= 2,
+      message: "Please enter the vehicle manufacturer"
+    }
+  ],
+  vehicleModel: [
+    {
+      test: (value) => !value || value.trim().length >= 2,
+      message: "Please enter the vehicle model"
+    }
+  ]
 };
