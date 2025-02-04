@@ -7,9 +7,9 @@ import {
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
+  type CarouselApi
 } from "@/components/ui/carousel";
 import { cn } from "@/lib/utils";
-import { useCarousel } from "@/components/ui/carousel";
 
 interface ReviewsListProps {
   reviews: Review[];
@@ -17,7 +17,7 @@ interface ReviewsListProps {
 }
 
 const ReviewsList = ({ reviews, displayedReviews }: ReviewsListProps) => {
-  const [api, setApi] = useState<ReturnType<typeof useCarousel>["api"]>();
+  const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
 
   useEffect(() => {
