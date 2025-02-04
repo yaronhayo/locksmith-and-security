@@ -2,7 +2,7 @@ import { useState, useCallback } from 'react';
 import { LoadScript, GoogleMap, Marker } from '@react-google-maps/api';
 import { useNavigate } from 'react-router-dom';
 import { Loader2 } from "lucide-react";
-import { GOOGLE_MAPS_API_KEY } from '@/config/constants';
+import { GOOGLE_MAPS_API_KEY, defaultMapCenter, defaultMapZoom, mapStyles } from '@/config/constants';
 import { MapLocation } from '@/types/map';
 
 interface MapProps {
@@ -12,9 +12,6 @@ interface MapProps {
   hoveredMarker?: string | null;
 }
 
-const defaultCenter = { lat: 40.7828, lng: -74.0297 };
-const defaultZoom = 12;
-
 const mapOptions = {
   disableDefaultUI: false,
   zoomControl: true,
@@ -23,18 +20,7 @@ const mapOptions = {
   streetViewControl: true,
   rotateControl: true,
   fullscreenControl: true,
-  styles: [
-    {
-      featureType: "all",
-      elementType: "geometry",
-      stylers: [{ visibility: "on" }]
-    },
-    {
-      featureType: "all",
-      elementType: "labels",
-      stylers: [{ visibility: "on" }]
-    }
-  ]
+  styles: mapStyles
 };
 
 const getMapHeight = () => {
@@ -43,20 +29,14 @@ const getMapHeight = () => {
 };
 
 const Map = ({ 
-  center = defaultCenter,
-  zoom = defaultZoom,
+  center = defaultMapCenter,
+  zoom = defaultMapZoom,
   markers = [],
   hoveredMarker = null
 }: MapProps) => {
   const navigate = useNavigate();
   const [isLoaded, setIsLoaded] = useState(false);
   const [loadError, setLoadError] = useState<string | null>(null);
-
-  const mapContainerStyle = {
-    width: '100%',
-    height: getMapHeight(),
-    borderRadius: '0.5rem'
-  };
 
   const handleMarkerClick = useCallback((slug?: string) => {
     if (slug) {
@@ -102,13 +82,16 @@ const Map = ({
         )}
         
         <GoogleMap
-          mapContainerStyle={mapContainerStyle}
+          mapContainerStyle={{
+            width: '100%',
+            height: getMapHeight(),
+            borderRadius: '0.5rem'
+          }}
           center={center}
           zoom={zoom}
           options={{
             ...mapOptions,
-            backgroundColor: '#e5e7eb',
-            mapTypeId: 'roadmap'
+            backgroundColor: '#e5e7eb'
           }}
           onLoad={() => setIsLoaded(true)}
         >

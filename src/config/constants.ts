@@ -10,3 +10,19 @@ export const serviceAreaLocations = [
   { lat: 40.7453, lng: -74.0279, title: "Hoboken", slug: "hoboken" },
   { lat: 40.7920, lng: -74.0037, title: "Guttenberg", slug: "guttenberg" }
 ] as const;
+
+export const defaultMapCenter = { lat: 40.7828, lng: -74.0297 };
+export const defaultMapZoom = 12;
+
+export const mapStyles = [
+  {
+    featureType: "all",
+    elementType: "geometry",
+    stylers: [{ visibility: "on" }]
+  },
+  {
+    featureType: "all",
+    elementType: "labels",
+    stylers: [{ visibility: "on" }]
+  }
+];

@@ -1,6 +1,7 @@
 import { Input } from "@/components/ui/input";
 import { useEffect, useRef } from "react";
 import { useLoadScript } from "@react-google-maps/api";
+import { GOOGLE_MAPS_API_KEY } from "@/config/constants";
 
 interface AddressAutocompleteProps {
   value: string;
@@ -13,8 +14,6 @@ interface AddressAutocompleteProps {
   name?: string;
   "aria-describedby"?: string;
 }
-
-const GOOGLE_MAPS_API_KEY = "AIzaSyBWC79s2TOCQPRUKSlG8J-yYfQqeKsPuVk";
 
 const AddressAutocomplete = ({
   value,
@@ -30,14 +29,8 @@ const AddressAutocomplete = ({
   const inputRef = useRef<HTMLInputElement>(null);
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: GOOGLE_MAPS_API_KEY,
-    libraries: ["places"],
+    libraries: ["places"]
   });
-
-  useEffect(() => {
-    if (loadError) {
-      console.error('Google Maps Places API loading error:', loadError);
-    }
-  }, [loadError]);
 
   useEffect(() => {
     if (!isLoaded || !inputRef.current) return;
@@ -45,14 +38,14 @@ const AddressAutocomplete = ({
     try {
       const autocomplete = new google.maps.places.Autocomplete(inputRef.current, {
         componentRestrictions: { country: "us" },
-        fields: ["formatted_address"],
+        fields: ["formatted_address"]
       });
 
       autocomplete.addListener("place_changed", () => {
         const place = autocomplete.getPlace();
         if (place.formatted_address) {
           onChange(place.formatted_address);
-          console.log('Address selected:', place.formatted_address);
+          console.log('Selected address:', place.formatted_address);
         }
       });
 
@@ -65,6 +58,7 @@ const AddressAutocomplete = ({
   }, [isLoaded, onChange]);
 
   if (loadError) {
+    console.error('Google Maps Places API loading error:', loadError);
     return (
       <Input
         type="text"
