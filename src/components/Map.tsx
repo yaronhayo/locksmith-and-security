@@ -54,6 +54,17 @@ const Map = ({
     scale: isHovered ? 12 : 10
   }), []);
 
+  if (!GOOGLE_MAPS_API_KEY) {
+    console.error('Google Maps API key is missing');
+    return (
+      <div className="w-full h-[400px] md:h-[500px] lg:h-[600px] flex items-center justify-center bg-gray-50 rounded-lg">
+        <div className="text-center space-y-4">
+          <p className="text-red-500">Error: Google Maps API key is not configured</p>
+        </div>
+      </div>
+    );
+  }
+
   if (loadError) {
     console.error('Map loading error:', loadError);
     return (
@@ -94,10 +105,7 @@ const Map = ({
           }}
           center={center}
           zoom={zoom}
-          options={{
-            ...mapOptions,
-            backgroundColor: '#e5e7eb'
-          }}
+          options={mapOptions}
           onLoad={() => {
             console.log('Map loaded successfully');
             setIsLoaded(true);
