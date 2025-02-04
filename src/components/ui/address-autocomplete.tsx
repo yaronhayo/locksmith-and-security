@@ -14,6 +14,8 @@ interface AddressAutocompleteProps {
   "aria-describedby"?: string;
 }
 
+const GOOGLE_MAPS_API_KEY = "AIzaSyBWC79s2TOCQPRUKSlG8J-yYfQqeKsPuVk";
+
 const AddressAutocomplete = ({
   value,
   onChange,
@@ -26,30 +28,58 @@ const AddressAutocomplete = ({
   "aria-describedby": ariaDescribedby,
 }: AddressAutocompleteProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
-  const { isLoaded } = useLoadScript({
-    googleMapsApiKey: "AIzaSyBWC79s2TOCQPRUKSlG8J-yYfQqeKsPuVk",
+  const { isLoaded, loadError } = useLoadScript({
+    googleMapsApiKey: GOOGLE_MAPS_API_KEY,
     libraries: ["places"],
   });
 
   useEffect(() => {
+    if (loadError) {
+      console.error('Google Maps Places API loading error:', loadError);
+    }
+  }, [loadError]);
+
+  useEffect(() => {
     if (!isLoaded || !inputRef.current) return;
 
-    const autocomplete = new google.maps.places.Autocomplete(inputRef.current, {
-      componentRestrictions: { country: "us" },
-      fields: ["formatted_address"],
-    });
+    try {
+      const autocomplete = new google.maps.places.Autocomplete(inputRef.current, {
+        componentRestrictions: { country: "us" },
+        fields: ["formatted_address"],
+      });
 
-    autocomplete.addListener("place_changed", () => {
-      const place = autocomplete.getPlace();
-      if (place.formatted_address) {
-        onChange(place.formatted_address);
-      }
-    });
+      autocomplete.addListener("place_changed", () => {
+        const place = autocomplete.getPlace();
+        if (place.formatted_address) {
+          onChange(place.formatted_address);
+          console.log('Address selected:', place.formatted_address);
+        }
+      });
 
-    return () => {
-      google.maps.event.clearInstanceListeners(autocomplete);
-    };
+      return () => {
+        google.maps.event.clearInstanceListeners(autocomplete);
+      };
+    } catch (error) {
+      console.error('Error initializing Places Autocomplete:', error);
+    }
   }, [isLoaded, onChange]);
+
+  if (loadError) {
+    return (
+      <Input
+        type="text"
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        className={className}
+        placeholder="Enter address manually (Maps API unavailable)"
+        required={required}
+        disabled={disabled}
+        id={id}
+        name={name}
+        aria-describedby={ariaDescribedby}
+      />
+    );
+  }
 
   return (
     <Input
@@ -58,9 +88,9 @@ const AddressAutocomplete = ({
       value={value}
       onChange={(e) => onChange(e.target.value)}
       className={className}
-      placeholder={placeholder}
+      placeholder={isLoaded ? placeholder : "Loading..."}
       required={required}
-      disabled={disabled}
+      disabled={disabled || !isLoaded}
       id={id}
       name={name}
       aria-describedby={ariaDescribedby}

@@ -25,6 +25,8 @@ const serviceAreaLocations = [
   { lat: 40.7920, lng: -74.0037, title: "Guttenberg", slug: "guttenberg" }
 ] as const;
 
+const GOOGLE_MAPS_API_KEY = "AIzaSyBWC79s2TOCQPRUKSlG8J-yYfQqeKsPuVk";
+
 const Map = ({ 
   center = { lat: 40.7828, lng: -74.0297 },
   zoom = 12,
@@ -87,6 +89,7 @@ const Map = ({
   const onLoad = useCallback((map: google.maps.Map) => {
     setMapInstance(map);
     setIsLoaded(true);
+    console.log('Google Maps loaded successfully');
 
     if (markers.length > 1) {
       const bounds = new google.maps.LatLngBounds();
@@ -96,6 +99,11 @@ const Map = ({
       map.fitBounds(bounds);
     }
   }, [markers]);
+
+  const handleLoadError = useCallback((error: Error) => {
+    console.error('Google Maps loading error:', error);
+    setLoadError(error.message);
+  }, []);
 
   if (loadError) {
     return <MapErrorState error={loadError} onRetry={handleRetry} />;
@@ -114,8 +122,9 @@ const Map = ({
         aria-label="Service areas map"
       >
         <LoadScript 
-          googleMapsApiKey="AIzaSyA836rCuy6AkrT3L2yT_rfxUPUphH_b6lw"
-          onError={(error) => setLoadError(error.message)}
+          googleMapsApiKey={GOOGLE_MAPS_API_KEY}
+          onError={handleLoadError}
+          onLoad={() => console.log('Google Maps script loaded')}
         >
           <GoogleMap
             mapContainerStyle={mapContainerStyle}
