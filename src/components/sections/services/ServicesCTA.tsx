@@ -25,7 +25,7 @@ const ServicesCTA = () => {
               asChild 
               className="border border-white text-white bg-transparent hover:bg-white/10"
             >
-              <a href="tel:5513037874" className="flex items-center">
+              <a href="tel:2017482070" className="flex items-center">
                 <Phone className="mr-2 h-5 w-5" />
                 Call (201) 748-2070
               </a>

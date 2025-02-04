@@ -21,7 +21,7 @@ export const homePageSchema = {
       "longitude": "-74.0324"
     },
     "url": "https://247locksmithandsecurity.com",
-    "telephone": "+15513037874",
+    "telephone": "+12017482070",
     "openingHoursSpecification": {
       "@type": "OpeningHoursSpecification",
       "dayOfWeek": [

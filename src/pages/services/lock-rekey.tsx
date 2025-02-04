@@ -17,7 +17,7 @@ const schema = {
     "@type": "LocalBusiness",
     "name": "Locksmith & Security LLC",
     "image": "/og-image.png",
-    "telephone": "+15513037874",
+    "telephone": "+12017482070",
     "address": {
       "@type": "PostalAddress",
       "addressLocality": "North Bergen",

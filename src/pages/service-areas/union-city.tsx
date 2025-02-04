@@ -14,7 +14,7 @@ const schema = {
   "provider": {
     "@type": "LocalBusiness",
     "name": "Locksmith & Security LLC",
-    "telephone": "+15513037874",
+    "telephone": "+12017482070",
     "areaServed": {
       "@type": "City",
       "name": "Union City",
