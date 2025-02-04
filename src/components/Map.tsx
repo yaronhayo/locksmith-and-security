@@ -5,7 +5,6 @@ import { Loader2, AlertCircle } from "lucide-react";
 import { defaultMapCenter, defaultMapZoom, mapStyles } from '@/config/constants';
 import { MapLocation } from '@/types/map';
 import { supabase } from '@/integrations/supabase/client';
-import { useToast } from "@/components/ui/use-toast";
 
 interface MapProps {
   center?: { lat: number; lng: number };
@@ -38,7 +37,6 @@ const Map = ({
   hoveredMarker = null
 }: MapProps) => {
   const navigate = useNavigate();
-  const { toast } = useToast();
   const [isLoaded, setIsLoaded] = useState(false);
   const [loadError, setLoadError] = useState<string | null>(null);
   const [map, setMap] = useState<google.maps.Map | null>(null);
@@ -71,11 +69,6 @@ const Map = ({
     } catch (error) {
       console.error('Fetch error:', error);
       setLoadError(error instanceof Error ? error.message : 'Failed to fetch API key');
-      toast({
-        variant: "destructive",
-        title: "Error loading map",
-        description: "There was a problem connecting to the database. Retrying...",
-      });
       setIsRetrying(true);
     }
   };
@@ -83,13 +76,12 @@ const Map = ({
   useEffect(() => {
     fetchApiKey();
     
-    // Retry logic
     let retryTimeout: NodeJS.Timeout;
     if (isRetrying) {
       retryTimeout = setTimeout(() => {
         console.log('Retrying API key fetch...');
         fetchApiKey();
-      }, 5000); // Retry every 5 seconds
+      }, 5000);
     }
 
     return () => {
@@ -142,11 +134,6 @@ const Map = ({
         onError={(error) => {
           console.error('LoadScript error:', error);
           setLoadError(`Failed to load Google Maps: ${error.message}`);
-          toast({
-            variant: "destructive",
-            title: "Error loading map",
-            description: "Failed to load Google Maps. Please check your internet connection.",
-          });
         }}
       >
         {!isLoaded && (
