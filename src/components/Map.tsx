@@ -50,16 +50,16 @@ const Map = ({
         .from('settings')
         .select('value')
         .eq('key', 'GOOGLE_MAPS_API_KEY')
-        .single();
+        .maybeSingle();
 
       if (error) {
         console.error('Supabase error:', error);
         throw new Error(`Database error: ${error.message}`);
       }
 
-      if (!data?.value) {
+      if (!data) {
         console.error('No API key found in settings');
-        throw new Error('API key not found in configuration');
+        throw new Error('Google Maps API key not found in database');
       }
 
       console.log('API key retrieved successfully');
