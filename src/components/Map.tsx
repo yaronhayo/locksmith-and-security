@@ -38,7 +38,6 @@ const Map = ({
   const [mapInstance, setMapInstance] = useState<google.maps.Map | null>(null);
   const [loadError, setLoadError] = useState<string | null>(null);
   const [retryCount, setRetryCount] = useState(0);
-  const [scriptLoaded, setScriptLoaded] = useState(false);
 
   const mapHeight = useMemo(() => {
     if (typeof window === 'undefined') return '600px';
@@ -59,6 +58,8 @@ const Map = ({
     scrollwheel: true,
     mapTypeControl: true,
     streetViewControl: true,
+    fullscreenControl: true,
+    mapTypeId: 'roadmap',
     styles: [
       {
         featureType: "poi",
@@ -88,13 +89,12 @@ const Map = ({
     setLoadError(null);
     setRetryCount(prev => prev + 1);
     setIsLoaded(false);
-    setScriptLoaded(false);
   }, []);
 
   const onLoad = useCallback((map: google.maps.Map) => {
+    console.log('Map instance loaded');
     setMapInstance(map);
     setIsLoaded(true);
-    console.log('Google Maps loaded successfully');
 
     if (markers.length > 1) {
       const bounds = new google.maps.LatLngBounds();
@@ -127,8 +127,7 @@ const Map = ({
           googleMapsApiKey={GOOGLE_MAPS_API_KEY}
           onError={handleLoadError}
           onLoad={() => {
-            console.log('Google Maps script loaded');
-            setScriptLoaded(true);
+            console.log('Google Maps script loaded successfully');
           }}
         >
           {!isLoaded && <MapLoadingState />}
