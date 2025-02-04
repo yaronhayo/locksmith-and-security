@@ -6,6 +6,8 @@ import MapLoadingState from './map/MapLoadingState';
 import MapErrorState from './map/MapErrorState';
 import { ErrorBoundary } from 'react-error-boundary';
 import ErrorFallback from './ErrorFallback';
+import { defaultMapOptions, getMarkerIcon } from './map/MapOptions';
+import { GOOGLE_MAPS_API_KEY, serviceAreaLocations } from './map/MapConstants';
 
 interface MapProps {
   center?: { lat: number; lng: number };
@@ -13,19 +15,6 @@ interface MapProps {
   markers?: ReadonlyArray<{ lat: number; lng: number; title?: string; slug?: string }>;
   hoveredMarker?: string | null;
 }
-
-const serviceAreaLocations = [
-  { lat: 40.7828, lng: -74.0297, title: "North Bergen", slug: "north-bergen" },
-  { lat: 40.7282, lng: -74.0776, title: "Jersey City", slug: "jersey-city" },
-  { lat: 40.7795, lng: -74.0246, title: "Union City", slug: "union-city" },
-  { lat: 40.7857, lng: -74.0143, title: "West New York", slug: "west-new-york" },
-  { lat: 40.7799, lng: -74.0566, title: "Secaucus", slug: "secaucus" },
-  { lat: 40.7684, lng: -74.0287, title: "Weehawken", slug: "weehawken" },
-  { lat: 40.7453, lng: -74.0279, title: "Hoboken", slug: "hoboken" },
-  { lat: 40.7920, lng: -74.0037, title: "Guttenberg", slug: "guttenberg" }
-] as const;
-
-const GOOGLE_MAPS_API_KEY = "AIzaSyBWC79s2TOCQPRUKSlG8J-yYfQqeKsPuVk";
 
 const Map = ({ 
   center = { lat: 40.7828, lng: -74.0297 },
@@ -51,32 +40,6 @@ const Map = ({
     height: mapHeight,
     borderRadius: '0.5rem'
   }), [mapHeight]);
-
-  const options = useMemo(() => ({
-    disableDefaultUI: false,
-    zoomControl: true,
-    scrollwheel: true,
-    mapTypeControl: true,
-    streetViewControl: true,
-    fullscreenControl: true,
-    mapTypeId: 'roadmap',
-    styles: [
-      {
-        featureType: "poi",
-        elementType: "labels",
-        stylers: [{ visibility: "off" }]
-      }
-    ]
-  }), []);
-
-  const getMarkerIcon = useCallback((isHovered: boolean) => ({
-    path: google.maps.SymbolPath.CIRCLE,
-    fillColor: isHovered ? '#2563EB' : '#1E3A8A',
-    fillOpacity: 1,
-    strokeWeight: isHovered ? 2 : 0,
-    strokeColor: '#ffffff',
-    scale: isHovered ? 12 : 10
-  }), []);
 
   const handleMarkerClick = useCallback((marker: typeof markers[number]) => {
     if (marker.slug) {
@@ -135,7 +98,7 @@ const Map = ({
             mapContainerStyle={mapContainerStyle}
             center={center}
             zoom={zoom}
-            options={options}
+            options={defaultMapOptions}
             onLoad={onLoad}
           >
             {isLoaded && markers.map((marker, index) => (
