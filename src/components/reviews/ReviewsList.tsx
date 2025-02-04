@@ -1,6 +1,15 @@
-import { memo } from 'react';
+import { memo, useEffect, useState } from 'react';
 import ReviewCard from './ReviewCard';
 import { Review } from '@/types/reviews';
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
+import { cn } from "@/lib/utils";
+import { useCarousel } from "@/components/ui/carousel";
 
 interface ReviewsListProps {
   reviews: Review[];
@@ -8,16 +17,65 @@ interface ReviewsListProps {
 }
 
 const ReviewsList = ({ reviews, displayedReviews }: ReviewsListProps) => {
+  const [api, setApi] = useState<ReturnType<typeof useCarousel>["api"]>();
+  const [current, setCurrent] = useState(0);
+
+  useEffect(() => {
+    if (!api) return;
+
+    api.on("select", () => {
+      setCurrent(api.selectedScrollSnap());
+    });
+
+    // Auto-rotation
+    const autoRotate = setInterval(() => {
+      api.scrollNext();
+    }, 1500);
+
+    return () => {
+      clearInterval(autoRotate);
+      api.off("select", () => {});
+    };
+  }, [api]);
+
+  const handleDotClick = (index: number) => {
+    api?.scrollTo(index);
+  };
+
   return (
-    <div 
-      className="flex gap-8 overflow-x-hidden"
-      style={{ WebkitOverflowScrolling: 'touch' }}
-      role="region"
-      aria-label="Reviews carousel"
-    >
-      {[...displayedReviews, ...displayedReviews].map((review, index) => (
-        <ReviewCard key={index} review={review} index={index} />
-      ))}
+    <div className="w-full max-w-7xl mx-auto px-4">
+      <Carousel
+        setApi={setApi}
+        className="w-full relative"
+        opts={{
+          align: "start",
+          loop: true,
+        }}
+      >
+        <CarouselContent>
+          {displayedReviews.map((review, index) => (
+            <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
+              <ReviewCard review={review} index={index} />
+            </CarouselItem>
+          ))}
+        </CarouselContent>
+        <CarouselPrevious className="hidden md:flex" />
+        <CarouselNext className="hidden md:flex" />
+      </Carousel>
+
+      <div className="flex justify-center gap-2 mt-4">
+        {displayedReviews.map((_, index) => (
+          <button
+            key={index}
+            onClick={() => handleDotClick(index)}
+            className={cn(
+              "w-2 h-2 rounded-full transition-all",
+              current === index ? "bg-primary" : "bg-gray-300"
+            )}
+            aria-label={`Go to review ${index + 1}`}
+          />
+        ))}
+      </div>
     </div>
   );
 };

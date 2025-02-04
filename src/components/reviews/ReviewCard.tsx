@@ -11,7 +11,7 @@ const ReviewCard = ({ review, index }: ReviewCardProps) => {
   const { name, rating, text, date, service, location } = review;
   
   return (
-    <Card className="hover:shadow-lg transition-shadow">
+    <Card className="h-full hover:shadow-lg transition-shadow">
       <CardContent className="p-6">
         <div className="flex items-center mb-4">
           {[...Array(rating)].map((_, i) => (
@@ -23,7 +23,7 @@ const ReviewCard = ({ review, index }: ReviewCardProps) => {
           ))}
         </div>
         <Quote className="w-8 h-8 text-primary/20 mb-4" />
-        <p className="text-gray-600 mb-4">{text}</p>
+        <p className="text-gray-600 mb-4 line-clamp-4">{text}</p>
         <div className="space-y-2">
           <div className="flex justify-between items-center">
             <p className="font-semibold">{name}</p>
