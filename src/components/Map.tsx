@@ -12,6 +12,12 @@ interface MapProps {
   hoveredMarker?: string | null;
 }
 
+const mapContainerStyle = {
+  width: '100%',
+  height: '600px',
+  borderRadius: '0.5rem'
+};
+
 const mapOptions = {
   disableDefaultUI: false,
   zoomControl: true,
@@ -21,11 +27,6 @@ const mapOptions = {
   rotateControl: true,
   fullscreenControl: true,
   styles: mapStyles
-};
-
-const getMapHeight = () => {
-  if (typeof window === 'undefined') return '600px';
-  return window.innerWidth < 640 ? '400px' : window.innerWidth < 768 ? '500px' : '600px';
 };
 
 const Map = ({ 
@@ -45,21 +46,13 @@ const Map = ({
     }
   }, [navigate]);
 
-  const getMarkerIcon = useCallback((isHovered: boolean) => ({
-    path: google.maps.SymbolPath.CIRCLE,
-    fillColor: isHovered ? '#2563EB' : '#1E3A8A',
-    fillOpacity: 1,
-    strokeWeight: isHovered ? 2 : 0,
-    strokeColor: '#ffffff',
-    scale: isHovered ? 12 : 10
-  }), []);
-
   if (!GOOGLE_MAPS_API_KEY) {
     console.error('Google Maps API key is missing');
     return (
-      <div className="w-full h-[400px] md:h-[500px] lg:h-[600px] flex items-center justify-center bg-gray-50 rounded-lg">
+      <div className="w-full h-[600px] flex items-center justify-center bg-gray-50 rounded-lg">
         <div className="text-center space-y-4">
           <p className="text-red-500">Error: Google Maps API key is not configured</p>
+          <p className="text-sm text-gray-600">Please check your environment variables</p>
         </div>
       </div>
     );
@@ -68,7 +61,7 @@ const Map = ({
   if (loadError) {
     console.error('Map loading error:', loadError);
     return (
-      <div className="w-full h-[400px] md:h-[500px] lg:h-[600px] flex items-center justify-center bg-gray-50 rounded-lg">
+      <div className="w-full h-[600px] flex items-center justify-center bg-gray-50 rounded-lg">
         <div className="text-center space-y-4">
           <p className="text-red-500">Error loading map: {loadError}</p>
         </div>
@@ -77,17 +70,15 @@ const Map = ({
   }
 
   return (
-    <div 
-      className="relative w-full rounded-lg overflow-hidden shadow-lg" 
-      style={{ height: getMapHeight() }}
-      role="region" 
-      aria-label="Service areas map"
-    >
+    <div className="relative w-full rounded-lg overflow-hidden shadow-lg h-[600px]">
       <LoadScript 
         googleMapsApiKey={GOOGLE_MAPS_API_KEY}
         onError={(error) => {
           console.error('LoadScript error:', error);
           setLoadError(error.message);
+        }}
+        onLoad={() => {
+          console.log('Google Maps script loaded successfully');
         }}
         libraries={["places"]}
       >
@@ -98,11 +89,7 @@ const Map = ({
         )}
         
         <GoogleMap
-          mapContainerStyle={{
-            width: '100%',
-            height: getMapHeight(),
-            borderRadius: '0.5rem'
-          }}
+          mapContainerStyle={mapContainerStyle}
           center={center}
           zoom={zoom}
           options={mapOptions}
@@ -110,12 +97,15 @@ const Map = ({
             console.log('Map loaded successfully');
             setIsLoaded(true);
           }}
+          onError={(error) => {
+            console.error('GoogleMap error:', error);
+            setLoadError('Failed to load Google Map');
+          }}
         >
           {isLoaded && markers.map((marker, index) => (
             <Marker
               key={`${marker.slug}-${index}`}
               position={{ lat: marker.lat, lng: marker.lng }}
-              icon={getMarkerIcon(hoveredMarker === marker.slug)}
               title={marker.title}
               onClick={() => handleMarkerClick(marker.slug)}
               animation={hoveredMarker === marker.slug ? google.maps.Animation.BOUNCE : undefined}
