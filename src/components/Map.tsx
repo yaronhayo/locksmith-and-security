@@ -2,8 +2,9 @@ import { useState, useCallback, useEffect } from 'react';
 import { LoadScript, GoogleMap, Marker } from '@react-google-maps/api';
 import { useNavigate } from 'react-router-dom';
 import { Loader2 } from "lucide-react";
-import { GOOGLE_MAPS_API_KEY, defaultMapCenter, defaultMapZoom, mapStyles } from '@/config/constants';
+import { defaultMapCenter, defaultMapZoom, mapStyles } from '@/config/constants';
 import { MapLocation } from '@/types/map';
+import { supabase } from '@/integrations/supabase/client';
 
 interface MapProps {
   center?: { lat: number; lng: number };
@@ -39,6 +40,34 @@ const Map = ({
   const [isLoaded, setIsLoaded] = useState(false);
   const [loadError, setLoadError] = useState<string | null>(null);
   const [map, setMap] = useState<google.maps.Map | null>(null);
+  const [apiKey, setApiKey] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchApiKey = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('settings')
+          .select('value')
+          .eq('key', 'GOOGLE_MAPS_API_KEY')
+          .single();
+
+        if (error) {
+          console.error('Error fetching Google Maps API key:', error);
+          setLoadError('Failed to load map configuration');
+          return;
+        }
+
+        if (data) {
+          setApiKey(data.value);
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        setLoadError('Failed to load map configuration');
+      }
+    };
+
+    fetchApiKey();
+  }, []);
 
   const handleMarkerClick = useCallback((slug?: string) => {
     if (slug) {
@@ -46,13 +75,6 @@ const Map = ({
       window.scrollTo(0, 0);
     }
   }, [navigate]);
-
-  useEffect(() => {
-    if (!GOOGLE_MAPS_API_KEY) {
-      setLoadError('Google Maps API key is not configured');
-      console.error('Google Maps API key is missing');
-    }
-  }, []);
 
   if (loadError) {
     return (
@@ -65,10 +87,18 @@ const Map = ({
     );
   }
 
+  if (!apiKey) {
+    return (
+      <div className="w-full h-[600px] flex items-center justify-center bg-gray-50 rounded-lg">
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      </div>
+    );
+  }
+
   return (
     <div className="relative w-full rounded-lg overflow-hidden shadow-lg h-[600px]">
       <LoadScript 
-        googleMapsApiKey={GOOGLE_MAPS_API_KEY}
+        googleMapsApiKey={apiKey}
         onLoad={() => {
           console.log('Google Maps script loaded successfully');
         }}

@@ -1,8 +1,8 @@
 import { Input } from "@/components/ui/input";
 import { useEffect, useRef, useState } from "react";
 import { useLoadScript } from "@react-google-maps/api";
-import { GOOGLE_MAPS_API_KEY } from "@/config/constants";
 import { Loader2 } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 
 interface AddressAutocompleteProps {
   value: string;
@@ -29,13 +29,39 @@ const AddressAutocomplete = ({
 }: AddressAutocompleteProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [isInitialized, setIsInitialized] = useState(false);
+  const [apiKey, setApiKey] = useState<string | null>(null);
   const { isLoaded, loadError } = useLoadScript({
-    googleMapsApiKey: GOOGLE_MAPS_API_KEY,
+    googleMapsApiKey: apiKey || '',
     libraries: ["places"]
   });
 
   useEffect(() => {
-    if (!isLoaded || !inputRef.current || isInitialized) return;
+    const fetchApiKey = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('settings')
+          .select('value')
+          .eq('key', 'GOOGLE_MAPS_API_KEY')
+          .single();
+
+        if (error) {
+          console.error('Error fetching Google Maps API key:', error);
+          return;
+        }
+
+        if (data) {
+          setApiKey(data.value);
+        }
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    };
+
+    fetchApiKey();
+  }, []);
+
+  useEffect(() => {
+    if (!isLoaded || !inputRef.current || isInitialized || !apiKey) return;
 
     try {
       const autocomplete = new google.maps.places.Autocomplete(inputRef.current, {
@@ -60,7 +86,23 @@ const AddressAutocomplete = ({
     } catch (error) {
       console.error('Error initializing Places Autocomplete:', error);
     }
-  }, [isLoaded, onChange, isInitialized]);
+  }, [isLoaded, onChange, isInitialized, apiKey]);
+
+  if (!apiKey) {
+    return (
+      <div className="relative">
+        <Input
+          type="text"
+          value={value}
+          className={className}
+          placeholder="Loading..."
+          disabled
+          id={id}
+        />
+        <Loader2 className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 animate-spin text-gray-400" />
+      </div>
+    );
+  }
 
   if (loadError) {
     console.error('Google Maps Places API loading error:', loadError);
