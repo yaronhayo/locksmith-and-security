@@ -7,6 +7,7 @@ interface MetaTagsProps {
   ogImage?: string;
   keywords?: string;
   schema?: object;
+  noindex?: boolean;
 }
 
 const MetaTags = ({
@@ -16,6 +17,7 @@ const MetaTags = ({
   ogImage = "/og-image.png",
   keywords = "locksmith, security, lock services, emergency locksmith, North Bergen",
   schema,
+  noindex = false,
 }: MetaTagsProps) => {
   const baseUrl = "https://247locksmithandsecurity.com";
   const fullCanonicalUrl = canonicalUrl ? `${baseUrl}${canonicalUrl}` : baseUrl;
@@ -122,6 +124,7 @@ const MetaTags = ({
       <meta name="description" content={description} />
       <meta name="keywords" content={keywords} />
       <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+      {noindex && <meta name="robots" content="noindex,nofollow" />}
       <link rel="canonical" href={fullCanonicalUrl} />
       
       {/* Open Graph Tags */}
@@ -144,7 +147,7 @@ const MetaTags = ({
       <meta name="apple-mobile-web-app-capable" content="yes" />
       <meta name="apple-mobile-web-app-status-bar-style" content="default" />
       <meta name="format-detection" content="telephone=yes" />
-      <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+      <meta name="robots" content={noindex ? "noindex,nofollow" : "index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1"} />
       <meta name="author" content="Locksmith & Security LLC" />
       <meta name="copyright" content="© 2024 Locksmith & Security LLC. All rights reserved." />
       

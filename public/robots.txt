@@ -6,13 +6,15 @@ Allow: /contact/
 Allow: /faq/
 Allow: /reviews/
 Allow: /service-areas/
-Allow: /privacy-policy/
-Allow: /terms-conditions/
 
-# Block access to admin and API routes
+# Block access to utility and private pages
 Disallow: /api/
 Disallow: /admin/
 Disallow: /private/
+Disallow: /book-online/
+Disallow: /booking/
+Disallow: /privacy-policy/
+Disallow: /terms-conditions/
 
 # Block access to development-specific files
 Disallow: /*.js$
