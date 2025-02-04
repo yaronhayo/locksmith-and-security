@@ -8,9 +8,14 @@ export const defaultMapOptions = {
   mapTypeId: 'roadmap',
   styles: [
     {
-      featureType: "poi",
+      featureType: "all",
+      elementType: "geometry",
+      stylers: [{ visibility: "on" }]
+    },
+    {
+      featureType: "all",
       elementType: "labels",
-      stylers: [{ visibility: "off" }]
+      stylers: [{ visibility: "on" }]
     }
   ]
 };

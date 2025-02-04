@@ -55,10 +55,11 @@ const Map = ({
   }, []);
 
   const onLoad = useCallback((map: google.maps.Map) => {
-    console.log('Map instance loaded');
+    console.log('Map instance loaded successfully');
     setMapInstance(map);
     setIsLoaded(true);
 
+    // Fit bounds only if there are multiple markers
     if (markers.length > 1) {
       const bounds = new google.maps.LatLngBounds();
       markers.forEach(marker => {
@@ -73,6 +74,12 @@ const Map = ({
     setLoadError(error.message);
     setIsLoaded(false);
   }, []);
+
+  useEffect(() => {
+    if (mapInstance) {
+      console.log('Map instance is ready');
+    }
+  }, [mapInstance]);
 
   if (loadError) {
     return <MapErrorState error={loadError} onRetry={handleRetry} />;
@@ -98,7 +105,11 @@ const Map = ({
             mapContainerStyle={mapContainerStyle}
             center={center}
             zoom={zoom}
-            options={defaultMapOptions}
+            options={{
+              ...defaultMapOptions,
+              backgroundColor: '#e5e7eb', // Light gray background
+              mapTypeId: google.maps.MapTypeId.ROADMAP
+            }}
             onLoad={onLoad}
           >
             {isLoaded && markers.map((marker, index) => (
