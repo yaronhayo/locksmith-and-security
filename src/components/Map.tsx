@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { LoadScript, GoogleMap, Marker } from '@react-google-maps/api';
 import { useNavigate } from 'react-router-dom';
 import { Loader2 } from "lucide-react";
@@ -38,6 +38,7 @@ const Map = ({
   const navigate = useNavigate();
   const [isLoaded, setIsLoaded] = useState(false);
   const [loadError, setLoadError] = useState<string | null>(null);
+  const [map, setMap] = useState<google.maps.Map | null>(null);
 
   const handleMarkerClick = useCallback((slug?: string) => {
     if (slug) {
@@ -46,12 +47,19 @@ const Map = ({
     }
   }, [navigate]);
 
+  useEffect(() => {
+    if (!GOOGLE_MAPS_API_KEY) {
+      setLoadError('Google Maps API key is not configured');
+      console.error('Google Maps API key is missing');
+    }
+  }, []);
+
   if (loadError) {
-    console.error('Map loading error:', loadError);
     return (
       <div className="w-full h-[600px] flex items-center justify-center bg-gray-50 rounded-lg">
         <div className="text-center space-y-4">
           <p className="text-red-500">Error loading map: {loadError}</p>
+          <p className="text-sm text-gray-600">Please check the console for more details</p>
         </div>
       </div>
     );
@@ -61,14 +69,13 @@ const Map = ({
     <div className="relative w-full rounded-lg overflow-hidden shadow-lg h-[600px]">
       <LoadScript 
         googleMapsApiKey={GOOGLE_MAPS_API_KEY}
+        onLoad={() => {
+          console.log('Google Maps script loaded successfully');
+        }}
         onError={(error) => {
           console.error('LoadScript error:', error);
           setLoadError(error.message);
         }}
-        onLoad={() => {
-          console.log('Google Maps script loaded successfully');
-        }}
-        libraries={["places"]}
       >
         {!isLoaded && (
           <div className="absolute inset-0 flex items-center justify-center bg-gray-50">
@@ -81,8 +88,9 @@ const Map = ({
           center={center}
           zoom={zoom}
           options={mapOptions}
-          onLoad={() => {
+          onLoad={(map) => {
             console.log('Map loaded successfully');
+            setMap(map);
             setIsLoaded(true);
           }}
         >
