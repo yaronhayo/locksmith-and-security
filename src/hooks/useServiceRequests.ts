@@ -1,4 +1,4 @@
-import { useMutation } from '@tanstack/react-query';
+import { useMutation as useReactMutation } from '@tanstack/react-query';
 import { supabase } from '@/lib/supabase-client';
 import { toast } from '@/components/ui/use-toast';
 
@@ -19,7 +19,7 @@ export interface ServiceRequest {
 }
 
 export const useServiceRequests = () => {
-  const createServiceRequest = useMutation({
+  const createServiceRequest = useReactMutation({
     mutationFn: async (data: Omit<ServiceRequest, 'id' | 'created_at' | 'status'>) => {
       const { data: result, error } = await supabase
         .from('service_requests')
