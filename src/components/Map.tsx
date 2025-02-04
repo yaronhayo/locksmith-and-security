@@ -6,7 +6,7 @@ import MapLoadingState from './map/MapLoadingState';
 import MapErrorState from './map/MapErrorState';
 import { ErrorBoundary } from 'react-error-boundary';
 import ErrorFallback from './ErrorFallback';
-import { defaultMapOptions, getMarkerIcon } from './map/MapOptions';
+import { defaultMapOptions } from './map/MapOptions';
 import { GOOGLE_MAPS_API_KEY, serviceAreaLocations } from './map/MapConstants';
 
 interface MapProps {
@@ -27,6 +27,7 @@ const Map = ({
   const [mapInstance, setMapInstance] = useState<google.maps.Map | null>(null);
   const [loadError, setLoadError] = useState<string | null>(null);
   const [retryCount, setRetryCount] = useState(0);
+  const [isScriptLoaded, setIsScriptLoaded] = useState(false);
 
   const mapHeight = useMemo(() => {
     if (typeof window === 'undefined') return '600px';
@@ -52,14 +53,23 @@ const Map = ({
     setLoadError(null);
     setRetryCount(prev => prev + 1);
     setIsLoaded(false);
+    setIsScriptLoaded(false);
   }, []);
+
+  const getMarkerIcon = useCallback((isHovered: boolean) => ({
+    path: window.google?.maps?.SymbolPath?.CIRCLE || 0,
+    fillColor: isHovered ? '#2563EB' : '#1E3A8A',
+    fillOpacity: 1,
+    strokeWeight: isHovered ? 2 : 0,
+    strokeColor: '#ffffff',
+    scale: isHovered ? 12 : 10
+  }), []);
 
   const onLoad = useCallback((map: google.maps.Map) => {
     console.log('Map instance loaded successfully');
     setMapInstance(map);
     setIsLoaded(true);
 
-    // Fit bounds only if there are multiple markers
     if (markers.length > 1) {
       const bounds = new google.maps.LatLngBounds();
       markers.forEach(marker => {
@@ -73,13 +83,13 @@ const Map = ({
     console.error('Google Maps loading error:', error);
     setLoadError(error.message);
     setIsLoaded(false);
+    setIsScriptLoaded(false);
   }, []);
 
-  useEffect(() => {
-    if (mapInstance) {
-      console.log('Map instance is ready');
-    }
-  }, [mapInstance]);
+  const handleScriptLoad = useCallback(() => {
+    console.log('Google Maps script loaded successfully');
+    setIsScriptLoaded(true);
+  }, []);
 
   if (loadError) {
     return <MapErrorState error={loadError} onRetry={handleRetry} />;
@@ -96,35 +106,35 @@ const Map = ({
         <LoadScript 
           googleMapsApiKey={GOOGLE_MAPS_API_KEY}
           onError={handleLoadError}
-          onLoad={() => {
-            console.log('Google Maps script loaded successfully');
-          }}
+          onLoad={handleScriptLoad}
         >
           {!isLoaded && <MapLoadingState />}
-          <GoogleMap
-            mapContainerStyle={mapContainerStyle}
-            center={center}
-            zoom={zoom}
-            options={{
-              ...defaultMapOptions,
-              backgroundColor: '#e5e7eb', // Light gray background
-              mapTypeId: google.maps.MapTypeId.ROADMAP
-            }}
-            onLoad={onLoad}
-          >
-            {isLoaded && markers.map((marker, index) => (
-              <MapMarker
-                key={`${marker.slug}-${index}`}
-                lat={marker.lat}
-                lng={marker.lng}
-                title={marker.title}
-                slug={marker.slug}
-                isHovered={hoveredMarker === marker.slug}
-                onClick={() => handleMarkerClick(marker)}
-                getMarkerIcon={getMarkerIcon}
-              />
-            ))}
-          </GoogleMap>
+          {isScriptLoaded && (
+            <GoogleMap
+              mapContainerStyle={mapContainerStyle}
+              center={center}
+              zoom={zoom}
+              options={{
+                ...defaultMapOptions,
+                backgroundColor: '#e5e7eb',
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+              }}
+              onLoad={onLoad}
+            >
+              {isLoaded && markers.map((marker, index) => (
+                <MapMarker
+                  key={`${marker.slug}-${index}`}
+                  lat={marker.lat}
+                  lng={marker.lng}
+                  title={marker.title}
+                  slug={marker.slug}
+                  isHovered={hoveredMarker === marker.slug}
+                  onClick={() => handleMarkerClick(marker)}
+                  getMarkerIcon={getMarkerIcon}
+                />
+              ))}
+            </GoogleMap>
+          )}
         </LoadScript>
       </div>
     </ErrorBoundary>
