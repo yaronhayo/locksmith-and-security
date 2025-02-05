@@ -42,6 +42,8 @@ const Map = ({
     }
   }, []);
 
+  console.log('Map render state:', { apiKey, loadError, isRetrying, retryCount });
+
   if (loadError) {
     return (
       <MapError 
@@ -61,7 +63,13 @@ const Map = ({
     <div className="w-full h-[400px] relative rounded-lg overflow-hidden">
       <LoadScript 
         googleMapsApiKey={apiKey}
-        onLoad={() => setIsLoaded(true)}
+        onLoad={() => {
+          console.log('Google Maps script loaded');
+          setIsLoaded(true);
+        }}
+        onError={(error) => {
+          console.error('Google Maps script error:', error);
+        }}
         libraries={["places"]}
       >
         {!isLoaded && <MapLoader />}
@@ -71,6 +79,9 @@ const Map = ({
           zoom={zoom}
           options={mapOptions}
           onClick={onClick}
+          onLoad={() => {
+            console.log('Google Map loaded');
+          }}
         >
           {markers.map((marker, index) => (
             <Marker

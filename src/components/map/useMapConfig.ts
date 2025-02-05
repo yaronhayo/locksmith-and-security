@@ -19,23 +19,32 @@ export const useMapConfig = () => {
       setIsRetrying(true);
       setLoadError(null);
       
+      console.log('Fetching Google Maps API key...');
+      
       const { data, error } = await supabase
         .from('settings')
         .select('value')
         .eq('key', 'google_maps_api_key')
         .single();
 
+      console.log('Supabase response:', { data, error });
+
       if (error) {
+        console.error('Supabase error:', error);
         throw new Error('Failed to fetch Google Maps API key');
       }
 
       if (!data?.value) {
-        throw new Error('Google Maps API key not configured');
+        console.error('No API key found in settings');
+        throw new Error('Google Maps API key not found');
       }
 
+      console.log('API key fetched successfully');
       setApiKey(data.value);
       setRetryCount(0);
+      setLoadError(null);
     } catch (error) {
+      console.error('Error in fetchApiKey:', error);
       const errorMessage = error instanceof Error ? error.message : 'Failed to load map configuration';
       setLoadError(errorMessage);
       
