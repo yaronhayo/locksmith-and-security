@@ -1,19 +1,26 @@
-import { useState } from "react";
-import { GoogleMap, LoadScript } from "@react-google-maps/api";
+import { useState, useCallback } from "react";
+import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
+import { useMapConfig } from "./map/useMapConfig";
 import MapError from "./map/MapError";
 import MapLoader from "./map/MapLoader";
-import MapMarkers from "./map/MapMarkers";
-import { useMapConfig } from "./map/useMapConfig";
 import { MapLocation } from "@/types/map";
-
-const mapContainerStyle = {
-  width: "100%",
-  height: "400px",
-};
 
 const defaultCenter = {
   lat: 40.7795,
   lng: -74.0324,
+};
+
+const mapContainerStyle = {
+  width: "100%",
+  height: "400px",
+  borderRadius: "0.5rem",
+};
+
+const mapOptions = {
+  disableDefaultUI: false,
+  zoomControl: true,
+  streetViewControl: false,
+  mapTypeControl: false,
 };
 
 interface MapProps {
@@ -21,24 +28,27 @@ interface MapProps {
   hoveredMarker?: string | null;
   center?: { lat: number; lng: number };
   zoom?: number;
+  onClick?: (e: google.maps.MapMouseEvent) => void;
 }
 
 const Map = ({
   markers = [],
   center = defaultCenter,
   zoom = 12,
-  hoveredMarker = null
+  hoveredMarker = null,
+  onClick,
 }: MapProps) => {
   const [isLoaded, setIsLoaded] = useState(false);
-  const [scriptError, setScriptError] = useState<string | null>(null);
   const { apiKey, loadError, isRetrying, fetchApiKey } = useMapConfig();
 
-  if (loadError || scriptError) {
-    return <MapError 
-      error={loadError || scriptError} 
-      onRetry={fetchApiKey} 
-      isRetrying={isRetrying} 
-    />;
+  const handleMarkerClick = useCallback((slug?: string) => {
+    if (slug) {
+      window.location.href = `/service-areas/${slug}`;
+    }
+  }, []);
+
+  if (loadError) {
+    return <MapError error={loadError} onRetry={fetchApiKey} isRetrying={isRetrying} />;
   }
 
   if (!apiKey) {
@@ -50,24 +60,29 @@ const Map = ({
       <LoadScript 
         googleMapsApiKey={apiKey}
         onLoad={() => setIsLoaded(true)}
-        onError={(error) => {
-          console.error('Google Maps script error:', error);
-          setScriptError('Failed to load Google Maps');
-        }}
+        libraries={["places"]}
       >
         {!isLoaded && <MapLoader />}
         <GoogleMap
           mapContainerStyle={mapContainerStyle}
           center={center}
           zoom={zoom}
-          options={{
-            disableDefaultUI: false,
-            zoomControl: true,
-            streetViewControl: false,
-            mapTypeControl: false,
-          }}
+          options={mapOptions}
+          onClick={onClick}
         >
-          <MapMarkers markers={markers} hoveredMarker={hoveredMarker} />
+          {markers.map((marker, index) => (
+            <Marker
+              key={`${marker.slug || ''}-${index}`}
+              position={{ lat: marker.lat, lng: marker.lng }}
+              title={marker.title}
+              onClick={() => handleMarkerClick(marker.slug)}
+              animation={
+                hoveredMarker === marker.slug
+                  ? google.maps.Animation.BOUNCE
+                  : undefined
+              }
+            />
+          ))}
         </GoogleMap>
       </LoadScript>
     </div>

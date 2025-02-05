@@ -1,9 +1,9 @@
-import LoadingSpinner from "@/components/LoadingSpinner";
+import { Loader2 } from "lucide-react";
 
 const MapLoader = () => {
   return (
     <div className="absolute inset-0 flex items-center justify-center bg-gray-100/80">
-      <LoadingSpinner />
+      <Loader2 className="h-8 w-8 animate-spin text-primary" />
     </div>
   );
 };

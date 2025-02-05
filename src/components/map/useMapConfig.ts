@@ -19,17 +19,16 @@ export const useMapConfig = () => {
 
       if (error) {
         console.error('Error fetching Google Maps API key:', error);
-        throw error;
+        throw new Error('Failed to fetch API key');
       }
-      
+
       if (!data?.value) {
-        throw new Error('API key not found');
+        throw new Error('Google Maps API key not found');
       }
 
       setApiKey(data.value);
     } catch (error) {
-      setLoadError('Failed to load map configuration');
-      console.error('Error fetching Google Maps API key:', error);
+      setLoadError(error instanceof Error ? error.message : 'Failed to load map configuration');
     } finally {
       setIsRetrying(false);
     }
