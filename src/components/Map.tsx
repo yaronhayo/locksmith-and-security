@@ -42,14 +42,6 @@ const Map = ({
     }
   }, []);
 
-  console.log('Map render state:', { 
-    hasApiKey: !!apiKey,
-    loadError,
-    isRetrying,
-    retryCount,
-    isLoaded
-  });
-
   if (loadError) {
     return (
       <MapError 
