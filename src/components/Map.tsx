@@ -1,10 +1,11 @@
-import { useState, useCallback, useEffect } from 'react';
-import { LoadScript, GoogleMap, Marker } from '@react-google-maps/api';
-import { useNavigate } from 'react-router-dom';
-import { Loader2, AlertCircle } from "lucide-react";
+import { useState } from 'react';
+import { LoadScript, GoogleMap } from '@react-google-maps/api';
 import { defaultMapCenter, defaultMapZoom, mapStyles } from '@/config/constants';
 import { MapLocation } from '@/types/map';
-import { supabase } from '@/integrations/supabase/client';
+import MapError from './map/MapError';
+import MapLoader from './map/MapLoader';
+import MapMarkers from './map/MapMarkers';
+import { useMapConfig } from './map/useMapConfig';
 
 interface MapProps {
   center?: { lat: number; lng: number };
@@ -36,89 +37,25 @@ const Map = ({
   markers = [],
   hoveredMarker = null
 }: MapProps) => {
-  const navigate = useNavigate();
   const [isLoaded, setIsLoaded] = useState(false);
-  const [loadError, setLoadError] = useState<string | null>(null);
-  const [apiKey, setApiKey] = useState<string | null>(null);
-  const [isRetrying, setIsRetrying] = useState(false);
-
-  const fetchApiKey = async () => {
-    try {
-      setIsRetrying(true);
-      const { data, error } = await supabase
-        .from('settings')
-        .select('value')
-        .eq('key', 'GOOGLE_MAPS_API_KEY')
-        .single();
-
-      if (error) throw new Error('Failed to fetch API key');
-      if (!data?.value) throw new Error('No API key found in settings');
-
-      setApiKey(data.value);
-      setLoadError(null);
-    } catch (error) {
-      setLoadError('Failed to load map configuration');
-    } finally {
-      setIsRetrying(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchApiKey();
-  }, []);
-
-  const handleMarkerClick = useCallback((slug?: string) => {
-    if (slug) {
-      navigate(`/service-areas/${slug}`);
-      window.scrollTo(0, 0);
-    }
-  }, [navigate]);
+  const { apiKey, loadError, isRetrying, fetchApiKey } = useMapConfig();
 
   if (loadError) {
-    return (
-      <div className="w-full h-[600px] flex items-center justify-center bg-gray-50 rounded-lg">
-        <div className="text-center space-y-4">
-          <AlertCircle className="h-12 w-12 text-red-500 mx-auto" />
-          <p className="text-red-500 font-medium">{loadError}</p>
-          <button 
-            onClick={fetchApiKey}
-            disabled={isRetrying}
-            className="px-4 py-2 bg-primary text-white rounded-md hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            {isRetrying ? (
-              <span className="flex items-center gap-2">
-                <Loader2 className="h-4 w-4 animate-spin" />
-                Retrying...
-              </span>
-            ) : (
-              'Try again'
-            )}
-          </button>
-        </div>
-      </div>
-    );
+    return <MapError error={loadError} onRetry={fetchApiKey} isRetrying={isRetrying} />;
   }
 
   if (!apiKey) {
-    return (
-      <div className="w-full h-[600px] flex items-center justify-center bg-gray-50 rounded-lg">
-        <Loader2 className="h-8 w-8 animate-spin text-primary" />
-      </div>
-    );
+    return <MapLoader />;
   }
 
   return (
     <div className="relative w-full rounded-lg overflow-hidden shadow-lg h-[600px]">
       <LoadScript 
         googleMapsApiKey={apiKey}
-        onLoad={() => setLoadError(null)}
+        onLoad={() => setIsLoaded(true)}
         onError={() => setLoadError('Failed to load Google Maps')}
       >
-        {!isLoaded && (
-          <div className="absolute inset-0 flex items-center justify-center bg-gray-50">
-            <Loader2 className="h-8 w-8 animate-spin text-primary" />
-          </div>
-        )}
+        {!isLoaded && <MapLoader />}
         
         <GoogleMap
           mapContainerStyle={mapContainerStyle}
@@ -127,15 +64,12 @@ const Map = ({
           options={mapOptions}
           onLoad={() => setIsLoaded(true)}
         >
-          {isLoaded && markers.map((marker, index) => (
-            <Marker
-              key={`${marker.slug}-${index}`}
-              position={{ lat: marker.lat, lng: marker.lng }}
-              title={marker.title}
-              onClick={() => handleMarkerClick(marker.slug)}
-              animation={hoveredMarker === marker.slug ? google.maps.Animation.BOUNCE : undefined}
+          {isLoaded && (
+            <MapMarkers 
+              markers={markers} 
+              hoveredMarker={hoveredMarker} 
             />
-          ))}
+          )}
         </GoogleMap>
       </LoadScript>
     </div>
