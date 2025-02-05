@@ -29,7 +29,7 @@ export const useMapConfig = () => {
         .maybeSingle();
 
       console.log('Supabase response:', { 
-        hasData: !!data,
+        hasData: !!data?.value,
         error: error ? {
           message: error.message,
           code: error.code
@@ -37,12 +37,10 @@ export const useMapConfig = () => {
       });
 
       if (error) {
-        console.error('Supabase error:', error);
         throw new Error(`Failed to fetch Google Maps API key: ${error.message}`);
       }
 
       if (!data?.value) {
-        console.error('No API key found in settings');
         throw new Error('Google Maps API key not found in settings');
       }
 
@@ -55,7 +53,8 @@ export const useMapConfig = () => {
       const errorMessage = error instanceof Error ? error.message : 'Failed to load map configuration';
       setLoadError(errorMessage);
       
-      if (retryCount < MAX_RETRIES) {
+      // Only schedule a retry if we haven't exceeded the maximum attempts
+      if (retryCount < MAX_RETRIES - 1) {
         const backoffTime = Math.min(INITIAL_BACKOFF * Math.pow(2, retryCount), 8000);
         console.log(`Retrying in ${backoffTime}ms (attempt ${retryCount + 1}/${MAX_RETRIES})`);
         setTimeout(() => {
@@ -69,8 +68,11 @@ export const useMapConfig = () => {
   }, [retryCount]);
 
   useEffect(() => {
-    console.log('useMapConfig hook mounted, initiating API key fetch');
-    fetchApiKey();
+    // Only fetch on initial mount
+    if (retryCount === 0) {
+      console.log('useMapConfig hook mounted, initiating API key fetch');
+      fetchApiKey();
+    }
   }, [fetchApiKey]);
 
   return {
