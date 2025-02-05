@@ -39,7 +39,6 @@ const Map = ({
   const navigate = useNavigate();
   const [isLoaded, setIsLoaded] = useState(false);
   const [loadError, setLoadError] = useState<string | null>(null);
-  const [map, setMap] = useState<google.maps.Map | null>(null);
   const [apiKey, setApiKey] = useState<string | null>(null);
   const [isRetrying, setIsRetrying] = useState(false);
 
@@ -142,9 +141,8 @@ const Map = ({
           center={center}
           zoom={zoom}
           options={mapOptions}
-          onLoad={(map) => {
+          onLoad={() => {
             console.log('Map component loaded successfully');
-            setMap(map);
             setIsLoaded(true);
           }}
         >
