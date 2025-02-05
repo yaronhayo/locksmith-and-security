@@ -45,28 +45,18 @@ const Map = ({
   const fetchApiKey = async () => {
     try {
       setIsRetrying(true);
-      console.log('Fetching API key...');
-      
       const { data, error } = await supabase
         .from('settings')
         .select('value')
         .eq('key', 'GOOGLE_MAPS_API_KEY')
         .single();
 
-      if (error) {
-        console.error('Supabase error:', error);
-        throw new Error('Failed to fetch API key');
-      }
+      if (error) throw new Error('Failed to fetch API key');
+      if (!data?.value) throw new Error('No API key found in settings');
 
-      if (!data?.value) {
-        throw new Error('No API key found in settings');
-      }
-
-      console.log('API key fetched successfully');
       setApiKey(data.value);
       setLoadError(null);
     } catch (error) {
-      console.error('API key fetch error:', error);
       setLoadError('Failed to load map configuration');
     } finally {
       setIsRetrying(false);
@@ -121,14 +111,8 @@ const Map = ({
     <div className="relative w-full rounded-lg overflow-hidden shadow-lg h-[600px]">
       <LoadScript 
         googleMapsApiKey={apiKey}
-        onLoad={() => {
-          console.log('Google Maps script loaded successfully');
-          setLoadError(null);
-        }}
-        onError={(error) => {
-          console.error('LoadScript error:', error);
-          setLoadError('Failed to load Google Maps');
-        }}
+        onLoad={() => setLoadError(null)}
+        onError={() => setLoadError('Failed to load Google Maps')}
       >
         {!isLoaded && (
           <div className="absolute inset-0 flex items-center justify-center bg-gray-50">
@@ -141,10 +125,7 @@ const Map = ({
           center={center}
           zoom={zoom}
           options={mapOptions}
-          onLoad={() => {
-            console.log('Map component loaded successfully');
-            setIsLoaded(true);
-          }}
+          onLoad={() => setIsLoaded(true)}
         >
           {isLoaded && markers.map((marker, index) => (
             <Marker
