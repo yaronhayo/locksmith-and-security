@@ -2,11 +2,12 @@ import { useEffect, useRef, useState } from "react";
 import { Input } from "./input";
 import { useMapConfig } from "../map/useMapConfig";
 import { LoadScript } from "@react-google-maps/api";
+import { InputHTMLAttributes } from "react";
 
-interface AddressAutocompleteProps extends React.InputHTMLAttributes<HTMLInputElement> {
+type AddressAutocompleteProps = Omit<InputHTMLAttributes<HTMLInputElement>, 'onChange'> & {
   value: string;
   onChange: (value: string) => void;
-}
+};
 
 const AddressAutocomplete = ({
   value,
@@ -51,6 +52,10 @@ const AddressAutocomplete = ({
     };
   }, [isLoaded, onChange]);
 
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    onChange(e.target.value);
+  };
+
   if (!apiKey) return null;
 
   return (
@@ -63,7 +68,7 @@ const AddressAutocomplete = ({
         ref={inputRef}
         type="text"
         value={value}
-        onChange={(e) => onChange(e.target.value)}
+        onChange={handleInputChange}
         className={className}
         disabled={disabled}
         {...props}
