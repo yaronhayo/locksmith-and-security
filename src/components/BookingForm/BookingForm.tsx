@@ -5,7 +5,7 @@ import ServiceSelection from "./FormFields/ServiceSelection";
 import TimeframeSelection from "./FormFields/TimeframeSelection";
 import AdditionalNotes from "./FormFields/AdditionalNotes";
 import OtherServiceField from "./FormFields/OtherServiceField";
-import VehicleFields from "./fields/VehicleFields";
+import VehicleFields from "./FormFields/VehicleFields";
 import SubmitButton from "./SubmitButton";
 import { validateForm } from "./validation";
 
@@ -85,10 +85,6 @@ const BookingForm = () => {
       <AdditionalNotes isSubmitting={isSubmitting} />
 
       <SubmitButton isSubmitting={isSubmitting} />
-
-      <p className="text-sm text-gray-500 text-center">
-        Fast Response • Professional Service • 24/7 Available
-      </p>
     </form>
   );
 };

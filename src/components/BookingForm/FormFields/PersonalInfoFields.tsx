@@ -20,7 +20,7 @@ const PersonalInfoFields = ({ errors, isSubmitting }: PersonalInfoFieldsProps) =
           aria-describedby="name-error"
           className={`h-10 text-base ${errors.name ? 'border-red-500' : ''}`}
           disabled={isSubmitting}
-          aria-label="Enter your full name"
+          autoComplete="name"
           required
         />
         {errors.name && (
@@ -40,7 +40,7 @@ const PersonalInfoFields = ({ errors, isSubmitting }: PersonalInfoFieldsProps) =
           aria-describedby="phone-error"
           className={`h-10 text-base ${errors.phone ? 'border-red-500' : ''}`}
           disabled={isSubmitting}
-          aria-label="Enter your phone number"
+          autoComplete="tel"
           required
         />
         {errors.phone && (
@@ -60,7 +60,7 @@ const PersonalInfoFields = ({ errors, isSubmitting }: PersonalInfoFieldsProps) =
           aria-describedby="address-error"
           className={`h-10 text-base ${errors.address ? 'border-red-500' : ''}`}
           disabled={isSubmitting}
-          aria-label="Enter your service address"
+          autoComplete="street-address"
           required
         />
         {errors.address && (

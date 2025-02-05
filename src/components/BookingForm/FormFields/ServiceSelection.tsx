@@ -24,7 +24,6 @@ const ServiceSelection = ({ error, isSubmitting, onServiceChange }: ServiceSelec
         <SelectTrigger 
           id="service"
           className={`h-10 text-base ${error ? 'border-red-500' : ''}`}
-          aria-label="Select the service you need"
         >
           <SelectValue placeholder="Select Service Needed" />
         </SelectTrigger>
