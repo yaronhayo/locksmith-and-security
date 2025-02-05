@@ -38,10 +38,15 @@ const Map = ({
   hoveredMarker = null
 }: MapProps) => {
   const [isLoaded, setIsLoaded] = useState(false);
+  const [scriptError, setScriptError] = useState<string | null>(null);
   const { apiKey, loadError, isRetrying, fetchApiKey } = useMapConfig();
 
-  if (loadError) {
-    return <MapError error={loadError} onRetry={fetchApiKey} isRetrying={isRetrying} />;
+  if (loadError || scriptError) {
+    return <MapError 
+      error={loadError || scriptError} 
+      onRetry={fetchApiKey} 
+      isRetrying={isRetrying} 
+    />;
   }
 
   if (!apiKey) {
@@ -53,7 +58,7 @@ const Map = ({
       <LoadScript 
         googleMapsApiKey={apiKey}
         onLoad={() => setIsLoaded(true)}
-        onError={() => setLoadError('Failed to load Google Maps')}
+        onError={() => setScriptError('Failed to load Google Maps')}
       >
         {!isLoaded && <MapLoader />}
         
