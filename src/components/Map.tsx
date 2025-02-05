@@ -44,32 +44,28 @@ const Map = ({
   const [isRetrying, setIsRetrying] = useState(false);
 
   const fetchApiKey = async () => {
-    console.log('Starting to fetch Google Maps API key...');
     try {
-      const { data, error } = await supabase
+      const { data: settingsData, error: settingsError } = await supabase
         .from('settings')
-        .select('*')
+        .select('value')
         .eq('key', 'GOOGLE_MAPS_API_KEY')
-        .maybeSingle();
+        .single();
 
-      console.log('Supabase response:', { data, error });
-
-      if (error) {
-        console.error('Supabase error:', error);
-        throw new Error(`Database error: ${error.message}`);
+      if (settingsError) {
+        console.error('Error fetching API key:', settingsError);
+        throw new Error(`Failed to fetch API key: ${settingsError.message}`);
       }
 
-      if (!data) {
-        console.error('No API key found in settings');
-        throw new Error('Google Maps API key not found in database');
+      if (!settingsData?.value) {
+        console.error('No API key found');
+        throw new Error('Google Maps API key not found');
       }
 
-      console.log('API key retrieved:', data.value ? 'Key exists' : 'No key found');
-      setApiKey(data.value);
+      setApiKey(settingsData.value);
       setLoadError(null);
       setIsRetrying(false);
     } catch (error) {
-      console.error('Fetch error:', error);
+      console.error('API key fetch error:', error);
       setLoadError(error instanceof Error ? error.message : 'Failed to fetch API key');
       setIsRetrying(true);
     }
