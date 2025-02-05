@@ -19,27 +19,32 @@ export const useMapConfig = () => {
       setIsRetrying(true);
       setLoadError(null);
       
-      console.log('Fetching Google Maps API key...');
+      console.log('Starting API key fetch attempt:', retryCount + 1);
       
-      const { data, error } = await supabase
+      const { data, error, status } = await supabase
         .from('settings')
         .select('value')
         .eq('key', 'google_maps_api_key')
         .single();
 
-      console.log('Supabase response:', { data, error });
+      console.log('Supabase response:', { data, error, status });
 
       if (error) {
-        console.error('Supabase error:', error);
-        throw new Error('Failed to fetch Google Maps API key');
+        console.error('Supabase error details:', {
+          message: error.message,
+          details: error.details,
+          hint: error.hint,
+          code: error.code
+        });
+        throw new Error(`Failed to fetch Google Maps API key: ${error.message}`);
       }
 
       if (!data?.value) {
-        console.error('No API key found in settings');
-        throw new Error('Google Maps API key not found');
+        console.error('No API key found in settings table');
+        throw new Error('Google Maps API key not found in settings');
       }
 
-      console.log('API key fetched successfully');
+      console.log('API key fetch successful, key length:', data.value.length);
       setApiKey(data.value);
       setRetryCount(0);
       setLoadError(null);
@@ -50,6 +55,7 @@ export const useMapConfig = () => {
       
       if (retryCount < MAX_RETRIES) {
         const backoffTime = Math.min(1000 * Math.pow(2, retryCount), 8000);
+        console.log(`Retrying in ${backoffTime}ms (attempt ${retryCount + 1}/${MAX_RETRIES})`);
         setTimeout(() => {
           setRetryCount(prev => prev + 1);
           fetchApiKey();
@@ -61,6 +67,7 @@ export const useMapConfig = () => {
   }, [retryCount]);
 
   useEffect(() => {
+    console.log('useMapConfig hook mounted, initiating API key fetch');
     fetchApiKey();
   }, [fetchApiKey]);
 
