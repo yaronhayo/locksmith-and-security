@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 
 const MAX_RETRIES = 3;
+const INITIAL_BACKOFF = 1000; // 1 second
 
 export const useMapConfig = () => {
   const [apiKey, setApiKey] = useState<string | null>(null);
@@ -21,30 +22,25 @@ export const useMapConfig = () => {
       
       console.log('Starting API key fetch attempt:', retryCount + 1);
       
-      const { data, error, status } = await supabase
+      const { data, error } = await supabase
         .from('settings')
         .select('value')
         .eq('key', 'google_maps_api_key')
         .single();
 
-      console.log('Supabase response:', { data, error, status });
+      console.log('Supabase response:', { data, error });
 
       if (error) {
-        console.error('Supabase error details:', {
-          message: error.message,
-          details: error.details,
-          hint: error.hint,
-          code: error.code
-        });
+        console.error('Supabase error:', error);
         throw new Error(`Failed to fetch Google Maps API key: ${error.message}`);
       }
 
       if (!data?.value) {
-        console.error('No API key found in settings table');
+        console.error('No API key found');
         throw new Error('Google Maps API key not found in settings');
       }
 
-      console.log('API key fetch successful, key length:', data.value.length);
+      console.log('API key fetch successful');
       setApiKey(data.value);
       setRetryCount(0);
       setLoadError(null);
@@ -54,7 +50,7 @@ export const useMapConfig = () => {
       setLoadError(errorMessage);
       
       if (retryCount < MAX_RETRIES) {
-        const backoffTime = Math.min(1000 * Math.pow(2, retryCount), 8000);
+        const backoffTime = Math.min(INITIAL_BACKOFF * Math.pow(2, retryCount), 8000);
         console.log(`Retrying in ${backoffTime}ms (attempt ${retryCount + 1}/${MAX_RETRIES})`);
         setTimeout(() => {
           setRetryCount(prev => prev + 1);
