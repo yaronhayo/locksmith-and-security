@@ -5,7 +5,6 @@ import { Loader2, AlertCircle } from "lucide-react";
 import { defaultMapCenter, defaultMapZoom, mapStyles } from '@/config/constants';
 import { MapLocation } from '@/types/map';
 import { supabase } from '@/integrations/supabase/client';
-import { useToast } from "@/components/ui/use-toast";
 
 interface MapProps {
   center?: { lat: number; lng: number };
@@ -38,7 +37,6 @@ const Map = ({
   hoveredMarker = null
 }: MapProps) => {
   const navigate = useNavigate();
-  const { toast } = useToast();
   const [isLoaded, setIsLoaded] = useState(false);
   const [loadError, setLoadError] = useState<string | null>(null);
   const [map, setMap] = useState<google.maps.Map | null>(null);
@@ -68,21 +66,9 @@ const Map = ({
       console.log('API key fetched successfully');
       setApiKey(data.value);
       setLoadError(null);
-      
-      toast({
-        title: "Map loaded successfully",
-        duration: 3000,
-      });
     } catch (error) {
       console.error('API key fetch error:', error);
       setLoadError('Failed to load map configuration');
-      
-      toast({
-        variant: "destructive",
-        title: "Error loading map",
-        description: "Please try again later",
-        duration: 5000,
-      });
     } finally {
       setIsRetrying(false);
     }
@@ -143,12 +129,6 @@ const Map = ({
         onError={(error) => {
           console.error('LoadScript error:', error);
           setLoadError('Failed to load Google Maps');
-          toast({
-            variant: "destructive",
-            title: "Error loading Google Maps",
-            description: "Please check your internet connection and try again",
-            duration: 5000,
-          });
         }}
       >
         {!isLoaded && (
