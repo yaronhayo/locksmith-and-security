@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
-import { Button } from "@/components/ui/button";
-import { Lock, Loader2 } from "lucide-react";
 import { BookingFormData, FormErrors } from "@/types/booking";
-import PersonalInfoFields from "./PersonalInfoFields";
-import ServiceSelection from "./ServiceSelection";
-import VehicleFields from "./VehicleFields";
-import TimeframeSelection from "./TimeframeSelection";
+import PersonalInfoFields from "./FormFields/PersonalInfoFields";
+import ServiceSelection from "./FormFields/ServiceSelection";
+import VehicleFields from "./FormFields/VehicleFields";
+import TimeframeSelection from "./FormFields/TimeframeSelection";
+import OtherServiceField from "./FormFields/OtherServiceField";
+import AdditionalNotes from "./FormFields/AdditionalNotes";
+import SubmitButton from "./SubmitButton";
 import { validateForm } from "./validation";
 
 const BookingForm = () => {
@@ -77,29 +78,13 @@ const BookingForm = () => {
 
       <TimeframeSelection isSubmitting={isSubmitting} />
 
-      <Button
-        type="submit"
-        size="lg"
-        className="w-full text-lg font-semibold h-10"
-        disabled={isSubmitting}
-        aria-label="Submit service request"
-      >
-        {isSubmitting ? (
-          <>
-            <Loader2 className="w-5 h-5 mr-2 animate-spin" />
-            Submitting...
-          </>
-        ) : (
-          <>
-            <Lock className="w-5 h-5 mr-2" />
-            Request Service
-          </>
-        )}
-      </Button>
+      {selectedService === "Other" && (
+        <OtherServiceField isSubmitting={isSubmitting} />
+      )}
 
-      <p className="text-sm text-gray-500 text-center">
-        Fast Response • Professional Service • 24/7 Available
-      </p>
+      <AdditionalNotes isSubmitting={isSubmitting} />
+
+      <SubmitButton isSubmitting={isSubmitting} />
     </form>
   );
 };
