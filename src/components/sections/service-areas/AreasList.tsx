@@ -1,10 +1,10 @@
 import { MapPin } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Area } from './types';
+import { ServiceAreaLocation } from '../../service-areas/types';
 
 interface AreasListProps {
-  areas: Area[];
+  areas: ServiceAreaLocation[];
   hoveredArea: string | null;
   setHoveredArea: (area: string | null) => void;
 }
