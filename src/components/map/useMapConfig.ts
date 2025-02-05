@@ -1,12 +1,13 @@
 import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 
+const MAX_RETRIES = 3;
+
 export const useMapConfig = () => {
   const [apiKey, setApiKey] = useState<string | null>(null);
   const [loadError, setLoadError] = useState<string | null>(null);
   const [isRetrying, setIsRetrying] = useState(false);
   const [retryCount, setRetryCount] = useState(0);
-  const MAX_RETRIES = 3;
 
   const fetchApiKey = useCallback(async () => {
     if (retryCount >= MAX_RETRIES) {
@@ -25,19 +26,16 @@ export const useMapConfig = () => {
         .single();
 
       if (error) {
-        console.error('Error fetching API key:', error);
-        throw new Error('Failed to fetch API key');
+        throw new Error('Failed to fetch Google Maps API key');
       }
 
       if (!data?.value) {
-        console.error('No API key found');
-        throw new Error('Google Maps API key not found');
+        throw new Error('Google Maps API key not configured');
       }
 
       setApiKey(data.value);
       setRetryCount(0);
     } catch (error) {
-      console.error('Error in fetchApiKey:', error);
       const errorMessage = error instanceof Error ? error.message : 'Failed to load map configuration';
       setLoadError(errorMessage);
       

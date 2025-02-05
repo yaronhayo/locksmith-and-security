@@ -5,11 +5,6 @@ import MapError from "./map/MapError";
 import MapLoader from "./map/MapLoader";
 import { MapLocation } from "@/types/map";
 
-const defaultCenter = {
-  lat: 40.7795,
-  lng: -74.0324,
-};
-
 const mapContainerStyle = {
   width: "100%",
   height: "400px",
@@ -33,7 +28,7 @@ interface MapProps {
 
 const Map = ({
   markers = [],
-  center = defaultCenter,
+  center = { lat: 40.7795, lng: -74.0324 },
   zoom = 12,
   hoveredMarker = null,
   onClick,
