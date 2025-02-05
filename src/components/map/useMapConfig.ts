@@ -18,8 +18,6 @@ export const useMapConfig = () => {
       setIsRetrying(true);
       setLoadError(null);
       
-      console.log(`Attempt ${retryCount + 1}/${MAX_RETRIES}: Fetching Google Maps API key...`);
-      
       const { data, error } = await supabase
         .from('settings')
         .select('value')
@@ -27,21 +25,15 @@ export const useMapConfig = () => {
         .single();
 
       if (error) {
-        console.error('Supabase error:', error);
-        throw new Error('Failed to fetch API key from settings');
+        console.error('Error fetching API key:', error);
+        throw new Error('Failed to fetch API key');
       }
 
       if (!data?.value) {
-        console.error('No API key found in settings');
-        throw new Error('Google Maps API key not configured');
+        console.error('No API key found');
+        throw new Error('Google Maps API key not found');
       }
 
-      if (data.value.trim() === '') {
-        console.error('API key is empty');
-        throw new Error('Google Maps API key not configured');
-      }
-
-      console.log('Successfully fetched API key');
       setApiKey(data.value);
       setRetryCount(0);
     } catch (error) {
@@ -51,7 +43,6 @@ export const useMapConfig = () => {
       
       if (retryCount < MAX_RETRIES) {
         const backoffTime = Math.min(1000 * Math.pow(2, retryCount), 8000);
-        console.log(`Retrying in ${backoffTime}ms...`);
         setTimeout(() => {
           setRetryCount(prev => prev + 1);
           fetchApiKey();
@@ -70,7 +61,7 @@ export const useMapConfig = () => {
     apiKey,
     loadError,
     isRetrying,
-    fetchApiKey,
-    retryCount
+    retryCount,
+    fetchApiKey
   };
 };
