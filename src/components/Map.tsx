@@ -42,7 +42,13 @@ const Map = ({
     }
   }, []);
 
-  console.log('Map render state:', { apiKey, loadError, isRetrying, retryCount });
+  console.log('Map render state:', { 
+    hasApiKey: !!apiKey,
+    loadError,
+    isRetrying,
+    retryCount,
+    isLoaded
+  });
 
   if (loadError) {
     return (
@@ -64,7 +70,7 @@ const Map = ({
       <LoadScript 
         googleMapsApiKey={apiKey}
         onLoad={() => {
-          console.log('Google Maps script loaded');
+          console.log('Google Maps script loaded successfully');
           setIsLoaded(true);
         }}
         onError={(error) => {
@@ -80,7 +86,7 @@ const Map = ({
           options={mapOptions}
           onClick={onClick}
           onLoad={() => {
-            console.log('Google Map loaded');
+            console.log('Google Map component loaded successfully');
           }}
         >
           {markers.map((marker, index) => (

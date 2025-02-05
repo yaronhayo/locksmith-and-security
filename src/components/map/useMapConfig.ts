@@ -26,9 +26,15 @@ export const useMapConfig = () => {
         .from('settings')
         .select('value')
         .eq('key', 'google_maps_api_key')
-        .single();
+        .maybeSingle();
 
-      console.log('Supabase response:', { data, error });
+      console.log('Supabase response:', { 
+        hasData: !!data,
+        error: error ? {
+          message: error.message,
+          code: error.code
+        } : null
+      });
 
       if (error) {
         console.error('Supabase error:', error);
@@ -36,7 +42,7 @@ export const useMapConfig = () => {
       }
 
       if (!data?.value) {
-        console.error('No API key found');
+        console.error('No API key found in settings');
         throw new Error('Google Maps API key not found in settings');
       }
 
