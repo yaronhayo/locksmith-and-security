@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 
 export const useMapConfig = () => {
@@ -17,8 +17,14 @@ export const useMapConfig = () => {
         .eq('key', 'google_maps_api_key')
         .single();
 
-      if (error) throw error;
-      if (!data?.value) throw new Error('API key not found');
+      if (error) {
+        console.error('Error fetching Google Maps API key:', error);
+        throw error;
+      }
+      
+      if (!data?.value) {
+        throw new Error('API key not found');
+      }
 
       setApiKey(data.value);
     } catch (error) {
@@ -29,10 +35,9 @@ export const useMapConfig = () => {
     }
   }, []);
 
-  // Fetch API key on mount
-  useState(() => {
+  useEffect(() => {
     fetchApiKey();
-  });
+  }, [fetchApiKey]);
 
   return {
     apiKey,

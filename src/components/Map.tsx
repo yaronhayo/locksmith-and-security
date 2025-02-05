@@ -50,7 +50,10 @@ const Map = ({
       <LoadScript 
         googleMapsApiKey={apiKey}
         onLoad={() => setIsLoaded(true)}
-        onError={() => setScriptError('Failed to load Google Maps')}
+        onError={(error) => {
+          console.error('Google Maps script error:', error);
+          setScriptError('Failed to load Google Maps');
+        }}
       >
         {!isLoaded && <MapLoader />}
         <GoogleMap
