@@ -9,11 +9,17 @@ export const useMapConfig = () => {
   const MAX_RETRIES = 3;
 
   const fetchApiKey = useCallback(async () => {
+    if (retryCount >= MAX_RETRIES) {
+      setLoadError('Maximum retry attempts reached. Please try again later.');
+      return;
+    }
+
     try {
       setIsRetrying(true);
       setLoadError(null);
       
-      console.log('Fetching Google Maps API key...');
+      console.log(`Attempt ${retryCount + 1}/${MAX_RETRIES}: Fetching Google Maps API key...`);
+      
       const { data, error } = await supabase
         .from('settings')
         .select('value')
@@ -21,24 +27,31 @@ export const useMapConfig = () => {
         .single();
 
       if (error) {
-        console.error('Error fetching Google Maps API key:', error);
-        throw new Error('Failed to fetch API key');
+        console.error('Supabase error:', error);
+        throw new Error('Failed to fetch API key from settings');
       }
 
       if (!data?.value) {
-        throw new Error('Google Maps API key not found in settings');
+        console.error('No API key found in settings');
+        throw new Error('Google Maps API key not configured');
+      }
+
+      if (data.value.trim() === '') {
+        console.error('API key is empty');
+        throw new Error('Google Maps API key not configured');
       }
 
       console.log('Successfully fetched API key');
       setApiKey(data.value);
-      setRetryCount(0); // Reset retry count on success
+      setRetryCount(0);
     } catch (error) {
       console.error('Error in fetchApiKey:', error);
-      setLoadError(error instanceof Error ? error.message : 'Failed to load map configuration');
+      const errorMessage = error instanceof Error ? error.message : 'Failed to load map configuration';
+      setLoadError(errorMessage);
       
-      // Implement exponential backoff for retries
       if (retryCount < MAX_RETRIES) {
         const backoffTime = Math.min(1000 * Math.pow(2, retryCount), 8000);
+        console.log(`Retrying in ${backoffTime}ms...`);
         setTimeout(() => {
           setRetryCount(prev => prev + 1);
           fetchApiKey();
