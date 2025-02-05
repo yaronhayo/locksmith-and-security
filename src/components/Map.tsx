@@ -39,7 +39,7 @@ const Map = ({
   onClick,
 }: MapProps) => {
   const [isLoaded, setIsLoaded] = useState(false);
-  const { apiKey, loadError, isRetrying, fetchApiKey } = useMapConfig();
+  const { apiKey, loadError, isRetrying, retryCount, fetchApiKey } = useMapConfig();
 
   const handleMarkerClick = useCallback((slug?: string) => {
     if (slug) {
@@ -48,7 +48,14 @@ const Map = ({
   }, []);
 
   if (loadError) {
-    return <MapError error={loadError} onRetry={fetchApiKey} isRetrying={isRetrying} />;
+    return (
+      <MapError 
+        error={loadError} 
+        onRetry={fetchApiKey} 
+        isRetrying={isRetrying}
+        retryCount={retryCount}
+      />
+    );
   }
 
   if (!apiKey) {

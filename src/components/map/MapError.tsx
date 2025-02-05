@@ -6,14 +6,18 @@ interface MapErrorProps {
   error: string;
   onRetry: () => void;
   isRetrying: boolean;
+  retryCount?: number;
 }
 
-const MapError = ({ error, onRetry, isRetrying }: MapErrorProps) => {
+const MapError = ({ error, onRetry, isRetrying, retryCount = 0 }: MapErrorProps) => {
   return (
     <Alert variant="destructive" className="mb-4">
       <AlertCircle className="h-4 w-4" />
       <AlertDescription className="flex items-center gap-4">
-        {error}
+        <span>
+          {error}
+          {retryCount > 0 && ` (Attempt ${retryCount}/3)`}
+        </span>
         <Button 
           variant="outline" 
           size="sm" 
