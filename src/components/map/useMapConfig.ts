@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 
 export const useMapConfig = () => {
@@ -6,30 +6,33 @@ export const useMapConfig = () => {
   const [loadError, setLoadError] = useState<string | null>(null);
   const [isRetrying, setIsRetrying] = useState(false);
 
-  const fetchApiKey = async () => {
+  const fetchApiKey = useCallback(async () => {
     try {
       setIsRetrying(true);
+      setLoadError(null);
+      
       const { data, error } = await supabase
         .from('settings')
         .select('value')
-        .eq('key', 'GOOGLE_MAPS_API_KEY')
+        .eq('key', 'google_maps_api_key')
         .single();
 
-      if (error) throw new Error('Failed to fetch API key');
-      if (!data?.value) throw new Error('No API key found in settings');
+      if (error) throw error;
+      if (!data?.value) throw new Error('API key not found');
 
       setApiKey(data.value);
-      setLoadError(null);
     } catch (error) {
       setLoadError('Failed to load map configuration');
+      console.error('Error fetching Google Maps API key:', error);
     } finally {
       setIsRetrying(false);
     }
-  };
-
-  useEffect(() => {
-    fetchApiKey();
   }, []);
+
+  // Fetch API key on mount
+  useState(() => {
+    fetchApiKey();
+  });
 
   return {
     apiKey,

@@ -1,40 +1,32 @@
-import { useState } from 'react';
-import { LoadScript, GoogleMap } from '@react-google-maps/api';
-import { defaultMapCenter, defaultMapZoom, mapStyles } from '@/config/constants';
-import { MapLocation } from '@/types/map';
-import MapError from './map/MapError';
-import MapLoader from './map/MapLoader';
-import MapMarkers from './map/MapMarkers';
-import { useMapConfig } from './map/useMapConfig';
-
-interface MapProps {
-  center?: { lat: number; lng: number };
-  zoom?: number;
-  markers?: MapLocation[];
-  hoveredMarker?: string | null;
-}
+import { useState } from "react";
+import { GoogleMap, LoadScript } from "@react-google-maps/api";
+import MapError from "./map/MapError";
+import MapLoader from "./map/MapLoader";
+import MapMarkers from "./map/MapMarkers";
+import { useMapConfig } from "./map/useMapConfig";
+import { MapLocation } from "@/types/map";
 
 const mapContainerStyle = {
-  width: '100%',
-  height: '600px',
-  borderRadius: '0.5rem'
+  width: "100%",
+  height: "400px",
 };
 
-const mapOptions = {
-  disableDefaultUI: false,
-  zoomControl: true,
-  mapTypeControl: true,
-  scaleControl: true,
-  streetViewControl: true,
-  rotateControl: true,
-  fullscreenControl: true,
-  styles: mapStyles
+const defaultCenter = {
+  lat: 40.7795,
+  lng: -74.0324,
 };
 
-const Map = ({ 
-  center = defaultMapCenter,
-  zoom = defaultMapZoom,
+interface MapProps {
+  markers?: MapLocation[];
+  hoveredMarker?: string | null;
+  center?: { lat: number; lng: number };
+  zoom?: number;
+}
+
+const Map = ({
   markers = [],
+  center = defaultCenter,
+  zoom = 12,
   hoveredMarker = null
 }: MapProps) => {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -54,27 +46,25 @@ const Map = ({
   }
 
   return (
-    <div className="relative w-full rounded-lg overflow-hidden shadow-lg h-[600px]">
+    <div className="w-full h-[400px] relative rounded-lg overflow-hidden">
       <LoadScript 
         googleMapsApiKey={apiKey}
         onLoad={() => setIsLoaded(true)}
         onError={() => setScriptError('Failed to load Google Maps')}
       >
         {!isLoaded && <MapLoader />}
-        
         <GoogleMap
           mapContainerStyle={mapContainerStyle}
           center={center}
           zoom={zoom}
-          options={mapOptions}
-          onLoad={() => setIsLoaded(true)}
+          options={{
+            disableDefaultUI: false,
+            zoomControl: true,
+            streetViewControl: false,
+            mapTypeControl: false,
+          }}
         >
-          {isLoaded && (
-            <MapMarkers 
-              markers={markers} 
-              hoveredMarker={hoveredMarker} 
-            />
-          )}
+          <MapMarkers markers={markers} hoveredMarker={hoveredMarker} />
         </GoogleMap>
       </LoadScript>
     </div>
