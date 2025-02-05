@@ -128,6 +128,7 @@ const BookingForm = () => {
           type="text"
           aria-describedby="name-error"
           className={`h-10 text-base ${errors.name ? 'border-red-500' : ''}`}
+          autoComplete="name"
         />
         {errors.name && (
           <Alert variant="destructive">
@@ -145,6 +146,7 @@ const BookingForm = () => {
           type="tel"
           aria-describedby="phone-error"
           className={`h-10 text-base ${errors.phone ? 'border-red-500' : ''}`}
+          autoComplete="tel"
         />
         {errors.phone && (
           <Alert variant="destructive">
@@ -162,6 +164,7 @@ const BookingForm = () => {
           type="text"
           aria-describedby="address-error"
           className={`h-10 text-base ${errors.address ? 'border-red-500' : ''}`}
+          autoComplete="street-address"
         />
         {errors.address && (
           <Alert variant="destructive">
@@ -206,6 +209,7 @@ const BookingForm = () => {
               type="text"
               aria-describedby="vehicleYear-error"
               className={`h-10 text-base ${errors.vehicleYear ? 'border-red-500' : ''}`}
+              autoComplete="off"
             />
             {errors.vehicleYear && (
               <Alert variant="destructive">
@@ -223,6 +227,7 @@ const BookingForm = () => {
               type="text"
               aria-describedby="vehicleMake-error"
               className={`h-10 text-base ${errors.vehicleMake ? 'border-red-500' : ''}`}
+              autoComplete="off"
             />
             {errors.vehicleMake && (
               <Alert variant="destructive">
@@ -240,6 +245,7 @@ const BookingForm = () => {
               type="text"
               aria-describedby="vehicleModel-error"
               className={`h-10 text-base ${errors.vehicleModel ? 'border-red-500' : ''}`}
+              autoComplete="off"
             />
             {errors.vehicleModel && (
               <Alert variant="destructive">
