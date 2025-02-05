@@ -5,6 +5,7 @@ import { Loader2, AlertCircle } from "lucide-react";
 import { defaultMapCenter, defaultMapZoom, mapStyles } from '@/config/constants';
 import { MapLocation } from '@/types/map';
 import { supabase } from '@/integrations/supabase/client';
+import { useToast } from "@/components/ui/use-toast";
 
 interface MapProps {
   center?: { lat: number; lng: number };
@@ -37,18 +38,22 @@ const Map = ({
   hoveredMarker = null
 }: MapProps) => {
   const navigate = useNavigate();
+  const { toast } = useToast();
   const [isLoaded, setIsLoaded] = useState(false);
   const [loadError, setLoadError] = useState<string | null>(null);
   const [map, setMap] = useState<google.maps.Map | null>(null);
   const [apiKey, setApiKey] = useState<string | null>(null);
+  const [isRetrying, setIsRetrying] = useState(false);
 
   const fetchApiKey = async () => {
     try {
+      setIsRetrying(true);
+      console.log('Fetching API key...');
+      
       const { data, error } = await supabase
         .from('settings')
         .select('value')
         .eq('key', 'GOOGLE_MAPS_API_KEY')
-        .limit(1)
         .single();
 
       if (error) {
@@ -57,14 +62,29 @@ const Map = ({
       }
 
       if (!data?.value) {
-        throw new Error('No API key found');
+        throw new Error('No API key found in settings');
       }
 
+      console.log('API key fetched successfully');
       setApiKey(data.value);
       setLoadError(null);
+      
+      toast({
+        title: "Map loaded successfully",
+        duration: 3000,
+      });
     } catch (error) {
       console.error('API key fetch error:', error);
       setLoadError('Failed to load map configuration');
+      
+      toast({
+        variant: "destructive",
+        title: "Error loading map",
+        description: "Please try again later",
+        duration: 5000,
+      });
+    } finally {
+      setIsRetrying(false);
     }
   };
 
@@ -84,12 +104,20 @@ const Map = ({
       <div className="w-full h-[600px] flex items-center justify-center bg-gray-50 rounded-lg">
         <div className="text-center space-y-4">
           <AlertCircle className="h-12 w-12 text-red-500 mx-auto" />
-          <p className="text-red-500 font-medium">Error loading map</p>
+          <p className="text-red-500 font-medium">{loadError}</p>
           <button 
-            onClick={() => fetchApiKey()}
-            className="text-primary hover:underline"
+            onClick={fetchApiKey}
+            disabled={isRetrying}
+            className="px-4 py-2 bg-primary text-white rounded-md hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            Try again
+            {isRetrying ? (
+              <span className="flex items-center gap-2">
+                <Loader2 className="h-4 w-4 animate-spin" />
+                Retrying...
+              </span>
+            ) : (
+              'Try again'
+            )}
           </button>
         </div>
       </div>
@@ -115,6 +143,12 @@ const Map = ({
         onError={(error) => {
           console.error('LoadScript error:', error);
           setLoadError('Failed to load Google Maps');
+          toast({
+            variant: "destructive",
+            title: "Error loading Google Maps",
+            description: "Please check your internet connection and try again",
+            duration: 5000,
+          });
         }}
       >
         {!isLoaded && (
