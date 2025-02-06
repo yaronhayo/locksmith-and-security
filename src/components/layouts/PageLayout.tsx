@@ -1,3 +1,4 @@
+
 import React from "react";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
@@ -20,6 +21,8 @@ interface PageLayoutProps {
   ogImage?: string;
   keywords?: string;
   isLoading?: boolean;
+  noindex?: boolean;
+  nofollow?: boolean;
 }
 
 const PageLayout = ({
@@ -34,6 +37,8 @@ const PageLayout = ({
   ogImage,
   keywords,
   isLoading = false,
+  noindex = false,
+  nofollow = false,
 }: PageLayoutProps) => {
   const hasHeroSection = Boolean(heroTitle || heroDescription);
 
@@ -50,6 +55,8 @@ const PageLayout = ({
         canonicalUrl={canonicalUrl}
         ogImage={ogImage}
         keywords={keywords}
+        noindex={noindex}
+        nofollow={nofollow}
       />
       
       {hasHeroSection && (
