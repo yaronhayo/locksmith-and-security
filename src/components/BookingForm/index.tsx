@@ -1,6 +1,6 @@
 
 import { useState } from "react";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/hooks/use-toast";
 import { BookingFormData, FormErrors } from "@/types/booking";
 import PersonalInfoFields from "./FormFields/PersonalInfoFields";
 import ServiceSelection from "./FormFields/ServiceSelection";
