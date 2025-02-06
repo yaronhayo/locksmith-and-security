@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { LoadScript } from "@react-google-maps/api";
 import { useMapConfig } from "./map/useMapConfig";
+import { useMapScript } from "./map/hooks/useMapScript";
 import MapError from "./map/MapError";
 import MapLoader from "./map/MapLoader";
 import MapContainer from "./map/MapContainer";
