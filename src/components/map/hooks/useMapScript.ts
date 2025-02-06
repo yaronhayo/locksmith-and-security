@@ -1,30 +1,31 @@
 
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useCallback } from 'react';
 import { Libraries } from '@react-google-maps/api';
 
-// Define libraries array outside component to prevent recreating on each render
+// Define constants outside of component to prevent recreation
 const MAP_LIBRARIES: Libraries = ["places", "marker"] as const;
+const SCRIPT_ID = 'google-maps-script';
 
 export const useMapScript = (apiKey: string) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // Memoize the loadScriptProps object to prevent unnecessary re-renders
-  const loadScriptProps = useMemo(() => ({
+  // Use static object to prevent unnecessary rerenders
+  const loadScriptProps = {
     googleMapsApiKey: apiKey,
     libraries: MAP_LIBRARIES,
-    id: 'google-maps-script'
-  }), [apiKey]);
+    id: SCRIPT_ID
+  } as const;
 
-  const handleScriptLoad = () => {
+  const handleScriptLoad = useCallback(() => {
     console.log('Google Maps script loaded successfully');
     setIsLoaded(true);
-  };
+  }, []);
 
-  const handleScriptError = (err: Error) => {
+  const handleScriptError = useCallback((err: Error) => {
     console.error('Error loading Google Maps script:', err);
     setError(err.message);
-  };
+  }, []);
 
   return {
     isLoaded,
