@@ -1,6 +1,6 @@
 
 import { supabase } from "@/integrations/supabase/client";
-import { FormData } from "../types";
+import { FormDataType, SubmissionData } from "../types";
 
 export const getVisitorInfo = () => {
   return {
@@ -13,7 +13,7 @@ export const getVisitorInfo = () => {
   };
 };
 
-export const submitBookingForm = async (formData: FormData, showVehicleInfo: boolean, location: string) => {
+export const submitBookingForm = async (formData: FormDataType, showVehicleInfo: boolean, location: string) => {
   const submissionData = {
     type: 'booking',
     name: String(formData.get('name')),
