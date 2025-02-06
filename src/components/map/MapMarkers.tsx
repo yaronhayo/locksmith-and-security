@@ -29,7 +29,7 @@ const MapMarkers = ({ markers, hoveredMarker }: MapMarkersProps) => {
             onClick={() => handleMarkerClick(marker.slug)}
             animation={
               hoveredMarker === marker.slug
-                ? google.maps.Animation.BOUNCE
+                ? window.google?.maps?.Animation?.BOUNCE
                 : undefined
             }
           />
