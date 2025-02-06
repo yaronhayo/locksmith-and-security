@@ -46,6 +46,12 @@ const Map = ({
   // Memoize the center to prevent unnecessary re-renders
   const mapCenter = useMemo(() => center, [center.lat, center.lng]);
 
+  // Memoize the LoadScript options
+  const loadScriptProps = useMemo(() => ({
+    googleMapsApiKey: apiKey || '',
+    libraries: MAP_LIBRARIES,
+  }), [apiKey]);
+
   useEffect(() => {
     if (map) {
       map.setCenter(mapCenter);
@@ -87,8 +93,7 @@ const Map = ({
   return (
     <div className="w-full h-[400px] relative rounded-lg overflow-hidden shadow-md">
       <LoadScript 
-        googleMapsApiKey={apiKey}
-        libraries={MAP_LIBRARIES}
+        {...loadScriptProps}
         onLoad={handleScriptLoad}
         onError={handleScriptError}
       >
