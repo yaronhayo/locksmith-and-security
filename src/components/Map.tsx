@@ -6,20 +6,21 @@ import MapLoader from "./map/MapLoader";
 import MapMarkers from "./map/MapMarkers";
 import { MapLocation } from "@/types/map";
 
-const mapContainerStyle = {
-  width: "100%",
-  height: "400px",
-  borderRadius: "0.5rem",
-};
+// Move constants outside component to prevent recreation
+const MAP_LIBRARIES: Libraries = ["places", "marker"];
 
-const mapOptions = {
+const MAP_OPTIONS = {
   disableDefaultUI: false,
   zoomControl: true,
   streetViewControl: false,
   mapTypeControl: false,
 };
 
-const libraries: Libraries = ["places", "marker"];
+const MAP_CONTAINER_STYLE = {
+  width: "100%",
+  height: "400px",
+  borderRadius: "0.5rem",
+};
 
 interface MapProps {
   markers?: MapLocation[];
@@ -39,7 +40,19 @@ const Map = ({
   const [isLoaded, setIsLoaded] = useState(false);
   const { apiKey, loadError, isRetrying, retryCount, fetchApiKey } = useMapConfig();
 
-  console.log('Map render:', { markers, isLoaded, apiKey });
+  // Consolidated logging
+  const handleScriptLoad = () => {
+    console.log('Google Maps script loaded successfully');
+    setIsLoaded(true);
+  };
+
+  const handleScriptError = (err: Error) => {
+    console.error('Error loading Google Maps script:', err);
+  };
+
+  const handleMapLoad = () => {
+    console.log('Map instance loaded successfully');
+  };
 
   if (loadError) {
     console.error('Map load error:', loadError);
@@ -62,24 +75,17 @@ const Map = ({
     <div className="w-full h-[400px] relative rounded-lg overflow-hidden">
       <LoadScript 
         googleMapsApiKey={apiKey}
-        libraries={libraries}
-        onLoad={() => {
-          console.log('Google Maps script loaded successfully');
-          setIsLoaded(true);
-        }}
-        onError={(err) => {
-          console.error('Error loading Google Maps script:', err);
-        }}
+        libraries={MAP_LIBRARIES}
+        onLoad={handleScriptLoad}
+        onError={handleScriptError}
       >
         <GoogleMap
-          mapContainerStyle={mapContainerStyle}
+          mapContainerStyle={MAP_CONTAINER_STYLE}
           center={center}
           zoom={zoom}
-          options={mapOptions}
+          options={MAP_OPTIONS}
           onClick={onClick}
-          onLoad={() => {
-            console.log('Map instance loaded successfully');
-          }}
+          onLoad={handleMapLoad}
         >
           {isLoaded && markers && markers.length > 0 && (
             <MapMarkers 
