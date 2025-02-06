@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState } from "react";
 import { GoogleMap, LoadScript } from "@react-google-maps/api";
 import { useMapConfig } from "./map/useMapConfig";
 import MapError from "./map/MapError";
@@ -20,7 +20,7 @@ const mapOptions = {
 };
 
 // Define libraries array outside component to prevent reloading
-const libraries: ("places")[] = ["places"];
+const libraries: ("places" | "geometry" | "drawing" | "visualization")[] = ["places"];
 
 interface MapProps {
   markers?: MapLocation[];
@@ -39,6 +39,8 @@ const Map = ({
 }: MapProps) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const { apiKey, loadError, isRetrying, retryCount, fetchApiKey } = useMapConfig();
+
+  console.log('Map render:', { markers, isLoaded, apiKey });
 
   if (loadError) {
     return (
@@ -71,6 +73,9 @@ const Map = ({
           zoom={zoom}
           options={mapOptions}
           onClick={onClick}
+          onLoad={() => {
+            console.log('Map component loaded');
+          }}
         >
           {isLoaded && markers && markers.length > 0 && (
             <MapMarkers 
