@@ -1,6 +1,6 @@
 
 import ServiceLayout from "@/components/layouts/ServiceLayout";
-import { Settings, Tool, Shield, Search, Wrench } from "lucide-react";
+import { Settings, Wrench, Shield, Search } from "lucide-react";
 
 const LockRepairPage = () => {
   return (
@@ -27,7 +27,7 @@ const LockRepairPage = () => {
         {
           title: "Professional Repair",
           description: "Skilled technicians using professional-grade tools and genuine parts.",
-          icon: Tool
+          icon: Wrench
         },
         {
           title: "Security Solutions",

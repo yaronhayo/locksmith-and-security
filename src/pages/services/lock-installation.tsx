@@ -1,6 +1,6 @@
 
 import ServiceLayout from "@/components/layouts/ServiceLayout";
-import { Wrench, Shield, Key, Lock, Tool } from "lucide-react";
+import { Wrench, Shield, Key, Lock } from "lucide-react";
 
 const LockInstallationPage = () => {
   return (
@@ -22,7 +22,7 @@ const LockInstallationPage = () => {
         {
           title: "Expert Installation",
           description: "Professional installation by certified technicians using industry-best practices and tools.",
-          icon: Tool
+          icon: Wrench
         },
         {
           title: "Security Consultation",
