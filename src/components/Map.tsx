@@ -6,6 +6,9 @@ import MapLoader from "./map/MapLoader";
 import MapMarkers from "./map/MapMarkers";
 import { MapLocation } from "@/types/map";
 
+// Define libraries outside component to prevent reloading warning
+const libraries: Libraries = ["places", "marker"];
+
 const mapContainerStyle = {
   width: "100%",
   height: "400px",
@@ -18,8 +21,6 @@ const mapOptions = {
   streetViewControl: false,
   mapTypeControl: false,
 };
-
-const libraries: Libraries = ["places", "marker"];
 
 interface MapProps {
   markers?: MapLocation[];
@@ -37,9 +38,10 @@ const Map = ({
   onClick,
 }: MapProps) => {
   const [isLoaded, setIsLoaded] = useState(false);
+  const [mapInstance, setMapInstance] = useState<google.maps.Map | null>(null);
   const { apiKey, loadError, isRetrying, retryCount, fetchApiKey } = useMapConfig();
 
-  console.log('Map render:', { markers, isLoaded, apiKey });
+  console.log('Map render:', { markers, isLoaded, apiKey, mapInstance: !!mapInstance });
 
   if (loadError) {
     console.error('Map load error:', loadError);
@@ -77,11 +79,12 @@ const Map = ({
           zoom={zoom}
           options={mapOptions}
           onClick={onClick}
-          onLoad={() => {
+          onLoad={(map) => {
             console.log('Map instance loaded successfully');
+            setMapInstance(map);
           }}
         >
-          {isLoaded && markers && markers.length > 0 && (
+          {isLoaded && mapInstance && markers && markers.length > 0 && (
             <MapMarkers 
               markers={markers} 
               hoveredMarker={hoveredMarker} 
