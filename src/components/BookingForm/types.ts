@@ -7,15 +7,6 @@ export interface BookingFormState {
   showVehicleInfo: boolean;
   isSubmitting: boolean;
   errors: Record<string, string>;
-  recaptchaToken: string | null;
-}
-
-export interface BookingFormActions {
-  setSelectedService: (value: string) => void;
-  setShowVehicleInfo: (value: boolean) => void;
-  setIsSubmitting: (value: boolean) => void;
-  setErrors: (value: Record<string, string>) => void;
-  setRecaptchaToken: (value: string | null) => void;
 }
 
 export interface SubmissionData {

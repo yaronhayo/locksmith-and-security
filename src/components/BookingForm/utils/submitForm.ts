@@ -14,7 +14,7 @@ export const getVisitorInfo = () => {
 };
 
 export const submitBookingForm = async (formData: FormDataType, showVehicleInfo: boolean, location: string) => {
-  const submissionData = {
+  const submissionData: SubmissionData = {
     type: 'booking',
     name: String(formData.get('name')),
     phone: String(formData.get('phone')),

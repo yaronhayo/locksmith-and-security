@@ -1,24 +1,34 @@
 
 import { useState } from "react";
-import { FormErrors } from "@/types/booking";
+import { BookingFormState } from "../types";
 
 export const useBookingFormState = () => {
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [selectedService, setSelectedService] = useState("");
-  const [showVehicleInfo, setShowVehicleInfo] = useState(false);
-  const [errors, setErrors] = useState<FormErrors>({});
+  const [state, setState] = useState<BookingFormState>({
+    isSubmitting: false,
+    selectedService: "",
+    showVehicleInfo: false,
+    errors: {},
+  });
 
   const handleServiceChange = (value: string) => {
-    setSelectedService(value);
-    setShowVehicleInfo(value.toLowerCase().includes("car"));
+    setState(prev => ({
+      ...prev,
+      selectedService: value,
+      showVehicleInfo: value.toLowerCase().includes("car")
+    }));
+  };
+
+  const setIsSubmitting = (isSubmitting: boolean) => {
+    setState(prev => ({ ...prev, isSubmitting }));
+  };
+
+  const setErrors = (errors: Record<string, string>) => {
+    setState(prev => ({ ...prev, errors }));
   };
 
   return {
-    isSubmitting,
+    ...state,
     setIsSubmitting,
-    selectedService,
-    showVehicleInfo,
-    errors,
     setErrors,
     handleServiceChange,
   };
