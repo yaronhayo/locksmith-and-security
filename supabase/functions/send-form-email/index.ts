@@ -43,32 +43,6 @@ const handler = async (req: Request): Promise<Response> => {
     const formData: FormData = await req.json();
     console.log("Received form data:", formData);
 
-    // First, store the submission in the database
-    const { data: submissionData, error: submissionError } = await supabase
-      .from('submissions')
-      .insert([{
-        type: formData.type,
-        name: formData.name,
-        phone: formData.phone,
-        email: formData.email,
-        address: formData.address,
-        service: formData.service,
-        timeframe: formData.timeframe,
-        notes: formData.notes,
-        vehicle_info: formData.vehicleInfo,
-        message: formData.message,
-        status: 'pending'
-      }])
-      .select()
-      .single();
-
-    if (submissionError) {
-      console.error("Database submission error:", submissionError);
-      throw new Error(`Failed to store submission: ${submissionError.message}`);
-    }
-
-    console.log("Submission stored in database:", submissionData);
-
     let emailHtml = '';
     let subject = '';
 
@@ -122,17 +96,6 @@ const handler = async (req: Request): Promise<Response> => {
 
     console.log("Email sent successfully:", emailResponse);
 
-    // Update submission status to processed
-    const { error: updateError } = await supabase
-      .from('submissions')
-      .update({ status: 'processed' })
-      .eq('id', submissionData.id);
-
-    if (updateError) {
-      console.error("Error updating submission status:", updateError);
-      // Don't throw here as the email was sent successfully
-    }
-
     return new Response(JSON.stringify(emailResponse), {
       status: 200,
       headers: {
@@ -147,21 +110,6 @@ const handler = async (req: Request): Promise<Response> => {
       stack: error.stack,
       name: error.name
     });
-
-    // If we have a submission ID, update its status to failed
-    if (error.submissionId) {
-      const { error: updateError } = await supabase
-        .from('submissions')
-        .update({ 
-          status: 'failed',
-          error_message: error.message
-        })
-        .eq('id', error.submissionId);
-
-      if (updateError) {
-        console.error("Error updating submission failure status:", updateError);
-      }
-    }
 
     return new Response(
       JSON.stringify({ 

@@ -65,6 +65,24 @@ const BookingForm = () => {
 
       console.log("Submitting booking form data:", formDataObj);
 
+      // First store in database
+      const { error: dbError } = await supabase
+        .from('submissions')
+        .insert([{
+          type: 'booking',
+          name: formDataObj.name,
+          phone: formDataObj.phone,
+          address: formDataObj.address,
+          service: formDataObj.service,
+          timeframe: formDataObj.timeframe,
+          notes: formDataObj.notes,
+          vehicle_info: formDataObj.vehicleInfo,
+          status: 'pending'
+        }]);
+
+      if (dbError) throw dbError;
+
+      // Then send email notification
       const { data, error } = await supabase.functions.invoke('send-form-email', {
         body: formDataObj
       });
@@ -72,11 +90,6 @@ const BookingForm = () => {
       if (error) throw error;
 
       console.log("Booking form submission response:", data);
-
-      toast({
-        title: "Success",
-        description: "Your booking request has been submitted successfully.",
-      });
 
       // Set flag for thank you page
       sessionStorage.setItem('fromFormSubmission', 'true');

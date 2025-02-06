@@ -44,6 +44,22 @@ const ContactForm = () => {
 
       console.log("Submitting contact form:", formDataObj);
 
+      // First store in database
+      const { error: dbError } = await supabase
+        .from('submissions')
+        .insert([{
+          type: 'contact',
+          name: formDataObj.name,
+          email: formDataObj.email,
+          phone: formDataObj.phone,
+          address: formDataObj.address,
+          message: formDataObj.message,
+          status: 'pending'
+        }]);
+
+      if (dbError) throw dbError;
+
+      // Then send email notification
       const { data, error } = await supabase.functions.invoke('send-form-email', {
         body: formDataObj
       });
@@ -51,11 +67,6 @@ const ContactForm = () => {
       if (error) throw error;
 
       console.log("Contact form submission response:", data);
-
-      toast({
-        title: "Success",
-        description: "Your message has been sent successfully.",
-      });
 
       // Set flag for thank you page
       sessionStorage.setItem('fromFormSubmission', 'true');
