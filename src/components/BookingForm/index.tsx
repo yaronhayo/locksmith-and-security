@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
 import { BookingFormData, FormErrors } from "@/types/booking";
@@ -11,9 +10,11 @@ import AdditionalNotes from "./FormFields/AdditionalNotes";
 import SubmitButton from "./SubmitButton";
 import { validateForm } from "./validation";
 import { supabase } from "@/integrations/supabase/client";
+import { useNavigate } from "react-router-dom";
 
 const BookingForm = () => {
   const { toast } = useToast();
+  const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [selectedService, setSelectedService] = useState("");
   const [showVehicleInfo, setShowVehicleInfo] = useState(false);
@@ -66,15 +67,12 @@ const BookingForm = () => {
 
       if (emailError) throw emailError;
 
-      toast({
-        title: "Request Submitted Successfully",
-        description: "We'll contact you shortly to confirm your booking.",
-      });
+      // Set flag for thank you page
+      sessionStorage.setItem('fromFormSubmission', 'true');
+      
+      // Navigate to thank you page
+      navigate('/thank-you');
 
-      (e.target as HTMLFormElement).reset();
-      setSelectedService("");
-      setShowVehicleInfo(false);
-      setErrors({});
     } catch (error: any) {
       console.error('Form submission error:', error);
       toast({
@@ -82,7 +80,6 @@ const BookingForm = () => {
         description: "Please try again or contact us directly.",
         variant: "destructive",
       });
-    } finally {
       setIsSubmitting(false);
     }
   };

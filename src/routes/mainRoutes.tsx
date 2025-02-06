@@ -1,3 +1,4 @@
+
 import { lazy } from 'react';
 import Index from "@/pages/Index";
 import PageLayout from "@/components/layouts/PageLayout";
@@ -12,6 +13,7 @@ const BookOnline = lazy(() => import("@/pages/book-online"));
 const ServiceAreas = lazy(() => import("@/pages/service-areas"));
 const PrivacyPolicy = lazy(() => import("@/pages/privacy-policy"));
 const TermsConditions = lazy(() => import("@/pages/terms-conditions"));
+const ThankYou = lazy(() => import("@/pages/thank-you"));
 const NotFound = lazy(() => import("@/pages/404"));
 
 export const mainRoutes = [
@@ -54,6 +56,10 @@ export const mainRoutes = [
   {
     path: "/terms-conditions",
     element: <TermsConditions />
+  },
+  {
+    path: "/thank-you",
+    element: <ThankYou />
   },
   {
     path: "*",

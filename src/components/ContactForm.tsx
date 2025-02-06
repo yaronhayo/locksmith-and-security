@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
@@ -7,9 +6,11 @@ import { Textarea } from "@/components/ui/textarea";
 import Recaptcha from "./ui/recaptcha";
 import AddressAutocomplete from "@/components/ui/address-autocomplete";
 import { supabase } from "@/integrations/supabase/client";
+import { useNavigate } from "react-router-dom";
 
 const ContactForm = () => {
   const { toast } = useToast();
+  const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
   const [address, setAddress] = useState("");
@@ -46,14 +47,12 @@ const ContactForm = () => {
 
       if (emailError) throw emailError;
 
-      toast({
-        title: "Message Sent Successfully",
-        description: "We'll get back to you as soon as possible.",
-      });
+      // Set flag for thank you page
+      sessionStorage.setItem('fromFormSubmission', 'true');
+      
+      // Navigate to thank you page
+      navigate('/thank-you');
 
-      (e.target as HTMLFormElement).reset();
-      setRecaptchaToken(null);
-      setAddress("");
     } catch (error: any) {
       console.error('Form submission error:', error);
       toast({
@@ -61,7 +60,6 @@ const ContactForm = () => {
         description: "Please try again or contact us directly.",
         variant: "destructive",
       });
-    } finally {
       setIsSubmitting(false);
     }
   };
