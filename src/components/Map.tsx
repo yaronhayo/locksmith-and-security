@@ -1,8 +1,9 @@
 import { useState, useCallback } from "react";
-import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
+import { GoogleMap, LoadScript } from "@react-google-maps/api";
 import { useMapConfig } from "./map/useMapConfig";
 import MapError from "./map/MapError";
 import MapLoader from "./map/MapLoader";
+import MapMarkers from "./map/MapMarkers";
 import { MapLocation } from "@/types/map";
 
 const mapContainerStyle = {
@@ -17,6 +18,9 @@ const mapOptions = {
   streetViewControl: false,
   mapTypeControl: false,
 };
+
+// Define libraries array outside component to prevent reloading
+const libraries: ("places")[] = ["places"];
 
 interface MapProps {
   markers?: MapLocation[];
@@ -35,12 +39,6 @@ const Map = ({
 }: MapProps) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const { apiKey, loadError, isRetrying, retryCount, fetchApiKey } = useMapConfig();
-
-  const handleMarkerClick = useCallback((slug?: string) => {
-    if (slug) {
-      window.location.href = `/service-areas/${slug}`;
-    }
-  }, []);
 
   if (loadError) {
     return (
@@ -68,7 +66,7 @@ const Map = ({
         onError={(error) => {
           console.error('Google Maps script error:', error);
         }}
-        libraries={["places"]}
+        libraries={libraries}
       >
         {!isLoaded && <MapLoader />}
         <GoogleMap
@@ -81,19 +79,12 @@ const Map = ({
             console.log('Google Map component loaded successfully');
           }}
         >
-          {markers.map((marker, index) => (
-            <Marker
-              key={`${marker.slug || ''}-${index}`}
-              position={{ lat: marker.lat, lng: marker.lng }}
-              title={marker.title}
-              onClick={() => handleMarkerClick(marker.slug)}
-              animation={
-                hoveredMarker === marker.slug
-                  ? google.maps.Animation.BOUNCE
-                  : undefined
-              }
+          {isLoaded && markers.length > 0 && (
+            <MapMarkers 
+              markers={markers} 
+              hoveredMarker={hoveredMarker} 
             />
-          ))}
+          )}
         </GoogleMap>
       </LoadScript>
     </div>
