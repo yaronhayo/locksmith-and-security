@@ -1,3 +1,4 @@
+
 import { useMemo } from "react";
 import { LoadScript } from "@react-google-maps/api";
 import { useMapConfig } from "./map/useMapConfig";
@@ -51,6 +52,7 @@ const Map = ({
         {...loadScriptProps}
         onLoad={handleScriptLoad}
         onError={handleScriptError}
+        loadingElement={<MapLoader />}
       >
         <MapContainer
           center={mapCenter}

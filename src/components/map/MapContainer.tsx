@@ -1,3 +1,4 @@
+
 import { GoogleMap } from "@react-google-maps/api";
 import { useMapInstance } from "./hooks/useMapInstance";
 import MapMarkers from "./MapMarkers";
@@ -35,7 +36,7 @@ const MapContainer = ({
   onClick,
   isLoaded
 }: MapContainerProps) => {
-  const { handleMapLoad } = useMapInstance({ center, zoom });
+  const { map, handleMapLoad } = useMapInstance({ center, zoom });
 
   return (
     <GoogleMap
