@@ -5,6 +5,7 @@ import MapError from "./map/MapError";
 import MapLoader from "./map/MapLoader";
 import MapMarkers from "./map/MapMarkers";
 import { MapLocation } from "@/types/map";
+import { defaultMapCenter, defaultMapZoom, mapStyles } from "@/config/constants";
 
 // Define libraries outside component to prevent reloading warning
 const libraries: Libraries = ["places", "marker"];
@@ -20,6 +21,7 @@ const mapOptions = {
   zoomControl: true,
   streetViewControl: false,
   mapTypeControl: false,
+  styles: mapStyles,
 };
 
 interface MapProps {
@@ -32,8 +34,8 @@ interface MapProps {
 
 const Map = ({
   markers = [],
-  center = { lat: 40.7795, lng: -74.0324 },
-  zoom = 12,
+  center = defaultMapCenter,
+  zoom = defaultMapZoom,
   hoveredMarker = null,
   onClick,
 }: MapProps) => {
@@ -41,7 +43,13 @@ const Map = ({
   const [mapInstance, setMapInstance] = useState<google.maps.Map | null>(null);
   const { apiKey, loadError, isRetrying, retryCount, fetchApiKey } = useMapConfig();
 
-  console.log('Map render:', { markers, isLoaded, apiKey, mapInstance: !!mapInstance });
+  console.log('Map render:', { 
+    markers: markers.length, 
+    isLoaded, 
+    hasApiKey: !!apiKey,
+    center,
+    zoom 
+  });
 
   if (loadError) {
     console.error('Map load error:', loadError);
@@ -61,7 +69,7 @@ const Map = ({
   }
 
   return (
-    <div className="w-full h-[400px] relative rounded-lg overflow-hidden">
+    <div className="w-full h-[400px] relative rounded-lg overflow-hidden shadow-md">
       <LoadScript 
         googleMapsApiKey={apiKey}
         libraries={libraries}

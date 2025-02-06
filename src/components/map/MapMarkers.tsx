@@ -32,7 +32,7 @@ const MapMarkers = ({ markers, hoveredMarker }: MapMarkersProps) => {
         console.log('Rendering marker:', { 
           index, 
           title: marker.title, 
-          slug: marker.slug,
+          position,
           isHovered: hoveredMarker === marker.slug 
         });
 
