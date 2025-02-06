@@ -34,8 +34,9 @@ const ServicesList = ({ areaName }: ServicesListProps) => {
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
+      whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: 0.2 }}
+      className="w-full"
     >
       <h2 className="text-2xl md:text-3xl font-bold mb-8">Our Services in {areaName}</h2>
       <div className="grid gap-6">
@@ -56,7 +57,7 @@ const ServicesList = ({ areaName }: ServicesListProps) => {
                   {service.features.map((feature, idx) => (
                     <div key={idx} className="flex items-center gap-2">
                       <Shield className="h-4 w-4 text-primary" />
-                      <span className="text-sm">{feature}</span>
+                      <span className="text-sm text-gray-600">{feature}</span>
                     </div>
                   ))}
                 </div>
