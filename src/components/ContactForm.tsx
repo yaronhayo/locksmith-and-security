@@ -52,6 +52,11 @@ const ContactForm = () => {
 
       console.log("Contact form submission response:", data);
 
+      toast({
+        title: "Success",
+        description: "Your message has been sent successfully.",
+      });
+
       // Set flag for thank you page
       sessionStorage.setItem('fromFormSubmission', 'true');
       
@@ -59,7 +64,7 @@ const ContactForm = () => {
       navigate('/thank-you');
 
     } catch (error: any) {
-      console.error('Form submission error:', error);
+      console.error('Contact form submission error:', error);
       toast({
         title: "Submission Failed",
         description: "Please try again or contact us directly.",

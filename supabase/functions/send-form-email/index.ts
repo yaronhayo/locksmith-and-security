@@ -28,6 +28,7 @@ interface FormData {
     model: string;
   };
   message?: string;
+  recaptchaToken?: string;
 }
 
 const handler = async (req: Request): Promise<Response> => {
@@ -38,10 +39,7 @@ const handler = async (req: Request): Promise<Response> => {
 
   try {
     console.log("Starting form submission handler");
-    console.log("RESEND_API_KEY present:", !!Deno.env.get("RESEND_API_KEY"));
-    console.log("SUPABASE_URL present:", !!supabaseUrl);
-    console.log("SUPABASE_SERVICE_ROLE_KEY present:", !!supabaseServiceKey);
-
+    
     const formData: FormData = await req.json();
     console.log("Received form data:", formData);
 

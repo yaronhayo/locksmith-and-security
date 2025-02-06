@@ -41,9 +41,10 @@ const BookingForm = () => {
       return;
     }
 
+    setErrors({});
+    setIsSubmitting(true);
+
     try {
-      setIsSubmitting(true);
-      
       const formDataObj: any = {
         type: 'booking',
         name: formData.get('name'),
@@ -62,7 +63,7 @@ const BookingForm = () => {
         };
       }
 
-      console.log("Submitting form data:", formDataObj);
+      console.log("Submitting booking form data:", formDataObj);
 
       const { data, error } = await supabase.functions.invoke('send-form-email', {
         body: formDataObj
@@ -70,7 +71,12 @@ const BookingForm = () => {
 
       if (error) throw error;
 
-      console.log("Form submission response:", data);
+      console.log("Booking form submission response:", data);
+
+      toast({
+        title: "Success",
+        description: "Your booking request has been submitted successfully.",
+      });
 
       // Set flag for thank you page
       sessionStorage.setItem('fromFormSubmission', 'true');
@@ -79,7 +85,7 @@ const BookingForm = () => {
       navigate('/thank-you');
 
     } catch (error: any) {
-      console.error('Form submission error:', error);
+      console.error('Booking form submission error:', error);
       toast({
         title: "Submission Failed",
         description: "Please try again or contact us directly.",
