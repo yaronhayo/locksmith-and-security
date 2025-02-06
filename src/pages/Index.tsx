@@ -16,6 +16,7 @@ const AboutSection = lazy(() => import("@/components/sections/AboutSection"));
 const ServiceAreasSection = lazy(() => import("@/components/sections/ServiceAreasSection"));
 const ReviewsSection = lazy(() => import("@/components/sections/ReviewsSection"));
 const FAQSection = lazy(() => import("@/components/sections/FAQSection"));
+const ServiceComparison = lazy(() => import("@/components/sections/ServiceComparison"));
 
 // Enhanced schema with more specific data
 const enhancedSchema = {
@@ -124,7 +125,7 @@ const Index = () => {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
             >
-              <ProcessSection />
+              <ServiceComparison />
             </motion.div>
             
             <motion.div 
@@ -133,7 +134,7 @@ const Index = () => {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
             >
-              <AboutSection />
+              <ProcessSection />
             </motion.div>
             
             <motion.div 
@@ -142,7 +143,7 @@ const Index = () => {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
             >
-              <ServiceAreasSection />
+              <AboutSection />
             </motion.div>
             
             <motion.div 
@@ -151,11 +152,20 @@ const Index = () => {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
             >
+              <ServiceAreasSection />
+            </motion.div>
+            
+            <motion.div 
+              className="bg-white"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+            >
               <ReviewsSection />
             </motion.div>
             
             <motion.div 
-              className="bg-white pb-20"
+              className="bg-gray-50 pb-20"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
