@@ -21,22 +21,19 @@ const MapMarkers = ({ markers, hoveredMarker }: MapMarkersProps) => {
 
   return (
     <>
-      {markers.map((marker, index) => {
-        console.log('Rendering marker:', marker);
-        return (
-          <Marker
-            key={`${marker.slug || ''}-${index}`}
-            position={{ lat: marker.lat, lng: marker.lng }}
-            title={marker.title}
-            onClick={() => handleMarkerClick(marker.slug)}
-            animation={
-              hoveredMarker === marker.slug
-                ? google.maps.Animation.BOUNCE
-                : undefined
-            }
-          />
-        );
-      })}
+      {markers.map((marker, index) => (
+        <Marker
+          key={`${marker.slug || ''}-${index}`}
+          position={{ lat: marker.lat, lng: marker.lng }}
+          title={marker.title}
+          onClick={() => handleMarkerClick(marker.slug)}
+          animation={
+            hoveredMarker === marker.slug
+              ? window.google.maps.Animation.BOUNCE
+              : undefined
+          }
+        />
+      ))}
     </>
   );
 };

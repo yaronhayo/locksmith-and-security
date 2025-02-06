@@ -73,10 +73,6 @@ const Map = ({
           zoom={zoom}
           options={mapOptions}
           onClick={onClick}
-          onLoad={() => {
-            console.log('Map component loaded');
-            setIsLoaded(true);
-          }}
         >
           {markers && markers.length > 0 && (
             <MapMarkers 
