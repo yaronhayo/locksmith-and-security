@@ -1,3 +1,4 @@
+
 import { Helmet } from "react-helmet";
 
 interface MetaTagsProps {
@@ -8,6 +9,7 @@ interface MetaTagsProps {
   keywords?: string;
   schema?: object;
   noindex?: boolean;
+  nofollow?: boolean;
 }
 
 const MetaTags = ({
@@ -18,6 +20,7 @@ const MetaTags = ({
   keywords = "locksmith, security, lock services, emergency locksmith, North Bergen",
   schema,
   noindex = false,
+  nofollow = false,
 }: MetaTagsProps) => {
   const baseUrl = "https://247locksmithandsecurity.com";
   const fullCanonicalUrl = canonicalUrl ? `${baseUrl}${canonicalUrl}` : baseUrl;
@@ -124,7 +127,12 @@ const MetaTags = ({
       <meta name="description" content={description} />
       <meta name="keywords" content={keywords} />
       <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
-      {noindex && <meta name="robots" content="noindex,nofollow" />}
+      {(noindex || nofollow) && (
+        <meta 
+          name="robots" 
+          content={`${noindex ? 'noindex' : 'index'},${nofollow ? 'nofollow' : 'follow'}`} 
+        />
+      )}
       <link rel="canonical" href={fullCanonicalUrl} />
       
       {/* Open Graph Tags */}
