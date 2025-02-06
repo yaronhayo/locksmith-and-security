@@ -11,11 +11,12 @@ import AdditionalNotes from "./FormFields/AdditionalNotes";
 import SubmitButton from "./SubmitButton";
 import { validateForm } from "./validation";
 import { supabase } from "@/integrations/supabase/client";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const BookingForm = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
+  const location = useLocation();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [selectedService, setSelectedService] = useState("");
   const [showVehicleInfo, setShowVehicleInfo] = useState(false);
@@ -24,6 +25,17 @@ const BookingForm = () => {
   const handleServiceChange = (value: string) => {
     setSelectedService(value);
     setShowVehicleInfo(value.toLowerCase().includes("car"));
+  };
+
+  const getVisitorInfo = () => {
+    return {
+      userAgent: navigator.userAgent,
+      language: navigator.language,
+      platform: navigator.platform,
+      screenResolution: `${window.screen.width}x${window.screen.height}`,
+      windowSize: `${window.innerWidth}x${window.innerHeight}`,
+      timestamp: new Date().toISOString(),
+    };
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -45,7 +57,7 @@ const BookingForm = () => {
     setIsSubmitting(true);
 
     try {
-      const formDataObj: any = {
+      const submissionData = {
         type: 'booking',
         name: String(formData.get('name')),
         phone: String(formData.get('phone')),
@@ -53,38 +65,28 @@ const BookingForm = () => {
         service: String(formData.get('service')),
         timeframe: String(formData.get('timeframe')),
         notes: formData.get('notes') ? String(formData.get('notes')) : null,
-      };
-
-      if (showVehicleInfo) {
-        formDataObj.vehicleInfo = {
+        vehicle_info: showVehicleInfo ? {
           year: String(formData.get('vehicleYear')),
           make: String(formData.get('vehicleMake')),
           model: String(formData.get('vehicleModel')),
-        };
-      }
+        } : null,
+        visitor_info: getVisitorInfo(),
+        source_url: location.pathname,
+        status: 'pending'
+      };
 
-      console.log("Submitting booking form data:", formDataObj);
+      console.log("Submitting booking form data:", submissionData);
 
       // First store in database
       const { error: dbError } = await supabase
         .from('submissions')
-        .insert({
-          type: formDataObj.type,
-          name: formDataObj.name,
-          phone: formDataObj.phone,
-          address: formDataObj.address,
-          service: formDataObj.service,
-          timeframe: formDataObj.timeframe,
-          notes: formDataObj.notes,
-          vehicle_info: formDataObj.vehicleInfo,
-          status: 'pending'
-        });
+        .insert(submissionData);
 
       if (dbError) throw dbError;
 
       // Then send email notification
       const { data, error } = await supabase.functions.invoke('send-form-email', {
-        body: formDataObj
+        body: submissionData
       });
 
       if (error) throw error;

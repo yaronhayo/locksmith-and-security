@@ -78,11 +78,13 @@ export type Database = {
           notes: string | null
           phone: string
           service: string | null
+          source_url: string | null
           status: string
           timeframe: string | null
           type: string
           updated_at: string | null
           vehicle_info: Json | null
+          visitor_info: Json | null
         }
         Insert: {
           address: string
@@ -95,11 +97,13 @@ export type Database = {
           notes?: string | null
           phone: string
           service?: string | null
+          source_url?: string | null
           status?: string
           timeframe?: string | null
           type: string
           updated_at?: string | null
           vehicle_info?: Json | null
+          visitor_info?: Json | null
         }
         Update: {
           address?: string
@@ -112,11 +116,13 @@ export type Database = {
           notes?: string | null
           phone?: string
           service?: string | null
+          source_url?: string | null
           status?: string
           timeframe?: string | null
           type?: string
           updated_at?: string | null
           vehicle_info?: Json | null
+          visitor_info?: Json | null
         }
         Relationships: []
       }

@@ -29,7 +29,29 @@ interface FormData {
   };
   message?: string;
   recaptchaToken?: string;
+  visitor_info?: {
+    userAgent: string;
+    language: string;
+    platform: string;
+    screenResolution: string;
+    windowSize: string;
+    timestamp: string;
+  };
+  source_url?: string;
 }
+
+const formatVisitorInfo = (info?: FormData['visitor_info']): string => {
+  if (!info) return '';
+  return `
+    <h3>Visitor Information</h3>
+    <p><strong>Browser:</strong> ${info.userAgent}</p>
+    <p><strong>Language:</strong> ${info.language}</p>
+    <p><strong>Platform:</strong> ${info.platform}</p>
+    <p><strong>Screen Size:</strong> ${info.screenResolution}</p>
+    <p><strong>Window Size:</strong> ${info.windowSize}</p>
+    <p><strong>Timestamp:</strong> ${info.timestamp}</p>
+  `;
+};
 
 const handler = async (req: Request): Promise<Response> => {
   // Handle CORS preflight requests
@@ -67,6 +89,9 @@ const handler = async (req: Request): Promise<Response> => {
           <h2>Additional Notes</h2>
           <p>${formData.notes}</p>
         ` : ''}
+        <h2>Submission Details</h2>
+        <p><strong>Source URL:</strong> ${formData.source_url || 'Not available'}</p>
+        ${formatVisitorInfo(formData.visitor_info)}
       `;
     } else {
       subject = 'New Contact Form Submission';
@@ -79,6 +104,9 @@ const handler = async (req: Request): Promise<Response> => {
         <p><strong>Address:</strong> ${formData.address}</p>
         <h2>Message</h2>
         <p>${formData.message}</p>
+        <h2>Submission Details</h2>
+        <p><strong>Source URL:</strong> ${formData.source_url || 'Not available'}</p>
+        ${formatVisitorInfo(formData.visitor_info)}
       `;
     }
 

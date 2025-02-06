@@ -7,14 +7,26 @@ import { Textarea } from "@/components/ui/textarea";
 import Recaptcha from "./ui/recaptcha";
 import AddressAutocomplete from "@/components/ui/address-autocomplete";
 import { supabase } from "@/integrations/supabase/client";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const ContactForm = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
+  const location = useLocation();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
   const [address, setAddress] = useState("");
+
+  const getVisitorInfo = () => {
+    return {
+      userAgent: navigator.userAgent,
+      language: navigator.language,
+      platform: navigator.platform,
+      screenResolution: `${window.screen.width}x${window.screen.height}`,
+      windowSize: `${window.innerWidth}x${window.innerHeight}`,
+      timestamp: new Date().toISOString(),
+    };
+  };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -32,36 +44,33 @@ const ContactForm = () => {
 
     try {
       const formData = new FormData(e.currentTarget);
-      const formDataObj = {
+      const submissionData = {
         type: 'contact',
         name: String(formData.get('name')),
         email: String(formData.get('email')),
         phone: String(formData.get('phone')),
         address: address,
         message: String(formData.get('message')),
-        recaptchaToken
+        status: 'pending',
+        visitor_info: getVisitorInfo(),
+        source_url: location.pathname,
       };
 
-      console.log("Submitting contact form:", formDataObj);
+      console.log("Submitting contact form:", submissionData);
 
       // First store in database
       const { error: dbError } = await supabase
         .from('submissions')
-        .insert({
-          type: formDataObj.type,
-          name: formDataObj.name,
-          email: formDataObj.email,
-          phone: formDataObj.phone,
-          address: formDataObj.address,
-          message: formDataObj.message,
-          status: 'pending'
-        });
+        .insert(submissionData);
 
       if (dbError) throw dbError;
 
-      // Then send email notification
+      // Then send email notification with enhanced data
       const { data, error } = await supabase.functions.invoke('send-form-email', {
-        body: formDataObj
+        body: {
+          ...submissionData,
+          recaptchaToken,
+        }
       });
 
       if (error) throw error;
