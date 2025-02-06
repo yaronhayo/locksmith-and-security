@@ -81,7 +81,7 @@ const Map = ({
             console.log('Map instance loaded successfully');
           }}
         >
-          {markers && markers.length > 0 && (
+          {isLoaded && markers && markers.length > 0 && (
             <MapMarkers 
               markers={markers} 
               hoveredMarker={hoveredMarker} 

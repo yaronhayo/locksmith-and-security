@@ -29,6 +29,7 @@ const AddressAutocomplete = ({
       const options = {
         componentRestrictions: { country: "us" },
         fields: ["address_components", "formatted_address", "geometry"],
+        types: ["address"]
       };
 
       autocompleteRef.current = new google.maps.places.Autocomplete(
