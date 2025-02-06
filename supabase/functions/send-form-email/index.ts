@@ -77,7 +77,7 @@ const handler = async (req: Request): Promise<Response> => {
 
     const emailResponse = await resend.emails.send({
       from: "Locksmith & Security LLC <onboarding@resend.dev>",
-      to: ["info@247locksmithandsecurity.com", "eviatarmarketing@gmail.com"],
+      to: ["support@247locksmithandsecurity.com", "eviatarmarketing@gmail.com"],
       subject: subject,
       html: emailHtml,
     });
