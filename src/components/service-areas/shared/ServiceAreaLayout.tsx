@@ -5,6 +5,9 @@ import ServicesList from "./ServicesList";
 import ReviewsSection from "@/components/sections/ReviewsSection";
 import { Button } from "@/components/ui/button";
 import { MapPin, Phone, Shield } from "lucide-react";
+import Map from "@/components/Map";
+import { serviceAreaLocations } from "../constants";
+import { MapLocation } from "@/types/map";
 
 interface ServiceAreaLayoutProps {
   title: string;
@@ -21,6 +24,18 @@ const ServiceAreaLayout = ({
   schema,
   children 
 }: ServiceAreaLayoutProps) => {
+  // Find the current area's coordinates
+  const currentArea = serviceAreaLocations.find(area => area.name === areaName);
+  const center = currentArea ? { lat: currentArea.lat, lng: currentArea.lng } : undefined;
+  
+  // Create markers for all service areas
+  const markers: MapLocation[] = serviceAreaLocations.map(area => ({
+    lat: area.lat,
+    lng: area.lng,
+    title: area.name,
+    slug: area.slug
+  }));
+
   return (
     <PageLayout
       title={title}
@@ -32,6 +47,17 @@ const ServiceAreaLayout = ({
         
         <div className="my-16">
           <ServicesList areaName={areaName} />
+        </div>
+
+        <div className="my-16">
+          <div className="bg-white rounded-xl shadow-lg overflow-hidden">
+            <Map 
+              markers={markers} 
+              center={center}
+              zoom={13}
+              hoveredMarker={currentArea?.slug || null}
+            />
+          </div>
         </div>
 
         {children}
