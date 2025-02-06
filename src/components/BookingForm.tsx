@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import AddressAutocomplete from "@/components/ui/address-autocomplete";
 
 const services = [
   "Car Lockout",
@@ -39,6 +40,7 @@ const BookingForm = () => {
   const [selectedService, setSelectedService] = useState("");
   const [showVehicleInfo, setShowVehicleInfo] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [address, setAddress] = useState("");
 
   const handleServiceChange = (value: string) => {
     setSelectedService(value);
@@ -50,7 +52,6 @@ const BookingForm = () => {
     
     const name = formData.get("name") as string;
     const phone = formData.get("phone") as string;
-    const address = formData.get("address") as string;
     
     if (!name || name.trim().length < 2) {
       newErrors.name = "Please enter a valid name (minimum 2 characters)";
@@ -91,6 +92,7 @@ const BookingForm = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
+    formData.set('address', address); // Ensure address is included in form data
     
     if (!validateForm(formData)) {
       toast({
@@ -116,6 +118,7 @@ const BookingForm = () => {
     setSelectedService("");
     setShowVehicleInfo(false);
     setErrors({});
+    setAddress("");
   };
 
   return (
@@ -157,14 +160,16 @@ const BookingForm = () => {
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="address">Address</Label>
-        <Input
+        <Label htmlFor="address">Service Address</Label>
+        <AddressAutocomplete
           id="address"
           name="address"
-          type="text"
+          value={address}
+          onChange={setAddress}
           aria-describedby="address-error"
           className={`h-10 text-base ${errors.address ? 'border-red-500' : ''}`}
-          autoComplete="street-address"
+          disabled={isSubmitting}
+          placeholder="Enter your service address"
         />
         {errors.address && (
           <Alert variant="destructive">
@@ -173,7 +178,7 @@ const BookingForm = () => {
           </Alert>
         )}
       </div>
-      
+
       <div className="space-y-2">
         <Label htmlFor="service">Service Needed</Label>
         <Select onValueChange={handleServiceChange} name="service">
