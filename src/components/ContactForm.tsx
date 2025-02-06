@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
@@ -41,11 +42,15 @@ const ContactForm = () => {
         recaptchaToken
       };
 
-      const { error: emailError } = await supabase.functions.invoke('send-form-email', {
+      console.log("Submitting contact form:", formDataObj);
+
+      const { data, error } = await supabase.functions.invoke('send-form-email', {
         body: formDataObj
       });
 
-      if (emailError) throw emailError;
+      if (error) throw error;
+
+      console.log("Contact form submission response:", data);
 
       // Set flag for thank you page
       sessionStorage.setItem('fromFormSubmission', 'true');
@@ -60,6 +65,7 @@ const ContactForm = () => {
         description: "Please try again or contact us directly.",
         variant: "destructive",
       });
+    } finally {
       setIsSubmitting(false);
     }
   };

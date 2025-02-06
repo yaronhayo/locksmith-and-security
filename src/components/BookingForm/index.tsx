@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
 import { BookingFormData, FormErrors } from "@/types/booking";
@@ -61,11 +62,15 @@ const BookingForm = () => {
         };
       }
 
-      const { error: emailError } = await supabase.functions.invoke('send-form-email', {
+      console.log("Submitting form data:", formDataObj);
+
+      const { data, error } = await supabase.functions.invoke('send-form-email', {
         body: formDataObj
       });
 
-      if (emailError) throw emailError;
+      if (error) throw error;
+
+      console.log("Form submission response:", data);
 
       // Set flag for thank you page
       sessionStorage.setItem('fromFormSubmission', 'true');
@@ -80,6 +85,7 @@ const BookingForm = () => {
         description: "Please try again or contact us directly.",
         variant: "destructive",
       });
+    } finally {
       setIsSubmitting(false);
     }
   };
