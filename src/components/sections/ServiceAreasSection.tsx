@@ -48,7 +48,12 @@ const ServiceAreasSection = () => {
             transition={{ duration: 0.5 }}
             className="bg-white rounded-xl shadow-lg overflow-hidden"
           >
-            <Map markers={markers} hoveredMarker={hoveredArea} />
+            <Map 
+              markers={markers} 
+              hoveredMarker={hoveredArea}
+              zoom={11}
+              center={{ lat: 40.7795, lng: -74.0324 }}
+            />
           </motion.div>
         </div>
 
