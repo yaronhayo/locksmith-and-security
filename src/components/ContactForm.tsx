@@ -34,11 +34,11 @@ const ContactForm = () => {
       const formData = new FormData(e.currentTarget);
       const formDataObj = {
         type: 'contact',
-        name: formData.get('name'),
-        email: formData.get('email'),
-        phone: formData.get('phone'),
+        name: String(formData.get('name')),
+        email: String(formData.get('email')),
+        phone: String(formData.get('phone')),
         address: address,
-        message: formData.get('message'),
+        message: String(formData.get('message')),
         recaptchaToken
       };
 
@@ -47,15 +47,15 @@ const ContactForm = () => {
       // First store in database
       const { error: dbError } = await supabase
         .from('submissions')
-        .insert([{
-          type: 'contact',
+        .insert({
+          type: formDataObj.type,
           name: formDataObj.name,
           email: formDataObj.email,
           phone: formDataObj.phone,
           address: formDataObj.address,
           message: formDataObj.message,
           status: 'pending'
-        }]);
+        });
 
       if (dbError) throw dbError;
 

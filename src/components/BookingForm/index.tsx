@@ -47,19 +47,19 @@ const BookingForm = () => {
     try {
       const formDataObj: any = {
         type: 'booking',
-        name: formData.get('name'),
-        phone: formData.get('phone'),
-        address: formData.get('address'),
-        service: formData.get('service'),
-        timeframe: formData.get('timeframe'),
-        notes: formData.get('notes'),
+        name: String(formData.get('name')),
+        phone: String(formData.get('phone')),
+        address: String(formData.get('address')),
+        service: String(formData.get('service')),
+        timeframe: String(formData.get('timeframe')),
+        notes: formData.get('notes') ? String(formData.get('notes')) : null,
       };
 
       if (showVehicleInfo) {
         formDataObj.vehicleInfo = {
-          year: formData.get('vehicleYear'),
-          make: formData.get('vehicleMake'),
-          model: formData.get('vehicleModel'),
+          year: String(formData.get('vehicleYear')),
+          make: String(formData.get('vehicleMake')),
+          model: String(formData.get('vehicleModel')),
         };
       }
 
@@ -68,8 +68,8 @@ const BookingForm = () => {
       // First store in database
       const { error: dbError } = await supabase
         .from('submissions')
-        .insert([{
-          type: 'booking',
+        .insert({
+          type: formDataObj.type,
           name: formDataObj.name,
           phone: formDataObj.phone,
           address: formDataObj.address,
@@ -78,7 +78,7 @@ const BookingForm = () => {
           notes: formDataObj.notes,
           vehicle_info: formDataObj.vehicleInfo,
           status: 'pending'
-        }]);
+        });
 
       if (dbError) throw dbError;
 
