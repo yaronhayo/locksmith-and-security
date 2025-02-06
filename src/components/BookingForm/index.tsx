@@ -39,11 +39,7 @@ const BookingForm = () => {
 
     try {
       await submitBookingForm(formData, showVehicleInfo, location.pathname);
-      
-      // Set flag for thank you page
       sessionStorage.setItem('fromFormSubmission', 'true');
-      
-      // Navigate to thank you page
       navigate('/thank-you');
     } catch (error: any) {
       console.error('Booking form submission error:', error);
