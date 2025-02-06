@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { GoogleMap, LoadScript } from "@react-google-maps/api";
+import { GoogleMap, LoadScript, Libraries } from "@react-google-maps/api";
 import { useMapConfig } from "./map/useMapConfig";
 import MapError from "./map/MapError";
 import MapLoader from "./map/MapLoader";
@@ -20,7 +20,7 @@ const mapOptions = {
 };
 
 // Define libraries array outside component to prevent reloading
-const libraries: ("places" | "geometry" | "drawing" | "visualization")[] = ["places"];
+const libraries: Libraries = ["places"];
 
 interface MapProps {
   markers?: MapLocation[];
@@ -75,9 +75,10 @@ const Map = ({
           onClick={onClick}
           onLoad={() => {
             console.log('Map component loaded');
+            setIsLoaded(true);
           }}
         >
-          {isLoaded && markers && markers.length > 0 && (
+          {markers && markers.length > 0 && (
             <MapMarkers 
               markers={markers} 
               hoveredMarker={hoveredMarker} 
