@@ -59,27 +59,20 @@ const Map = ({
     <div className="w-full h-[400px] relative rounded-lg overflow-hidden">
       <LoadScript 
         googleMapsApiKey={apiKey}
+        libraries={libraries}
         onLoad={() => {
           console.log('Google Maps script loaded successfully');
           setIsLoaded(true);
         }}
-        onError={(error) => {
-          console.error('Google Maps script error:', error);
-        }}
-        libraries={libraries}
       >
-        {!isLoaded && <MapLoader />}
         <GoogleMap
           mapContainerStyle={mapContainerStyle}
           center={center}
           zoom={zoom}
           options={mapOptions}
           onClick={onClick}
-          onLoad={() => {
-            console.log('Google Map component loaded successfully');
-          }}
         >
-          {isLoaded && markers.length > 0 && (
+          {isLoaded && markers && markers.length > 0 && (
             <MapMarkers 
               markers={markers} 
               hoveredMarker={hoveredMarker} 
