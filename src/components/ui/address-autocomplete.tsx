@@ -26,32 +26,46 @@ const AddressAutocomplete = ({
     if (!isLoaded || !inputRef.current) return;
 
     try {
-      const options = {
+      // Configure the autocomplete options
+      const options: google.maps.places.AutocompleteOptions = {
         componentRestrictions: { country: "us" },
-        fields: ["address_components", "formatted_address", "geometry"],
+        fields: ["address_components", "formatted_address", "geometry", "place_id"],
         types: ["address"]
       };
 
+      // Initialize the autocomplete instance
       autocompleteRef.current = new google.maps.places.Autocomplete(
         inputRef.current,
         options
       );
 
-      console.log('Autocomplete initialized successfully');
+      console.log('Autocomplete initialized with options:', options);
 
+      // Add place_changed event listener
       const listener = autocompleteRef.current.addListener(
         "place_changed",
         () => {
           const place = autocompleteRef.current?.getPlace();
+          
           if (place?.formatted_address) {
-            console.log('Place selected:', place.formatted_address);
+            console.log('Selected place:', {
+              address: place.formatted_address,
+              placeId: place.place_id,
+              location: place.geometry?.location?.toJSON()
+            });
+            
             onChange(place.formatted_address);
+          } else {
+            console.warn('No formatted address found in place data');
           }
         }
       );
 
+      // Cleanup function
       return () => {
-        google.maps.event.removeListener(listener);
+        if (listener) {
+          google.maps.event.removeListener(listener);
+        }
         if (autocompleteRef.current) {
           google.maps.event.clearInstanceListeners(autocompleteRef.current);
         }
@@ -62,6 +76,7 @@ const AddressAutocomplete = ({
     }
   }, [isLoaded, onChange]);
 
+  // Handle manual input changes
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     onChange(e.target.value);
   };
@@ -69,10 +84,6 @@ const AddressAutocomplete = ({
   if (!apiKey) {
     console.error('No Google Maps API key available');
     return null;
-  }
-
-  if (error) {
-    console.error('Autocomplete error:', error);
   }
 
   return (
@@ -88,18 +99,20 @@ const AddressAutocomplete = ({
         setError('Failed to load Google Maps Places');
       }}
     >
-      <Input
-        ref={inputRef}
-        type="text"
-        value={value}
-        onChange={handleInputChange}
-        className={`${className} ${error ? 'border-red-500' : ''}`}
-        disabled={disabled}
-        {...props}
-      />
-      {error && (
-        <p className="text-sm text-red-500 mt-1">{error}</p>
-      )}
+      <div className="relative">
+        <Input
+          ref={inputRef}
+          type="text"
+          value={value}
+          onChange={handleInputChange}
+          className={`${className} ${error ? 'border-red-500' : ''}`}
+          disabled={disabled}
+          {...props}
+        />
+        {error && (
+          <p className="text-sm text-red-500 mt-1">{error}</p>
+        )}
+      </div>
     </LoadScript>
   );
 };

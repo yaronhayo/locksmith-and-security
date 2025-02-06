@@ -13,7 +13,7 @@ interface AddressFieldProps {
 const AddressField = ({ value, onChange, error, isSubmitting }: AddressFieldProps) => {
   return (
     <div className="space-y-2">
-      <Label htmlFor="address">Address</Label>
+      <Label htmlFor="address">Service Address</Label>
       <AddressAutocomplete
         id="address"
         name="address"
@@ -22,6 +22,7 @@ const AddressField = ({ value, onChange, error, isSubmitting }: AddressFieldProp
         aria-describedby="address-error"
         className={`h-10 text-base ${error ? 'border-red-500' : ''}`}
         disabled={isSubmitting}
+        placeholder="Enter your service address"
         required
       />
       {error && (
