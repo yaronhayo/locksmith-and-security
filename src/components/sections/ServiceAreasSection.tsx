@@ -1,22 +1,64 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Map from '../Map';
 import AreasList from './service-areas/AreasList';
 import ServiceAreaFeatures from '../service-areas/shared/ServiceAreaFeatures';
 import EmergencyCallout from './service-areas/EmergencyCallout';
-import { serviceAreaLocations } from '../service-areas/constants';
+import { supabase } from '@/integrations/supabase/client';
 import { MapLocation } from '@/types/map';
+import { ServiceAreaLocation } from '../service-areas/types';
 
 const ServiceAreasSection = () => {
   const [hoveredArea, setHoveredArea] = useState<string | null>(null);
+  const [locations, setLocations] = useState<ServiceAreaLocation[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   
-  // Map service area locations to the correct marker format
-  const markers: MapLocation[] = serviceAreaLocations.map(area => ({
+  useEffect(() => {
+    const fetchLocations = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('locations')
+          .select('*');
+        
+        if (error) {
+          console.error('Error fetching locations:', error);
+          return;
+        }
+
+        if (data) {
+          setLocations(data.map(location => ({
+            name: location.name,
+            slug: location.slug,
+            description: location.description || '',
+            lat: Number(location.lat),
+            lng: Number(location.lng)
+          })));
+        }
+      } catch (error) {
+        console.error('Error:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchLocations();
+  }, []);
+
+  // Map locations to markers format
+  const markers: MapLocation[] = locations.map(area => ({
     lat: area.lat,
     lng: area.lng,
     title: area.name,
     slug: area.slug
   }));
+
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center min-h-[400px]">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+      </div>
+    );
+  }
 
   return (
     <section className="py-20">
@@ -38,7 +80,7 @@ const ServiceAreasSection = () => {
 
         <div className="grid lg:grid-cols-2 gap-12 mb-16">
           <AreasList 
-            areas={serviceAreaLocations} 
+            areas={locations} 
             hoveredArea={hoveredArea} 
             setHoveredArea={setHoveredArea} 
           />
