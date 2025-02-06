@@ -19,8 +19,7 @@ const mapOptions = {
   mapTypeControl: false,
 };
 
-// Define libraries array outside component to prevent reloading
-const libraries: Libraries = ["places"];
+const libraries: Libraries = ["places", "marker"];
 
 interface MapProps {
   markers?: MapLocation[];
@@ -43,6 +42,7 @@ const Map = ({
   console.log('Map render:', { markers, isLoaded, apiKey });
 
   if (loadError) {
+    console.error('Map load error:', loadError);
     return (
       <MapError 
         error={loadError} 
@@ -54,6 +54,7 @@ const Map = ({
   }
 
   if (!apiKey) {
+    console.log('Waiting for API key...');
     return <MapLoader />;
   }
 
@@ -66,6 +67,9 @@ const Map = ({
           console.log('Google Maps script loaded successfully');
           setIsLoaded(true);
         }}
+        onError={(err) => {
+          console.error('Error loading Google Maps script:', err);
+        }}
       >
         <GoogleMap
           mapContainerStyle={mapContainerStyle}
@@ -73,6 +77,9 @@ const Map = ({
           zoom={zoom}
           options={mapOptions}
           onClick={onClick}
+          onLoad={() => {
+            console.log('Map instance loaded successfully');
+          }}
         >
           {markers && markers.length > 0 && (
             <MapMarkers 

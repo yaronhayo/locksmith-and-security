@@ -1,4 +1,4 @@
-import { Marker } from '@react-google-maps/api';
+import { AdvancedMarkerElement } from '@react-google-maps/api';
 import { MapLocation } from '@/types/map';
 import { useNavigate } from 'react-router-dom';
 
@@ -21,19 +21,23 @@ const MapMarkers = ({ markers, hoveredMarker }: MapMarkersProps) => {
 
   return (
     <>
-      {markers.map((marker, index) => (
-        <Marker
-          key={`${marker.slug || ''}-${index}`}
-          position={{ lat: marker.lat, lng: marker.lng }}
-          title={marker.title}
-          onClick={() => handleMarkerClick(marker.slug)}
-          animation={
-            hoveredMarker === marker.slug
-              ? window.google.maps.Animation.BOUNCE
-              : undefined
-          }
-        />
-      ))}
+      {markers.map((marker, index) => {
+        const position = { lat: marker.lat, lng: marker.lng };
+        
+        return (
+          <AdvancedMarkerElement
+            key={`${marker.slug || ''}-${index}`}
+            position={position}
+            title={marker.title}
+            onClick={() => handleMarkerClick(marker.slug)}
+            animation={
+              hoveredMarker === marker.slug
+                ? window.google.maps.Animation.BOUNCE
+                : undefined
+            }
+          />
+        );
+      })}
     </>
   );
 };
