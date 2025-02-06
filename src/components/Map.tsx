@@ -69,6 +69,12 @@ const Map = ({
       <LoadScript 
         googleMapsApiKey={apiKey}
         libraries={libraries}
+        onLoad={() => {
+          console.log('Google Maps script loaded successfully');
+        }}
+        onError={(error) => {
+          console.error('Google Maps script load error:', error);
+        }}
       >
         <GoogleMap
           mapContainerStyle={mapContainerStyle}
@@ -81,7 +87,7 @@ const Map = ({
             setMapLoaded(true);
           }}
         >
-          {mapLoaded && markers && markers.length > 0 && (
+          {markers && markers.length > 0 && (
             <MapMarkers 
               markers={markers} 
               hoveredMarker={hoveredMarker} 
