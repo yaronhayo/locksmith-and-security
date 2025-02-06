@@ -6,56 +6,56 @@ const services = [
   { 
     icon: Lock, 
     title: "House Lockout", 
-    description: "Locked out of your home? Our expert locksmiths will help you regain access quickly and safely, without damaging your locks. Available 24/7 for homeowners and renters.", 
+    description: "Expert locksmith service for residential lockouts. Available 24/7 with fast response times for homeowners and renters.", 
     link: "/services/house-lockout", 
     cta: "Unlock Your Home" 
   },
   { 
     icon: Car, 
     title: "Car Lockout", 
-    description: "Lost your car keys or locked them inside? Our mobile locksmiths come to your location and safely unlock your vehicle. Available 24/7 for all car makes and models.", 
+    description: "Professional automotive lockout service available 24/7. We come to your location and safely unlock any vehicle make or model.", 
     link: "/services/car-lockout", 
     cta: "Unlock Your Car" 
   },
   { 
     icon: Building2, 
     title: "Business Lockout", 
-    description: "Can't access your business? We provide fast commercial lockout service to get you back to work quickly. Available for offices, stores, and warehouses.", 
+    description: "Commercial lockout solutions for all business types. Fast response service available 24/7 to get you back to work quickly.", 
     link: "/services/business-lockout", 
     cta: "Unlock Your Business" 
   },
   { 
     icon: Key, 
     title: "Lock Change", 
-    description: "Need new locks? We install high-quality locks for better security. Perfect for new homeowners or when upgrading old locks. We work with all major brands.", 
+    description: "Professional lock replacement service with high-security options. Ideal for new homeowners or upgrading existing security.", 
     link: "/services/lock-change", 
     cta: "Change Your Locks" 
   },
   { 
     icon: Key, 
     title: "Lock Rekey", 
-    description: "Want to keep your locks but need new keys? We'll rekey your existing locks to work with new keys, making old ones useless. Ideal for landlords and new homeowners.", 
+    description: "Expert lock rekeying service to maintain security with new keys. Perfect solution for landlords and new property owners.", 
     link: "/services/lock-rekey", 
     cta: "Rekey Your Locks" 
   },
   { 
     icon: Building2, 
     title: "Business Lock Change", 
-    description: "Upgrade your business security with new commercial-grade locks. We install master key systems and high-security locks for offices, stores, and warehouses.", 
+    description: "Commercial-grade lock installation and security upgrades. Specialized solutions for offices, retail stores, and facilities.", 
     link: "/services/business-lock-change", 
     cta: "Secure Your Business" 
   },
   { 
     icon: Car, 
     title: "New Car Key", 
-    description: "Lost your car key? We make and program new keys for all vehicle types, including transponder and smart keys. Fast service with professional equipment.", 
+    description: "Professional car key cutting and programming service. We create keys for all vehicle types using advanced equipment.", 
     link: "/services/new-car-key", 
     cta: "Get a New Car Key" 
   },
   { 
     icon: Car, 
     title: "Car Key Program", 
-    description: "Need a car key programmed? We program all types of electronic car keys and key fobs. Our technicians use professional equipment for all vehicle makes.", 
+    description: "Expert programming for all types of car keys and fobs. Professional service compatible with all major vehicle brands.", 
     link: "/services/car-key-program", 
     cta: "Program Your Car Key" 
   }
@@ -69,11 +69,11 @@ const ServicesSection = () => {
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
           {services.map((service, index) => (
             <Card key={index} className="transition-shadow duration-300 hover:shadow-lg">
-              <CardContent className="p-6 text-center">
+              <CardContent className="p-6 text-center h-full flex flex-col">
                 <service.icon className="w-12 h-12 mx-auto mb-4 text-primary" />
                 <h3 className="text-xl font-semibold mb-2">{service.title}</h3>
-                <p className="text-gray-600 mb-4">{service.description}</p>
-                <Button asChild variant="secondary" className="group">
+                <p className="text-gray-600 mb-4 flex-grow">{service.description}</p>
+                <Button asChild variant="secondary" className="group mt-auto">
                   <a href={service.link} className="inline-flex items-center">
                     {service.cta}
                     <ArrowRight className="ml-2 transform transition-transform duration-300 group-hover:translate-x-2" />
