@@ -27,6 +27,7 @@ export const sendTestEmail = async () => {
     return data;
   } catch (error) {
     console.error('Failed to send test email:', error);
+    // Re-throw the error to be handled by the calling component
     throw error;
   }
 };

@@ -33,6 +33,9 @@ const handler = async (req: Request): Promise<Response> => {
   }
 
   try {
+    // Log the RESEND_API_KEY presence (not the actual key)
+    console.log("RESEND_API_KEY present:", !!Deno.env.get("RESEND_API_KEY"));
+
     const formData: FormData = await req.json();
     console.log("Received form data:", formData);
 
@@ -75,6 +78,11 @@ const handler = async (req: Request): Promise<Response> => {
       `;
     }
 
+    console.log("Preparing to send email:", {
+      subject,
+      recipients: ["support@247locksmithandsecurity.com", "eviatarmarketing@gmail.com"]
+    });
+
     const emailResponse = await resend.emails.send({
       from: "Locksmith & Security LLC <onboarding@resend.dev>",
       to: ["support@247locksmithandsecurity.com", "eviatarmarketing@gmail.com"],
@@ -93,8 +101,18 @@ const handler = async (req: Request): Promise<Response> => {
     });
   } catch (error: any) {
     console.error("Error in send-form-email function:", error);
+    console.error("Error details:", {
+      message: error.message,
+      stack: error.stack,
+      name: error.name
+    });
+
     return new Response(
-      JSON.stringify({ error: error.message }),
+      JSON.stringify({ 
+        error: error.message,
+        details: error.stack,
+        name: error.name
+      }),
       {
         status: 500,
         headers: { "Content-Type": "application/json", ...corsHeaders },
