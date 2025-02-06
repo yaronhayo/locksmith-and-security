@@ -44,10 +44,10 @@ const Map = ({
   hoveredMarker = null,
   onClick,
 }: MapProps) => {
-  const [mapLoaded, setMapLoaded] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
   const { apiKey, loadError, isRetrying, retryCount, fetchApiKey } = useMapConfig();
 
-  console.log('Map render:', { markers, mapLoaded, apiKey });
+  console.log('Map render:', { markers, isLoaded, apiKey });
 
   if (loadError) {
     return (
@@ -71,9 +71,7 @@ const Map = ({
         libraries={libraries}
         onLoad={() => {
           console.log('Google Maps script loaded successfully');
-        }}
-        onError={(error) => {
-          console.error('Google Maps script load error:', error);
+          setIsLoaded(true);
         }}
       >
         <GoogleMap
@@ -82,12 +80,8 @@ const Map = ({
           zoom={zoom}
           options={mapOptions}
           onClick={onClick}
-          onLoad={() => {
-            console.log('Google Map component loaded');
-            setMapLoaded(true);
-          }}
         >
-          {markers && markers.length > 0 && (
+          {isLoaded && markers && markers.length > 0 && (
             <MapMarkers 
               markers={markers} 
               hoveredMarker={hoveredMarker} 

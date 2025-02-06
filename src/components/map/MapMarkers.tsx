@@ -1,6 +1,7 @@
 import { Marker } from '@react-google-maps/api';
 import { MapLocation } from '@/types/map';
 import { useNavigate } from 'react-router-dom';
+import { MapPin } from 'lucide-react';
 
 interface MapMarkersProps {
   markers: MapLocation[];
