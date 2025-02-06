@@ -5,10 +5,6 @@ import MapError from "./map/MapError";
 import MapLoader from "./map/MapLoader";
 import MapMarkers from "./map/MapMarkers";
 import { MapLocation } from "@/types/map";
-import { defaultMapCenter, defaultMapZoom, mapStyles } from "@/config/constants";
-
-// Define libraries outside component to prevent reloading warning
-const libraries: Libraries = ["places", "marker"];
 
 const mapContainerStyle = {
   width: "100%",
@@ -21,8 +17,9 @@ const mapOptions = {
   zoomControl: true,
   streetViewControl: false,
   mapTypeControl: false,
-  styles: mapStyles,
 };
+
+const libraries: Libraries = ["places", "marker"];
 
 interface MapProps {
   markers?: MapLocation[];
@@ -34,22 +31,15 @@ interface MapProps {
 
 const Map = ({
   markers = [],
-  center = defaultMapCenter,
-  zoom = defaultMapZoom,
+  center = { lat: 40.7795, lng: -74.0324 },
+  zoom = 12,
   hoveredMarker = null,
   onClick,
 }: MapProps) => {
   const [isLoaded, setIsLoaded] = useState(false);
-  const [mapInstance, setMapInstance] = useState<google.maps.Map | null>(null);
   const { apiKey, loadError, isRetrying, retryCount, fetchApiKey } = useMapConfig();
 
-  console.log('Map render:', { 
-    markers: markers.length, 
-    isLoaded, 
-    hasApiKey: !!apiKey,
-    center,
-    zoom 
-  });
+  console.log('Map render:', { markers, isLoaded, apiKey });
 
   if (loadError) {
     console.error('Map load error:', loadError);
@@ -69,7 +59,7 @@ const Map = ({
   }
 
   return (
-    <div className="w-full h-[400px] relative rounded-lg overflow-hidden shadow-md">
+    <div className="w-full h-[400px] relative rounded-lg overflow-hidden">
       <LoadScript 
         googleMapsApiKey={apiKey}
         libraries={libraries}
@@ -87,12 +77,11 @@ const Map = ({
           zoom={zoom}
           options={mapOptions}
           onClick={onClick}
-          onLoad={(map) => {
+          onLoad={() => {
             console.log('Map instance loaded successfully');
-            setMapInstance(map);
           }}
         >
-          {isLoaded && mapInstance && markers && markers.length > 0 && (
+          {isLoaded && markers && markers.length > 0 && (
             <MapMarkers 
               markers={markers} 
               hoveredMarker={hoveredMarker} 
