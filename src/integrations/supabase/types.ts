@@ -42,6 +42,39 @@ export type Database = {
         }
         Relationships: []
       }
+      reviews: {
+        Row: {
+          comment: string
+          created_at: string
+          id: string
+          location: string | null
+          name: string
+          rating: number
+          sentiment: string | null
+          verified: boolean | null
+        }
+        Insert: {
+          comment: string
+          created_at?: string
+          id?: string
+          location?: string | null
+          name: string
+          rating: number
+          sentiment?: string | null
+          verified?: boolean | null
+        }
+        Update: {
+          comment?: string
+          created_at?: string
+          id?: string
+          location?: string | null
+          name?: string
+          rating?: number
+          sentiment?: string | null
+          verified?: boolean | null
+        }
+        Relationships: []
+      }
       settings: {
         Row: {
           created_at: string | null
