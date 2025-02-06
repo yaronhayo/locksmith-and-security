@@ -6,7 +6,7 @@ import MapLoader from "./map/MapLoader";
 import MapMarkers from "./map/MapMarkers";
 import { MapLocation } from "@/types/map";
 
-// Move constants outside component to prevent recreation
+// Constants defined outside component to prevent recreation
 const MAP_LIBRARIES: Libraries = ["places", "marker"];
 
 const MAP_OPTIONS = {
@@ -14,12 +14,13 @@ const MAP_OPTIONS = {
   zoomControl: true,
   streetViewControl: false,
   mapTypeControl: false,
+  fullscreenControl: false
 };
 
 const MAP_CONTAINER_STYLE = {
   width: "100%",
   height: "400px",
-  borderRadius: "0.5rem",
+  borderRadius: "0.5rem"
 };
 
 interface MapProps {
@@ -40,7 +41,6 @@ const Map = ({
   const [isLoaded, setIsLoaded] = useState(false);
   const { apiKey, loadError, isRetrying, retryCount, fetchApiKey } = useMapConfig();
 
-  // Consolidated logging
   const handleScriptLoad = () => {
     console.log('Google Maps script loaded successfully');
     setIsLoaded(true);
@@ -50,8 +50,13 @@ const Map = ({
     console.error('Error loading Google Maps script:', err);
   };
 
-  const handleMapLoad = () => {
+  const handleMapLoad = (map: google.maps.Map) => {
     console.log('Map instance loaded successfully');
+    // Ensure map is properly centered
+    if (map) {
+      map.setCenter(center);
+      map.setZoom(zoom);
+    }
   };
 
   if (loadError) {
@@ -72,7 +77,7 @@ const Map = ({
   }
 
   return (
-    <div className="w-full h-[400px] relative rounded-lg overflow-hidden">
+    <div className="w-full h-[400px] relative rounded-lg overflow-hidden shadow-md">
       <LoadScript 
         googleMapsApiKey={apiKey}
         libraries={MAP_LIBRARIES}
