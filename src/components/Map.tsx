@@ -17,6 +17,13 @@ const mapOptions = {
   zoomControl: true,
   streetViewControl: false,
   mapTypeControl: false,
+  styles: [
+    {
+      featureType: "poi",
+      elementType: "labels",
+      stylers: [{ visibility: "off" }],
+    },
+  ],
 };
 
 // Define libraries array outside component to prevent reloading
@@ -74,7 +81,7 @@ const Map = ({
           options={mapOptions}
           onClick={onClick}
         >
-          {markers && markers.length > 0 && (
+          {isLoaded && markers && markers.length > 0 && (
             <MapMarkers 
               markers={markers} 
               hoveredMarker={hoveredMarker} 
