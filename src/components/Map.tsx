@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { GoogleMap, LoadScript, Libraries } from "@react-google-maps/api";
 import { useMapConfig } from "./map/useMapConfig";
 import MapError from "./map/MapError";
@@ -14,7 +14,8 @@ const MAP_OPTIONS = {
   zoomControl: true,
   streetViewControl: false,
   mapTypeControl: false,
-  fullscreenControl: false
+  fullscreenControl: false,
+  gestureHandling: 'cooperative'
 };
 
 const MAP_CONTAINER_STYLE = {
@@ -39,7 +40,15 @@ const Map = ({
   onClick,
 }: MapProps) => {
   const [isLoaded, setIsLoaded] = useState(false);
+  const [map, setMap] = useState<google.maps.Map | null>(null);
   const { apiKey, loadError, isRetrying, retryCount, fetchApiKey } = useMapConfig();
+
+  useEffect(() => {
+    if (map) {
+      map.setCenter(center);
+      map.setZoom(zoom);
+    }
+  }, [map, center, zoom]);
 
   const handleScriptLoad = () => {
     console.log('Google Maps script loaded successfully');
@@ -52,11 +61,7 @@ const Map = ({
 
   const handleMapLoad = (map: google.maps.Map) => {
     console.log('Map instance loaded successfully');
-    // Ensure map is properly centered
-    if (map) {
-      map.setCenter(center);
-      map.setZoom(zoom);
-    }
+    setMap(map);
   };
 
   if (loadError) {
