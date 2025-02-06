@@ -1,19 +1,29 @@
-export interface FormErrors {
-  [key: string]: string;
+
+export interface FormData extends FormData {
+  get(key: string): FormDataEntryValue | null;
 }
 
-export interface BookingFormState {
-  selectedService: string;
-  showVehicleInfo: boolean;
-  isSubmitting: boolean;
-  errors: FormErrors;
-  recaptchaToken: string | null;
-}
-
-export interface BookingFormActions {
-  setSelectedService: (service: string) => void;
-  setShowVehicleInfo: (show: boolean) => void;
-  setIsSubmitting: (isSubmitting: boolean) => void;
-  setErrors: (errors: FormErrors) => void;
-  setRecaptchaToken: (token: string | null) => void;
+export interface SubmissionData {
+  type: 'booking';
+  name: string;
+  phone: string;
+  address: string;
+  service: string;
+  timeframe: string;
+  notes: string | null;
+  vehicle_info: {
+    year: string;
+    make: string;
+    model: string;
+  } | null;
+  visitor_info: {
+    userAgent: string;
+    language: string;
+    platform: string;
+    screenResolution: string;
+    windowSize: string;
+    timestamp: string;
+  };
+  source_url: string;
+  status: 'pending';
 }
