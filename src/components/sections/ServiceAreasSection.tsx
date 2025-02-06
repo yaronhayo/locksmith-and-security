@@ -10,6 +10,7 @@ import { MapLocation } from '@/types/map';
 const ServiceAreasSection = () => {
   const [hoveredArea, setHoveredArea] = useState<string | null>(null);
   
+  // Map service area locations to the correct marker format
   const markers: MapLocation[] = serviceAreaLocations.map(area => ({
     lat: area.lat,
     lng: area.lng,
