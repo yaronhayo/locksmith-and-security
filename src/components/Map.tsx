@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { GoogleMap, LoadScript, Libraries } from "@react-google-maps/api";
 import { useMapConfig } from "./map/useMapConfig";
 import MapError from "./map/MapError";
@@ -7,7 +7,7 @@ import MapMarkers from "./map/MapMarkers";
 import { MapLocation } from "@/types/map";
 
 // Constants defined outside component to prevent recreation
-const MAP_LIBRARIES: Libraries = ["places", "marker"];
+const MAP_LIBRARIES: Libraries = ["places", "marker"] as const;
 
 const MAP_OPTIONS = {
   disableDefaultUI: false,
@@ -16,13 +16,13 @@ const MAP_OPTIONS = {
   mapTypeControl: false,
   fullscreenControl: false,
   gestureHandling: 'cooperative'
-};
+} as const;
 
 const MAP_CONTAINER_STYLE = {
   width: "100%",
   height: "400px",
   borderRadius: "0.5rem"
-};
+} as const;
 
 interface MapProps {
   markers?: MapLocation[];
@@ -43,12 +43,15 @@ const Map = ({
   const [map, setMap] = useState<google.maps.Map | null>(null);
   const { apiKey, loadError, isRetrying, retryCount, fetchApiKey } = useMapConfig();
 
+  // Memoize the center to prevent unnecessary re-renders
+  const mapCenter = useMemo(() => center, [center.lat, center.lng]);
+
   useEffect(() => {
     if (map) {
-      map.setCenter(center);
+      map.setCenter(mapCenter);
       map.setZoom(zoom);
     }
-  }, [map, center, zoom]);
+  }, [map, mapCenter, zoom]);
 
   const handleScriptLoad = () => {
     console.log('Google Maps script loaded successfully');
@@ -91,7 +94,7 @@ const Map = ({
       >
         <GoogleMap
           mapContainerStyle={MAP_CONTAINER_STYLE}
-          center={center}
+          center={mapCenter}
           zoom={zoom}
           options={MAP_OPTIONS}
           onClick={onClick}
