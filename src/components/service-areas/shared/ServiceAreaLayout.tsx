@@ -10,6 +10,7 @@ interface ServiceAreaLayoutProps {
   title: string;
   description: string;
   areaName: string;
+  schema?: object;
   children?: ReactNode;
 }
 
@@ -17,12 +18,14 @@ const ServiceAreaLayout = ({
   title, 
   description, 
   areaName,
+  schema,
   children 
 }: ServiceAreaLayoutProps) => {
   return (
     <PageLayout
       title={title}
       description={description}
+      schema={schema}
     >
       <div className="container mx-auto px-4 py-8">
         <ServiceAreaHero areaName={areaName} />
