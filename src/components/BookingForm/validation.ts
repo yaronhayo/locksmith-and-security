@@ -1,3 +1,4 @@
+
 export const validateForm = (formData: FormData, showVehicleInfo: boolean) => {
   const errors: Record<string, string> = {};
   
