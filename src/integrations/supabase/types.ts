@@ -66,6 +66,60 @@ export type Database = {
         }
         Relationships: []
       }
+      submissions: {
+        Row: {
+          address: string
+          created_at: string | null
+          email: string | null
+          error_message: string | null
+          id: number
+          message: string | null
+          name: string
+          notes: string | null
+          phone: string
+          service: string | null
+          status: string
+          timeframe: string | null
+          type: string
+          updated_at: string | null
+          vehicle_info: Json | null
+        }
+        Insert: {
+          address: string
+          created_at?: string | null
+          email?: string | null
+          error_message?: string | null
+          id?: number
+          message?: string | null
+          name: string
+          notes?: string | null
+          phone: string
+          service?: string | null
+          status?: string
+          timeframe?: string | null
+          type: string
+          updated_at?: string | null
+          vehicle_info?: Json | null
+        }
+        Update: {
+          address?: string
+          created_at?: string | null
+          email?: string | null
+          error_message?: string | null
+          id?: number
+          message?: string | null
+          name?: string
+          notes?: string | null
+          phone?: string
+          service?: string | null
+          status?: string
+          timeframe?: string | null
+          type?: string
+          updated_at?: string | null
+          vehicle_info?: Json | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

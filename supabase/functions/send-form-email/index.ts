@@ -1,8 +1,12 @@
 
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { Resend } from "npm:resend@2.0.0";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2.39.3";
 
 const resend = new Resend(Deno.env.get("RESEND_API_KEY"));
+const supabaseUrl = Deno.env.get("SUPABASE_URL") ?? "";
+const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "";
+const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -33,11 +37,39 @@ const handler = async (req: Request): Promise<Response> => {
   }
 
   try {
-    // Log the RESEND_API_KEY presence (not the actual key)
+    console.log("Starting form submission handler");
     console.log("RESEND_API_KEY present:", !!Deno.env.get("RESEND_API_KEY"));
+    console.log("SUPABASE_URL present:", !!supabaseUrl);
+    console.log("SUPABASE_SERVICE_ROLE_KEY present:", !!supabaseServiceKey);
 
     const formData: FormData = await req.json();
     console.log("Received form data:", formData);
+
+    // First, store the submission in the database
+    const { data: submissionData, error: submissionError } = await supabase
+      .from('submissions')
+      .insert([{
+        type: formData.type,
+        name: formData.name,
+        phone: formData.phone,
+        email: formData.email,
+        address: formData.address,
+        service: formData.service,
+        timeframe: formData.timeframe,
+        notes: formData.notes,
+        vehicle_info: formData.vehicleInfo,
+        message: formData.message,
+        status: 'pending'
+      }])
+      .select()
+      .single();
+
+    if (submissionError) {
+      console.error("Database submission error:", submissionError);
+      throw new Error(`Failed to store submission: ${submissionError.message}`);
+    }
+
+    console.log("Submission stored in database:", submissionData);
 
     let emailHtml = '';
     let subject = '';
@@ -92,6 +124,17 @@ const handler = async (req: Request): Promise<Response> => {
 
     console.log("Email sent successfully:", emailResponse);
 
+    // Update submission status to processed
+    const { error: updateError } = await supabase
+      .from('submissions')
+      .update({ status: 'processed' })
+      .eq('id', submissionData.id);
+
+    if (updateError) {
+      console.error("Error updating submission status:", updateError);
+      // Don't throw here as the email was sent successfully
+    }
+
     return new Response(JSON.stringify(emailResponse), {
       status: 200,
       headers: {
@@ -106,6 +149,21 @@ const handler = async (req: Request): Promise<Response> => {
       stack: error.stack,
       name: error.name
     });
+
+    // If we have a submission ID, update its status to failed
+    if (error.submissionId) {
+      const { error: updateError } = await supabase
+        .from('submissions')
+        .update({ 
+          status: 'failed',
+          error_message: error.message
+        })
+        .eq('id', error.submissionId);
+
+      if (updateError) {
+        console.error("Error updating submission failure status:", updateError);
+      }
+    }
 
     return new Response(
       JSON.stringify({ 

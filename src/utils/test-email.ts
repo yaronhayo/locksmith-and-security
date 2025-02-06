@@ -24,10 +24,25 @@ export const sendTestEmail = async () => {
     }
 
     console.log('Test email sent successfully:', data);
+
+    // Query the submissions table to verify the test submission was stored
+    const { data: submission, error: queryError } = await supabase
+      .from('submissions')
+      .select('*')
+      .eq('name', 'Test User')
+      .order('created_at', { ascending: false })
+      .limit(1)
+      .single();
+
+    if (queryError) {
+      console.error('Error querying test submission:', queryError);
+    } else {
+      console.log('Test submission stored successfully:', submission);
+    }
+
     return data;
   } catch (error) {
     console.error('Failed to send test email:', error);
-    // Re-throw the error to be handled by the calling component
     throw error;
   }
 };
