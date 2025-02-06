@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
 import { BookingFormData, FormErrors } from "@/types/booking";
@@ -9,6 +10,7 @@ import OtherServiceField from "./FormFields/OtherServiceField";
 import AdditionalNotes from "./FormFields/AdditionalNotes";
 import SubmitButton from "./SubmitButton";
 import { validateForm } from "./validation";
+import { supabase } from "@/integrations/supabase/client";
 
 const BookingForm = () => {
   const { toast } = useToast();
@@ -39,8 +41,30 @@ const BookingForm = () => {
 
     try {
       setIsSubmitting(true);
-      // Simulate form submission
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      const formDataObj: any = {
+        type: 'booking',
+        name: formData.get('name'),
+        phone: formData.get('phone'),
+        address: formData.get('address'),
+        service: formData.get('service'),
+        timeframe: formData.get('timeframe'),
+        notes: formData.get('notes'),
+      };
+
+      if (showVehicleInfo) {
+        formDataObj.vehicleInfo = {
+          year: formData.get('vehicleYear'),
+          make: formData.get('vehicleMake'),
+          model: formData.get('vehicleModel'),
+        };
+      }
+
+      const { error: emailError } = await supabase.functions.invoke('send-form-email', {
+        body: formDataObj
+      });
+
+      if (emailError) throw emailError;
 
       toast({
         title: "Request Submitted Successfully",
@@ -51,7 +75,8 @@ const BookingForm = () => {
       setSelectedService("");
       setShowVehicleInfo(false);
       setErrors({});
-    } catch (error) {
+    } catch (error: any) {
+      console.error('Form submission error:', error);
       toast({
         title: "Submission Failed",
         description: "Please try again or contact us directly.",

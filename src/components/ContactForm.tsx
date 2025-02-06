@@ -1,11 +1,12 @@
+
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { sendContactFormEmail } from "@/utils/emailjs";
 import Recaptcha from "./ui/recaptcha";
 import AddressAutocomplete from "@/components/ui/address-autocomplete";
+import { supabase } from "@/integrations/supabase/client";
 
 const ContactForm = () => {
   const { toast } = useToast();
@@ -29,16 +30,21 @@ const ContactForm = () => {
 
     try {
       const formData = new FormData(e.currentTarget);
-      const formDataObj: Record<string, any> = {};
-      formData.forEach((value, key) => {
-        formDataObj[key] = value;
+      const formDataObj = {
+        type: 'contact',
+        name: formData.get('name'),
+        email: formData.get('email'),
+        phone: formData.get('phone'),
+        address: address,
+        message: formData.get('message'),
+        recaptchaToken
+      };
+
+      const { error: emailError } = await supabase.functions.invoke('send-form-email', {
+        body: formDataObj
       });
 
-      // Add recaptcha token to form data
-      formDataObj.recaptchaToken = recaptchaToken;
-      formDataObj.address = address;
-
-      await sendContactFormEmail(formDataObj);
+      if (emailError) throw emailError;
 
       toast({
         title: "Message Sent Successfully",
@@ -48,7 +54,8 @@ const ContactForm = () => {
       (e.target as HTMLFormElement).reset();
       setRecaptchaToken(null);
       setAddress("");
-    } catch (error) {
+    } catch (error: any) {
+      console.error('Form submission error:', error);
       toast({
         title: "Submission Failed",
         description: "Please try again or contact us directly.",
