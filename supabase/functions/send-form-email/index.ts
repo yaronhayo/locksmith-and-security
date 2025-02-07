@@ -42,14 +42,181 @@ interface FormData {
 const formatVisitorInfo = (info?: FormData['visitor_info']): string => {
   if (!info) return '';
   return `
-    <h3>Visitor Information</h3>
-    <p><strong>Browser:</strong> ${info.userAgent}</p>
-    <p><strong>Language:</strong> ${info.language}</p>
-    <p><strong>Platform:</strong> ${info.platform}</p>
-    <p><strong>Screen Size:</strong> ${info.screenResolution}</p>
-    <p><strong>Window Size:</strong> ${info.windowSize}</p>
-    <p><strong>Timestamp:</strong> ${info.timestamp}</p>
+    <tr>
+      <td colspan="2" style="padding: 20px 0;">
+        <h3 style="color: #1a365d; margin-bottom: 15px; border-bottom: 1px solid #e2e8f0; padding-bottom: 10px;">Visitor Information</h3>
+        <p style="margin: 5px 0;"><strong>Browser:</strong> ${info.userAgent}</p>
+        <p style="margin: 5px 0;"><strong>Language:</strong> ${info.language}</p>
+        <p style="margin: 5px 0;"><strong>Platform:</strong> ${info.platform}</p>
+        <p style="margin: 5px 0;"><strong>Screen Size:</strong> ${info.screenResolution}</p>
+        <p style="margin: 5px 0;"><strong>Window Size:</strong> ${info.windowSize}</p>
+        <p style="margin: 5px 0;"><strong>Timestamp:</strong> ${info.timestamp}</p>
+      </td>
+    </tr>
   `;
+};
+
+const getEmailTemplate = (formData: FormData): string => {
+  const commonStyles = `
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    line-height: 1.6;
+    color: #2d3748;
+  `;
+
+  const headerStyle = `
+    background-color: #1a365d;
+    color: white;
+    padding: 30px;
+    text-align: center;
+    border-radius: 8px 8px 0 0;
+  `;
+
+  const sectionHeaderStyle = `
+    color: #1a365d;
+    margin: 25px 0 15px;
+    border-bottom: 1px solid #e2e8f0;
+    padding-bottom: 10px;
+  `;
+
+  if (formData.type === 'booking') {
+    return `
+      <div style="${commonStyles}">
+        <div style="${headerStyle}">
+          <h1 style="margin: 0; font-size: 24px;">New Service Booking Request</h1>
+          <p style="margin: 10px 0 0; opacity: 0.9;">Received on ${new Date().toLocaleDateString()}</p>
+        </div>
+        <div style="padding: 30px; background-color: white; border-radius: 0 0 8px 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+          <table style="width: 100%; border-collapse: collapse;">
+            <tr>
+              <td colspan="2">
+                <h2 style="${sectionHeaderStyle}">Customer Information</h2>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding: 8px 0;"><strong>Name:</strong></td>
+              <td style="padding: 8px 0;">${formData.name}</td>
+            </tr>
+            <tr>
+              <td style="padding: 8px 0;"><strong>Phone:</strong></td>
+              <td style="padding: 8px 0;"><a href="tel:${formData.phone}" style="color: #4299e1;">${formData.phone}</a></td>
+            </tr>
+            <tr>
+              <td style="padding: 8px 0;"><strong>Address:</strong></td>
+              <td style="padding: 8px 0;">${formData.address}</td>
+            </tr>
+            <tr>
+              <td colspan="2">
+                <h2 style="${sectionHeaderStyle}">Service Details</h2>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding: 8px 0;"><strong>Service:</strong></td>
+              <td style="padding: 8px 0;">${formData.service}</td>
+            </tr>
+            <tr>
+              <td style="padding: 8px 0;"><strong>Timeframe:</strong></td>
+              <td style="padding: 8px 0;">${formData.timeframe}</td>
+            </tr>
+            ${formData.vehicle_info ? `
+              <tr>
+                <td colspan="2">
+                  <h2 style="${sectionHeaderStyle}">Vehicle Information</h2>
+                </td>
+              </tr>
+              <tr>
+                <td style="padding: 8px 0;"><strong>Year:</strong></td>
+                <td style="padding: 8px 0;">${formData.vehicle_info.year}</td>
+              </tr>
+              <tr>
+                <td style="padding: 8px 0;"><strong>Make:</strong></td>
+                <td style="padding: 8px 0;">${formData.vehicle_info.make}</td>
+              </tr>
+              <tr>
+                <td style="padding: 8px 0;"><strong>Model:</strong></td>
+                <td style="padding: 8px 0;">${formData.vehicle_info.model}</td>
+              </tr>
+            ` : ''}
+            ${formData.notes ? `
+              <tr>
+                <td colspan="2">
+                  <h2 style="${sectionHeaderStyle}">Additional Notes</h2>
+                  <p style="margin: 5px 0;">${formData.notes}</p>
+                </td>
+              </tr>
+            ` : ''}
+            <tr>
+              <td colspan="2">
+                <h2 style="${sectionHeaderStyle}">Submission Details</h2>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding: 8px 0;"><strong>Source URL:</strong></td>
+              <td style="padding: 8px 0;">${formData.source_url || 'Not available'}</td>
+            </tr>
+            ${formatVisitorInfo(formData.visitor_info)}
+          </table>
+        </div>
+        <div style="text-align: center; padding: 20px; color: #718096; font-size: 14px;">
+          <p>© ${new Date().getFullYear()} Locksmith & Security LLC. All rights reserved.</p>
+        </div>
+      </div>
+    `;
+  } else {
+    return `
+      <div style="${commonStyles}">
+        <div style="${headerStyle}">
+          <h1 style="margin: 0; font-size: 24px;">New Contact Form Submission</h1>
+          <p style="margin: 10px 0 0; opacity: 0.9;">Received on ${new Date().toLocaleDateString()}</p>
+        </div>
+        <div style="padding: 30px; background-color: white; border-radius: 0 0 8px 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+          <table style="width: 100%; border-collapse: collapse;">
+            <tr>
+              <td colspan="2">
+                <h2 style="${sectionHeaderStyle}">Contact Information</h2>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding: 8px 0;"><strong>Name:</strong></td>
+              <td style="padding: 8px 0;">${formData.name}</td>
+            </tr>
+            <tr>
+              <td style="padding: 8px 0;"><strong>Phone:</strong></td>
+              <td style="padding: 8px 0;"><a href="tel:${formData.phone}" style="color: #4299e1;">${formData.phone}</a></td>
+            </tr>
+            ${formData.email ? `
+              <tr>
+                <td style="padding: 8px 0;"><strong>Email:</strong></td>
+                <td style="padding: 8px 0;"><a href="mailto:${formData.email}" style="color: #4299e1;">${formData.email}</a></td>
+              </tr>
+            ` : ''}
+            <tr>
+              <td style="padding: 8px 0;"><strong>Address:</strong></td>
+              <td style="padding: 8px 0;">${formData.address}</td>
+            </tr>
+            <tr>
+              <td colspan="2">
+                <h2 style="${sectionHeaderStyle}">Message</h2>
+                <p style="margin: 5px 0; white-space: pre-wrap;">${formData.message}</p>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2">
+                <h2 style="${sectionHeaderStyle}">Submission Details</h2>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding: 8px 0;"><strong>Source URL:</strong></td>
+              <td style="padding: 8px 0;">${formData.source_url || 'Not available'}</td>
+            </tr>
+            ${formatVisitorInfo(formData.visitor_info)}
+          </table>
+        </div>
+        <div style="text-align: center; padding: 20px; color: #718096; font-size: 14px;">
+          <p>© ${new Date().getFullYear()} Locksmith & Security LLC. All rights reserved.</p>
+        </div>
+      </div>
+    `;
+  }
 };
 
 const handler = async (req: Request): Promise<Response> => {
@@ -74,50 +241,8 @@ const handler = async (req: Request): Promise<Response> => {
       throw new Error("RESEND_API_KEY is not configured");
     }
 
-    let emailHtml = '';
-    let subject = '';
-
-    if (formData.type === 'booking') {
-      subject = 'New Service Booking Request';
-      emailHtml = `
-        <h1>New Service Booking Request</h1>
-        <h2>Customer Information</h2>
-        <p><strong>Name:</strong> ${formData.name}</p>
-        <p><strong>Phone:</strong> ${formData.phone}</p>
-        <p><strong>Address:</strong> ${formData.address}</p>
-        <h2>Service Details</h2>
-        <p><strong>Service:</strong> ${formData.service}</p>
-        <p><strong>Timeframe:</strong> ${formData.timeframe}</p>
-        ${formData.vehicle_info ? `
-          <h2>Vehicle Information</h2>
-          <p><strong>Year:</strong> ${formData.vehicle_info.year}</p>
-          <p><strong>Make:</strong> ${formData.vehicle_info.make}</p>
-          <p><strong>Model:</strong> ${formData.vehicle_info.model}</p>
-        ` : ''}
-        ${formData.notes ? `
-          <h2>Additional Notes</h2>
-          <p>${formData.notes}</p>
-        ` : ''}
-        <h2>Submission Details</h2>
-        <p><strong>Source URL:</strong> ${formData.source_url || 'Not available'}</p>
-        ${formatVisitorInfo(formData.visitor_info)}
-      `;
-    } else {
-      subject = 'New Contact Form Submission';
-      emailHtml = `
-        <h1>New Contact Form Submission</h1>
-        <h2>Contact Information</h2>
-        <p><strong>Name:</strong> ${formData.name}</p>
-        <p><strong>Phone:</strong> ${formData.phone}</p>
-        <p><strong>Email:</strong> ${formData.email}</p>
-        <p><strong>Address:</strong> ${formData.address}</p>
-        <h2>Message</h2>
-        <p>${formData.message}</p>
-        <h2>Submission Details</h2>
-        <p><strong>Source URL:</strong> ${formData.source_url || 'Not available'}</p>
-        ${formatVisitorInfo(formData.visitor_info)}
-      `;
-    }
+    const emailHtml = getEmailTemplate(formData);
+    const subject = formData.type === 'booking' ? 'New Service Booking Request' : 'New Contact Form Submission';
 
     console.log("Preparing to send email with subject:", subject);
 
