@@ -105,11 +105,14 @@ export type Database = {
           created_at: string | null
           email: string | null
           error_message: string | null
+          formatted_address: string | null
           id: number
           message: string | null
           name: string
           notes: string | null
           phone: string
+          place_id: string | null
+          recaptcha_token: string | null
           service: string | null
           source_url: string | null
           status: string
@@ -127,11 +130,14 @@ export type Database = {
           created_at?: string | null
           email?: string | null
           error_message?: string | null
+          formatted_address?: string | null
           id?: number
           message?: string | null
           name: string
           notes?: string | null
           phone: string
+          place_id?: string | null
+          recaptcha_token?: string | null
           service?: string | null
           source_url?: string | null
           status?: string
@@ -149,11 +155,14 @@ export type Database = {
           created_at?: string | null
           email?: string | null
           error_message?: string | null
+          formatted_address?: string | null
           id?: number
           message?: string | null
           name?: string
           notes?: string | null
           phone?: string
+          place_id?: string | null
+          recaptcha_token?: string | null
           service?: string | null
           source_url?: string | null
           status?: string
