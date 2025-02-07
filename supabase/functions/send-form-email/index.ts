@@ -37,6 +37,13 @@ interface FormData {
     timestamp: string;
   };
   source_url?: string;
+  traffic_source?: {
+    source: string;
+    medium: string;
+    campaign: string;
+    keyword: string;
+    clickPath: string[];
+  };
 }
 
 const formatVisitorInfo = (info?: FormData['visitor_info']): string => {
@@ -51,6 +58,22 @@ const formatVisitorInfo = (info?: FormData['visitor_info']): string => {
         <p style="margin: 5px 0;"><strong>Screen Size:</strong> ${info.screenResolution}</p>
         <p style="margin: 5px 0;"><strong>Window Size:</strong> ${info.windowSize}</p>
         <p style="margin: 5px 0;"><strong>Timestamp:</strong> ${info.timestamp}</p>
+      </td>
+    </tr>
+  `;
+};
+
+const formatTrafficSource = (info?: FormData['traffic_source']): string => {
+  if (!info) return '';
+  return `
+    <tr>
+      <td colspan="2" style="padding: 20px 0;">
+        <h3 style="color: #1a365d; margin-bottom: 15px; border-bottom: 1px solid #e2e8f0; padding-bottom: 10px;">Traffic Source Information</h3>
+        <p style="margin: 5px 0;"><strong>Source:</strong> ${info.source || 'Direct'}</p>
+        <p style="margin: 5px 0;"><strong>Medium:</strong> ${info.medium || 'N/A'}</p>
+        <p style="margin: 5px 0;"><strong>Campaign:</strong> ${info.campaign || 'N/A'}</p>
+        <p style="margin: 5px 0;"><strong>Keyword:</strong> ${info.keyword || 'N/A'}</p>
+        <p style="margin: 5px 0;"><strong>Click Path:</strong> ${info.clickPath?.join(' → ') || 'N/A'}</p>
       </td>
     </tr>
   `;
@@ -167,6 +190,7 @@ const getEmailTemplate = (formData: FormData): string => {
               <td style="padding: 8px 0;"><strong>Source URL:</strong></td>
               <td style="padding: 8px 0;">${formData.source_url || 'Not available'}</td>
             </tr>
+            ${formatTrafficSource(formData.traffic_source)}
             ${formatVisitorInfo(formData.visitor_info)}
           </table>
         </div>
@@ -222,6 +246,7 @@ const getEmailTemplate = (formData: FormData): string => {
               <td style="padding: 8px 0;"><strong>Source URL:</strong></td>
               <td style="padding: 8px 0;">${formData.source_url || 'Not available'}</td>
             </tr>
+            ${formatTrafficSource(formData.traffic_source)}
             ${formatVisitorInfo(formData.visitor_info)}
           </table>
         </div>
@@ -329,4 +354,3 @@ const handler = async (req: Request): Promise<Response> => {
 };
 
 serve(handler);
-
