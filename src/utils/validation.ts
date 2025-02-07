@@ -1,3 +1,4 @@
+
 export interface ValidationRule {
   test: (value: any) => boolean;
   message: string;
@@ -31,7 +32,7 @@ export const bookingValidationRules: FieldValidation = {
   ],
   address: [
     {
-      test: (value) => value && value.trim().length >= 5,
+      test: (value) => value && value.trim().length > 0,
       message: "Please enter your complete service address"
     }
   ],

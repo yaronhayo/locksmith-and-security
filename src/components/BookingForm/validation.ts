@@ -15,7 +15,7 @@ export const validateForm = (formData: FormData, showVehicleInfo: boolean) => {
     errors.phone = "Please enter a valid phone number";
   }
   
-  if (!address || address.trim().length < 5) {
+  if (!address || !address.trim()) {
     errors.address = "Please enter a valid address";
   }
   
