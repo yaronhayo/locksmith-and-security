@@ -21,31 +21,23 @@ const NavigationLink = memo(({
   children,
   icon
 }: NavigationLinkProps) => {
+  // In mobile menu, just show the main link without children
+  if (isMenuOpen) {
+    return (
+      <Link
+        to={path}
+        className="flex items-center gap-2 w-full py-2 text-base font-medium text-white hover:text-secondary transition-colors"
+        onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+      >
+        {icon}
+        <span>{label}</span>
+      </Link>
+    );
+  }
+
+  // For desktop, show dropdown if there are children
   if (children) {
-    return isMenuOpen ? (
-      <div className="space-y-2 w-full">
-        <Link
-          to={path}
-          className="flex items-center gap-2 w-full py-2 text-base font-medium text-white hover:text-secondary transition-colors"
-          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-        >
-          {icon}
-          <span>{label}</span>
-        </Link>
-        <div className="pl-7 space-y-2">
-          {children.map((child) => (
-            <Link
-              key={child.path}
-              to={child.path}
-              className="block text-sm text-white/90 hover:text-white transition-colors py-1"
-              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-            >
-              {child.label}
-            </Link>
-          ))}
-        </div>
-      </div>
-    ) : (
+    return (
       <NavigationMenu>
         <NavigationMenuList>
           <NavigationMenuItem>
@@ -90,6 +82,7 @@ const NavigationLink = memo(({
     );
   }
 
+  // Regular link for both mobile and desktop
   return (
     <Link
       to={path}
