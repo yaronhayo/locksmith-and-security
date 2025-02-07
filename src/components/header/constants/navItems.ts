@@ -12,12 +12,9 @@ export const navItems: readonly NavItem[] = [
       { path: "/services/business-lockout", label: "Business Lockout" },
       { path: "/services/lock-change", label: "Lock Change" },
       { path: "/services/lock-rekey", label: "Lock Rekey" },
-      { path: "/services/lock-installation", label: "Lock Installation" },
-      { path: "/services/lock-repair", label: "Lock Repair" },
       { path: "/services/business-lock-change", label: "Business Lock Change" },
       { path: "/services/new-car-key", label: "New Car Key" },
-      { path: "/services/car-key-program", label: "Car Key Program" },
-      { path: "/services/security-systems", label: "Security Systems" }
+      { path: "/services/car-key-program", label: "Car Key Program" }
     ]
   },
   { 
