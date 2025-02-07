@@ -22,13 +22,12 @@ interface FormData {
   service?: string;
   timeframe?: string;
   notes?: string;
-  vehicleInfo?: {
+  vehicle_info?: {
     year: string;
     make: string;
     model: string;
   };
   message?: string;
-  recaptchaToken?: string;
   visitor_info?: {
     userAgent: string;
     language: string;
@@ -79,11 +78,11 @@ const handler = async (req: Request): Promise<Response> => {
         <h2>Service Details</h2>
         <p><strong>Service:</strong> ${formData.service}</p>
         <p><strong>Timeframe:</strong> ${formData.timeframe}</p>
-        ${formData.vehicleInfo ? `
+        ${formData.vehicle_info ? `
           <h2>Vehicle Information</h2>
-          <p><strong>Year:</strong> ${formData.vehicleInfo.year}</p>
-          <p><strong>Make:</strong> ${formData.vehicleInfo.make}</p>
-          <p><strong>Model:</strong> ${formData.vehicleInfo.model}</p>
+          <p><strong>Year:</strong> ${formData.vehicle_info.year}</p>
+          <p><strong>Make:</strong> ${formData.vehicle_info.make}</p>
+          <p><strong>Model:</strong> ${formData.vehicle_info.model}</p>
         ` : ''}
         ${formData.notes ? `
           <h2>Additional Notes</h2>
