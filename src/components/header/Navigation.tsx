@@ -5,7 +5,7 @@ import { memo, useEffect, useState } from "react";
 import NavigationLink from "./NavigationLink";
 import { navItems } from "./constants/navItems";
 import { NavigationProps } from "./types/navigation";
-import { Phone, Calendar } from "lucide-react";
+import { Phone, Calendar, Home, ChevronRight, Settings, MapPin, Info, Star, MessageSquare, HelpCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import BookingDialog from "@/components/BookingDialog";
 
@@ -23,17 +23,39 @@ const Navigation = ({ className, isMenuOpen = false, isScrolled = false }: Navig
 
   const isActive = (path: string) => location.pathname === path;
 
+  // Get icon for menu item
+  const getIcon = (label: string) => {
+    switch (label) {
+      case "Home":
+        return <Home className="w-5 h-5" />;
+      case "Services":
+        return <Settings className="w-5 h-5" />;
+      case "Service Areas":
+        return <MapPin className="w-5 h-5" />;
+      case "About":
+        return <Info className="w-5 h-5" />;
+      case "Reviews":
+        return <Star className="w-5 h-5" />;
+      case "Contact":
+        return <MessageSquare className="w-5 h-5" />;
+      case "FAQ":
+        return <HelpCircle className="w-5 h-5" />;
+      default:
+        return <ChevronRight className="w-5 h-5" />;
+    }
+  };
+
   // Filter items based on whether we're in mobile view (isOpen) or not
   const displayItems = isOpen 
-    ? navItems.filter(item => !item.children || ["Services", "Service Areas"].includes(item.label)) // Show main pages and Services/Service Areas in mobile menu
+    ? navItems.filter(item => !item.children || ["Services", "Service Areas"].includes(item.label))
     : navItems;
 
   return (
     <nav 
       className={cn(
         "hidden lg:flex items-center space-x-8",
-        isOpen && "fixed inset-0 top-[65px] bg-primary/95 flex flex-col items-start px-6 py-8 space-y-4 lg:relative lg:top-0 lg:bg-transparent lg:flex-row lg:items-center lg:space-x-8 lg:space-y-0 lg:p-0",
-        isOpen && "!flex",  // Force display when menu is open
+        isOpen && "fixed inset-0 top-[65px] bg-primary/95 flex flex-col items-start px-6 py-6 space-y-3 overflow-y-auto lg:relative lg:top-0 lg:bg-transparent lg:flex-row lg:items-center lg:space-x-8 lg:space-y-0 lg:p-0 max-h-[calc(100vh-65px)]",
+        isOpen && "!flex",
         className
       )}
       role="navigation"
@@ -41,24 +63,30 @@ const Navigation = ({ className, isMenuOpen = false, isScrolled = false }: Navig
     >
       {displayItems.map(({ path, label, showMobileOnly, children }) => (
         (!showMobileOnly || (showMobileOnly && isOpen)) && (
-          <NavigationLink
-            key={path}
-            path={path}
-            label={label}
-            isActive={isActive(path)}
-            isMenuOpen={isOpen}
-            children={children}
-          />
+          <div key={path} className="w-full">
+            <NavigationLink
+              path={path}
+              label={label}
+              isActive={isActive(path)}
+              isMenuOpen={isOpen}
+              children={children}
+              icon={getIcon(label)}
+            />
+          </div>
         )
       ))}
       
       {isOpen && (
-        <div className="mt-6 space-y-4 w-full">
+        <div className="mt-2 space-y-3 w-full">
           <BookingDialog 
             variant="secondary"
-            className="w-full bg-secondary hover:bg-secondary-hover text-white shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
+            className="w-full"
           >
-            <Button asChild variant="secondary" className="w-full">
+            <Button 
+              asChild 
+              variant="secondary" 
+              className="w-full bg-secondary hover:bg-secondary-hover text-white shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
+            >
               <span className="inline-flex items-center justify-center gap-2">
                 <Calendar className="w-5 h-5" />
                 Book Service
@@ -68,7 +96,7 @@ const Navigation = ({ className, isMenuOpen = false, isScrolled = false }: Navig
           
           <a 
             href="tel:2017482070" 
-            className="w-full inline-flex items-center justify-center gap-2 text-white text-lg font-bold hover:text-secondary transition-colors"
+            className="w-full inline-flex items-center justify-center gap-2 py-3 px-4 bg-white/10 rounded-md text-white text-lg font-bold hover:bg-white/20 transition-all duration-300"
           >
             <Phone className="w-5 h-5 animate-phone-ring" />
             (201) 748-2070
@@ -80,3 +108,4 @@ const Navigation = ({ className, isMenuOpen = false, isScrolled = false }: Navig
 };
 
 export default memo(Navigation);
+

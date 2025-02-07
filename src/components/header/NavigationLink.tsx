@@ -1,3 +1,4 @@
+
 import { memo } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
@@ -7,7 +8,6 @@ import {
   NavigationMenu,
   NavigationMenuContent,
   NavigationMenuItem,
-  NavigationMenuLink,
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
@@ -17,18 +17,25 @@ const NavigationLink = memo(({
   label, 
   isActive, 
   isMenuOpen,
-  children 
+  children,
+  icon
 }: NavigationLinkProps) => {
   if (children) {
     return isMenuOpen ? (
-      <div className="space-y-2">
-        <span className="text-base font-medium text-white lg:text-gray-700">{label}</span>
-        <div className="pl-4 space-y-2">
+      <div className="space-y-2 w-full">
+        <Link
+          to={path}
+          className="flex items-center gap-2 w-full py-2 text-base font-medium text-white hover:text-secondary transition-colors"
+        >
+          {icon}
+          <span>{label}</span>
+        </Link>
+        <div className="pl-7 space-y-2">
           {children.map((child) => (
             <Link
               key={child.path}
               to={child.path}
-              className="block text-sm text-white/90 hover:text-white lg:text-gray-600 lg:hover:text-gray-900"
+              className="block text-sm text-white/90 hover:text-white transition-colors py-1"
               onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
             >
               {child.label}
@@ -75,18 +82,21 @@ const NavigationLink = memo(({
       className={cn(
         "text-base font-medium transition-colors duration-300 relative group no-underline",
         isActive ? "text-secondary" : "text-gray-700 hover:text-secondary",
-        isMenuOpen && "text-white lg:text-gray-700"
+        isMenuOpen && "text-white hover:text-secondary w-full flex items-center gap-2 py-2"
       )}
       onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
     >
+      {isMenuOpen && icon}
       {label}
-      <motion.div
-        className="absolute -bottom-1 left-0 h-0.5 bg-secondary"
-        initial={{ width: isActive ? "100%" : "0%" }}
-        animate={{ width: isActive ? "100%" : "0%" }}
-        whileHover={{ width: "100%" }}
-        transition={{ duration: 0.2, ease: "easeInOut" }}
-      />
+      {!isMenuOpen && (
+        <motion.div
+          className="absolute -bottom-1 left-0 h-0.5 bg-secondary"
+          initial={{ width: isActive ? "100%" : "0%" }}
+          animate={{ width: isActive ? "100%" : "0%" }}
+          whileHover={{ width: "100%" }}
+          transition={{ duration: 0.2, ease: "easeInOut" }}
+        />
+      )}
     </Link>
   );
 });

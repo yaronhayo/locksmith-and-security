@@ -1,3 +1,4 @@
+
 export type NavItem = {
   path: string;
   label: string;
@@ -17,4 +18,5 @@ export interface NavigationLinkProps {
   isActive: boolean;
   isMenuOpen: boolean;
   children?: { path: string; label: string }[];
+  icon?: React.ReactNode;
 }
