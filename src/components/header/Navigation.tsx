@@ -20,6 +20,11 @@ const Navigation = ({ className, isMenuOpen = false, isScrolled = false }: Navig
 
   const isActive = (path: string) => location.pathname === path;
 
+  // Filter items based on whether we're in mobile view (isOpen) or not
+  const displayItems = isOpen 
+    ? navItems.filter(item => !item.children) // Only show main pages in mobile menu
+    : navItems;
+
   return (
     <nav 
       className={cn(
@@ -31,7 +36,7 @@ const Navigation = ({ className, isMenuOpen = false, isScrolled = false }: Navig
       role="navigation"
       aria-label="Main navigation"
     >
-      {navItems.map(({ path, label, showMobileOnly, children }) => (
+      {displayItems.map(({ path, label, showMobileOnly, children }) => (
         (!showMobileOnly || (showMobileOnly && isOpen)) && (
           <NavigationLink
             key={path}
@@ -48,3 +53,4 @@ const Navigation = ({ className, isMenuOpen = false, isScrolled = false }: Navig
 };
 
 export default memo(Navigation);
+
