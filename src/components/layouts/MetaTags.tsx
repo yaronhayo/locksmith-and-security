@@ -13,6 +13,7 @@ interface MetaTagsProps {
   modifiedDate?: string;
   breadcrumbs?: Array<{ name: string; item: string }>;
   articleSchema?: boolean;
+  businessSchema?: boolean;
 }
 
 const MetaTags = ({
@@ -27,6 +28,7 @@ const MetaTags = ({
   modifiedDate = new Date().toISOString().split('T')[0],
   breadcrumbs,
   articleSchema = false,
+  businessSchema = true,
 }: MetaTagsProps) => {
   const baseUrl = "https://247locksmithandsecurity.com";
   const fullCanonicalUrl = canonicalUrl ? `${baseUrl}${canonicalUrl}` : baseUrl;
@@ -90,7 +92,29 @@ const MetaTags = ({
     "sameAs": [
       "https://www.facebook.com/247locksmithandsecurity",
       "https://www.yelp.com/biz/247-locksmith-and-security-north-bergen"
-    ]
+    ],
+    "hasOfferCatalog": {
+      "@type": "OfferCatalog",
+      "name": "Locksmith Services",
+      "itemListElement": [
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Emergency Lockout Service",
+            "description": "24/7 emergency lockout services for homes, businesses, and vehicles"
+          }
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Lock Installation",
+            "description": "Professional installation of high-security locks"
+          }
+        }
+      ]
+    }
   };
 
   const pageSchema = {
@@ -180,9 +204,11 @@ const MetaTags = ({
       <meta name="business:contact_data:email" content="info@247locksmithandsecurity.com" />
       
       {/* Schema.org JSON-LD */}
-      <script type="application/ld+json">
-        {JSON.stringify(defaultSchema)}
-      </script>
+      {businessSchema && (
+        <script type="application/ld+json">
+          {JSON.stringify(defaultSchema)}
+        </script>
+      )}
       <script type="application/ld+json">
         {JSON.stringify(pageSchema)}
       </script>
