@@ -1,6 +1,7 @@
+
 import { Phone, Calendar, Menu, X } from 'lucide-react';
 import { Button } from "@/components/ui/button";
-import BookingDialog from '@/components/BookingDialog';
+import { Link } from "react-router-dom";
 
 interface ActionButtonsProps {
   isMenuOpen: boolean;
@@ -15,24 +16,28 @@ const ActionButtons = ({ isMenuOpen, setIsMenuOpen }: ActionButtonsProps) => {
           <Phone className="w-6 h-6 animate-phone-ring" />
           <span className="text-2xl transform transition-transform duration-300 group-hover:translate-y-[-2px]">(201) 748-2070</span>
         </a>
-        <BookingDialog 
+        <Button 
+          asChild
           variant="secondary"
           className="bg-secondary hover:bg-secondary-hover text-white text-lg px-6 py-3 shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
-        />
+        >
+          <Link to="/book-online" className="inline-flex items-center gap-2">
+            <Calendar className="w-5 h-5" />
+            Book Service
+          </Link>
+        </Button>
       </div>
       <div className="flex md:hidden items-center space-x-2">
-        <BookingDialog 
-          variant="secondary"
-          size="sm"
+        <Button 
+          asChild 
+          size="sm" 
           className="bg-secondary hover:bg-secondary-hover text-white shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
         >
-          <Button asChild size="sm" className="bg-secondary hover:bg-secondary-hover text-white shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300">
-            <span className="inline-flex items-center gap-1">
-              <Calendar className="w-4 h-4" />
-              Book Online
-            </span>
-          </Button>
-        </BookingDialog>
+          <Link to="/book-online" className="inline-flex items-center gap-1">
+            <Calendar className="w-4 h-4" />
+            Book Online
+          </Link>
+        </Button>
         <a href="tel:2017482070">
           <Button 
             size="icon" 

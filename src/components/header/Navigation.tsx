@@ -7,7 +7,7 @@ import { navItems } from "./constants/navItems";
 import { NavigationProps } from "./types/navigation";
 import { Phone, Calendar, Home, ChevronRight, Settings, MapPin, Info, Star, MessageSquare, HelpCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import BookingDialog from "@/components/BookingDialog";
+import { Link } from "react-router-dom";
 
 const Navigation = ({ className, isMenuOpen = false, isScrolled = false }: NavigationProps) => {
   const location = useLocation();
@@ -78,21 +78,16 @@ const Navigation = ({ className, isMenuOpen = false, isScrolled = false }: Navig
       
       {isOpen && (
         <div className="mt-2 space-y-3 w-full">
-          <BookingDialog 
-            variant="secondary"
-            className="w-full"
+          <Button 
+            asChild 
+            variant="secondary" 
+            className="w-full bg-secondary hover:bg-secondary-hover text-white shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
           >
-            <Button 
-              asChild 
-              variant="secondary" 
-              className="w-full bg-secondary hover:bg-secondary-hover text-white shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
-            >
-              <span className="inline-flex items-center justify-center gap-2">
-                <Calendar className="w-5 h-5" />
-                Book Service
-              </span>
-            </Button>
-          </BookingDialog>
+            <Link to="/book-online" className="inline-flex items-center justify-center gap-2">
+              <Calendar className="w-5 h-5" />
+              Book Service
+            </Link>
+          </Button>
           
           <a 
             href="tel:2017482070" 
