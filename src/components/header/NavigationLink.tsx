@@ -10,6 +10,7 @@ import {
   NavigationMenuItem,
   NavigationMenuList,
   NavigationMenuTrigger,
+  NavigationMenuLink
 } from "@/components/ui/navigation-menu";
 
 const NavigationLink = memo(({ 
@@ -58,7 +59,10 @@ const NavigationLink = memo(({
             <NavigationMenuContent>
               <div className="grid w-[400px] gap-3 p-4">
                 {children.map((child) => (
-                  <NavigationMenuLink asChild key={child.path}>
+                  <NavigationMenuLink
+                    key={child.path}
+                    asChild
+                  >
                     <Link
                       to={child.path}
                       className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
@@ -104,3 +108,4 @@ const NavigationLink = memo(({
 NavigationLink.displayName = 'NavigationLink';
 
 export default NavigationLink;
+
