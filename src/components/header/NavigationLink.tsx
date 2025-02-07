@@ -27,6 +27,7 @@ const NavigationLink = memo(({
         <Link
           to={path}
           className="flex items-center gap-2 w-full py-2 text-base font-medium text-white hover:text-secondary transition-colors"
+          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
         >
           {icon}
           <span>{label}</span>
@@ -58,6 +59,15 @@ const NavigationLink = memo(({
             </NavigationMenuTrigger>
             <NavigationMenuContent>
               <div className="grid w-[400px] gap-3 p-4">
+                <NavigationMenuLink asChild>
+                  <Link
+                    to={path}
+                    className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground font-medium"
+                    onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                  >
+                    {label} Overview
+                  </Link>
+                </NavigationMenuLink>
                 {children.map((child) => (
                   <NavigationMenuLink
                     key={child.path}
@@ -108,4 +118,3 @@ const NavigationLink = memo(({
 NavigationLink.displayName = 'NavigationLink';
 
 export default NavigationLink;
-

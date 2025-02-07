@@ -5,7 +5,7 @@ import { memo, useEffect, useState } from "react";
 import NavigationLink from "./NavigationLink";
 import { navItems } from "./constants/navItems";
 import { NavigationProps } from "./types/navigation";
-import { Phone, Calendar, Home, ChevronRight, Settings, MapPin, Info, Star, MessageSquare, HelpCircle } from "lucide-react";
+import { Phone, Calendar, Home, ChevronRight, Settings, MapPin, Info, Star, MessageSquare, HelpCircle } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 
@@ -21,7 +21,12 @@ const Navigation = ({ className, isMenuOpen = false, isScrolled = false }: Navig
     setIsOpen(false);
   }, [location]);
 
-  const isActive = (path: string) => location.pathname === path;
+  const isActive = (path: string) => {
+    // Check if the current path matches the nav item path or its children paths
+    if (path === location.pathname) return true;
+    const matchingNavItem = navItems.find(item => item.children?.some(child => child.path === location.pathname));
+    return matchingNavItem?.path === path;
+  };
 
   // Get icon for menu item
   const getIcon = (label: string) => {
@@ -47,8 +52,8 @@ const Navigation = ({ className, isMenuOpen = false, isScrolled = false }: Navig
 
   // Filter items based on whether we're in mobile view (isOpen) or not
   const displayItems = isOpen 
-    ? navItems.filter(item => !item.children || ["Services", "Service Areas"].includes(item.label))
-    : navItems;
+    ? navItems
+    : navItems.filter(item => !item.showMobileOnly);
 
   return (
     <nav 
@@ -62,18 +67,16 @@ const Navigation = ({ className, isMenuOpen = false, isScrolled = false }: Navig
       aria-label="Main navigation"
     >
       {displayItems.map(({ path, label, showMobileOnly, children }) => (
-        (!showMobileOnly || (showMobileOnly && isOpen)) && (
-          <div key={path} className="w-full">
-            <NavigationLink
-              path={path}
-              label={label}
-              isActive={isActive(path)}
-              isMenuOpen={isOpen}
-              children={children}
-              icon={getIcon(label)}
-            />
-          </div>
-        )
+        <div key={path} className="w-full">
+          <NavigationLink
+            path={path}
+            label={label}
+            isActive={isActive(path)}
+            isMenuOpen={isOpen}
+            children={children}
+            icon={getIcon(label)}
+          />
+        </div>
       ))}
       
       {isOpen && (
@@ -103,4 +106,3 @@ const Navigation = ({ className, isMenuOpen = false, isScrolled = false }: Navig
 };
 
 export default memo(Navigation);
-
