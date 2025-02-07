@@ -1,3 +1,4 @@
+
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Alert, AlertDescription } from "@/components/ui/alert";
@@ -47,26 +48,6 @@ const PersonalInfoFields = ({ errors, isSubmitting }: PersonalInfoFieldsProps) =
           <Alert variant="destructive">
             <AlertCircle className="h-4 w-4" />
             <AlertDescription>{errors.phone}</AlertDescription>
-          </Alert>
-        )}
-      </div>
-
-      <div className="space-y-2">
-        <Label htmlFor="address">Address</Label>
-        <Input
-          id="address"
-          name="address"
-          type="text"
-          aria-describedby="address-error"
-          className={`h-10 text-base ${errors.address ? 'border-red-500' : ''}`}
-          disabled={isSubmitting}
-          autoComplete="street-address"
-          required
-        />
-        {errors.address && (
-          <Alert variant="destructive">
-            <AlertCircle className="h-4 w-4" />
-            <AlertDescription>{errors.address}</AlertDescription>
           </Alert>
         )}
       </div>
