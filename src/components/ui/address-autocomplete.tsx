@@ -1,8 +1,10 @@
+
 import { useEffect, useRef, useState } from "react";
 import { Input } from "./input";
 import { useMapConfig } from "../map/useMapConfig";
 import { LoadScript } from "@react-google-maps/api";
 import { InputHTMLAttributes } from "react";
+import { Skeleton } from "./skeleton";
 
 type AddressAutocompleteProps = Omit<InputHTMLAttributes<HTMLInputElement>, 'onChange'> & {
   value: string;
@@ -18,12 +20,12 @@ const AddressAutocomplete = ({
 }: AddressAutocompleteProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const autocompleteRef = useRef<google.maps.places.Autocomplete | null>(null);
-  const { apiKey } = useMapConfig();
-  const [isLoaded, setIsLoaded] = useState(false);
+  const { apiKey, isLoading } = useMapConfig();
+  const [isLoadingScript, setIsLoadingScript] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!isLoaded || !inputRef.current) return;
+    if (!apiKey || !inputRef.current || isLoading || isLoadingScript) return;
 
     try {
       // Configure the autocomplete options
@@ -39,8 +41,6 @@ const AddressAutocomplete = ({
         options
       );
 
-      console.log('Autocomplete initialized with options:', options);
-
       // Add place_changed event listener
       const listener = autocompleteRef.current.addListener(
         "place_changed",
@@ -48,15 +48,7 @@ const AddressAutocomplete = ({
           const place = autocompleteRef.current?.getPlace();
           
           if (place?.formatted_address) {
-            console.log('Selected place:', {
-              address: place.formatted_address,
-              placeId: place.place_id,
-              location: place.geometry?.location?.toJSON()
-            });
-            
             onChange(place.formatted_address);
-          } else {
-            console.warn('No formatted address found in place data');
           }
         }
       );
@@ -74,16 +66,28 @@ const AddressAutocomplete = ({
       console.error('Error initializing autocomplete:', err);
       setError(err instanceof Error ? err.message : 'Failed to initialize address autocomplete');
     }
-  }, [isLoaded, onChange]);
+  }, [apiKey, onChange, isLoading, isLoadingScript]);
 
   // Handle manual input changes
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     onChange(e.target.value);
   };
 
+  if (isLoading) {
+    return <Skeleton className="h-10 w-full" />;
+  }
+
   if (!apiKey) {
-    console.error('No Google Maps API key available');
-    return null;
+    return (
+      <Input
+        type="text"
+        value={value}
+        onChange={handleInputChange}
+        className={className}
+        disabled={disabled}
+        {...props}
+      />
+    );
   }
 
   return (
@@ -91,12 +95,12 @@ const AddressAutocomplete = ({
       googleMapsApiKey={apiKey} 
       libraries={["places"]}
       onLoad={() => {
-        console.log('Google Maps Places script loaded successfully');
-        setIsLoaded(true);
+        setIsLoadingScript(false);
       }}
       onError={(err) => {
         console.error('Error loading Google Maps Places script:', err);
         setError('Failed to load Google Maps Places');
+        setIsLoadingScript(false);
       }}
     >
       <div className="relative">
@@ -106,7 +110,7 @@ const AddressAutocomplete = ({
           value={value}
           onChange={handleInputChange}
           className={`${className} ${error ? 'border-red-500' : ''}`}
-          disabled={disabled}
+          disabled={disabled || isLoadingScript}
           {...props}
         />
         {error && (
