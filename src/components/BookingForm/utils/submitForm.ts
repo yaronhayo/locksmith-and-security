@@ -14,13 +14,23 @@ export const getVisitorInfo = (): VisitorInfo => {
   };
 };
 
-export const submitBookingForm = async (formData: FormDataType, showVehicleInfo: boolean, location: string) => {
+export const submitBookingForm = async (
+  formData: FormDataType, 
+  showVehicleInfo: boolean, 
+  location: string,
+  recaptchaToken: string | null,
+  address: string
+) => {
+  if (!recaptchaToken) {
+    throw new Error("reCAPTCHA verification is required");
+  }
+
   const visitorInfo = getVisitorInfo();
   const submissionData: SubmissionData = {
     type: 'booking',
     name: String(formData.get('name')),
     phone: String(formData.get('phone')),
-    address: String(formData.get('address')),
+    address: address,
     service: String(formData.get('service')),
     timeframe: String(formData.get('timeframe')),
     notes: formData.get('notes') ? String(formData.get('notes')) : null,
@@ -38,7 +48,8 @@ export const submitBookingForm = async (formData: FormDataType, showVehicleInfo:
       timestamp: visitorInfo.timestamp,
     },
     source_url: location,
-    status: 'pending'
+    status: 'pending',
+    recaptcha_token: recaptchaToken
   };
 
   console.log("Submitting booking form data:", submissionData);

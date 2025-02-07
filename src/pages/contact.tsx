@@ -4,17 +4,34 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import PageLayout from "@/components/layouts/PageLayout";
 import { supabase } from "@/integrations/supabase/client";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import AddressAutocomplete from "@/components/ui/address-autocomplete";
+import Recaptcha from "@/components/ui/recaptcha";
+import { useToast } from "@/hooks/use-toast";
 
 const ContactPage = () => {
   const form = useRef<HTMLFormElement>(null);
   const navigate = useNavigate();
+  const { toast } = useToast();
+  const [address, setAddress] = useState("");
+  const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
+    if (!recaptchaToken) {
+      toast({
+        title: "Verification Required",
+        description: "Please complete the reCAPTCHA verification",
+        variant: "destructive",
+      });
+      return;
+    }
+
     if (!form.current) return;
+    setIsSubmitting(true);
 
     const formData = new FormData(form.current);
     const submissionData = {
@@ -22,9 +39,10 @@ const ContactPage = () => {
       name: String(formData.get('user_name')),
       email: String(formData.get('user_email')),
       phone: String(formData.get('user_phone')),
-      address: String(formData.get('address')),
+      address: address,
       message: String(formData.get('message')),
       status: 'pending',
+      recaptcha_token: recaptchaToken,
       visitor_info: {
         userAgent: navigator.userAgent,
         language: navigator.language,
@@ -59,6 +77,13 @@ const ContactPage = () => {
 
     } catch (error: any) {
       console.error('Contact form submission error:', error);
+      toast({
+        title: "Submission Failed",
+        description: "Please try again or contact us directly.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -71,6 +96,7 @@ const ContactPage = () => {
     >
       <div className="container mx-auto px-4 py-12">
         <div className="grid lg:grid-cols-2 gap-12">
+          {/* Left column with contact info */}
           <div className="space-y-8">
             <div className="prose max-w-none">
               <h2 className="text-3xl font-bold mb-6">How Can We Help?</h2>
@@ -145,13 +171,26 @@ const ContactPage = () => {
                   <label htmlFor="name" className="block text-sm font-medium mb-2">
                     Full Name
                   </label>
-                  <Input id="name" name="user_name" required placeholder="John Doe" />
+                  <Input 
+                    id="name" 
+                    name="user_name" 
+                    required 
+                    placeholder="John Doe"
+                    disabled={isSubmitting}
+                  />
                 </div>
                 <div>
                   <label htmlFor="phone" className="block text-sm font-medium mb-2">
                     Phone Number
                   </label>
-                  <Input id="phone" name="user_phone" type="tel" required placeholder="(555) 555-5555" />
+                  <Input 
+                    id="phone" 
+                    name="user_phone" 
+                    type="tel" 
+                    required 
+                    placeholder="(555) 555-5555"
+                    disabled={isSubmitting}
+                  />
                 </div>
               </div>
 
@@ -159,14 +198,27 @@ const ContactPage = () => {
                 <label htmlFor="email" className="block text-sm font-medium mb-2">
                   Email Address
                 </label>
-                <Input id="email" name="user_email" type="email" required placeholder="john@example.com" />
+                <Input 
+                  id="email" 
+                  name="user_email" 
+                  type="email" 
+                  required 
+                  placeholder="john@example.com"
+                  disabled={isSubmitting}
+                />
               </div>
 
               <div>
                 <label htmlFor="address" className="block text-sm font-medium mb-2">
                   Service Address
                 </label>
-                <Input id="address" name="address" required placeholder="123 Main St, North Bergen, NJ" />
+                <AddressAutocomplete
+                  value={address}
+                  onChange={setAddress}
+                  placeholder="123 Main St, North Bergen, NJ"
+                  disabled={isSubmitting}
+                  required
+                />
               </div>
 
               <div>
@@ -180,11 +232,18 @@ const ContactPage = () => {
                   required 
                   placeholder="Please describe what service you need..."
                   className="min-h-[120px]"
+                  disabled={isSubmitting}
                 />
               </div>
 
-              <Button type="submit" className="w-full bg-primary hover:bg-primary-hover">
-                Send Message
+              <Recaptcha onChange={setRecaptchaToken} />
+
+              <Button 
+                type="submit" 
+                className="w-full bg-primary hover:bg-primary-hover"
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? "Sending..." : "Send Message"}
               </Button>
             </form>
           </div>
