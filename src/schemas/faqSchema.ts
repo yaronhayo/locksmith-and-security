@@ -1,3 +1,4 @@
+
 export const createFAQSchema = (questions: Array<{ question: string; answer: string }>) => ({
   "@context": "https://schema.org",
   "@type": "FAQPage",
@@ -10,3 +11,4 @@ export const createFAQSchema = (questions: Array<{ question: string; answer: str
     }
   }))
 });
+
