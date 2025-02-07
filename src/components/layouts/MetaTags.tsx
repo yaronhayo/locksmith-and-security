@@ -10,6 +10,9 @@ interface MetaTagsProps {
   schema?: object;
   noindex?: boolean;
   nofollow?: boolean;
+  modifiedDate?: string;
+  breadcrumbs?: Array<{ name: string; item: string }>;
+  articleSchema?: boolean;
 }
 
 const MetaTags = ({
@@ -21,6 +24,9 @@ const MetaTags = ({
   schema,
   noindex = false,
   nofollow = false,
+  modifiedDate = new Date().toISOString().split('T')[0],
+  breadcrumbs,
+  articleSchema = false,
 }: MetaTagsProps) => {
   const baseUrl = "https://247locksmithandsecurity.com";
   const fullCanonicalUrl = canonicalUrl ? `${baseUrl}${canonicalUrl}` : baseUrl;
@@ -84,41 +90,31 @@ const MetaTags = ({
     "sameAs": [
       "https://www.facebook.com/247locksmithandsecurity",
       "https://www.yelp.com/biz/247-locksmith-and-security-north-bergen"
-    ],
-    "hasOfferCatalog": {
-      "@type": "OfferCatalog",
-      "name": "Locksmith Services",
-      "itemListElement": [
-        {
-          "@type": "Offer",
-          "itemOffered": {
-            "@type": "Service",
-            "name": "Emergency Lockout Service",
-            "description": "24/7 emergency lockout services for homes, businesses, and vehicles"
-          }
-        },
-        {
-          "@type": "Offer",
-          "itemOffered": {
-            "@type": "Service",
-            "name": "Lock Installation",
-            "description": "Professional installation of high-security locks"
-          }
-        }
-      ]
-    }
+    ]
   };
 
   const pageSchema = {
     "@context": "https://schema.org",
-    "@type": "WebPage",
+    "@type": articleSchema ? "Article" : "WebPage",
     "name": title,
     "description": description,
+    "dateModified": modifiedDate,
     "isPartOf": {
       "@id": baseUrl
     },
     ...schema
   };
+
+  const breadcrumbSchema = breadcrumbs ? {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": breadcrumbs.map((item, index) => ({
+      "@type": "ListItem",
+      "position": index + 1,
+      "name": item.name,
+      "item": `${baseUrl}${item.item}`
+    }))
+  } : null;
 
   return (
     <Helmet>
@@ -143,6 +139,7 @@ const MetaTags = ({
       <meta property="og:type" content="website" />
       <meta property="og:site_name" content="Locksmith & Security LLC" />
       <meta property="og:locale" content="en_US" />
+      <meta property="og:updated_time" content={modifiedDate} />
       
       {/* Twitter Card Tags */}
       <meta name="twitter:card" content="summary_large_image" />
@@ -158,6 +155,13 @@ const MetaTags = ({
       <meta name="robots" content={noindex ? "noindex,nofollow" : "index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1"} />
       <meta name="author" content="Locksmith & Security LLC" />
       <meta name="copyright" content="© 2024 Locksmith & Security LLC. All rights reserved." />
+      <meta name="last-modified" content={modifiedDate} />
+      
+      {/* Mobile Meta Tags */}
+      <meta name="apple-mobile-web-app-title" content="Locksmith & Security LLC" />
+      <meta name="application-name" content="Locksmith & Security LLC" />
+      <meta name="mobile-web-app-capable" content="yes" />
+      <meta name="HandheldFriendly" content="True" />
       
       {/* Geo Location Tags */}
       <meta name="geo.region" content="US-NJ" />
@@ -175,16 +179,18 @@ const MetaTags = ({
       <meta name="business:contact_data:website" content={baseUrl} />
       <meta name="business:contact_data:email" content="info@247locksmithandsecurity.com" />
       
-      {/* Accessibility Tags */}
-      <meta name="apple-mobile-web-app-title" content="Locksmith & Security LLC" />
-      <meta name="application-name" content="Locksmith & Security LLC" />
-      
+      {/* Schema.org JSON-LD */}
       <script type="application/ld+json">
         {JSON.stringify(defaultSchema)}
       </script>
       <script type="application/ld+json">
         {JSON.stringify(pageSchema)}
       </script>
+      {breadcrumbSchema && (
+        <script type="application/ld+json">
+          {JSON.stringify(breadcrumbSchema)}
+        </script>
+      )}
     </Helmet>
   );
 };
