@@ -5,6 +5,9 @@ import { memo, useEffect, useState } from "react";
 import NavigationLink from "./NavigationLink";
 import { navItems } from "./constants/navItems";
 import { NavigationProps } from "./types/navigation";
+import { Phone, Calendar } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import BookingDialog from "@/components/BookingDialog";
 
 const Navigation = ({ className, isMenuOpen = false, isScrolled = false }: NavigationProps) => {
   const location = useLocation();
@@ -22,7 +25,7 @@ const Navigation = ({ className, isMenuOpen = false, isScrolled = false }: Navig
 
   // Filter items based on whether we're in mobile view (isOpen) or not
   const displayItems = isOpen 
-    ? navItems.filter(item => !item.children) // Only show main pages in mobile menu
+    ? navItems.filter(item => !item.children || ["Services", "Service Areas"].includes(item.label)) // Show main pages and Services/Service Areas in mobile menu
     : navItems;
 
   return (
@@ -48,9 +51,32 @@ const Navigation = ({ className, isMenuOpen = false, isScrolled = false }: Navig
           />
         )
       ))}
+      
+      {isOpen && (
+        <div className="mt-6 space-y-4 w-full">
+          <BookingDialog 
+            variant="secondary"
+            className="w-full bg-secondary hover:bg-secondary-hover text-white shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
+          >
+            <Button asChild variant="secondary" className="w-full">
+              <span className="inline-flex items-center justify-center gap-2">
+                <Calendar className="w-5 h-5" />
+                Book Service
+              </span>
+            </Button>
+          </BookingDialog>
+          
+          <a 
+            href="tel:2017482070" 
+            className="w-full inline-flex items-center justify-center gap-2 text-white text-lg font-bold hover:text-secondary transition-colors"
+          >
+            <Phone className="w-5 h-5 animate-phone-ring" />
+            (201) 748-2070
+          </a>
+        </div>
+      )}
     </nav>
   );
 };
 
 export default memo(Navigation);
-
