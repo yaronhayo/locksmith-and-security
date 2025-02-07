@@ -114,6 +114,9 @@ export type Database = {
           source_url: string | null
           status: string
           timeframe: string | null
+          traffic_source:
+            | Database["public"]["CompositeTypes"]["traffic_source_type"]
+            | null
           type: string
           updated_at: string | null
           vehicle_info: Json | null
@@ -133,6 +136,9 @@ export type Database = {
           source_url?: string | null
           status?: string
           timeframe?: string | null
+          traffic_source?:
+            | Database["public"]["CompositeTypes"]["traffic_source_type"]
+            | null
           type: string
           updated_at?: string | null
           vehicle_info?: Json | null
@@ -152,6 +158,9 @@ export type Database = {
           source_url?: string | null
           status?: string
           timeframe?: string | null
+          traffic_source?:
+            | Database["public"]["CompositeTypes"]["traffic_source_type"]
+            | null
           type?: string
           updated_at?: string | null
           vehicle_info?: Json | null
@@ -170,7 +179,13 @@ export type Database = {
       [_ in never]: never
     }
     CompositeTypes: {
-      [_ in never]: never
+      traffic_source_type: {
+        source: string | null
+        medium: string | null
+        campaign: string | null
+        keyword: string | null
+        click_path: string[] | null
+      }
     }
   }
 }
