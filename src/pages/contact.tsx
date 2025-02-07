@@ -1,10 +1,11 @@
+
 import { MapPin, Phone, Mail, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import PageLayout from "@/components/layouts/PageLayout";
-import emailjs from '@emailjs/browser';
+import { supabase } from "@/integrations/supabase/client";
 import { useRef } from "react";
 
 const ContactPage = () => {
@@ -16,13 +17,40 @@ const ContactPage = () => {
     
     if (!form.current) return;
 
+    const formData = new FormData(form.current);
+    const submissionData = {
+      type: 'contact',
+      name: String(formData.get('user_name')),
+      email: String(formData.get('user_email')),
+      phone: String(formData.get('user_phone')),
+      address: String(formData.get('address')),
+      message: String(formData.get('message')),
+      status: 'pending',
+      visitor_info: {
+        userAgent: navigator.userAgent,
+        language: navigator.language,
+        platform: navigator.platform,
+        screenResolution: `${window.screen.width}x${window.screen.height}`,
+        windowSize: `${window.innerWidth}x${window.innerHeight}`,
+        timestamp: new Date().toISOString(),
+      },
+      source_url: window.location.pathname
+    };
+
     try {
-      await emailjs.sendForm(
-        'YOUR_SERVICE_ID',
-        'YOUR_TEMPLATE_ID',
-        form.current,
-        'YOUR_PUBLIC_KEY'
-      );
+      // First store in database
+      const { error: dbError } = await supabase
+        .from('submissions')
+        .insert(submissionData);
+
+      if (dbError) throw dbError;
+
+      // Then send email notification
+      const { error } = await supabase.functions.invoke('send-form-email', {
+        body: submissionData
+      });
+
+      if (error) throw error;
 
       toast({
         title: "Message Sent",
@@ -32,7 +60,8 @@ const ContactPage = () => {
       if (form.current) {
         form.current.reset();
       }
-    } catch (error) {
+    } catch (error: any) {
+      console.error('Contact form submission error:', error);
       toast({
         title: "Error",
         description: "Failed to send message. Please try again.",
@@ -174,3 +203,4 @@ const ContactPage = () => {
 };
 
 export default ContactPage;
+
