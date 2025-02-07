@@ -53,6 +53,8 @@ const formatVisitorInfo = (info?: FormData['visitor_info']): string => {
 };
 
 const handler = async (req: Request): Promise<Response> => {
+  console.log("Starting handler with method:", req.method);
+
   // Handle CORS preflight requests
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
@@ -63,6 +65,14 @@ const handler = async (req: Request): Promise<Response> => {
     
     const formData: FormData = await req.json();
     console.log("Received form data:", formData);
+
+    // Verify Resend API key
+    const resendApiKey = Deno.env.get("RESEND_API_KEY");
+    console.log("Resend API key exists:", !!resendApiKey);
+    
+    if (!resendApiKey) {
+      throw new Error("RESEND_API_KEY is not configured");
+    }
 
     let emailHtml = '';
     let subject = '';
@@ -109,27 +119,33 @@ const handler = async (req: Request): Promise<Response> => {
       `;
     }
 
-    console.log("Preparing to send email:", {
-      subject,
-      recipients: ["support@247locksmithandsecurity.com", "eviatarmarketing@gmail.com"]
-    });
+    console.log("Preparing to send email with subject:", subject);
 
-    const emailResponse = await resend.emails.send({
-      from: "Locksmith & Security LLC <onboarding@resend.dev>",
-      to: ["support@247locksmithandsecurity.com", "eviatarmarketing@gmail.com"],
-      subject: subject,
-      html: emailHtml,
-    });
+    try {
+      const emailResponse = await resend.emails.send({
+        from: "Locksmith & Security LLC <onboarding@resend.dev>",
+        to: ["support@247locksmithandsecurity.com", "eviatarmarketing@gmail.com"],
+        subject: subject,
+        html: emailHtml,
+      });
 
-    console.log("Email sent successfully:", emailResponse);
+      console.log("Email sent successfully:", emailResponse);
 
-    return new Response(JSON.stringify(emailResponse), {
-      status: 200,
-      headers: {
-        "Content-Type": "application/json",
-        ...corsHeaders,
-      },
-    });
+      return new Response(JSON.stringify(emailResponse), {
+        status: 200,
+        headers: {
+          "Content-Type": "application/json",
+          ...corsHeaders,
+        },
+      });
+    } catch (emailError: any) {
+      console.error("Resend API Error:", {
+        message: emailError.message,
+        code: emailError.statusCode,
+        name: emailError.name
+      });
+      throw emailError;
+    }
   } catch (error: any) {
     console.error("Error in send-form-email function:", error);
     console.error("Error details:", {
