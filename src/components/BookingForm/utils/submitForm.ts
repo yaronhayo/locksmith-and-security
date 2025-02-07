@@ -1,8 +1,9 @@
 
 import { supabase } from "@/integrations/supabase/client";
 import { FormDataType, SubmissionData } from "../types";
+import { VisitorInfo } from "@/types/submissions";
 
-export const getVisitorInfo = () => {
+export const getVisitorInfo = (): VisitorInfo => {
   return {
     userAgent: navigator.userAgent,
     language: navigator.language,
@@ -14,6 +15,7 @@ export const getVisitorInfo = () => {
 };
 
 export const submitBookingForm = async (formData: FormDataType, showVehicleInfo: boolean, location: string) => {
+  const visitorInfo = getVisitorInfo();
   const submissionData: SubmissionData = {
     type: 'booking',
     name: String(formData.get('name')),
@@ -27,7 +29,14 @@ export const submitBookingForm = async (formData: FormDataType, showVehicleInfo:
       make: String(formData.get('vehicleMake')),
       model: String(formData.get('vehicleModel')),
     } : null,
-    visitor_info: getVisitorInfo(),
+    visitor_info: {
+      userAgent: visitorInfo.userAgent,
+      language: visitorInfo.language,
+      platform: visitorInfo.platform,
+      screenResolution: visitorInfo.screenResolution,
+      windowSize: visitorInfo.windowSize,
+      timestamp: visitorInfo.timestamp,
+    },
     source_url: location,
     status: 'pending'
   };
