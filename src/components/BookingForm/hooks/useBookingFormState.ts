@@ -7,6 +7,7 @@ export const useBookingFormState = () => {
     isSubmitting: false,
     selectedService: "",
     showVehicleInfo: false,
+    recaptchaToken: null,
     errors: {},
   });
 
@@ -26,10 +27,15 @@ export const useBookingFormState = () => {
     setState(prev => ({ ...prev, errors }));
   };
 
+  const setRecaptchaToken = (token: string | null) => {
+    setState(prev => ({ ...prev, recaptchaToken: token }));
+  };
+
   return {
     ...state,
     setIsSubmitting,
     setErrors,
     handleServiceChange,
+    setRecaptchaToken,
   };
 };

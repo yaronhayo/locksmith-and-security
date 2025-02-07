@@ -4,7 +4,7 @@ export interface TrafficSource {
   medium: string;
   campaign: string;
   keyword: string;
-  clickPath: string[];
+  click_path: string[];
 }
 
 export interface VisitorInfo {

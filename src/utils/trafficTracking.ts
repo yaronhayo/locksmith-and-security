@@ -10,14 +10,14 @@ export const getTrafficSource = (): TrafficSource => {
   const keyword = urlParams.get('utm_term') || sessionStorage.getItem('utm_term') || '';
 
   // Get click path from session storage
-  const clickPath = JSON.parse(sessionStorage.getItem('clickPath') || '[]');
+  const click_path = JSON.parse(sessionStorage.getItem('clickPath') || '[]');
 
   return {
     source,
     medium,
     campaign,
     keyword,
-    clickPath
+    click_path
   };
 };
 
