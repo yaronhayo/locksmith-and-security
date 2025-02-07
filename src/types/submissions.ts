@@ -24,6 +24,7 @@ export interface BaseSubmission {
   visitor_info: Record<string, string>;  // Changed to match Json type
   source_url: string;
   traffic_source?: TrafficSource;
+  recaptcha_token: string | null;
 }
 
 export interface ContactSubmission extends BaseSubmission {
@@ -45,3 +46,4 @@ export interface BookingSubmission extends BaseSubmission {
 }
 
 export type SubmissionData = ContactSubmission | BookingSubmission;
+
