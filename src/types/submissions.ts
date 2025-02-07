@@ -21,7 +21,7 @@ export interface BaseSubmission {
   phone: string;
   address: string;
   status: 'pending';
-  visitor_info: VisitorInfo;
+  visitor_info: Record<string, string>;  // Changed to match Json type
   source_url: string;
   traffic_source?: TrafficSource;
 }
