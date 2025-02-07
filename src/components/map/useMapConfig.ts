@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 
@@ -9,16 +10,19 @@ export const useMapConfig = () => {
   const [loadError, setLoadError] = useState<string | null>(null);
   const [isRetrying, setIsRetrying] = useState(false);
   const [retryCount, setRetryCount] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
 
   const fetchApiKey = useCallback(async () => {
     if (retryCount >= MAX_RETRIES) {
       setLoadError('Maximum retry attempts reached. Please try again later.');
+      setIsLoading(false);
       return;
     }
 
     try {
       setIsRetrying(true);
       setLoadError(null);
+      setIsLoading(true);
       
       console.log('Starting API key fetch attempt:', retryCount + 1);
       
@@ -64,6 +68,7 @@ export const useMapConfig = () => {
       }
     } finally {
       setIsRetrying(false);
+      setIsLoading(false);
     }
   }, [retryCount]);
 
@@ -80,6 +85,7 @@ export const useMapConfig = () => {
     loadError,
     isRetrying,
     retryCount,
-    fetchApiKey
+    fetchApiKey,
+    isLoading
   };
 };
