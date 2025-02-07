@@ -233,6 +233,25 @@ const handler = async (req: Request): Promise<Response> => {
     const formData: FormData = await req.json();
     console.log("Received form data:", formData);
 
+    // Fetch email settings from the database
+    const { data: settings, error: settingsError } = await supabase
+      .from('settings')
+      .select('key, value')
+      .in('key', ['email_from', 'email_to']);
+
+    if (settingsError) {
+      console.error("Error fetching settings:", settingsError);
+      throw new Error("Failed to fetch email settings");
+    }
+
+    console.log("Retrieved settings:", settings);
+
+    // Convert settings array to object for easier access
+    const emailSettings = settings.reduce((acc: Record<string, string>, curr) => {
+      acc[curr.key] = curr.value;
+      return acc;
+    }, {});
+
     // Verify Resend API key
     const resendApiKey = Deno.env.get("RESEND_API_KEY");
     console.log("Resend API key exists:", !!resendApiKey);
@@ -245,11 +264,13 @@ const handler = async (req: Request): Promise<Response> => {
     const subject = formData.type === 'booking' ? 'New Service Booking Request' : 'New Contact Form Submission';
 
     console.log("Preparing to send email with subject:", subject);
+    console.log("Using email settings - From:", emailSettings.email_from);
+    console.log("Using email settings - To:", emailSettings.email_to.split(',').map(email => email.trim()));
 
     try {
       const emailResponse = await resend.emails.send({
-        from: "Locksmith & Security LLC <onboarding@resend.dev>",
-        to: ["support@247locksmithandsecurity.com", "eviatarmarketing@gmail.com"],
+        from: emailSettings.email_from,
+        to: emailSettings.email_to.split(',').map(email => email.trim()),
         subject: subject,
         html: emailHtml,
       });
