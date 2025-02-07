@@ -1,16 +1,15 @@
-
 import { MapPin, Phone, Mail, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { useToast } from "@/hooks/use-toast";
 import PageLayout from "@/components/layouts/PageLayout";
 import { supabase } from "@/integrations/supabase/client";
 import { useRef } from "react";
+import { useNavigate } from "react-router-dom";
 
 const ContactPage = () => {
-  const { toast } = useToast();
   const form = useRef<HTMLFormElement>(null);
+  const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -52,21 +51,14 @@ const ContactPage = () => {
 
       if (error) throw error;
 
-      toast({
-        title: "Message Sent",
-        description: "We'll get back to you as soon as possible.",
-      });
+      // Set flag for thank you page
+      sessionStorage.setItem('fromFormSubmission', 'true');
+      
+      // Navigate to thank you page
+      navigate('/thank-you');
 
-      if (form.current) {
-        form.current.reset();
-      }
     } catch (error: any) {
       console.error('Contact form submission error:', error);
-      toast({
-        title: "Error",
-        description: "Failed to send message. Please try again.",
-        variant: "destructive",
-      });
     }
   };
 
@@ -203,4 +195,3 @@ const ContactPage = () => {
 };
 
 export default ContactPage;
-
