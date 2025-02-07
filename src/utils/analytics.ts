@@ -60,11 +60,5 @@ if (typeof window !== 'undefined') {
   });
 }
 
-// Type definitions for global window object
-declare global {
-  interface Window {
-    dataLayer: any[];
-    gtag: (...args: any[]) => void;
-    clarity?: (...args: any[]) => void;
-  }
-}
+// Since these are already declared in vite-env.d.ts, we don't need to redeclare them here
+// This fixes the "All declarations must have identical modifiers" error
