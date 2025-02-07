@@ -1,5 +1,5 @@
 
-const CACHE_NAME = 'locksmith-cache-v2'; // Incrementing version to force cache purge
+const CACHE_NAME = 'locksmith-cache-v3'; // Incrementing version to force cache purge
 const urlsToCache = [
   '/',
   '/index.html',
@@ -45,3 +45,4 @@ self.addEventListener('activate', (event) => {
   // Ensure the new service worker takes control immediately
   self.clients.claim();
 });
+
