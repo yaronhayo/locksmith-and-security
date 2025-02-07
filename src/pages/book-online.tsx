@@ -1,6 +1,8 @@
+
 import PageLayout from "@/components/layouts/PageLayout";
 import { motion } from "framer-motion";
 import { Clock, Shield, Star, ArrowRight } from "lucide-react";
+import BookingForm from "@/components/BookingForm";
 
 const BookOnlinePage = () => {
   return (
@@ -41,15 +43,8 @@ const BookOnlinePage = () => {
             </div>
           </div>
 
-          <div className="bg-white rounded-xl shadow-xl overflow-hidden">
-            <iframe 
-              src='https://plugin.uleadz.com/pg/1/e8bb3c8575fb40388efd8b1e999e992a' 
-              width='100%' 
-              height='800' 
-              scrolling='no' 
-              style={{ border: 'none' }}
-              title="Booking Form"
-            />
+          <div className="bg-white rounded-xl shadow-xl p-8">
+            <BookingForm />
           </div>
 
           <div className="mt-12 text-center">
