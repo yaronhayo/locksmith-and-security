@@ -56,6 +56,18 @@ const formatVisitorInfo = (info?: FormData['visitor_info']): string => {
   `;
 };
 
+const formatInEasternTime = (date: Date): string => {
+  return new Intl.DateTimeFormat('en-US', {
+    timeZone: 'America/New_York',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: 'numeric',
+    hour12: true
+  }).format(date);
+};
+
 const getEmailTemplate = (formData: FormData): string => {
   const commonStyles = `
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
@@ -78,12 +90,14 @@ const getEmailTemplate = (formData: FormData): string => {
     padding-bottom: 10px;
   `;
 
+  const currentTimeEastern = formatInEasternTime(new Date());
+
   if (formData.type === 'booking') {
     return `
       <div style="${commonStyles}">
         <div style="${headerStyle}">
           <h1 style="margin: 0; font-size: 24px;">New Service Booking Request</h1>
-          <p style="margin: 10px 0 0; opacity: 0.9;">Received on ${new Date().toLocaleDateString()}</p>
+          <p style="margin: 10px 0 0; opacity: 0.9;">Received on ${currentTimeEastern} EST</p>
         </div>
         <div style="padding: 30px; background-color: white; border-radius: 0 0 8px 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
           <table style="width: 100%; border-collapse: collapse;">
@@ -166,7 +180,7 @@ const getEmailTemplate = (formData: FormData): string => {
       <div style="${commonStyles}">
         <div style="${headerStyle}">
           <h1 style="margin: 0; font-size: 24px;">New Contact Form Submission</h1>
-          <p style="margin: 10px 0 0; opacity: 0.9;">Received on ${new Date().toLocaleDateString()}</p>
+          <p style="margin: 10px 0 0; opacity: 0.9;">Received on ${currentTimeEastern} EST</p>
         </div>
         <div style="padding: 30px; background-color: white; border-radius: 0 0 8px 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
           <table style="width: 100%; border-collapse: collapse;">
@@ -315,3 +329,4 @@ const handler = async (req: Request): Promise<Response> => {
 };
 
 serve(handler);
+
