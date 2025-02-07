@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useCallback, memo } from 'react';
 import { X } from 'lucide-react';
 import { Button } from "@/components/ui/button";
@@ -35,7 +36,7 @@ const Header = () => {
         role="banner"
       >
         <div className="container mx-auto px-4">
-          <div className="flex items-center justify-between py-2 lg:py-4">
+          <div className="flex items-center justify-between h-16 lg:h-20">
             <Logo />
 
             <Navigation isMenuOpen={isMenuOpen} isScrolled={isScrolled} />

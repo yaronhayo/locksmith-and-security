@@ -1,3 +1,4 @@
+
 import { cn } from "@/lib/utils";
 import { useLocation } from "react-router-dom";
 import { memo, useEffect, useState } from "react";
@@ -10,6 +11,10 @@ const Navigation = ({ className, isMenuOpen = false, isScrolled = false }: Navig
   const [isOpen, setIsOpen] = useState(isMenuOpen);
   
   useEffect(() => {
+    setIsOpen(isMenuOpen);
+  }, [isMenuOpen]);
+
+  useEffect(() => {
     setIsOpen(false);
   }, [location]);
 
@@ -20,6 +25,7 @@ const Navigation = ({ className, isMenuOpen = false, isScrolled = false }: Navig
       className={cn(
         "hidden lg:flex items-center space-x-8",
         isOpen && "fixed inset-0 top-[65px] bg-primary/95 flex flex-col items-start px-6 py-8 space-y-4 lg:relative lg:top-0 lg:bg-transparent lg:flex-row lg:items-center lg:space-x-8 lg:space-y-0 lg:p-0",
+        isOpen && "!flex",  // Force display when menu is open
         className
       )}
       role="navigation"
