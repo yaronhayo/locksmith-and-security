@@ -1,10 +1,8 @@
 
-import { Suspense, lazy, useEffect } from 'react';
+import { Suspense, lazy } from 'react';
 import PageLayout from "@/components/layouts/PageLayout";
 import HeroSection from "@/components/sections/HeroSection";
 import LoadingSpinner from "@/components/LoadingSpinner";
-import { setupPerformanceMonitoring } from "@/utils/performanceMonitoring";
-import { checkAnalytics } from "@/utils/analytics";
 import { homePageSchema } from "@/schemas/homePageSchema";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -18,7 +16,6 @@ const ServiceAreasSection = lazy(() => import("@/components/sections/ServiceArea
 const ReviewsSection = lazy(() => import("@/components/sections/ReviewsSection"));
 const FAQSection = lazy(() => import("@/components/sections/FAQSection"));
 
-// Enhanced schema with more specific data
 const enhancedSchema = {
   ...homePageSchema,
   "@type": ["WebPage", "LocalBusiness"],
@@ -51,23 +48,6 @@ const enhancedSchema = {
 };
 
 const Index = () => {
-  useEffect(() => {
-    // Set up performance monitoring and analytics
-    if (typeof window !== 'undefined') {
-      setupPerformanceMonitoring();
-      checkAnalytics();
-    }
-
-    // Prefetch common routes
-    const prefetchRoutes = ['/services', '/contact', '/about'];
-    prefetchRoutes.forEach(route => {
-      const link = document.createElement('link');
-      link.rel = 'prefetch';
-      link.href = route;
-      document.head.appendChild(link);
-    });
-  }, []);
-
   return (
     <PageLayout
       title="24/7 Emergency Locksmith Services in North Bergen, NJ | Licensed & Insured"
