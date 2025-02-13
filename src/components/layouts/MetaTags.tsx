@@ -14,6 +14,7 @@ interface MetaTagsProps {
   breadcrumbs?: Array<{ name: string; item: string }>;
   articleSchema?: boolean;
   businessSchema?: boolean;
+  serviceSchema?: boolean;
 }
 
 const MetaTags = ({
@@ -29,6 +30,7 @@ const MetaTags = ({
   breadcrumbs,
   articleSchema = false,
   businessSchema = true,
+  serviceSchema = false,
 }: MetaTagsProps) => {
   const baseUrl = "https://247locksmithandsecurity.com";
   const fullCanonicalUrl = canonicalUrl ? `${baseUrl}${canonicalUrl}` : baseUrl;
@@ -43,7 +45,7 @@ const MetaTags = ({
     "logo": `${baseUrl}/logo.png`,
     "description": description,
     "url": baseUrl,
-    "telephone": "+15513037874",
+    "telephone": "+12017482070",
     "priceRange": "$$",
     "address": {
       "@type": "PostalAddress",
@@ -92,30 +94,30 @@ const MetaTags = ({
     "sameAs": [
       "https://www.facebook.com/247locksmithandsecurity",
       "https://www.yelp.com/biz/247-locksmith-and-security-north-bergen"
-    ],
-    "hasOfferCatalog": {
-      "@type": "OfferCatalog",
-      "name": "Locksmith Services",
-      "itemListElement": [
-        {
-          "@type": "Offer",
-          "itemOffered": {
-            "@type": "Service",
-            "name": "Emergency Lockout Service",
-            "description": "24/7 emergency lockout services for homes, businesses, and vehicles"
-          }
-        },
-        {
-          "@type": "Offer",
-          "itemOffered": {
-            "@type": "Service",
-            "name": "Lock Installation",
-            "description": "Professional installation of high-security locks"
-          }
-        }
-      ]
-    }
+    ]
   };
+
+  const servicePageSchema = serviceSchema ? {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "name": title,
+    "description": description,
+    "provider": {
+      "@type": "LocalBusiness",
+      "name": "Locksmith & Security LLC",
+      "image": `${baseUrl}/og-image.png`
+    },
+    "areaServed": {
+      "@type": "City",
+      "name": "North Bergen",
+      "sameAs": "https://en.wikipedia.org/wiki/North_Bergen,_New_Jersey"
+    },
+    "availableChannel": {
+      "@type": "ServiceChannel",
+      "serviceUrl": fullCanonicalUrl,
+      "servicePhone": "+12017482070"
+    }
+  } : null;
 
   const pageSchema = {
     "@context": "https://schema.org",
@@ -181,28 +183,6 @@ const MetaTags = ({
       <meta name="copyright" content="© 2024 Locksmith & Security LLC. All rights reserved." />
       <meta name="last-modified" content={modifiedDate} />
       
-      {/* Mobile Meta Tags */}
-      <meta name="apple-mobile-web-app-title" content="Locksmith & Security LLC" />
-      <meta name="application-name" content="Locksmith & Security LLC" />
-      <meta name="mobile-web-app-capable" content="yes" />
-      <meta name="HandheldFriendly" content="True" />
-      
-      {/* Geo Location Tags */}
-      <meta name="geo.region" content="US-NJ" />
-      <meta name="geo.placename" content="North Bergen" />
-      <meta name="geo.position" content="40.7995;-74.0246" />
-      <meta name="ICBM" content="40.7995, -74.0246" />
-      
-      {/* Business Information */}
-      <meta name="business:contact_data:street_address" content="123 Main Street" />
-      <meta name="business:contact_data:locality" content="North Bergen" />
-      <meta name="business:contact_data:region" content="NJ" />
-      <meta name="business:contact_data:postal_code" content="07047" />
-      <meta name="business:contact_data:country_name" content="United States" />
-      <meta name="business:contact_data:phone_number" content="+15513037874" />
-      <meta name="business:contact_data:website" content={baseUrl} />
-      <meta name="business:contact_data:email" content="info@247locksmithandsecurity.com" />
-      
       {/* Schema.org JSON-LD */}
       {businessSchema && (
         <script type="application/ld+json">
@@ -215,6 +195,11 @@ const MetaTags = ({
       {breadcrumbSchema && (
         <script type="application/ld+json">
           {JSON.stringify(breadcrumbSchema)}
+        </script>
+      )}
+      {servicePageSchema && (
+        <script type="application/ld+json">
+          {JSON.stringify(servicePageSchema)}
         </script>
       )}
     </Helmet>

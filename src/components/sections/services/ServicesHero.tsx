@@ -2,6 +2,7 @@
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Phone, ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const ServicesCTA = () => {
   return (
@@ -32,10 +33,10 @@ const ServicesCTA = () => {
               </a>
             </Button>
             <Button size="lg" variant="secondary" asChild className="text-primary hover:text-black">
-              <a href="/book-online" className="flex items-center">
+              <Link to="/book-online" className="flex items-center">
                 Book Online
                 <ArrowRight className="ml-2 h-5 w-5" />
-              </a>
+              </Link>
             </Button>
           </div>
         </motion.div>
