@@ -32,7 +32,8 @@ export const bookingValidationRules: FieldValidation = {
   ],
   address: [
     {
-      test: (value) => value && value.trim().length > 0,
+      // Modified to accept any non-empty string as valid since it's coming from the autocomplete API
+      test: (value) => Boolean(value && value.trim()),
       message: "Please enter your complete service address"
     }
   ],
