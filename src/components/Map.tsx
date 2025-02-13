@@ -6,10 +6,10 @@ import MapError from "./map/MapError";
 import MapLoader from "./map/MapLoader";
 import MapContainer from "./map/MapContainer";
 import { MapErrorBoundary } from "./map/MapErrorBoundary";
-import { MapLocation } from "@/types/map";
+import { MapMarker } from "@/types/service-area";
 
 interface MapProps {
-  markers?: MapLocation[];
+  markers?: MapMarker[];
   hoveredMarker?: string | null;
   center?: { lat: number; lng: number };
   zoom?: number;
