@@ -19,47 +19,69 @@ const AddressAutocomplete = ({
 }: AddressAutocompleteProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const autocompleteRef = useRef<google.maps.places.Autocomplete | null>(null);
-  const { apiKey } = useMapConfig();
+  const { apiKey, loadError } = useMapConfig();
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!apiKey || !inputRef.current || !window.google?.maps?.places) return;
+    let listener: google.maps.MapsEventListener | null = null;
 
-    try {
-      // Configure the autocomplete options
-      const options: google.maps.places.AutocompleteOptions = {
-        componentRestrictions: { country: "us" },
-        fields: ["address_components", "formatted_address", "geometry", "place_id"],
-        types: ["address"]
-      };
+    const initializeAutocomplete = () => {
+      if (!inputRef.current || !window.google?.maps?.places) return;
 
-      // Initialize the autocomplete instance
-      autocompleteRef.current = new google.maps.places.Autocomplete(
-        inputRef.current,
-        options
-      );
+      try {
+        const options: google.maps.places.AutocompleteOptions = {
+          componentRestrictions: { country: "us" },
+          fields: ["address_components", "formatted_address", "geometry", "place_id"],
+          types: ["address"]
+        };
 
-      // Add place_changed event listener
-      const listener = autocompleteRef.current.addListener(
-        "place_changed",
-        () => {
-          const place = autocompleteRef.current?.getPlace();
-          
-          if (place?.formatted_address) {
-            onChange(place.formatted_address);
+        autocompleteRef.current = new google.maps.places.Autocomplete(
+          inputRef.current,
+          options
+        );
+
+        listener = autocompleteRef.current.addListener(
+          "place_changed",
+          () => {
+            const place = autocompleteRef.current?.getPlace();
+            if (place?.formatted_address) {
+              onChange(place.formatted_address);
+            }
           }
-        }
-      );
+        );
 
-      // Prevent form submission on enter
-      inputRef.current.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter') {
-          e.preventDefault();
-        }
-      });
+        // Prevent form submission on enter
+        inputRef.current.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter') {
+            e.preventDefault();
+          }
+        });
+      } catch (err) {
+        console.error('Error initializing autocomplete:', err);
+        setError(err instanceof Error ? err.message : 'Failed to initialize address autocomplete');
+      }
+    };
 
-      // Cleanup function
+    if (apiKey) {
+      // Check periodically for Google Maps initialization
+      const interval = setInterval(() => {
+        if (window.google?.maps?.places) {
+          clearInterval(interval);
+          initializeAutocomplete();
+        }
+      }, 100);
+
+      // Cleanup after 10 seconds if Google Maps hasn't loaded
+      const timeout = setTimeout(() => {
+        clearInterval(interval);
+        if (!window.google?.maps?.places) {
+          setError('Google Maps failed to load. Please refresh the page.');
+        }
+      }, 10000);
+
       return () => {
+        clearInterval(interval);
+        clearTimeout(timeout);
         if (listener) {
           google.maps.event.removeListener(listener);
         }
@@ -67,16 +89,18 @@ const AddressAutocomplete = ({
           google.maps.event.clearInstanceListeners(autocompleteRef.current);
         }
       };
-    } catch (err) {
-      console.error('Error initializing autocomplete:', err);
-      setError(err instanceof Error ? err.message : 'Failed to initialize address autocomplete');
     }
   }, [apiKey, onChange]);
 
-  // Handle manual input changes
+  useEffect(() => {
+    if (loadError) {
+      setError(loadError);
+    }
+  }, [loadError]);
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     onChange(e.target.value);
-    setError(null); // Clear any previous errors when user types
+    setError(null);
   };
 
   return (

@@ -32,6 +32,7 @@ const fetchMapApiKey = async () => {
 
 export const useMapConfig = () => {
   const [retryCount, setRetryCount] = useState(0);
+  const [isRetrying, setIsRetrying] = useState(false);
 
   const { 
     data: apiKey,
@@ -40,23 +41,27 @@ export const useMapConfig = () => {
     isError,
     refetch
   } = useQuery({
-    queryKey: ['mapApiKey', retryCount],
+    queryKey: ['mapApiKey'],
     queryFn: fetchMapApiKey,
     retry: MAX_RETRIES,
-    retryDelay: (attemptIndex) => Math.min(
-      INITIAL_BACKOFF * Math.pow(2, attemptIndex),
-      8000
-    ),
+    retryDelay: (attemptIndex) => {
+      const delay = Math.min(INITIAL_BACKOFF * Math.pow(2, attemptIndex), 8000);
+      setIsRetrying(true);
+      return delay;
+    },
     staleTime: 24 * 60 * 60 * 1000, // Cache for 24 hours
-    meta: {
-      errorMessage: 'Failed to load map configuration'
-    }
   });
+
+  useEffect(() => {
+    if (!isLoading) {
+      setIsRetrying(false);
+    }
+  }, [isLoading]);
 
   return {
     apiKey,
     loadError: isError ? error?.message : null,
-    isRetrying: isLoading && retryCount > 0,
+    isRetrying,
     retryCount,
     fetchApiKey: refetch
   };
