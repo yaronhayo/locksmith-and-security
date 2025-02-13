@@ -7,7 +7,7 @@ const FooterCopyright = () => {
   
   return (
     <div className="flex flex-col sm:flex-row justify-between items-center text-sm text-gray-400">
-      <div className="flex flex-col sm:flex-row items-center gap-2">
+      <div className="flex flex-col items-center sm:items-start gap-2">
         <p>© {currentYear} Locksmith & Security LLC. All rights reserved.</p>
         <div className="flex items-center gap-1">
           <span>Made with</span>
