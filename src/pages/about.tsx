@@ -1,3 +1,4 @@
+
 import PageLayout from "@/components/layouts/PageLayout";
 import { Shield, Award, Users, Clock, CheckCircle, Phone, MapPin, Mail } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
@@ -213,3 +214,4 @@ const AboutPage = () => {
 };
 
 export default AboutPage;
+

@@ -1,3 +1,4 @@
+
 export const homePageSchema = {
   "@context": "https://schema.org",
   "@type": "WebPage",
@@ -127,3 +128,4 @@ export const homePageSchema = {
     ]
   }
 };
+
