@@ -2,11 +2,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Input } from "./input";
 import { useMapConfig } from "@/hooks/useMap";
-import { LoadScript, Libraries } from "@react-google-maps/api";
 import { InputHTMLAttributes } from "react";
-
-// Define libraries outside component to prevent recreation
-const libraries: Libraries = ['places'];
 
 type AddressAutocompleteProps = Omit<InputHTMLAttributes<HTMLInputElement>, 'onChange'> & {
   value: string;
@@ -18,16 +14,16 @@ const AddressAutocomplete = ({
   onChange,
   className,
   disabled,
+  placeholder,
   ...props
 }: AddressAutocompleteProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const autocompleteRef = useRef<google.maps.places.Autocomplete | null>(null);
   const { apiKey } = useMapConfig();
-  const [isLoaded, setIsLoaded] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!isLoaded || !inputRef.current) return;
+    if (!apiKey || !inputRef.current || !window.google?.maps?.places) return;
 
     try {
       // Configure the autocomplete options
@@ -55,6 +51,13 @@ const AddressAutocomplete = ({
         }
       );
 
+      // Prevent form submission on enter
+      inputRef.current.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+        }
+      });
+
       // Cleanup function
       return () => {
         if (listener) {
@@ -68,42 +71,34 @@ const AddressAutocomplete = ({
       console.error('Error initializing autocomplete:', err);
       setError(err instanceof Error ? err.message : 'Failed to initialize address autocomplete');
     }
-  }, [isLoaded, onChange]);
+  }, [apiKey, onChange]);
 
   // Handle manual input changes
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     onChange(e.target.value);
+    setError(null); // Clear any previous errors when user types
   };
 
-  if (!apiKey) {
-    return <Input type="text" value={value} onChange={handleInputChange} disabled={disabled} {...props} />;
-  }
-
   return (
-    <LoadScript 
-      googleMapsApiKey={apiKey} 
-      libraries={libraries}
-      onLoad={() => setIsLoaded(true)}
-      onError={(err) => {
-        console.error('Error loading Google Maps Places script:', err);
-        setError('Failed to load Google Maps Places');
-      }}
-    >
-      <div className="relative">
-        <Input
-          ref={inputRef}
-          type="text"
-          value={value}
-          onChange={handleInputChange}
-          className={`${className} ${error ? 'border-red-500' : ''}`}
-          disabled={disabled}
-          {...props}
-        />
-        {error && (
-          <p className="text-sm text-red-500 mt-1">{error}</p>
-        )}
-      </div>
-    </LoadScript>
+    <div className="relative w-full">
+      <Input
+        ref={inputRef}
+        type="text"
+        value={value}
+        onChange={handleInputChange}
+        className={`${className} w-full ${error ? 'border-red-500' : ''}`}
+        disabled={disabled}
+        placeholder={placeholder}
+        aria-invalid={error ? "true" : "false"}
+        aria-describedby={error ? "address-error" : undefined}
+        {...props}
+      />
+      {error && (
+        <p id="address-error" className="text-sm text-red-500 mt-1">
+          {error}
+        </p>
+      )}
+    </div>
   );
 };
 
