@@ -1,7 +1,7 @@
 
 type LogLevel = 'info' | 'warn' | 'error';
 
-const logToService = (level: LogLevel, message: string, data?: any) => {
+export const logToService = (level: LogLevel, message: string, data?: any) => {
   // In a real application, this would send logs to a service like DataDog, New Relic, etc.
   // For now, we'll only log errors to console in production
   if (process.env.NODE_ENV === 'production' && level === 'error') {
