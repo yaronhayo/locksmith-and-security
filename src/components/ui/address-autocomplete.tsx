@@ -1,8 +1,12 @@
+
 import { useEffect, useRef, useState } from "react";
 import { Input } from "./input";
-import { useMapConfig } from "../map/useMapConfig";
-import { LoadScript } from "@react-google-maps/api";
+import { useMapConfig } from "@/hooks/useMap";
+import { LoadScript, Libraries } from "@react-google-maps/api";
 import { InputHTMLAttributes } from "react";
+
+// Define libraries outside component to prevent recreation
+const libraries: Libraries = ['places'];
 
 type AddressAutocompleteProps = Omit<InputHTMLAttributes<HTMLInputElement>, 'onChange'> & {
   value: string;
@@ -39,8 +43,6 @@ const AddressAutocomplete = ({
         options
       );
 
-      console.log('Autocomplete initialized with options:', options);
-
       // Add place_changed event listener
       const listener = autocompleteRef.current.addListener(
         "place_changed",
@@ -48,15 +50,7 @@ const AddressAutocomplete = ({
           const place = autocompleteRef.current?.getPlace();
           
           if (place?.formatted_address) {
-            console.log('Selected place:', {
-              address: place.formatted_address,
-              placeId: place.place_id,
-              location: place.geometry?.location?.toJSON()
-            });
-            
             onChange(place.formatted_address);
-          } else {
-            console.warn('No formatted address found in place data');
           }
         }
       );
@@ -82,18 +76,14 @@ const AddressAutocomplete = ({
   };
 
   if (!apiKey) {
-    console.error('No Google Maps API key available');
-    return null;
+    return <Input type="text" value={value} onChange={handleInputChange} disabled={disabled} {...props} />;
   }
 
   return (
     <LoadScript 
       googleMapsApiKey={apiKey} 
-      libraries={["places"]}
-      onLoad={() => {
-        console.log('Google Maps Places script loaded successfully');
-        setIsLoaded(true);
-      }}
+      libraries={libraries}
+      onLoad={() => setIsLoaded(true)}
       onError={(err) => {
         console.error('Error loading Google Maps Places script:', err);
         setError('Failed to load Google Maps Places');
