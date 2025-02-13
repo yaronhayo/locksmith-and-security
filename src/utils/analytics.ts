@@ -62,3 +62,4 @@ if (typeof window !== 'undefined') {
 
 // Since these are already declared in vite-env.d.ts, we don't need to redeclare them here
 // This fixes the "All declarations must have identical modifiers" error
+
