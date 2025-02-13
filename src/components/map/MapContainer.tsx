@@ -1,6 +1,6 @@
 
 import { GoogleMap } from "@react-google-maps/api";
-import { useMapInstance } from "./hooks/useMapInstance";
+import { useMapInstance } from "@/hooks/useMap";
 import MapMarkers from "./MapMarkers";
 import { MapLocation } from "@/types/map";
 import { useEffect, useMemo } from "react";
