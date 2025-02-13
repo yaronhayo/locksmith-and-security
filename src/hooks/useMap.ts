@@ -32,7 +32,6 @@ const fetchMapApiKey = async () => {
 
 export const useMapConfig = () => {
   const [retryCount, setRetryCount] = useState(0);
-  const [isRetrying, setIsRetrying] = useState(false);
 
   const { 
     data: apiKey,
@@ -41,27 +40,23 @@ export const useMapConfig = () => {
     isError,
     refetch
   } = useQuery({
-    queryKey: ['mapApiKey'],
+    queryKey: ['mapApiKey', retryCount],
     queryFn: fetchMapApiKey,
     retry: MAX_RETRIES,
-    retryDelay: (attemptIndex) => {
-      const delay = Math.min(INITIAL_BACKOFF * Math.pow(2, attemptIndex), 8000);
-      setIsRetrying(true);
-      return delay;
-    },
+    retryDelay: (attemptIndex) => Math.min(
+      INITIAL_BACKOFF * Math.pow(2, attemptIndex),
+      8000
+    ),
     staleTime: 24 * 60 * 60 * 1000, // Cache for 24 hours
-  });
-
-  useEffect(() => {
-    if (!isLoading) {
-      setIsRetrying(false);
+    meta: {
+      errorMessage: 'Failed to load map configuration'
     }
-  }, [isLoading]);
+  });
 
   return {
     apiKey,
     loadError: isError ? error?.message : null,
-    isRetrying,
+    isRetrying: isLoading && retryCount > 0,
     retryCount,
     fetchApiKey: refetch
   };
@@ -88,18 +83,24 @@ export const useMapInstance = ({ center, zoom }: MapConfig) => {
 
 export const useMapScript = (apiKey: string) => {
   const [isLoaded, setIsLoaded] = useState(false);
+  const [placesInitialized, setPlacesInitialized] = useState(false);
 
   const handleScriptLoad = useCallback(() => {
     setIsLoaded(true);
+    if (window.google?.maps?.places) {
+      setPlacesInitialized(true);
+    }
   }, []);
 
   const handleScriptError = useCallback((error: Error) => {
     console.error('Google Maps script load error:', error);
     setIsLoaded(false);
+    setPlacesInitialized(false);
   }, []);
 
   return {
     isLoaded,
+    placesInitialized,
     handleScriptLoad,
     handleScriptError
   };

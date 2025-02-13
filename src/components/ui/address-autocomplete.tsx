@@ -19,28 +19,30 @@ const AddressAutocomplete = ({
 }: AddressAutocompleteProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const autocompleteRef = useRef<google.maps.places.Autocomplete | null>(null);
-  const { apiKey, loadError } = useMapConfig();
+  const { apiKey } = useMapConfig();
   const [error, setError] = useState<string | null>(null);
+  const [isInitialized, setIsInitialized] = useState(false);
 
   useEffect(() => {
-    let listener: google.maps.MapsEventListener | null = null;
-
-    const initializeAutocomplete = () => {
-      if (!inputRef.current || !window.google?.maps?.places) return;
+    const checkAndInitialize = () => {
+      if (!apiKey || !inputRef.current || !window.google?.maps?.places || isInitialized) return;
 
       try {
+        // Configure the autocomplete options
         const options: google.maps.places.AutocompleteOptions = {
           componentRestrictions: { country: "us" },
           fields: ["address_components", "formatted_address", "geometry", "place_id"],
           types: ["address"]
         };
 
+        // Initialize the autocomplete instance
         autocompleteRef.current = new google.maps.places.Autocomplete(
           inputRef.current,
           options
         );
 
-        listener = autocompleteRef.current.addListener(
+        // Add place_changed event listener
+        const listener = autocompleteRef.current.addListener(
           "place_changed",
           () => {
             const place = autocompleteRef.current?.getPlace();
@@ -51,56 +53,48 @@ const AddressAutocomplete = ({
         );
 
         // Prevent form submission on enter
-        inputRef.current.addEventListener('keydown', (e) => {
+        const enterListener = (e: KeyboardEvent) => {
           if (e.key === 'Enter') {
             e.preventDefault();
           }
-        });
+        };
+
+        inputRef.current.addEventListener('keydown', enterListener);
+        setIsInitialized(true);
+
+        // Cleanup function
+        return () => {
+          if (listener) {
+            google.maps.event.removeListener(listener);
+          }
+          if (autocompleteRef.current) {
+            google.maps.event.clearInstanceListeners(autocompleteRef.current);
+          }
+          inputRef.current?.removeEventListener('keydown', enterListener);
+        };
       } catch (err) {
         console.error('Error initializing autocomplete:', err);
         setError(err instanceof Error ? err.message : 'Failed to initialize address autocomplete');
       }
     };
 
-    if (apiKey) {
-      // Check periodically for Google Maps initialization
-      const interval = setInterval(() => {
-        if (window.google?.maps?.places) {
-          clearInterval(interval);
-          initializeAutocomplete();
-        }
-      }, 100);
-
-      // Cleanup after 10 seconds if Google Maps hasn't loaded
-      const timeout = setTimeout(() => {
+    // Check for Google Maps initialization every 100ms until it's available
+    const interval = setInterval(() => {
+      if (window.google?.maps?.places) {
+        checkAndInitialize();
         clearInterval(interval);
-        if (!window.google?.maps?.places) {
-          setError('Google Maps failed to load. Please refresh the page.');
-        }
-      }, 10000);
+      }
+    }, 100);
 
-      return () => {
-        clearInterval(interval);
-        clearTimeout(timeout);
-        if (listener) {
-          google.maps.event.removeListener(listener);
-        }
-        if (autocompleteRef.current) {
-          google.maps.event.clearInstanceListeners(autocompleteRef.current);
-        }
-      };
-    }
-  }, [apiKey, onChange]);
+    return () => {
+      clearInterval(interval);
+    };
+  }, [apiKey, onChange, isInitialized]);
 
-  useEffect(() => {
-    if (loadError) {
-      setError(loadError);
-    }
-  }, [loadError]);
-
+  // Handle manual input changes
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     onChange(e.target.value);
-    setError(null);
+    setError(null); // Clear any previous errors when user types
   };
 
   return (
