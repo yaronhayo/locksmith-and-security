@@ -1,3 +1,4 @@
+
 type LogLevel = 'info' | 'warn' | 'error';
 
 const logToService = (level: LogLevel, message: string, data?: any) => {
