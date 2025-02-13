@@ -83,18 +83,24 @@ export const useMapInstance = ({ center, zoom }: MapConfig) => {
 
 export const useMapScript = (apiKey: string) => {
   const [isLoaded, setIsLoaded] = useState(false);
+  const [placesInitialized, setPlacesInitialized] = useState(false);
 
   const handleScriptLoad = useCallback(() => {
     setIsLoaded(true);
+    if (window.google?.maps?.places) {
+      setPlacesInitialized(true);
+    }
   }, []);
 
   const handleScriptError = useCallback((error: Error) => {
     console.error('Google Maps script load error:', error);
     setIsLoaded(false);
+    setPlacesInitialized(false);
   }, []);
 
   return {
     isLoaded,
+    placesInitialized,
     handleScriptLoad,
     handleScriptError
   };
