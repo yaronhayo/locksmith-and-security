@@ -6,6 +6,7 @@ import { useMapScript } from "./map/hooks/useMapScript";
 import MapError from "./map/MapError";
 import MapLoader from "./map/MapLoader";
 import MapContainer from "./map/MapContainer";
+import { MapErrorBoundary } from "./map/MapErrorBoundary";
 import { MapLocation } from "@/types/map";
 
 interface MapProps {
@@ -48,21 +49,23 @@ const Map = ({
 
   return (
     <div className="w-full h-[400px] relative rounded-lg overflow-hidden shadow-md">
-      <LoadScript 
-        {...loadScriptProps}
-        onLoad={handleScriptLoad}
-        onError={handleScriptError}
-        loadingElement={<MapLoader />}
-      >
-        <MapContainer
-          center={mapCenter}
-          zoom={zoom}
-          markers={markers}
-          hoveredMarker={hoveredMarker}
-          onClick={onClick}
-          isLoaded={isLoaded}
-        />
-      </LoadScript>
+      <MapErrorBoundary>
+        <LoadScript 
+          {...loadScriptProps}
+          onLoad={handleScriptLoad}
+          onError={handleScriptError}
+          loadingElement={<MapLoader />}
+        >
+          <MapContainer
+            center={mapCenter}
+            zoom={zoom}
+            markers={markers}
+            hoveredMarker={hoveredMarker}
+            onClick={onClick}
+            isLoaded={isLoaded}
+          />
+        </LoadScript>
+      </MapErrorBoundary>
     </div>
   );
 };
