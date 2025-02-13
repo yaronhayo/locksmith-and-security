@@ -2,15 +2,15 @@
 import { useState, useCallback } from 'react';
 import { Libraries } from '@react-google-maps/api';
 
-// Define libraries array as a constant outside the component
-const MAP_LIBRARIES: Libraries = ["places", "marker"] as const;
-const SCRIPT_ID = 'google-maps-script';
+// Define libraries array as a constant outside to prevent unnecessary re-renders
+export const MAP_LIBRARIES: Libraries = ["places", "marker"] as const;
+export const SCRIPT_ID = 'google-maps-script';
 
 export const useMapScript = (apiKey: string) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // Always return the same loadScriptProps object
+  // Memoize loadScriptProps to prevent unnecessary re-renders
   const loadScriptProps = {
     googleMapsApiKey: apiKey,
     libraries: MAP_LIBRARIES,
@@ -35,3 +35,6 @@ export const useMapScript = (apiKey: string) => {
     handleScriptError
   };
 };
+
+// Export type for better type safety across components
+export type MapScriptHookResult = ReturnType<typeof useMapScript>;
