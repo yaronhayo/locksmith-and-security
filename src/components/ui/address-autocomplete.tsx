@@ -24,24 +24,23 @@ const AddressAutocomplete = ({
   const [isInitialized, setIsInitialized] = useState(false);
 
   useEffect(() => {
-    const checkAndInitialize = () => {
-      if (!apiKey || !inputRef.current || !window.google?.maps?.places || isInitialized) return;
+    let cleanup: (() => void) | undefined;
+
+    const initializeAutocomplete = () => {
+      if (!inputRef.current || !window.google?.maps?.places || isInitialized) return;
 
       try {
-        // Configure the autocomplete options
         const options: google.maps.places.AutocompleteOptions = {
           componentRestrictions: { country: "us" },
           fields: ["address_components", "formatted_address", "geometry", "place_id"],
           types: ["address"]
         };
 
-        // Initialize the autocomplete instance
-        autocompleteRef.current = new google.maps.places.Autocomplete(
+        autocompleteRef.current = new window.google.maps.places.Autocomplete(
           inputRef.current,
           options
         );
 
-        // Add place_changed event listener
         const listener = autocompleteRef.current.addListener(
           "place_changed",
           () => {
@@ -52,7 +51,6 @@ const AddressAutocomplete = ({
           }
         );
 
-        // Prevent form submission on enter
         const enterListener = (e: KeyboardEvent) => {
           if (e.key === 'Enter') {
             e.preventDefault();
@@ -62,8 +60,7 @@ const AddressAutocomplete = ({
         inputRef.current.addEventListener('keydown', enterListener);
         setIsInitialized(true);
 
-        // Cleanup function
-        return () => {
+        cleanup = () => {
           if (listener) {
             google.maps.event.removeListener(listener);
           }
@@ -78,23 +75,34 @@ const AddressAutocomplete = ({
       }
     };
 
-    // Check for Google Maps initialization every 100ms until it's available
-    const interval = setInterval(() => {
-      if (window.google?.maps?.places) {
-        checkAndInitialize();
-        clearInterval(interval);
-      }
-    }, 100);
+    if (apiKey && !isInitialized) {
+      const interval = setInterval(() => {
+        if (window.google?.maps?.places) {
+          clearInterval(interval);
+          initializeAutocomplete();
+        }
+      }, 100);
 
-    return () => {
-      clearInterval(interval);
-    };
+      const timeout = setTimeout(() => {
+        clearInterval(interval);
+        if (!window.google?.maps?.places) {
+          setError('Google Maps failed to load. Please refresh the page.');
+        }
+      }, 10000);
+
+      return () => {
+        clearInterval(interval);
+        clearTimeout(timeout);
+        if (cleanup) cleanup();
+      };
+    }
+
+    return cleanup;
   }, [apiKey, onChange, isInitialized]);
 
-  // Handle manual input changes
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     onChange(e.target.value);
-    setError(null); // Clear any previous errors when user types
+    setError(null);
   };
 
   return (

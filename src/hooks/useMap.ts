@@ -60,25 +60,6 @@ export const useMapConfig = () => {
   };
 };
 
-export const useMapInstance = ({ center, zoom }: MapConfig) => {
-  const [map, setMap] = useState<google.maps.Map | null>(null);
-
-  const handleMapLoad = useCallback((mapInstance: google.maps.Map) => {
-    const startTime = performance.now();
-    setMap(mapInstance);
-    mapPerformance.trackInstanceLoad(startTime);
-  }, []);
-
-  useEffect(() => {
-    if (map) {
-      map.setCenter(center);
-      map.setZoom(zoom);
-    }
-  }, [map, center, zoom]);
-
-  return { map, handleMapLoad };
-};
-
 export const useMapScript = (apiKey: string) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [placesInitialized, setPlacesInitialized] = useState(false);
@@ -102,4 +83,23 @@ export const useMapScript = (apiKey: string) => {
     handleScriptLoad,
     handleScriptError
   };
+};
+
+export const useMapInstance = ({ center, zoom }: MapConfig) => {
+  const [map, setMap] = useState<google.maps.Map | null>(null);
+
+  const handleMapLoad = useCallback((mapInstance: google.maps.Map) => {
+    const startTime = performance.now();
+    setMap(mapInstance);
+    mapPerformance.trackInstanceLoad(startTime);
+  }, []);
+
+  useEffect(() => {
+    if (map) {
+      map.setCenter(center);
+      map.setZoom(zoom);
+    }
+  }, [map, center, zoom]);
+
+  return { map, handleMapLoad };
 };
