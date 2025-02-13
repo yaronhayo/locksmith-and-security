@@ -9,3 +9,4 @@ export const createBreadcrumbSchema = (items: Array<{ name: string; item: string
     "item": `https://247locksmithandsecurity.com${item.item}`
   }))
 });
+

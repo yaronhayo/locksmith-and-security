@@ -1,3 +1,4 @@
+
 import { Suspense, lazy, useEffect } from 'react';
 import PageLayout from "@/components/layouts/PageLayout";
 import HeroSection from "@/components/sections/HeroSection";

@@ -1,3 +1,4 @@
+
 export const createServiceAreaSchema = (city: string) => ({
   "@context": "https://schema.org",
   "@type": "LocalBusiness",
