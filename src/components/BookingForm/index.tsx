@@ -58,7 +58,27 @@ const BookingForm = () => {
 
     try {
       await submitBookingForm(formData, showVehicleInfo, location.pathname, recaptchaToken, address);
-      sessionStorage.setItem('fromFormSubmission', 'true');
+      
+      // Set the flag in session storage before redirecting
+      window.sessionStorage.setItem('fromFormSubmission', 'true');
+      
+      // Show success toast before redirecting
+      toast({
+        title: "Booking Received!",
+        description: "We'll contact you shortly to confirm your appointment.",
+        variant: "default",
+      });
+
+      // Track conversion if analytics is available
+      if (typeof window.gtag === 'function') {
+        window.gtag('event', 'conversion', {
+          'event_category': 'form',
+          'event_label': 'booking_submission',
+          'value': 1
+        });
+      }
+
+      // Redirect to thank you page
       navigate('/thank-you');
     } catch (error: any) {
       console.error('Booking form submission error:', error);
