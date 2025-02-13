@@ -1,3 +1,4 @@
+
 import { Shield, Clock, DollarSign, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
@@ -22,9 +23,9 @@ const NewCarKeyHero = () => {
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <Button size="lg" variant="secondary" asChild className="text-lg">
-                <a href="tel:5513037874" className="flex items-center">
+                <a href="tel:2017482070" className="flex items-center">
                   <Phone className="mr-2 h-5 w-5" />
-                  (551) 303-7874
+                  (201) 748-2070
                 </a>
               </Button>
               <Button size="lg" variant="outline" className="text-lg bg-white/10 text-white hover:bg-white/20">
