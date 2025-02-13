@@ -1,59 +1,66 @@
 
+// Consolidated performance monitoring utilities
 type LogLevel = 'info' | 'warn' | 'error';
 
 export const logToService = (level: LogLevel, message: string, data?: any) => {
-  // In a real application, this would send logs to a service like DataDog, New Relic, etc.
-  // For now, we'll only log errors to console in production
-  if (process.env.NODE_ENV === 'production' && level === 'error') {
-    console.error(message, data);
-  } else if (process.env.NODE_ENV !== 'production') {
-    switch (level) {
-      case 'info':
-        console.log(message, data);
-        break;
-      case 'warn':
-        console.warn(message, data);
-        break;
-      case 'error':
-        console.error(message, data);
-        break;
-    }
+  console[level](`[Performance] ${message}`, data);
+  
+  // Can be extended to send to monitoring service
+  if (process.env.NODE_ENV === 'production') {
+    // Send to monitoring service if needed
   }
 };
 
-export const setupPerformanceMonitoring = () => {
-  try {
-    if (typeof window === 'undefined') return;
+// Map specific performance monitoring
+interface MapLoadMetrics {
+  scriptLoadTime: number;
+  instanceLoadTime: number;
+  markersCount: number;
+}
 
-    const observer = new PerformanceObserver((list) => {
-      for (const entry of list.getEntries()) {
-        logToService('info', 'Performance Entry:', {
-          name: entry.name,
-          startTime: entry.startTime,
-          duration: entry.duration,
-          entryType: entry.entryType
-        });
-      }
-    });
+class MapPerformanceTracker {
+  private static instance: MapPerformanceTracker;
+  private metrics: MapLoadMetrics = {
+    scriptLoadTime: 0,
+    instanceLoadTime: 0,
+    markersCount: 0
+  };
 
-    observer.observe({ entryTypes: ['navigation', 'resource', 'paint'] });
+  private constructor() {}
 
-    window.addEventListener('error', (event) => {
-      logToService('error', 'Runtime Error:', {
-        message: event.message,
-        filename: event.filename,
-        lineno: event.lineno,
-        colno: event.colno,
-        error: event.error
-      });
-    });
-
-    window.addEventListener('unhandledrejection', (event) => {
-      logToService('error', 'Unhandled Promise Rejection:', {
-        reason: event.reason
-      });
-    });
-  } catch (error) {
-    logToService('error', 'Error setting up performance monitoring:', error);
+  static getInstance(): MapPerformanceTracker {
+    if (!MapPerformanceTracker.instance) {
+      MapPerformanceTracker.instance = new MapPerformanceTracker();
+    }
+    return MapPerformanceTracker.instance;
   }
+
+  trackScriptLoad(startTime: number) {
+    this.metrics.scriptLoadTime = performance.now() - startTime;
+    this.logMetrics('Script Load');
+  }
+
+  trackInstanceLoad(startTime: number) {
+    this.metrics.instanceLoadTime = performance.now() - startTime;
+    this.logMetrics('Instance Load');
+  }
+
+  setMarkersCount(count: number) {
+    this.metrics.markersCount = count;
+    this.logMetrics('Markers Update');
+  }
+
+  private logMetrics(event: string) {
+    logToService('info', `Map Performance - ${event}:`, this.metrics);
+  }
+}
+
+export const mapPerformance = MapPerformanceTracker.getInstance();
+
+// General performance monitoring
+export const measurePerformance = (label: string, callback: () => void) => {
+  const start = performance.now();
+  callback();
+  const duration = performance.now() - start;
+  logToService('info', `Performance measurement: ${label}`, { duration });
 };
