@@ -33,12 +33,6 @@ const fetchMapApiKey = async () => {
 export const useMapConfig = () => {
   const [retryCount, setRetryCount] = useState(0);
 
-  const handleRetry = useCallback(() => {
-    if (retryCount < MAX_RETRIES) {
-      setRetryCount(prev => prev + 1);
-    }
-  }, [retryCount]);
-
   const { 
     data: apiKey,
     error,
@@ -99,15 +93,8 @@ export const useMapScript = (apiKey: string) => {
     setIsLoaded(false);
   }, []);
 
-  const loadScriptProps = {
-    googleMapsApiKey: apiKey,
-    language: 'en',
-    region: 'US',
-  };
-
   return {
     isLoaded,
-    loadScriptProps,
     handleScriptLoad,
     handleScriptError
   };

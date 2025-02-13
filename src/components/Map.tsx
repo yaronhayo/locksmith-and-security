@@ -1,12 +1,15 @@
 
 import { useMemo } from "react";
-import { LoadScript } from "@react-google-maps/api";
+import { LoadScript, Libraries } from "@react-google-maps/api";
 import { useMapConfig, useMapScript } from "@/hooks/useMap";
 import MapError from "./map/MapError";
 import MapLoader from "./map/MapLoader";
 import MapContainer from "./map/MapContainer";
 import { MapErrorBoundary } from "./map/MapErrorBoundary";
 import { MapMarker } from "@/types/service-area";
+
+// Define libraries outside component to prevent recreation
+const libraries: Libraries = ['places'];
 
 interface MapProps {
   markers?: MapMarker[];
@@ -24,10 +27,18 @@ const Map = ({
   onClick,
 }: MapProps) => {
   const { apiKey, loadError, isRetrying, retryCount, fetchApiKey } = useMapConfig();
-  const { isLoaded, loadScriptProps, handleScriptLoad, handleScriptError } = useMapScript(apiKey || '');
+  const { isLoaded, handleScriptLoad, handleScriptError } = useMapScript(apiKey || '');
 
   // Memoize the center to prevent unnecessary re-renders
   const mapCenter = useMemo(() => center, [center.lat, center.lng]);
+
+  // Memoize LoadScript props
+  const loadScriptProps = useMemo(() => ({
+    googleMapsApiKey: apiKey || '',
+    libraries,
+    language: 'en',
+    region: 'US',
+  }), [apiKey]);
 
   if (loadError) {
     console.error('Map load error:', loadError);
