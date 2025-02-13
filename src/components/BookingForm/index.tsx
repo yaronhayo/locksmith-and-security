@@ -43,7 +43,9 @@ const BookingForm = () => {
       return;
     }
 
+    // Create FormData and manually append the address
     const formData = new FormData(e.currentTarget);
+    formData.set('address', address); // Ensure address is included in formData
     
     const validationResult = validateForm(formData, showVehicleInfo);
     if (!validationResult.isValid) {
