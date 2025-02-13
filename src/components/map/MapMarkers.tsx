@@ -1,11 +1,11 @@
 
 import { Marker } from '@react-google-maps/api';
-import { MapLocation } from '@/types/map';
+import { MapMarker } from '@/types/service-area';
 import { useNavigate } from 'react-router-dom';
 import { useMemo } from 'react';
 
 interface MapMarkersProps {
-  markers: MapLocation[];
+  markers: MapMarker[];
   hoveredMarker: string | null;
 }
 

@@ -2,7 +2,7 @@
 import { GoogleMap } from "@react-google-maps/api";
 import { useMapInstance } from "@/hooks/useMap";
 import MapMarkers from "./MapMarkers";
-import { MapLocation } from "@/types/map";
+import { MapMarker } from "@/types/service-area";
 import { useEffect, useMemo } from "react";
 
 const MAP_OPTIONS = {
@@ -23,7 +23,7 @@ const MAP_CONTAINER_STYLE = {
 interface MapContainerProps {
   center: { lat: number; lng: number };
   zoom: number;
-  markers?: MapLocation[];
+  markers?: MapMarker[];
   hoveredMarker?: string | null;
   onClick?: (e: google.maps.MapMouseEvent) => void;
   isLoaded: boolean;
