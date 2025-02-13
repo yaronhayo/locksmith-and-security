@@ -1,3 +1,41 @@
+
+import { LucideIcon } from 'lucide-react';
+
+export interface ServiceAreaLocation {
+  name: string;
+  slug: string;
+  description: string;
+  lat: number;
+  lng: number;
+}
+
+export interface ServiceAreaFeature {
+  icon: LucideIcon;
+  title: string;
+  description: string;
+}
+
+export interface MapMarker {
+  lat: number;
+  lng: number;
+  title: string;
+  slug?: string;
+}
+
+export interface Area {
+  name: string;
+  slug: string;
+  description: string;
+  lat: number;
+  lng: number;
+}
+
+export interface Feature {
+  icon: LucideIcon;
+  title: string;
+  description: string;
+}
+
 export interface ServiceAreaSchema {
   "@context": "https://schema.org";
   "@type": "Service";
@@ -38,19 +76,4 @@ export interface ServiceAreaSchema {
     };
     reviewBody: string;
   };
-}
-
-export interface ServiceAreaProps {
-  location: string;
-  coordinates: {
-    lat: number;
-    lng: number;
-  };
-  schema: ServiceAreaSchema;
-}
-
-export interface ServiceFeature {
-  icon: React.ComponentType;
-  title: string;
-  description: string;
 }

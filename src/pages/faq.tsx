@@ -1,3 +1,4 @@
+
 import PageLayout from "@/components/layouts/PageLayout";
 import {
   Accordion,
@@ -7,11 +8,7 @@ import {
 } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
 import { Phone } from "lucide-react";
-import { generalFaqs } from "@/data/faq/general";
-import { residentialFaqs } from "@/data/faq/residential";
-import { automotiveFaqs } from "@/data/faq/automotive";
-import { commercialFaqs } from "@/data/faq/commercial";
-import { emergencyFaqs } from "@/data/faq/emergency";
+import { generalFaqs, residentialFaqs, automotiveFaqs, commercialFaqs, emergencyFaqs } from "@/data/faqData";
 
 const FAQPage = () => {
   const allFaqs = [
