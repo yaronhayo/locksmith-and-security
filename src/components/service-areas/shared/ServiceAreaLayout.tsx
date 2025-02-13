@@ -1,3 +1,4 @@
+
 import { ReactNode } from "react";
 import PageLayout from "@/components/layouts/PageLayout";
 import ServiceAreaHero from "./ServiceAreaHero";
@@ -7,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { MapPin, Phone, Shield } from "lucide-react";
 import Map from "@/components/Map";
 import { serviceAreaLocations } from "../constants";
-import { MapLocation } from "@/types/map";
+import { MapMarker } from "@/types/service-area";
 
 interface ServiceAreaLayoutProps {
   title: string;
@@ -28,11 +29,11 @@ const ServiceAreaLayout = ({
   const currentArea = serviceAreaLocations.find(area => area.name === areaName);
   const center = currentArea ? { lat: currentArea.lat, lng: currentArea.lng } : undefined;
   
-  // Create markers for all service areas
-  const markers: MapLocation[] = serviceAreaLocations.map(area => ({
+  // Create markers for all service areas, ensuring title is provided
+  const markers: MapMarker[] = serviceAreaLocations.map(area => ({
     lat: area.lat,
     lng: area.lng,
-    title: area.name,
+    title: area.name, // name is used as the required title
     slug: area.slug
   }));
 
