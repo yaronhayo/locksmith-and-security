@@ -5,7 +5,7 @@ import Map from '../Map';
 import AreasList from './service-areas/AreasList';
 import ServiceAreaFeatures from '../service-areas/shared/ServiceAreaFeatures';
 import EmergencyCallout from './service-areas/EmergencyCallout';
-import { MapLocation } from '@/types/map';
+import { MapMarker, ServiceAreaLocation } from '@/types/service-area';
 import { useLocations } from '@/hooks/useLocations';
 import LoadingSpinner from '../LoadingSpinner';
 
@@ -13,8 +13,8 @@ const ServiceAreasSection = () => {
   const [hoveredArea, setHoveredArea] = useState<string | null>(null);
   const { data: locations, isLoading, error } = useLocations();
   
-  // Map locations to markers format
-  const markers: MapLocation[] = locations?.map(area => ({
+  // Map locations to markers format with required title
+  const markers: MapMarker[] = locations?.map(area => ({
     lat: area.lat,
     lng: area.lng,
     title: area.name,

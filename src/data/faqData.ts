@@ -7,7 +7,7 @@ export interface FAQ {
   category?: string;
 }
 
-const generalFaqs: FAQ[] = [
+export const generalFaqs: FAQ[] = [
   {
     question: "What areas do you serve?",
     answer: "We serve North Bergen and surrounding areas including Jersey City, Union City, West New York, Secaucus, Weehawken, Hoboken, and Guttenberg."
@@ -30,7 +30,7 @@ const generalFaqs: FAQ[] = [
   }
 ];
 
-const residentialFaqs: FAQ[] = [
+export const residentialFaqs: FAQ[] = [
   {
     question: "Can you rekey my house locks?",
     answer: "Yes, we provide professional rekeying services for all types of residential locks."
@@ -45,7 +45,7 @@ const residentialFaqs: FAQ[] = [
   }
 ];
 
-const automotiveFaqs: FAQ[] = [
+export const automotiveFaqs: FAQ[] = [
   {
     question: "Can you make new car keys?",
     answer: "Yes, we can create new keys for most vehicle makes and models."
@@ -60,7 +60,7 @@ const automotiveFaqs: FAQ[] = [
   }
 ];
 
-const commercialFaqs: FAQ[] = [
+export const commercialFaqs: FAQ[] = [
   {
     question: "Do you install commercial grade locks?",
     answer: "Yes, we install and service high-security commercial grade locks."
@@ -101,4 +101,3 @@ export const additionalFaqs = [
   ...commercialFaqs,
   ...emergencyFaqs
 ];
-

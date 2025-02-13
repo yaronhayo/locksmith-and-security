@@ -7,6 +7,7 @@ export interface ServiceAreaLocation {
   description: string;
   lat: number;
   lng: number;
+  title?: string;
 }
 
 export interface ServiceAreaFeature {
