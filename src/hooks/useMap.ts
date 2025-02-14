@@ -59,18 +59,6 @@ export const useMapConfig = () => {
   const isRetrying = isLoading && error !== null;
   const retryCount = error ? Math.min(MAX_RETRIES, error instanceof Error ? 1 : 0) : 0;
 
-  useEffect(() => {
-    if (isLoading) {
-      console.log('Loading API key...');
-    }
-    if (apiKey) {
-      console.log('API key loaded successfully');
-    }
-    if (error) {
-      console.error('Error loading API key:', error);
-    }
-  }, [isLoading, apiKey, error]);
-
   return {
     apiKey,
     loadError: isError ? error?.message : null,
@@ -88,59 +76,69 @@ export const useMapScript = (apiKey: string) => {
   });
 
   useEffect(() => {
-    if (!apiKey) {
-      console.error('No API key provided to useMapScript');
-      setScriptState(prev => ({
-        ...prev,
-        loadError: 'No API key available'
-      }));
-      return;
-    }
+    let mounted = true;
 
-    console.log('Initializing Google Maps script with API key');
-    
-    const existingScript = document.querySelector(`script[src*="maps.googleapis.com"]`);
-    if (existingScript) {
-      console.log('Removing existing Google Maps script');
-      existingScript.remove();
-    }
+    const initializeScript = () => {
+      if (!apiKey) {
+        console.error('No API key provided to useMapScript');
+        if (mounted) {
+          setScriptState(prev => ({
+            ...prev,
+            loadError: 'No API key available'
+          }));
+        }
+        return;
+      }
 
-    const script = document.createElement('script');
-    script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places`;
-    script.async = true;
-    script.defer = true;
+      console.log('Initializing Google Maps script');
+      
+      const existingScript = document.querySelector(`script[src*="maps.googleapis.com"]`);
+      if (existingScript) {
+        console.log('Removing existing Google Maps script');
+        existingScript.remove();
+      }
 
-    const handleLoad = () => {
-      console.log('Google Maps script loaded successfully');
-      setScriptState(prev => ({
-        ...prev,
-        isLoaded: true,
-        loadError: null,
-        placesInitialized: !!window.google?.maps?.places
-      }));
+      const script = document.createElement('script');
+      script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places`;
+      script.async = true;
+      script.defer = true;
+
+      const handleLoad = () => {
+        console.log('Google Maps script loaded successfully');
+        if (mounted) {
+          setScriptState({
+            isLoaded: true,
+            loadError: null,
+            placesInitialized: !!window.google?.maps?.places
+          });
+        }
+      };
+
+      const handleError = () => {
+        const error = 'Failed to load Google Maps script';
+        console.error(error);
+        if (mounted) {
+          setScriptState({
+            isLoaded: false,
+            loadError: error,
+            placesInitialized: false
+          });
+        }
+      };
+
+      script.addEventListener('load', handleLoad);
+      script.addEventListener('error', handleError);
+
+      document.head.appendChild(script);
     };
 
-    const handleError = () => {
-      const error = 'Failed to load Google Maps script';
-      console.error(error);
-      setScriptState(prev => ({
-        ...prev,
-        isLoaded: false,
-        loadError: error,
-        placesInitialized: false
-      }));
-    };
-
-    script.addEventListener('load', handleLoad);
-    script.addEventListener('error', handleError);
-
-    document.head.appendChild(script);
+    initializeScript();
 
     return () => {
-      script.removeEventListener('load', handleLoad);
-      script.removeEventListener('error', handleError);
-      if (document.head.contains(script)) {
-        document.head.removeChild(script);
+      mounted = false;
+      const script = document.querySelector(`script[src*="maps.googleapis.com"]`);
+      if (script) {
+        script.remove();
       }
     };
   }, [apiKey]);
