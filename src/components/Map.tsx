@@ -27,7 +27,7 @@ const Map = ({
   onClick,
 }: MapProps) => {
   const { apiKey, loadError, isRetrying, retryCount, fetchApiKey } = useMapConfig();
-  const { isLoaded, handleScriptLoad, handleScriptError } = useMapScript(apiKey || '');
+  const { isLoaded } = useMapScript(apiKey || '');
 
   // Memoize the center to prevent unnecessary re-renders
   const mapCenter = useMemo(() => center, [center.lat, center.lng]);
@@ -60,12 +60,7 @@ const Map = ({
   return (
     <div className="w-full h-[400px] relative rounded-lg overflow-hidden shadow-md">
       <MapErrorBoundary>
-        <LoadScript 
-          {...loadScriptProps}
-          onLoad={handleScriptLoad}
-          onError={handleScriptError}
-          loadingElement={<MapLoader />}
-        >
+        <LoadScript {...loadScriptProps} loadingElement={<MapLoader />}>
           <MapContainer
             center={mapCenter}
             zoom={zoom}

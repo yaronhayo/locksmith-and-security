@@ -67,21 +67,24 @@ export const useMapConfig = () => {
   };
 };
 
-export const useMapScript = (apiKey: string | undefined) => {
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [loadError, setLoadError] = useState<string | null>(null);
-  const [placesInitialized, setPlacesInitialized] = useState(false);
+export const useMapScript = (apiKey: string) => {
+  const [scriptState, setScriptState] = useState({
+    isLoaded: false,
+    loadError: null as string | null,
+    placesInitialized: false
+  });
 
   useEffect(() => {
     if (!apiKey) {
-      setLoadError('No API key available');
+      setScriptState(prev => ({
+        ...prev,
+        loadError: 'No API key available'
+      }));
       return;
     }
 
     console.log('Initializing Google Maps script');
-    setIsLoaded(false);
-    setLoadError(null);
-
+    
     // Check if script is already loaded
     const existingScript = document.querySelector(`script[src*="maps.googleapis.com"]`);
     if (existingScript) {
@@ -96,17 +99,21 @@ export const useMapScript = (apiKey: string | undefined) => {
 
     const handleLoad = () => {
       console.log('Google Maps script loaded successfully');
-      setIsLoaded(true);
-      if (window.google?.maps?.places) {
-        setPlacesInitialized(true);
-      }
+      setScriptState({
+        isLoaded: true,
+        loadError: null,
+        placesInitialized: !!window.google?.maps?.places
+      });
     };
 
     const handleError = () => {
       const error = 'Failed to load Google Maps script';
       console.error(error);
-      setLoadError(error);
-      setIsLoaded(false);
+      setScriptState({
+        isLoaded: false,
+        loadError: error,
+        placesInitialized: false
+      });
     };
 
     script.addEventListener('load', handleLoad);
@@ -123,11 +130,7 @@ export const useMapScript = (apiKey: string | undefined) => {
     };
   }, [apiKey]);
 
-  return {
-    isLoaded,
-    loadError,
-    placesInitialized
-  };
+  return scriptState;
 };
 
 export const useMapInstance = ({ center, zoom }: MapConfig) => {
