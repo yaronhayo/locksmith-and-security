@@ -13,6 +13,7 @@ interface MapConfig {
 }
 
 const fetchMapApiKey = async () => {
+  console.log('Fetching Google Maps API key');
   const { data, error } = await supabase
     .from('settings')
     .select('value')
@@ -20,13 +21,16 @@ const fetchMapApiKey = async () => {
     .maybeSingle();
 
   if (error) {
+    console.error('Error fetching API key:', error);
     throw new Error(`Failed to fetch Google Maps API key: ${error.message}`);
   }
 
   if (!data?.value) {
+    console.error('No API key found in settings');
     throw new Error('Google Maps API key not found in settings');
   }
 
+  console.log('Successfully fetched API key');
   return data.value;
 };
 
@@ -46,6 +50,9 @@ export const useMapConfig = () => {
       8000
     ),
     staleTime: 24 * 60 * 60 * 1000, // Cache for 24 hours
+    meta: {
+      errorMessage: 'Failed to load Google Maps API key'
+    }
   });
 
   const isRetrying = isLoading && error !== null;
@@ -60,35 +67,75 @@ export const useMapConfig = () => {
   };
 };
 
-export const useMapScript = (apiKey: string) => {
+export const useMapScript = (apiKey: string | undefined) => {
   const [isLoaded, setIsLoaded] = useState(false);
+  const [loadError, setLoadError] = useState<string | null>(null);
   const [placesInitialized, setPlacesInitialized] = useState(false);
 
-  const handleScriptLoad = useCallback(() => {
-    setIsLoaded(true);
-    if (window.google?.maps?.places) {
-      setPlacesInitialized(true);
+  useEffect(() => {
+    if (!apiKey) {
+      setLoadError('No API key available');
+      return;
     }
-  }, []);
 
-  const handleScriptError = useCallback((error: Error) => {
-    console.error('Google Maps script load error:', error);
+    console.log('Initializing Google Maps script');
     setIsLoaded(false);
-    setPlacesInitialized(false);
-  }, []);
+    setLoadError(null);
+
+    // Check if script is already loaded
+    const existingScript = document.querySelector(`script[src*="maps.googleapis.com"]`);
+    if (existingScript) {
+      console.log('Google Maps script already exists, removing');
+      existingScript.remove();
+    }
+
+    const script = document.createElement('script');
+    script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places`;
+    script.async = true;
+    script.defer = true;
+
+    const handleLoad = () => {
+      console.log('Google Maps script loaded successfully');
+      setIsLoaded(true);
+      if (window.google?.maps?.places) {
+        setPlacesInitialized(true);
+      }
+    };
+
+    const handleError = () => {
+      const error = 'Failed to load Google Maps script';
+      console.error(error);
+      setLoadError(error);
+      setIsLoaded(false);
+    };
+
+    script.addEventListener('load', handleLoad);
+    script.addEventListener('error', handleError);
+
+    document.head.appendChild(script);
+
+    return () => {
+      script.removeEventListener('load', handleLoad);
+      script.removeEventListener('error', handleError);
+      if (document.head.contains(script)) {
+        document.head.removeChild(script);
+      }
+    };
+  }, [apiKey]);
 
   return {
     isLoaded,
-    placesInitialized,
-    handleScriptLoad,
-    handleScriptError
+    loadError,
+    placesInitialized
   };
 };
 
 export const useMapInstance = ({ center, zoom }: MapConfig) => {
   const [map, setMap] = useState<google.maps.Map | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   const handleMapLoad = useCallback((mapInstance: google.maps.Map) => {
+    console.log('Map instance loaded');
     const startTime = performance.now();
     setMap(mapInstance);
     mapPerformance.trackInstanceLoad(startTime);
@@ -96,10 +143,15 @@ export const useMapInstance = ({ center, zoom }: MapConfig) => {
 
   useEffect(() => {
     if (map) {
-      map.setCenter(center);
-      map.setZoom(zoom);
+      try {
+        map.setCenter(center);
+        map.setZoom(zoom);
+      } catch (err) {
+        console.error('Error updating map:', err);
+        setError(err instanceof Error ? err.message : 'Failed to update map');
+      }
     }
   }, [map, center, zoom]);
 
-  return { map, handleMapLoad };
+  return { map, error, handleMapLoad };
 };

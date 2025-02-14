@@ -1,9 +1,10 @@
 
 import { useEffect, useRef, useState } from "react";
 import { Input } from "./input";
-import { useMapConfig } from "@/hooks/useMap";
+import { useMapConfig, useMapScript } from "@/hooks/useMap";
 import { InputHTMLAttributes } from "react";
-import Script from 'next/script'
+import { Loader2 } from "lucide-react";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
 type AddressAutocompleteProps = Omit<InputHTMLAttributes<HTMLInputElement>, 'onChange'> & {
   value: string;
@@ -20,17 +21,20 @@ const AddressAutocomplete = ({
 }: AddressAutocompleteProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const autocompleteRef = useRef<google.maps.places.Autocomplete | null>(null);
-  const { apiKey } = useMapConfig();
+  const { apiKey, loadError: apiKeyError } = useMapConfig();
+  const { isLoaded, loadError: scriptError, placesInitialized } = useMapScript(apiKey);
   const [error, setError] = useState<string | null>(null);
-  const [isScriptLoaded, setIsScriptLoaded] = useState(false);
-  const [isInitialized, setIsInitialized] = useState(false);
 
   // Initialize autocomplete once script is loaded
-  const initializeAutocomplete = () => {
-    if (!inputRef.current || !window.google?.maps?.places || isInitialized) return;
+  useEffect(() => {
+    if (!inputRef.current || !isLoaded || !placesInitialized) return;
 
+    console.log('Initializing Places Autocomplete');
     try {
-      // Create autocomplete instance with specific options
+      if (autocompleteRef.current) {
+        google.maps.event.clearInstanceListeners(autocompleteRef.current);
+      }
+
       autocompleteRef.current = new window.google.maps.places.Autocomplete(
         inputRef.current,
         {
@@ -40,7 +44,6 @@ const AddressAutocomplete = ({
         }
       );
 
-      // Add place_changed listener
       const placeChangedListener = autocompleteRef.current.addListener(
         "place_changed",
         () => {
@@ -51,9 +54,6 @@ const AddressAutocomplete = ({
         }
       );
 
-      setIsInitialized(true);
-
-      // Return cleanup function
       return () => {
         if (placeChangedListener) {
           google.maps.event.removeListener(placeChangedListener);
@@ -66,32 +66,7 @@ const AddressAutocomplete = ({
       console.error('Error initializing autocomplete:', err);
       setError(err instanceof Error ? err.message : 'Failed to initialize address autocomplete');
     }
-  };
-
-  // Load Google Maps script
-  useEffect(() => {
-    if (apiKey && !isScriptLoaded) {
-      const script = document.createElement('script');
-      script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places`;
-      script.async = true;
-      script.defer = true;
-      
-      script.onload = () => {
-        setIsScriptLoaded(true);
-        initializeAutocomplete();
-      };
-
-      script.onerror = () => {
-        setError('Failed to load Google Maps script');
-      };
-
-      document.head.appendChild(script);
-
-      return () => {
-        document.head.removeChild(script);
-      };
-    }
-  }, [apiKey, isScriptLoaded]);
+  }, [isLoaded, placesInitialized, onChange]);
 
   // Prevent form submission on Enter key
   useEffect(() => {
@@ -101,10 +76,13 @@ const AddressAutocomplete = ({
       }
     };
 
-    inputRef.current?.addEventListener('keydown', handleKeyDown);
-    return () => {
-      inputRef.current?.removeEventListener('keydown', handleKeyDown);
-    };
+    const input = inputRef.current;
+    if (input) {
+      input.addEventListener('keydown', handleKeyDown);
+      return () => {
+        input.removeEventListener('keydown', handleKeyDown);
+      };
+    }
   }, []);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -112,24 +90,37 @@ const AddressAutocomplete = ({
     setError(null);
   };
 
+  const displayError = error || scriptError || apiKeyError;
+  const isLoading = !isLoaded && !displayError;
+
   return (
-    <div className="relative w-full">
-      <Input
-        ref={inputRef}
-        type="text"
-        value={value}
-        onChange={handleInputChange}
-        className={`${className} w-full ${error ? 'border-red-500' : ''}`}
-        disabled={disabled}
-        placeholder={placeholder}
-        aria-invalid={error ? "true" : "false"}
-        aria-describedby={error ? "address-error" : undefined}
-        {...props}
-      />
-      {error && (
-        <p id="address-error" className="text-sm text-red-500 mt-1">
-          {error}
-        </p>
+    <div className="relative w-full space-y-2">
+      <div className="relative">
+        <Input
+          ref={inputRef}
+          type="text"
+          value={value}
+          onChange={handleInputChange}
+          className={`${className} w-full ${displayError ? 'border-red-500' : ''}`}
+          disabled={disabled || isLoading}
+          placeholder={placeholder}
+          aria-invalid={displayError ? "true" : "false"}
+          aria-describedby={displayError ? "address-error" : undefined}
+          {...props}
+        />
+        {isLoading && (
+          <div className="absolute right-3 top-1/2 -translate-y-1/2">
+            <Loader2 className="h-4 w-4 animate-spin text-gray-400" />
+          </div>
+        )}
+      </div>
+      
+      {displayError && (
+        <Alert variant="destructive">
+          <AlertDescription id="address-error">
+            {displayError}
+          </AlertDescription>
+        </Alert>
       )}
     </div>
   );
