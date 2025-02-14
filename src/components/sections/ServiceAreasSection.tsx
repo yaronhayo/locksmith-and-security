@@ -8,10 +8,12 @@ import EmergencyCallout from './service-areas/EmergencyCallout';
 import { MapMarker, ServiceAreaLocation } from '@/types/service-area';
 import { useLocations } from '@/hooks/useLocations';
 import LoadingSpinner from '../LoadingSpinner';
+import { useMapConfig } from '@/hooks/useMap';
 
 const ServiceAreasSection = () => {
   const [hoveredArea, setHoveredArea] = useState<string | null>(null);
-  const { data: locations, isLoading, error } = useLocations();
+  const { data: locations, isLoading: locationsLoading, error: locationsError } = useLocations();
+  const { apiKey, loadError: mapError, isLoading: mapLoading } = useMapConfig();
   
   // Map locations to markers format with required title
   const markers: MapMarker[] = locations?.map(area => ({
@@ -20,6 +22,9 @@ const ServiceAreasSection = () => {
     title: area.name,
     slug: area.slug
   })) || [];
+
+  const isLoading = locationsLoading || mapLoading;
+  const error = locationsError || mapError;
 
   if (isLoading) {
     return (
@@ -68,12 +73,18 @@ const ServiceAreasSection = () => {
             transition={{ duration: 0.5 }}
             className="bg-white rounded-xl shadow-lg overflow-hidden"
           >
-            <Map 
-              markers={markers} 
-              hoveredMarker={hoveredArea}
-              zoom={11}
-              center={{ lat: 40.7795, lng: -74.0324 }}
-            />
+            {apiKey ? (
+              <Map 
+                markers={markers} 
+                hoveredMarker={hoveredArea}
+                zoom={11}
+                center={{ lat: 40.7795, lng: -74.0324 }}
+              />
+            ) : (
+              <div className="flex justify-center items-center h-[400px]">
+                <LoadingSpinner />
+              </div>
+            )}
           </motion.div>
         </div>
 
