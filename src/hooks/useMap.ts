@@ -31,7 +31,7 @@ const fetchMapApiKey = async () => {
     throw new Error('Google Maps API key not found in settings');
   }
 
-  console.log('API key fetched successfully:', data.value ? 'Key exists' : 'No key');
+  console.log('API key fetched successfully');
   return data.value;
 };
 
@@ -59,18 +59,6 @@ export const useMapConfig = () => {
   const isRetrying = isLoading && error !== null;
   const retryCount = error ? Math.min(MAX_RETRIES, error instanceof Error ? 1 : 0) : 0;
 
-  useEffect(() => {
-    if (isLoading) {
-      console.log('Loading API key...');
-    }
-    if (apiKey) {
-      console.log('API key loaded successfully');
-    }
-    if (error) {
-      console.error('Error loading API key:', error);
-    }
-  }, [isLoading, apiKey, error]);
-
   return {
     apiKey,
     loadError: isError ? error?.message : null,
@@ -83,8 +71,7 @@ export const useMapConfig = () => {
 export const useMapScript = (apiKey: string) => {
   const [scriptState, setScriptState] = useState({
     isLoaded: false,
-    loadError: null as string | null,
-    placesInitialized: false
+    loadError: null as string | null
   });
 
   useEffect(() => {
@@ -97,38 +84,32 @@ export const useMapScript = (apiKey: string) => {
       return;
     }
 
-    console.log('Initializing Google Maps script with API key');
+    console.log('Initializing Google Maps script');
     
-    const existingScript = document.querySelector(`script[src*="maps.googleapis.com"]`);
-    if (existingScript) {
-      console.log('Removing existing Google Maps script');
-      existingScript.remove();
-    }
+    // Remove any existing Google Maps scripts
+    const existingScripts = document.querySelectorAll('script[src*="maps.googleapis.com"]');
+    existingScripts.forEach(script => script.remove());
 
     const script = document.createElement('script');
-    script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places`;
+    script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places&loading=async`;
     script.async = true;
     script.defer = true;
 
     const handleLoad = () => {
       console.log('Google Maps script loaded successfully');
-      setScriptState(prev => ({
-        ...prev,
+      setScriptState({
         isLoaded: true,
-        loadError: null,
-        placesInitialized: !!window.google?.maps?.places
-      }));
+        loadError: null
+      });
     };
 
     const handleError = () => {
       const error = 'Failed to load Google Maps script';
       console.error(error);
-      setScriptState(prev => ({
-        ...prev,
+      setScriptState({
         isLoaded: false,
-        loadError: error,
-        placesInitialized: false
-      }));
+        loadError: error
+      });
     };
 
     script.addEventListener('load', handleLoad);
