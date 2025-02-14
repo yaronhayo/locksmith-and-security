@@ -13,7 +13,7 @@ import { useMapConfig } from '@/hooks/useMap';
 const ServiceAreasSection = () => {
   const [hoveredArea, setHoveredArea] = useState<string | null>(null);
   const { data: locations, isLoading: locationsLoading, error: locationsError } = useLocations();
-  const { apiKey, loadError: mapError, isLoading: mapLoading } = useMapConfig();
+  const { apiKey, loadError: mapError, isRetrying } = useMapConfig();
   
   // Map locations to markers format with required title
   const markers: MapMarker[] = locations?.map(area => ({
@@ -23,7 +23,7 @@ const ServiceAreasSection = () => {
     slug: area.slug
   })) || [];
 
-  const isLoading = locationsLoading || mapLoading;
+  const isLoading = locationsLoading || isRetrying;
   const error = locationsError || mapError;
 
   if (isLoading) {
