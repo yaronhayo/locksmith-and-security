@@ -27,23 +27,24 @@ const Map = ({
   onClick,
 }: MapProps) => {
   const { apiKey, loadError, isRetrying, retryCount, fetchApiKey } = useMapConfig();
-  const { isLoaded, loadError: scriptError } = useMapScript(apiKey || '');
+  const { isLoaded } = useMapScript(apiKey || '');
 
   // Memoize the center to prevent unnecessary re-renders
   const mapCenter = useMemo(() => center, [center.lat, center.lng]);
 
-  // Show loading state while API key is being fetched or script is loading
-  if (!apiKey || isRetrying) {
-    console.log('Loading: Waiting for API key...', { apiKey, isRetrying });
-    return <MapLoader />;
-  }
+  // Memoize LoadScript props
+  const loadScriptProps = useMemo(() => ({
+    googleMapsApiKey: apiKey || '',
+    libraries,
+    language: 'en',
+    region: 'US',
+  }), [apiKey]);
 
-  // Show error if there's an API key error or script loading error
-  if (loadError || scriptError) {
-    console.error('Map error:', loadError || scriptError);
+  if (loadError) {
+    console.error('Map load error:', loadError);
     return (
       <MapError 
-        error={loadError || scriptError} 
+        error={loadError} 
         onRetry={fetchApiKey} 
         isRetrying={isRetrying}
         retryCount={retryCount}
@@ -51,16 +52,15 @@ const Map = ({
     );
   }
 
+  if (!apiKey) {
+    console.log('Waiting for API key...');
+    return <MapLoader />;
+  }
+
   return (
     <div className="w-full h-[400px] relative rounded-lg overflow-hidden shadow-md">
       <MapErrorBoundary>
-        <LoadScript
-          googleMapsApiKey={apiKey}
-          libraries={libraries}
-          language="en"
-          region="US"
-          loadingElement={<MapLoader />}
-        >
+        <LoadScript {...loadScriptProps} loadingElement={<MapLoader />}>
           <MapContainer
             center={mapCenter}
             zoom={zoom}
