@@ -15,15 +15,6 @@ interface MapConfig {
 const fetchMapApiKey = async () => {
   console.log('Fetching Google Maps API key from settings table');
   
-  // First, log the settings table content for debugging
-  const { data: allSettings, error: debugError } = await supabase
-    .from('settings')
-    .select('*');
-    
-  console.log('All settings:', allSettings);
-  if (debugError) console.error('Debug query error:', debugError);
-
-  // Now fetch the specific key
   const { data, error } = await supabase
     .from('settings')
     .select('value')
@@ -40,7 +31,7 @@ const fetchMapApiKey = async () => {
     throw new Error('Google Maps API key not found in settings');
   }
 
-  console.log('Successfully fetched API key');
+  console.log('API key fetched successfully:', data.value ? 'Key exists' : 'No key');
   return data.value;
 };
 
@@ -68,7 +59,6 @@ export const useMapConfig = () => {
   const isRetrying = isLoading && error !== null;
   const retryCount = error ? Math.min(MAX_RETRIES, error instanceof Error ? 1 : 0) : 0;
 
-  // Add debug logging
   useEffect(() => {
     if (isLoading) {
       console.log('Loading API key...');
@@ -99,6 +89,7 @@ export const useMapScript = (apiKey: string) => {
 
   useEffect(() => {
     if (!apiKey) {
+      console.error('No API key provided to useMapScript');
       setScriptState(prev => ({
         ...prev,
         loadError: 'No API key available'
@@ -106,12 +97,11 @@ export const useMapScript = (apiKey: string) => {
       return;
     }
 
-    console.log('Initializing Google Maps script');
+    console.log('Initializing Google Maps script with API key');
     
-    // Check if script is already loaded
     const existingScript = document.querySelector(`script[src*="maps.googleapis.com"]`);
     if (existingScript) {
-      console.log('Google Maps script already exists, removing');
+      console.log('Removing existing Google Maps script');
       existingScript.remove();
     }
 
