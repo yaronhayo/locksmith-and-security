@@ -71,7 +71,8 @@ export const useMapConfig = () => {
 export const useMapScript = (apiKey: string) => {
   const [scriptState, setScriptState] = useState({
     isLoaded: false,
-    loadError: null as string | null
+    loadError: null as string | null,
+    placesInitialized: false
   });
 
   useEffect(() => {
@@ -97,9 +98,14 @@ export const useMapScript = (apiKey: string) => {
 
     const handleLoad = () => {
       console.log('Google Maps script loaded successfully');
+      const placesInitialized = typeof window.google !== 'undefined' && 
+                               typeof window.google.maps !== 'undefined' && 
+                               typeof window.google.maps.places !== 'undefined';
+      
       setScriptState({
         isLoaded: true,
-        loadError: null
+        loadError: null,
+        placesInitialized
       });
     };
 
@@ -108,7 +114,8 @@ export const useMapScript = (apiKey: string) => {
       console.error(error);
       setScriptState({
         isLoaded: false,
-        loadError: error
+        loadError: error,
+        placesInitialized: false
       });
     };
 
