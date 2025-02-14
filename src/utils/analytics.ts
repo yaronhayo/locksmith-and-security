@@ -1,56 +1,50 @@
 
 export const checkAnalytics = () => {
-  // Check if tracking scripts are loaded
-  const analyticsState = {
-    gtmAvailable: typeof window.dataLayer !== 'undefined',
-    gaAvailable: typeof window.gtag !== 'undefined',
-    clarityAvailable: typeof window.clarity !== 'undefined'
+  // Initialize dataLayer
+  window.dataLayer = window.dataLayer || [];
+
+  // Track page view
+  const trackPageView = () => {
+    if (window.dataLayer) {
+      window.dataLayer.push({
+        event: 'page_view',
+        page: {
+          path: window.location.pathname,
+          title: document.title
+        }
+      });
+      console.log('Page view tracked:', window.location.pathname);
+    }
   };
 
-  console.log('Analytics and tracking check:', analyticsState);
+  // Initial page view
+  trackPageView();
 
-  // If GA script is not loaded, load it first
-  if (!document.getElementById('ga-script')) {
-    console.log('Loading Google Analytics script...');
-    const script = document.createElement('script');
-    script.id = 'ga-script';
-    script.async = true;
-    script.src = 'https://www.googletagmanager.com/gtag/js?id=G-ZE9WV5PLTD';
-    document.head.appendChild(script);
+  // Track subsequent navigation
+  const handleRouteChange = () => {
+    trackPageView();
+  };
 
-    script.onload = () => {
-      console.log('Google Analytics script loaded, initializing...');
-      // Initialize GA after script loads
-      window.dataLayer = window.dataLayer || [];
-      window.gtag = function(){window.dataLayer.push(arguments);};
-      window.gtag('js', new Date());
-      window.gtag('config', 'G-ZE9WV5PLTD', {
-        send_page_view: true,
-        page_path: window.location.pathname
+  // Listen for route changes
+  window.addEventListener('popstate', handleRouteChange);
+
+  // Track errors
+  window.addEventListener('error', (event) => {
+    if (window.dataLayer) {
+      window.dataLayer.push({
+        event: 'javascript_error',
+        error_message: event.message,
+        error_url: event.filename,
+        error_line: event.lineno,
+        error_column: event.colno
       });
+      console.log('Error tracked:', event.message);
+    }
+  });
 
-      // Send a test event
-      window.gtag('event', 'analytics_check', {
-        event_category: 'system',
-        event_label: 'Analytics Verification',
-        value: 1
-      });
-      console.log('Test event sent to Google Analytics');
-    };
-  } else if (!analyticsState.gaAvailable) {
-    console.warn('Google Analytics script present but not initialized, attempting to reinitialize...');
-    
-    // Reinitialize GA
-    window.dataLayer = window.dataLayer || [];
-    window.gtag = function(){window.dataLayer.push(arguments);};
-    window.gtag('js', new Date());
-    window.gtag('config', 'G-ZE9WV5PLTD', {
-      send_page_view: true,
-      page_path: window.location.pathname
-    });
-  }
-
-  return analyticsState;
+  return () => {
+    window.removeEventListener('popstate', handleRouteChange);
+  };
 };
 
 // Initialize analytics check on page load
@@ -59,6 +53,3 @@ if (typeof window !== 'undefined') {
     checkAnalytics();
   });
 }
-
-// Since these are already declared in vite-env.d.ts, we don't need to redeclare them here
-// This fixes the "All declarations must have identical modifiers" error
