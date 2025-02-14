@@ -122,21 +122,23 @@ export const useMapScript = (apiKey: string) => {
 
     const handleLoad = () => {
       console.log('Google Maps script loaded successfully');
-      setScriptState({
+      setScriptState(prev => ({
+        ...prev,
         isLoaded: true,
         loadError: null,
         placesInitialized: !!window.google?.maps?.places
-      });
+      }));
     };
 
     const handleError = () => {
       const error = 'Failed to load Google Maps script';
       console.error(error);
-      setScriptState({
+      setScriptState(prev => ({
+        ...prev,
         isLoaded: false,
         loadError: error,
         placesInitialized: false
-      });
+      }));
     };
 
     script.addEventListener('load', handleLoad);
