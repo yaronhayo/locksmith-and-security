@@ -22,50 +22,62 @@ const AddressAutocomplete = ({
   const inputRef = useRef<HTMLInputElement>(null);
   const autocompleteRef = useRef<google.maps.places.Autocomplete | null>(null);
   const { apiKey, loadError: apiKeyError } = useMapConfig();
-  const { isLoaded, loadError: scriptError, placesInitialized } = useMapScript(apiKey);
+  const { isLoaded, loadError: scriptError, placesInitialized } = useMapScript(apiKey || '');
   const [error, setError] = useState<string | null>(null);
 
   // Initialize autocomplete once script is loaded
   useEffect(() => {
-    if (!inputRef.current || !isLoaded || !placesInitialized) return;
+    let placeChangedListener: google.maps.MapsEventListener | null = null;
 
-    console.log('Initializing Places Autocomplete');
-    try {
-      if (autocompleteRef.current) {
-        google.maps.event.clearInstanceListeners(autocompleteRef.current);
-      }
+    const initializeAutocomplete = () => {
+      if (!inputRef.current || !isLoaded || !placesInitialized) return;
 
-      autocompleteRef.current = new window.google.maps.places.Autocomplete(
-        inputRef.current,
-        {
-          componentRestrictions: { country: "us" },
-          fields: ["address_components", "formatted_address", "geometry", "place_id"],
-          types: ["address"]
-        }
-      );
-
-      const placeChangedListener = autocompleteRef.current.addListener(
-        "place_changed",
-        () => {
-          const place = autocompleteRef.current?.getPlace();
-          if (place?.formatted_address) {
-            onChange(place.formatted_address);
-          }
-        }
-      );
-
-      return () => {
-        if (placeChangedListener) {
-          google.maps.event.removeListener(placeChangedListener);
-        }
+      console.log('Initializing Places Autocomplete');
+      try {
+        // Clean up existing instance if it exists
         if (autocompleteRef.current) {
           google.maps.event.clearInstanceListeners(autocompleteRef.current);
+          autocompleteRef.current = null;
         }
-      };
-    } catch (err) {
-      console.error('Error initializing autocomplete:', err);
-      setError(err instanceof Error ? err.message : 'Failed to initialize address autocomplete');
-    }
+
+        // Create new instance
+        autocompleteRef.current = new window.google.maps.places.Autocomplete(
+          inputRef.current,
+          {
+            componentRestrictions: { country: "us" },
+            fields: ["address_components", "formatted_address", "geometry", "place_id"],
+            types: ["address"]
+          }
+        );
+
+        // Add place changed listener
+        placeChangedListener = autocompleteRef.current.addListener(
+          "place_changed",
+          () => {
+            const place = autocompleteRef.current?.getPlace();
+            if (place?.formatted_address) {
+              onChange(place.formatted_address);
+            }
+          }
+        );
+      } catch (err) {
+        console.error('Error initializing autocomplete:', err);
+        setError(err instanceof Error ? err.message : 'Failed to initialize address autocomplete');
+      }
+    };
+
+    initializeAutocomplete();
+
+    // Cleanup function
+    return () => {
+      if (placeChangedListener) {
+        placeChangedListener.remove();
+      }
+      if (autocompleteRef.current) {
+        google.maps.event.clearInstanceListeners(autocompleteRef.current);
+        autocompleteRef.current = null;
+      }
+    };
   }, [isLoaded, placesInitialized, onChange]);
 
   // Prevent form submission on Enter key
