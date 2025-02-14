@@ -13,7 +13,17 @@ interface MapConfig {
 }
 
 const fetchMapApiKey = async () => {
-  console.log('Fetching Google Maps API key');
+  console.log('Fetching Google Maps API key from settings table');
+  
+  // First, log the settings table content for debugging
+  const { data: allSettings, error: debugError } = await supabase
+    .from('settings')
+    .select('*');
+    
+  console.log('All settings:', allSettings);
+  if (debugError) console.error('Debug query error:', debugError);
+
+  // Now fetch the specific key
   const { data, error } = await supabase
     .from('settings')
     .select('value')
@@ -26,7 +36,7 @@ const fetchMapApiKey = async () => {
   }
 
   if (!data?.value) {
-    console.error('No API key found in settings');
+    console.error('No API key found in settings table');
     throw new Error('Google Maps API key not found in settings');
   }
 
@@ -57,6 +67,19 @@ export const useMapConfig = () => {
 
   const isRetrying = isLoading && error !== null;
   const retryCount = error ? Math.min(MAX_RETRIES, error instanceof Error ? 1 : 0) : 0;
+
+  // Add debug logging
+  useEffect(() => {
+    if (isLoading) {
+      console.log('Loading API key...');
+    }
+    if (apiKey) {
+      console.log('API key loaded successfully');
+    }
+    if (error) {
+      console.error('Error loading API key:', error);
+    }
+  }, [isLoading, apiKey, error]);
 
   return {
     apiKey,
