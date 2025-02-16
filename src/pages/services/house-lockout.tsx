@@ -1,75 +1,41 @@
-import PageLayout from "@/components/layouts/PageLayout";
-import HouseLockoutHero from "@/components/sections/HouseLockoutHero";
-import LockoutServices from "@/components/sections/LockoutServices";
-import WhyChooseUs from "@/components/sections/WhyChooseUs";
-import ServiceDescription from "@/components/services/house-lockout/ServiceDescription";
-import RealWorldExamples from "@/components/services/house-lockout/RealWorldExamples";
-import EmergencyCallout from "@/components/services/house-lockout/EmergencyCallout";
-import FAQSection from "@/components/sections/FAQSection";
-import { Lock } from "lucide-react";
 
-const schema = {
-  "@context": "https://schema.org",
-  "@type": "Service",
-  "name": "24/7 Emergency House Lockout Service in North Bergen",
-  "description": "Professional residential lockout services available 24/7 in North Bergen and surrounding areas. Fast response times and licensed technicians.",
-  "provider": {
-    "@type": "LocalBusiness",
-    "name": "Locksmith & Security LLC",
-    "image": "/og-image.png",
-    "telephone": "+12017482070",
-    "address": {
-      "@type": "PostalAddress",
-      "addressLocality": "North Bergen",
-      "addressRegion": "NJ",
-      "postalCode": "07047",
-      "addressCountry": "US"
-    },
-    "geo": {
-      "@type": "GeoCoordinates",
-      "latitude": "40.7995",
-      "longitude": "-74.0246"
-    },
-    "areaServed": {
-      "@type": "GeoCircle",
-      "geoMidpoint": {
-        "@type": "GeoCoordinates",
-        "latitude": "40.7995",
-        "longitude": "-74.0246"
-      },
-      "geoRadius": "30mi"
-    }
-  },
-  "serviceArea": {
-    "@type": "GeoCircle",
-    "geoMidpoint": {
-      "@type": "GeoCoordinates",
-      "latitude": "40.7995",
-      "longitude": "-74.0246"
-    },
-    "geoRadius": "30mi"
-  }
-};
+import ServiceLayout from "@/components/layouts/ServiceLayout";
+import EmergencyCallout from "@/components/services/house-lockout/EmergencyCallout";
+import RealWorldExamples from "@/components/services/house-lockout/RealWorldExamples";
+import ServiceDescription from "@/components/services/house-lockout/ServiceDescription";
+import ServiceTrustIndicators from "@/components/services/shared/ServiceTrustIndicators";
+import ServiceSchema from "@/components/services/shared/ServiceSchema";
+import ReviewsSection from "@/components/sections/ReviewsSection";
+import { Lock } from "lucide-react";
 
 const HouseLockoutPage = () => {
   return (
-    <PageLayout
-      title="24/7 House Lockout Service North Bergen | Emergency Residential Locksmith"
-      description="Professional house lockout services in North Bergen. Available 24/7 with 15-30 minute response time. Licensed and insured residential locksmith specialists ready to help."
-      schema={schema}
-    >
-      <HouseLockoutHero />
-      <LockoutServices />
-      <WhyChooseUs />
-      <div className="container mx-auto px-4 py-12">
-        <div className="max-w-4xl mx-auto">
-          <ServiceDescription />
-          <RealWorldExamples />
-          <EmergencyCallout />
-        </div>
-      </div>
-      <FAQSection />
-    </PageLayout>
+    <>
+      <ServiceSchema
+        name="House Lockout Service"
+        description="Professional house lockout service available 24/7. Our expert locksmiths provide fast, reliable assistance to help you regain access to your home."
+        serviceType="Residential Locksmith"
+        price={{ amount: 75, currency: "USD" }}
+        estimatedTime="15-30 minutes"
+      />
+      <ServiceLayout
+        title="House Lockout Service"
+        description="Locked out of your house? Our professional locksmiths provide fast, reliable service 24/7 to help you regain access to your home."
+        icon={Lock}
+        service="house-lockout"
+        callToAction="Get Back Inside Now"
+      >
+        <ServiceTrustIndicators
+          responseTime="15-30 Min"
+          rating="5.0"
+          certifications={["Licensed", "Insured", "Bonded"]}
+        />
+        <EmergencyCallout />
+        <ServiceDescription />
+        <RealWorldExamples />
+        <ReviewsSection location="House Lockout" />
+      </ServiceLayout>
+    </>
   );
 };
 
