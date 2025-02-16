@@ -626,8 +626,8 @@ export const reviews = [
   {
     name: "Walter Thompson",
     rating: 5,
-    text: "Great experience with their lock rekey service. Very thorough and professional.",
-    service: "Lock Rekey",
+    text: "Great experience with their car key programming service. Saved me a trip to the dealer.",
+    service: "Car Key Programming",
     location: "Guttenberg, NJ",
     date: "8 months ago"
   },
