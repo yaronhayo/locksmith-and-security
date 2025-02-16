@@ -1,11 +1,10 @@
 
-import { Suspense, lazy, useEffect } from 'react';
+import { Suspense, lazy } from 'react';
 import PageLayout from "@/components/layouts/PageLayout";
 import HeroSection from "@/components/sections/HeroSection";
 import LoadingSpinner from "@/components/LoadingSpinner";
 import { homePageSchema } from "@/schemas/homePageSchema";
 import { motion, AnimatePresence } from "framer-motion";
-import { checkAnalytics } from "@/utils/analytics";
 
 // Lazy load sections
 const TrustBadgesSection = lazy(() => import("@/components/sections/TrustBadgesSection"));
@@ -49,10 +48,6 @@ const enhancedSchema = {
 };
 
 const Index = () => {
-  useEffect(() => {
-    checkAnalytics();
-  }, []);
-
   return (
     <PageLayout
       title="24/7 Emergency Locksmith Services in North Bergen, NJ | Licensed & Insured"
