@@ -28,13 +28,23 @@ const ReviewsList = ({ reviews, isLoading }: ReviewsListProps) => {
       setCurrent(api.selectedScrollSnap());
     });
 
-    // Auto-rotation
-    const autoRotate = setInterval(() => {
-      api.scrollNext();
-    }, 1500);
+    // Optimized auto-rotation with requestAnimationFrame
+    let rafId: number;
+    let lastRotation = performance.now();
+    const rotationInterval = 3000; // Increased for better UX
+
+    const rotate = (timestamp: number) => {
+      if (timestamp - lastRotation >= rotationInterval) {
+        api.scrollNext();
+        lastRotation = timestamp;
+      }
+      rafId = requestAnimationFrame(rotate);
+    };
+
+    rafId = requestAnimationFrame(rotate);
 
     return () => {
-      clearInterval(autoRotate);
+      cancelAnimationFrame(rafId);
       api.off("select", () => {});
     };
   }, [api]);
