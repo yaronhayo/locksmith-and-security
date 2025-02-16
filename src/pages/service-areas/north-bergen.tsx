@@ -1,3 +1,4 @@
+
 import ServiceAreaLayout from "@/components/service-areas/shared/ServiceAreaLayout";
 
 const schema = {
