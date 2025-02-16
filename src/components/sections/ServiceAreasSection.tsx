@@ -1,11 +1,10 @@
 
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import Map from '../Map';
+import GoogleMap from '../map/GoogleMap';
 import AreasList from './service-areas/AreasList';
 import ServiceAreaFeatures from '../service-areas/shared/ServiceAreaFeatures';
 import EmergencyCallout from './service-areas/EmergencyCallout';
-import { MapMarker, ServiceAreaLocation } from '@/types/service-area';
 import { useLocations } from '@/hooks/useLocations';
 import LoadingSpinner from '../LoadingSpinner';
 
@@ -13,14 +12,6 @@ const ServiceAreasSection = () => {
   const [hoveredArea, setHoveredArea] = useState<string | null>(null);
   const { data: locations, isLoading, error } = useLocations();
   
-  // Map locations to markers format with required title
-  const markers: MapMarker[] = locations?.map(area => ({
-    lat: area.lat,
-    lng: area.lng,
-    title: area.name,
-    slug: area.slug
-  })) || [];
-
   if (isLoading) {
     return (
       <div className="flex justify-center items-center min-h-[400px]">
@@ -68,11 +59,10 @@ const ServiceAreasSection = () => {
             transition={{ duration: 0.5 }}
             className="bg-white rounded-xl shadow-lg overflow-hidden"
           >
-            <Map 
-              markers={markers} 
-              hoveredMarker={hoveredArea}
+            <GoogleMap 
+              highlightedMarker={hoveredArea}
+              showAllMarkers={true}
               zoom={11}
-              center={{ lat: 40.7795, lng: -74.0324 }}
             />
           </motion.div>
         </div>

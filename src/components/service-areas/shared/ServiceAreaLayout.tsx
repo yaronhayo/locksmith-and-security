@@ -1,14 +1,13 @@
 
-import { ReactNode } from "react";
+import { ReactNode, useMemo } from "react";
 import PageLayout from "@/components/layouts/PageLayout";
 import ServiceAreaHero from "./ServiceAreaHero";
 import ServicesList from "./ServicesList";
 import ReviewsSection from "@/components/sections/ReviewsSection";
 import { Button } from "@/components/ui/button";
 import { MapPin, Phone, Shield } from "lucide-react";
-import Map from "@/components/Map";
-import { serviceAreaLocations } from "../constants";
-import { MapMarker } from "@/types/service-area";
+import GoogleMap from "@/components/map/GoogleMap";
+import { useLocations } from "@/hooks/useLocations";
 
 interface ServiceAreaLayoutProps {
   title: string;
@@ -25,17 +24,17 @@ const ServiceAreaLayout = ({
   schema,
   children 
 }: ServiceAreaLayoutProps) => {
-  // Find the current area's coordinates
-  const currentArea = serviceAreaLocations.find(area => area.name === areaName);
-  const center = currentArea ? { lat: currentArea.lat, lng: currentArea.lng } : undefined;
+  const { data: locations } = useLocations();
   
-  // Create markers for all service areas, ensuring title is provided
-  const markers: MapMarker[] = serviceAreaLocations.map(area => ({
-    lat: area.lat,
-    lng: area.lng,
-    title: area.name, // name is used as the required title
-    slug: area.slug
-  }));
+  // Find the current area's coordinates
+  const currentArea = useMemo(() => 
+    locations?.find(area => area.name === areaName),
+    [locations, areaName]
+  );
+
+  const center = currentArea 
+    ? { lat: currentArea.lat, lng: currentArea.lng }
+    : undefined;
 
   return (
     <PageLayout
@@ -52,11 +51,11 @@ const ServiceAreaLayout = ({
 
         <div className="my-16">
           <div className="bg-white rounded-xl shadow-lg overflow-hidden">
-            <Map 
-              markers={markers} 
+            <GoogleMap 
               center={center}
               zoom={13}
-              hoveredMarker={currentArea?.slug || null}
+              highlightedMarker={currentArea?.slug || null}
+              showAllMarkers={true}
             />
           </div>
         </div>
