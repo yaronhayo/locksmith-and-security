@@ -1,75 +1,41 @@
-import PageLayout from "@/components/layouts/PageLayout";
-import LockRekeyHero from "@/components/sections/LockRekeyHero";
-import LockoutServices from "@/components/sections/LockoutServices";
-import WhyChooseUs from "@/components/sections/WhyChooseUs";
-import ServiceDescription from "@/components/services/lock-rekey/ServiceDescription";
-import RealWorldExamples from "@/components/services/lock-rekey/RealWorldExamples";
-import EmergencyCallout from "@/components/services/lock-rekey/EmergencyCallout";
-import FAQSection from "@/components/sections/FAQSection";
-import { Key } from "lucide-react";
 
-const schema = {
-  "@context": "https://schema.org",
-  "@type": "Service",
-  "name": "Professional Lock Rekey Service in North Bergen",
-  "description": "Expert lock rekeying services available 24/7 in North Bergen and surrounding areas. Fast, reliable service by licensed technicians.",
-  "provider": {
-    "@type": "LocalBusiness",
-    "name": "Locksmith & Security LLC",
-    "image": "/og-image.png",
-    "telephone": "+12017482070",
-    "address": {
-      "@type": "PostalAddress",
-      "addressLocality": "North Bergen",
-      "addressRegion": "NJ",
-      "postalCode": "07047",
-      "addressCountry": "US"
-    },
-    "geo": {
-      "@type": "GeoCoordinates",
-      "latitude": "40.7995",
-      "longitude": "-74.0246"
-    },
-    "areaServed": {
-      "@type": "GeoCircle",
-      "geoMidpoint": {
-        "@type": "GeoCoordinates",
-        "latitude": "40.7995",
-        "longitude": "-74.0246"
-      },
-      "geoRadius": "30mi"
-    }
-  },
-  "serviceArea": {
-    "@type": "GeoCircle",
-    "geoMidpoint": {
-      "@type": "GeoCoordinates",
-      "latitude": "40.7995",
-      "longitude": "-74.0246"
-    },
-    "geoRadius": "30mi"
-  }
-};
+import ServiceLayout from "@/components/layouts/ServiceLayout";
+import EmergencyCallout from "@/components/services/lock-rekey/EmergencyCallout";
+import RealWorldExamples from "@/components/services/lock-rekey/RealWorldExamples";
+import ServiceDescription from "@/components/services/lock-rekey/ServiceDescription";
+import ServiceTrustIndicators from "@/components/services/shared/ServiceTrustIndicators";
+import ServiceSchema from "@/components/services/shared/ServiceSchema";
+import ReviewsSection from "@/components/sections/ReviewsSection";
+import { Key } from "lucide-react";
 
 const LockRekeyPage = () => {
   return (
-    <PageLayout
-      title="Professional Lock Rekey Service North Bergen | Expert Locksmith"
-      description="Expert lock rekeying services in North Bergen. Available 24/7 with fast response time. Licensed and insured locksmith specialists ready to help."
-      schema={schema}
-    >
-      <LockRekeyHero />
-      <LockoutServices />
-      <WhyChooseUs />
-      <div className="container mx-auto px-4 py-12">
-        <div className="max-w-4xl mx-auto">
-          <ServiceDescription />
-          <RealWorldExamples />
-          <EmergencyCallout />
-        </div>
-      </div>
-      <FAQSection />
-    </PageLayout>
+    <>
+      <ServiceSchema
+        name="Lock Rekey Service"
+        description="Professional lock rekeying service. Our expert locksmiths rekey your existing locks to work with new keys, maintaining security without full replacement."
+        serviceType="Lock Modification"
+        price={{ amount: 65, currency: "USD" }}
+        estimatedTime="20-30 minutes"
+      />
+      <ServiceLayout
+        title="Lock Rekey Service"
+        description="Want to keep your locks but need new keys? Our expert locksmiths rekey your existing locks to work with new keys, perfect for rental properties or after key loss."
+        icon={Key}
+        service="lock-rekey"
+        callToAction="Rekey Your Locks"
+      >
+        <ServiceTrustIndicators
+          responseTime="20-30 Min"
+          rating="5.0"
+          certifications={["Licensed", "Insured", "Key Systems Expert"]}
+        />
+        <EmergencyCallout />
+        <ServiceDescription />
+        <RealWorldExamples />
+        <ReviewsSection location="Lock Rekey" />
+      </ServiceLayout>
+    </>
   );
 };
 
