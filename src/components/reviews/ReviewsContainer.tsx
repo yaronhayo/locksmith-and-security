@@ -6,12 +6,12 @@ import { ErrorBoundary } from "react-error-boundary";
 import ErrorFallback from "@/components/ErrorFallback";
 import { createReviewsSchema } from "@/schemas/reviewsSchema";
 import { SchemaScripts } from "@/components/meta/SchemaScripts";
-import type { ServiceCategory } from "@/types/reviews";
+import type { ServiceCategory, Review } from "@/types/reviews";
 
 interface ReviewsContainerProps {
   location?: string;
   category?: ServiceCategory;
-  displayedReviews: any[];
+  displayedReviews: Review[];
   isLoading: boolean;
   totalReviews: number;
 }

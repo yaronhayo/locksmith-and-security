@@ -9,9 +9,11 @@ export const useReviews = (location?: string, category?: ServiceCategory) => {
   const [page, setPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const loadingRef = useRef(null);
-  const pageSize = 6; // Reduced batch size for smoother loading
+  const pageSize = 6;
 
   const filteredReviews = useMemo(() => {
+    if (!location && !category) return reviews;
+    
     let filtered = [...reviews];
     
     if (category) {
@@ -35,24 +37,21 @@ export const useReviews = (location?: string, category?: ServiceCategory) => {
     const endIndex = startIndex + pageSize;
     const newReviews = filteredReviews.slice(startIndex, endIndex);
     
-    // Simulate network delay in development only
-    const loadDelay = process.env.NODE_ENV === 'development' ? 1000 : 0;
+    if (newReviews.length > 0) {
+      setDisplayedReviews(prev => [...prev, ...newReviews]);
+      setPage(prev => prev + 1);
+    }
+    setIsLoading(false);
     
-    setTimeout(() => {
-      if (newReviews.length > 0) {
-        setDisplayedReviews(prev => [...prev, ...newReviews]);
-        setPage(prev => prev + 1);
-      }
-      setIsLoading(false);
-      
-      // Log performance metrics
+    // Log performance metrics only in production
+    if (process.env.NODE_ENV === 'production') {
       const duration = performance.now() - startTime;
       logToService('info', 'Reviews load performance', {
         duration,
         batchSize: pageSize,
         totalLoaded: displayedReviews.length + newReviews.length
       });
-    }, loadDelay);
+    }
   }, [page, filteredReviews, isLoading, displayedReviews.length]);
 
   useEffect(() => {
