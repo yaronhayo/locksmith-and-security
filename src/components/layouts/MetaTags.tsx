@@ -3,6 +3,9 @@ import { BasicMetaTags } from "../meta/BasicMetaTags";
 import { OpenGraphTags } from "../meta/OpenGraphTags";
 import { TwitterTags } from "../meta/TwitterTags";
 import { SchemaScripts } from "../meta/SchemaScripts";
+import { useSettings } from "@/hooks/useSettings";
+import { useEffect } from "react";
+import { useToast } from "@/hooks/use-toast";
 
 interface MetaTagsProps {
   title: string;
@@ -35,9 +38,40 @@ const MetaTags = ({
   businessSchema = true,
   serviceSchema = false,
 }: MetaTagsProps) => {
-  const baseUrl = "https://247locksmithandsecurity.com";
+  const { data: settings, error } = useSettings();
+  const { toast } = useToast();
+
+  useEffect(() => {
+    if (error) {
+      console.error('Error loading site settings:', error);
+      toast({
+        title: "Warning",
+        description: "Some site information might not be up to date.",
+        variant: "destructive",
+      });
+    }
+  }, [error, toast]);
+
+  if (!settings) {
+    // Use hardcoded defaults if settings are not loaded
+    settings = {
+      base_url: "https://247locksmithandsecurity.com",
+      company_name: "Locksmith & Security LLC",
+      company_phone: "+12017482070",
+      company_address: "123 Main Street",
+      company_city: "North Bergen",
+      company_state: "NJ",
+      company_zip: "07047",
+      company_lat: "40.7795",
+      company_lng: "-74.0324",
+      default_meta_title: "24/7 Emergency Locksmith Services in North Bergen, NJ | Licensed & Insured",
+      default_meta_description: "Professional locksmith services in North Bergen. Available 24/7 for residential, commercial, and automotive locksmith needs."
+    };
+  }
+
+  const baseUrl = settings.base_url;
   const fullCanonicalUrl = canonicalUrl ? `${baseUrl}${canonicalUrl}` : baseUrl;
-  const fullTitle = `${title} | Locksmith & Security LLC - Professional Locksmith Services in North Bergen, NJ`;
+  const fullTitle = `${title} | ${settings.company_name} - Professional Locksmith Services in ${settings.company_city}, ${settings.company_state}`;
 
   // Generate all schemas
   const schemas = [];
@@ -49,25 +83,25 @@ const MetaTags = ({
         "@context": "https://schema.org",
         "@type": "LocalBusiness",
         "@id": baseUrl,
-        "name": "Locksmith & Security LLC",
+        "name": settings.company_name,
         "image": `${baseUrl}/og-image.png`,
         "logo": `${baseUrl}/logo.png`,
         "description": description,
         "url": baseUrl,
-        "telephone": "+12017482070",
+        "telephone": settings.company_phone,
         "priceRange": "$$",
         "address": {
           "@type": "PostalAddress",
-          "streetAddress": "123 Main Street",
-          "addressLocality": "North Bergen",
-          "addressRegion": "NJ",
-          "postalCode": "07047",
+          "streetAddress": settings.company_address,
+          "addressLocality": settings.company_city,
+          "addressRegion": settings.company_state,
+          "postalCode": settings.company_zip,
           "addressCountry": "US"
         },
         "geo": {
           "@type": "GeoCoordinates",
-          "latitude": "40.7795",
-          "longitude": "-74.0324"
+          "latitude": settings.company_lat,
+          "longitude": settings.company_lng
         },
         "areaServed": [
           {
@@ -133,18 +167,18 @@ const MetaTags = ({
         "description": description,
         "provider": {
           "@type": "LocalBusiness",
-          "name": "Locksmith & Security LLC",
+          "name": settings.company_name,
           "image": `${baseUrl}/og-image.png`
         },
         "areaServed": {
           "@type": "City",
-          "name": "North Bergen",
-          "sameAs": "https://en.wikipedia.org/wiki/North_Bergen,_New_Jersey"
+          "name": settings.company_city,
+          "sameAs": `https://en.wikipedia.org/wiki/${settings.company_city},_New_Jersey`
         },
         "availableChannel": {
           "@type": "ServiceChannel",
           "serviceUrl": fullCanonicalUrl,
-          "servicePhone": "+12017482070"
+          "servicePhone": settings.company_phone
         }
       }
     });
