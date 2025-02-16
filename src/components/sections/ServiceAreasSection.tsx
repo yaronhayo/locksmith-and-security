@@ -1,7 +1,7 @@
 
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import GoogleMap from '../map/GoogleMap';
+import GoogleMap from '../GoogleMap';
 import AreasList from './service-areas/AreasList';
 import ServiceAreaFeatures from '../service-areas/shared/ServiceAreaFeatures';
 import EmergencyCallout from './service-areas/EmergencyCallout';
@@ -71,6 +71,7 @@ const ServiceAreasSection = () => {
               highlightedMarker={hoveredArea}
               showAllMarkers={true}
               zoom={11}
+              center={{ lat: 40.7795, lng: -74.0324 }}
             />
           </motion.div>
         </div>

@@ -27,7 +27,6 @@ const Map = ({
   onClick,
 }: MapProps) => {
   const { apiKey, loadError, isRetrying, retryCount, fetchApiKey } = useMapConfig();
-  const { isLoaded } = useMapScript(apiKey || '');
 
   // Memoize the center to prevent unnecessary re-renders
   const mapCenter = useMemo(() => center, [center.lat, center.lng]);
@@ -67,7 +66,6 @@ const Map = ({
             markers={markers}
             hoveredMarker={hoveredMarker}
             onClick={onClick}
-            isLoaded={isLoaded}
           />
         </LoadScript>
       </MapErrorBoundary>
