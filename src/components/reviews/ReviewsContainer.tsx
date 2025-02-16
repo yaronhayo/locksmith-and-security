@@ -1,36 +1,27 @@
+
 import { memo } from "react";
-import ReviewsList from "./ReviewsList";
+import { useReviews } from "@/components/reviews/useReviews";
 import ReviewsHeader from "./ReviewsHeader";
-import LoadingSpinner from "@/components/LoadingSpinner";
-import { Review } from "@/types/reviews";
+import ReviewsList from "./ReviewsList";
+import { ErrorBoundary } from "react-error-boundary";
+import ErrorFallback from "@/components/ErrorFallback";
 
 interface ReviewsContainerProps {
   location?: string;
-  displayedReviews: Review[];
+  displayedReviews: any[];
   isLoading: boolean;
 }
 
-const ReviewsContainer = memo(({ 
-  location, 
-  displayedReviews, 
-  isLoading 
-}: ReviewsContainerProps) => {
+const ReviewsContainer = memo(({ location, displayedReviews, isLoading }: ReviewsContainerProps) => {
   return (
-    <section 
-      className="py-20 overflow-hidden"
-      aria-label="Customer Reviews"
-    >
-      <div className="container mx-auto px-4">
-        <ReviewsHeader location={location} />
-        <ReviewsList 
-          reviews={displayedReviews} 
-          displayedReviews={displayedReviews}
-        />
-        <div className="h-10">
-          {isLoading && <LoadingSpinner />}
+    <ErrorBoundary FallbackComponent={ErrorFallback}>
+      <section className="py-20 bg-white">
+        <div className="container mx-auto px-4">
+          <ReviewsHeader location={location} />
+          <ReviewsList reviews={displayedReviews} isLoading={isLoading} />
         </div>
-      </div>
-    </section>
+      </section>
+    </ErrorBoundary>
   );
 });
 

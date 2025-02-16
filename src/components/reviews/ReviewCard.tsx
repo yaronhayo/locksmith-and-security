@@ -1,6 +1,8 @@
-import { Star, Quote } from "lucide-react";
+
+import { Star } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
-import { Review } from "@/types/reviews";
+import { motion } from "framer-motion";
+import type { Review } from "@/types/reviews";
 
 interface ReviewCardProps {
   review: Review;
@@ -8,32 +10,34 @@ interface ReviewCardProps {
 }
 
 const ReviewCard = ({ review, index }: ReviewCardProps) => {
-  const { name, rating, text, date, service, location } = review;
-  
   return (
-    <Card className="h-full hover:shadow-lg transition-shadow">
-      <CardContent className="p-6">
-        <div className="flex items-center mb-4">
-          {[...Array(rating)].map((_, i) => (
-            <Star
-              key={i}
-              className="w-5 h-5 text-secondary"
-              fill="currentColor"
-            />
-          ))}
-        </div>
-        <Quote className="w-8 h-8 text-primary/20 mb-4" />
-        <p className="text-gray-600 mb-4 line-clamp-4">{text}</p>
-        <div className="space-y-2">
-          <div className="flex justify-between items-center">
-            <p className="font-semibold">{name}</p>
-            <p className="text-sm text-gray-500">{date}</p>
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, delay: index * 0.1 }}
+    >
+      <Card className="h-full hover:shadow-lg transition-all duration-300">
+        <CardContent className="p-6">
+          <div className="flex items-center mb-4">
+            <div className="flex-1">
+              <h3 className="font-semibold text-lg">{review.name}</h3>
+              <p className="text-sm text-muted-foreground">{review.location}</p>
+            </div>
+            <div className="flex items-center">
+              <Star className="w-5 h-5 text-yellow-400 fill-current" />
+              <span className="ml-1 font-semibold">{review.rating}</span>
+            </div>
           </div>
-          <p className="text-sm text-gray-500">{service}</p>
-          <p className="text-sm text-gray-500">{location}</p>
-        </div>
-      </CardContent>
-    </Card>
+          <div className="space-y-2">
+            <p className="text-sm text-muted-foreground italic">{review.text}</p>
+            <div className="flex justify-between items-center text-xs text-muted-foreground">
+              <span>{review.service}</span>
+              <span>{review.date}</span>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    </motion.div>
   );
 };
 
