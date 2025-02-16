@@ -1,3 +1,4 @@
+
 import { memo, useEffect, useState } from 'react';
 import ReviewCard from './ReviewCard';
 import { Review } from '@/types/reviews';
@@ -13,10 +14,10 @@ import { cn } from "@/lib/utils";
 
 interface ReviewsListProps {
   reviews: Review[];
-  displayedReviews: Review[];
+  isLoading?: boolean;
 }
 
-const ReviewsList = ({ reviews, displayedReviews }: ReviewsListProps) => {
+const ReviewsList = ({ reviews, isLoading }: ReviewsListProps) => {
   const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
 
@@ -42,6 +43,16 @@ const ReviewsList = ({ reviews, displayedReviews }: ReviewsListProps) => {
     api?.scrollTo(index);
   };
 
+  if (isLoading) {
+    return (
+      <div className="w-full max-w-7xl mx-auto px-4">
+        <div className="animate-pulse space-y-4">
+          <div className="h-64 bg-gray-200 rounded-lg" />
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="w-full max-w-7xl mx-auto px-4">
       <Carousel
@@ -53,7 +64,7 @@ const ReviewsList = ({ reviews, displayedReviews }: ReviewsListProps) => {
         }}
       >
         <CarouselContent>
-          {displayedReviews.map((review, index) => (
+          {reviews.map((review, index) => (
             <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
               <ReviewCard review={review} index={index} />
             </CarouselItem>
@@ -64,7 +75,7 @@ const ReviewsList = ({ reviews, displayedReviews }: ReviewsListProps) => {
       </Carousel>
 
       <div className="flex justify-center gap-2 mt-4">
-        {displayedReviews.map((_, index) => (
+        {reviews.map((_, index) => (
           <button
             key={index}
             onClick={() => handleDotClick(index)}
