@@ -42,7 +42,7 @@ const MetaTags = ({
   title,
   description,
   canonicalUrl,
-  ogImage = "/og-image.png",
+  ogImage = "/lovable-uploads/950b5c4c-f0b8-4d22-beb0-66a7d7554476.png",
   keywords = "locksmith, security, lock services, emergency locksmith, North Bergen",
   schema,
   noindex = false,
@@ -83,7 +83,7 @@ const MetaTags = ({
         "@type": "LocalBusiness",
         "@id": baseUrl,
         "name": siteSettings.company_name,
-        "image": `${baseUrl}/og-image.png`,
+        "image": `${baseUrl}/lovable-uploads/950b5c4c-f0b8-4d22-beb0-66a7d7554476.png`,
         "logo": `${baseUrl}/logo.png`,
         "description": description,
         "url": baseUrl,
@@ -167,7 +167,7 @@ const MetaTags = ({
         "provider": {
           "@type": "LocalBusiness",
           "name": siteSettings.company_name,
-          "image": `${baseUrl}/og-image.png`
+          "image": `${baseUrl}/lovable-uploads/950b5c4c-f0b8-4d22-beb0-66a7d7554476.png`
         },
         "areaServed": {
           "@type": "City",
