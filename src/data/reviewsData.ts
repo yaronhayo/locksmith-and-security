@@ -1,4 +1,3 @@
-<lov-code>
 export const reviews = [
   {
     name: "Michael R.",
@@ -937,4 +936,11 @@ export const reviews = [
     date: "12 months ago"
   },
   {
-    name: "Julian
+    name: "Julian Davis",
+    rating: 5,
+    text: "Great experience with their commercial security. Very knowledgeable staff.",
+    service: "Commercial Security",
+    location: "Secaucus, NJ",
+    date: "12 months ago"
+  }
+] as const;

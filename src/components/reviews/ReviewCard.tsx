@@ -24,8 +24,16 @@ const ReviewCard = ({ review, index }: ReviewCardProps) => {
               <p className="text-sm text-muted-foreground">{review.location}</p>
             </div>
             <div className="flex items-center">
-              <Star className="w-5 h-5 text-yellow-400 fill-current" />
-              <span className="ml-1 font-semibold">{review.rating}</span>
+              {[...Array(5)].map((_, i) => (
+                <Star
+                  key={i}
+                  className={`w-4 h-4 ${
+                    i < review.rating 
+                      ? "text-yellow-400 fill-current" 
+                      : "text-gray-300"
+                  }`}
+                />
+              ))}
             </div>
           </div>
           <div className="space-y-2">
