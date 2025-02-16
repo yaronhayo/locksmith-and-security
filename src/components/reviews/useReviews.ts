@@ -1,19 +1,29 @@
 
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { reviews } from '@/data/reviewsData';
-import type { Review } from '@/types/reviews';
+import { reviews, getReviewsByCategory, getReviewsByLocation } from '@/data/reviewsData';
+import type { Review, ServiceCategory } from '@/types/reviews';
 import { logToService } from '@/utils/performanceMonitoring';
 
-export const useReviews = (location?: string) => {
+export const useReviews = (location?: string, category?: ServiceCategory) => {
   const [displayedReviews, setDisplayedReviews] = useState<Review[]>([]);
   const [page, setPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const loadingRef = useRef(null);
   const pageSize = 6; // Reduced batch size for smoother loading
 
-  const filteredReviews = location 
-    ? reviews.filter(review => review.location.includes(location))
-    : reviews;
+  const filteredReviews = useMemo(() => {
+    let filtered = [...reviews];
+    
+    if (category) {
+      filtered = getReviewsByCategory(category);
+    }
+    
+    if (location) {
+      filtered = filtered.filter(review => review.location.includes(location));
+    }
+    
+    return filtered;
+  }, [category, location]);
 
   const loadMoreReviews = useCallback(() => {
     if (isLoading) return;
@@ -48,7 +58,7 @@ export const useReviews = (location?: string) => {
   useEffect(() => {
     setDisplayedReviews([]);
     setPage(1);
-  }, [location]);
+  }, [location, category]);
 
   useEffect(() => {
     loadMoreReviews();
