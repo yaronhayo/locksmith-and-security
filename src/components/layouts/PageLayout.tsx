@@ -4,7 +4,6 @@ import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 import { ErrorBoundary } from "react-error-boundary";
 import ErrorFallback from "@/components/ErrorFallback";
-import { Analytics } from '@vercel/analytics/react';
 import MetaTags from "./MetaTags";
 import PageHero from "./PageHero";
 import PageLoading from "./PageLoading";
@@ -76,7 +75,6 @@ const PageLayout = ({
       >
         <div className={cn(className)}>{children}</div>
       </motion.div>
-      <Analytics />
     </ErrorBoundary>
   );
 };
