@@ -11,3 +11,4 @@ export const createFAQPageSchema = (faqs: Array<{ question: string; answer: stri
     }
   }))
 });
+

@@ -59,3 +59,4 @@ export const createServiceAreaSchema = (city: string) => ({
     ]
   }
 });
+
