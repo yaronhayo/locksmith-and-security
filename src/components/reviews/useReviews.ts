@@ -1,5 +1,5 @@
 
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useCallback, useRef, useMemo } from 'react';
 import { reviews, getReviewsByCategory, getReviewsByLocation } from '@/data/reviewsData';
 import type { Review, ServiceCategory } from '@/types/reviews';
 import { logToService } from '@/utils/performanceMonitoring';
