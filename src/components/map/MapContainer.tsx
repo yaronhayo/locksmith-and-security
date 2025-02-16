@@ -47,8 +47,6 @@ const MapContainer = ({
     }
   }, [map, center, zoom]);
 
-  console.log('MapContainer render:', { markerCount: markers.length });
-
   return (
     <GoogleMap
       mapContainerStyle={MAP_CONTAINER_STYLE}

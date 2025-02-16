@@ -1,101 +1,68 @@
-import { useEffect, useMemo, useState } from "react";
-import { GoogleMap, useLoadScript } from "@react-google-maps/api";
-import { useNavigate } from "react-router-dom";
-import MapMarkers from "./MapMarkers";
-import MapLoader from "./MapLoader";
+
+import { useMemo } from "react";
+import { LoadScript, Libraries } from "@react-google-maps/api";
+import { useMapConfig } from "@/hooks/useMap";
 import MapError from "./MapError";
-import { useSettings } from "@/hooks/useSettings";
-import { useLocations } from "@/hooks/useLocations";
-import { MapMarker } from "@/types/service-area";
+import MapLoader from "./MapLoader";
+import MapContainer from "./MapContainer";
+import { MapErrorBoundary } from "./MapErrorBoundary";
+import { MapMarker, MapProps } from "@/types/service-area";
 
-const defaultCenter = { lat: 40.7795, lng: -74.0324 }; // North Bergen coordinates
-const DEFAULT_ZOOM = 12;
+// Define libraries outside component to prevent recreation
+const libraries: Libraries = ['places'];
 
-interface MapProps {
-  center?: { lat: number; lng: number };
-  zoom?: number;
-  showAllMarkers?: boolean;
-  highlightedMarker?: string | null;
-  className?: string;
-  height?: string;
-}
-
-const GoogleMapComponent = ({
-  center = defaultCenter,
-  zoom = DEFAULT_ZOOM,
-  showAllMarkers = true,
+const GoogleMap = ({
+  markers = [],
   highlightedMarker = null,
-  className = "w-full h-[400px]",
-  height = "400px",
+  showAllMarkers = true,
+  zoom = 12,
+  center = { lat: 40.7795, lng: -74.0324 },
+  onClick
 }: MapProps) => {
-  const navigate = useNavigate();
-  const { data: settings } = useSettings();
-  const { data: locations, isLoading: locationsLoading, error: locationsError } = useLocations();
-  const [hoveredMarker, setHoveredMarker] = useState<string | null>(highlightedMarker);
+  const { apiKey, loadError, isRetrying, retryCount, fetchApiKey } = useMapConfig();
 
-  // Get Google Maps API key from settings with correct capitalization
-  const apiKey = settings?.GOOGLE_MAPS_API_KEY || '';
-
-  const { isLoaded, loadError } = useLoadScript({
-    googleMapsApiKey: apiKey,
-  });
-
-  // Convert locations to markers
-  const markers: MapMarker[] = useMemo(() => {
-    if (!locations) return [];
-    return locations.map(location => ({
-      lat: location.lat,
-      lng: location.lng,
-      title: location.name,
-      slug: location.slug
-    }));
-  }, [locations]);
-
-  // Map options
-  const options = useMemo(() => ({
-    disableDefaultUI: false,
-    zoomControl: true,
-    streetViewControl: false,
-    mapTypeControl: false,
-    fullscreenControl: false,
-    styles: [
-      {
-        featureType: "poi",
-        elementType: "labels",
-        stylers: [{ visibility: "off" }],
-      },
-    ],
-  }), []);
+  // Memoize LoadScript props
+  const loadScriptProps = useMemo(() => ({
+    googleMapsApiKey: apiKey || '',
+    libraries,
+    language: 'en',
+    region: 'US',
+  }), [apiKey]);
 
   if (loadError) {
-    console.error("Error loading Google Maps:", loadError);
-    return <MapError error="Failed to load Google Maps" onRetry={() => window.location.reload()} isRetrying={false} />;
+    console.error('Map load error:', loadError);
+    return (
+      <MapError 
+        error={loadError} 
+        onRetry={fetchApiKey} 
+        isRetrying={isRetrying}
+        retryCount={retryCount}
+      />
+    );
   }
 
-  if (!isLoaded || locationsLoading) {
+  if (!apiKey) {
+    console.log('Waiting for API key...');
     return <MapLoader />;
   }
 
-  if (locationsError) {
-    console.error("Error loading locations:", locationsError);
-    return <MapError error="Failed to load service areas" onRetry={() => window.location.reload()} isRetrying={false} />;
-  }
+  const visibleMarkers = showAllMarkers ? markers : markers.filter(m => m.slug === highlightedMarker);
 
   return (
-    <div className={`relative rounded-lg overflow-hidden ${className}`} style={{ height }}>
-      <GoogleMap
-        mapContainerClassName="w-full h-full"
-        center={center}
-        zoom={zoom}
-        options={options}
-      >
-        <MapMarkers 
-          markers={showAllMarkers ? markers : markers.filter(m => m.slug === highlightedMarker)}
-          hoveredMarker={hoveredMarker}
-        />
-      </GoogleMap>
+    <div className="w-full h-[400px] relative rounded-lg overflow-hidden shadow-md">
+      <MapErrorBoundary>
+        <LoadScript {...loadScriptProps} loadingElement={<MapLoader />}>
+          <MapContainer
+            center={center}
+            zoom={zoom}
+            markers={visibleMarkers}
+            hoveredMarker={highlightedMarker}
+            onClick={onClick}
+          />
+        </LoadScript>
+      </MapErrorBoundary>
     </div>
   );
 };
 
-export default GoogleMapComponent;
+export default GoogleMap;

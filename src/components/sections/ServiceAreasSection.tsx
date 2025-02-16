@@ -1,7 +1,7 @@
 
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import GoogleMap from '../GoogleMap';
+import GoogleMap from '../map/GoogleMap';
 import AreasList from './service-areas/AreasList';
 import ServiceAreaFeatures from '../service-areas/shared/ServiceAreaFeatures';
 import EmergencyCallout from './service-areas/EmergencyCallout';
