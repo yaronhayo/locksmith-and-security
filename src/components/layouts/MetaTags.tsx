@@ -1,5 +1,8 @@
 
-import { Helmet } from "react-helmet";
+import { BasicMetaTags } from "../meta/BasicMetaTags";
+import { OpenGraphTags } from "../meta/OpenGraphTags";
+import { TwitterTags } from "../meta/TwitterTags";
+import { SchemaScripts } from "../meta/SchemaScripts";
 
 interface MetaTagsProps {
   title: string;
@@ -36,175 +39,161 @@ const MetaTags = ({
   const fullCanonicalUrl = canonicalUrl ? `${baseUrl}${canonicalUrl}` : baseUrl;
   const fullTitle = `${title} | Locksmith & Security LLC - Professional Locksmith Services in North Bergen, NJ`;
 
-  const defaultSchema = {
-    "@context": "https://schema.org",
-    "@type": "LocalBusiness",
-    "@id": baseUrl,
-    "name": "Locksmith & Security LLC",
-    "image": `${baseUrl}/og-image.png`,
-    "logo": `${baseUrl}/logo.png`,
-    "description": description,
-    "url": baseUrl,
-    "telephone": "+12017482070",
-    "priceRange": "$$",
-    "address": {
-      "@type": "PostalAddress",
-      "streetAddress": "123 Main Street",
-      "addressLocality": "North Bergen",
-      "addressRegion": "NJ",
-      "postalCode": "07047",
-      "addressCountry": "US"
-    },
-    "geo": {
-      "@type": "GeoCoordinates",
-      "latitude": "40.7795",
-      "longitude": "-74.0324"
-    },
-    "areaServed": [
-      {
-        "@type": "City",
-        "name": "North Bergen",
-        "sameAs": "https://en.wikipedia.org/wiki/North_Bergen,_New_Jersey"
-      },
-      {
-        "@type": "City",
-        "name": "Union City",
-        "sameAs": "https://en.wikipedia.org/wiki/Union_City,_New_Jersey"
-      },
-      {
-        "@type": "City",
-        "name": "West New York",
-        "sameAs": "https://en.wikipedia.org/wiki/West_New_York,_New_Jersey"
+  // Generate all schemas
+  const schemas = [];
+
+  if (businessSchema) {
+    schemas.push({
+      type: 'LocalBusiness',
+      data: {
+        "@context": "https://schema.org",
+        "@type": "LocalBusiness",
+        "@id": baseUrl,
+        "name": "Locksmith & Security LLC",
+        "image": `${baseUrl}/og-image.png`,
+        "logo": `${baseUrl}/logo.png`,
+        "description": description,
+        "url": baseUrl,
+        "telephone": "+12017482070",
+        "priceRange": "$$",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "123 Main Street",
+          "addressLocality": "North Bergen",
+          "addressRegion": "NJ",
+          "postalCode": "07047",
+          "addressCountry": "US"
+        },
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": "40.7795",
+          "longitude": "-74.0324"
+        },
+        "areaServed": [
+          {
+            "@type": "City",
+            "name": "North Bergen",
+            "sameAs": "https://en.wikipedia.org/wiki/North_Bergen,_New_Jersey"
+          },
+          {
+            "@type": "City",
+            "name": "Union City",
+            "sameAs": "https://en.wikipedia.org/wiki/Union_City,_New_Jersey"
+          },
+          {
+            "@type": "City",
+            "name": "West New York",
+            "sameAs": "https://en.wikipedia.org/wiki/West_New_York,_New_Jersey"
+          }
+        ],
+        "openingHoursSpecification": {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": [
+            "Monday",
+            "Tuesday",
+            "Wednesday",
+            "Thursday",
+            "Friday",
+            "Saturday",
+            "Sunday"
+          ],
+          "opens": "00:00",
+          "closes": "23:59"
+        },
+        "sameAs": [
+          "https://www.facebook.com/247locksmithandsecurity",
+          "https://www.yelp.com/biz/247-locksmith-and-security-north-bergen"
+        ]
       }
-    ],
-    "openingHoursSpecification": {
-      "@type": "OpeningHoursSpecification",
-      "dayOfWeek": [
-        "Monday",
-        "Tuesday",
-        "Wednesday",
-        "Thursday",
-        "Friday",
-        "Saturday",
-        "Sunday"
-      ],
-      "opens": "00:00",
-      "closes": "23:59"
-    },
-    "sameAs": [
-      "https://www.facebook.com/247locksmithandsecurity",
-      "https://www.yelp.com/biz/247-locksmith-and-security-north-bergen"
-    ]
-  };
+    });
+  }
 
-  const servicePageSchema = serviceSchema ? {
-    "@context": "https://schema.org",
-    "@type": "Service",
-    "name": title,
-    "description": description,
-    "provider": {
-      "@type": "LocalBusiness",
-      "name": "Locksmith & Security LLC",
-      "image": `${baseUrl}/og-image.png`
-    },
-    "areaServed": {
-      "@type": "City",
-      "name": "North Bergen",
-      "sameAs": "https://en.wikipedia.org/wiki/North_Bergen,_New_Jersey"
-    },
-    "availableChannel": {
-      "@type": "ServiceChannel",
-      "serviceUrl": fullCanonicalUrl,
-      "servicePhone": "+12017482070"
+  schemas.push({
+    type: articleSchema ? 'Article' : 'WebPage',
+    data: {
+      "@context": "https://schema.org",
+      "@type": articleSchema ? "Article" : "WebPage",
+      "name": title,
+      "description": description,
+      "dateModified": modifiedDate,
+      "isPartOf": {
+        "@id": baseUrl
+      },
+      ...schema
     }
-  } : null;
+  });
 
-  const pageSchema = {
-    "@context": "https://schema.org",
-    "@type": articleSchema ? "Article" : "WebPage",
-    "name": title,
-    "description": description,
-    "dateModified": modifiedDate,
-    "isPartOf": {
-      "@id": baseUrl
-    },
-    ...schema
-  };
+  if (serviceSchema) {
+    schemas.push({
+      type: 'Service',
+      data: {
+        "@context": "https://schema.org",
+        "@type": "Service",
+        "name": title,
+        "description": description,
+        "provider": {
+          "@type": "LocalBusiness",
+          "name": "Locksmith & Security LLC",
+          "image": `${baseUrl}/og-image.png`
+        },
+        "areaServed": {
+          "@type": "City",
+          "name": "North Bergen",
+          "sameAs": "https://en.wikipedia.org/wiki/North_Bergen,_New_Jersey"
+        },
+        "availableChannel": {
+          "@type": "ServiceChannel",
+          "serviceUrl": fullCanonicalUrl,
+          "servicePhone": "+12017482070"
+        }
+      }
+    });
+  }
 
-  const breadcrumbSchema = breadcrumbs ? {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    "itemListElement": breadcrumbs.map((item, index) => ({
-      "@type": "ListItem",
-      "position": index + 1,
-      "name": item.name,
-      "item": `${baseUrl}${item.item}`
-    }))
-  } : null;
+  if (breadcrumbs) {
+    schemas.push({
+      type: 'BreadcrumbList',
+      data: {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": breadcrumbs.map((item, index) => ({
+          "@type": "ListItem",
+          "position": index + 1,
+          "name": item.name,
+          "item": `${baseUrl}${item.item}`
+        }))
+      }
+    });
+  }
 
   return (
-    <Helmet>
-      <html lang="en" />
-      <title>{fullTitle}</title>
-      <meta name="description" content={description} />
-      <meta name="keywords" content={keywords} />
-      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
-      {(noindex || nofollow) && (
-        <meta 
-          name="robots" 
-          content={`${noindex ? 'noindex' : 'index'},${nofollow ? 'nofollow' : 'follow'}`} 
-        />
-      )}
-      <link rel="canonical" href={fullCanonicalUrl} />
-      
-      {/* Open Graph Tags */}
-      <meta property="og:title" content={fullTitle} />
-      <meta property="og:description" content={description} />
-      <meta property="og:image" content={`${baseUrl}${ogImage}`} />
-      <meta property="og:url" content={fullCanonicalUrl} />
-      <meta property="og:type" content="website" />
-      <meta property="og:site_name" content="Locksmith & Security LLC" />
-      <meta property="og:locale" content="en_US" />
-      <meta property="og:updated_time" content={modifiedDate} />
-      
-      {/* Twitter Card Tags */}
-      <meta name="twitter:card" content="summary_large_image" />
-      <meta name="twitter:title" content={fullTitle} />
-      <meta name="twitter:description" content={description} />
-      <meta name="twitter:image" content={`${baseUrl}${ogImage}`} />
-      
-      {/* Additional Meta Tags */}
-      <meta name="theme-color" content="#1E3A8A" />
-      <meta name="apple-mobile-web-app-capable" content="yes" />
-      <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-      <meta name="format-detection" content="telephone=yes" />
-      <meta name="robots" content={noindex ? "noindex,nofollow" : "index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1"} />
-      <meta name="author" content="Locksmith & Security LLC" />
-      <meta name="copyright" content="© 2024 Locksmith & Security LLC. All rights reserved." />
-      <meta name="last-modified" content={modifiedDate} />
-      
-      {/* Schema.org JSON-LD */}
-      {businessSchema && (
-        <script type="application/ld+json">
-          {JSON.stringify(defaultSchema)}
-        </script>
-      )}
-      <script type="application/ld+json">
-        {JSON.stringify(pageSchema)}
-      </script>
-      {breadcrumbSchema && (
-        <script type="application/ld+json">
-          {JSON.stringify(breadcrumbSchema)}
-        </script>
-      )}
-      {servicePageSchema && (
-        <script type="application/ld+json">
-          {JSON.stringify(servicePageSchema)}
-        </script>
-      )}
-    </Helmet>
+    <>
+      <BasicMetaTags
+        title={fullTitle}
+        description={description}
+        keywords={keywords}
+        noindex={noindex}
+        nofollow={nofollow}
+        canonicalUrl={fullCanonicalUrl}
+        modifiedDate={modifiedDate}
+      />
+      <OpenGraphTags
+        title={fullTitle}
+        description={description}
+        image={ogImage}
+        url={fullCanonicalUrl}
+        modifiedDate={modifiedDate}
+        baseUrl={baseUrl}
+      />
+      <TwitterTags
+        title={fullTitle}
+        description={description}
+        image={ogImage}
+        baseUrl={baseUrl}
+      />
+      <SchemaScripts schemas={schemas} />
+    </>
   );
 };
 
 export default MetaTags;
-
