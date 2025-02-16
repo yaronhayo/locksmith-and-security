@@ -26,7 +26,6 @@ interface MapContainerProps {
   markers?: MapMarker[];
   hoveredMarker?: string | null;
   onClick?: (e: google.maps.MapMouseEvent) => void;
-  isLoaded: boolean;
 }
 
 const MapContainer = ({
@@ -35,7 +34,6 @@ const MapContainer = ({
   markers = [],
   hoveredMarker,
   onClick,
-  isLoaded
 }: MapContainerProps) => {
   const { map, handleMapLoad } = useMapInstance({ center, zoom });
 
@@ -49,7 +47,7 @@ const MapContainer = ({
     }
   }, [map, center, zoom]);
 
-  console.log('MapContainer render:', { isLoaded, markerCount: markers.length });
+  console.log('MapContainer render:', { markerCount: markers.length });
 
   return (
     <GoogleMap
@@ -60,7 +58,7 @@ const MapContainer = ({
       onClick={onClick}
       onLoad={handleMapLoad}
     >
-      {isLoaded && markers && markers.length > 0 && (
+      {markers && markers.length > 0 && (
         <MapMarkers 
           markers={markers} 
           hoveredMarker={hoveredMarker} 
