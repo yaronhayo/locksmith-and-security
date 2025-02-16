@@ -28,6 +28,13 @@ const ServiceAreasSection = () => {
     );
   }
 
+  const mapMarkers = locations?.map(location => ({
+    lat: location.lat,
+    lng: location.lng,
+    title: location.name,
+    slug: location.slug
+  })) || [];
+
   return (
     <section className="py-20">
       <div className="container mx-auto px-4">
@@ -60,6 +67,7 @@ const ServiceAreasSection = () => {
             className="bg-white rounded-xl shadow-lg overflow-hidden"
           >
             <GoogleMap 
+              markers={mapMarkers}
               highlightedMarker={hoveredArea}
               showAllMarkers={true}
               zoom={11}
