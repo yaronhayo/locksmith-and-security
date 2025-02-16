@@ -1,3 +1,4 @@
+
 {
   "name": "Locksmith & Security LLC",
   "short_name": "Locksmith",
@@ -8,13 +9,13 @@
   "theme_color": "#1E3A8A",
   "icons": [
     {
-      "src": "/lovable-uploads/950b5c4c-f0b8-4d22-beb0-66a7d7554476.png",
+      "src": "/logo.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "/lovable-uploads/950b5c4c-f0b8-4d22-beb0-66a7d7554476.png",
+      "src": "/logo.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
