@@ -1,4 +1,3 @@
-
 import { BasicMetaTags } from "../meta/BasicMetaTags";
 import { OpenGraphTags } from "../meta/OpenGraphTags";
 import { TwitterTags } from "../meta/TwitterTags";
@@ -34,7 +33,8 @@ const DEFAULT_SETTINGS: SiteSettings = {
   company_lat: "40.7795",
   company_lng: "-74.0324",
   default_meta_title: "24/7 Emergency Locksmith Services in North Bergen, NJ | Licensed & Insured",
-  default_meta_description: "Professional locksmith services in North Bergen. Available 24/7 for residential, commercial, and automotive locksmith needs."
+  default_meta_description: "Professional locksmith services in North Bergen. Available 24/7 for residential, commercial, and automotive locksmith needs.",
+  GOOGLE_MAPS_API_KEY: "",
 };
 
 const MetaTags = ({
@@ -66,14 +66,12 @@ const MetaTags = ({
     }
   }, [error, toast]);
 
-  // Use settings from the database or fall back to defaults
   const siteSettings = settings || DEFAULT_SETTINGS;
 
   const baseUrl = siteSettings.base_url;
   const fullCanonicalUrl = canonicalUrl ? `${baseUrl}${canonicalUrl}` : baseUrl;
   const fullTitle = `${title} | ${siteSettings.company_name} - Professional Locksmith Services in ${siteSettings.company_city}, ${siteSettings.company_state}`;
 
-  // Generate all schemas
   const schemas = [];
 
   if (businessSchema) {

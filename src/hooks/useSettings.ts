@@ -14,7 +14,7 @@ export type SiteSettings = {
   base_url: string;
   default_meta_title: string;
   default_meta_description: string;
-  google_maps_api_key: string;
+  GOOGLE_MAPS_API_KEY: string;
 };
 
 export const useSettings = () => {

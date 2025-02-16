@@ -1,4 +1,3 @@
-
 import { useEffect, useMemo, useState } from "react";
 import { GoogleMap, useLoadScript } from "@react-google-maps/api";
 import { useNavigate } from "react-router-dom";
@@ -34,8 +33,8 @@ const GoogleMapComponent = ({
   const { data: locations, isLoading: locationsLoading, error: locationsError } = useLocations();
   const [hoveredMarker, setHoveredMarker] = useState<string | null>(highlightedMarker);
 
-  // Get Google Maps API key from settings
-  const apiKey = settings?.google_maps_api_key || '';
+  // Get Google Maps API key from settings with correct capitalization
+  const apiKey = settings?.GOOGLE_MAPS_API_KEY || '';
 
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: apiKey,
