@@ -7,7 +7,7 @@ import MapLoader from "./MapLoader";
 import MapMarkers from "./MapMarkers";
 import { MapMarker } from "@/types/service-area";
 
-const libraries: ("places")[] = ['places'];
+const libraries: ("places" | "marker")[] = ['places', 'marker'];
 
 const mapOptions = {
   zoomControl: true,
@@ -53,8 +53,6 @@ const GoogleMap = ({
   if (isLoading) return <MapLoader />;
   if (apiKeyError) return <MapError error={apiKeyError.message} />;
   if (!apiKey) return <MapError error="Google Maps API key not found" />;
-
-  console.log('Map render - markers:', visibleMarkers.length, 'API Key:', apiKey.substring(0, 10) + '...');
 
   return (
     <div className="w-full h-full relative">

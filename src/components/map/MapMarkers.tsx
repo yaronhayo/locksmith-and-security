@@ -1,8 +1,8 @@
 
-import { Marker } from '@react-google-maps/api';
-import { MapMarker } from '@/types/service-area';
-import { useNavigate } from 'react-router-dom';
 import { useMemo, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { MapMarker } from '@/types/service-area';
+import { AdvancedMarkerElement } from '@react-google-maps/api';
 
 interface MapMarkersProps {
   markers: MapMarker[];
@@ -24,7 +24,7 @@ const MapMarkers = ({ markers, hoveredMarker }: MapMarkersProps) => {
       const isHovered = hoveredMarker === marker.slug;
       
       return (
-        <Marker
+        <AdvancedMarkerElement
           key={`${marker.slug || ''}-${index}`}
           position={position}
           title={marker.title}
