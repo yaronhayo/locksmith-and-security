@@ -1,16 +1,9 @@
 
-import { useState, useCallback, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
-import { mapPerformance } from '@/utils/performanceMonitoring';
 
 const MAX_RETRIES = 3;
 const INITIAL_BACKOFF = 1000;
-
-interface MapConfig {
-  center: { lat: number; lng: number };
-  zoom: number;
-}
 
 const fetchMapApiKey = async () => {
   console.log('Fetching Google Maps API key from settings table');
@@ -66,30 +59,4 @@ export const useMapConfig = () => {
     retryCount,
     fetchApiKey: refetch
   };
-};
-
-export const useMapInstance = ({ center, zoom }: MapConfig) => {
-  const [map, setMap] = useState<google.maps.Map | null>(null);
-  const [error, setError] = useState<string | null>(null);
-
-  const handleMapLoad = useCallback((mapInstance: google.maps.Map) => {
-    console.log('Map instance loaded');
-    const startTime = performance.now();
-    setMap(mapInstance);
-    mapPerformance.trackInstanceLoad(startTime);
-  }, []);
-
-  useEffect(() => {
-    if (map) {
-      try {
-        map.setCenter(center);
-        map.setZoom(zoom);
-      } catch (err) {
-        console.error('Error updating map:', err);
-        setError(err instanceof Error ? err.message : 'Failed to update map');
-      }
-    }
-  }, [map, center, zoom]);
-
-  return { map, error, handleMapLoad };
 };

@@ -1,15 +1,30 @@
 
 import { useMemo } from "react";
-import { LoadScript, Libraries } from "@react-google-maps/api";
+import { LoadScript, Libraries, GoogleMap as GoogleMapComponent } from "@react-google-maps/api";
 import { useMapConfig } from "@/hooks/useMap";
 import MapError from "./MapError";
 import MapLoader from "./MapLoader";
-import MapContainer from "./MapContainer";
+import MapMarkers from "./MapMarkers";
 import { MapErrorBoundary } from "./MapErrorBoundary";
-import { MapMarker, MapProps } from "@/types/service-area";
+import { MapProps } from "@/types/map";
 
 // Define libraries outside component to prevent recreation
 const libraries: Libraries = ['places'];
+
+const mapOptions = {
+  disableDefaultUI: false,
+  zoomControl: true,
+  streetViewControl: false,
+  mapTypeControl: false,
+  fullscreenControl: false,
+  gestureHandling: 'cooperative'
+} as const;
+
+const mapContainerStyle = {
+  width: "100%",
+  height: "400px",
+  borderRadius: "0.5rem"
+} as const;
 
 const GoogleMap = ({
   markers = [],
@@ -20,6 +35,9 @@ const GoogleMap = ({
   onClick
 }: MapProps) => {
   const { apiKey, loadError, isRetrying, retryCount, fetchApiKey } = useMapConfig();
+
+  // Memoize center to prevent unnecessary re-renders
+  const mapCenter = useMemo(() => center, [center.lat, center.lng]);
 
   // Memoize LoadScript props
   const loadScriptProps = useMemo(() => ({
@@ -53,13 +71,20 @@ const GoogleMap = ({
     <div className="w-full h-[400px] relative rounded-lg overflow-hidden shadow-md">
       <MapErrorBoundary>
         <LoadScript {...loadScriptProps}>
-          <MapContainer
-            center={center}
+          <GoogleMapComponent
+            mapContainerStyle={mapContainerStyle}
+            center={mapCenter}
             zoom={zoom}
-            markers={visibleMarkers}
-            hoveredMarker={highlightedMarker}
+            options={mapOptions}
             onClick={onClick}
-          />
+          >
+            {visibleMarkers.length > 0 && (
+              <MapMarkers 
+                markers={visibleMarkers} 
+                hoveredMarker={highlightedMarker} 
+              />
+            )}
+          </GoogleMapComponent>
         </LoadScript>
       </MapErrorBoundary>
     </div>

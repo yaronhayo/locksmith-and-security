@@ -7,8 +7,10 @@ export interface MapLocation {
 }
 
 export interface MapProps {
-  center?: { lat: number; lng: number };
-  zoom?: number;
   markers?: MapLocation[];
-  hoveredMarker?: string | null;
+  highlightedMarker?: string | null;
+  showAllMarkers?: boolean;
+  zoom?: number;
+  center?: { lat: number; lng: number };
+  onClick?: (e: google.maps.MapMouseEvent) => void;
 }
