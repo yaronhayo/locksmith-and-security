@@ -18,7 +18,7 @@ const fetchMapApiKey = async () => {
   const { data, error } = await supabase
     .from('settings')
     .select('value')
-    .eq('key', 'google_maps_api_key')
+    .eq('key', 'GOOGLE_MAPS_API_KEY')
     .maybeSingle();
 
   if (error) {
