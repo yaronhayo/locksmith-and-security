@@ -73,7 +73,7 @@ const ServiceAreasSection = () => {
             initial={{ opacity: 0, x: 20 }}
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5 }}
-            className="bg-white rounded-xl shadow-lg overflow-hidden h-[400px]"
+            className="relative w-full h-[500px] bg-white rounded-xl shadow-lg overflow-hidden"
           >
             <GoogleMap 
               markers={mapMarkers}

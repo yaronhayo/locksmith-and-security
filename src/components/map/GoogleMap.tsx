@@ -50,7 +50,7 @@ const GoogleMap = ({
   if (!apiKey) return <MapError error="Google Maps API key not found" />;
 
   return (
-    <div className="w-full h-[400px] relative rounded-lg overflow-hidden shadow-md">
+    <div className="absolute inset-0">
       <ErrorBoundary FallbackComponent={MapErrorFallback}>
         <LoadScriptNext
           googleMapsApiKey={apiKey}
