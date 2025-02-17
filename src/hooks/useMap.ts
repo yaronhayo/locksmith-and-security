@@ -9,18 +9,14 @@ interface MapConfig {
 }
 
 export const useMapConfig = () => {
-  const { 
-    data: apiKey,
-    error,
-    isLoading
-  } = useQuery({
+  return useQuery({
     queryKey: ['googleMapsApiKey'],
     queryFn: async () => {
       const { data, error } = await supabase
         .from('settings')
         .select('value')
         .eq('key', 'GOOGLE_MAPS_API_KEY')
-        .single();
+        .maybeSingle();
 
       if (error) throw error;
       
@@ -33,12 +29,6 @@ export const useMapConfig = () => {
     staleTime: Infinity,
     retry: false
   });
-
-  return {
-    apiKey,
-    error: error as Error | null,
-    isLoading
-  };
 };
 
 export const useMapInstance = ({ center, zoom }: MapConfig) => {

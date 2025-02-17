@@ -15,8 +15,7 @@ const MAP_OPTIONS = {
 
 const MAP_CONTAINER_STYLE = {
   width: "100%",
-  height: "400px",
-  borderRadius: "0.5rem"
+  height: "100%",
 } as const;
 
 interface MapContainerProps {
