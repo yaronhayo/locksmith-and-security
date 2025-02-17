@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { ServiceAreaLocation } from '@/components/service-areas/types';
 
-const fetchLocations = async () => {
+const fetchLocations = async (): Promise<ServiceAreaLocation[]> => {
   const { data, error } = await supabase
     .from('locations')
     .select('*');
@@ -17,7 +17,8 @@ const fetchLocations = async () => {
     slug: location.slug,
     description: location.description || '',
     lat: Number(location.lat),
-    lng: Number(location.lng)
+    lng: Number(location.lng),
+    title: location.title || `${location.name} Locksmith Services | 24/7 Emergency Service`
   }));
 };
 
