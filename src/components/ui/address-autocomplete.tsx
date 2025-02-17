@@ -22,35 +22,10 @@ const AddressAutocomplete = ({
   const inputRef = useRef<HTMLInputElement>(null);
   const autocompleteRef = useRef<google.maps.places.Autocomplete | null>(null);
   const { data: apiKey, error: apiKeyError } = useMapConfig();
-  const [scriptLoaded, setScriptLoaded] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!apiKey || scriptLoaded) return;
-
-    const script = document.createElement('script');
-    script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places`;
-    script.async = true;
-    script.onload = () => {
-      setScriptLoaded(true);
-    };
-    script.onerror = () => {
-      setError('Failed to load address autocomplete service');
-    };
-
-    if (!document.querySelector(`script[src*="maps.googleapis.com"]`)) {
-      document.head.appendChild(script);
-    } else {
-      setScriptLoaded(true);
-    }
-
-    return () => {
-      // Don't remove the script on unmount as other components might need it
-    };
-  }, [apiKey]);
-
-  useEffect(() => {
-    if (!inputRef.current || !scriptLoaded || !window.google?.maps?.places) return;
+    if (!inputRef.current || !window.google?.maps?.places) return;
 
     try {
       if (autocompleteRef.current) {
@@ -87,7 +62,7 @@ const AddressAutocomplete = ({
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to initialize address autocomplete');
     }
-  }, [scriptLoaded, onChange]);
+  }, [onChange]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -111,7 +86,7 @@ const AddressAutocomplete = ({
   };
 
   const displayError = error || (apiKeyError?.message ?? null);
-  const isLoading = !scriptLoaded && !displayError;
+  const isLoading = !window.google?.maps?.places && !displayError;
 
   return (
     <div className="relative w-full space-y-2">
