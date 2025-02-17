@@ -3,7 +3,7 @@ import { GoogleMap } from "@react-google-maps/api";
 import { useMapInstance } from "@/hooks/useMap";
 import MapMarkers from "./MapMarkers";
 import { MapMarker } from "@/types/service-area";
-import { useMemo } from "react";
+import { useMemo, useCallback } from "react";
 
 const MAP_OPTIONS = {
   zoomControl: true,
@@ -37,6 +37,10 @@ const MapContainer = ({
   const { map, onLoad } = useMapInstance({ center, zoom });
   const options = useMemo(() => MAP_OPTIONS, []);
 
+  const handleLoadError = useCallback((error: Error) => {
+    console.error('Map load error:', error);
+  }, []);
+
   return (
     <GoogleMap
       mapContainerStyle={MAP_CONTAINER_STYLE}
@@ -45,6 +49,7 @@ const MapContainer = ({
       options={options}
       onClick={onClick}
       onLoad={onLoad}
+      onError={handleLoadError}
     >
       {markers && markers.length > 0 && (
         <MapMarkers 

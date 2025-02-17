@@ -7,6 +7,8 @@ interface MapErrorProps {
 }
 
 const MapError = ({ error }: MapErrorProps) => {
+  console.error('Map Error:', error); // Add logging for debugging
+
   return (
     <Alert variant="destructive" className="mb-4">
       <AlertCircle className="h-4 w-4" />
