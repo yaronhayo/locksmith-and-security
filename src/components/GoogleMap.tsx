@@ -1,23 +1,30 @@
 
 import { useMemo } from "react";
-import { LoadScript, Libraries } from "@react-google-maps/api";
+import { LoadScript, Libraries, GoogleMap as GoogleMapComponent } from "@react-google-maps/api";
 import { useMapConfig } from "@/hooks/useMap";
 import MapError from "./map/MapError";
 import MapLoader from "./map/MapLoader";
-import MapContainer from "./map/MapContainer";
+import MapMarkers from "./map/MapMarkers";
 import { MapErrorBoundary } from "./map/MapErrorBoundary";
-import { MapMarker } from "@/types/service-area";
+import { MapProps } from "@/types/map";
 
 // Define libraries outside component to prevent recreation
 const libraries: Libraries = ['places'];
 
-interface GoogleMapProps {
-  markers?: MapMarker[];
-  highlightedMarker?: string | null;
-  showAllMarkers?: boolean;
-  zoom?: number;
-  center?: { lat: number; lng: number };
-}
+const mapOptions = {
+  disableDefaultUI: false,
+  zoomControl: true,
+  streetViewControl: false,
+  mapTypeControl: false,
+  fullscreenControl: false,
+  gestureHandling: 'cooperative'
+} as const;
+
+const mapContainerStyle = {
+  width: "100%",
+  height: "400px",
+  borderRadius: "0.5rem"
+} as const;
 
 const GoogleMap = ({
   markers = [],
@@ -25,8 +32,11 @@ const GoogleMap = ({
   showAllMarkers = true,
   zoom = 12,
   center = { lat: 40.7795, lng: -74.0324 },
-}: GoogleMapProps) => {
+}: MapProps) => {
   const { apiKey, loadError, isRetrying, retryCount, fetchApiKey } = useMapConfig();
+
+  // Memoize center to prevent unnecessary re-renders
+  const mapCenter = useMemo(() => center, [center.lat, center.lng]);
 
   // Memoize LoadScript props
   const loadScriptProps = useMemo(() => ({
@@ -59,12 +69,19 @@ const GoogleMap = ({
     <div className="w-full h-[400px] relative rounded-lg overflow-hidden shadow-md">
       <MapErrorBoundary>
         <LoadScript {...loadScriptProps} loadingElement={<MapLoader />}>
-          <MapContainer
-            center={center}
+          <GoogleMapComponent
+            mapContainerStyle={mapContainerStyle}
+            center={mapCenter}
             zoom={zoom}
-            markers={visibleMarkers}
-            hoveredMarker={highlightedMarker}
-          />
+            options={mapOptions}
+          >
+            {visibleMarkers.length > 0 && (
+              <MapMarkers 
+                markers={visibleMarkers} 
+                hoveredMarker={highlightedMarker} 
+              />
+            )}
+          </GoogleMapComponent>
         </LoadScript>
       </MapErrorBoundary>
     </div>
