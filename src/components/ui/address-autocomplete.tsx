@@ -1,7 +1,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { Input } from "./input";
-import { useMapConfig, useMapScript } from "@/hooks/useMap";
+import { useMapConfig } from "@/hooks/useMap";
 import { InputHTMLAttributes } from "react";
 import { Loader2 } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
@@ -22,63 +22,81 @@ const AddressAutocomplete = ({
   const inputRef = useRef<HTMLInputElement>(null);
   const autocompleteRef = useRef<google.maps.places.Autocomplete | null>(null);
   const { apiKey, loadError: apiKeyError } = useMapConfig();
-  const { isLoaded, loadError: scriptError, placesInitialized } = useMapScript(apiKey || '');
+  const [scriptLoaded, setScriptLoaded] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  // Load Google Maps script if not already loaded
+  useEffect(() => {
+    if (!apiKey || scriptLoaded) return;
+
+    const script = document.createElement('script');
+    script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places`;
+    script.async = true;
+    script.onload = () => {
+      console.log('Google Maps script loaded in AddressAutocomplete');
+      setScriptLoaded(true);
+    };
+    script.onerror = () => {
+      console.error('Failed to load Google Maps script in AddressAutocomplete');
+      setError('Failed to load address autocomplete service');
+    };
+
+    // Only add the script if it's not already present
+    if (!document.querySelector(`script[src*="maps.googleapis.com"]`)) {
+      document.head.appendChild(script);
+    } else {
+      setScriptLoaded(true);
+    }
+
+    return () => {
+      // Don't remove the script on unmount as other components might need it
+    };
+  }, [apiKey]);
 
   // Initialize autocomplete once script is loaded
   useEffect(() => {
-    let placeChangedListener: google.maps.MapsEventListener | null = null;
+    if (!inputRef.current || !scriptLoaded || !window.google?.maps?.places) return;
 
-    const initializeAutocomplete = () => {
-      if (!inputRef.current || !isLoaded || !placesInitialized) return;
-
-      console.log('Initializing Places Autocomplete');
-      try {
-        // Clean up existing instance if it exists
-        if (autocompleteRef.current) {
-          google.maps.event.clearInstanceListeners(autocompleteRef.current);
-          autocompleteRef.current = null;
-        }
-
-        // Create new instance
-        autocompleteRef.current = new window.google.maps.places.Autocomplete(
-          inputRef.current,
-          {
-            componentRestrictions: { country: "us" },
-            fields: ["address_components", "formatted_address", "geometry", "place_id"],
-            types: ["address"]
-          }
-        );
-
-        // Add place changed listener
-        placeChangedListener = autocompleteRef.current.addListener(
-          "place_changed",
-          () => {
-            const place = autocompleteRef.current?.getPlace();
-            if (place?.formatted_address) {
-              onChange(place.formatted_address);
-            }
-          }
-        );
-      } catch (err) {
-        console.error('Error initializing autocomplete:', err);
-        setError(err instanceof Error ? err.message : 'Failed to initialize address autocomplete');
-      }
-    };
-
-    initializeAutocomplete();
-
-    // Cleanup function
-    return () => {
-      if (placeChangedListener) {
-        placeChangedListener.remove();
-      }
+    try {
+      // Clean up existing instance if it exists
       if (autocompleteRef.current) {
         google.maps.event.clearInstanceListeners(autocompleteRef.current);
-        autocompleteRef.current = null;
       }
-    };
-  }, [isLoaded, placesInitialized, onChange]);
+
+      // Create new instance
+      autocompleteRef.current = new window.google.maps.places.Autocomplete(
+        inputRef.current,
+        {
+          componentRestrictions: { country: "us" },
+          fields: ["address_components", "formatted_address", "geometry", "place_id"],
+          types: ["address"]
+        }
+      );
+
+      // Add place changed listener
+      const listener = autocompleteRef.current.addListener(
+        "place_changed",
+        () => {
+          const place = autocompleteRef.current?.getPlace();
+          if (place?.formatted_address) {
+            onChange(place.formatted_address);
+          }
+        }
+      );
+
+      return () => {
+        if (listener) {
+          listener.remove();
+        }
+        if (autocompleteRef.current) {
+          google.maps.event.clearInstanceListeners(autocompleteRef.current);
+        }
+      };
+    } catch (err) {
+      console.error('Error initializing autocomplete:', err);
+      setError(err instanceof Error ? err.message : 'Failed to initialize address autocomplete');
+    }
+  }, [scriptLoaded, onChange]);
 
   // Prevent form submission on Enter key
   useEffect(() => {
@@ -102,8 +120,8 @@ const AddressAutocomplete = ({
     setError(null);
   };
 
-  const displayError = error || scriptError || apiKeyError;
-  const isLoading = !isLoaded && !displayError;
+  const displayError = error || apiKeyError;
+  const isLoading = !scriptLoaded && !displayError;
 
   return (
     <div className="relative w-full space-y-2">
