@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import GoogleMap from '../map/GoogleMap';
+import MapTest from '../map/MapTest';
 import AreasList from './service-areas/AreasList';
 import ServiceAreaFeatures from '../service-areas/shared/ServiceAreaFeatures';
 import EmergencyCallout from './service-areas/EmergencyCallout';
@@ -61,7 +62,9 @@ const ServiceAreasSection = () => {
           </p>
         </motion.div>
 
-        <div className="grid lg:grid-cols-2 gap-12 mb-16">
+        <MapTest />
+
+        <div className="grid lg:grid-cols-2 gap-12 mb-16 mt-8">
           <AreasList 
             areas={locations || []} 
             hoveredArea={hoveredArea} 
