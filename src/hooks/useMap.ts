@@ -54,6 +54,14 @@ export const useMapConfig = () => {
   });
 
   useEffect(() => {
+    // First, check if Google Maps is already available
+    if (window.google?.maps) {
+      console.log('Google Maps already loaded');
+      isScriptLoaded = true;
+      setGoogleLoaded(true);
+      return;
+    }
+
     if (!apiKey || isScriptLoaded || isScriptLoading) {
       console.log('Script loading conditions not met:', {
         hasApiKey: !!apiKey,
@@ -64,9 +72,11 @@ export const useMapConfig = () => {
     }
 
     const loadScript = () => {
+      // Clear any existing Google Maps state
       isScriptLoading = true;
-      console.log('Loading Google Maps script with key:', apiKey.substring(0, 8) + '...');
-
+      isScriptLoaded = false;
+      setGoogleLoaded(false);
+      
       // Remove any existing Google Maps scripts
       const existingScript = document.querySelector('script[src*="maps.googleapis.com"]');
       if (existingScript) {
@@ -76,12 +86,7 @@ export const useMapConfig = () => {
         (window as any).google = undefined;
       }
 
-      const script = document.createElement('script');
-      script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places&callback=initMap`;
-      script.async = true;
-      script.defer = true;
-
-      // Define callback function
+      // Define callback function BEFORE creating the script
       (window as any).initMap = () => {
         console.log('Google Maps initialization callback triggered');
         isScriptLoaded = true;
@@ -96,6 +101,13 @@ export const useMapConfig = () => {
         }
       };
 
+      console.log('Loading Google Maps script with key:', apiKey.substring(0, 8) + '...');
+      
+      const script = document.createElement('script');
+      script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places&callback=initMap`;
+      script.async = true;
+      script.defer = true;
+
       script.onerror = (error) => {
         const errorMsg = 'Failed to load Google Maps script';
         console.error(errorMsg, error);
@@ -107,13 +119,13 @@ export const useMapConfig = () => {
       document.head.appendChild(script);
     };
 
-    if (window.google?.maps) {
-      console.log('Google Maps already loaded');
-      isScriptLoaded = true;
-      setGoogleLoaded(true);
-    } else {
-      loadScript();
-    }
+    loadScript();
+
+    // Cleanup function
+    return () => {
+      // Remove the callback when the component unmounts
+      delete (window as any).initMap;
+    };
   }, [apiKey]);
 
   return {
