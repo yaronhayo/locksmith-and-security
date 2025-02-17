@@ -12,8 +12,6 @@ interface MapMarkersProps {
 const MapMarkers = ({ markers, hoveredMarker }: MapMarkersProps) => {
   const navigate = useNavigate();
 
-  console.log('MapMarkers render:', { markers, hoveredMarker });
-
   const handleMarkerClick = (slug?: string) => {
     if (slug) {
       navigate(`/service-areas/${slug}`);
@@ -21,7 +19,6 @@ const MapMarkers = ({ markers, hoveredMarker }: MapMarkersProps) => {
     }
   };
 
-  // Memoize markers to prevent unnecessary re-renders
   const renderedMarkers = useMemo(() => 
     markers.map((marker, index) => {
       const position = { lat: marker.lat, lng: marker.lng };

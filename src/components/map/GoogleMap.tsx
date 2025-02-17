@@ -33,12 +33,9 @@ const GoogleMap = ({
 }: GoogleMapProps) => {
   const { apiKey, error, isLoading } = useMapConfig();
   
-  // Always call useMemo, regardless of conditions
   const scriptOptions = useMemo(() => ({
-    googleMapsApiKey: apiKey,
+    googleMapsApiKey: apiKey || '',
     libraries,
-    language: 'en',
-    region: 'US'
   }), [apiKey]);
 
   const visibleMarkers = useMemo(() => 
@@ -46,10 +43,9 @@ const GoogleMap = ({
     [markers, showAllMarkers, highlightedMarker]
   );
 
-  // Handle loading and error states
   if (isLoading) return <MapLoader />;
   if (error) return <MapError error={error.message} />;
-  if (!apiKey) return <MapError error="No API key available" />;
+  if (!apiKey) return <MapError error="Google Maps API key not found" />;
 
   return (
     <div className="w-full h-[400px] relative rounded-lg overflow-hidden shadow-md">
