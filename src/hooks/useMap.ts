@@ -60,7 +60,7 @@ export const useMapConfig = () => {
       console.log('Loading Google Maps script with key:', apiKey.substring(0, 8) + '...');
 
       const script = document.createElement('script');
-      script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places`;
+      script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places,marker`;
       script.async = true;
       script.defer = true;
 
