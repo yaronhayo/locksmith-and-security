@@ -36,6 +36,7 @@ const GoogleMap = ({
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: apiKey || '',
     libraries,
+    id: 'google-map-script'
   });
 
   const visibleMarkers = useMemo(() => 
@@ -44,7 +45,7 @@ const GoogleMap = ({
   );
 
   if (isLoadingKey) return <MapLoader />;
-  if (apiKeyError) return <MapError error="Failed to load Google Maps API key" />;
+  if (apiKeyError) return <MapError error={apiKeyError.message} />;
   if (!apiKey) return <MapError error="Google Maps API key not found" />;
   if (loadError) return <MapError error="Failed to load Google Maps" />;
   if (!isLoaded) return <MapLoader />;

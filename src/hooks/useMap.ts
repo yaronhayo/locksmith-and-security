@@ -8,34 +8,35 @@ interface MapConfig {
   zoom: number;
 }
 
-const fetchMapApiKey = async () => {
-  const { data, error } = await supabase
-    .from('settings')
-    .select('value')
-    .eq('key', 'GOOGLE_MAPS_API_KEY')
-    .single();
-
-  if (error) throw error;
-  return data.value;
-};
-
 export const useMapConfig = () => {
   const { 
     data: apiKey,
     error,
-    isLoading,
-    isError
+    isLoading
   } = useQuery({
     queryKey: ['googleMapsApiKey'],
-    queryFn: fetchMapApiKey,
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('settings')
+        .select('value')
+        .eq('key', 'GOOGLE_MAPS_API_KEY')
+        .single();
+
+      if (error) throw error;
+      
+      if (!data?.value) {
+        throw new Error('Google Maps API key not found');
+      }
+
+      return data.value;
+    },
     staleTime: Infinity,
-    gcTime: Infinity,
-    retry: 3
+    retry: false
   });
 
   return {
     apiKey,
-    error: isError ? error : null,
+    error: error as Error | null,
     isLoading
   };
 };
