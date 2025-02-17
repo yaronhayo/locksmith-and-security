@@ -28,21 +28,6 @@ const ServiceAreasSection = () => {
     );
   }
 
-  console.log('ServiceAreasSection render:', { 
-    locationCount: locations?.length,
-    locations: locations,
-    hoveredArea 
-  });
-
-  const mapMarkers = locations?.map(location => ({
-    lat: location.lat,
-    lng: location.lng,
-    title: location.name,
-    slug: location.slug
-  })) || [];
-
-  console.log('Map markers:', mapMarkers);
-
   return (
     <section className="py-20">
       <div className="container mx-auto px-4">
@@ -75,11 +60,9 @@ const ServiceAreasSection = () => {
             className="bg-white rounded-xl shadow-lg overflow-hidden"
           >
             <GoogleMap 
-              markers={mapMarkers}
               highlightedMarker={hoveredArea}
               showAllMarkers={true}
               zoom={11}
-              center={{ lat: 40.7795, lng: -74.0324 }}
             />
           </motion.div>
         </div>
