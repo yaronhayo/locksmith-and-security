@@ -8,6 +8,7 @@ import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import AddressAutocomplete from "@/components/ui/address-autocomplete";
 import Recaptcha from "@/components/ui/recaptcha";
+import GoogleMapsProvider from "@/components/providers/GoogleMapsProvider";
 
 const ContactForm = () => {
   const form = useRef<HTMLFormElement>(null);
@@ -131,13 +132,15 @@ const ContactForm = () => {
           <label htmlFor="address" className="block text-sm font-medium mb-2">
             Service Address
           </label>
-          <AddressAutocomplete
-            value={address}
-            onChange={setAddress}
-            placeholder="123 Main St, North Bergen, NJ"
-            disabled={isSubmitting}
-            required
-          />
+          <GoogleMapsProvider>
+            <AddressAutocomplete
+              value={address}
+              onChange={setAddress}
+              placeholder="123 Main St, North Bergen, NJ"
+              disabled={isSubmitting}
+              required
+            />
+          </GoogleMapsProvider>
         </div>
 
         <div>

@@ -14,6 +14,7 @@ import Recaptcha from "@/components/ui/recaptcha";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import AddressAutocomplete from "@/components/ui/address-autocomplete";
+import GoogleMapsProvider from "@/components/providers/GoogleMapsProvider";
 
 const BookingForm = () => {
   const navigate = useNavigate();
@@ -100,13 +101,15 @@ const BookingForm = () => {
         <label htmlFor="address" className="block text-sm font-medium text-gray-700 mb-1">
           Service Address
         </label>
-        <AddressAutocomplete
-          value={address}
-          onChange={setAddress}
-          placeholder="Enter your service address"
-          disabled={isSubmitting}
-          required
-        />
+        <GoogleMapsProvider>
+          <AddressAutocomplete
+            value={address}
+            onChange={setAddress}
+            placeholder="Enter your service address"
+            disabled={isSubmitting}
+            required
+          />
+        </GoogleMapsProvider>
         {errors.address && (
           <p className="text-sm text-red-500 mt-1">{errors.address}</p>
         )}
