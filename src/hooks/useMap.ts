@@ -10,7 +10,7 @@ interface MapConfig {
 
 export const useMapConfig = () => {
   return useQuery({
-    queryKey: ['googleMapsApiKey'],
+    queryKey: ['GOOGLE_MAPS_API_KEY'],
     queryFn: async () => {
       const { data, error } = await supabase
         .from('settings')
@@ -19,11 +19,9 @@ export const useMapConfig = () => {
         .maybeSingle();
 
       if (error) throw error;
-      
       if (!data?.value) {
         throw new Error('Google Maps API key not found');
       }
-
       return data.value;
     },
     staleTime: Infinity,

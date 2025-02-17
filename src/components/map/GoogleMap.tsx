@@ -1,6 +1,6 @@
 
 import { useMemo } from "react";
-import { useLoadScript } from "@react-google-maps/api";
+import { LoadScript } from "@react-google-maps/api";
 import { useMapConfig } from "@/hooks/useMap";
 import MapError from "./MapError";
 import MapLoader from "./MapLoader";
@@ -31,35 +31,32 @@ const GoogleMap = ({
   center = { lat: 40.7795, lng: -74.0324 },
   onClick
 }: GoogleMapProps) => {
-  const { data: apiKey, error: apiKeyError, isLoading: isLoadingKey } = useMapConfig();
-
-  const { isLoaded, loadError } = useLoadScript({
-    googleMapsApiKey: apiKey || '',
-    libraries,
-    id: 'google-map-script'
-  });
+  const { data: apiKey, error: apiKeyError, isLoading } = useMapConfig();
 
   const visibleMarkers = useMemo(() => 
     showAllMarkers ? markers : markers.filter(m => m.slug === highlightedMarker),
     [markers, showAllMarkers, highlightedMarker]
   );
 
-  if (isLoadingKey) return <MapLoader />;
+  if (isLoading) return <MapLoader />;
   if (apiKeyError) return <MapError error={apiKeyError.message} />;
   if (!apiKey) return <MapError error="Google Maps API key not found" />;
-  if (loadError) return <MapError error="Failed to load Google Maps" />;
-  if (!isLoaded) return <MapLoader />;
 
   return (
     <div className="w-full h-[400px] relative rounded-lg overflow-hidden shadow-md">
       <ErrorBoundary FallbackComponent={MapErrorFallback}>
-        <MapContainer
-          center={center}
-          zoom={zoom}
-          markers={visibleMarkers}
-          hoveredMarker={highlightedMarker}
-          onClick={onClick}
-        />
+        <LoadScript
+          googleMapsApiKey={apiKey}
+          libraries={libraries}
+        >
+          <MapContainer
+            center={center}
+            zoom={zoom}
+            markers={visibleMarkers}
+            hoveredMarker={highlightedMarker}
+            onClick={onClick}
+          />
+        </LoadScript>
       </ErrorBoundary>
     </div>
   );
