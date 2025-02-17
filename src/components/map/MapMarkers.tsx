@@ -12,7 +12,11 @@ interface MapMarkersProps {
 const MapMarkers = ({ markers, hoveredMarker }: MapMarkersProps) => {
   const navigate = useNavigate();
 
-  console.log('MapMarkers render:', { markers, hoveredMarker });
+  console.log('MapMarkers render:', { 
+    markerCount: markers.length,
+    markers: markers,
+    hoveredMarker 
+  });
 
   const handleMarkerClick = (slug?: string) => {
     if (slug) {
@@ -26,6 +30,12 @@ const MapMarkers = ({ markers, hoveredMarker }: MapMarkersProps) => {
     markers.map((marker, index) => {
       const position = { lat: marker.lat, lng: marker.lng };
       
+      console.log('Rendering marker:', { 
+        position, 
+        title: marker.title,
+        slug: marker.slug 
+      });
+
       return (
         <Marker
           key={`${marker.slug || ''}-${index}`}

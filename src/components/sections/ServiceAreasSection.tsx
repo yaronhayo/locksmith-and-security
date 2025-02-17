@@ -28,12 +28,20 @@ const ServiceAreasSection = () => {
     );
   }
 
+  console.log('ServiceAreasSection render:', { 
+    locationCount: locations?.length,
+    locations: locations,
+    hoveredArea 
+  });
+
   const mapMarkers = locations?.map(location => ({
     lat: location.lat,
     lng: location.lng,
     title: location.name,
     slug: location.slug
   })) || [];
+
+  console.log('Map markers:', mapMarkers);
 
   return (
     <section className="py-20">
