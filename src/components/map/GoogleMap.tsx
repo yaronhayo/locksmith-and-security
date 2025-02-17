@@ -48,7 +48,7 @@ const GoogleMap = ({
   console.log('Rendering map with API key:', apiKey.substring(0, 10) + '...');
 
   return (
-    <div className="w-full h-full">
+    <div className="w-full h-full relative">
       <LoadScriptNext googleMapsApiKey={apiKey} libraries={libraries}>
         <GoogleMapComponent
           mapContainerClassName="w-full h-full"
