@@ -26,6 +26,13 @@ const mapContainerStyle = {
   borderRadius: "0.5rem"
 } as const;
 
+// Define LoadScript options outside component to prevent recreation
+const loadScriptOptions = {
+  language: 'en',
+  region: 'US',
+  libraries,
+};
+
 const GoogleMap = ({
   markers = [],
   highlightedMarker = null,
@@ -38,15 +45,6 @@ const GoogleMap = ({
 
   // Memoize center to prevent unnecessary re-renders
   const mapCenter = useMemo(() => center, [center.lat, center.lng]);
-
-  // Memoize LoadScript props
-  const loadScriptProps = useMemo(() => ({
-    googleMapsApiKey: apiKey || '',
-    libraries,
-    language: 'en',
-    region: 'US',
-    version: 'weekly'
-  }), [apiKey]);
 
   if (loadError) {
     console.error('Map load error:', loadError);
@@ -70,7 +68,10 @@ const GoogleMap = ({
   return (
     <div className="w-full h-[400px] relative rounded-lg overflow-hidden shadow-md">
       <MapErrorBoundary>
-        <LoadScript {...loadScriptProps}>
+        <LoadScript 
+          googleMapsApiKey={apiKey}
+          {...loadScriptOptions}
+        >
           <GoogleMapComponent
             mapContainerStyle={mapContainerStyle}
             center={mapCenter}

@@ -12,7 +12,7 @@ const fetchMapApiKey = async () => {
     .from('settings')
     .select('value')
     .eq('key', 'GOOGLE_MAPS_API_KEY')
-    .maybeSingle();
+    .single();
 
   if (error) {
     console.error('Error fetching API key:', error);
@@ -24,7 +24,6 @@ const fetchMapApiKey = async () => {
     throw new Error('Google Maps API key not found in settings');
   }
 
-  console.log('API key fetched successfully:', data.value ? 'Key exists' : 'No key');
   return data.value;
 };
 
@@ -43,8 +42,8 @@ export const useMapConfig = () => {
       INITIAL_BACKOFF * Math.pow(2, attemptIndex),
       8000
     ),
-    staleTime: 24 * 60 * 60 * 1000, // Cache for 24 hours
-    gcTime: 24 * 60 * 60 * 1000, // Keep in garbage collection for 24 hours
+    staleTime: Infinity, // Never mark as stale since API key rarely changes
+    gcTime: Infinity, // Keep in cache indefinitely
     meta: {
       errorMessage: 'Failed to load Google Maps API key'
     }
