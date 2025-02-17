@@ -39,21 +39,23 @@ const GoogleMap = ({
   if (!apiKey) return <MapError error="Google Maps API key not found" />;
 
   return (
-    <ErrorBoundary FallbackComponent={MapError}>
-      <LoadScriptNext
-        googleMapsApiKey={apiKey}
-        libraries={libraries}
-        id="google-map-script"
-      >
-        <MapContainer
-          center={center}
-          zoom={zoom}
-          markers={visibleMarkers}
-          hoveredMarker={highlightedMarker}
-          onClick={onClick}
-        />
-      </LoadScriptNext>
-    </ErrorBoundary>
+    <div className="w-full h-full">
+      <ErrorBoundary FallbackComponent={MapError}>
+        <LoadScriptNext
+          googleMapsApiKey={apiKey}
+          libraries={libraries}
+          id="google-map-script"
+        >
+          <MapContainer
+            center={center}
+            zoom={zoom}
+            markers={visibleMarkers}
+            hoveredMarker={highlightedMarker}
+            onClick={onClick}
+          />
+        </LoadScriptNext>
+      </ErrorBoundary>
+    </div>
   );
 };
 
