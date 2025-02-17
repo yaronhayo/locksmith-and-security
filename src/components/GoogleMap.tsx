@@ -26,7 +26,7 @@ const GoogleMap = ({
   center = { lat: 40.7795, lng: -74.0324 },
   onClick
 }: GoogleMapProps) => {
-  const { apiKey, error, isLoading } = useMapConfig();
+  const { data: apiKey, error, isLoading } = useMapConfig();
 
   // Handle loading and error states
   if (isLoading) return <MapLoader />;

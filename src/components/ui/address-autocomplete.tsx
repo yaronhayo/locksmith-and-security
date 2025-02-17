@@ -21,7 +21,7 @@ const AddressAutocomplete = ({
 }: AddressAutocompleteProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const autocompleteRef = useRef<google.maps.places.Autocomplete | null>(null);
-  const { apiKey, error: apiKeyError } = useMapConfig();
+  const { data: apiKey, error: apiKeyError } = useMapConfig();
   const [scriptLoaded, setScriptLoaded] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
