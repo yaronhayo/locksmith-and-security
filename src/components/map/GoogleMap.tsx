@@ -1,6 +1,6 @@
 
 import { useMemo } from "react";
-import { LoadScript, Libraries } from "@react-google-maps/api";
+import { LoadScriptNext, Libraries } from "@react-google-maps/api";
 import { useMapConfig } from "@/hooks/useMap";
 import MapError from "./MapError";
 import MapLoader from "./MapLoader";
@@ -36,7 +36,8 @@ const GoogleMap = ({
     libraries,
     language: 'en',
     region: 'US',
-    loadingElement: <MapLoader />
+    loadingElement: <MapLoader />,
+    id: 'google-map-script'
   }), [apiKey]);
 
   if (loadError) {
@@ -61,7 +62,7 @@ const GoogleMap = ({
   return (
     <div className="w-full h-[400px] relative rounded-lg overflow-hidden shadow-md">
       <MapErrorBoundary>
-        <LoadScript {...loadScriptProps}>
+        <LoadScriptNext {...loadScriptProps}>
           <MapContainer
             center={center}
             zoom={zoom}
@@ -69,7 +70,7 @@ const GoogleMap = ({
             hoveredMarker={highlightedMarker}
             onClick={onClick}
           />
-        </LoadScript>
+        </LoadScriptNext>
       </MapErrorBoundary>
     </div>
   );
