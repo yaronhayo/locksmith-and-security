@@ -48,15 +48,15 @@ const MapContainer = ({
     handleMapLoad(mapInstance);
   }, [handleMapLoad, center, zoom]);
 
-  const onError = useCallback((error: Error) => {
-    console.error('Map instance error:', error);
-  }, []);
-
   useEffect(() => {
     if (map) {
       console.log('Updating map center and zoom:', { center, zoom });
-      map.setCenter(center);
-      map.setZoom(zoom);
+      try {
+        map.setCenter(center);
+        map.setZoom(zoom);
+      } catch (err) {
+        console.error('Error updating map:', err);
+      }
     }
   }, [map, center, zoom]);
 
@@ -68,7 +68,6 @@ const MapContainer = ({
       options={options}
       onClick={onClick}
       onLoad={onLoad}
-      onError={onError}
     >
       {markers && markers.length > 0 && (
         <MapMarkers 
