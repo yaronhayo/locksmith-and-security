@@ -52,14 +52,16 @@ const ServiceAreasSection = () => {
             setHoveredArea={setHoveredArea} 
           />
           
-          <div className="h-[600px] bg-white rounded-xl shadow-lg overflow-hidden">
-            <GoogleMap 
-              markers={mapMarkers}
-              highlightedMarker={hoveredArea}
-              showAllMarkers={true}
-              zoom={11}
-              center={{ lat: 40.7795, lng: -74.0324 }}
-            />
+          <div style={{ height: '600px', position: 'relative' }} className="bg-white rounded-xl shadow-lg overflow-hidden">
+            <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}>
+              <GoogleMap 
+                markers={mapMarkers}
+                highlightedMarker={hoveredArea}
+                showAllMarkers={true}
+                zoom={11}
+                center={{ lat: 40.7795, lng: -74.0324 }}
+              />
+            </div>
           </div>
         </div>
 

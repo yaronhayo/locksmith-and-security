@@ -37,21 +37,21 @@ const GoogleMap = ({
   if (apiKeyError) return <MapError error={apiKeyError.message} />;
   if (!apiKey) return <MapError error="Google Maps API key not found" />;
 
-  console.log('Rendering map with', visibleMarkers.length, 'markers');
-
   return (
-    <LoadScriptNext
-      googleMapsApiKey={apiKey}
-      libraries={libraries}
-    >
-      <MapContainer
-        center={center}
-        zoom={zoom}
-        markers={visibleMarkers}
-        hoveredMarker={highlightedMarker}
-        onClick={onClick}
-      />
-    </LoadScriptNext>
+    <div style={{ width: '100%', height: '100%' }}>
+      <LoadScriptNext
+        googleMapsApiKey={apiKey}
+        libraries={libraries}
+      >
+        <MapContainer
+          center={center}
+          zoom={zoom}
+          markers={visibleMarkers}
+          hoveredMarker={highlightedMarker}
+          onClick={onClick}
+        />
+      </LoadScriptNext>
+    </div>
   );
 };
 

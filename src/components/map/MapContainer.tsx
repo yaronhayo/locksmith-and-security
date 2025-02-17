@@ -33,7 +33,7 @@ const MapContainer = ({
 
   return (
     <GoogleMap
-      mapContainerStyle={{ width: '100%', height: '100%' }}
+      mapContainerStyle={{ width: '100%', height: '100%', position: 'relative' }}
       center={center}
       zoom={zoom}
       options={options}
