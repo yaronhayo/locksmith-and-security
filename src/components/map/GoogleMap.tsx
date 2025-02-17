@@ -6,7 +6,6 @@ import MapError from "./MapError";
 import MapLoader from "./MapLoader";
 import MapContainer from "./MapContainer";
 import { MapMarker } from "@/types/service-area";
-import { ErrorBoundary } from "react-error-boundary";
 
 const libraries: ("places")[] = ['places'];
 
@@ -38,24 +37,21 @@ const GoogleMap = ({
   if (apiKeyError) return <MapError error={apiKeyError.message} />;
   if (!apiKey) return <MapError error="Google Maps API key not found" />;
 
+  console.log('Rendering map with', visibleMarkers.length, 'markers');
+
   return (
-    <div className="w-full h-full">
-      <ErrorBoundary FallbackComponent={MapError}>
-        <LoadScriptNext
-          googleMapsApiKey={apiKey}
-          libraries={libraries}
-          id="google-map-script"
-        >
-          <MapContainer
-            center={center}
-            zoom={zoom}
-            markers={visibleMarkers}
-            hoveredMarker={highlightedMarker}
-            onClick={onClick}
-          />
-        </LoadScriptNext>
-      </ErrorBoundary>
-    </div>
+    <LoadScriptNext
+      googleMapsApiKey={apiKey}
+      libraries={libraries}
+    >
+      <MapContainer
+        center={center}
+        zoom={zoom}
+        markers={visibleMarkers}
+        hoveredMarker={highlightedMarker}
+        onClick={onClick}
+      />
+    </LoadScriptNext>
   );
 };
 

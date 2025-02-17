@@ -1,6 +1,5 @@
 
 import { useState } from 'react';
-import { motion } from 'framer-motion';
 import GoogleMap from '../map/GoogleMap';
 import AreasList from './service-areas/AreasList';
 import ServiceAreaFeatures from '../service-areas/shared/ServiceAreaFeatures';
@@ -38,20 +37,13 @@ const ServiceAreasSection = () => {
   return (
     <section className="py-20">
       <div className="container mx-auto px-4">
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="text-center mb-16"
-        >
-          <h1 className="text-4xl md:text-5xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/80">
-            Service Areas
-          </h1>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Professional locksmith services available throughout North Bergen and surrounding areas in New Jersey. 
-            Fast response times and reliable service, available 24/7 for your security needs.
-          </p>
-        </motion.div>
+        <h1 className="text-4xl md:text-5xl font-bold mb-6 text-center bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/80">
+          Service Areas
+        </h1>
+        <p className="text-lg text-gray-600 max-w-2xl mx-auto text-center mb-16">
+          Professional locksmith services available throughout North Bergen and surrounding areas in New Jersey. 
+          Fast response times and reliable service, available 24/7 for your security needs.
+        </p>
 
         <div className="grid lg:grid-cols-2 gap-12 mb-16">
           <AreasList 
@@ -60,16 +52,14 @@ const ServiceAreasSection = () => {
             setHoveredArea={setHoveredArea} 
           />
           
-          <div className="relative w-full min-h-[500px] bg-white rounded-xl shadow-lg overflow-hidden">
-            <div className="absolute inset-0">
-              <GoogleMap 
-                markers={mapMarkers}
-                highlightedMarker={hoveredArea}
-                showAllMarkers={true}
-                zoom={11}
-                center={{ lat: 40.7795, lng: -74.0324 }}
-              />
-            </div>
+          <div className="h-[600px] bg-white rounded-xl shadow-lg overflow-hidden">
+            <GoogleMap 
+              markers={mapMarkers}
+              highlightedMarker={hoveredArea}
+              showAllMarkers={true}
+              zoom={11}
+              center={{ lat: 40.7795, lng: -74.0324 }}
+            />
           </div>
         </div>
 

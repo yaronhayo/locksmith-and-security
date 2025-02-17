@@ -10,14 +10,7 @@ const MAP_OPTIONS = {
   streetViewControl: false,
   mapTypeControl: false,
   fullscreenControl: false,
-  gestureHandling: 'cooperative',
-  styles: [
-    {
-      featureType: "poi",
-      elementType: "labels",
-      stylers: [{ visibility: "off" }]
-    }
-  ]
+  gestureHandling: 'cooperative'
 };
 
 interface MapContainerProps {

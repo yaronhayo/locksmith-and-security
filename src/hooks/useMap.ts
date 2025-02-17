@@ -29,11 +29,10 @@ export const useMapConfig = () => {
         throw new Error('Google Maps API key not found');
       }
 
-      console.log('API key fetched successfully');
-      return data.value.toString();
-    },
-    staleTime: Infinity,
-    retry: false
+      const apiKey = data.value.toString().trim();
+      console.log('API key found:', apiKey.substring(0, 5) + '...');
+      return apiKey;
+    }
   });
 };
 
@@ -41,6 +40,7 @@ export const useMapInstance = ({ center, zoom }: MapConfig) => {
   const [map, setMap] = useState<google.maps.Map | null>(null);
 
   const onLoad = useCallback((mapInstance: google.maps.Map) => {
+    console.log('Map instance loaded');
     setMap(mapInstance);
   }, []);
 
