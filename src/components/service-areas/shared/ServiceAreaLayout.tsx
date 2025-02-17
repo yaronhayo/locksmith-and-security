@@ -8,23 +8,24 @@ import ServiceAreaFeatures from "./ServiceAreaFeatures";
 import { motion } from "framer-motion";
 import { createFAQSchema } from "@/components/meta/schema/FAQSchema";
 import { createRatingSchema } from "@/components/meta/schema/RatingSchema";
+import { useLocations } from "@/hooks/useLocations";
 
 interface ServiceAreaLayoutProps {
-  title: string;
-  description: string;
-  areaName: string;
-  schema?: object;
+  areaSlug: string;
 }
 
-const ServiceAreaLayout = ({ title, description, areaName, schema }: ServiceAreaLayoutProps) => {
-  const { data: settings, isLoading } = useSettings();
+const ServiceAreaLayout = ({ areaSlug }: ServiceAreaLayoutProps) => {
+  const { data: settings, isLoading: settingsLoading } = useSettings();
+  const { data: locations, isLoading: locationsLoading } = useLocations();
+
+  const location = locations?.find(loc => loc.slug === areaSlug);
 
   // Add schema data
   const faqSchema = createFAQSchema({
     questions: [
       {
-        question: `What areas of ${areaName} do you serve?`,
-        answer: `We provide comprehensive locksmith services throughout all of ${areaName}, NJ and surrounding areas.`
+        question: `What areas of ${location?.name || ''} do you serve?`,
+        answer: `We provide comprehensive locksmith services throughout all of ${location?.name || ''}, NJ and surrounding areas.`
       },
       {
         question: "Are you available 24/7 for emergencies?",
@@ -43,12 +44,16 @@ const ServiceAreaLayout = ({ title, description, areaName, schema }: ServiceArea
     name: settings?.company_name || "Locksmith & Security LLC"
   });
 
-  const schemas = [faqSchema, ratingSchema, schema].filter(Boolean);
+  const schemas = [faqSchema, ratingSchema].filter(Boolean);
+
+  if (!location) {
+    return null; // Or a 404 component
+  }
 
   return (
     <PageLayout
-      title={title}
-      description={description}
+      title={location.title}
+      description={location.description}
       schema={schemas}
       className="py-12 md:py-20"
     >
@@ -59,8 +64,8 @@ const ServiceAreaLayout = ({ title, description, areaName, schema }: ServiceArea
         transition={{ duration: 0.5 }}
       >
         <div className="grid gap-12 md:gap-20">
-          <ServiceAreaHero areaName={areaName} isLoading={isLoading} />
-          <ServicesList areaName={areaName} />
+          <ServiceAreaHero areaName={location.name} isLoading={settingsLoading || locationsLoading} />
+          <ServicesList areaName={location.name} />
           <ServiceAreaFeatures />
         </div>
       </motion.div>
