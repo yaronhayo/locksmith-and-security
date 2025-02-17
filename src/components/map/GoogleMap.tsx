@@ -26,13 +26,6 @@ const mapContainerStyle = {
   borderRadius: "0.5rem"
 } as const;
 
-// Define LoadScript options outside component to prevent recreation
-const loadScriptOptions = {
-  language: 'en',
-  region: 'US',
-  libraries,
-};
-
 const GoogleMap = ({
   markers = [],
   highlightedMarker = null,
@@ -70,7 +63,7 @@ const GoogleMap = ({
       <MapErrorBoundary>
         <LoadScript 
           googleMapsApiKey={apiKey}
-          {...loadScriptOptions}
+          libraries={libraries}
         >
           <GoogleMapComponent
             mapContainerStyle={mapContainerStyle}

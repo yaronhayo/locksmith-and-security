@@ -8,23 +8,29 @@ const INITIAL_BACKOFF = 1000;
 const fetchMapApiKey = async () => {
   console.log('Fetching Google Maps API key from settings table');
   
-  const { data, error } = await supabase
-    .from('settings')
-    .select('value')
-    .eq('key', 'GOOGLE_MAPS_API_KEY')
-    .single();
+  try {
+    const { data, error } = await supabase
+      .from('settings')
+      .select('value')
+      .eq('key', 'GOOGLE_MAPS_API_KEY')
+      .single();
 
-  if (error) {
-    console.error('Error fetching API key:', error);
-    throw new Error(`Failed to fetch Google Maps API key: ${error.message}`);
+    if (error) {
+      console.error('Error fetching API key:', error);
+      throw new Error(`Failed to fetch Google Maps API key: ${error.message}`);
+    }
+
+    if (!data?.value) {
+      console.error('No API key found in settings table');
+      throw new Error('Google Maps API key not found in settings');
+    }
+
+    console.log('Successfully fetched Maps API key');
+    return data.value;
+  } catch (error) {
+    console.error('Error in fetchMapApiKey:', error);
+    throw error;
   }
-
-  if (!data?.value) {
-    console.error('No API key found in settings table');
-    throw new Error('Google Maps API key not found in settings');
-  }
-
-  return data.value;
 };
 
 export const useMapConfig = () => {
@@ -37,11 +43,7 @@ export const useMapConfig = () => {
   } = useQuery({
     queryKey: ['mapApiKey'],
     queryFn: fetchMapApiKey,
-    retry: MAX_RETRIES,
-    retryDelay: (attemptIndex) => Math.min(
-      INITIAL_BACKOFF * Math.pow(2, attemptIndex),
-      8000
-    ),
+    retry: false, // Don't retry automatically, let user retry manually
     staleTime: Infinity, // Never mark as stale since API key rarely changes
     gcTime: Infinity, // Keep in cache indefinitely
     meta: {
