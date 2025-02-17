@@ -3,17 +3,14 @@ import { GoogleMap } from "@react-google-maps/api";
 import { useMapInstance } from "@/hooks/useMap";
 import MapMarkers from "./MapMarkers";
 import { MapMarker } from "@/types/service-area";
-import { useCallback, useMemo } from "react";
+import { useMemo } from "react";
 
 const MAP_OPTIONS = {
-  disableDefaultUI: false,
   zoomControl: true,
   streetViewControl: false,
   mapTypeControl: false,
   fullscreenControl: false,
-  gestureHandling: 'cooperative',
-  noClear: true,
-  clickableIcons: false
+  gestureHandling: 'cooperative'
 } as const;
 
 const MAP_CONTAINER_STYLE = {
@@ -37,13 +34,8 @@ const MapContainer = ({
   hoveredMarker,
   onClick,
 }: MapContainerProps) => {
-  const { map, handleMapLoad } = useMapInstance({ center, zoom });
-
+  const { map, onLoad } = useMapInstance({ center, zoom });
   const options = useMemo(() => MAP_OPTIONS, []);
-
-  const onLoad = useCallback((mapInstance: google.maps.Map) => {
-    handleMapLoad(mapInstance);
-  }, [handleMapLoad]);
 
   return (
     <GoogleMap
