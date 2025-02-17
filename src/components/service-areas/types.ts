@@ -1,9 +1,13 @@
+
 import { LucideIcon } from 'lucide-react';
 
-export interface ServiceAreaFeature {
-  icon: LucideIcon;
-  title: string;
+export interface ServiceAreaLocation {
+  name: string;
+  slug: string;
   description: string;
+  lat: number;
+  lng: number;
+  title: string;
 }
 
 export interface ServiceAreaService {
@@ -14,10 +18,8 @@ export interface ServiceAreaService {
   features: string[];
 }
 
-export interface ServiceAreaLocation {
-  name: string;
-  slug: string;
+export interface ServiceAreaFeature {
+  icon: LucideIcon;
+  title: string;
   description: string;
-  lat: number;
-  lng: number;
 }
