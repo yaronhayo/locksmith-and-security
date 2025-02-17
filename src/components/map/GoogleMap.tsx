@@ -1,6 +1,6 @@
 
 import { useMemo } from "react";
-import { LoadScript, Libraries } from "@react-google-maps/api";
+import { useLoadScript } from "@react-google-maps/api";
 import { useMapConfig } from "@/hooks/useMap";
 import MapError from "./MapError";
 import MapLoader from "./MapLoader";
@@ -8,7 +8,7 @@ import MapContainer from "./MapContainer";
 import { MapMarker } from "@/types/service-area";
 import { ErrorBoundary } from "react-error-boundary";
 
-const libraries: Libraries = ['places'];
+const libraries: ("places")[] = ['places'];
 
 interface GoogleMapProps {
   markers?: MapMarker[];
@@ -31,34 +31,34 @@ const GoogleMap = ({
   center = { lat: 40.7795, lng: -74.0324 },
   onClick
 }: GoogleMapProps) => {
-  const { apiKey, error, isLoading } = useMapConfig();
-  
-  const scriptOptions = useMemo(() => ({
+  const { apiKey, error: apiKeyError, isLoading: isLoadingKey } = useMapConfig();
+
+  const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: apiKey || '',
     libraries,
-  }), [apiKey]);
+  });
 
   const visibleMarkers = useMemo(() => 
     showAllMarkers ? markers : markers.filter(m => m.slug === highlightedMarker),
     [markers, showAllMarkers, highlightedMarker]
   );
 
-  if (isLoading) return <MapLoader />;
-  if (error) return <MapError error={error.message} />;
+  if (isLoadingKey) return <MapLoader />;
+  if (apiKeyError) return <MapError error="Failed to load Google Maps API key" />;
   if (!apiKey) return <MapError error="Google Maps API key not found" />;
+  if (loadError) return <MapError error="Failed to load Google Maps" />;
+  if (!isLoaded) return <MapLoader />;
 
   return (
     <div className="w-full h-[400px] relative rounded-lg overflow-hidden shadow-md">
       <ErrorBoundary FallbackComponent={MapErrorFallback}>
-        <LoadScript {...scriptOptions}>
-          <MapContainer
-            center={center}
-            zoom={zoom}
-            markers={visibleMarkers}
-            hoveredMarker={highlightedMarker}
-            onClick={onClick}
-          />
-        </LoadScript>
+        <MapContainer
+          center={center}
+          zoom={zoom}
+          markers={visibleMarkers}
+          hoveredMarker={highlightedMarker}
+          onClick={onClick}
+        />
       </ErrorBoundary>
     </div>
   );
