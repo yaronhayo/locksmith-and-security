@@ -33,6 +33,13 @@ const GoogleMap = ({
 }: GoogleMapProps) => {
   const { data: apiKey, error: apiKeyError, isLoading } = useMapConfig();
 
+  console.log('Map component render:', { 
+    hasApiKey: !!apiKey, 
+    isLoading, 
+    hasError: !!apiKeyError,
+    markerCount: markers.length 
+  });
+
   const visibleMarkers = useMemo(() => 
     showAllMarkers ? markers : markers.filter(m => m.slug === highlightedMarker),
     [markers, showAllMarkers, highlightedMarker]

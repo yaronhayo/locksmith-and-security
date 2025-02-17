@@ -10,18 +10,26 @@ interface MapConfig {
 
 export const useMapConfig = () => {
   return useQuery({
-    queryKey: ['GOOGLE_MAPS_API_KEY'],
+    queryKey: ['google-maps-api-key'],
     queryFn: async () => {
+      console.log('Fetching Google Maps API key...');
       const { data, error } = await supabase
         .from('settings')
         .select('value')
         .eq('key', 'GOOGLE_MAPS_API_KEY')
-        .maybeSingle();
+        .single();
 
-      if (error) throw error;
+      if (error) {
+        console.error('Error fetching API key:', error);
+        throw error;
+      }
+      
       if (!data?.value) {
+        console.error('No API key found in settings');
         throw new Error('Google Maps API key not found');
       }
+
+      console.log('API key fetched successfully');
       return data.value;
     },
     staleTime: Infinity,
