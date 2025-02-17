@@ -50,7 +50,7 @@ export const useMapConfig = () => {
       INITIAL_BACKOFF * Math.pow(2, attemptIndex),
       8000
     ),
-    staleTime: 5 * 60 * 1000, // Cache for 5 minutes instead of 24 hours
+    staleTime: 5 * 60 * 1000, // Cache for 5 minutes
     gcTime: 10 * 60 * 1000, // Garbage collect after 10 minutes
     meta: {
       errorMessage: 'Failed to load Google Maps API key'
@@ -69,6 +69,8 @@ export const useMapConfig = () => {
   };
 };
 
+let scriptLoadPromise: Promise<void> | null = null;
+
 export const useMapScript = (apiKey: string) => {
   const [scriptState, setScriptState] = useState({
     isLoaded: false,
@@ -79,7 +81,7 @@ export const useMapScript = (apiKey: string) => {
   useEffect(() => {
     let mounted = true;
 
-    const initializeScript = () => {
+    const loadScript = async () => {
       if (!apiKey) {
         console.error('No API key provided to useMapScript');
         if (mounted) {
@@ -91,56 +93,78 @@ export const useMapScript = (apiKey: string) => {
         return;
       }
 
-      console.log('Initializing Google Maps script with key length:', apiKey.length);
-      
-      // Remove any existing script to ensure clean loading
-      const existingScript = document.querySelector(`script[src*="maps.googleapis.com"]`);
-      if (existingScript) {
-        console.log('Removing existing Google Maps script');
-        existingScript.remove();
-        
-        // Clear any existing Google Maps objects
-        if (window.google?.maps) {
-          // @ts-ignore - Reset Google Maps object
-          window.google.maps = undefined;
+      // If script is already loading, wait for it
+      if (scriptLoadPromise) {
+        try {
+          await scriptLoadPromise;
+          if (mounted) {
+            setScriptState({
+              isLoaded: true,
+              loadError: null,
+              placesInitialized: !!window.google?.maps?.places
+            });
+          }
+          return;
+        } catch (error) {
+          console.error('Error waiting for existing script load:', error);
         }
       }
 
-      const script = document.createElement('script');
-      script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places`;
-      script.async = true;
-      script.defer = true;
-
-      const handleLoad = () => {
-        console.log('Google Maps script loaded successfully');
-        if (mounted) {
-          setScriptState({
-            isLoaded: true,
-            loadError: null,
-            placesInitialized: !!window.google?.maps?.places
-          });
+      // Remove any existing script
+      const existingScript = document.querySelector('script[src*="maps.googleapis.com"]');
+      if (existingScript) {
+        existingScript.remove();
+        if (window.google?.maps) {
+          delete window.google.maps;
         }
-      };
+      }
 
-      const handleError = () => {
-        const error = 'Failed to load Google Maps script';
-        console.error(error);
-        if (mounted) {
-          setScriptState({
-            isLoaded: false,
-            loadError: error,
-            placesInitialized: false
-          });
-        }
-      };
+      // Create new load promise
+      scriptLoadPromise = new Promise((resolve, reject) => {
+        const script = document.createElement('script');
+        script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places&loading=async&callback=initMap`;
+        script.async = true;
+        script.defer = true;
+        script.crossOrigin = "anonymous";
 
-      script.addEventListener('load', handleLoad);
-      script.addEventListener('error', handleError);
+        // Define callback
+        window.initMap = () => {
+          console.log('Google Maps initialized successfully');
+          if (mounted) {
+            setScriptState({
+              isLoaded: true,
+              loadError: null,
+              placesInitialized: !!window.google?.maps?.places
+            });
+          }
+          resolve();
+        };
 
-      document.head.appendChild(script);
+        script.onerror = (error) => {
+          console.error('Google Maps script failed to load:', error);
+          if (mounted) {
+            setScriptState({
+              isLoaded: false,
+              loadError: 'Failed to load Google Maps script',
+              placesInitialized: false
+            });
+          }
+          reject(error);
+          scriptLoadPromise = null;
+        };
+
+        document.head.appendChild(script);
+      });
+
+      try {
+        await scriptLoadPromise;
+      } catch (error) {
+        console.error('Error loading Google Maps script:', error);
+        scriptLoadPromise = null;
+      }
     };
 
-    initializeScript();
+    loadScript();
 
     return () => {
       mounted = false;
@@ -175,3 +199,10 @@ export const useMapInstance = ({ center, zoom }: MapConfig) => {
 
   return { map, error, handleMapLoad };
 };
+
+// Add type definition for window object
+declare global {
+  interface Window {
+    initMap: () => void;
+  }
+}
