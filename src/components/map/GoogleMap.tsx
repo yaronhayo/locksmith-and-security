@@ -19,10 +19,6 @@ interface GoogleMapProps {
   onClick?: (e: google.maps.MapMouseEvent) => void;
 }
 
-const MapErrorFallback = ({ error }: { error: Error }) => (
-  <MapError error={error.message || 'An error occurred loading the map'} />
-);
-
 const GoogleMap = ({
   markers = [],
   highlightedMarker = null,
@@ -32,13 +28,6 @@ const GoogleMap = ({
   onClick
 }: GoogleMapProps) => {
   const { data: apiKey, error: apiKeyError, isLoading } = useMapConfig();
-
-  console.log('Map component render:', { 
-    hasApiKey: !!apiKey, 
-    isLoading, 
-    hasError: !!apiKeyError,
-    markerCount: markers.length 
-  });
 
   const visibleMarkers = useMemo(() => 
     showAllMarkers ? markers : markers.filter(m => m.slug === highlightedMarker),
@@ -50,23 +39,21 @@ const GoogleMap = ({
   if (!apiKey) return <MapError error="Google Maps API key not found" />;
 
   return (
-    <div className="absolute inset-0">
-      <ErrorBoundary FallbackComponent={MapErrorFallback}>
-        <LoadScriptNext
-          googleMapsApiKey={apiKey}
-          libraries={libraries}
-          id="google-map-script"
-        >
-          <MapContainer
-            center={center}
-            zoom={zoom}
-            markers={visibleMarkers}
-            hoveredMarker={highlightedMarker}
-            onClick={onClick}
-          />
-        </LoadScriptNext>
-      </ErrorBoundary>
-    </div>
+    <ErrorBoundary FallbackComponent={MapError}>
+      <LoadScriptNext
+        googleMapsApiKey={apiKey}
+        libraries={libraries}
+        id="google-map-script"
+      >
+        <MapContainer
+          center={center}
+          zoom={zoom}
+          markers={visibleMarkers}
+          hoveredMarker={highlightedMarker}
+          onClick={onClick}
+        />
+      </LoadScriptNext>
+    </ErrorBoundary>
   );
 };
 

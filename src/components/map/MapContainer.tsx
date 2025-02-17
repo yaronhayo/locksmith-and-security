@@ -20,11 +20,6 @@ const MAP_OPTIONS = {
   ]
 };
 
-const MAP_CONTAINER_STYLE = {
-  width: "100%",
-  height: "100%",
-} as const;
-
 interface MapContainerProps {
   center: { lat: number; lng: number };
   zoom: number;
@@ -43,16 +38,9 @@ const MapContainer = ({
   const { map, onLoad } = useMapInstance({ center, zoom });
   const options = useMemo(() => MAP_OPTIONS, []);
 
-  console.log('MapContainer render:', {
-    hasCenter: !!center,
-    zoom,
-    markerCount: markers.length,
-    mapInstance: !!map
-  });
-
   return (
     <GoogleMap
-      mapContainerStyle={MAP_CONTAINER_STYLE}
+      mapContainerStyle={{ width: '100%', height: '100%' }}
       center={center}
       zoom={zoom}
       options={options}

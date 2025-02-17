@@ -30,7 +30,7 @@ export const useMapConfig = () => {
       }
 
       console.log('API key fetched successfully');
-      return data.value;
+      return data.value.toString();
     },
     staleTime: Infinity,
     retry: false

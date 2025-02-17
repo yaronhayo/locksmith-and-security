@@ -11,13 +11,6 @@ import LoadingSpinner from '../LoadingSpinner';
 const ServiceAreasSection = () => {
   const [hoveredArea, setHoveredArea] = useState<string | null>(null);
   const { data: locations, isLoading, error } = useLocations();
-  
-  console.log('ServiceAreasSection render:', {
-    hasLocations: !!locations,
-    locationCount: locations?.length,
-    isLoading,
-    hasError: !!error
-  });
 
   if (isLoading) {
     return (
@@ -41,8 +34,6 @@ const ServiceAreasSection = () => {
     title: location.name,
     slug: location.slug
   })) || [];
-
-  console.log('Map markers:', mapMarkers);
 
   return (
     <section className="py-20">
@@ -69,12 +60,7 @@ const ServiceAreasSection = () => {
             setHoveredArea={setHoveredArea} 
           />
           
-          <motion.div 
-            initial={{ opacity: 0, x: 20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5 }}
-            className="relative w-full h-[500px] bg-white rounded-xl shadow-lg overflow-hidden"
-          >
+          <div className="h-[500px] bg-white rounded-xl shadow-lg overflow-hidden">
             <GoogleMap 
               markers={mapMarkers}
               highlightedMarker={hoveredArea}
@@ -82,7 +68,7 @@ const ServiceAreasSection = () => {
               zoom={11}
               center={{ lat: 40.7795, lng: -74.0324 }}
             />
-          </motion.div>
+          </div>
         </div>
 
         <ServiceAreaFeatures />
