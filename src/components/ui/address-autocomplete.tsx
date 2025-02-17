@@ -21,11 +21,10 @@ const AddressAutocomplete = ({
 }: AddressAutocompleteProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const autocompleteRef = useRef<google.maps.places.Autocomplete | null>(null);
-  const { apiKey, loadError: apiKeyError } = useMapConfig();
+  const { apiKey, error: apiKeyError } = useMapConfig();
   const [scriptLoaded, setScriptLoaded] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // Load Google Maps script if not already loaded
   useEffect(() => {
     if (!apiKey || scriptLoaded) return;
 
@@ -33,15 +32,12 @@ const AddressAutocomplete = ({
     script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places`;
     script.async = true;
     script.onload = () => {
-      console.log('Google Maps script loaded in AddressAutocomplete');
       setScriptLoaded(true);
     };
     script.onerror = () => {
-      console.error('Failed to load Google Maps script in AddressAutocomplete');
       setError('Failed to load address autocomplete service');
     };
 
-    // Only add the script if it's not already present
     if (!document.querySelector(`script[src*="maps.googleapis.com"]`)) {
       document.head.appendChild(script);
     } else {
@@ -53,17 +49,14 @@ const AddressAutocomplete = ({
     };
   }, [apiKey]);
 
-  // Initialize autocomplete once script is loaded
   useEffect(() => {
     if (!inputRef.current || !scriptLoaded || !window.google?.maps?.places) return;
 
     try {
-      // Clean up existing instance if it exists
       if (autocompleteRef.current) {
         google.maps.event.clearInstanceListeners(autocompleteRef.current);
       }
 
-      // Create new instance
       autocompleteRef.current = new window.google.maps.places.Autocomplete(
         inputRef.current,
         {
@@ -73,7 +66,6 @@ const AddressAutocomplete = ({
         }
       );
 
-      // Add place changed listener
       const listener = autocompleteRef.current.addListener(
         "place_changed",
         () => {
@@ -93,12 +85,10 @@ const AddressAutocomplete = ({
         }
       };
     } catch (err) {
-      console.error('Error initializing autocomplete:', err);
       setError(err instanceof Error ? err.message : 'Failed to initialize address autocomplete');
     }
   }, [scriptLoaded, onChange]);
 
-  // Prevent form submission on Enter key
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Enter' && autocompleteRef.current) {
@@ -120,7 +110,7 @@ const AddressAutocomplete = ({
     setError(null);
   };
 
-  const displayError = error || apiKeyError;
+  const displayError = error || (apiKeyError?.message ?? null);
   const isLoading = !scriptLoaded && !displayError;
 
   return (
