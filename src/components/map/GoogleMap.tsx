@@ -32,21 +32,24 @@ const GoogleMap = ({
   onClick
 }: GoogleMapProps) => {
   const { apiKey, error, isLoading } = useMapConfig();
-
-  // Handle loading and error states
-  if (isLoading) return <MapLoader />;
-  if (error) return <MapError error={error.message} />;
-  if (!apiKey) return <MapError error="No API key available" />;
-
-  const visibleMarkers = showAllMarkers ? markers : markers.filter(m => m.slug === highlightedMarker);
-
-  // Memoize script options to prevent unnecessary reloads
+  
+  // Always call useMemo, regardless of conditions
   const scriptOptions = useMemo(() => ({
     googleMapsApiKey: apiKey,
     libraries,
     language: 'en',
     region: 'US'
   }), [apiKey]);
+
+  const visibleMarkers = useMemo(() => 
+    showAllMarkers ? markers : markers.filter(m => m.slug === highlightedMarker),
+    [markers, showAllMarkers, highlightedMarker]
+  );
+
+  // Handle loading and error states
+  if (isLoading) return <MapLoader />;
+  if (error) return <MapError error={error.message} />;
+  if (!apiKey) return <MapError error="No API key available" />;
 
   return (
     <div className="w-full h-[400px] relative rounded-lg overflow-hidden shadow-md">
