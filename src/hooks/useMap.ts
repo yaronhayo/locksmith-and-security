@@ -25,6 +25,7 @@ const fetchMapApiKey = async () => {
       throw new Error('Google Maps API key not found in settings');
     }
 
+    console.log('Successfully fetched API key');
     return data.value;
   } catch (error) {
     console.error('Error in fetchMapApiKey:', error);
@@ -53,26 +54,43 @@ export const useMapConfig = () => {
   });
 
   useEffect(() => {
-    if (!apiKey || isScriptLoaded || isScriptLoading) return;
+    if (!apiKey || isScriptLoaded || isScriptLoading) {
+      console.log('Script loading conditions not met:', {
+        hasApiKey: !!apiKey,
+        isScriptLoaded,
+        isScriptLoading
+      });
+      return;
+    }
 
     const loadScript = () => {
       isScriptLoading = true;
       console.log('Loading Google Maps script with key:', apiKey.substring(0, 8) + '...');
 
+      // Remove any existing Google Maps scripts
+      const existingScript = document.querySelector('script[src*="maps.googleapis.com"]');
+      if (existingScript) {
+        console.log('Removing existing Google Maps script');
+        existingScript.remove();
+        // Reset the global google object
+        (window as any).google = undefined;
+      }
+
       const script = document.createElement('script');
-      script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places`;
+      script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places&callback=initMap`;
       script.async = true;
       script.defer = true;
 
-      script.onload = () => {
-        console.log('Google Maps script loaded successfully');
+      // Define callback function
+      (window as any).initMap = () => {
+        console.log('Google Maps initialization callback triggered');
         isScriptLoaded = true;
         isScriptLoading = false;
         if (window.google?.maps) {
           console.log('Google Maps object is available');
           setGoogleLoaded(true);
         } else {
-          const error = 'Google Maps object not available after script load';
+          const error = 'Google Maps object not available after initialization';
           console.error(error);
           setScriptError(error);
         }
@@ -85,6 +103,7 @@ export const useMapConfig = () => {
         isScriptLoading = false;
       };
 
+      console.log('Appending Google Maps script to document head');
       document.head.appendChild(script);
     };
 
