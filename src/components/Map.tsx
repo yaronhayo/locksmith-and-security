@@ -1,7 +1,7 @@
 
 import { useMemo } from "react";
 import { LoadScript, Libraries } from "@react-google-maps/api";
-import { useMapConfig, useMapScript } from "@/hooks/useMap";
+import { useMapConfig } from "@/hooks/useMap";
 import MapError from "./map/MapError";
 import MapLoader from "./map/MapLoader";
 import MapContainer from "./map/MapContainer";
@@ -28,15 +28,13 @@ const Map = ({
 }: MapProps) => {
   const { apiKey, loadError, isRetrying, retryCount, fetchApiKey } = useMapConfig();
 
-  // Memoize the center to prevent unnecessary re-renders
-  const mapCenter = useMemo(() => center, [center.lat, center.lng]);
-
   // Memoize LoadScript props
   const loadScriptProps = useMemo(() => ({
     googleMapsApiKey: apiKey || '',
     libraries,
     language: 'en',
     region: 'US',
+    version: 'weekly'
   }), [apiKey]);
 
   if (loadError) {
@@ -59,9 +57,9 @@ const Map = ({
   return (
     <div className="w-full h-[400px] relative rounded-lg overflow-hidden shadow-md">
       <MapErrorBoundary>
-        <LoadScript {...loadScriptProps} loadingElement={<MapLoader />}>
+        <LoadScript {...loadScriptProps}>
           <MapContainer
-            center={mapCenter}
+            center={center}
             zoom={zoom}
             markers={markers}
             hoveredMarker={hoveredMarker}
