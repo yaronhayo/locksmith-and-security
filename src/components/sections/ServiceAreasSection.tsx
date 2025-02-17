@@ -12,6 +12,13 @@ const ServiceAreasSection = () => {
   const [hoveredArea, setHoveredArea] = useState<string | null>(null);
   const { data: locations, isLoading, error } = useLocations();
   
+  console.log('ServiceAreasSection render:', {
+    hasLocations: !!locations,
+    locationCount: locations?.length,
+    isLoading,
+    hasError: !!error
+  });
+
   if (isLoading) {
     return (
       <div className="flex justify-center items-center min-h-[400px]">
@@ -34,6 +41,8 @@ const ServiceAreasSection = () => {
     title: location.name,
     slug: location.slug
   })) || [];
+
+  console.log('Map markers:', mapMarkers);
 
   return (
     <section className="py-20">
@@ -64,7 +73,7 @@ const ServiceAreasSection = () => {
             initial={{ opacity: 0, x: 20 }}
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5 }}
-            className="bg-white rounded-xl shadow-lg overflow-hidden"
+            className="bg-white rounded-xl shadow-lg overflow-hidden h-[400px]"
           >
             <GoogleMap 
               markers={mapMarkers}

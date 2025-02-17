@@ -10,7 +10,14 @@ const MAP_OPTIONS = {
   streetViewControl: false,
   mapTypeControl: false,
   fullscreenControl: false,
-  gestureHandling: 'cooperative'
+  gestureHandling: 'cooperative',
+  styles: [
+    {
+      featureType: "poi",
+      elementType: "labels",
+      stylers: [{ visibility: "off" }]
+    }
+  ]
 } as const;
 
 const MAP_CONTAINER_STYLE = {
@@ -35,6 +42,13 @@ const MapContainer = ({
 }: MapContainerProps) => {
   const { map, onLoad } = useMapInstance({ center, zoom });
   const options = useMemo(() => MAP_OPTIONS, []);
+
+  console.log('MapContainer render:', {
+    hasCenter: !!center,
+    zoom,
+    markerCount: markers.length,
+    mapInstance: !!map
+  });
 
   return (
     <GoogleMap
