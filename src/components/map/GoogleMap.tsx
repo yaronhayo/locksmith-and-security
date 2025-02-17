@@ -1,6 +1,6 @@
 
-import { useMemo, useCallback, useRef } from "react";
-import { GoogleMap as GoogleMapComponent, LoadScript, LoadScriptNext } from "@react-google-maps/api";
+import { useMemo, useCallback } from "react";
+import { GoogleMap as GoogleMapComponent, LoadScript } from "@react-google-maps/api";
 import { useMapConfig } from "@/hooks/useMap";
 import MapError from "./MapError";
 import MapLoader from "./MapLoader";
@@ -40,7 +40,6 @@ const GoogleMap = ({
   onClick
 }: GoogleMapProps) => {
   const { data: apiKey, error: apiKeyError, isLoading } = useMapConfig();
-  const scriptLoadingAttempted = useRef(false);
 
   const visibleMarkers = useMemo(() => 
     showAllMarkers ? markers : markers.filter(m => m.slug === highlightedMarker),
@@ -51,47 +50,15 @@ const GoogleMap = ({
     console.log('Map loaded successfully');
   }, []);
 
-  const onUnmountCallback = useCallback(() => {
-    scriptLoadingAttempted.current = false;
-  }, []);
-
   if (isLoading) return <MapLoader />;
   if (apiKeyError) return <MapError error={apiKeyError.message} />;
   if (!apiKey) return <MapError error="Google Maps API key not found" />;
 
-  // Check if Google Maps script is already loaded
-  if (window.google?.maps && !scriptLoadingAttempted.current) {
-    return (
-      <div className="w-full h-full relative">
-        <GoogleMapComponent
-          mapContainerStyle={containerStyle}
-          center={center}
-          zoom={zoom}
-          options={mapOptions}
-          onClick={onClick}
-          onLoad={onLoadCallback}
-          onUnmount={onUnmountCallback}
-        >
-          {visibleMarkers.map((marker, index) => (
-            <MapMarkers
-              key={`${marker.slug || ''}-${index}`}
-              markers={[marker]}
-              hoveredMarker={highlightedMarker}
-            />
-          ))}
-        </GoogleMapComponent>
-      </div>
-    );
-  }
-
-  scriptLoadingAttempted.current = true;
-
   return (
     <div className="w-full h-full relative">
-      <LoadScriptNext 
+      <LoadScript 
         googleMapsApiKey={apiKey} 
         libraries={libraries}
-        loadingElement={<MapLoader />}
       >
         <GoogleMapComponent
           mapContainerStyle={containerStyle}
@@ -100,7 +67,6 @@ const GoogleMap = ({
           options={mapOptions}
           onClick={onClick}
           onLoad={onLoadCallback}
-          onUnmount={onUnmountCallback}
         >
           {visibleMarkers.map((marker, index) => (
             <MapMarkers
@@ -110,7 +76,7 @@ const GoogleMap = ({
             />
           ))}
         </GoogleMapComponent>
-      </LoadScriptNext>
+      </LoadScript>
     </div>
   );
 };
