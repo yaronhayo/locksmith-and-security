@@ -41,7 +41,16 @@ const MapContainer = ({
   const options = useMemo(() => ({
     ...MAP_OPTIONS,
     noClear: true, // Prevent map from being cleared between renders
-    clickableIcons: false // Disable POI clicks
+    clickableIcons: false, // Disable POI clicks
+    restriction: {
+      latLngBounds: {
+        north: 41.0,
+        south: 40.5,
+        east: -73.8,
+        west: -74.3,
+      },
+      strictBounds: true
+    }
   }), []);
 
   const onLoad = useCallback((mapInstance: google.maps.Map) => {
@@ -51,7 +60,6 @@ const MapContainer = ({
 
   useEffect(() => {
     if (map) {
-      console.log('Updating map center and zoom:', { center, zoom });
       map.setCenter(center);
       map.setZoom(zoom);
     }
