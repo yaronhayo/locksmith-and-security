@@ -18,7 +18,7 @@ const MAP_OPTIONS = {
       stylers: [{ visibility: "off" }]
     }
   ]
-} as const;
+};
 
 const MAP_CONTAINER_STYLE = {
   width: "100%",
