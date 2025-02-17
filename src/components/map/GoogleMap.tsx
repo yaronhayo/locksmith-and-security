@@ -1,13 +1,21 @@
 
 import { useMemo } from "react";
-import { LoadScriptNext } from "@react-google-maps/api";
+import { LoadScriptNext, GoogleMap as GoogleMapComponent } from "@react-google-maps/api";
 import { useMapConfig } from "@/hooks/useMap";
 import MapError from "./MapError";
 import MapLoader from "./MapLoader";
-import MapContainer from "./MapContainer";
+import MapMarkers from "./MapMarkers";
 import { MapMarker } from "@/types/service-area";
 
 const libraries: ("places")[] = ['places'];
+
+const mapOptions = {
+  zoomControl: true,
+  streetViewControl: false,
+  mapTypeControl: false,
+  fullscreenControl: false,
+  gestureHandling: 'cooperative'
+};
 
 interface GoogleMapProps {
   markers?: MapMarker[];
@@ -37,19 +45,26 @@ const GoogleMap = ({
   if (apiKeyError) return <MapError error={apiKeyError.message} />;
   if (!apiKey) return <MapError error="Google Maps API key not found" />;
 
+  console.log('Rendering map with API key:', apiKey.substring(0, 10) + '...');
+
   return (
-    <div style={{ width: '100%', height: '100%' }}>
-      <LoadScriptNext
-        googleMapsApiKey={apiKey}
-        libraries={libraries}
-      >
-        <MapContainer
+    <div className="w-full h-full">
+      <LoadScriptNext googleMapsApiKey={apiKey} libraries={libraries}>
+        <GoogleMapComponent
+          mapContainerClassName="w-full h-full"
           center={center}
           zoom={zoom}
-          markers={visibleMarkers}
-          hoveredMarker={highlightedMarker}
+          options={mapOptions}
           onClick={onClick}
-        />
+        >
+          {visibleMarkers.map((marker, index) => (
+            <MapMarkers
+              key={`${marker.slug || ''}-${index}`}
+              markers={[marker]}
+              hoveredMarker={highlightedMarker}
+            />
+          ))}
+        </GoogleMapComponent>
       </LoadScriptNext>
     </div>
   );

@@ -1,12 +1,6 @@
 
-import { useState, useCallback, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
-
-interface MapConfig {
-  center: { lat: number; lng: number };
-  zoom: number;
-}
 
 export const useMapConfig = () => {
   return useQuery({
@@ -32,24 +26,7 @@ export const useMapConfig = () => {
       const apiKey = data.value.toString().trim();
       console.log('API key found:', apiKey.substring(0, 5) + '...');
       return apiKey;
-    }
+    },
+    staleTime: Infinity // API key won't change often
   });
-};
-
-export const useMapInstance = ({ center, zoom }: MapConfig) => {
-  const [map, setMap] = useState<google.maps.Map | null>(null);
-
-  const onLoad = useCallback((mapInstance: google.maps.Map) => {
-    console.log('Map instance loaded');
-    setMap(mapInstance);
-  }, []);
-
-  useEffect(() => {
-    if (map) {
-      map.setCenter(center);
-      map.setZoom(zoom);
-    }
-  }, [map, center, zoom]);
-
-  return { map, onLoad };
 };
