@@ -31,7 +31,7 @@ const ServiceAreasSection = () => {
   const mapMarkers = locations?.map(location => ({
     lat: location.lat,
     lng: location.lng,
-    title: location.name,
+    title: location.name, // Ensure title is always provided
     slug: location.slug
   })) || [];
 

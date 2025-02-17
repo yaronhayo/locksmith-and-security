@@ -2,7 +2,7 @@
 export interface MapLocation {
   lat: number;
   lng: number;
-  title?: string;
+  title: string; // Made required to match MapMarker
   slug?: string;
 }
 
