@@ -1,5 +1,5 @@
 
-import { useMemo } from "react";
+import { useMemo, useCallback } from "react";
 import { GoogleMap as GoogleMapComponent, LoadScript } from "@react-google-maps/api";
 import { useMapConfig } from "@/hooks/useMap";
 import MapError from "./MapError";
@@ -26,6 +26,11 @@ interface GoogleMapProps {
   onClick?: (e: google.maps.MapMouseEvent) => void;
 }
 
+const containerStyle = {
+  width: '100%',
+  height: '100%'
+};
+
 const GoogleMap = ({
   markers = [],
   highlightedMarker = null,
@@ -41,21 +46,26 @@ const GoogleMap = ({
     [markers, showAllMarkers, highlightedMarker]
   );
 
+  const onLoadCallback = useCallback(() => {
+    console.log('Map loaded successfully');
+  }, []);
+
   if (isLoading) return <MapLoader />;
   if (apiKeyError) return <MapError error={apiKeyError.message} />;
   if (!apiKey) return <MapError error="Google Maps API key not found" />;
 
-  console.log('Map render - markers:', visibleMarkers.length);
+  console.log('Map render - markers:', visibleMarkers.length, 'API Key:', apiKey.substring(0, 10) + '...');
 
   return (
-    <div className="w-full h-full min-h-[400px] relative">
+    <div className="w-full h-full relative">
       <LoadScript googleMapsApiKey={apiKey} libraries={libraries}>
         <GoogleMapComponent
-          mapContainerStyle={{ width: '100%', height: '100%', minHeight: '400px' }}
+          mapContainerStyle={containerStyle}
           center={center}
           zoom={zoom}
           options={mapOptions}
           onClick={onClick}
+          onLoad={onLoadCallback}
         >
           {visibleMarkers.map((marker, index) => (
             <MapMarkers

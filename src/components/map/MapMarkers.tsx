@@ -2,7 +2,7 @@
 import { Marker } from '@react-google-maps/api';
 import { MapMarker } from '@/types/service-area';
 import { useNavigate } from 'react-router-dom';
-import { useMemo } from 'react';
+import { useMemo, useCallback } from 'react';
 
 interface MapMarkersProps {
   markers: MapMarker[];
@@ -12,11 +12,11 @@ interface MapMarkersProps {
 const MapMarkers = ({ markers, hoveredMarker }: MapMarkersProps) => {
   const navigate = useNavigate();
 
-  const handleMarkerClick = (slug?: string) => {
+  const handleMarkerClick = useCallback((slug?: string) => {
     if (slug) {
       navigate(`/service-areas/${slug}`);
     }
-  };
+  }, [navigate]);
 
   const renderedMarkers = useMemo(() => 
     markers.map((marker, index) => {
@@ -32,7 +32,7 @@ const MapMarkers = ({ markers, hoveredMarker }: MapMarkersProps) => {
           animation={isHovered ? google.maps.Animation.BOUNCE : undefined}
         />
       );
-    }), [markers, hoveredMarker, navigate]);
+    }), [markers, hoveredMarker, handleMarkerClick]);
 
   return <>{renderedMarkers}</>;
 };
