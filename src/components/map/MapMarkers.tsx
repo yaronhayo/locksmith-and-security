@@ -1,5 +1,5 @@
 
-import { AdvancedMarkerElement } from '@react-google-maps/api';
+import { Marker } from '@react-google-maps/api';
 import { MapLocation } from '@/types/map';
 import { useNavigate } from 'react-router-dom';
 import { useMemo } from 'react';
@@ -37,11 +37,16 @@ const MapMarkers = ({ markers, hoveredMarker }: MapMarkersProps) => {
       });
 
       return (
-        <AdvancedMarkerElement
+        <Marker
           key={`${marker.slug || ''}-${index}`}
           position={position}
           title={marker.title}
           onClick={() => handleMarkerClick(marker.slug)}
+          animation={
+            hoveredMarker === marker.slug
+              ? google.maps.Animation.BOUNCE
+              : undefined
+          }
         />
       );
     }), [markers, hoveredMarker, navigate]);
