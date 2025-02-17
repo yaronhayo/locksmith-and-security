@@ -36,6 +36,10 @@ const GoogleMap = ({
     libraries,
     language: 'en',
     region: 'US',
+    version: 'weekly',
+    loadingElement: <MapLoader />,
+    onLoad: () => console.log('Google Maps script loaded successfully'),
+    onError: (error: Error) => console.error('Google Maps script error:', error)
   }), [apiKey]);
 
   if (loadError) {

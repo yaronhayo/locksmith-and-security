@@ -38,12 +38,19 @@ const MapContainer = ({
   const { map, handleMapLoad } = useMapInstance({ center, zoom });
 
   // Memoize map options to prevent unnecessary re-renders
-  const options = useMemo(() => MAP_OPTIONS, []);
+  const options = useMemo(() => ({
+    ...MAP_OPTIONS,
+    noClear: true // Prevent map from being cleared between renders
+  }), []);
 
   const onLoad = useCallback((mapInstance: google.maps.Map) => {
     console.log('Map instance loading:', { center, zoom });
     handleMapLoad(mapInstance);
   }, [handleMapLoad, center, zoom]);
+
+  const onError = useCallback((error: Error) => {
+    console.error('Map instance error:', error);
+  }, []);
 
   useEffect(() => {
     if (map) {
@@ -61,6 +68,7 @@ const MapContainer = ({
       options={options}
       onClick={onClick}
       onLoad={onLoad}
+      onError={onError}
     >
       {markers && markers.length > 0 && (
         <MapMarkers 
