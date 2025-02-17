@@ -48,8 +48,8 @@ export const useMapConfig = () => {
       INITIAL_BACKOFF * Math.pow(2, attemptIndex),
       8000
     ),
-    staleTime: 5 * 60 * 1000, // Cache for 5 minutes
-    gcTime: 10 * 60 * 1000, // Garbage collect after 10 minutes
+    staleTime: 1000 * 60 * 5, // Cache for 5 minutes
+    gcTime: 1000 * 60 * 10, // Garbage collect after 10 minutes
     meta: {
       errorMessage: 'Failed to load Google Maps API key'
     }
@@ -72,7 +72,7 @@ export const useMapInstance = ({ center, zoom }: MapConfig) => {
   const [error, setError] = useState<string | null>(null);
 
   const handleMapLoad = useCallback((mapInstance: google.maps.Map) => {
-    console.log('Map instance loaded');
+    console.log('Map instance loaded successfully');
     setMap(mapInstance);
   }, []);
 

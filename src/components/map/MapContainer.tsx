@@ -40,7 +40,8 @@ const MapContainer = ({
   // Memoize map options to prevent unnecessary re-renders
   const options = useMemo(() => ({
     ...MAP_OPTIONS,
-    noClear: true // Prevent map from being cleared between renders
+    noClear: true, // Prevent map from being cleared between renders
+    clickableIcons: false // Disable POI clicks
   }), []);
 
   const onLoad = useCallback((mapInstance: google.maps.Map) => {
@@ -51,12 +52,8 @@ const MapContainer = ({
   useEffect(() => {
     if (map) {
       console.log('Updating map center and zoom:', { center, zoom });
-      try {
-        map.setCenter(center);
-        map.setZoom(zoom);
-      } catch (err) {
-        console.error('Error updating map:', err);
-      }
+      map.setCenter(center);
+      map.setZoom(zoom);
     }
   }, [map, center, zoom]);
 

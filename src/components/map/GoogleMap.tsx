@@ -36,7 +36,7 @@ const GoogleMap = ({
     libraries,
     language: 'en',
     region: 'US',
-    version: 'weekly'
+    loadingElement: <MapLoader />
   }), [apiKey]);
 
   if (loadError) {
