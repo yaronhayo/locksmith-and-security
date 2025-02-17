@@ -15,13 +15,13 @@ const MapMarkers = ({ markers, hoveredMarker }: MapMarkersProps) => {
   const handleMarkerClick = (slug?: string) => {
     if (slug) {
       navigate(`/service-areas/${slug}`);
-      window.scrollTo(0, 0);
     }
   };
 
   const renderedMarkers = useMemo(() => 
     markers.map((marker, index) => {
       const position = { lat: marker.lat, lng: marker.lng };
+      const isHovered = hoveredMarker === marker.slug;
       
       return (
         <Marker
@@ -29,11 +29,7 @@ const MapMarkers = ({ markers, hoveredMarker }: MapMarkersProps) => {
           position={position}
           title={marker.title}
           onClick={() => handleMarkerClick(marker.slug)}
-          animation={
-            hoveredMarker === marker.slug
-              ? google.maps.Animation.BOUNCE
-              : undefined
-          }
+          animation={isHovered ? google.maps.Animation.BOUNCE : undefined}
         />
       );
     }), [markers, hoveredMarker, navigate]);

@@ -23,9 +23,9 @@ export const useMapConfig = () => {
         throw new Error('Google Maps API key not found');
       }
 
-      console.log('API key found:', data.value.substring(0, 5) + '...');
-      return data.value.toString().trim();
+      return data.value;
     },
-    staleTime: Infinity // API key won't change often
+    staleTime: Infinity,
+    retry: 1
   });
 };

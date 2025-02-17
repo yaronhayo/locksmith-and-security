@@ -1,6 +1,6 @@
 
 import { useMemo } from "react";
-import { LoadScriptNext, GoogleMap as GoogleMapComponent } from "@react-google-maps/api";
+import { GoogleMap as GoogleMapComponent, LoadScript } from "@react-google-maps/api";
 import { useMapConfig } from "@/hooks/useMap";
 import MapError from "./MapError";
 import MapLoader from "./MapLoader";
@@ -45,13 +45,13 @@ const GoogleMap = ({
   if (apiKeyError) return <MapError error={apiKeyError.message} />;
   if (!apiKey) return <MapError error="Google Maps API key not found" />;
 
-  console.log('Rendering map with API key:', apiKey.substring(0, 10) + '...');
+  console.log('Map render - markers:', visibleMarkers.length);
 
   return (
-    <div className="w-full h-full relative">
-      <LoadScriptNext googleMapsApiKey={apiKey} libraries={libraries}>
+    <div className="w-full h-full min-h-[400px] relative">
+      <LoadScript googleMapsApiKey={apiKey} libraries={libraries}>
         <GoogleMapComponent
-          mapContainerClassName="w-full h-full"
+          mapContainerStyle={{ width: '100%', height: '100%', minHeight: '400px' }}
           center={center}
           zoom={zoom}
           options={mapOptions}
@@ -65,7 +65,7 @@ const GoogleMap = ({
             />
           ))}
         </GoogleMapComponent>
-      </LoadScriptNext>
+      </LoadScript>
     </div>
   );
 };
