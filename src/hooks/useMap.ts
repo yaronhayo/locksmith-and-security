@@ -12,25 +12,15 @@ interface MapConfig {
 }
 
 const fetchMapApiKey = async () => {
-  console.log('Fetching Google Maps API key from settings table');
-  
   const { data, error } = await supabase
     .from('settings')
     .select('value')
     .eq('key', 'GOOGLE_MAPS_API_KEY')
     .maybeSingle();
 
-  if (error) {
-    console.error('Error fetching API key:', error);
-    throw new Error(`Failed to fetch Google Maps API key: ${error.message}`);
-  }
+  if (error) throw new Error(`Failed to fetch Google Maps API key: ${error.message}`);
+  if (!data?.value) throw new Error('Google Maps API key not found in settings');
 
-  if (!data?.value) {
-    console.error('No API key found in settings table');
-    throw new Error('Google Maps API key not found in settings');
-  }
-
-  console.log('Successfully fetched Maps API key');
   return data.value;
 };
 
@@ -49,52 +39,32 @@ export const useMapConfig = () => {
       INITIAL_BACKOFF * Math.pow(2, attemptIndex),
       8000
     ),
-    staleTime: 1000 * 60 * 60, // Cache for 1 hour
-    gcTime: 1000 * 60 * 60 * 2, // Garbage collect after 2 hours
-    meta: {
-      errorMessage: 'Failed to load Google Maps API key'
-    }
+    staleTime: Infinity, // Never consider the API key stale
+    gcTime: Infinity, // Never garbage collect the API key
   });
-
-  const isRetrying = isLoading && error !== null;
-  const retryCount = error ? Math.min(MAX_RETRIES, error instanceof Error ? 1 : 0) : 0;
 
   return {
     apiKey,
     loadError: isError ? error?.message : null,
-    isRetrying,
-    retryCount,
+    isRetrying: isLoading && error !== null,
+    retryCount: error ? Math.min(MAX_RETRIES, error instanceof Error ? 1 : 0) : 0,
     fetchApiKey: refetch
   };
 };
 
 export const useMapInstance = ({ center, zoom }: MapConfig) => {
   const [map, setMap] = useState<google.maps.Map | null>(null);
-  const [error, setError] = useState<string | null>(null);
 
   const handleMapLoad = useCallback((mapInstance: google.maps.Map) => {
-    console.log('Map instance loaded successfully');
     setMap(mapInstance);
   }, []);
 
   useEffect(() => {
     if (map) {
-      try {
-        map.setCenter(center);
-        map.setZoom(zoom);
-      } catch (err) {
-        console.error('Error updating map:', err);
-        setError(err instanceof Error ? err.message : 'Failed to update map');
-      }
+      map.setCenter(center);
+      map.setZoom(zoom);
     }
   }, [map, center, zoom]);
 
-  return { map, error, handleMapLoad };
+  return { map, handleMapLoad };
 };
-
-// Add type definition for window object
-declare global {
-  interface Window {
-    initMap: () => void;
-  }
-}

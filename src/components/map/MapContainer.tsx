@@ -3,7 +3,7 @@ import { GoogleMap } from "@react-google-maps/api";
 import { useMapInstance } from "@/hooks/useMap";
 import MapMarkers from "./MapMarkers";
 import { MapMarker } from "@/types/service-area";
-import { useEffect, useMemo, useCallback } from "react";
+import { useCallback, useMemo } from "react";
 
 const MAP_OPTIONS = {
   disableDefaultUI: false,
@@ -11,7 +11,9 @@ const MAP_OPTIONS = {
   streetViewControl: false,
   mapTypeControl: false,
   fullscreenControl: false,
-  gestureHandling: 'cooperative'
+  gestureHandling: 'cooperative',
+  noClear: true,
+  clickableIcons: false
 } as const;
 
 const MAP_CONTAINER_STYLE = {
@@ -37,33 +39,11 @@ const MapContainer = ({
 }: MapContainerProps) => {
   const { map, handleMapLoad } = useMapInstance({ center, zoom });
 
-  // Memoize map options to prevent unnecessary re-renders
-  const options = useMemo(() => ({
-    ...MAP_OPTIONS,
-    noClear: true, // Prevent map from being cleared between renders
-    clickableIcons: false, // Disable POI clicks
-    restriction: {
-      latLngBounds: {
-        north: 41.0,
-        south: 40.5,
-        east: -73.8,
-        west: -74.3,
-      },
-      strictBounds: true
-    }
-  }), []);
+  const options = useMemo(() => MAP_OPTIONS, []);
 
   const onLoad = useCallback((mapInstance: google.maps.Map) => {
-    console.log('Map instance loading:', { center, zoom });
     handleMapLoad(mapInstance);
-  }, [handleMapLoad, center, zoom]);
-
-  useEffect(() => {
-    if (map) {
-      map.setCenter(center);
-      map.setZoom(zoom);
-    }
-  }, [map, center, zoom]);
+  }, [handleMapLoad]);
 
   return (
     <GoogleMap

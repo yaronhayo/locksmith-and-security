@@ -8,7 +8,6 @@ import MapContainer from "./MapContainer";
 import { MapErrorBoundary } from "./MapErrorBoundary";
 import { MapMarker } from "@/types/service-area";
 
-// Define libraries outside component to prevent recreation
 const libraries: Libraries = ['places'];
 
 interface GoogleMapProps {
@@ -30,7 +29,6 @@ const GoogleMap = ({
 }: GoogleMapProps) => {
   const { apiKey, loadError, isRetrying, retryCount, fetchApiKey } = useMapConfig();
 
-  // Memoize LoadScript props
   const loadScriptProps = useMemo(() => ({
     googleMapsApiKey: apiKey || '',
     libraries,
@@ -41,7 +39,6 @@ const GoogleMap = ({
   }), [apiKey]);
 
   if (loadError) {
-    console.error('Map load error:', loadError);
     return (
       <MapError 
         error={loadError} 
@@ -52,10 +49,7 @@ const GoogleMap = ({
     );
   }
 
-  if (!apiKey) {
-    console.log('Waiting for API key...');
-    return <MapLoader />;
-  }
+  if (!apiKey) return <MapLoader />;
 
   const visibleMarkers = showAllMarkers ? markers : markers.filter(m => m.slug === highlightedMarker);
 
