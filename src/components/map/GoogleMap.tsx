@@ -27,6 +27,7 @@ const GoogleMap = ({
     libraries,
     language: 'en',
     region: 'US',
+    loading: 'async'
   }), [apiKey]);
 
   if (loadError) {
@@ -51,7 +52,7 @@ const GoogleMap = ({
   return (
     <div className="w-full h-[400px] relative rounded-lg overflow-hidden shadow-md">
       <MapErrorBoundary>
-        <LoadScript {...loadScriptProps} loadingElement={<MapLoader />}>
+        <LoadScript {...loadScriptProps}>
           <MapContainer
             center={center}
             zoom={zoom}
