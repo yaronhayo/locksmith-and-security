@@ -31,8 +31,8 @@ const fetchMapApiKey = async () => {
     throw new Error('Google Maps API key not found in settings');
   }
 
-  console.log('API key fetched successfully:', data.value ? 'Key exists' : 'No key');
-  return data.value;
+  console.log('API key fetched successfully');
+  return data.value.trim(); // Ensure no whitespace
 };
 
 export const useMapConfig = () => {
@@ -50,7 +50,8 @@ export const useMapConfig = () => {
       INITIAL_BACKOFF * Math.pow(2, attemptIndex),
       8000
     ),
-    staleTime: 24 * 60 * 60 * 1000, // Cache for 24 hours
+    staleTime: 5 * 60 * 1000, // Cache for 5 minutes instead of 24 hours
+    gcTime: 10 * 60 * 1000, // Garbage collect after 10 minutes
     meta: {
       errorMessage: 'Failed to load Google Maps API key'
     }
@@ -90,12 +91,19 @@ export const useMapScript = (apiKey: string) => {
         return;
       }
 
-      console.log('Initializing Google Maps script');
+      console.log('Initializing Google Maps script with key length:', apiKey.length);
       
+      // Remove any existing script to ensure clean loading
       const existingScript = document.querySelector(`script[src*="maps.googleapis.com"]`);
       if (existingScript) {
         console.log('Removing existing Google Maps script');
         existingScript.remove();
+        
+        // Clear any existing Google Maps objects
+        if (window.google?.maps) {
+          // @ts-ignore - Reset Google Maps object
+          window.google.maps = undefined;
+        }
       }
 
       const script = document.createElement('script');
@@ -136,10 +144,6 @@ export const useMapScript = (apiKey: string) => {
 
     return () => {
       mounted = false;
-      const script = document.querySelector(`script[src*="maps.googleapis.com"]`);
-      if (script) {
-        script.remove();
-      }
     };
   }, [apiKey]);
 
