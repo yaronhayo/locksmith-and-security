@@ -1,11 +1,13 @@
 
-import { useState } from 'react';
-import GoogleMap from '../map/GoogleMap';
+import { useState, lazy, Suspense } from 'react';
 import AreasList from './service-areas/AreasList';
 import ServiceAreaFeatures from '../service-areas/shared/ServiceAreaFeatures';
 import EmergencyCallout from './service-areas/EmergencyCallout';
 import { useLocations } from '@/hooks/useLocations';
 import LoadingSpinner from '../LoadingSpinner';
+
+// Lazy load the GoogleMap component
+const GoogleMap = lazy(() => import('../map/GoogleMap'));
 
 const ServiceAreasSection = () => {
   const [hoveredArea, setHoveredArea] = useState<string | null>(null);
@@ -53,13 +55,15 @@ const ServiceAreasSection = () => {
           />
           
           <div className="h-[600px] bg-white rounded-xl shadow-lg overflow-hidden">
-            <GoogleMap 
-              markers={mapMarkers}
-              highlightedMarker={hoveredArea}
-              showAllMarkers={true}
-              zoom={11}
-              center={{ lat: 40.7795, lng: -74.0324 }}
-            />
+            <Suspense fallback={<LoadingSpinner />}>
+              <GoogleMap 
+                markers={mapMarkers}
+                highlightedMarker={hoveredArea}
+                showAllMarkers={true}
+                zoom={11}
+                center={{ lat: 40.7795, lng: -74.0324 }}
+              />
+            </Suspense>
           </div>
         </div>
 
