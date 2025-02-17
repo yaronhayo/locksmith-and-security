@@ -1,5 +1,5 @@
 
-import { useMemo } from "react";
+import { useMemo, useCallback } from "react";
 import { LoadScript, Libraries, GoogleMap as GoogleMapComponent } from "@react-google-maps/api";
 import { useMapConfig } from "@/hooks/useMap";
 import MapError from "./MapError";
@@ -39,8 +39,18 @@ const GoogleMap = ({
   // Memoize center to prevent unnecessary re-renders
   const mapCenter = useMemo(() => center, [center.lat, center.lng]);
 
+  // Handle map load error
+  const handleLoadError = useCallback((error: Error) => {
+    console.error('Google Maps load error:', error);
+  }, []);
+
+  // Handle successful map load
+  const handleLoad = useCallback(() => {
+    console.log('Google Maps loaded successfully');
+  }, []);
+
   if (loadError) {
-    console.error('Map load error:', loadError);
+    console.error('Map config load error:', loadError);
     return (
       <MapError 
         error={loadError} 
@@ -56,6 +66,8 @@ const GoogleMap = ({
     return <MapLoader />;
   }
 
+  console.log('Rendering map with API key:', apiKey ? 'Key exists' : 'No key');
+
   const visibleMarkers = showAllMarkers ? markers : markers.filter(m => m.slug === highlightedMarker);
 
   return (
@@ -64,6 +76,8 @@ const GoogleMap = ({
         <LoadScript 
           googleMapsApiKey={apiKey}
           libraries={libraries}
+          onLoad={handleLoad}
+          onError={handleLoadError}
         >
           <GoogleMapComponent
             mapContainerStyle={mapContainerStyle}

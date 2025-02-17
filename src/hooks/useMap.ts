@@ -3,7 +3,6 @@ import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 
 const MAX_RETRIES = 3;
-const INITIAL_BACKOFF = 1000;
 
 const fetchMapApiKey = async () => {
   console.log('Fetching Google Maps API key from settings table');
@@ -25,7 +24,7 @@ const fetchMapApiKey = async () => {
       throw new Error('Google Maps API key not found in settings');
     }
 
-    console.log('Successfully fetched Maps API key');
+    console.log('Successfully fetched Maps API key:', data.value ? 'Key exists' : 'No key');
     return data.value;
   } catch (error) {
     console.error('Error in fetchMapApiKey:', error);
@@ -43,9 +42,9 @@ export const useMapConfig = () => {
   } = useQuery({
     queryKey: ['mapApiKey'],
     queryFn: fetchMapApiKey,
-    retry: false, // Don't retry automatically, let user retry manually
     staleTime: Infinity, // Never mark as stale since API key rarely changes
     gcTime: Infinity, // Keep in cache indefinitely
+    retry: 1, // Try once more if initial fetch fails
     meta: {
       errorMessage: 'Failed to load Google Maps API key'
     }
