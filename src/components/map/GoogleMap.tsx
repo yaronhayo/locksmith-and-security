@@ -8,7 +8,6 @@ import MapMarkers from "./MapMarkers";
 import { MapErrorBoundary } from "./MapErrorBoundary";
 import { MapProps } from "@/types/map";
 
-// Define libraries outside component to prevent recreation
 const libraries: Libraries = ['places'];
 
 const mapOptions = {
@@ -34,7 +33,7 @@ const GoogleMap = ({
   center = { lat: 40.7795, lng: -74.0324 },
   onClick
 }: MapProps) => {
-  const { apiKey, loadError, isRetrying, retryCount, fetchApiKey } = useMapConfig();
+  const { apiKey, loadError, isLoading, fetchApiKey } = useMapConfig();
 
   // Memoize center to prevent unnecessary re-renders
   const mapCenter = useMemo(() => center, [center.lat, center.lng]);
@@ -42,7 +41,9 @@ const GoogleMap = ({
   // Handle map load error
   const handleLoadError = useCallback((error: Error) => {
     console.error('Google Maps load error:', error);
-  }, []);
+    // Attempt to refresh the API key
+    fetchApiKey();
+  }, [fetchApiKey]);
 
   // Handle successful map load
   const handleLoad = useCallback(() => {
@@ -55,18 +56,15 @@ const GoogleMap = ({
       <MapError 
         error={loadError} 
         onRetry={fetchApiKey} 
-        isRetrying={isRetrying}
-        retryCount={retryCount}
+        isRetrying={isLoading}
+        retryCount={0}
       />
     );
   }
 
-  if (!apiKey) {
-    console.log('Waiting for API key...');
+  if (!apiKey || isLoading) {
     return <MapLoader />;
   }
-
-  console.log('Rendering map with API key:', apiKey ? 'Key exists' : 'No key');
 
   const visibleMarkers = showAllMarkers ? markers : markers.filter(m => m.slug === highlightedMarker);
 

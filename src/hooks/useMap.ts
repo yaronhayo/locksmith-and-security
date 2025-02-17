@@ -24,7 +24,6 @@ const fetchMapApiKey = async () => {
       throw new Error('Google Maps API key not found in settings');
     }
 
-    console.log('Successfully fetched Maps API key:', data.value ? 'Key exists' : 'No key');
     return data.value;
   } catch (error) {
     console.error('Error in fetchMapApiKey:', error);
@@ -42,22 +41,18 @@ export const useMapConfig = () => {
   } = useQuery({
     queryKey: ['mapApiKey'],
     queryFn: fetchMapApiKey,
-    staleTime: Infinity, // Never mark as stale since API key rarely changes
-    gcTime: Infinity, // Keep in cache indefinitely
-    retry: 1, // Try once more if initial fetch fails
+    staleTime: 0, // Set to 0 to always fetch fresh data
+    gcTime: 1000 * 60 * 5, // Keep in cache for 5 minutes
+    retry: MAX_RETRIES,
     meta: {
       errorMessage: 'Failed to load Google Maps API key'
     }
   });
 
-  const isRetrying = isLoading && error !== null;
-  const retryCount = error ? Math.min(MAX_RETRIES, error instanceof Error ? 1 : 0) : 0;
-
   return {
     apiKey,
     loadError: isError ? error?.message : null,
-    isRetrying,
-    retryCount,
+    isLoading,
     fetchApiKey: refetch
   };
 };
