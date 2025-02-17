@@ -45,7 +45,7 @@ const GoogleMap = ({
     libraries,
     language: 'en',
     region: 'US',
-    loading: 'async'
+    version: 'weekly'
   }), [apiKey]);
 
   if (loadError) {

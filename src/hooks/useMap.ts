@@ -44,6 +44,7 @@ export const useMapConfig = () => {
       8000
     ),
     staleTime: 24 * 60 * 60 * 1000, // Cache for 24 hours
+    gcTime: 24 * 60 * 60 * 1000, // Keep in garbage collection for 24 hours
     meta: {
       errorMessage: 'Failed to load Google Maps API key'
     }
