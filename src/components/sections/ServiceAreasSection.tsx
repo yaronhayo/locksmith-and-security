@@ -5,6 +5,7 @@ import ServiceAreaFeatures from '../service-areas/shared/ServiceAreaFeatures';
 import EmergencyCallout from './service-areas/EmergencyCallout';
 import { useLocations } from '@/hooks/useLocations';
 import LoadingSpinner from '../LoadingSpinner';
+import { measurePerformance } from '@/utils/performanceMonitoring';
 
 // Lazy load the GoogleMap component
 const GoogleMap = lazy(() => import('../map/GoogleMap'));

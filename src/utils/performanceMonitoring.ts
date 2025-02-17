@@ -64,4 +64,3 @@ export const measurePerformance = (label: string, callback: () => void) => {
   const duration = performance.now() - start;
   logToService('info', `Performance measurement: ${label}`, { duration });
 };
-

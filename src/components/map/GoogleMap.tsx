@@ -4,6 +4,7 @@ import { useMapConfig } from "@/hooks/useMap";
 import MapError from "./MapError";
 import MapLoader from "./MapLoader";
 import { MapMarker } from "@/types/service-area";
+import { mapPerformance } from "@/utils/performanceMonitoring";
 
 // Lazy load the Google Maps components
 const GoogleMapComponent = lazy(() => import('@react-google-maps/api').then(module => ({
@@ -54,7 +55,11 @@ const GoogleMap = ({
   );
 
   const onLoadCallback = useCallback(() => {
-    console.log('Map loaded successfully');
+    mapPerformance.trackInstanceLoad(performance.now());
+  }, []);
+
+  const onScriptLoad = useCallback(() => {
+    mapPerformance.trackScriptLoad(performance.now());
   }, []);
 
   if (isLoading) return <MapLoader />;
@@ -64,7 +69,11 @@ const GoogleMap = ({
   return (
     <div className="w-full h-full relative">
       <Suspense fallback={<MapLoader />}>
-        <LoadScript googleMapsApiKey={apiKey} libraries={libraries}>
+        <LoadScript 
+          googleMapsApiKey={apiKey} 
+          libraries={libraries}
+          onLoad={onScriptLoad}
+        >
           <GoogleMapComponent
             mapContainerStyle={containerStyle}
             center={center}
