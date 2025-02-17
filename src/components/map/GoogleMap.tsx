@@ -7,7 +7,7 @@ import MapLoader from "./MapLoader";
 import MapMarkers from "./MapMarkers";
 import { MapMarker } from "@/types/service-area";
 
-const libraries: ("places" | "marker")[] = ['places', 'marker'];
+const libraries: ("places")[] = ['places'];
 
 const mapOptions = {
   zoomControl: true,
