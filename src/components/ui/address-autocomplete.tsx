@@ -25,7 +25,7 @@ const AddressAutocomplete = ({
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!inputRef.current || !window.google?.maps?.places) return;
+    if (!inputRef.current || !window.google?.maps?.places || !apiKey) return;
 
     try {
       if (autocompleteRef.current) {
@@ -62,7 +62,7 @@ const AddressAutocomplete = ({
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to initialize address autocomplete');
     }
-  }, [onChange]);
+  }, [onChange, apiKey]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
