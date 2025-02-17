@@ -1,13 +1,11 @@
 
 import { useMemo, useCallback } from "react";
-import { GoogleMap as GoogleMapComponent, LoadScript } from "@react-google-maps/api";
+import { GoogleMap as GoogleMapComponent } from "@react-google-maps/api";
 import { useMapConfig } from "@/hooks/useMap";
 import MapError from "./MapError";
 import MapLoader from "./MapLoader";
 import MapMarkers from "./MapMarkers";
 import { MapMarker } from "@/types/service-area";
-
-const libraries: ("places")[] = ['places'];
 
 const mapOptions = {
   zoomControl: true,
@@ -39,7 +37,7 @@ const GoogleMap = ({
   center = { lat: 40.7795, lng: -74.0324 },
   onClick
 }: GoogleMapProps) => {
-  const { data: apiKey, error: apiKeyError, isLoading } = useMapConfig();
+  const { isLoading, error: apiKeyError } = useMapConfig();
 
   const visibleMarkers = useMemo(() => 
     showAllMarkers ? markers : markers.filter(m => m.slug === highlightedMarker),
@@ -52,31 +50,25 @@ const GoogleMap = ({
 
   if (isLoading) return <MapLoader />;
   if (apiKeyError) return <MapError error={apiKeyError.message} />;
-  if (!apiKey) return <MapError error="Google Maps API key not found" />;
 
   return (
     <div className="w-full h-full relative">
-      <LoadScript 
-        googleMapsApiKey={apiKey} 
-        libraries={libraries}
+      <GoogleMapComponent
+        mapContainerStyle={containerStyle}
+        center={center}
+        zoom={zoom}
+        options={mapOptions}
+        onClick={onClick}
+        onLoad={onLoadCallback}
       >
-        <GoogleMapComponent
-          mapContainerStyle={containerStyle}
-          center={center}
-          zoom={zoom}
-          options={mapOptions}
-          onClick={onClick}
-          onLoad={onLoadCallback}
-        >
-          {visibleMarkers.map((marker, index) => (
-            <MapMarkers
-              key={`${marker.slug || ''}-${index}`}
-              markers={[marker]}
-              hoveredMarker={highlightedMarker}
-            />
-          ))}
-        </GoogleMapComponent>
-      </LoadScript>
+        {visibleMarkers.map((marker, index) => (
+          <MapMarkers
+            key={`${marker.slug || ''}-${index}`}
+            markers={[marker]}
+            hoveredMarker={highlightedMarker}
+          />
+        ))}
+      </GoogleMapComponent>
     </div>
   );
 };
