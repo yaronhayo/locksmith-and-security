@@ -6,10 +6,19 @@ import MapError from "./MapError";
 import MapLoader from "./MapLoader";
 import MapContainer from "./MapContainer";
 import { MapErrorBoundary } from "./MapErrorBoundary";
-import { MapMarker, MapProps } from "@/types/service-area";
+import { MapMarker } from "@/types/service-area";
 
 // Define libraries outside component to prevent recreation
 const libraries: Libraries = ['places'];
+
+interface GoogleMapProps {
+  markers?: MapMarker[];
+  highlightedMarker?: string | null;
+  showAllMarkers?: boolean;
+  zoom?: number;
+  center?: { lat: number; lng: number };
+  onClick?: (e: google.maps.MapMouseEvent) => void;
+}
 
 const GoogleMap = ({
   markers = [],
@@ -18,7 +27,7 @@ const GoogleMap = ({
   zoom = 12,
   center = { lat: 40.7795, lng: -74.0324 },
   onClick
-}: MapProps) => {
+}: GoogleMapProps) => {
   const { apiKey, loadError, isRetrying, retryCount, fetchApiKey } = useMapConfig();
 
   // Memoize LoadScript props
@@ -51,7 +60,7 @@ const GoogleMap = ({
   return (
     <div className="w-full h-[400px] relative rounded-lg overflow-hidden shadow-md">
       <MapErrorBoundary>
-        <LoadScript {...loadScriptProps} loadingElement={<MapLoader />}>
+        <LoadScript {...loadScriptProps}>
           <MapContainer
             center={center}
             zoom={zoom}

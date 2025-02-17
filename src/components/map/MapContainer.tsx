@@ -3,7 +3,7 @@ import { GoogleMap } from "@react-google-maps/api";
 import { useMapInstance } from "@/hooks/useMap";
 import MapMarkers from "./MapMarkers";
 import { MapMarker } from "@/types/service-area";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useCallback } from "react";
 
 const MAP_OPTIONS = {
   disableDefaultUI: false,
@@ -40,8 +40,14 @@ const MapContainer = ({
   // Memoize map options to prevent unnecessary re-renders
   const options = useMemo(() => MAP_OPTIONS, []);
 
+  const onLoad = useCallback((mapInstance: google.maps.Map) => {
+    console.log('Map instance loading:', { center, zoom });
+    handleMapLoad(mapInstance);
+  }, [handleMapLoad, center, zoom]);
+
   useEffect(() => {
     if (map) {
+      console.log('Updating map center and zoom:', { center, zoom });
       map.setCenter(center);
       map.setZoom(zoom);
     }
@@ -54,7 +60,7 @@ const MapContainer = ({
       zoom={zoom}
       options={options}
       onClick={onClick}
-      onLoad={handleMapLoad}
+      onLoad={onLoad}
     >
       {markers && markers.length > 0 && (
         <MapMarkers 
