@@ -43,6 +43,6 @@ export const serviceRoutes = [
   },
   {
     path: "/services/business-lock-change",
-    element: <BusinessLockChange />
+    element: <PageLayout title="Business Lock Change" description="Professional business lock change and replacement services"><BusinessLockChange /></PageLayout>
   }
 ];
