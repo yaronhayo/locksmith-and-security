@@ -23,7 +23,7 @@ const HeroSection = () => {
 
   return (
     <section 
-      className="relative min-h-screen bg-gradient-to-br from-primary to-primary-hover overflow-hidden pt-16 pb-8 md:pt-20 md:pb-12 lg:pb-20"
+      className="relative min-h-screen bg-gradient-to-br from-primary to-primary-hover overflow-visible pt-16 pb-8 md:pt-20 md:pb-12 lg:pb-20"
       role="banner"
       aria-label="Hero section"
     >
@@ -69,7 +69,7 @@ const HeroSection = () => {
           </div>
 
           <motion.div 
-            className="w-full lg:w-5/12 bg-white rounded-2xl p-3 sm:p-4 lg:p-5 shadow-2xl transform hover:scale-[1.02] transition-transform duration-300 backdrop-blur-sm max-h-[calc(100vh-8rem)] overflow-y-auto"
+            className="w-full lg:w-5/12 bg-white rounded-2xl p-3 sm:p-4 lg:p-5 shadow-2xl transform hover:scale-[1.02] transition-transform duration-300 backdrop-blur-sm"
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.7 }}
