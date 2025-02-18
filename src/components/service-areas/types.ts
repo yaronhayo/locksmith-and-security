@@ -10,16 +10,24 @@ export interface ServiceAreaLocation {
   title: string;
 }
 
-export interface ServiceAreaService {
-  icon: LucideIcon;
-  title: string;
-  description: string;
-  link: string;
-  features: string[];
-}
-
 export interface ServiceAreaFeature {
   icon: LucideIcon;
   title: string;
   description: string;
+}
+
+export interface MapMarker {
+  lat: number;
+  lng: number;
+  title: string;
+  slug?: string;
+}
+
+export interface MapProps {
+  markers?: MapMarker[];
+  highlightedMarker?: string | null;
+  showAllMarkers?: boolean;
+  zoom?: number;
+  center?: { lat: number; lng: number };
+  onClick?: (e: google.maps.MapMouseEvent) => void;
 }
