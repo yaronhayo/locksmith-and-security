@@ -26,14 +26,24 @@ const GoogleMapsProvider = ({ children }: GoogleMapsProviderProps) => {
     setScriptError("Failed to load Google Maps");
   }, []);
 
+  // Script initialization check
   useEffect(() => {
-    // Check if script is already loaded
     if (window.google?.maps) {
       console.log("Google Maps already loaded");
       setIsScriptLoaded(true);
+      return;
     }
 
+    const checkGoogleMaps = setInterval(() => {
+      if (window.google?.maps) {
+        console.log("Google Maps initialized");
+        setIsScriptLoaded(true);
+        clearInterval(checkGoogleMaps);
+      }
+    }, 100);
+
     return () => {
+      clearInterval(checkGoogleMaps);
       setIsScriptLoaded(false);
     };
   }, []);
@@ -43,10 +53,12 @@ const GoogleMapsProvider = ({ children }: GoogleMapsProviderProps) => {
   if (!apiKey) return <MapError error="Google Maps API key not found" />;
   if (scriptError) return <MapError error={scriptError} />;
 
-  if (isScriptLoaded) {
+  // If script is already loaded, render children directly
+  if (isScriptLoaded && window.google?.maps) {
     return <>{children}</>;
   }
 
+  // Load script if not already loaded
   return (
     <LoadScript 
       googleMapsApiKey={apiKey}
@@ -58,9 +70,9 @@ const GoogleMapsProvider = ({ children }: GoogleMapsProviderProps) => {
         setIsScriptLoaded(false);
       }}
     >
-      <MapLoader>
+      <div className="w-full h-full">
         {children}
-      </MapLoader>
+      </div>
     </LoadScript>
   );
 };
