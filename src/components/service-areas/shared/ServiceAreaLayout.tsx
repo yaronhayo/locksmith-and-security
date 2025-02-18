@@ -13,6 +13,7 @@ import { useReviews } from "@/components/reviews/useReviews";
 import { createServiceAreaSchemas } from "./ServiceAreaSchemas";
 import ServiceAreaInfo from "./ServiceAreaInfo";
 import ServiceAreaFAQ from "./ServiceAreaFAQ";
+import { FAQSchema } from "@/types/schema";
 
 interface ServiceAreaLayoutProps {
   areaSlug: string;
@@ -30,8 +31,9 @@ const ServiceAreaLayout = ({ areaSlug }: ServiceAreaLayoutProps) => {
     return null;
   }
 
-  // Find the FAQ schema from the array of schemas
-  const faqSchema = schemas.find(schema => schema.type === 'FAQPage');
+  // Find and type check the FAQ schema
+  const rawFaqSchema = schemas.find(schema => schema.type === 'FAQPage');
+  const faqSchema = rawFaqSchema as FAQSchema | undefined;
 
   return (
     <PageLayout
@@ -78,7 +80,7 @@ const ServiceAreaLayout = ({ areaSlug }: ServiceAreaLayoutProps) => {
             />
           </section>
 
-          {faqSchema && (
+          {faqSchema && faqSchema.data.mainEntity && (
             <ServiceAreaFAQ 
               faqSchema={faqSchema} 
               locationName={location.name}
