@@ -69,16 +69,16 @@ const HeroSection = () => {
           </div>
 
           <motion.div 
-            className="w-full lg:w-5/12 bg-white rounded-2xl p-4 sm:p-6 lg:p-8 shadow-2xl transform hover:scale-[1.02] transition-transform duration-300 backdrop-blur-sm"
+            className="w-full lg:w-5/12 bg-white rounded-2xl p-3 sm:p-4 lg:p-5 shadow-2xl transform hover:scale-[1.02] transition-transform duration-300 backdrop-blur-sm max-h-[calc(100vh-8rem)] overflow-y-auto"
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.7 }}
             role="complementary"
             aria-label="Request service form"
           >
-            <div className="text-center mb-6">
-              <h2 className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-900">Request Service</h2>
-              <p className="text-sm sm:text-base text-gray-600 mt-2">Get a quick response from our team</p>
+            <div className="text-center mb-3">
+              <h2 className="text-lg sm:text-xl font-bold text-gray-900">Request Service</h2>
+              <p className="text-sm text-gray-600 mt-1">Get a quick response from our team</p>
             </div>
             <BookingForm />
           </motion.div>
