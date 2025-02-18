@@ -12,7 +12,7 @@ interface ReviewsSectionProps {
 }
 
 const ReviewsSection = memo(({ location, category }: ReviewsSectionProps) => {
-  const { displayedReviews, isLoading, loadingRef, loadMoreReviews, totalReviews } = useReviews(location, category);
+  const { displayedReviews, isLoading, loadingRef, totalReviews } = useReviews(location, category);
 
   return (
     <ErrorBoundary FallbackComponent={ErrorFallback}>

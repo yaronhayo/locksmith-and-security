@@ -5,10 +5,8 @@ import RealWorldExamples from "@/components/services/business-lock-change/RealWo
 import ServiceDescription from "@/components/services/business-lock-change/ServiceDescription";
 import ServiceTrustIndicators from "@/components/services/shared/ServiceTrustIndicators";
 import ServiceSchema from "@/components/services/shared/ServiceSchema";
-import { lazy } from "react";
+import ReviewsSection from "@/components/reviews/ReviewsSection";
 import { Lock } from "lucide-react";
-
-const ReviewsSection = lazy(() => import("@/components/reviews/ReviewsSection"));
 
 const BusinessLockChangePage = () => {
   return (
