@@ -1,3 +1,4 @@
+
 import { useEffect } from "react";
 import { useSettings } from "@/hooks/useSettings";
 import PageLayout from "@/components/layouts/PageLayout";
@@ -23,7 +24,7 @@ const ServiceAreaLayout = ({ areaSlug }: ServiceAreaLayoutProps) => {
   const { data: settings, isLoading: settingsLoading } = useSettings();
   const { data: locations, isLoading: locationsLoading } = useLocations();
   const location = locations?.find(loc => loc.slug === areaSlug);
-  const { displayedReviews, isLoading: reviewsLoading } = useReviews(location?.name);
+  const { displayedReviews, isLoading: reviewsLoading, totalReviews } = useReviews(location?.name);
 
   const breadcrumbSchema = createBreadcrumbSchema({
     breadcrumbs: [
@@ -93,35 +94,32 @@ const ServiceAreaLayout = ({ areaSlug }: ServiceAreaLayoutProps) => {
     phone: settings?.company_phone || ""
   });
 
-  const schemas = [
-    breadcrumbSchema,
-    serviceSchema,
-    locationSchema,
-    createFAQSchema({
-      questions: [
-        {
-          question: `What areas of ${location?.name || ''} do you serve?`,
-          answer: `We provide comprehensive locksmith services throughout all of ${location?.name || ''}, NJ and surrounding areas.`
-        },
-        {
-          question: "Are you available 24/7 for emergencies?",
-          answer: "Yes, we offer 24/7 emergency locksmith services for all residential, commercial, and automotive needs."
-        },
-        {
-          question: "How quickly can you arrive?",
-          answer: "We typically arrive within 20-30 minutes for emergency calls in our service area."
-        },
-        {
-          question: `What are your most popular services in ${location?.name || ''}?`,
-          answer: "Our most requested services include emergency lockouts, car key replacement, and commercial lock installation."
-        },
-        {
-          question: "Do you provide written estimates?",
-          answer: "Yes, we provide detailed written estimates before beginning any work, ensuring complete transparency."
-        }
-      ]
-    })
-  ].filter(Boolean);
+  const faqData = createFAQSchema({
+    questions: [
+      {
+        question: `What areas of ${location?.name || ''} do you serve?`,
+        answer: `We provide comprehensive locksmith services throughout all of ${location?.name || ''}, NJ and surrounding areas.`
+      },
+      {
+        question: "Are you available 24/7 for emergencies?",
+        answer: "Yes, we offer 24/7 emergency locksmith services for all residential, commercial, and automotive needs."
+      },
+      {
+        question: "How quickly can you arrive?",
+        answer: "We typically arrive within 20-30 minutes for emergency calls in our service area."
+      },
+      {
+        question: `What are your most popular services in ${location?.name || ''}?`,
+        answer: "Our most requested services include emergency lockouts, car key replacement, and commercial lock installation."
+      },
+      {
+        question: "Do you provide written estimates?",
+        answer: "Yes, we provide detailed written estimates before beginning any work, ensuring complete transparency."
+      }
+    ]
+  });
+
+  const schemas = [breadcrumbSchema, serviceSchema, locationSchema, faqData].filter(Boolean);
 
   if (!location) {
     return null;
@@ -193,6 +191,7 @@ const ServiceAreaLayout = ({ areaSlug }: ServiceAreaLayoutProps) => {
               location={location.name}
               displayedReviews={displayedReviews}
               isLoading={reviewsLoading}
+              totalReviews={totalReviews}
             />
           </section>
 
@@ -202,7 +201,7 @@ const ServiceAreaLayout = ({ areaSlug }: ServiceAreaLayoutProps) => {
                 Frequently Asked Questions About Our {location.name} Services
               </h2>
               <div className="max-w-3xl mx-auto space-y-6">
-                {schemas[3].data.mainEntity.map((faq: any, index: number) => (
+                {faqData.data.mainEntity.map((faq: any, index: number) => (
                   <div key={index} className="bg-white rounded-lg p-6 shadow-sm">
                     <h3 className="text-xl font-semibold mb-2">{faq.name}</h3>
                     <p className="text-gray-600">{faq.acceptedAnswer.text}</p>
