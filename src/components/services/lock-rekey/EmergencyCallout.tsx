@@ -1,3 +1,4 @@
+
 import { Button } from "@/components/ui/button";
 import { Phone } from "lucide-react";
 
@@ -16,7 +17,7 @@ const EmergencyCallout = () => {
           </a>
         </Button>
         <Button size="lg" variant="secondary" asChild>
-          <a href="/booking">Book Online</a>
+          <a href="/book-online">Book Online</a>
         </Button>
       </div>
     </div>
