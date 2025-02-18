@@ -2,7 +2,6 @@
 import { Routes as RouterRoutes, Route } from 'react-router-dom';
 import { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
-import Breadcrumbs from "@/components/Breadcrumbs";
 import { mainRoutes } from "./routes/mainRoutes";
 import { serviceRoutes } from "./routes/serviceRoutes";
 import { serviceAreaRoutes } from "./routes/serviceAreaRoutes";
@@ -12,7 +11,6 @@ import ErrorFallback from "./components/ErrorFallback";
 const Routes = () => {
   return (
     <ErrorBoundary FallbackComponent={ErrorFallback}>
-      <Breadcrumbs />
       <RouterRoutes>
         {mainRoutes.map(({ path, element }) => (
           <Route
