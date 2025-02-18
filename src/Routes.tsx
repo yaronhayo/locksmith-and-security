@@ -11,53 +11,33 @@ import ErrorFallback from "./components/ErrorFallback";
 const Routes = () => {
   return (
     <ErrorBoundary FallbackComponent={ErrorFallback}>
-      <RouterRoutes>
-        {mainRoutes.map(({ path, element }) => (
-          <Route
-            key={path}
-            path={path}
-            element={
-              path === "/" ? (
-                element
-              ) : (
-                <ErrorBoundary FallbackComponent={ErrorFallback}>
-                  <Suspense fallback={<LoadingSpinner />}>
-                    {element}
-                  </Suspense>
-                </ErrorBoundary>
-              )
-            }
-          />
-        ))}
-        
-        {serviceRoutes.map(({ path, element }) => (
-          <Route
-            key={path}
-            path={path}
-            element={
-              <ErrorBoundary FallbackComponent={ErrorFallback}>
-                <Suspense fallback={<LoadingSpinner />}>
-                  {element}
-                </Suspense>
-              </ErrorBoundary>
-            }
-          />
-        ))}
-        
-        {serviceAreaRoutes.map(({ path, element }) => (
-          <Route
-            key={path}
-            path={path}
-            element={
-              <ErrorBoundary FallbackComponent={ErrorFallback}>
-                <Suspense fallback={<LoadingSpinner />}>
-                  {element}
-                </Suspense>
-              </ErrorBoundary>
-            }
-          />
-        ))}
-      </RouterRoutes>
+      <Suspense fallback={<LoadingSpinner />}>
+        <RouterRoutes>
+          {mainRoutes.map(({ path, element }) => (
+            <Route
+              key={path}
+              path={path}
+              element={element}
+            />
+          ))}
+          
+          {serviceRoutes.map(({ path, element }) => (
+            <Route
+              key={path}
+              path={path}
+              element={element}
+            />
+          ))}
+          
+          {serviceAreaRoutes.map(({ path, element }) => (
+            <Route
+              key={path}
+              path={path}
+              element={element}
+            />
+          ))}
+        </RouterRoutes>
+      </Suspense>
     </ErrorBoundary>
   );
 };
