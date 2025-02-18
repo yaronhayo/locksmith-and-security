@@ -12,7 +12,14 @@ const mapOptions = {
   streetViewControl: false,
   mapTypeControl: false,
   fullscreenControl: false,
-  gestureHandling: 'cooperative'
+  gestureHandling: 'cooperative',
+  styles: [
+    {
+      featureType: "all",
+      elementType: "geometry",
+      stylers: [{ visibility: "on" }]
+    }
+  ]
 };
 
 interface GoogleMapProps {

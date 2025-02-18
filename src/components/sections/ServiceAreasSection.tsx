@@ -53,7 +53,7 @@ const ServiceAreasSection = () => {
             setHoveredArea={setHoveredArea} 
           />
           
-          <div key="map-container" className="h-[600px] bg-white rounded-xl shadow-lg overflow-hidden">
+          <div className="h-[600px] bg-white rounded-xl shadow-lg overflow-hidden border border-gray-200">
             <GoogleMapsProvider>
               <GoogleMap 
                 markers={mapMarkers}
