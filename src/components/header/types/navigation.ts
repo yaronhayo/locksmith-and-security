@@ -20,3 +20,14 @@ export interface NavigationLinkProps {
   children?: { path: string; label: string }[];
   icon?: React.ReactNode;
 }
+
+export interface NavItemProps {
+  item: NavItem;
+  isActive: boolean;
+  isMenuOpen: boolean;
+  getIcon: (label: string) => React.ReactNode;
+}
+
+export interface MobileMenuActionsProps {
+  isMenuOpen: boolean;
+}

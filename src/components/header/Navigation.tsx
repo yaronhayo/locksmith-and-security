@@ -2,12 +2,11 @@
 import { cn } from "@/lib/utils";
 import { useLocation } from "react-router-dom";
 import { memo, useEffect, useState } from "react";
-import NavigationLink from "./NavigationLink";
 import { navItems } from "./constants/navItems";
 import { NavigationProps } from "./types/navigation";
-import { Phone, Calendar, Home, ChevronRight, Settings, MapPin, Info, Star, MessageSquare, HelpCircle } from 'lucide-react';
-import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
+import { Home, Settings, MapPin, Info, Star, MessageSquare, HelpCircle, ChevronRight } from 'lucide-react';
+import NavItem from "./NavItem";
+import MobileMenuActions from "./MobileMenuActions";
 
 const Navigation = ({ className, isMenuOpen = false, isScrolled = false }: NavigationProps) => {
   const location = useLocation();
@@ -22,13 +21,13 @@ const Navigation = ({ className, isMenuOpen = false, isScrolled = false }: Navig
   }, [location]);
 
   const isActive = (path: string) => {
-    // Check if the current path matches the nav item path or its children paths
     if (path === location.pathname) return true;
-    const matchingNavItem = navItems.find(item => item.children?.some(child => child.path === location.pathname));
+    const matchingNavItem = navItems.find(item => 
+      item.children?.some(child => child.path === location.pathname)
+    );
     return matchingNavItem?.path === path;
   };
 
-  // Get icon for menu item
   const getIcon = (label: string) => {
     switch (label) {
       case "Home":
@@ -50,9 +49,8 @@ const Navigation = ({ className, isMenuOpen = false, isScrolled = false }: Navig
     }
   };
 
-  // Filter items based on whether we're in mobile view (isOpen) or not
   const displayItems = isOpen 
-    ? navItems
+    ? navItems 
     : navItems.filter(item => !item.showMobileOnly);
 
   return (
@@ -66,44 +64,19 @@ const Navigation = ({ className, isMenuOpen = false, isScrolled = false }: Navig
       role="navigation"
       aria-label="Main navigation"
     >
-      {displayItems.map(({ path, label, showMobileOnly, children }) => (
-        <div key={path} className="w-full">
-          <NavigationLink
-            path={path}
-            label={label}
-            isActive={isActive(path)}
-            isMenuOpen={isOpen}
-            children={children}
-            icon={getIcon(label)}
-          />
-        </div>
+      {displayItems.map((item) => (
+        <NavItem
+          key={item.path}
+          item={item}
+          isActive={isActive(item.path)}
+          isMenuOpen={isOpen}
+          getIcon={getIcon}
+        />
       ))}
       
-      {isOpen && (
-        <div className="mt-2 space-y-3 w-full px-4">
-          <Button 
-            asChild 
-            variant="secondary" 
-            className="w-full max-w-[calc(100%-2rem)] mx-auto bg-secondary hover:bg-secondary-hover text-white shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
-          >
-            <Link to="/book-online" className="inline-flex items-center justify-center gap-2">
-              <Calendar className="w-5 h-5" />
-              Book Service
-            </Link>
-          </Button>
-          
-          <a 
-            href="tel:2017482070" 
-            className="w-full max-w-[calc(100%-2rem)] mx-auto inline-flex items-center justify-center gap-2 py-3 px-4 bg-white/10 rounded-md text-white text-lg font-bold hover:bg-white/20 transition-all duration-300"
-          >
-            <Phone className="w-5 h-5 animate-phone-ring" />
-            (201) 748-2070
-          </a>
-        </div>
-      )}
+      <MobileMenuActions isMenuOpen={isOpen} />
     </nav>
   );
 };
 
 export default memo(Navigation);
-
