@@ -70,10 +70,12 @@ const GoogleMap = ({
         onClick={onClick}
         onLoad={onLoadCallback}
       >
-        <MapMarkers
-          markers={visibleMarkers}
-          hoveredMarker={highlightedMarker}
-        />
+        {visibleMarkers.length > 0 && (
+          <MapMarkers
+            markers={visibleMarkers}
+            hoveredMarker={highlightedMarker}
+          />
+        )}
       </GoogleMapComponent>
     </div>
   );
