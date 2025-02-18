@@ -17,10 +17,14 @@ const GoogleMapsProvider = ({ children }: GoogleMapsProviderProps) => {
   const [scriptError, setScriptError] = useState<string | null>(null);
 
   useEffect(() => {
+    let isMounted = true;
+
     const checkGoogleMapsLoaded = () => {
+      if (!isMounted) return false;
+      
       try {
         if (window.google && window.google.maps) {
-          console.log("Google Maps already loaded, skipping script load");
+          console.log("Google Maps already loaded");
           setIsScriptLoaded(true);
           return true;
         }
@@ -34,16 +38,8 @@ const GoogleMapsProvider = ({ children }: GoogleMapsProviderProps) => {
     // Initial check
     checkGoogleMapsLoaded();
 
-    // Set up error handler
-    const handleScriptError = (event: ErrorEvent) => {
-      console.error("Google Maps script error:", event);
-      setScriptError(event.message || "Failed to load Google Maps");
-    };
-
-    window.addEventListener('error', handleScriptError);
-    
     return () => {
-      window.removeEventListener('error', handleScriptError);
+      isMounted = false;
     };
   }, []);
 
@@ -69,7 +65,9 @@ const GoogleMapsProvider = ({ children }: GoogleMapsProviderProps) => {
         console.error("Error loading Google Maps script:", error);
         setScriptError("Failed to load Google Maps");
       }}
-      preventGoogleFontsLoading={true}
+      onUnmount={() => {
+        console.log("Google Maps script unmounting");
+      }}
     >
       {children}
     </LoadScript>
