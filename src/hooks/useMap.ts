@@ -4,7 +4,7 @@ import { supabase } from '@/integrations/supabase/client';
 
 export const useMapConfig = () => {
   return useQuery({
-    queryKey: ['google-maps-api-key'],
+    queryKey: ['GOOGLE_MAPS_API_KEY'],
     queryFn: async () => {
       console.log('Fetching Google Maps API key...');
       const { data, error } = await supabase
