@@ -1,4 +1,3 @@
-
 import { useEffect } from "react";
 import { useSettings } from "@/hooks/useSettings";
 import PageLayout from "@/components/layouts/PageLayout";
@@ -9,8 +8,12 @@ import { motion } from "framer-motion";
 import { createFAQSchema } from "@/components/meta/schema/FAQSchema";
 import { createRatingSchema } from "@/components/meta/schema/RatingSchema";
 import { createLocationSchema } from "@/components/meta/schema/LocationSchema";
+import { createBreadcrumbSchema } from "@/components/meta/schema/BreadcrumbSchema";
 import { useLocations } from "@/hooks/useLocations";
-import ReviewsSection from "@/components/reviews/ReviewsSection";
+import { AspectRatio } from "@/components/ui/aspect-ratio";
+import Breadcrumbs from "@/components/Breadcrumbs";
+import ReviewsContainer from "@/components/reviews/ReviewsContainer";
+import { useReviews } from "@/components/reviews/useReviews";
 
 interface ServiceAreaLayoutProps {
   areaSlug: string;
@@ -19,43 +22,66 @@ interface ServiceAreaLayoutProps {
 const ServiceAreaLayout = ({ areaSlug }: ServiceAreaLayoutProps) => {
   const { data: settings, isLoading: settingsLoading } = useSettings();
   const { data: locations, isLoading: locationsLoading } = useLocations();
-
   const location = locations?.find(loc => loc.slug === areaSlug);
+  const { displayedReviews, isLoading: reviewsLoading } = useReviews(location?.name);
 
-  // Location-specific FAQ schema
-  const faqSchema = createFAQSchema({
-    questions: [
-      {
-        question: `What areas of ${location?.name || ''} do you serve?`,
-        answer: `We provide comprehensive locksmith services throughout all of ${location?.name || ''}, NJ and surrounding areas.`
+  const breadcrumbSchema = createBreadcrumbSchema({
+    breadcrumbs: [
+      { name: "Home", item: "/" },
+      { name: "Service Areas", item: "/service-areas" },
+      { name: location?.name || "", item: `/service-areas/${areaSlug}` }
+    ],
+    baseUrl: "https://247locksmithandsecurity.com"
+  });
+
+  const serviceSchema = {
+    type: 'Service',
+    data: {
+      "@context": "https://schema.org",
+      "@type": "Service",
+      "name": `Locksmith Services in ${location?.name || ''}`,
+      "provider": {
+        "@type": "LocalBusiness",
+        "name": settings?.company_name,
+        "image": "/lovable-uploads/1bbeb1e6-5581-4e09-9600-7d1859bb17c5.png",
+        "description": `Professional locksmith services in ${location?.name || ''}, NJ`,
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": location?.name,
+          "addressRegion": "NJ",
+          "addressCountry": "US"
+        }
       },
-      {
-        question: "Are you available 24/7 for emergencies?",
-        answer: "Yes, we offer 24/7 emergency locksmith services for all residential, commercial, and automotive needs."
+      "areaServed": {
+        "@type": "City",
+        "name": location?.name,
+        "sameAs": `https://en.wikipedia.org/wiki/${location?.name?.replace(/ /g, '_')},_New_Jersey`
       },
-      {
-        question: "How quickly can you arrive?",
-        answer: "We typically arrive within 20-30 minutes for emergency calls in our service area."
-      },
-      {
-        question: `What are your most popular services in ${location?.name || ''}?`,
-        answer: "Our most requested services include emergency lockouts, car key replacement, and commercial lock installation."
-      },
-      {
-        question: "Do you provide written estimates?",
-        answer: "Yes, we provide detailed written estimates before beginning any work, ensuring complete transparency."
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Locksmith Services",
+        "itemListElement": [
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Emergency Lockout Service",
+              "description": `24/7 emergency lockout services in ${location?.name || ''}`
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Car Key Replacement",
+              "description": `Professional car key services in ${location?.name || ''}`
+            }
+          }
+        ]
       }
-    ]
-  });
+    }
+  };
 
-  // Location-specific rating schema
-  const ratingSchema = createRatingSchema({
-    ratingValue: 4.8,
-    reviewCount: 150,
-    name: settings?.company_name || "Locksmith & Security LLC"
-  });
-
-  // Location schema
   const locationSchema = createLocationSchema({
     name: location?.name || '',
     description: location?.description || '',
@@ -67,7 +93,35 @@ const ServiceAreaLayout = ({ areaSlug }: ServiceAreaLayoutProps) => {
     phone: settings?.company_phone || ""
   });
 
-  const schemas = [faqSchema, ratingSchema, locationSchema].filter(Boolean);
+  const schemas = [
+    breadcrumbSchema,
+    serviceSchema,
+    locationSchema,
+    createFAQSchema({
+      questions: [
+        {
+          question: `What areas of ${location?.name || ''} do you serve?`,
+          answer: `We provide comprehensive locksmith services throughout all of ${location?.name || ''}, NJ and surrounding areas.`
+        },
+        {
+          question: "Are you available 24/7 for emergencies?",
+          answer: "Yes, we offer 24/7 emergency locksmith services for all residential, commercial, and automotive needs."
+        },
+        {
+          question: "How quickly can you arrive?",
+          answer: "We typically arrive within 20-30 minutes for emergency calls in our service area."
+        },
+        {
+          question: `What are your most popular services in ${location?.name || ''}?`,
+          answer: "Our most requested services include emergency lockouts, car key replacement, and commercial lock installation."
+        },
+        {
+          question: "Do you provide written estimates?",
+          answer: "Yes, we provide detailed written estimates before beginning any work, ensuring complete transparency."
+        }
+      ]
+    })
+  ].filter(Boolean);
 
   if (!location) {
     return null;
@@ -80,6 +134,7 @@ const ServiceAreaLayout = ({ areaSlug }: ServiceAreaLayoutProps) => {
       schema={schemas}
       className="py-12 md:py-20"
     >
+      <Breadcrumbs />
       <motion.div 
         className="container mx-auto px-4"
         initial={{ opacity: 0 }}
@@ -87,26 +142,67 @@ const ServiceAreaLayout = ({ areaSlug }: ServiceAreaLayoutProps) => {
         transition={{ duration: 0.5 }}
       >
         <div className="grid gap-12 md:gap-20">
+          <div className="relative w-full h-[300px] rounded-xl overflow-hidden">
+            <AspectRatio ratio={16/9}>
+              <img 
+                src="/lovable-uploads/950b5c4c-f0b8-4d22-beb0-66a7d7554476.png"
+                alt={`Professional locksmith services in ${location.name}, New Jersey`}
+                className="object-cover w-full h-full"
+                loading="lazy"
+                width={1200}
+                height={675}
+              />
+            </AspectRatio>
+          </div>
+
           <ServiceAreaHero areaName={location.name} isLoading={settingsLoading || locationsLoading} />
+          
+          <section className="bg-gray-50 rounded-xl p-8">
+            <h2 className="text-3xl font-bold mb-6">About Our Services in {location.name}</h2>
+            <p className="text-lg text-gray-700 mb-6">
+              Trust your local locksmith in {location.name}, providing professional services 
+              for residential, commercial, and automotive security needs. We're available 
+              24/7 for emergencies and pride ourselves on fast response times.
+            </p>
+            <div className="grid md:grid-cols-2 gap-8">
+              <div>
+                <h3 className="text-xl font-semibold mb-4">Service Coverage</h3>
+                <p className="text-gray-600">
+                  We provide comprehensive locksmith services throughout {location.name} and 
+                  surrounding areas, ensuring quick response times and professional service.
+                </p>
+              </div>
+              <div>
+                <h3 className="text-xl font-semibold mb-4">Response Times</h3>
+                <p className="text-gray-600">
+                  Our average response time in {location.name} is 20-30 minutes, 
+                  ensuring you get help when you need it most.
+                </p>
+              </div>
+            </div>
+          </section>
+
           <ServicesList areaName={location.name} />
           <ServiceAreaFeatures />
           
-          {/* Location-specific Reviews Section */}
           <section className="py-12" id="reviews">
             <h2 className="text-3xl font-bold text-center mb-8">
               Customer Reviews in {location.name}
             </h2>
-            <ReviewsSection location={location.name} />
+            <ReviewsContainer
+              location={location.name}
+              displayedReviews={displayedReviews}
+              isLoading={reviewsLoading}
+            />
           </section>
 
-          {/* Location-specific FAQ Section */}
           <section className="py-12 bg-gray-50 rounded-xl" id="faq">
             <div className="container mx-auto px-4">
               <h2 className="text-3xl font-bold text-center mb-8">
                 Frequently Asked Questions About Our {location.name} Services
               </h2>
               <div className="max-w-3xl mx-auto space-y-6">
-                {faqSchema.data.mainEntity.map((faq: any, index: number) => (
+                {schemas[3].data.mainEntity.map((faq: any, index: number) => (
                   <div key={index} className="bg-white rounded-lg p-6 shadow-sm">
                     <h3 className="text-xl font-semibold mb-2">{faq.name}</h3>
                     <p className="text-gray-600">{faq.acceptedAnswer.text}</p>
