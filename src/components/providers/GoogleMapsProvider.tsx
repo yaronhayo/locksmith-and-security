@@ -17,6 +17,7 @@ const GoogleMapsProvider = ({ children }: GoogleMapsProviderProps) => {
   const [scriptError, setScriptError] = useState<string | null>(null);
 
   const handleLoad = useCallback(() => {
+    console.log("Google Maps script loading...");
     if (!window.google?.maps) {
       console.error("Google Maps not available after load");
       setScriptError("Failed to initialize Google Maps");
@@ -31,35 +32,20 @@ const GoogleMapsProvider = ({ children }: GoogleMapsProviderProps) => {
     setScriptError("Failed to load Google Maps");
   }, []);
 
-  useEffect(() => {
-    // Ensure cleanup on unmount
-    return () => {
-      setIsScriptLoaded(false);
-    };
-  }, []);
-
   if (isLoading) return <MapLoader />;
   if (apiKeyError) return <MapError error={apiKeyError.message} />;
   if (!apiKey) return <MapError error="Google Maps API key not found" />;
   if (scriptError) return <MapError error={scriptError} />;
 
-  // If script is already loaded
-  if (window.google?.maps) {
-    console.log("Using existing Google Maps instance");
-    return <>{children}</>;
-  }
-
-  // Load new script instance
   return (
     <LoadScript 
       googleMapsApiKey={apiKey}
       libraries={libraries}
       onLoad={handleLoad}
       onError={handleError}
-      onUnmount={() => setIsScriptLoaded(false)}
       loadingElement={<MapLoader />}
     >
-      {isScriptLoaded ? children : <MapLoader />}
+      {children}
     </LoadScript>
   );
 };

@@ -23,10 +23,11 @@ export const useMapConfig = () => {
         throw new Error('Google Maps API key not found');
       }
 
+      console.log('API key fetched successfully');
       return data.value;
     },
-    staleTime: Infinity, // Never mark the data as stale
-    gcTime: Infinity, // Keep the data cached indefinitely (renamed from cacheTime)
+    staleTime: Infinity,
+    gcTime: Infinity,
     retry: 1
   });
 };
