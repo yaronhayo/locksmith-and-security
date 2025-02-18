@@ -1,16 +1,10 @@
 
 import { memo, useEffect, useState } from 'react';
-import ReviewCard from './ReviewCard';
 import { Review } from '@/types/reviews';
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-  type CarouselApi
-} from "@/components/ui/carousel";
-import { cn } from "@/lib/utils";
+import { type CarouselApi } from "@/components/ui/carousel";
+import ReviewsLoadingSkeleton from './ReviewsLoadingSkeleton';
+import ReviewsCarousel from './ReviewsCarousel';
+import CarouselDots from './CarouselDots';
 
 interface ReviewsListProps {
   reviews: Review[];
@@ -31,7 +25,7 @@ const ReviewsList = ({ reviews, isLoading }: ReviewsListProps) => {
     // Optimized auto-rotation with requestAnimationFrame
     let rafId: number;
     let lastRotation = performance.now();
-    const rotationInterval = 3000; // Increased for better UX
+    const rotationInterval = 3000;
 
     const rotate = (timestamp: number) => {
       if (timestamp - lastRotation >= rotationInterval) {
@@ -49,54 +43,18 @@ const ReviewsList = ({ reviews, isLoading }: ReviewsListProps) => {
     };
   }, [api]);
 
-  const handleDotClick = (index: number) => {
-    api?.scrollTo(index);
-  };
-
   if (isLoading) {
-    return (
-      <div className="w-full max-w-7xl mx-auto px-4">
-        <div className="animate-pulse space-y-4">
-          <div className="h-64 bg-gray-200 rounded-lg" />
-        </div>
-      </div>
-    );
+    return <ReviewsLoadingSkeleton />;
   }
 
   return (
     <div className="w-full max-w-7xl mx-auto px-4">
-      <Carousel
-        setApi={setApi}
-        className="w-full relative"
-        opts={{
-          align: "start",
-          loop: true,
-        }}
-      >
-        <CarouselContent>
-          {reviews.map((review, index) => (
-            <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
-              <ReviewCard review={review} index={index} />
-            </CarouselItem>
-          ))}
-        </CarouselContent>
-        <CarouselPrevious className="hidden md:flex" />
-        <CarouselNext className="hidden md:flex" />
-      </Carousel>
-
-      <div className="flex justify-center gap-2 mt-4">
-        {reviews.map((_, index) => (
-          <button
-            key={index}
-            onClick={() => handleDotClick(index)}
-            className={cn(
-              "w-2 h-2 rounded-full transition-all",
-              current === index ? "bg-primary" : "bg-gray-300"
-            )}
-            aria-label={`Go to review ${index + 1}`}
-          />
-        ))}
-      </div>
+      <ReviewsCarousel reviews={reviews} />
+      <CarouselDots 
+        total={reviews.length} 
+        current={current} 
+        onDotClick={(index) => api?.scrollTo(index)} 
+      />
     </div>
   );
 };
