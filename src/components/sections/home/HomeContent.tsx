@@ -2,7 +2,7 @@
 import { motion } from "framer-motion";
 import { Suspense, lazy } from 'react';
 import LoadingSpinner from "@/components/LoadingSpinner";
-import ReviewsSection from "@/components/sections/reviews/ReviewsSection";
+import ReviewsSection from "@/components/reviews/ReviewsSection";
 
 // Lazy load sections
 const TrustBadgesSection = lazy(() => import("@/components/sections/TrustBadgesSection"));
