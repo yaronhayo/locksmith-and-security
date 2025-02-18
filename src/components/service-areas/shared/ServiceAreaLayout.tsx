@@ -15,6 +15,8 @@ import { AspectRatio } from "@/components/ui/aspect-ratio";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import ReviewsContainer from "@/components/reviews/ReviewsContainer";
 import { useReviews } from "@/components/reviews/useReviews";
+import { Clock, Shield, MapPin, Phone } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 interface ServiceAreaLayoutProps {
   areaSlug: string;
@@ -155,27 +157,66 @@ const ServiceAreaLayout = ({ areaSlug }: ServiceAreaLayoutProps) => {
 
           <ServiceAreaHero areaName={location.name} isLoading={settingsLoading || locationsLoading} />
           
-          <section className="bg-gray-50 rounded-xl p-8">
-            <h2 className="text-3xl font-bold mb-6">About Our Services in {location.name}</h2>
-            <p className="text-lg text-gray-700 mb-6">
-              Trust your local locksmith in {location.name}, providing professional services 
-              for residential, commercial, and automotive security needs. We're available 
-              24/7 for emergencies and pride ourselves on fast response times.
-            </p>
-            <div className="grid md:grid-cols-2 gap-8">
-              <div>
-                <h3 className="text-xl font-semibold mb-4">Service Coverage</h3>
-                <p className="text-gray-600">
-                  We provide comprehensive locksmith services throughout {location.name} and 
-                  surrounding areas, ensuring quick response times and professional service.
-                </p>
+          <section className="bg-white rounded-xl shadow-sm p-8 md:p-12">
+            <h2 className="text-3xl font-bold mb-6 text-primary">About Our Services in {location.name}</h2>
+            <div className="prose max-w-none">
+              <p className="text-lg text-gray-700 mb-8">
+                Trust your local locksmith in {location.name}, providing professional services 
+                for residential, commercial, and automotive security needs. We're available 
+                24/7 for emergencies and pride ourselves on fast response times.
+              </p>
+              
+              <div className="grid md:grid-cols-2 gap-8 mb-8">
+                <div className="bg-gray-50 p-6 rounded-lg">
+                  <h3 className="text-xl font-semibold mb-4 flex items-center gap-2 text-primary">
+                    <MapPin className="h-5 w-5" />
+                    Service Coverage
+                  </h3>
+                  <p className="text-gray-600">
+                    We provide comprehensive locksmith services throughout {location.name} and 
+                    surrounding areas, ensuring quick response times and professional service.
+                  </p>
+                </div>
+                <div className="bg-gray-50 p-6 rounded-lg">
+                  <h3 className="text-xl font-semibold mb-4 flex items-center gap-2 text-primary">
+                    <Clock className="h-5 w-5" />
+                    Response Times
+                  </h3>
+                  <p className="text-gray-600">
+                    Our average response time in {location.name} is 20-30 minutes, 
+                    ensuring you get help when you need it most.
+                  </p>
+                </div>
               </div>
-              <div>
-                <h3 className="text-xl font-semibold mb-4">Response Times</h3>
-                <p className="text-gray-600">
-                  Our average response time in {location.name} is 20-30 minutes, 
-                  ensuring you get help when you need it most.
-                </p>
+
+              <div className="flex flex-col sm:flex-row gap-4 mb-12">
+                <Button size="lg" asChild className="flex items-center gap-2">
+                  <a href="tel:2017482070">
+                    <Phone className="h-5 w-5" />
+                    Call (201) 748-2070
+                  </a>
+                </Button>
+                <Button size="lg" variant="outline" asChild>
+                  <a href="/book-online">Book Online</a>
+                </Button>
+              </div>
+
+              <div className="grid sm:grid-cols-3 gap-6 mb-12">
+                <div className="flex flex-col items-center p-6 bg-primary/5 rounded-lg text-center">
+                  <Clock className="h-8 w-8 text-primary mb-3" />
+                  <h4 className="font-semibold mb-2">24/7 Availability</h4>
+                  <p className="text-sm text-gray-600">Emergency service available around the clock</p>
+                </div>
+                <div className="flex flex-col items-center p-6 bg-primary/5 rounded-lg text-center">
+                  <Shield className="h-8 w-8 text-primary mb-3" />
+                  <h4 className="font-semibold mb-2">Licensed & Insured</h4>
+                  <p className="text-sm text-gray-600">Professional, certified technicians</p>
+                </div>
+                <div className="flex flex-col items-center p-6 bg-primary/5 rounded-lg text-center">
+                  <MapPin className="h-8 w-8 text-primary mb-3" />
+                  <h4 className="font-semibold mb-2">Local Service</h4>
+                  <p className="text-sm text-gray-600">Serving all of {location.name}</p>
+                </div>
               </div>
             </div>
           </section>
