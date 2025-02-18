@@ -1,74 +1,43 @@
-import PageLayout from "@/components/layouts/PageLayout";
-import BusinessLockChangeHero from "@/components/sections/BusinessLockChangeHero";
-import LockoutServices from "@/components/sections/LockoutServices";
-import WhyChooseUs from "@/components/sections/WhyChooseUs";
-import ServiceDescription from "@/components/services/business-lock-change/ServiceDescription";
-import RealWorldExamples from "@/components/services/business-lock-change/RealWorldExamples";
-import EmergencyCallout from "@/components/services/business-lock-change/EmergencyCallout";
-import FAQSection from "@/components/sections/FAQSection";
 
-const schema = {
-  "@context": "https://schema.org",
-  "@type": "Service",
-  "name": "Business Lock Change Services in North Bergen",
-  "description": "Professional business lock change services available in North Bergen and surrounding areas. Fast response times and licensed technicians.",
-  "provider": {
-    "@type": "LocalBusiness",
-    "name": "Locksmith & Security LLC",
-    "image": "/og-image.png",
-    "telephone": "+12017482070",
-    "address": {
-      "@type": "PostalAddress",
-      "addressLocality": "North Bergen",
-      "addressRegion": "NJ",
-      "postalCode": "07047",
-      "addressCountry": "US"
-    },
-    "geo": {
-      "@type": "GeoCoordinates",
-      "latitude": "40.7995",
-      "longitude": "-74.0246"
-    },
-    "areaServed": {
-      "@type": "GeoCircle",
-      "geoMidpoint": {
-        "@type": "GeoCoordinates",
-        "latitude": "40.7995",
-        "longitude": "-74.0246"
-      },
-      "geoRadius": "30mi"
-    }
-  },
-  "serviceArea": {
-    "@type": "GeoCircle",
-    "geoMidpoint": {
-      "@type": "GeoCoordinates",
-      "latitude": "40.7995",
-      "longitude": "-74.0246"
-    },
-    "geoRadius": "30mi"
-  }
-};
+import ServiceLayout from "@/components/layouts/ServiceLayout";
+import EmergencyCallout from "@/components/services/business-lock-change/EmergencyCallout";
+import RealWorldExamples from "@/components/services/business-lock-change/RealWorldExamples";
+import ServiceDescription from "@/components/services/business-lock-change/ServiceDescription";
+import ServiceTrustIndicators from "@/components/services/shared/ServiceTrustIndicators";
+import ServiceSchema from "@/components/services/shared/ServiceSchema";
+import { lazy } from "react";
+import { Lock } from "lucide-react";
+
+const ReviewsSection = lazy(() => import("@/components/reviews/ReviewsSection"));
 
 const BusinessLockChangePage = () => {
   return (
-    <PageLayout
-      title="Business Lock Change Services North Bergen | Commercial Lock Change"
-      description="Professional business lock change services in North Bergen. Available 24/7 with fast response time. Licensed and insured commercial locksmith specialists ready to help."
-      schema={schema}
-    >
-      <BusinessLockChangeHero />
-      <LockoutServices />
-      <WhyChooseUs />
-      <div className="container mx-auto px-4 py-12">
-        <div className="max-w-4xl mx-auto">
-          <ServiceDescription />
-          <RealWorldExamples />
-          <EmergencyCallout />
-        </div>
-      </div>
-      <FAQSection />
-    </PageLayout>
+    <>
+      <ServiceSchema
+        name="Business Lock Change Service"
+        description="Professional business lock change and replacement services. Our expert locksmiths provide reliable solutions to enhance your business security."
+        serviceType="Commercial Locksmith"
+        price={{ amount: 95, currency: "USD" }}
+        estimatedTime="30-60 minutes"
+      />
+      <ServiceLayout
+        title="Business Lock Change Service"
+        description="Professional lock change services for your business. Our expert locksmiths provide reliable solutions to enhance your commercial security."
+        icon={Lock}
+        service="business-lock-change"
+        callToAction="Schedule Lock Change"
+      >
+        <ServiceTrustIndicators
+          responseTime="30-60 Min"
+          rating="5.0"
+          certifications={["Licensed", "Insured", "Bonded"]}
+        />
+        <EmergencyCallout />
+        <ServiceDescription />
+        <RealWorldExamples />
+        <ReviewsSection category="commercial" />
+      </ServiceLayout>
+    </>
   );
 };
 
