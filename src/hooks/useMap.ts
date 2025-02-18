@@ -25,7 +25,8 @@ export const useMapConfig = () => {
 
       return data.value;
     },
-    staleTime: Infinity,
+    staleTime: Infinity, // Never mark the data as stale
+    cacheTime: Infinity, // Keep the data cached indefinitely
     retry: 1
   });
 };

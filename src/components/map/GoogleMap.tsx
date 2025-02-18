@@ -44,9 +44,18 @@ const GoogleMap = ({
     [markers, showAllMarkers, highlightedMarker]
   );
 
-  const onLoadCallback = useCallback(() => {
+  const onLoadCallback = useCallback((map: google.maps.Map) => {
     console.log('Map loaded successfully');
-  }, []);
+    
+    // Fit bounds to markers if there are any
+    if (visibleMarkers.length > 0) {
+      const bounds = new google.maps.LatLngBounds();
+      visibleMarkers.forEach(marker => {
+        bounds.extend({ lat: marker.lat, lng: marker.lng });
+      });
+      map.fitBounds(bounds, 50); // 50px padding
+    }
+  }, [visibleMarkers]);
 
   if (isLoading) return <MapLoader />;
   if (apiKeyError) return <MapError error={apiKeyError.message} />;
@@ -61,13 +70,10 @@ const GoogleMap = ({
         onClick={onClick}
         onLoad={onLoadCallback}
       >
-        {visibleMarkers.map((marker, index) => (
-          <MapMarkers
-            key={`${marker.slug || ''}-${index}`}
-            markers={[marker]}
-            hoveredMarker={highlightedMarker}
-          />
-        ))}
+        <MapMarkers
+          markers={visibleMarkers}
+          hoveredMarker={highlightedMarker}
+        />
       </GoogleMapComponent>
     </div>
   );
