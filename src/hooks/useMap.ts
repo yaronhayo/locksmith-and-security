@@ -20,7 +20,7 @@ export const useMapConfig = () => {
       
       if (!data?.value) {
         console.error('No API key found in settings');
-        throw new Error('Google Maps API key not found');
+        throw new Error('Google Maps API key not found in settings');
       }
 
       console.log('API key fetched successfully');
@@ -28,6 +28,9 @@ export const useMapConfig = () => {
     },
     staleTime: Infinity,
     gcTime: Infinity,
-    retry: 1
+    retry: 1,
+    meta: {
+      errorMessage: 'Failed to load Google Maps configuration'
+    }
   });
 };

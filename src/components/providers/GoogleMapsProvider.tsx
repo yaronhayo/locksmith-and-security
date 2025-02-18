@@ -29,8 +29,14 @@ const GoogleMapsProvider = ({ children }: GoogleMapsProviderProps) => {
 
   const handleError = useCallback((error: Error) => {
     console.error("Error loading Google Maps script:", error);
-    setScriptError("Failed to load Google Maps");
+    setScriptError(error.message || "Failed to load Google Maps");
   }, []);
+
+  useEffect(() => {
+    if (apiKeyError) {
+      console.error("API Key Error:", apiKeyError);
+    }
+  }, [apiKeyError]);
 
   if (isLoading) return <MapLoader />;
   if (apiKeyError) return <MapError error={apiKeyError.message} />;
