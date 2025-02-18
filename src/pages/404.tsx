@@ -1,8 +1,9 @@
 
 import PageLayout from "@/components/layouts/PageLayout";
 import { Button } from "@/components/ui/button";
-import { FileQuestion, Key, LockKeyhole, Search } from "lucide-react";
+import { Key, Search } from "lucide-react";
 import { motion } from "framer-motion";
+import { AspectRatio } from "@/components/ui/aspect-ratio";
 
 const NotFoundPage = () => {
   return (
@@ -12,30 +13,21 @@ const NotFoundPage = () => {
     >
       <div className="min-h-[70vh] flex items-center justify-center p-4 bg-gradient-to-b from-transparent to-blue-50/30">
         <div className="max-w-2xl mx-auto text-center space-y-8">
-          {/* Animated Lock and Key */}
+          {/* Company Logo Animation */}
           <div className="relative h-32 mb-8">
             <motion.div
-              initial={{ rotate: 0 }}
-              animate={{ rotate: [0, -10, 10, -10, 10, 0] }}
-              transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}
-              className="absolute left-1/2 -translate-x-1/2"
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ duration: 0.5 }}
+              className="w-32 h-32 mx-auto"
             >
-              <LockKeyhole className="w-20 h-20 text-primary" />
-            </motion.div>
-            <motion.div
-              initial={{ x: -100, rotate: 0 }}
-              animate={{ 
-                x: [null, 0],
-                rotate: [0, -45, 0],
-              }}
-              transition={{ 
-                duration: 1.5,
-                repeat: Infinity,
-                repeatDelay: 3.5
-              }}
-              className="absolute left-1/2 top-1/2 -translate-y-1/2"
-            >
-              <Key className="w-16 h-16 text-secondary" />
+              <AspectRatio ratio={1}>
+                <img 
+                  src="/lovable-uploads/1bbeb1e6-5581-4e09-9600-7d1859bb17c5.png"
+                  alt="Locksmith & Security LLC Logo"
+                  className="object-contain"
+                />
+              </AspectRatio>
             </motion.div>
           </div>
 
