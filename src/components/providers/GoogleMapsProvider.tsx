@@ -17,6 +17,11 @@ const GoogleMapsProvider = ({ children }: GoogleMapsProviderProps) => {
   const [scriptError, setScriptError] = useState<string | null>(null);
 
   const handleLoad = useCallback(() => {
+    if (!window.google?.maps) {
+      console.error("Google Maps not available after load");
+      setScriptError("Failed to initialize Google Maps");
+      return;
+    }
     console.log("Google Maps script loaded successfully");
     setIsScriptLoaded(true);
   }, []);
@@ -28,22 +33,27 @@ const GoogleMapsProvider = ({ children }: GoogleMapsProviderProps) => {
 
   // Script initialization check
   useEffect(() => {
-    if (window.google?.maps) {
-      console.log("Google Maps already loaded");
-      setIsScriptLoaded(true);
-      return;
-    }
-
-    const checkGoogleMaps = setInterval(() => {
+    const checkAndSetLoaded = () => {
       if (window.google?.maps) {
-        console.log("Google Maps initialized");
+        console.log("Google Maps already available");
         setIsScriptLoaded(true);
-        clearInterval(checkGoogleMaps);
+        return true;
+      }
+      return false;
+    };
+
+    // Initial check
+    if (checkAndSetLoaded()) return;
+
+    // Periodic check for initialization
+    const checkInterval = setInterval(() => {
+      if (checkAndSetLoaded()) {
+        clearInterval(checkInterval);
       }
     }, 100);
 
     return () => {
-      clearInterval(checkGoogleMaps);
+      clearInterval(checkInterval);
       setIsScriptLoaded(false);
     };
   }, []);
@@ -53,12 +63,11 @@ const GoogleMapsProvider = ({ children }: GoogleMapsProviderProps) => {
   if (!apiKey) return <MapError error="Google Maps API key not found" />;
   if (scriptError) return <MapError error={scriptError} />;
 
-  // If script is already loaded, render children directly
+  // Only render map content when script is fully loaded
   if (isScriptLoaded && window.google?.maps) {
     return <>{children}</>;
   }
 
-  // Load script if not already loaded
   return (
     <LoadScript 
       googleMapsApiKey={apiKey}
@@ -70,9 +79,7 @@ const GoogleMapsProvider = ({ children }: GoogleMapsProviderProps) => {
         setIsScriptLoaded(false);
       }}
     >
-      <div className="w-full h-full">
-        {children}
-      </div>
+      <MapLoader />
     </LoadScript>
   );
 };

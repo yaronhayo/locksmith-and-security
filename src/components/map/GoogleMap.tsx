@@ -1,5 +1,5 @@
 
-import { useMemo, useCallback, useRef } from "react";
+import { useMemo, useCallback, useRef, useEffect } from "react";
 import { GoogleMap as GoogleMapComponent } from "@react-google-maps/api";
 import { useMapConfig } from "@/hooks/useMap";
 import MapError from "./MapError";
@@ -45,17 +45,23 @@ const GoogleMap = ({
     [markers, showAllMarkers, highlightedMarker]
   );
 
+  // Verify Google Maps is available
+  useEffect(() => {
+    if (!window.google?.maps) {
+      console.error("Google Maps not available");
+    }
+  }, []);
+
   const onLoadCallback = useCallback((map: google.maps.Map) => {
     console.log('Map loaded successfully');
     mapRef.current = map;
     
-    // Fit bounds to markers if there are any
     if (visibleMarkers.length > 0) {
       const bounds = new google.maps.LatLngBounds();
       visibleMarkers.forEach(marker => {
         bounds.extend({ lat: marker.lat, lng: marker.lng });
       });
-      map.fitBounds(bounds, 50); // 50px padding
+      map.fitBounds(bounds, 50);
     }
   }, [visibleMarkers]);
 
@@ -66,6 +72,7 @@ const GoogleMap = ({
 
   if (isLoading) return <MapLoader />;
   if (apiKeyError) return <MapError error={apiKeyError.message} />;
+  if (!window.google?.maps) return <MapError error="Google Maps not initialized" />;
 
   return (
     <div className="w-full h-full relative">
@@ -78,7 +85,7 @@ const GoogleMap = ({
         onLoad={onLoadCallback}
         onUnmount={onUnmountCallback}
       >
-        {visibleMarkers.length > 0 && window.google?.maps && (
+        {visibleMarkers.length > 0 && (
           <MapMarkers
             markers={visibleMarkers}
             hoveredMarker={highlightedMarker}
