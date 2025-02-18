@@ -34,11 +34,7 @@ const GoogleMapsProvider = ({ children }: GoogleMapsProviderProps) => {
     }
 
     return () => {
-      // Cleanup
-      if (window.google?.maps) {
-        console.log("Cleaning up Google Maps script");
-        delete window.google.maps;
-      }
+      setIsScriptLoaded(false);
     };
   }, []);
 
@@ -61,10 +57,10 @@ const GoogleMapsProvider = ({ children }: GoogleMapsProviderProps) => {
         console.log("Google Maps script unmounting");
         setIsScriptLoaded(false);
       }}
-      cleanupOnUnmount={true}
-      loadingElement={<MapLoader />}
     >
-      {children}
+      <MapLoader>
+        {children}
+      </MapLoader>
     </LoadScript>
   );
 };
