@@ -44,9 +44,8 @@ const BookingForm = () => {
       return;
     }
 
-    // Create FormData and manually append the address
     const formData = new FormData(e.currentTarget);
-    formData.set('address', address); // Ensure address is included in formData
+    formData.set('address', address);
     
     const validationResult = validateForm(formData, showVehicleInfo);
     if (!validationResult.isValid) {
@@ -59,18 +58,14 @@ const BookingForm = () => {
 
     try {
       await submitBookingForm(formData, showVehicleInfo, location.pathname, recaptchaToken, address);
-      
-      // Set the flag in session storage before redirecting
       window.sessionStorage.setItem('fromFormSubmission', 'true');
       
-      // Show success toast before redirecting
       toast({
         title: "Booking Received!",
         description: "We'll contact you shortly to confirm your appointment.",
         variant: "default",
       });
 
-      // Track conversion if analytics is available
       if (typeof window.gtag === 'function') {
         window.gtag('event', 'conversion', {
           'event_category': 'form',
@@ -79,7 +74,6 @@ const BookingForm = () => {
         });
       }
 
-      // Redirect to thank you page
       navigate('/thank-you');
     } catch (error: any) {
       console.error('Booking form submission error:', error);
@@ -94,46 +88,50 @@ const BookingForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-3" role="form" aria-label="Service booking form">
-      <PersonalInfoFields errors={errors} isSubmitting={isSubmitting} />
-      
-      <div className="form-group">
-        <label htmlFor="address" className="block text-sm font-medium text-gray-700 mb-1">
-          Service Address
-        </label>
-        <GoogleMapsProvider>
-          <AddressAutocomplete
-            value={address}
-            onChange={setAddress}
-            placeholder="Enter your service address"
-            disabled={isSubmitting}
-            required
-          />
-        </GoogleMapsProvider>
-        {errors.address && (
-          <p className="text-sm text-red-500 mt-1">{errors.address}</p>
+    <form onSubmit={handleSubmit} className="space-y-2.5" role="form" aria-label="Service booking form">
+      <div className="space-y-2.5">
+        <PersonalInfoFields errors={errors} isSubmitting={isSubmitting} />
+        
+        <div className="form-group">
+          <label htmlFor="address" className="block text-sm font-medium text-gray-700 mb-1">
+            Service Address
+          </label>
+          <GoogleMapsProvider>
+            <AddressAutocomplete
+              value={address}
+              onChange={setAddress}
+              placeholder="Enter your service address"
+              disabled={isSubmitting}
+              required
+            />
+          </GoogleMapsProvider>
+          {errors.address && (
+            <p className="text-xs text-red-500 mt-1">{errors.address}</p>
+          )}
+        </div>
+        
+        <ServiceSelection 
+          error={errors.service}
+          isSubmitting={isSubmitting}
+          onServiceChange={handleServiceChange}
+        />
+
+        {showVehicleInfo && (
+          <VehicleFields errors={errors} isSubmitting={isSubmitting} />
         )}
+
+        <TimeframeSelection isSubmitting={isSubmitting} />
+
+        {selectedService === "Other" && (
+          <OtherServiceField isSubmitting={isSubmitting} />
+        )}
+
+        <AdditionalNotes isSubmitting={isSubmitting} />
       </div>
-      
-      <ServiceSelection 
-        error={errors.service}
-        isSubmitting={isSubmitting}
-        onServiceChange={handleServiceChange}
-      />
 
-      {showVehicleInfo && (
-        <VehicleFields errors={errors} isSubmitting={isSubmitting} />
-      )}
-
-      <TimeframeSelection isSubmitting={isSubmitting} />
-
-      {selectedService === "Other" && (
-        <OtherServiceField isSubmitting={isSubmitting} />
-      )}
-
-      <AdditionalNotes isSubmitting={isSubmitting} />
-
-      <Recaptcha onChange={setRecaptchaToken} />
+      <div className="pt-2">
+        <Recaptcha onChange={setRecaptchaToken} />
+      </div>
 
       <SubmitButton isSubmitting={isSubmitting} />
     </form>

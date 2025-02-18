@@ -1,3 +1,4 @@
+
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 
@@ -7,13 +8,13 @@ interface AdditionalNotesProps {
 
 const AdditionalNotes = ({ isSubmitting }: AdditionalNotesProps) => {
   return (
-    <div className="space-y-2">
-      <Label htmlFor="notes">Additional Notes</Label>
+    <div className="space-y-1.5">
+      <Label htmlFor="notes" className="text-sm">Additional Notes</Label>
       <Textarea
         id="notes"
         name="notes"
         placeholder="Additional Notes..."
-        className="h-20 text-base resize-none"
+        className="h-16 text-sm resize-none"
         disabled={isSubmitting}
       />
     </div>

@@ -46,7 +46,7 @@ const ServiceLayout = ({
           Back
         </Button>
         
-        <div className="grid lg:grid-cols-3 gap-12">
+        <div className="grid lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -148,8 +148,8 @@ const ServiceLayout = ({
           </div>
           
           <div className="lg:col-span-1">
-            <div className="bg-white rounded-lg shadow-lg p-6 sticky top-24">
-              <h2 className="text-2xl font-bold mb-6">Book Now</h2>
+            <div className="bg-white rounded-lg shadow-lg p-4 md:p-5 sticky top-24 max-h-[calc(100vh-8rem)] overflow-y-auto">
+              <h2 className="text-xl font-bold mb-4">Book Now</h2>
               <BookingForm />
             </div>
           </div>
