@@ -30,6 +30,9 @@ const ServiceAreaLayout = ({ areaSlug }: ServiceAreaLayoutProps) => {
     return null;
   }
 
+  // Find the FAQ schema from the array of schemas
+  const faqSchema = schemas.find(schema => schema.type === 'FAQPage');
+
   return (
     <PageLayout
       title={`${location.name} Locksmith Services | 24/7 Emergency Service | Licensed & Insured`}
@@ -75,10 +78,12 @@ const ServiceAreaLayout = ({ areaSlug }: ServiceAreaLayoutProps) => {
             />
           </section>
 
-          <ServiceAreaFAQ 
-            faqSchema={schemas[3]} 
-            locationName={location.name}
-          />
+          {faqSchema && (
+            <ServiceAreaFAQ 
+              faqSchema={faqSchema} 
+              locationName={location.name}
+            />
+          )}
         </div>
       </motion.div>
     </PageLayout>
