@@ -2,13 +2,13 @@
 import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
-import AddressAutocomplete from "@/components/ui/address-autocomplete";
 import Recaptcha from "@/components/ui/recaptcha";
-import GoogleMapsProvider from "@/components/providers/GoogleMapsProvider";
+import PersonalInfoFields from "./form/PersonalInfoFields";
+import EmailField from "./form/EmailField";
+import AddressField from "./form/AddressField";
+import MessageField from "./form/MessageField";
 
 const ContactForm = () => {
   const form = useRef<HTMLFormElement>(null);
@@ -86,78 +86,14 @@ const ContactForm = () => {
     <div className="bg-white p-8 rounded-xl shadow-lg">
       <h2 className="text-2xl font-bold mb-6">Send Us a Message</h2>
       <form ref={form} onSubmit={handleSubmit} className="space-y-6">
-        <div className="grid md:grid-cols-2 gap-4">
-          <div>
-            <label htmlFor="name" className="block text-sm font-medium mb-2">
-              Full Name
-            </label>
-            <Input 
-              id="name" 
-              name="user_name" 
-              required 
-              placeholder="John Doe"
-              disabled={isSubmitting}
-            />
-          </div>
-          <div>
-            <label htmlFor="phone" className="block text-sm font-medium mb-2">
-              Phone Number
-            </label>
-            <Input 
-              id="phone" 
-              name="user_phone" 
-              type="tel" 
-              required 
-              placeholder="(555) 555-5555"
-              disabled={isSubmitting}
-            />
-          </div>
-        </div>
-
-        <div>
-          <label htmlFor="email" className="block text-sm font-medium mb-2">
-            Email Address
-          </label>
-          <Input 
-            id="email" 
-            name="user_email" 
-            type="email" 
-            required 
-            placeholder="john@example.com"
-            disabled={isSubmitting}
-          />
-        </div>
-
-        <div>
-          <label htmlFor="address" className="block text-sm font-medium mb-2">
-            Service Address
-          </label>
-          <GoogleMapsProvider>
-            <AddressAutocomplete
-              value={address}
-              onChange={setAddress}
-              placeholder="123 Main St, North Bergen, NJ"
-              disabled={isSubmitting}
-              required
-            />
-          </GoogleMapsProvider>
-        </div>
-
-        <div>
-          <label htmlFor="message" className="block text-sm font-medium mb-2">
-            How Can We Help You?
-          </label>
-          <Textarea 
-            id="message" 
-            name="message" 
-            rows={4} 
-            required 
-            placeholder="Please describe what service you need..."
-            className="min-h-[120px]"
-            disabled={isSubmitting}
-          />
-        </div>
-
+        <PersonalInfoFields isSubmitting={isSubmitting} />
+        <EmailField isSubmitting={isSubmitting} />
+        <AddressField 
+          value={address}
+          onChange={setAddress}
+          isSubmitting={isSubmitting}
+        />
+        <MessageField isSubmitting={isSubmitting} />
         <Recaptcha onChange={setRecaptchaToken} />
 
         <Button 
