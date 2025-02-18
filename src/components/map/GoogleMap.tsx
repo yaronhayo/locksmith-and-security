@@ -1,5 +1,5 @@
 
-import { useMemo, useCallback } from "react";
+import { useMemo, useCallback, useRef } from "react";
 import { GoogleMap as GoogleMapComponent } from "@react-google-maps/api";
 import { useMapConfig } from "@/hooks/useMap";
 import MapError from "./MapError";
@@ -38,6 +38,7 @@ const GoogleMap = ({
   onClick
 }: GoogleMapProps) => {
   const { isLoading, error: apiKeyError } = useMapConfig();
+  const mapRef = useRef<google.maps.Map | null>(null);
 
   const visibleMarkers = useMemo(() => 
     showAllMarkers ? markers : markers.filter(m => m.slug === highlightedMarker),
@@ -46,6 +47,7 @@ const GoogleMap = ({
 
   const onLoadCallback = useCallback((map: google.maps.Map) => {
     console.log('Map loaded successfully');
+    mapRef.current = map;
     
     // Fit bounds to markers if there are any
     if (visibleMarkers.length > 0) {
@@ -56,6 +58,11 @@ const GoogleMap = ({
       map.fitBounds(bounds, 50); // 50px padding
     }
   }, [visibleMarkers]);
+
+  const onUnmountCallback = useCallback(() => {
+    console.log('Map unmounting');
+    mapRef.current = null;
+  }, []);
 
   if (isLoading) return <MapLoader />;
   if (apiKeyError) return <MapError error={apiKeyError.message} />;
@@ -69,8 +76,9 @@ const GoogleMap = ({
         options={mapOptions}
         onClick={onClick}
         onLoad={onLoadCallback}
+        onUnmount={onUnmountCallback}
       >
-        {visibleMarkers.length > 0 && (
+        {visibleMarkers.length > 0 && window.google?.maps && (
           <MapMarkers
             markers={visibleMarkers}
             hoveredMarker={highlightedMarker}
