@@ -10,7 +10,7 @@ const EmergencyServicesSection = lazy(() => import("@/components/sections/Emerge
 const ProcessSection = lazy(() => import("@/components/sections/ProcessSection"));
 const AboutSection = lazy(() => import("@/components/sections/AboutSection"));
 const ServiceAreasSection = lazy(() => import("@/components/sections/ServiceAreasSection"));
-const ReviewsSection = lazy(() => import("@/components/reviews/ReviewsSection"));
+const ReviewsSection = lazy(() => import("@/components/sections/ReviewsSection"));
 const FAQSection = lazy(() => import("@/components/sections/FAQSection"));
 
 const HomeContent = () => {
