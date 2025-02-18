@@ -1,4 +1,3 @@
-
 import { useEffect } from "react";
 import { useSettings } from "@/hooks/useSettings";
 import PageLayout from "@/components/layouts/PageLayout";
@@ -59,44 +58,22 @@ const ServiceAreaLayout = ({ areaSlug }: ServiceAreaLayoutProps) => {
         "@type": "City",
         "name": location?.name,
         "sameAs": `https://en.wikipedia.org/wiki/${location?.name?.replace(/ /g, '_')},_New_Jersey`
-      },
-      "hasOfferCatalog": {
-        "@type": "OfferCatalog",
-        "name": "Locksmith Services",
-        "itemListElement": [
-          {
-            "@type": "Offer",
-            "itemOffered": {
-              "@type": "Service",
-              "name": "Emergency Lockout Service",
-              "description": `24/7 emergency lockout services in ${location?.name || ''}`
-            }
-          },
-          {
-            "@type": "Offer",
-            "itemOffered": {
-              "@type": "Service",
-              "name": "Car Key Replacement",
-              "description": `Professional car key services in ${location?.name || ''}`
-            }
-          }
-        ]
       }
     }
   };
 
-  const locationSchema = createLocationSchema({
-    name: location?.name || '',
-    description: location?.description || '',
-    latitude: location?.lat || 0,
-    longitude: location?.lng || 0,
-    areaServed: location?.name || '',
+  const locationSchema = location ? createLocationSchema({
+    name: location.name,
+    description: location.description,
+    latitude: location.lat,
+    longitude: location.lng,
+    areaServed: location.name,
     companyName: settings?.company_name || "Locksmith & Security LLC",
     address: settings?.company_address || "",
     phone: settings?.company_phone || ""
-  });
+  }) : null;
 
-  const faqData = createFAQSchema({
+  const faqSchema = createFAQSchema({
     questions: [
       {
         question: `What areas of ${location?.name || ''} do you serve?`,
@@ -121,7 +98,12 @@ const ServiceAreaLayout = ({ areaSlug }: ServiceAreaLayoutProps) => {
     ]
   });
 
-  const schemas = [breadcrumbSchema, serviceSchema, locationSchema, faqData].filter(Boolean);
+  const schemas = [
+    breadcrumbSchema,
+    serviceSchema,
+    locationSchema,
+    faqSchema
+  ].filter(Boolean);
 
   if (!location) {
     return null;
@@ -242,7 +224,7 @@ const ServiceAreaLayout = ({ areaSlug }: ServiceAreaLayoutProps) => {
                 Frequently Asked Questions About Our {location.name} Services
               </h2>
               <div className="max-w-3xl mx-auto space-y-6">
-                {faqData.data.mainEntity.map((faq: any, index: number) => (
+                {faqSchema.data.mainEntity.map((faq: any, index: number) => (
                   <div key={index} className="bg-white rounded-lg p-6 shadow-sm">
                     <h3 className="text-xl font-semibold mb-2">{faq.name}</h3>
                     <p className="text-gray-600">{faq.acceptedAnswer.text}</p>
