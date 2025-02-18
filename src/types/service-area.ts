@@ -31,3 +31,19 @@ export interface MapProps {
   center?: { lat: number; lng: number };
   onClick?: (e: google.maps.MapMouseEvent) => void;
 }
+
+export interface Location {
+  name: string;
+  slug: string;
+  description: string;
+  lat: number;
+  lng: number;
+  title: string;
+}
+
+export interface Settings {
+  company_name: string;
+  company_address: string;
+  company_phone: string;
+  base_url: string;
+}
