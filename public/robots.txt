@@ -1,13 +1,30 @@
 
-# Allow all crawlers full access
+# Main directives
 User-agent: *
 Allow: /
+Allow: /sitemap.xml
 
-# Sitemaps
-Sitemap: https://247locksmithandsecurity.com/sitemap.xml
+# Important pages that should be crawled
+Allow: /services/
+Allow: /service-areas/
+Allow: /about/
+Allow: /contact/
+Allow: /reviews/
+Allow: /faq/
 
-# Optional crawl delay to prevent server overload
+# Allow booking-related pages for conversion tracking
+Allow: /book-online/
+Allow: /booking/
+
+# Allow legal pages for trust signals
+Allow: /privacy-policy/
+Allow: /terms-conditions/
+
+# Set crawl rate to optimize server load
 Crawl-delay: 1
 
-# Host directive for canonical domain
+# Canonical domain
 Host: https://247locksmithandsecurity.com
+
+# Sitemap declaration
+Sitemap: https://247locksmithandsecurity.com/sitemap.xml
