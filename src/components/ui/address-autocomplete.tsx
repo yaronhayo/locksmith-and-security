@@ -28,8 +28,10 @@ const AddressAutocomplete = ({
     if (!inputRef.current || !window.google?.maps?.places || !apiKey) return;
 
     try {
+      // Clear existing listeners before creating new autocomplete instance
       if (autocompleteRef.current) {
         google.maps.event.clearInstanceListeners(autocompleteRef.current);
+        autocompleteRef.current = null;
       }
 
       autocompleteRef.current = new window.google.maps.places.Autocomplete(
@@ -52,14 +54,17 @@ const AddressAutocomplete = ({
       );
 
       return () => {
-        if (listener) {
+        // Only attempt cleanup if Google Maps is still available
+        if (window.google?.maps?.event && listener) {
           listener.remove();
         }
-        if (autocompleteRef.current) {
+        if (window.google?.maps?.event && autocompleteRef.current) {
           google.maps.event.clearInstanceListeners(autocompleteRef.current);
+          autocompleteRef.current = null;
         }
       };
     } catch (err) {
+      console.error('Error initializing address autocomplete:', err);
       setError(err instanceof Error ? err.message : 'Failed to initialize address autocomplete');
     }
   }, [onChange, apiKey]);
