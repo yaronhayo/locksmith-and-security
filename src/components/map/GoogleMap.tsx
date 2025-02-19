@@ -31,7 +31,10 @@ interface GoogleMapProps {
 
 const containerStyle = {
   width: '100%',
-  height: '100%'
+  height: '100%',
+  position: 'absolute',
+  top: 0,
+  left: 0
 };
 
 const GoogleMap = ({
@@ -66,8 +69,6 @@ const GoogleMap = ({
     console.log('Map unmounting');
     mapRef.current = null;
   }, []);
-
-  if (!window.google) return <MapLoader />;
 
   return (
     <div className="w-full h-full relative">

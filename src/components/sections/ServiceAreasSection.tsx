@@ -37,24 +37,22 @@ const ServiceAreasSection = () => {
   }));
 
   return (
-    <section className="py-20">
+    <section className="py-20 bg-gray-50">
       <div className="container mx-auto px-4">
-        <h1 className="text-4xl md:text-5xl font-bold mb-6 text-center bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/80">
-          Service Areas
-        </h1>
-        <p className="text-lg text-gray-600 max-w-2xl mx-auto text-center mb-16">
-          Professional locksmith services available throughout North Bergen and surrounding areas in New Jersey. 
-          Fast response times and reliable service, available 24/7 for your security needs.
+        <h2 className="text-4xl font-bold text-center mb-6">Our Service Areas</h2>
+        <p className="text-lg text-gray-600 text-center mb-12 max-w-2xl mx-auto">
+          Professional locksmith services available throughout North Bergen and surrounding areas. 
+          Fast response times and reliable service, available 24/7.
         </p>
 
-        <div className="grid lg:grid-cols-2 gap-12 mb-16">
+        <div className="grid lg:grid-cols-2 gap-8 items-start">
           <AreasList 
             areas={locations} 
             hoveredArea={hoveredArea} 
             setHoveredArea={setHoveredArea} 
           />
           
-          <div className="h-[600px] relative bg-white rounded-xl shadow-lg overflow-hidden border border-gray-200">
+          <div className="h-[500px] lg:h-[600px] relative bg-white rounded-xl shadow-lg overflow-hidden">
             <GoogleMapsProvider>
               <GoogleMap 
                 markers={mapMarkers}
@@ -66,9 +64,6 @@ const ServiceAreasSection = () => {
             </GoogleMapsProvider>
           </div>
         </div>
-
-        <ServiceAreaFeatures />
-        <EmergencyCallout />
       </div>
     </section>
   );
