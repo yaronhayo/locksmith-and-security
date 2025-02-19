@@ -12,6 +12,7 @@ interface MapMarkersProps {
 const MapMarkers = ({ markers, hoveredMarker }: MapMarkersProps) => {
   const navigate = useNavigate();
   const markersRef = useRef<(google.maps.Marker | null)[]>([]);
+  const isUnmountingRef = useRef(false);
 
   const handleMarkerClick = useCallback((slug?: string) => {
     if (slug) {
@@ -19,29 +20,27 @@ const MapMarkers = ({ markers, hoveredMarker }: MapMarkersProps) => {
     }
   }, [navigate]);
 
-  // Cleanup markers on unmount
+  // Set unmounting flag to prevent cleanup operations if Google Maps is not available
   useEffect(() => {
     return () => {
-      // Clean up markers on component unmount
-      if (window.google?.maps) {
-        markersRef.current.forEach((marker) => {
-          if (marker) {
-            marker.setMap(null);
-          }
-        });
-      }
-      markersRef.current = [];
+      isUnmountingRef.current = true;
     };
   }, []);
 
   const handleMarkerLoad = useCallback((marker: google.maps.Marker, index: number) => {
-    markersRef.current[index] = marker;
+    if (!isUnmountingRef.current) {
+      markersRef.current[index] = marker;
+    }
   }, []);
 
   const handleMarkerUnmount = useCallback((index: number) => {
-    if (window.google?.maps && markersRef.current[index]) {
-      markersRef.current[index]?.setMap(null);
-      markersRef.current[index] = null;
+    try {
+      if (!isUnmountingRef.current && window.google?.maps && markersRef.current[index]) {
+        markersRef.current[index]?.setMap(null);
+        markersRef.current[index] = null;
+      }
+    } catch (error) {
+      console.error('Error unmounting marker:', error);
     }
   }, []);
 
@@ -56,7 +55,7 @@ const MapMarkers = ({ markers, hoveredMarker }: MapMarkersProps) => {
           position={position}
           title={marker.title}
           onClick={() => handleMarkerClick(marker.slug)}
-          animation={isHovered ? google.maps.Animation.BOUNCE : undefined}
+          animation={isHovered && window.google?.maps ? google.maps.Animation.BOUNCE : undefined}
           onLoad={(marker) => handleMarkerLoad(marker, index)}
           onUnmount={() => handleMarkerUnmount(index)}
         />

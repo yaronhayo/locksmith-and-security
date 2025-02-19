@@ -14,35 +14,37 @@ interface GoogleMapsProviderProps {
 const GoogleMapsProvider = ({ children }: GoogleMapsProviderProps) => {
   const { data: apiKey, error: apiKeyError, isLoading } = useMapConfig();
   const [scriptError, setScriptError] = useState<string | null>(null);
-  const isScriptLoadedRef = useRef(false);
+  const [isScriptLoaded, setIsScriptLoaded] = useState(false);
+  const scriptLoadedTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const handleLoad = useCallback(() => {
-    if (isScriptLoadedRef.current) {
-      console.log("Google Maps script already loaded, skipping initialization");
-      return;
-    }
-
     console.log("Google Maps script loading...");
-    if (!window.google?.maps) {
-      console.error("Google Maps not available after load");
-      setScriptError("Failed to initialize Google Maps");
-      return;
-    }
-
-    console.log("Google Maps script loaded successfully");
-    isScriptLoadedRef.current = true;
+    
+    // Set a timeout to verify the script loaded successfully
+    scriptLoadedTimeoutRef.current = setTimeout(() => {
+      if (!window.google?.maps) {
+        console.error("Google Maps not available after load timeout");
+        setScriptError("Failed to initialize Google Maps");
+        return;
+      }
+      console.log("Google Maps script loaded and verified");
+      setIsScriptLoaded(true);
+    }, 1000);
   }, []);
 
   const handleError = useCallback((error: Error) => {
     console.error("Error loading Google Maps script:", error);
     setScriptError(error.message || "Failed to load Google Maps");
-    isScriptLoadedRef.current = false;
+    setIsScriptLoaded(false);
   }, []);
 
   // Cleanup on unmount
   useEffect(() => {
     return () => {
-      isScriptLoadedRef.current = false;
+      if (scriptLoadedTimeoutRef.current) {
+        clearTimeout(scriptLoadedTimeoutRef.current);
+      }
+      setIsScriptLoaded(false);
     };
   }, []);
 
@@ -52,16 +54,13 @@ const GoogleMapsProvider = ({ children }: GoogleMapsProviderProps) => {
     }
   }, [apiKeyError]);
 
-  // Only try to load the script if we have an API key and haven't encountered any errors
+  // Show loading state while checking API key
   if (isLoading) return <MapLoader />;
+  
+  // Show errors if they exist
   if (apiKeyError) return <MapError error={apiKeyError.message} />;
   if (!apiKey) return <MapError error="Google Maps API key not found" />;
   if (scriptError) return <MapError error={scriptError} />;
-
-  // If the script is already loaded globally, just render children
-  if (window.google?.maps && isScriptLoadedRef.current) {
-    return <>{children}</>;
-  }
 
   return (
     <LoadScript 
