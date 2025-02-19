@@ -11,15 +11,7 @@ const mapOptions: google.maps.MapOptions = {
   streetViewControl: false,
   mapTypeControl: false,
   fullscreenControl: false,
-  gestureHandling: 'cooperative',
-  mapId: 'DEMO_MAP_ID',
-  styles: [
-    {
-      featureType: "all",
-      elementType: "geometry",
-      stylers: [{ visibility: "on" }]
-    }
-  ]
+  gestureHandling: 'cooperative'
 };
 
 interface GoogleMapProps {
@@ -73,7 +65,7 @@ const GoogleMap = ({
   }, []);
 
   return (
-    <div className="w-full h-full relative">
+    <div className="w-full h-full relative bg-gray-100">
       <GoogleMapComponent
         mapContainerStyle={containerStyle}
         center={center}

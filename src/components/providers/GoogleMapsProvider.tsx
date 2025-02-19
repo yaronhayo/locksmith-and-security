@@ -5,7 +5,7 @@ import { useMapConfig } from "@/hooks/useMap";
 import MapError from "../map/MapError";
 import MapLoader from "../map/MapLoader";
 
-const libraries: LoadScriptProps['libraries'] = ['places', 'marker'];
+const libraries: LoadScriptProps['libraries'] = ['places'];
 
 interface GoogleMapsProviderProps {
   children: ReactNode;
@@ -42,7 +42,6 @@ const GoogleMapsProvider = ({ children }: GoogleMapsProviderProps) => {
       onLoad={handleLoad}
       onError={handleError}
       loadingElement={<MapLoader />}
-      version="beta"
     >
       {children}
     </LoadScript>
