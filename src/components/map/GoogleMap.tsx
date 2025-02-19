@@ -4,6 +4,7 @@ import { GoogleMap as GoogleMapComponent } from "@react-google-maps/api";
 import MapLoader from "./MapLoader";
 import MapMarkers from "./MapMarkers";
 import { MapMarker } from "@/types/service-area";
+import { CSSProperties } from "react";
 
 const mapOptions: google.maps.MapOptions = {
   zoomControl: true,
@@ -29,10 +30,10 @@ interface GoogleMapProps {
   onClick?: (e: google.maps.MapMouseEvent) => void;
 }
 
-const containerStyle = {
+const containerStyle: CSSProperties = {
   width: '100%',
   height: '100%',
-  position: 'absolute',
+  position: 'absolute' as const,
   top: 0,
   left: 0
 };
