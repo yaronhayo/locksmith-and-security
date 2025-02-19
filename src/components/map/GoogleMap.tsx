@@ -25,10 +25,7 @@ interface GoogleMapProps {
 
 const containerStyle: CSSProperties = {
   width: '100%',
-  height: '100%',
-  position: 'absolute' as const,
-  top: 0,
-  left: 0
+  height: '100%'
 };
 
 const GoogleMap = ({
@@ -65,23 +62,25 @@ const GoogleMap = ({
   }, []);
 
   return (
-    <div className="w-full h-full relative bg-gray-100">
-      <GoogleMapComponent
-        mapContainerStyle={containerStyle}
-        center={center}
-        zoom={zoom}
-        options={mapOptions}
-        onClick={onClick}
-        onLoad={onLoadCallback}
-        onUnmount={onUnmountCallback}
-      >
-        {visibleMarkers.length > 0 && (
-          <MapMarkers
-            markers={visibleMarkers}
-            hoveredMarker={highlightedMarker}
-          />
-        )}
-      </GoogleMapComponent>
+    <div className="w-full h-full relative">
+      <div className="absolute inset-0 bg-gray-100">
+        <GoogleMapComponent
+          mapContainerStyle={containerStyle}
+          center={center}
+          zoom={zoom}
+          options={mapOptions}
+          onClick={onClick}
+          onLoad={onLoadCallback}
+          onUnmount={onUnmountCallback}
+        >
+          {visibleMarkers.length > 0 && (
+            <MapMarkers
+              markers={visibleMarkers}
+              hoveredMarker={highlightedMarker}
+            />
+          )}
+        </GoogleMapComponent>
+      </div>
     </div>
   );
 };
