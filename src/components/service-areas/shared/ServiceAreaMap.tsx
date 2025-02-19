@@ -2,14 +2,21 @@
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import GoogleMapsProvider from "@/components/providers/GoogleMapsProvider";
 import GoogleMap from "@/components/map/GoogleMap";
-import { serviceAreaLocations } from "../constants";
+import { useLocations } from "@/hooks/useLocations";
 
 interface ServiceAreaMapProps {
   locationName: string;
 }
 
 const ServiceAreaMap = ({ locationName }: ServiceAreaMapProps) => {
-  const location = serviceAreaLocations.find(
+  const { data: locations } = useLocations();
+  
+  if (!locations) {
+    console.error(`No locations data available`);
+    return null;
+  }
+
+  const location = locations.find(
     loc => loc.name.toLowerCase() === locationName.toLowerCase()
   );
 

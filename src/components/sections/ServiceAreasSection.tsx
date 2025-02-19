@@ -20,7 +20,8 @@ const ServiceAreasSection = () => {
     );
   }
 
-  if (error) {
+  if (error || !locations) {
+    console.error('Error loading locations:', error);
     return (
       <div className="flex justify-center items-center min-h-[400px]">
         <div className="text-red-500">Error loading service areas. Please try again later.</div>
@@ -28,12 +29,12 @@ const ServiceAreasSection = () => {
     );
   }
 
-  const mapMarkers = locations?.map(location => ({
+  const mapMarkers = locations.map(location => ({
     lat: location.lat,
     lng: location.lng,
     title: location.name,
     slug: location.slug
-  })) || [];
+  }));
 
   return (
     <section className="py-20">
@@ -48,7 +49,7 @@ const ServiceAreasSection = () => {
 
         <div className="grid lg:grid-cols-2 gap-12 mb-16">
           <AreasList 
-            areas={locations || []} 
+            areas={locations} 
             hoveredArea={hoveredArea} 
             setHoveredArea={setHoveredArea} 
           />
