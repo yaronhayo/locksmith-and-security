@@ -1,7 +1,6 @@
 
-import { useMemo, useCallback, useRef } from "react";
+import { useMemo, useCallback, useRef, useEffect } from "react";
 import { GoogleMap as GoogleMapComponent } from "@react-google-maps/api";
-import { useMapConfig } from "@/hooks/useMap";
 import MapError from "./MapError";
 import MapLoader from "./MapLoader";
 import MapMarkers from "./MapMarkers";
@@ -44,8 +43,8 @@ const GoogleMap = ({
   center = { lat: 40.7795, lng: -74.0324 },
   onClick
 }: GoogleMapProps) => {
-  const { isLoading, error: apiKeyError } = useMapConfig();
   const mapRef = useRef<google.maps.Map | null>(null);
+  const isInitializedRef = useRef(false);
 
   const visibleMarkers = useMemo(() => 
     showAllMarkers ? markers : markers.filter(m => m.slug === highlightedMarker),
@@ -53,8 +52,14 @@ const GoogleMap = ({
   );
 
   const onLoadCallback = useCallback((map: google.maps.Map) => {
+    if (isInitializedRef.current) {
+      console.log('Map already initialized, skipping');
+      return;
+    }
+
     console.log('Map loaded successfully');
     mapRef.current = map;
+    isInitializedRef.current = true;
     
     if (visibleMarkers.length > 0) {
       const bounds = new google.maps.LatLngBounds();
@@ -68,10 +73,19 @@ const GoogleMap = ({
   const onUnmountCallback = useCallback(() => {
     console.log('Map unmounting');
     mapRef.current = null;
+    isInitializedRef.current = false;
   }, []);
 
-  if (isLoading) return <MapLoader />;
-  if (apiKeyError) return <MapError error={apiKeyError.message} />;
+  // Cleanup on component unmount
+  useEffect(() => {
+    return () => {
+      if (mapRef.current) {
+        mapRef.current = null;
+        isInitializedRef.current = false;
+      }
+    };
+  }, []);
+
   if (!window.google?.maps) return <MapLoader />;
 
   return (
