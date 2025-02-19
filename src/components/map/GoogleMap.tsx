@@ -67,6 +67,8 @@ const GoogleMap = ({
     mapRef.current = null;
   }, []);
 
+  if (!window.google) return <MapLoader />;
+
   return (
     <div className="w-full h-full relative">
       <GoogleMapComponent
