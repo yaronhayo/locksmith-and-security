@@ -12,6 +12,7 @@ const mapOptions: google.maps.MapOptions = {
   mapTypeControl: false,
   fullscreenControl: false,
   gestureHandling: 'cooperative',
+  mapId: 'DEMO_MAP_ID',
   styles: [
     {
       featureType: "all",
