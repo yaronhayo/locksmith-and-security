@@ -72,6 +72,9 @@ const GoogleMap = ({
 
   const onUnmountCallback = useCallback(() => {
     console.log('Map unmounting');
+    if (mapRef.current && window.google?.maps) {
+      mapRef.current.setMap(null);
+    }
     mapRef.current = null;
     isInitializedRef.current = false;
   }, []);
@@ -79,7 +82,8 @@ const GoogleMap = ({
   // Cleanup on component unmount
   useEffect(() => {
     return () => {
-      if (mapRef.current) {
+      if (mapRef.current && window.google?.maps) {
+        mapRef.current.setMap(null);
         mapRef.current = null;
         isInitializedRef.current = false;
       }

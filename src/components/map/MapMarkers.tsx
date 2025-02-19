@@ -23,11 +23,13 @@ const MapMarkers = ({ markers, hoveredMarker }: MapMarkersProps) => {
   useEffect(() => {
     return () => {
       // Clean up markers on component unmount
-      markersRef.current.forEach((marker) => {
-        if (marker) {
-          marker.setMap(null);
-        }
-      });
+      if (window.google?.maps) {
+        markersRef.current.forEach((marker) => {
+          if (marker) {
+            marker.setMap(null);
+          }
+        });
+      }
       markersRef.current = [];
     };
   }, []);
@@ -37,7 +39,7 @@ const MapMarkers = ({ markers, hoveredMarker }: MapMarkersProps) => {
   }, []);
 
   const handleMarkerUnmount = useCallback((index: number) => {
-    if (markersRef.current[index]) {
+    if (window.google?.maps && markersRef.current[index]) {
       markersRef.current[index]?.setMap(null);
       markersRef.current[index] = null;
     }
