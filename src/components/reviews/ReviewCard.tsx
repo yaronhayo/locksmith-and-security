@@ -18,7 +18,7 @@ const ReviewCard = ({ review, index }: ReviewCardProps) => {
     "itemReviewed": {
       "@type": "LocalBusiness",
       "name": "Locksmith & Security LLC",
-      "image": "/lovable-uploads/1bbeb1e6-5581-4e09-9600-7d1859bb17c5.png",
+      "image": "/website-uploads/1bbeb1e6-5581-4e09-9600-7d1859bb17c5.png",
       "address": {
         "@type": "PostalAddress",
         "addressLocality": review.location,
