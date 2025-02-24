@@ -34,7 +34,7 @@ const BusinessLockoutPage = () => {
         callToAction="Get Back to Business"
       >
         <ServiceTrustIndicators
-          responseTime="15-30 Min"
+          responseTime="Emergency Service"
           rating="5.0"
           certifications={["Licensed", "Insured", "Commercial Security Expert"]}
         />

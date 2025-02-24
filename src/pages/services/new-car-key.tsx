@@ -26,7 +26,7 @@ const NewCarKeyPage = () => {
         callToAction="Get a New Car Key"
       >
         <ServiceTrustIndicators
-          responseTime="30-45 Min"
+          responseTime="Professional Service"
           rating="5.0"
           certifications={["Licensed", "Insured", "Auto Security Certified"]}
         />

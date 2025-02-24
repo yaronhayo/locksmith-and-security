@@ -26,7 +26,7 @@ const HouseLockoutPage = () => {
         callToAction="Get Back Inside Now"
       >
         <ServiceTrustIndicators
-          responseTime="15-30 Min"
+          responseTime="Emergency Service"
           rating="5.0"
           certifications={["Licensed", "Insured", "Bonded"]}
         />

@@ -26,7 +26,7 @@ const LockRekeyPage = () => {
         callToAction="Rekey Your Locks"
       >
         <ServiceTrustIndicators
-          responseTime="20-30 Min"
+          responseTime="Professional Service"
           rating="5.0"
           certifications={["Licensed", "Insured", "Key Systems Expert"]}
         />

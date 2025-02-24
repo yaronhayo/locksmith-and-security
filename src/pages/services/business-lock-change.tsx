@@ -26,7 +26,7 @@ const BusinessLockChangePage = () => {
         callToAction="Schedule Lock Change"
       >
         <ServiceTrustIndicators
-          responseTime="30-60 Min"
+          responseTime="Professional Service"
           rating="5.0"
           certifications={["Licensed", "Insured", "Bonded"]}
         />

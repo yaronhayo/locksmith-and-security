@@ -26,7 +26,7 @@ const LockChangePage = () => {
         callToAction="Upgrade Your Locks"
       >
         <ServiceTrustIndicators
-          responseTime="30-45 Min"
+          responseTime="Professional Service"
           rating="5.0"
           certifications={["Licensed", "Insured", "Master Locksmith"]}
         />

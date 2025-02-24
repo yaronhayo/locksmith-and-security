@@ -26,7 +26,7 @@ const CarKeyProgramPage = () => {
         callToAction="Program Your Car Key"
       >
         <ServiceTrustIndicators
-          responseTime="20-30 Min"
+          responseTime="Professional Service"
           rating="5.0"
           certifications={["Licensed", "Insured", "Automotive Security Certified"]}
         />
