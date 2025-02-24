@@ -39,8 +39,6 @@ const PageLayout = ({
   noindex = false,
   nofollow = false,
 }: PageLayoutProps) => {
-  const hasHeroSection = Boolean(heroTitle || heroDescription);
-
   if (isLoading) {
     return <PageLoading />;
   }
@@ -58,7 +56,7 @@ const PageLayout = ({
         nofollow={nofollow}
       />
       
-      {hasHeroSection && (
+      {(heroTitle || heroDescription) && (
         <PageHero 
           title={heroTitle || title}
           description={heroDescription || description}
@@ -66,7 +64,7 @@ const PageLayout = ({
       )}
       
       <motion.div 
-        className={cn("flex-grow", !hasHeroSection && "pt-0")}
+        className={cn("flex-grow", !(heroTitle || heroDescription) && "pt-0")}
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: 20 }}

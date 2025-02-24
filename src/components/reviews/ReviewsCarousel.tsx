@@ -14,6 +14,8 @@ interface ReviewsCarouselProps {
 }
 
 const ReviewsCarousel = ({ reviews }: ReviewsCarouselProps) => {
+  if (!reviews.length) return null;
+  
   return (
     <Carousel
       className="w-full relative"
