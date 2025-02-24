@@ -14,6 +14,7 @@ const ServiceAreas = lazy(() => import("@/pages/service-areas"));
 const PrivacyPolicy = lazy(() => import("@/pages/privacy-policy"));
 const TermsConditions = lazy(() => import("@/pages/terms-conditions"));
 const ThankYou = lazy(() => import("@/pages/thank-you"));
+const Sitemap = lazy(() => import("@/pages/sitemap"));
 const NotFound = lazy(() => import("@/pages/404"));
 
 export const mainRoutes = [
@@ -60,6 +61,10 @@ export const mainRoutes = [
   {
     path: "/thank-you",
     element: <ThankYou />
+  },
+  {
+    path: "/sitemap",
+    element: <Sitemap />
   },
   {
     path: "*",

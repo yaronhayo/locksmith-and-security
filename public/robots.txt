@@ -11,6 +11,7 @@ Allow: /about/
 Allow: /contact/
 Allow: /reviews/
 Allow: /faq/
+Allow: /sitemap/
 
 # Allow booking-related pages for conversion tracking
 Allow: /book-online/
@@ -23,8 +24,10 @@ Allow: /terms-conditions/
 # Set crawl rate to optimize server load
 Crawl-delay: 1
 
-# Canonical domain
+# Allow all versions of domain
 Host: https://247locksmithandsecurity.com
+Host: https://www.247locksmithandsecurity.com
 
 # Sitemap declaration
 Sitemap: https://247locksmithandsecurity.com/sitemap.xml
+Sitemap: https://www.247locksmithandsecurity.com/sitemap.xml
