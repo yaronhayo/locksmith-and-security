@@ -1,17 +1,20 @@
+
 import { BookingFormState, SubmissionData } from "../types";
 
-export const submitForm = async (
+export const submitBookingForm = async (
   formData: FormData,
-  state: BookingFormState,
-  setIsSubmitting: (value: boolean) => void,
-  onSuccess: () => void,
-  onError: (error: string) => void
+  showVehicleInfo: boolean,
+  pathname: string,
+  recaptchaToken: string,
+  address: string
 ) => {
-  setIsSubmitting(true);
   try {
     const response = await fetch('/api/submit', {
       method: 'POST',
       body: formData,
+      headers: {
+        'X-Recaptcha-Token': recaptchaToken,
+      },
     });
 
     if (!response.ok) {
@@ -20,11 +23,9 @@ export const submitForm = async (
 
     const data: SubmissionData = await response.json();
     console.log('Submission successful:', data);
-    onSuccess();
+    return data;
   } catch (error) {
     console.error('Error submitting form:', error);
-    onError(error.message);
-  } finally {
-    setIsSubmitting(false);
+    throw error;
   }
 };
