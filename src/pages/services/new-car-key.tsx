@@ -16,7 +16,7 @@ const NewCarKeyPage = () => {
         description="Professional car key cutting and programming service. Our automotive locksmiths create new keys for all vehicle makes and models."
         serviceType="Automotive Locksmith"
         price={{ amount: 120, currency: "USD" }}
-        estimatedTime="30-45 minutes"
+        estimatedTime="Professional Service"
       />
       <ServiceLayout
         title="New Car Key Service"

@@ -16,7 +16,7 @@ const LockRekeyPage = () => {
         description="Professional lock rekeying service. Our expert locksmiths rekey your existing locks to work with new keys, maintaining security without full replacement."
         serviceType="Lock Modification"
         price={{ amount: 65, currency: "USD" }}
-        estimatedTime="20-30 minutes"
+        estimatedTime="Professional Service"
       />
       <ServiceLayout
         title="Lock Rekey Service"

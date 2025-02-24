@@ -16,7 +16,7 @@ const CarKeyProgramPage = () => {
         description="Professional car key programming and transponder coding. Our automotive locksmiths program keys and fobs for all vehicle makes and models."
         serviceType="Automotive Locksmith"
         price={{ amount: 85, currency: "USD" }}
-        estimatedTime="20-30 minutes"
+        estimatedTime="Professional Service"
       />
       <ServiceLayout
         title="Car Key Programming"

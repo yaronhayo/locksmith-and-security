@@ -16,15 +16,7 @@ const BusinessLockoutPage = () => {
         description="Professional commercial lockout solutions available 24/7. Our expert locksmiths provide rapid response for all types of business lockouts."
         serviceType="Commercial Locksmith"
         price={{ amount: 95, currency: "USD" }}
-        estimatedTime="15-30 minutes"
-        areaServed={[
-          "North Bergen",
-          "Union City",
-          "West New York",
-          "Guttenberg",
-          "Jersey City",
-          "Hoboken"
-        ]}
+        estimatedTime="24/7 Emergency Service"
       />
       <ServiceLayout
         title="Commercial Lockout Service"

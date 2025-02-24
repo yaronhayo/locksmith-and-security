@@ -16,7 +16,7 @@ const BusinessLockChangePage = () => {
         description="Professional business lock change and replacement services. Our expert locksmiths provide reliable solutions to enhance your business security."
         serviceType="Commercial Locksmith"
         price={{ amount: 95, currency: "USD" }}
-        estimatedTime="30-60 minutes"
+        estimatedTime="Professional Service"
       />
       <ServiceLayout
         title="Business Lock Change Service"

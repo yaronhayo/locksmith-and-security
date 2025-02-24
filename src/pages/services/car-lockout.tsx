@@ -16,7 +16,7 @@ const CarLockoutPage = () => {
         description="24/7 car lockout assistance. Our automotive locksmiths provide fast, professional service to get you back in your vehicle quickly and safely."
         serviceType="Automotive Locksmith"
         price={{ amount: 75, currency: "USD" }}
-        estimatedTime="15-30 minutes"
+        estimatedTime="24/7 Emergency Service"
       />
       <ServiceLayout
         title="Car Lockout Service"

@@ -16,7 +16,7 @@ const LockChangePage = () => {
         description="Professional lock change and replacement services. Our expert locksmiths install high-security locks to enhance your property's security."
         serviceType="Security Installation"
         price={{ amount: 85, currency: "USD" }}
-        estimatedTime="30-45 minutes"
+        estimatedTime="Professional Service"
       />
       <ServiceLayout
         title="Lock Change & Replacement"
