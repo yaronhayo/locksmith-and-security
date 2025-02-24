@@ -8,6 +8,7 @@ import ServicesList from "./ServicesList";
 import ServiceAreaReviews from "./ServiceAreaReviews";
 import ServiceAreaFAQ from "./ServiceAreaFAQ";
 import { FAQSchema } from "@/types/schema";
+import { Review } from "@/types/reviews";
 
 interface ServiceAreaContentProps {
   locationName: string;

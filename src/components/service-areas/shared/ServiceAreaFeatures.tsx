@@ -1,3 +1,4 @@
+
 import { motion } from 'framer-motion';
 import { serviceAreaFeatures } from '../constants';
 
@@ -23,9 +24,11 @@ const ServiceAreaFeatures = ({ locationName }: ServiceAreaFeaturesProps) => {
             transition={{ duration: 0.3, delay: index * 0.1 }}
             className="p-6 bg-white rounded-lg shadow-sm hover:shadow-md transition-all"
           >
-            <Icon className="h-10 w-10 text-primary mx-auto mb-4" />
-            <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
-            <p className="text-gray-600">{feature.description}</p>
+            <div className="flex justify-center mb-4">
+              <Icon className="h-10 w-10 text-primary" />
+            </div>
+            <h3 className="text-xl font-semibold mb-2 text-center">{feature.title}</h3>
+            <p className="text-gray-600 text-center">{feature.description}</p>
           </motion.div>
         );
       })}
