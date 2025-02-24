@@ -1,62 +1,59 @@
-import { motion } from "framer-motion";
-import { Card, CardContent } from "@/components/ui/card";
-import { Clock, Building2, Shield } from "lucide-react";
 
-const examples = [
-  {
-    icon: Clock,
-    title: "After Hours Emergency",
-    description: "A retail store manager couldn't access the building before opening hours due to a malfunctioning lock. Our team arrived within 15 minutes, resolved the issue, and the store opened on time."
-  },
-  {
-    icon: Building2,
-    title: "Office Complex Access",
-    description: "Multiple tenants in an office building were affected by a master key system failure. We quickly restored access and implemented a new, more secure master key system."
-  },
-  {
-    icon: Shield,
-    title: "Digital Lock Malfunction",
-    description: "A modern office's access control system stopped working after a power outage. We restored access immediately and installed a backup power system to prevent future issues."
-  }
-];
+import React from 'react';
+import { motion } from "framer-motion";
 
 const RealWorldExamples = () => {
   return (
-    <section className="mb-16">
-      <motion.h2 
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="text-3xl font-bold mb-8 text-primary"
-      >
-        Real Business Solutions
-      </motion.h2>
-      <div className="grid md:grid-cols-3 gap-6">
-        {examples.map((example, index) => {
-          const Icon = example.icon;
-          return (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-            >
-              <Card className="h-full hover:shadow-lg transition-all duration-300 group">
-                <CardContent className="p-6">
-                  <div className="mb-4">
-                    <Icon className="w-8 h-8 text-primary group-hover:text-secondary transition-colors duration-300" />
-                  </div>
-                  <h3 className="text-xl font-semibold mb-3 group-hover:text-primary transition-colors duration-300">
-                    {example.title}
-                  </h3>
-                  <p className="text-gray-600">{example.description}</p>
-                </CardContent>
-              </Card>
-            </motion.div>
-          );
-        })}
+    <motion.div 
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+      className="prose max-w-none bg-white rounded-lg shadow-sm p-8 mb-12"
+    >
+      <h3 className="text-2xl font-semibold mb-6 text-primary">Real-World Business Lockout Scenarios</h3>
+      
+      <div className="grid md:grid-cols-2 gap-8">
+        <div>
+          <h4 className="text-xl font-semibold mb-3">Retail Store Emergency</h4>
+          <p className="text-gray-600">
+            A clothing store manager discovered their main entrance lock was jammed before opening hours. 
+            Our team provided emergency assistance, ensuring the store could open for business with minimal delay.
+          </p>
+        </div>
+        
+        <div>
+          <h4 className="text-xl font-semibold mb-3">Office Complex After Hours</h4>
+          <p className="text-gray-600">
+            An employee was locked out of their office late at night with important client files inside. 
+            Our 24/7 service enabled them to retrieve crucial documents and continue their work.
+          </p>
+        </div>
+        
+        <div>
+          <h4 className="text-xl font-semibold mb-3">Restaurant Lock Malfunction</h4>
+          <p className="text-gray-600">
+            A restaurant's back door lock malfunctioned during peak hours. Our professional locksmith 
+            resolved the issue promptly while maintaining security protocols.
+          </p>
+        </div>
+        
+        <div>
+          <h4 className="text-xl font-semibold mb-3">Security System Integration</h4>
+          <p className="text-gray-600">
+            A medical facility needed emergency access when their electronic access system failed. 
+            We provided immediate entry and helped integrate a backup mechanical system.
+          </p>
+        </div>
       </div>
-    </section>
+
+      <div className="mt-8 p-4 bg-primary/5 rounded-lg">
+        <h4 className="text-xl font-semibold mb-2">Our Commitment</h4>
+        <p className="text-gray-600">
+          We understand that business lockouts can significantly impact your operations. Our team is available 
+          24/7 to provide professional commercial locksmith services, helping minimize disruption to your business.
+        </p>
+      </div>
+    </motion.div>
   );
 };
 
