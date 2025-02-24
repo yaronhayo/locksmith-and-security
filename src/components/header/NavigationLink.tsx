@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { NavigationLinkProps } from "./types/navigation";
+import { MapPin } from "lucide-react";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -50,7 +51,7 @@ const NavigationLink = memo(({
               {label}
             </NavigationMenuTrigger>
             <NavigationMenuContent>
-              <div className="grid w-[400px] gap-3 p-4">
+              <div className="grid w-[400px] gap-3 p-4 bg-white">
                 <NavigationMenuLink asChild>
                   <Link
                     to={path}
@@ -67,9 +68,12 @@ const NavigationLink = memo(({
                   >
                     <Link
                       to={child.path}
-                      className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+                      className="flex items-center gap-2 select-none rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-secondary/10 hover:text-secondary focus:bg-accent focus:text-accent-foreground group"
                       onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
                     >
+                      {label === "Service Areas" && (
+                        <MapPin className="w-4 h-4 text-gray-500 group-hover:text-secondary transition-colors" />
+                      )}
                       <div className="text-sm font-medium leading-none">{child.label}</div>
                     </Link>
                   </NavigationMenuLink>
