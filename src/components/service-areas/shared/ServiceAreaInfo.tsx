@@ -13,7 +13,7 @@ const ServiceAreaInfo = ({ locationName }: ServiceAreaInfoProps) => {
         <p className="text-lg text-gray-700 mb-8">
           Trust your local locksmith in {locationName}, providing professional services 
           for residential, commercial, and automotive security needs. We're available 
-          24/7 for emergencies and pride ourselves on fast response times.
+          24/7 for emergencies and pride ourselves on reliable service.
         </p>
         
         <div className="grid md:grid-cols-2 gap-8 mb-8">
@@ -24,17 +24,17 @@ const ServiceAreaInfo = ({ locationName }: ServiceAreaInfoProps) => {
             </h3>
             <p className="text-gray-600">
               We provide comprehensive locksmith services throughout {locationName} and 
-              surrounding areas, ensuring quick response times and professional service.
+              surrounding areas, ensuring reliable service and professional solutions.
             </p>
           </div>
           <div className="bg-gray-50 p-6 rounded-lg">
             <h3 className="text-xl font-semibold mb-4 flex items-center gap-2 text-primary">
               <Clock className="h-5 w-5" />
-              Response Times
+              Available 24/7
             </h3>
             <p className="text-gray-600">
-              Our average response time in {locationName} is 20-30 minutes, 
-              ensuring you get help when you need it most.
+              Our team is ready to help you in {locationName} any time, 
+              day or night, for all your locksmith needs.
             </p>
           </div>
         </div>

@@ -1,8 +1,9 @@
+
 import { Clock, Car, Shield } from "lucide-react";
 
 const process = [
   { icon: Clock, title: "Contact Us", description: "Call or fill out our form for immediate assistance" },
-  { icon: Car, title: "Quick Response", description: "Our technician will arrive within 30 minutes" },
+  { icon: Car, title: "Professional Service", description: "Expert technician dispatched to your location" },
   { icon: Shield, title: "Problem Solved", description: "Professional service with satisfaction guaranteed" }
 ];
 

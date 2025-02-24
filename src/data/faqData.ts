@@ -17,8 +17,8 @@ export const generalFaqs: FAQ[] = [
     answer: "Yes, we provide 24/7 emergency locksmith services for all your residential, commercial, and automotive needs."
   },
   {
-    question: "How quickly can you arrive?",
-    answer: "We typically arrive within 30 minutes for emergency calls in our service area."
+    question: "Can you help right now?",
+    answer: "Yes, we provide prompt emergency service throughout our service area."
   },
   {
     question: "What forms of payment do you accept?",
@@ -41,7 +41,7 @@ export const residentialFaqs: FAQ[] = [
   },
   {
     question: "What should I do if I'm locked out late at night?",
-    answer: "Call us immediately - we provide 24/7 emergency lockout services with fast response times."
+    answer: "Call us immediately - we provide 24/7 emergency lockout services with reliable service."
   }
 ];
 
@@ -77,8 +77,8 @@ export const commercialFaqs: FAQ[] = [
 
 export const emergencyFaqs: FAQ[] = [
   {
-    question: "What's your emergency response time?",
-    answer: "We typically arrive within 20-30 minutes for emergencies in our service area."
+    question: "Do you offer 24/7 emergency service?",
+    answer: "Yes, we provide emergency services throughout our entire service area."
   },
   {
     question: "Do you charge extra for night calls?",
