@@ -1,5 +1,9 @@
 
-import { LucideIcon } from 'lucide-react';
+export interface ServiceAreaFeature {
+  icon: React.ComponentType;
+  title: string;
+  description: string;
+}
 
 export interface ServiceAreaLocation {
   name: string;
@@ -10,24 +14,15 @@ export interface ServiceAreaLocation {
   title: string;
 }
 
-export interface ServiceAreaFeature {
-  icon: LucideIcon;
-  title: string;
-  description: string;
+export interface ServiceAreaInfoProps {
+  location: ServiceAreaLocation;
 }
 
-export interface MapMarker {
-  lat: number;
-  lng: number;
-  title: string;
-  slug?: string;
+export interface ServiceAreaHeroProps {
+  location: ServiceAreaLocation;
 }
 
-export interface MapProps {
-  markers?: MapMarker[];
-  highlightedMarker?: string | null;
-  showAllMarkers?: boolean;
-  zoom?: number;
-  center?: { lat: number; lng: number };
-  onClick?: (e: google.maps.MapMouseEvent) => void;
+export interface ServiceAreaLayoutProps {
+  location: ServiceAreaLocation;
+  children: React.ReactNode;
 }

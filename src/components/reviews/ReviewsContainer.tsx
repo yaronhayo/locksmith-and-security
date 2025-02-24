@@ -16,7 +16,13 @@ interface ReviewsContainerProps {
   totalReviews: number;
 }
 
-const ReviewsContainer = memo(({ location, category, displayedReviews, isLoading, totalReviews }: ReviewsContainerProps) => {
+const ReviewsContainer = memo(({ 
+  location, 
+  category, 
+  displayedReviews, 
+  isLoading, 
+  totalReviews 
+}: ReviewsContainerProps) => {
   const reviewsSchema = createReviewsSchema(displayedReviews, location);
 
   return (

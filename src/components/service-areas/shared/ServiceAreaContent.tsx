@@ -1,55 +1,58 @@
 
 import { motion } from "framer-motion";
-import ServiceAreaInfo from "./ServiceAreaInfo";
-import ServicesList from "./ServicesList";
+import type { ServiceAreaLocation } from "../types";
 import ServiceAreaFeatures from "./ServiceAreaFeatures";
+import ServiceAreaInfo from "./ServiceAreaInfo";
 import ServiceAreaMap from "./ServiceAreaMap";
+import ServicesList from "./ServicesList";
 import ServiceAreaReviews from "./ServiceAreaReviews";
 import ServiceAreaFAQ from "./ServiceAreaFAQ";
-import { FAQSchema } from "@/types/schema";
-import { Review } from "@/types/reviews";
 
 interface ServiceAreaContentProps {
-  locationName: string;
-  displayedReviews: Review[];
-  isLoading: boolean;
-  totalReviews: number;
-  faqSchema?: FAQSchema;
+  location: ServiceAreaLocation;
 }
 
-const ServiceAreaContent = ({ 
-  locationName, 
-  displayedReviews, 
-  isLoading, 
-  totalReviews,
-  faqSchema 
-}: ServiceAreaContentProps) => {
+const ServiceAreaContent = ({ location }: ServiceAreaContentProps) => {
   return (
-    <motion.div 
-      className="container mx-auto px-4"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.5 }}
-    >
-      <div className="grid gap-12 md:gap-20">
-        <ServiceAreaMap locationName={locationName} />
-        <ServiceAreaInfo locationName={locationName} />
-        <ServicesList areaName={locationName} />
-        <ServiceAreaFeatures />
-        <ServiceAreaReviews
-          locationName={locationName}
-          displayedReviews={displayedReviews}
-          isLoading={isLoading}
-          totalReviews={totalReviews}
-        />
-        {faqSchema && faqSchema.data.mainEntity && (
-          <ServiceAreaFAQ 
-            faqSchema={faqSchema} 
-            locationName={locationName}
-          />
-        )}
-      </div>
-    </motion.div>
+    <div className="space-y-20">
+      <motion.section
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="py-12"
+      >
+        <div className="container mx-auto px-4">
+          <ServiceAreaInfo location={location} />
+        </div>
+      </motion.section>
+
+      <ServiceAreaFeatures location={location} />
+      
+      <motion.section
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.2 }}
+        className="py-12 bg-gray-50"
+      >
+        <div className="container mx-auto px-4">
+          <ServicesList location={location} />
+        </div>
+      </motion.section>
+
+      <motion.section
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5, delay: 0.3 }}
+        className="py-12"
+      >
+        <div className="container mx-auto px-4">
+          <ServiceAreaMap location={location} />
+        </div>
+      </motion.section>
+
+      <ServiceAreaReviews location={location.name} />
+      <ServiceAreaFAQ location={location} />
+    </div>
   );
 };
 
