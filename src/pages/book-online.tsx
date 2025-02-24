@@ -75,10 +75,10 @@ const BookOnlinePage = () => {
               For emergency service or immediate assistance, call us directly:
             </p>
             <a 
-              href="tel:5513037874" 
+              href="tel:2017482070" 
               className="inline-flex items-center px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary-hover transition-colors text-lg"
             >
-              Call (551) 303-7874
+              Call (201) 748-2070
               <ArrowRight className="ml-2 h-5 w-5" />
             </a>
           </div>
