@@ -1,11 +1,10 @@
+
 export const services = [
   "Car Lockout",
   "Car Key Programming",
   "House Lockout",
-  "Lock Change",
-  "Lock Repair",
-  "Lock Installation",
-  "Key Duplication",
+  "Lock Rekey",
+  "Business Lock Change",
   "Other"
 ] as const;
 

@@ -10,7 +10,6 @@ export const navItems: readonly NavItem[] = [
       { path: "/services/house-lockout", label: "House Lockout" },
       { path: "/services/car-lockout", label: "Car Lockout" },
       { path: "/services/business-lockout", label: "Business Lockout" },
-      { path: "/services/lock-change", label: "Lock Change" },
       { path: "/services/lock-rekey", label: "Lock Rekey" },
       { path: "/services/business-lock-change", label: "Business Lock Change" },
       { path: "/services/new-car-key", label: "New Car Key" },

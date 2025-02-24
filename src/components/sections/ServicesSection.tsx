@@ -27,13 +27,6 @@ const services = [
   },
   { 
     icon: Key, 
-    title: "Lock Change", 
-    description: "Professional lock replacement service with high-security options. Ideal for new homeowners or upgrading existing locks.", 
-    link: "/services/lock-change", 
-    cta: "Change Your Locks" 
-  },
-  { 
-    icon: Key, 
     title: "Lock Rekey", 
     description: "Expert lock rekeying service to maintain security with new keys. Perfect solution for landlords and new property owners.", 
     link: "/services/lock-rekey", 
