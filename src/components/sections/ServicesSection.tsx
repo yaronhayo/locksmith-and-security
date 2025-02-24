@@ -31,6 +31,34 @@ const services = [
     description: "Professional lock replacement service with high-security options. Ideal for new homeowners or upgrading existing locks.", 
     link: "/services/lock-change", 
     cta: "Change Your Locks" 
+  },
+  { 
+    icon: Key, 
+    title: "Lock Rekey", 
+    description: "Expert lock rekeying service to maintain security with new keys. Perfect solution for landlords and new property owners.", 
+    link: "/services/lock-rekey", 
+    cta: "Rekey Your Locks" 
+  },
+  { 
+    icon: Building2, 
+    title: "Business Lock Change", 
+    description: "Commercial-grade lock installation and security upgrades. Specialized solutions for offices, retail stores, and facilities.", 
+    link: "/services/business-lock-change", 
+    cta: "Secure Your Business" 
+  },
+  { 
+    icon: Car, 
+    title: "New Car Key", 
+    description: "Lost your car key? We make and program new keys for all vehicle types using advanced equipment.", 
+    link: "/services/new-car-key", 
+    cta: "Get a New Car Key" 
+  },
+  { 
+    icon: Car, 
+    title: "Car Key Program", 
+    description: "Need a car key programmed? We program all types of electronic car keys and key fobs.", 
+    link: "/services/car-key-program", 
+    cta: "Program Your Car Key" 
   }
 ];
 
