@@ -17,16 +17,24 @@ const BusinessLockoutPage = () => {
         serviceType="Commercial Locksmith"
         price={{ amount: 95, currency: "USD" }}
         estimatedTime="24/7 Emergency Service"
+        areaServed={[
+          "North Bergen",
+          "Union City",
+          "West New York",
+          "Guttenberg",
+          "Jersey City",
+          "Hoboken"
+        ]}
       />
       <ServiceLayout
         title="Commercial Lockout Service"
-        description="Locked out of your business? Our commercial locksmith team provides rapid, professional service to minimize business disruption."
+        description="Locked out of your business? Our commercial locksmith team provides 24/7 emergency service to minimize business disruption."
         icon={Building2}
         service="business-lockout"
         callToAction="Get Back to Business"
       >
         <ServiceTrustIndicators
-          responseTime="Emergency Service"
+          responseTime="24/7 Emergency Service"
           rating="5.0"
           certifications={["Licensed", "Insured", "Commercial Security Expert"]}
         />
