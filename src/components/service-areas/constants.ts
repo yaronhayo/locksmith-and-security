@@ -1,4 +1,3 @@
-
 import { Clock, Shield, Phone } from 'lucide-react';
 import { ServiceAreaFeature, ServiceAreaLocation } from './types';
 
@@ -16,7 +15,7 @@ export const serviceAreaFeatures: ServiceAreaFeature[] = [
   {
     icon: Phone,
     title: "Fast Response",
-    description: "15-30 minute response time throughout our service areas"
+    description: "Emergency response throughout our service areas"
   }
 ];
 

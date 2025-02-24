@@ -1,3 +1,4 @@
+
 import { Shield, Clock, CheckCircle } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 
@@ -22,7 +23,7 @@ const EmergencyServicesSection = () => {
           <div className="bg-white p-6 rounded-lg shadow-lg text-center">
             <Clock className="w-12 h-12 text-primary mx-auto mb-4" />
             <h3 className="text-xl font-semibold mb-2">Fast Response Time</h3>
-            <p className="text-gray-600">30-minute response time for emergency calls</p>
+            <p className="text-gray-600">Emergency response available 24/7</p>
           </div>
           
           <div className="bg-white p-6 rounded-lg shadow-lg text-center">

@@ -26,7 +26,7 @@ const CarLockoutPage = () => {
         callToAction="Get Back in Your Car"
       >
         <ServiceTrustIndicators
-          responseTime="Emergency Service"
+          responseTime="24/7 Emergency Service"
           rating="5.0"
           certifications={["Licensed", "Insured", "Auto Security Expert"]}
         />
