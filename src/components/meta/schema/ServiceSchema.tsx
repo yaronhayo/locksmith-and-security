@@ -19,7 +19,10 @@ export const createServiceSchema = ({ title, description, baseUrl, settings, can
     "provider": {
       "@type": "LocalBusiness",
       "name": settings.company_name,
-      "image": `${baseUrl}/lovable-uploads/950b5c4c-f0b8-4d22-beb0-66a7d7554476.png`
+      "image": `${baseUrl}/lovable-uploads/950b5c4c-f0b8-4d22-beb0-66a7d7554476.png`,
+      "availabilityStarts": "00:00",
+      "availabilityEnds": "23:59",
+      "hoursAvailable": "24/7 Emergency Service"
     },
     "areaServed": {
       "@type": "City",
@@ -33,3 +36,4 @@ export const createServiceSchema = ({ title, description, baseUrl, settings, can
     }
   }
 });
+
