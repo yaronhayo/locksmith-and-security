@@ -20,7 +20,6 @@ const Logo = () => {
           width="400"
           height="80"
           loading="eager"
-          priority="high"
         />
       </div>
     </Link>
