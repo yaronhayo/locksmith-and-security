@@ -1,3 +1,4 @@
+
 import { motion } from "framer-motion";
 import { Phone, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -12,19 +13,19 @@ const EmergencyCallout = () => {
     >
       <div className="flex flex-col md:flex-row items-center justify-between gap-6">
         <div>
-          <h3 className="text-2xl font-bold mb-4">Need a New Car Key Fast?</h3>
+          <h3 className="text-2xl font-bold mb-4">Need a New Car Key?</h3>
           <p className="text-lg opacity-90 mb-4">
             Lost your only car key? Our mobile key cutting service comes to you. Professional equipment 
-            for all vehicle makes and models. Available 24/7 for emergency key replacement.
+            for all vehicle makes and models. Available 24/7 for emergency service.
           </p>
           <div className="flex items-center gap-4 text-sm opacity-90">
             <div className="flex items-center gap-2">
               <Clock className="h-4 w-4" />
-              <span>Fast Response Time</span>
+              <span>24/7 Service</span>
             </div>
             <div className="flex items-center gap-2">
               <Phone className="h-4 w-4" />
-              <span>24/7 Service</span>
+              <span>Emergency Available</span>
             </div>
           </div>
         </div>

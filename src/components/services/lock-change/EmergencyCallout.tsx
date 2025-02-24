@@ -1,3 +1,4 @@
+
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Phone, Clock } from "lucide-react";
@@ -14,11 +15,11 @@ const EmergencyCallout = () => {
         <div className="flex-1">
           <h2 className="text-2xl font-bold mb-2">Need Emergency Lock Change?</h2>
           <p className="text-white/90 mb-4">
-            Available 24/7 for urgent lock changes. Our professional locksmiths arrive quickly with all necessary equipment.
+            Available 24/7 for urgent lock changes. Our professional locksmiths arrive fully equipped for immediate service.
           </p>
           <div className="flex items-center gap-2 text-secondary">
             <Clock className="w-5 h-5" />
-            <span>Fast Response Time</span>
+            <span>24/7 Emergency Service</span>
           </div>
         </div>
         <Button size="lg" variant="secondary" asChild className="whitespace-nowrap">
