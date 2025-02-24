@@ -3,7 +3,7 @@ import { BasicMetaTags } from "../meta/BasicMetaTags";
 import { OpenGraphTags } from "../meta/OpenGraphTags";
 import { TwitterTags } from "../meta/TwitterTags";
 import { SchemaScripts } from "../meta/SchemaScripts";
-import { useSettings, type SiteSettings } from "@/hooks/useSettings";
+import { useSettings } from "@/hooks/useSettings";
 import { useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { createBusinessSchema } from "../meta/schema/BusinessSchema";
@@ -27,7 +27,7 @@ interface MetaTagsProps {
   serviceSchema?: boolean;
 }
 
-const DEFAULT_SETTINGS: SiteSettings = {
+const DEFAULT_SETTINGS = {
   base_url: "https://247locksmithandsecurity.com",
   company_name: "Locksmith & Security LLC",
   company_phone: "+12017482070",
@@ -74,7 +74,6 @@ const MetaTags = ({
   const siteSettings = settings || DEFAULT_SETTINGS;
   const baseUrl = siteSettings.base_url;
   const fullCanonicalUrl = canonicalUrl ? `${baseUrl}${canonicalUrl}` : baseUrl;
-  const fullTitle = `${title} | ${siteSettings.company_name} - Professional Locksmith Services in ${siteSettings.company_city}, ${siteSettings.company_state}`;
 
   const schemas = [];
 
@@ -108,7 +107,7 @@ const MetaTags = ({
   return (
     <>
       <BasicMetaTags
-        title={fullTitle}
+        title={title}
         description={description}
         keywords={keywords}
         noindex={noindex}
@@ -117,7 +116,7 @@ const MetaTags = ({
         modifiedDate={modifiedDate}
       />
       <OpenGraphTags
-        title={fullTitle}
+        title={title}
         description={description}
         image={ogImage}
         url={fullCanonicalUrl}
@@ -125,7 +124,7 @@ const MetaTags = ({
         baseUrl={baseUrl}
       />
       <TwitterTags
-        title={fullTitle}
+        title={title}
         description={description}
         image={ogImage}
         baseUrl={baseUrl}

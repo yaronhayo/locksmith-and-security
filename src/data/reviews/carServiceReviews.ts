@@ -41,29 +41,5 @@ export const carServiceReviews: Review[] = [
     service: "Car Key Replacement",
     location: "Weehawken, NJ",
     date: "2 months ago"
-  },
-  {
-    name: "Elizabeth Ross",
-    rating: 5,
-    text: "Excellent service programming a new key fob for my car. Works perfectly and saved me money compared to the dealer.",
-    service: "Key Fob Programming",
-    location: "Jersey City, NJ",
-    date: "3 months ago"
-  },
-  {
-    name: "Katherine Lee",
-    rating: 5,
-    text: "Professional car key programming service. Saved me time and money compared to the dealer.",
-    service: "Car Key Programming",
-    location: "Jersey City, NJ",
-    date: "4 months ago"
-  },
-  {
-    name: "Olivia Wright",
-    rating: 5,
-    text: "Fast response to my car key replacement needs. Great service and fair pricing.",
-    service: "Car Key Replacement",
-    location: "Secaucus, NJ",
-    date: "5 months ago"
   }
 ];
