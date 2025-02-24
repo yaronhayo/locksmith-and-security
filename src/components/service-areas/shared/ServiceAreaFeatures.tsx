@@ -25,7 +25,9 @@ const ServiceAreaFeatures = ({ locationName }: ServiceAreaFeaturesProps) => {
             className="p-6 bg-white rounded-lg shadow-sm hover:shadow-md transition-all"
           >
             <div className="flex justify-center mb-4">
-              <Icon className="h-10 w-10 text-primary" />
+              <div className="text-primary">
+                <Icon size={40} />
+              </div>
             </div>
             <h3 className="text-xl font-semibold mb-2 text-center">{feature.title}</h3>
             <p className="text-gray-600 text-center">{feature.description}</p>
