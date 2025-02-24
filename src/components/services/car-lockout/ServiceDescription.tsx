@@ -1,3 +1,4 @@
+
 import { Car, Shield, Clock } from "lucide-react";
 
 const ServiceDescription = () => {
@@ -12,8 +13,8 @@ const ServiceDescription = () => {
       <div className="grid md:grid-cols-3 gap-8 my-12">
         <div className="flex flex-col items-center text-center p-6 bg-primary/5 rounded-lg">
           <Clock className="w-12 h-12 text-primary mb-4" />
-          <h3 className="text-xl font-semibold mb-2">Fast Response</h3>
-          <p>15-30 minute response time in North Bergen and surrounding areas</p>
+          <h3 className="text-xl font-semibold mb-2">24/7 Service</h3>
+          <p>Emergency car lockout service available around the clock</p>
         </div>
         
         <div className="flex flex-col items-center text-center p-6 bg-primary/5 rounded-lg">
