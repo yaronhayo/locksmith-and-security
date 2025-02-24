@@ -7,7 +7,6 @@ const BusinessLockout = lazy(() => import("@/pages/services/business-lockout"));
 const CarKeyProgram = lazy(() => import("@/pages/services/car-key-program"));
 const CarLockout = lazy(() => import("@/pages/services/car-lockout"));
 const HouseLockout = lazy(() => import("@/pages/services/house-lockout"));
-const LockChange = lazy(() => import("@/pages/services/lock-change"));
 const LockRekey = lazy(() => import("@/pages/services/lock-rekey"));
 const NewCarKey = lazy(() => import("@/pages/services/new-car-key"));
 const BusinessLockChange = lazy(() => import("@/pages/services/business-lock-change"));
@@ -28,10 +27,6 @@ export const serviceRoutes = [
   {
     path: "/services/house-lockout",
     element: <PageLayout title="House Lockout Services" description="Emergency house lockout solutions"><HouseLockout /></PageLayout>
-  },
-  {
-    path: "/services/lock-change",
-    element: <PageLayout title="Lock Change Services" description="Professional lock change and replacement"><LockChange /></PageLayout>
   },
   {
     path: "/services/lock-rekey",
