@@ -15,7 +15,7 @@ export const createBusinessSchema = ({ baseUrl, description, settings }: Busines
     "@id": baseUrl,
     "name": settings.company_name,
     "image": `${baseUrl}/website-uploads/950b5c4c-f0b8-4d22-beb0-66a7d7554476.png`,
-    "logo": `${baseUrl}/logo.png`,
+    "logo": `${baseUrl}/website-uploads/950b5c4c-f0b8-4d22-beb0-66a7d7554476.png`,
     "description": description,
     "url": baseUrl,
     "telephone": settings.company_phone,
