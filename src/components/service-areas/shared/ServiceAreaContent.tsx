@@ -7,12 +7,23 @@ import ServiceAreaMap from "./ServiceAreaMap";
 import ServicesList from "./ServicesList";
 import ServiceAreaReviews from "./ServiceAreaReviews";
 import ServiceAreaFAQ from "./ServiceAreaFAQ";
+import { FAQSchema } from "@/types/schema";
 
 interface ServiceAreaContentProps {
-  location: ServiceAreaLocation;
+  locationName: string;
+  displayedReviews: Review[];
+  isLoading: boolean;
+  totalReviews: number;
+  faqSchema: FAQSchema;
 }
 
-const ServiceAreaContent = ({ location }: ServiceAreaContentProps) => {
+const ServiceAreaContent = ({ 
+  locationName,
+  displayedReviews,
+  isLoading,
+  totalReviews,
+  faqSchema
+}: ServiceAreaContentProps) => {
   return (
     <div className="space-y-20">
       <motion.section
@@ -22,11 +33,11 @@ const ServiceAreaContent = ({ location }: ServiceAreaContentProps) => {
         className="py-12"
       >
         <div className="container mx-auto px-4">
-          <ServiceAreaInfo location={location} />
+          <ServiceAreaInfo locationName={locationName} />
         </div>
       </motion.section>
 
-      <ServiceAreaFeatures location={location} />
+      <ServiceAreaFeatures locationName={locationName} />
       
       <motion.section
         initial={{ opacity: 0, y: 20 }}
@@ -35,7 +46,7 @@ const ServiceAreaContent = ({ location }: ServiceAreaContentProps) => {
         className="py-12 bg-gray-50"
       >
         <div className="container mx-auto px-4">
-          <ServicesList location={location} />
+          <ServicesList areaName={locationName} />
         </div>
       </motion.section>
 
@@ -46,12 +57,17 @@ const ServiceAreaContent = ({ location }: ServiceAreaContentProps) => {
         className="py-12"
       >
         <div className="container mx-auto px-4">
-          <ServiceAreaMap location={location} />
+          <ServiceAreaMap locationName={locationName} />
         </div>
       </motion.section>
 
-      <ServiceAreaReviews location={location.name} />
-      <ServiceAreaFAQ location={location} />
+      <ServiceAreaReviews 
+        locationName={locationName}
+        displayedReviews={displayedReviews}
+        isLoading={isLoading}
+        totalReviews={totalReviews}
+      />
+      <ServiceAreaFAQ locationName={locationName} faqSchema={faqSchema} />
     </div>
   );
 };

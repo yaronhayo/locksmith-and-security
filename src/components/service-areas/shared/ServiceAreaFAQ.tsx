@@ -1,12 +1,11 @@
-
 import { FAQSchema } from "@/types/schema";
 
 interface ServiceAreaFAQProps {
-  faqSchema: FAQSchema;
   locationName: string;
+  faqSchema: FAQSchema;
 }
 
-const ServiceAreaFAQ = ({ faqSchema, locationName }: ServiceAreaFAQProps) => {
+const ServiceAreaFAQ = ({ locationName, faqSchema }: ServiceAreaFAQProps) => {
   return (
     <section className="py-12 bg-gray-50 rounded-xl" id="faq">
       <div className="container mx-auto px-4">

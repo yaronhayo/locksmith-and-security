@@ -1,7 +1,11 @@
 import { motion } from 'framer-motion';
 import { serviceAreaFeatures } from '../constants';
 
-const ServiceAreaFeatures = () => {
+interface ServiceAreaFeaturesProps {
+  locationName: string;
+}
+
+const ServiceAreaFeatures = ({ locationName }: ServiceAreaFeaturesProps) => {
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}

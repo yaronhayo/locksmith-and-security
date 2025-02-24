@@ -1,4 +1,3 @@
-
 import { Clock, Shield, MapPin } from "lucide-react";
 
 interface ServiceAreaInfoProps {
