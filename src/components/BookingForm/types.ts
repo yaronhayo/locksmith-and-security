@@ -1,9 +1,6 @@
 
 import { BookingSubmission } from '../../types/submissions';
 
-// Extend the built-in FormData type without recursion
-export type FormDataType = globalThis.FormData;
-
 export interface BookingFormState {
   selectedService: string;
   showVehicleInfo: boolean;

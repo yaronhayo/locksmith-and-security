@@ -1,6 +1,5 @@
 
 import { motion } from "framer-motion";
-import type { ServiceAreaLocation } from "../types";
 import ServiceAreaFeatures from "./ServiceAreaFeatures";
 import ServiceAreaInfo from "./ServiceAreaInfo";
 import ServiceAreaMap from "./ServiceAreaMap";
@@ -38,7 +37,7 @@ const ServiceAreaContent = ({
         </div>
       </motion.section>
 
-      <ServiceAreaFeatures locationName={locationName} />
+      <ServiceAreaFeatures />
       
       <motion.section
         initial={{ opacity: 0, y: 20 }}

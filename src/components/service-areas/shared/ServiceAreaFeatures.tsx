@@ -3,17 +3,13 @@ import { motion } from 'framer-motion';
 import { serviceAreaFeatures } from '../constants';
 import { LucideIcon } from 'lucide-react';
 
-interface ServiceAreaFeaturesProps {
-  locationName: string;
-}
-
 interface ServiceAreaFeature {
   icon: LucideIcon;
   title: string;
   description: string;
 }
 
-const ServiceAreaFeatures = ({ locationName }: ServiceAreaFeaturesProps) => {
+const ServiceAreaFeatures = () => {
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
