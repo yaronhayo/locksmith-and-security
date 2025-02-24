@@ -5,7 +5,7 @@ const Logo = () => {
   return (
     <Link to="/" className="flex items-center" aria-label="Go to homepage">
       <img
-        src="/website-uploads/950b5c4c-f0b8-4d22-beb0-66a7d7554476.png"
+        src="https://mtbgayqzjrxjjmsjikcg.supabase.co/storage/v1/object/public/uploads//Locksmithandsecuritylogo.jpg"
         alt="Locksmith & Security LLC Logo"
         className="h-12 w-auto transform transition-transform duration-300 hover:scale-105"
         style={{
