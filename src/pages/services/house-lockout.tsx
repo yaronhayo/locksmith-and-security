@@ -16,7 +16,7 @@ const HouseLockoutPage = () => {
         description="Professional house lockout service available 24/7. Our expert locksmiths provide fast, reliable assistance to help you regain access to your home."
         serviceType="Residential Locksmith"
         price={{ amount: 75, currency: "USD" }}
-        estimatedTime="15-30 minutes"
+        estimatedTime="24/7 Emergency Service"
       />
       <ServiceLayout
         title="House Lockout Service"

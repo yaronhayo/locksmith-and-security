@@ -87,7 +87,7 @@ const ServiceDescription = () => {
         </div>
         <div className="flex items-center gap-2 text-primary">
           <Clock className="h-6 w-6" />
-          <span className="font-medium">15-30 Min Response</span>
+          <span className="font-medium">24/7 Emergency Service</span>
         </div>
       </div>
     </motion.div>
