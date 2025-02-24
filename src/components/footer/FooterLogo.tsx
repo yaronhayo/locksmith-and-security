@@ -1,11 +1,12 @@
 
+import { Link } from 'react-router-dom';
 import { Shield } from 'lucide-react';
 
 const FooterLogo = () => {
   return (
     <div>
       <div className="mb-6">
-        <a href="/" aria-label="Go to homepage">
+        <Link to="/" aria-label="Go to homepage">
           <img 
             src="/website-uploads/950b5c4c-f0b8-4d22-beb0-66a7d7554476.png" 
             alt="Locksmith & Security LLC Logo" 
@@ -18,7 +19,7 @@ const FooterLogo = () => {
             height="80"
             loading="lazy"
           />
-        </a>
+        </Link>
       </div>
       <p className="text-gray-300 mb-4 text-center md:text-left">
         Professional locksmith services available 24/7 in North Bergen and surrounding areas.
