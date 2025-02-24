@@ -1,3 +1,5 @@
+
+import React from 'react';
 import { Shield, Clock, Building2 } from "lucide-react";
 import { motion } from "framer-motion";
 
@@ -89,7 +91,7 @@ const ServiceDescription = () => {
         </div>
         <div className="flex items-center gap-2 text-primary">
           <Clock className="h-6 w-6" />
-          <span className="font-medium">15-30 Min Response</span>
+          <span className="font-medium">24/7 Service</span>
         </div>
         <div className="flex items-center gap-2 text-primary">
           <Building2 className="h-6 w-6" />
