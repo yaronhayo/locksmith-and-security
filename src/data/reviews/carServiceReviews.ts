@@ -1,10 +1,11 @@
+
 import type { Review } from '@/types/reviews';
 
 export const carServiceReviews: Review[] = [
   {
     name: "Michael R.",
     rating: 5,
-    text: "Called them at 2 AM when I was locked out of my car in North Bergen. The technician arrived in 20 minutes and had me back in my car quickly. Extremely professional and reasonable pricing.",
+    text: "Called them late at night when I was locked out of my car in North Bergen. The technician arrived promptly and had me back in my car quickly. Extremely professional and reasonable pricing.",
     service: "Emergency Car Lockout",
     location: "North Bergen, NJ",
     date: "2 days ago"
