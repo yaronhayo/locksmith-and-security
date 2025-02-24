@@ -1,6 +1,12 @@
 
-import { Phone, Mail, Clock, MapPin } from "lucide-react";
+import { Phone, Clock, MapPin, ChevronDown } from "lucide-react";
 import { Link } from "react-router-dom";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const TopBar = () => {
   const serviceAreas = [
@@ -18,27 +24,28 @@ const TopBar = () => {
     <div className="bg-primary text-white text-sm py-2">
       <div className="container mx-auto px-4">
         <div className="flex flex-col sm:flex-row justify-end items-center gap-4">
-          <div className="hidden lg:flex items-center gap-4 overflow-x-auto">
-            {serviceAreas.map((area) => (
-              <Link 
-                key={area.path}
-                to={area.path} 
-                className="flex items-center gap-1 hover:text-secondary transition-colors whitespace-nowrap group"
-              >
-                <MapPin className="h-3 w-3 text-secondary group-hover:text-secondary" />
-                <span>{area.label}</span>
-              </Link>
-            ))}
+          <div className="hidden lg:flex items-center gap-4">
+            <DropdownMenu>
+              <DropdownMenuTrigger className="flex items-center gap-1 hover:text-secondary transition-colors">
+                Service Areas
+                <ChevronDown className="h-4 w-4" />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="bg-white w-48">
+                {serviceAreas.map((area) => (
+                  <DropdownMenuItem key={area.path} asChild>
+                    <Link 
+                      to={area.path}
+                      className="flex items-center gap-2 px-4 py-2 hover:bg-secondary/10 hover:text-secondary transition-colors group"
+                    >
+                      <MapPin className="h-3 w-3 text-secondary group-hover:text-secondary" />
+                      <span>{area.label}</span>
+                    </Link>
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
           <div className="flex items-center gap-4">
-            <a 
-              href="mailto:info@247locksmithandsecurity.com"
-              className="hidden sm:flex items-center gap-1 hover:text-secondary transition-colors"
-              aria-label="Email us"
-            >
-              <Mail className="h-4 w-4" />
-              <span>info@247locksmithandsecurity.com</span>
-            </a>
             <div className="flex items-center gap-1">
               <Clock className="h-4 w-4 text-secondary" />
               <span>24/7 Emergency Service</span>
