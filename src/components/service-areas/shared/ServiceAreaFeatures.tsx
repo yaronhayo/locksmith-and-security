@@ -1,9 +1,16 @@
 
 import { motion } from 'framer-motion';
 import { serviceAreaFeatures } from '../constants';
+import { LucideIcon } from 'lucide-react';
 
 interface ServiceAreaFeaturesProps {
   locationName: string;
+}
+
+interface ServiceAreaFeature {
+  icon: LucideIcon;
+  title: string;
+  description: string;
 }
 
 const ServiceAreaFeatures = ({ locationName }: ServiceAreaFeaturesProps) => {
@@ -14,7 +21,7 @@ const ServiceAreaFeatures = ({ locationName }: ServiceAreaFeaturesProps) => {
       transition={{ duration: 0.5 }}
       className="grid md:grid-cols-3 gap-6"
     >
-      {serviceAreaFeatures.map((feature, index) => {
+      {serviceAreaFeatures.map((feature: ServiceAreaFeature, index) => {
         const Icon = feature.icon;
         return (
           <motion.div
@@ -26,7 +33,7 @@ const ServiceAreaFeatures = ({ locationName }: ServiceAreaFeaturesProps) => {
           >
             <div className="flex justify-center mb-4">
               <div className="text-primary">
-                <Icon size={40} />
+                <Icon strokeWidth={2} size={40} />
               </div>
             </div>
             <h3 className="text-xl font-semibold mb-2 text-center">{feature.title}</h3>
