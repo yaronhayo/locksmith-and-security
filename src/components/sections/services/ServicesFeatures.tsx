@@ -1,3 +1,4 @@
+
 import { motion } from "framer-motion";
 import { Shield, Clock, DollarSign, Wrench, Star, Phone } from "lucide-react";
 
@@ -10,7 +11,7 @@ const features = [
   {
     icon: Clock,
     title: "Fast Response",
-    description: "15-30 minute response time for emergency services"
+    description: "24/7 emergency response to your location"
   },
   {
     icon: DollarSign,
