@@ -25,7 +25,6 @@ const ServiceAreaLayout = ({ areaSlug }: ServiceAreaLayoutProps) => {
     return null;
   }
 
-  // Find and type check the FAQ schema
   const rawFaqSchema = schemas.find(schema => schema.type === 'FAQPage');
   const faqSchema = rawFaqSchema as FAQSchema | undefined;
 
