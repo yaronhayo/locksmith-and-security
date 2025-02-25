@@ -10,10 +10,10 @@ const FooterLogo = () => {
           <img 
             src="https://mtbgayqzjrxjjmsjikcg.supabase.co/storage/v1/object/public/uploads//Locksmithandsecuritylogo.jpg" 
             alt="Locksmith & Security LLC Logo" 
-            className="h-20 w-auto mx-auto md:mx-0 transform transition-transform duration-300 hover:scale-105"
+            className="h-20 w-auto mx-auto md:mx-0"
             style={{
               objectFit: 'contain',
-              maxWidth: 'none'
+              maxHeight: '80px'
             }}
             width="400"
             height="80"
