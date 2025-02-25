@@ -1,33 +1,26 @@
 
-# Main directives
+# Global rules
 User-agent: *
 Allow: /
-Allow: /sitemap.xml
+Disallow: /thank-you
 
 # Important pages that should be crawled
-Allow: /services/
-Allow: /service-areas/
-Allow: /about/
-Allow: /contact/
-Allow: /reviews/
-Allow: /faq/
-Allow: /sitemap/
-
-# Allow booking-related pages for conversion tracking
-Allow: /book-online/
-Allow: /booking/
-
-# Allow legal pages for trust signals
-Allow: /privacy-policy/
-Allow: /terms-conditions/
+Allow: /services/*
+Allow: /service-areas/*
+Allow: /about
+Allow: /contact
+Allow: /reviews
+Allow: /faq
+Allow: /sitemap
+Allow: /book-online
+Allow: /privacy-policy
+Allow: /terms-conditions
 
 # Set crawl rate to optimize server load
 Crawl-delay: 1
 
-# Allow all versions of domain
+# Primary domain declaration
 Host: https://247locksmithandsecurity.com
-Host: https://www.247locksmithandsecurity.com
 
 # Sitemap declaration
 Sitemap: https://247locksmithandsecurity.com/sitemap.xml
-Sitemap: https://www.247locksmithandsecurity.com/sitemap.xml

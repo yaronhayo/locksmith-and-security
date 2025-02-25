@@ -1,5 +1,11 @@
 
+# Redirect domain aliases to primary domain
+https://www.247locksmithandsecurity.com/* https://247locksmithandsecurity.com/:splat 301!
+
+# Handle client-side routing
 /* /index.html 200
+
+# Specific routes
 /service-areas/* /index.html 200
 /services/* /index.html 200
 /about /index.html 200
@@ -11,3 +17,6 @@
 /thank-you /index.html 200
 /book-online /index.html 200
 /sitemap /index.html 200
+
+# Force HTTPS
+http://* https://:splat 301!
