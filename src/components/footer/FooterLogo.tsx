@@ -9,7 +9,7 @@ const FooterLogo = () => {
         <Link to="/" className="no-underline block" aria-label="Go to homepage">
           <div className="relative w-[300px] h-[80px] mx-auto md:mx-0">
             <img 
-              src="https://mtbgayqzjrxjjmsjikcg.supabase.co/storage/v1/object/public/uploads/Locksmithandsecuritylogo.jpg" 
+              src="https://mtbgayqzjrxjjmsjikcg.supabase.co/storage/v1/object/public/uploads//Locksmithandsecuritylogo.jpg" 
               alt="Locksmith & Security LLC Logo" 
               className="w-full h-full"
               style={{
