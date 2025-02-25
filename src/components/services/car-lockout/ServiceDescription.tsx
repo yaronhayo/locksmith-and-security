@@ -1,4 +1,5 @@
-import { Car, Shield, Key, Tool, Lock, Wrench } from "lucide-react";
+
+import { Car, Shield, Key, Lock, Wrench } from "lucide-react";
 
 const ServiceDescription = () => {
   return (
