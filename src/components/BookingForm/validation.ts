@@ -44,3 +44,4 @@ export const validateForm = (formData: FormData, showVehicleInfo: boolean) => {
     errors
   };
 };
+

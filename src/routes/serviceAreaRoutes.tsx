@@ -1,5 +1,6 @@
 
 import { lazy } from 'react';
+import PageLayout from "@/components/layouts/PageLayout";
 
 // Lazy load service area pages
 const NorthBergen = lazy(() => import("@/pages/service-areas/north-bergen"));
@@ -14,34 +15,35 @@ const Secaucus = lazy(() => import("@/pages/service-areas/secaucus"));
 export const serviceAreaRoutes = [
   {
     path: "/service-areas/north-bergen",
-    element: <NorthBergen />
+    element: <PageLayout title="North Bergen Locksmith Services" description="Professional locksmith services in North Bergen, NJ"><NorthBergen /></PageLayout>
   },
   {
     path: "/service-areas/union-city",
-    element: <UnionCity />
+    element: <PageLayout title="Union City Locksmith Services" description="Professional locksmith services in Union City, NJ"><UnionCity /></PageLayout>
   },
   {
     path: "/service-areas/west-new-york",
-    element: <WestNewYork />
+    element: <PageLayout title="West New York Locksmith Services" description="Professional locksmith services in West New York, NJ"><WestNewYork /></PageLayout>
   },
   {
     path: "/service-areas/guttenberg",
-    element: <Guttenberg />
+    element: <PageLayout title="Guttenberg Locksmith Services" description="Professional locksmith services in Guttenberg, NJ"><Guttenberg /></PageLayout>
   },
   {
     path: "/service-areas/weehawken",
-    element: <Weehawken />
+    element: <PageLayout title="Weehawken Locksmith Services" description="Professional locksmith services in Weehawken, NJ"><Weehawken /></PageLayout>
   },
   {
     path: "/service-areas/jersey-city",
-    element: <JerseyCity />
+    element: <PageLayout title="Jersey City Locksmith Services" description="Professional locksmith services in Jersey City, NJ"><JerseyCity /></PageLayout>
   },
   {
     path: "/service-areas/hoboken",
-    element: <Hoboken />
+    element: <PageLayout title="Hoboken Locksmith Services" description="Professional locksmith services in Hoboken, NJ"><Hoboken /></PageLayout>
   },
   {
     path: "/service-areas/secaucus",
-    element: <Secaucus />
+    element: <PageLayout title="Secaucus Locksmith Services" description="Professional locksmith services in Secaucus, NJ"><Secaucus /></PageLayout>
   }
 ];
+

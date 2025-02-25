@@ -20,3 +20,4 @@ const MapError = ({ error }: MapErrorProps) => {
 };
 
 export default MapError;
+
