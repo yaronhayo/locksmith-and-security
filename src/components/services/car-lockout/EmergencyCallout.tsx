@@ -1,24 +1,25 @@
 
 import { Button } from "@/components/ui/button";
-import { Phone } from "lucide-react";
+import { Shield, Phone } from "lucide-react";
 
 const EmergencyCallout = () => {
   return (
-    <div className="bg-primary/5 p-8 rounded-lg my-8">
-      <h2 className="text-3xl font-bold mb-4">Need Emergency Car Lockout Service?</h2>
-      <p className="text-lg mb-6">
-        Don't stay stranded. Our professional auto locksmiths provide 24/7 emergency service throughout our service area.
-      </p>
-      <div className="flex flex-col sm:flex-row gap-4">
-        <Button size="lg" asChild>
-          <a href="tel:2017482070" className="flex items-center">
-            <Phone className="mr-2" />
-            Call (201) 748-2070
-          </a>
-        </Button>
-        <Button size="lg" variant="secondary" asChild>
-          <a href="/book-online">Book Online</a>
-        </Button>
+    <div className="bg-primary/5 rounded-lg p-8 my-12">
+      <div className="flex items-start gap-4">
+        <Shield className="h-12 w-12 text-primary flex-shrink-0" />
+        <div>
+          <h2 className="text-2xl font-bold mb-4">Professional Car Lockout Service</h2>
+          <p className="text-lg text-gray-600 mb-6">
+            Our professional automotive locksmiths are available 24/7 to help with any car lockout situation. 
+            We provide licensed and insured service throughout the area. Call now to speak with our team.
+          </p>
+          <Button asChild className="gap-2">
+            <a href="tel:+12017482070">
+              <Phone className="h-4 w-4" />
+              Call Now
+            </a>
+          </Button>
+        </div>
       </div>
     </div>
   );
