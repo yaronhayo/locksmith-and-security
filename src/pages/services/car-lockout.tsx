@@ -32,7 +32,7 @@ const CarLockoutPage = () => {
           transition={{ duration: 0.5 }}
         >
           <ServiceTrustIndicators
-            responseTime="30 minutes"
+            responseTime="Available 24/7"
             rating="5.0"
             certifications={["Licensed", "Insured", "Auto Security Expert"]}
           />
