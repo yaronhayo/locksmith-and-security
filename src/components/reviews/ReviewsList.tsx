@@ -14,6 +14,7 @@ interface ReviewsListProps {
 const ReviewsList = ({ reviews, isLoading }: ReviewsListProps) => {
   const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
 
   useEffect(() => {
     if (!api) return;
@@ -25,11 +26,11 @@ const ReviewsList = ({ reviews, isLoading }: ReviewsListProps) => {
     // Optimized auto-rotation with requestAnimationFrame
     let rafId: number;
     let lastRotation = performance.now();
-    const rotationInterval = 3000;
+    const rotationInterval = 1800; // 1.8 seconds
 
     const rotate = (timestamp: number) => {
-      if (timestamp - lastRotation >= rotationInterval) {
-        api.scrollNext();
+      if (!isPaused && timestamp - lastRotation >= rotationInterval) {
+        api.scrollPrev(); // Changed to scrollPrev for leftward rotation
         lastRotation = timestamp;
       }
       rafId = requestAnimationFrame(rotate);
@@ -41,14 +42,18 @@ const ReviewsList = ({ reviews, isLoading }: ReviewsListProps) => {
       cancelAnimationFrame(rafId);
       api.off("select", () => {});
     };
-  }, [api]);
+  }, [api, isPaused]);
 
   if (isLoading) {
     return <ReviewsLoadingSkeleton />;
   }
 
   return (
-    <div className="w-full max-w-7xl mx-auto px-4">
+    <div 
+      className="w-full max-w-7xl mx-auto px-4"
+      onMouseEnter={() => setIsPaused(true)}
+      onMouseLeave={() => setIsPaused(false)}
+    >
       <ReviewsCarousel reviews={reviews} />
       <CarouselDots 
         total={reviews.length} 
