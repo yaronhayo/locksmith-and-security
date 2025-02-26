@@ -1,6 +1,7 @@
 
-import { Menu, Phone } from "lucide-react";
+import { Menu, Phone, Calendar } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 
 interface ActionButtonsProps {
   isMenuOpen: boolean;
@@ -21,6 +22,19 @@ const ActionButtons = ({ isMenuOpen, setIsMenuOpen }: ActionButtonsProps) => {
           <span className="hidden md:inline group-hover:text-black transition-colors duration-300">(201) 748-2070</span>
           <span className="md:hidden group-hover:text-black transition-colors duration-300">Call Now</span>
         </a>
+      </Button>
+
+      <Button
+        size="sm"
+        variant="default"
+        className="hidden sm:flex gap-2 items-center group transform hover:scale-105 transition-all duration-300 hover:shadow-lg"
+        asChild
+      >
+        <Link to="/book-online">
+          <Calendar className="h-4 w-4 group-hover:text-secondary transition-colors duration-300" />
+          <span className="hidden md:inline group-hover:text-secondary transition-colors duration-300">Book Service</span>
+          <span className="md:hidden group-hover:text-secondary transition-colors duration-300">Book</span>
+        </Link>
       </Button>
 
       <Button
