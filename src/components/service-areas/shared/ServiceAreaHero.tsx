@@ -41,7 +41,7 @@ const ServiceAreaHero = ({ areaName, isLoading = false }: ServiceAreaHeroProps) 
       <p className="text-lg text-gray-700 md:text-xl">
         At Locksmith & Security LLC, we provide comprehensive locksmith services throughout {areaName}. 
         Our team of experienced professionals is available 24/7 to handle all your residential, 
-        commercial, and automotive locksmith needs with prompt and reliable service.
+        commercial, and automotive locksmith needs with professional and reliable service.
       </p>
       <div className="flex flex-col sm:flex-row gap-4">
         <Button size="lg" className="w-full sm:w-auto gap-2" asChild>
