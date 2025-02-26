@@ -1,3 +1,4 @@
+
 import { Button } from "@/components/ui/button";
 import { Lock, Loader2 } from "lucide-react";
 
@@ -28,7 +29,7 @@ const SubmitButton = ({ isSubmitting }: SubmitButtonProps) => {
       </Button>
 
       <p className="text-sm text-gray-500 text-center">
-        Fast Response • Professional Service • 24/7 Available
+        Professional Service • Licensed & Insured • 24/7 Available
       </p>
     </>
   );

@@ -16,7 +16,7 @@ const EmergencyServicesSection = () => {
         >
           <h2 className="text-3xl font-bold mb-4">24/7 Emergency Locksmith Service</h2>
           <p className="text-lg text-white/90">
-            Professional locksmith assistance whenever you need it. Our experienced team is ready to help with any emergency lockout situation.
+            Professional locksmith assistance when you need it most. Our experienced team is ready to help with any emergency lockout situation.
           </p>
         </motion.div>
 
@@ -30,7 +30,7 @@ const EmergencyServicesSection = () => {
             <Clock className="w-12 h-12 mx-auto mb-4 text-secondary" />
             <h3 className="text-xl font-semibold mb-2 text-white">Always Available</h3>
             <p className="text-white/80">
-              Emergency service available 24 hours a day, 7 days a week, including holidays
+              Emergency service available around the clock, including holidays
             </p>
           </motion.div>
 
@@ -56,7 +56,7 @@ const EmergencyServicesSection = () => {
             <MapPin className="w-12 h-12 mx-auto mb-4 text-secondary" />
             <h3 className="text-xl font-semibold mb-2 text-white">Local Service</h3>
             <p className="text-white/80">
-              Serving North Bergen and surrounding areas with prompt service
+              Serving North Bergen and surrounding areas with dedicated service
             </p>
           </motion.div>
         </div>
