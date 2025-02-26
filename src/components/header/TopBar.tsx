@@ -27,6 +27,7 @@ const TopBar = () => {
           <div className="hidden lg:flex items-center gap-4">
             <DropdownMenu>
               <DropdownMenuTrigger className="flex items-center gap-1 hover:text-secondary transition-colors">
+                <MapPin className="h-4 w-4 text-secondary" />
                 Service Areas
                 <ChevronDown className="h-4 w-4" />
               </DropdownMenuTrigger>
@@ -50,14 +51,9 @@ const TopBar = () => {
               <Clock className="h-4 w-4 text-secondary" />
               <span>24/7 Emergency Service</span>
             </div>
-            <a 
-              href="tel:2017482070" 
-              className="flex items-center gap-1 hover:text-secondary transition-colors"
-              aria-label="Call our emergency service"
-            >
-              <Phone className="h-4 w-4" />
-              <span>(201) 748-2070</span>
-            </a>
+            <div className="flex items-center gap-1">
+              <span className="text-sm">NJ DCA License #13VH12595700</span>
+            </div>
           </div>
         </div>
       </div>

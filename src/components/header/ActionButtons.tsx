@@ -12,12 +12,13 @@ const ActionButtons = ({ isMenuOpen, setIsMenuOpen }: ActionButtonsProps) => {
     <div className="flex items-center gap-2">
       <Button
         size="sm"
-        className="hidden sm:flex gap-2"
+        className="hidden sm:flex gap-2 items-center"
         asChild
       >
         <a href="tel:2017482070">
           <Phone className="h-4 w-4" />
-          <span>Call Now</span>
+          <span className="hidden md:inline">(201) 748-2070</span>
+          <span className="md:hidden">Call Now</span>
         </a>
       </Button>
 
