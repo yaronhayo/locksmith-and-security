@@ -6,9 +6,16 @@ import { Button } from "@/components/ui/button";
 import { ChevronRight, HelpCircle } from "lucide-react";
 import { Link } from "react-router-dom";
 import { initialFaqs, additionalFaqs } from "@/data/faqData";
+import { FAQ } from "@/data/faqData";
 
-const FAQSection = () => {
-  const [displayedFaqs, setDisplayedFaqs] = useState([...initialFaqs]);
+interface FAQSectionProps {
+  title?: string;
+  description?: string;
+  faqs?: FAQ[];
+}
+
+const FAQSection = ({ title = "Frequently Asked Questions", description = "Find answers to common questions about our services.", faqs = initialFaqs }: FAQSectionProps) => {
+  const [displayedFaqs, setDisplayedFaqs] = useState([...faqs]);
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
@@ -45,10 +52,9 @@ const FAQSection = () => {
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
           <HelpCircle className="w-12 h-12 mx-auto mb-4 text-primary animate-bounce" />
-          <h2 className="text-3xl font-bold mb-4">Frequently Asked Questions</h2>
+          <h2 className="text-3xl font-bold mb-4">{title}</h2>
           <p className="text-gray-600 max-w-2xl mx-auto">
-            Find answers to common questions about our locksmith services. 
-            Can't find what you're looking for? Feel free to contact us.
+            {description}
           </p>
         </div>
         
