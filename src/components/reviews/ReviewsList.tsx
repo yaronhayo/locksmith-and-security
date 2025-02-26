@@ -28,7 +28,7 @@ const ReviewsList = ({ reviews, isLoading }: ReviewsListProps) => {
     const startRotation = () => {
       interval = setInterval(() => {
         if (!isPaused) {
-          api.scrollPrev();
+          api.scrollNext();
         }
       }, 1800); // 1.8 seconds
     };
