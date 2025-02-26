@@ -1,73 +1,67 @@
 
+import { useSettings } from "@/hooks/useSettings";
+import { useLocations } from "@/hooks/useLocations";
 import { motion } from "framer-motion";
-import ServiceAreaFeatures from "./ServiceAreaFeatures";
-import ServiceAreaInfo from "./ServiceAreaInfo";
 import ServiceAreaMap from "./ServiceAreaMap";
-import ServicesList from "./ServicesList";
-import ServiceAreaReviews from "./ServiceAreaReviews";
+import ServiceAreaInfo from "./ServiceAreaInfo";
+import ServiceAreaFeatures from "./ServiceAreaFeatures";
+import ServiceAreaForm from "./ServiceAreaForm";
 import ServiceAreaFAQ from "./ServiceAreaFAQ";
+import ServiceAreaReviews from "./ServiceAreaReviews";
 import { FAQSchema } from "@/types/schema";
+import ServicesList from "./ServicesList";
 import { Review } from "@/types/reviews";
 
 interface ServiceAreaContentProps {
   locationName: string;
-  displayedReviews: Review[];
-  isLoading: boolean;
-  totalReviews: number;
-  faqSchema: FAQSchema;
+  displayedReviews?: Review[];
+  isLoading?: boolean;
+  totalReviews?: number;
+  faqSchema?: FAQSchema;
 }
 
-const ServiceAreaContent = ({ 
+const ServiceAreaContent = ({
   locationName,
   displayedReviews,
-  isLoading,
+  isLoading: reviewsLoading,
   totalReviews,
   faqSchema
 }: ServiceAreaContentProps) => {
+  const { data: settings } = useSettings();
+  const { data: locations } = useLocations();
+
   return (
-    <div className="space-y-20">
-      <motion.section
+    <div className="container mx-auto px-4 space-y-20">
+      <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="py-12"
+        className="grid lg:grid-cols-2 gap-8 items-start"
       >
-        <div className="container mx-auto px-4">
-          <ServiceAreaInfo locationName={locationName} />
-        </div>
-      </motion.section>
-
-      <ServiceAreaFeatures />
-      
-      <motion.section
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.2 }}
-        className="py-12 bg-gray-50"
-      >
-        <div className="container mx-auto px-4">
-          <ServicesList areaName={locationName} />
-        </div>
-      </motion.section>
-
-      <motion.section
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.5, delay: 0.3 }}
-        className="py-12"
-      >
-        <div className="container mx-auto px-4">
+        <ServiceAreaInfo locationName={locationName} />
+        <div className="lg:sticky lg:top-24">
           <ServiceAreaMap locationName={locationName} />
         </div>
-      </motion.section>
+      </motion.div>
 
-      <ServiceAreaReviews 
+      <ServiceAreaFeatures />
+      <ServicesList />
+      
+      <ServiceAreaForm 
         locationName={locationName}
-        displayedReviews={displayedReviews}
-        isLoading={isLoading}
-        totalReviews={totalReviews}
+        settings={settings}
       />
-      <ServiceAreaFAQ locationName={locationName} faqSchema={faqSchema} />
+      
+      {displayedReviews && (
+        <ServiceAreaReviews
+          locationName={locationName}
+          reviews={displayedReviews}
+          isLoading={reviewsLoading}
+          totalReviews={totalReviews}
+        />
+      )}
+      
+      {faqSchema && <ServiceAreaFAQ schema={faqSchema} />}
     </div>
   );
 };
