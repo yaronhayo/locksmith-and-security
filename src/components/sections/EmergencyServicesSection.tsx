@@ -28,7 +28,7 @@ const EmergencyServicesSection = () => {
             className="bg-white/10 backdrop-blur-sm rounded-lg p-6 text-center"
           >
             <Clock className="w-12 h-12 mx-auto mb-4 text-secondary" />
-            <h3 className="text-xl font-semibold mb-2">Always Available</h3>
+            <h3 className="text-xl font-semibold mb-2 text-white">Always Available</h3>
             <p className="text-white/80">
               Emergency service available 24 hours a day, 7 days a week, including holidays
             </p>
@@ -41,7 +41,7 @@ const EmergencyServicesSection = () => {
             className="bg-white/10 backdrop-blur-sm rounded-lg p-6 text-center"
           >
             <Shield className="w-12 h-12 mx-auto mb-4 text-secondary" />
-            <h3 className="text-xl font-semibold mb-2">Licensed & Insured</h3>
+            <h3 className="text-xl font-semibold mb-2 text-white">Licensed & Insured</h3>
             <p className="text-white/80">
               Professional service by certified technicians you can trust
             </p>
@@ -54,7 +54,7 @@ const EmergencyServicesSection = () => {
             className="bg-white/10 backdrop-blur-sm rounded-lg p-6 text-center"
           >
             <MapPin className="w-12 h-12 mx-auto mb-4 text-secondary" />
-            <h3 className="text-xl font-semibold mb-2">Local Service</h3>
+            <h3 className="text-xl font-semibold mb-2 text-white">Local Service</h3>
             <p className="text-white/80">
               Serving North Bergen and surrounding areas with prompt service
             </p>
