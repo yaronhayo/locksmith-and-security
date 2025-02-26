@@ -17,7 +17,7 @@ const services = [
     description: "24/7 emergency locksmith services for cars, homes, and businesses. Fast response times and professional service.", 
     link: "/services/emergency-locksmith",
     highlight: "Available 24/7",
-    cta: "24/7 Emergency Locksmith Services",
+    cta: "Emergency Services",
     subServices: [
       { name: "Car Lockout", link: "/services/emergency-locksmith/car-lockout" },
       { name: "House Lockout", link: "/services/emergency-locksmith/house-lockout" },
@@ -37,7 +37,7 @@ const services = [
     description: "Complete residential locksmith services including lock replacement, rekeying, repairs, and security upgrades.", 
     link: "/services/residential-locksmith",
     highlight: "Home Security",
-    cta: "Residential Locksmith Solutions",
+    cta: "Home Security",
     subServices: [
       { name: "Lock Replacement", link: "/services/residential-locksmith/lock-replacement" },
       { name: "Lock Rekey", link: "/services/residential-locksmith/lock-rekey" },
@@ -57,7 +57,7 @@ const services = [
     description: "Professional commercial locksmith solutions for businesses, including access control and master key systems.", 
     link: "/services/commercial-locksmith",
     highlight: "Business Security",
-    cta: "Commercial Security Solutions",
+    cta: "Business Security",
     subServices: [
       { name: "Lock Replacement", link: "/services/commercial-locksmith/lock-replacement" },
       { name: "Master Key Systems", link: "/services/commercial-locksmith/master-key" },
@@ -77,7 +77,7 @@ const services = [
     description: "Comprehensive auto locksmith services including car key replacement, programming, and ignition repair.", 
     link: "/services/auto-locksmith",
     highlight: "Mobile Service",
-    cta: "Automotive Locksmith Services",
+    cta: "Auto Services",
     subServices: [
       { name: "Car Key Replacement", link: "/services/auto-locksmith/car-key-replacement" },
       { name: "Key Fob Programming", link: "/services/auto-locksmith/key-fob-programming" },
