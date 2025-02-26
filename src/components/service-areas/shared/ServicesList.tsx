@@ -1,4 +1,5 @@
-import { Shield, Car, Home, Building2 } from "lucide-react";
+
+import { Shield, Car, House, Building2 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 
@@ -8,7 +9,7 @@ interface ServicesListProps {
 
 const services = [
   {
-    icon: Home,
+    icon: House,
     title: "Residential Locksmith",
     description: "House lockouts, lock changes, rekeying, and security upgrades for your home.",
     link: "/services/house-lockout",

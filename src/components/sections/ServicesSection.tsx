@@ -1,5 +1,5 @@
 
-import { Lock, Car, Building2, ArrowRight, Key, Wrench, Shield } from 'lucide-react';
+import { Lock, Car, Building2, ArrowRight, Key, Wrench, Shield, House } from 'lucide-react';
 import { motion } from "framer-motion";
 import { Link } from 'react-router-dom';
 import { Card, CardContent } from "@/components/ui/card";
@@ -25,7 +25,7 @@ const services = [
     ]
   },
   { 
-    icon: Building2,
+    icon: House,
     subIcons: {
       "Lock Replacement": Lock,
       "Lock Rekey": Key,
