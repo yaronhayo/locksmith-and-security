@@ -10,7 +10,7 @@ const EmergencyExitDevice = () => {
     <main className="flex-grow">
       <ServicesHero 
         title="Emergency Exit Device Installation"
-        description="Professional emergency exit device installation. Expert installation of panic bars and push-to-exit devices."
+        description="Professional emergency exit device installation by certified technicians. Expert solutions for commercial safety requirements."
       />
       <ServicesFeatures />
       <ServicesProof />

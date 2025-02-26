@@ -28,7 +28,7 @@ const EmergencyServicesSection = () => {
             className="bg-white/10 backdrop-blur-sm rounded-lg p-6 text-center"
           >
             <Clock className="w-12 h-12 mx-auto mb-4 text-secondary" />
-            <h3 className="text-xl font-semibold mb-2 text-white">Always Available</h3>
+            <h3 className="text-xl font-semibold mb-2 text-white">24/7 Availability</h3>
             <p className="text-white/80">
               Emergency service available around the clock, including holidays
             </p>

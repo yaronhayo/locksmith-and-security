@@ -10,7 +10,7 @@ const MasterKey = () => {
     <main className="flex-grow">
       <ServicesHero 
         title="Master Key System Installation"
-        description="Professional master key system design and implementation. Streamline access control for your business."
+        description="Professional master key system design and implementation by certified technicians. Expert access control solutions for your business."
       />
       <ServicesFeatures />
       <ServicesProof />

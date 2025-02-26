@@ -10,7 +10,7 @@ const AccessControl = () => {
     <main className="flex-grow">
       <ServicesHero 
         title="Access Control Systems"
-        description="Professional access control system installation and maintenance. Advanced security solutions for your business."
+        description="Professional access control system installation and maintenance by certified technicians. Expert security solutions for your business."
       />
       <ServicesFeatures />
       <ServicesProof />

@@ -9,8 +9,8 @@ const KeyFobProgramming = () => {
   return (
     <main className="flex-grow">
       <ServicesHero 
-        title="Key Fob Programming"
-        description="Professional key fob programming services. Expert programming for all vehicle makes and models."
+        title="Key Fob Programming Service"
+        description="Professional key fob programming by certified technicians. Expert service for all vehicle makes and models."
       />
       <ServicesFeatures />
       <ServicesProof />

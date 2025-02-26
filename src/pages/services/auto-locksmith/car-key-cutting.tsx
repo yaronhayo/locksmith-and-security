@@ -9,8 +9,8 @@ const CarKeyCutting = () => {
   return (
     <main className="flex-grow">
       <ServicesHero 
-        title="Car Key Cutting"
-        description="Professional car key cutting services. Precision cutting for all types of car keys."
+        title="Car Key Cutting Service"
+        description="Professional car key cutting by experienced technicians. Expert service for all vehicle makes and models."
       />
       <ServicesFeatures />
       <ServicesProof />
