@@ -1,3 +1,4 @@
+
 import PageLayout from "@/components/layouts/PageLayout";
 import ServicesHero from "@/components/sections/services/ServicesHero";
 import ServicesFeatures from "@/components/sections/services/ServicesFeatures";
@@ -11,7 +12,10 @@ const ServicesPage = () => {
       title="Professional Locksmith Services in North Bergen"
       description="Expert locksmith services including residential, commercial, and automotive solutions. Available 24/7 for all your security needs."
     >
-      <ServicesHero />
+      <ServicesHero 
+        title="Professional Locksmith Services"
+        description="Expert residential, commercial, and automotive locksmith solutions available 24/7"
+      />
       <ServicesFeatures />
       <ServicesGrid />
       <ServicesCTA />
