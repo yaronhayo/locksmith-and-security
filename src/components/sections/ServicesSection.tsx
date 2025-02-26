@@ -107,12 +107,12 @@ const ServicesSection = () => {
                         <Link 
                           key={subIndex}
                           to={subService.link}
-                          className="flex items-center text-sm text-gray-600 py-1.5 group/item relative"
+                          className="flex items-center text-sm text-gray-600 py-1.5 hover:text-primary group relative"
                         >
-                          <ArrowRight className="w-4 h-4 mr-2 opacity-0 -translate-x-2 group-hover/item:opacity-100 group-hover/item:translate-x-0 transition-all duration-200" />
+                          <ArrowRight className="w-4 h-4 mr-2 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-200" />
                           <span className="relative inline-block">
                             {subService.name}
-                            <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-primary transition-all duration-300 group-hover/item:w-full"></span>
+                            <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-primary transition-all duration-300 group-hover:w-full"></span>
                           </span>
                         </Link>
                       ))}
@@ -120,13 +120,13 @@ const ServicesSection = () => {
 
                     <Link
                       to={service.link}
-                      className="inline-flex items-center text-primary font-semibold relative group/link px-1"
+                      className="inline-flex items-center text-primary font-semibold hover:text-primary/80 group relative px-1"
                     >
                       <span className="relative inline-block">
                         Explore All Services
-                        <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-primary transition-all duration-300 group-hover/link:w-full"></span>
+                        <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-primary transition-all duration-300 group-hover:w-full"></span>
                       </span>
-                      <ArrowRight className="ml-2 w-4 h-4 transform group-hover/link:translate-x-1 transition-transform" />
+                      <ArrowRight className="ml-2 w-4 h-4 transform group-hover:translate-x-1 transition-transform" />
                     </Link>
                   </div>
                 </CardContent>
