@@ -1,5 +1,5 @@
 
-import { Lock, Car, Building2, ArrowRight } from 'lucide-react';
+import { Lock, Car, Building2, ArrowRight, Key, Tools, Shield, Wrench } from 'lucide-react';
 import { motion } from "framer-motion";
 import { Link } from 'react-router-dom';
 import { Card, CardContent } from "@/components/ui/card";
@@ -7,6 +7,12 @@ import { Card, CardContent } from "@/components/ui/card";
 const services = [
   { 
     icon: Lock, 
+    subIcons: {
+      "Car Lockout": Car,
+      "House Lockout": Key,
+      "Business Lockout": Building2,
+      "Storage Unit Lockout": Lock
+    },
     title: "Emergency Locksmith", 
     description: "24/7 emergency locksmith services for cars, homes, and businesses. Fast response times and professional service.", 
     link: "/services/emergency-locksmith",
@@ -19,7 +25,13 @@ const services = [
     ]
   },
   { 
-    icon: Building2, 
+    icon: Building2,
+    subIcons: {
+      "Lock Replacement": Lock,
+      "Lock Rekey": Key,
+      "Lock Repair": Tools,
+      "Gate Locks": Shield
+    },
     title: "Residential Locksmith", 
     description: "Complete residential locksmith services including lock replacement, rekeying, repairs, and security upgrades.", 
     link: "/services/residential-locksmith",
@@ -32,7 +44,13 @@ const services = [
     ]
   },
   { 
-    icon: Building2, 
+    icon: Building2,
+    subIcons: {
+      "Lock Replacement": Lock,
+      "Master Key Systems": Key,
+      "Access Control": Shield,
+      "Emergency Exit Devices": Tools
+    },
     title: "Commercial Locksmith", 
     description: "Professional commercial locksmith solutions for businesses, including access control and master key systems.", 
     link: "/services/commercial-locksmith",
@@ -45,7 +63,13 @@ const services = [
     ]
   },
   { 
-    icon: Car, 
+    icon: Car,
+    subIcons: {
+      "Car Key Replacement": Key,
+      "Key Fob Programming": Shield,
+      "Car Key Duplicate": Tools,
+      "Ignition Repair": Wrench
+    },
     title: "Auto Locksmith", 
     description: "Comprehensive auto locksmith services including car key replacement, programming, and ignition repair.", 
     link: "/services/auto-locksmith",
@@ -109,10 +133,14 @@ const ServicesSection = () => {
                             to={subService.link}
                             className="flex items-center text-sm text-gray-600 py-1.5 hover:text-primary relative w-full"
                           >
-                            <ArrowRight className="w-4 h-4 mr-2 opacity-0 -translate-x-2 transition-all duration-200 peer-hover:opacity-100 peer-hover:translate-x-0" />
-                            <span className="peer relative inline-block">
+                            {service.subIcons[subService.name as keyof typeof service.subIcons] && (
+                              <service.subIcons[subService.name as keyof typeof service.subIcons] 
+                                className="w-4 h-4 mr-2 text-primary/70" 
+                              />
+                            )}
+                            <span className="relative inline-block">
                               {subService.name}
-                              <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-primary transition-all duration-300 peer-hover:w-full"></span>
+                              <span className="absolute bottom-0 left-0 right-0 w-0 h-[1px] bg-primary transition-all duration-300 hover:w-full"></span>
                             </span>
                           </Link>
                         </div>
@@ -122,13 +150,10 @@ const ServicesSection = () => {
                     <div className="inline-block">
                       <Link
                         to={service.link}
-                        className="inline-flex items-center text-primary font-semibold hover:text-primary/80 relative px-1"
+                        className="inline-flex items-center px-4 py-2 bg-[#F97316] hover:bg-[#F97316]/90 text-white rounded-md font-medium transition-colors"
                       >
-                        <span className="peer relative inline-block">
-                          Explore All Services
-                          <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-primary transition-all duration-300 peer-hover:w-full"></span>
-                        </span>
-                        <ArrowRight className="ml-2 w-4 h-4 transform transition-transform peer-hover:translate-x-1" />
+                        Explore All Services
+                        <ArrowRight className="ml-2 w-4 h-4" />
                       </Link>
                     </div>
                   </div>
