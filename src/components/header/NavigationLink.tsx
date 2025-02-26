@@ -56,9 +56,11 @@ const NavigationLink = memo(({
               >
                 <span className="relative inline-flex">
                   {label}
-                  {isActive ? (
-                    <div className="absolute -bottom-2 left-0 right-0 h-0.5 bg-secondary" />
-                  ) : (
+                  <div className={cn(
+                    "absolute -bottom-2 left-0 right-0 h-0.5",
+                    isActive && "bg-secondary"
+                  )} />
+                  {!isActive && (
                     <motion.div
                       className="absolute -bottom-2 left-0 right-0 h-0.5 bg-secondary"
                       initial={{ scaleX: 0 }}
@@ -112,17 +114,21 @@ const NavigationLink = memo(({
       <span className="relative inline-flex">
         {label}
         {!isMenuOpen && (
-          isActive ? (
-            <div className="absolute -bottom-2 left-0 right-0 h-0.5 bg-secondary" />
-          ) : (
-            <motion.div
-              className="absolute -bottom-2 left-0 right-0 h-0.5 bg-secondary"
-              initial={{ scaleX: 0 }}
-              whileHover={{ scaleX: 1 }}
-              transition={{ duration: 0.2, ease: "easeInOut" }}
-              style={{ transformOrigin: "left" }}
-            />
-          )
+          <>
+            <div className={cn(
+              "absolute -bottom-2 left-0 right-0 h-0.5",
+              isActive && "bg-secondary"
+            )} />
+            {!isActive && (
+              <motion.div
+                className="absolute -bottom-2 left-0 right-0 h-0.5 bg-secondary"
+                initial={{ scaleX: 0 }}
+                whileHover={{ scaleX: 1 }}
+                transition={{ duration: 0.2, ease: "easeInOut" }}
+                style={{ transformOrigin: "left" }}
+              />
+            )}
+          </>
         )}
       </span>
     </Link>
