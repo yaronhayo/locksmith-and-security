@@ -24,4 +24,3 @@ Host: https://247locksmithandsecurity.com
 
 # Sitemap declaration
 Sitemap: https://247locksmithandsecurity.com/sitemap.xml
-
