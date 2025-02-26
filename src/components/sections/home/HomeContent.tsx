@@ -14,10 +14,10 @@ const HomeContent = () => {
       <ServicesSection />
       <EmergencyServicesSection />
       <ProcessSection />
+      <WhyChooseUs />
       <GoogleMapsProvider>
         <ServiceAreasSection />
       </GoogleMapsProvider>
-      <WhyChooseUs />
       <ReviewsSection />
       <FAQSection />
     </>
