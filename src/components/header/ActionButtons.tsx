@@ -20,7 +20,6 @@ const ActionButtons = ({ isMenuOpen, setIsMenuOpen }: ActionButtonsProps) => {
         <a href="tel:2017482070">
           <Phone className="h-4 w-4 animate-phone-ring group-hover:text-black transition-transform duration-300" />
           <span className="hidden md:inline group-hover:text-black transition-colors duration-300">(201) 748-2070</span>
-          <span className="md:hidden group-hover:text-black transition-colors duration-300">Call Now</span>
         </a>
       </Button>
 
@@ -33,7 +32,6 @@ const ActionButtons = ({ isMenuOpen, setIsMenuOpen }: ActionButtonsProps) => {
         <Link to="/book-online">
           <Calendar className="h-4 w-4 group-hover:text-secondary transition-colors duration-300" />
           <span className="hidden md:inline group-hover:text-secondary transition-colors duration-300">Book Service</span>
-          <span className="md:hidden group-hover:text-secondary transition-colors duration-300">Book</span>
         </Link>
       </Button>
 
