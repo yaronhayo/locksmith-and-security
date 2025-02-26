@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { NavigationLinkProps } from "./types/navigation";
-import { MapPin, Key, Car, Building2, Home, Star, ArrowRight } from "lucide-react";
+import { MapPin, Key, Car, Building2, Home, ArrowRight } from "lucide-react";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -50,15 +50,14 @@ const NavigationLink = memo(({
                     isActive ? "text-secondary" : "text-gray-700 hover:text-secondary"
                   )}
                 >
-                  <span className="relative inline-flex">
+                  <span className="relative inline-block">
                     {label}
                     <motion.div
-                      className="absolute -bottom-2 left-0 right-0 h-0.5 bg-secondary"
-                      initial={{ scaleX: isActive ? 1 : 0 }}
-                      animate={{ scaleX: isActive ? 1 : 0 }}
-                      whileHover={{ scaleX: 1 }}
+                      className="absolute -bottom-2 left-0 h-0.5 bg-secondary"
+                      initial={{ width: isActive ? '100%' : 0 }}
+                      animate={{ width: isActive ? '100%' : 0 }}
+                      whileHover={{ width: '100%' }}
                       transition={{ duration: 0.2, ease: "easeInOut" }}
-                      style={{ transformOrigin: "left" }}
                     />
                   </span>
                 </NavigationMenuTrigger>
@@ -276,9 +275,7 @@ const NavigationLink = memo(({
           <NavigationMenuItem>
             <Link 
               to={path}
-              onClick={(e) => {
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-              }}
+              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
             >
               <NavigationMenuTrigger
                 className={cn(
@@ -286,15 +283,14 @@ const NavigationLink = memo(({
                   isActive ? "text-secondary" : "text-gray-700 hover:text-secondary"
                 )}
               >
-                <span className="relative inline-flex">
+                <span className="relative inline-block">
                   {label}
                   <motion.div
-                    className="absolute -bottom-2 left-0 right-0 h-0.5 bg-secondary"
-                    initial={{ scaleX: isActive ? 1 : 0 }}
-                    animate={{ scaleX: isActive ? 1 : 0 }}
-                    whileHover={{ scaleX: 1 }}
+                    className="absolute -bottom-2 left-0 h-0.5 bg-secondary"
+                    initial={{ width: isActive ? '100%' : 0 }}
+                    animate={{ width: isActive ? '100%' : 0 }}
+                    whileHover={{ width: '100%' }}
                     transition={{ duration: 0.2, ease: "easeInOut" }}
-                    style={{ transformOrigin: "left" }}
                   />
                 </span>
               </NavigationMenuTrigger>
@@ -338,16 +334,15 @@ const NavigationLink = memo(({
       onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
     >
       {isMenuOpen && icon}
-      <span className="relative inline-flex">
+      <span className="relative inline-block">
         {label}
         {!isMenuOpen && (
           <motion.div
-            className="absolute -bottom-2 left-0 right-0 h-0.5 bg-secondary"
-            initial={{ scaleX: isActive ? 1 : 0 }}
-            animate={{ scaleX: isActive ? 1 : 0 }}
-            whileHover={{ scaleX: 1 }}
+            className="absolute -bottom-2 left-0 h-0.5 bg-secondary"
+            initial={{ width: isActive ? '100%' : 0 }}
+            animate={{ width: isActive ? '100%' : 0 }}
+            whileHover={{ width: '100%' }}
             transition={{ duration: 0.2, ease: "easeInOut" }}
-            style={{ transformOrigin: "left" }}
           />
         )}
       </span>
