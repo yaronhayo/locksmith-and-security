@@ -1,10 +1,14 @@
 
 import Header from "../Header";
 import Footer from "../Footer";
-import HomeContent from "../sections/home/HomeContent";
 import MetaTags from "./MetaTags";
+import { ReactNode } from "react";
 
-const HomeLayout = () => {
+interface HomeLayoutProps {
+  children: ReactNode;
+}
+
+const HomeLayout = ({ children }: HomeLayoutProps) => {
   return (
     <div className="relative min-h-screen">
       <MetaTags 
@@ -13,7 +17,7 @@ const HomeLayout = () => {
       />
       <Header />
       <main>
-        <HomeContent />
+        {children}
       </main>
       <Footer />
     </div>
