@@ -68,8 +68,8 @@ export const createServiceAreaSchemas = (
         answer: "Yes, we offer 24/7 emergency locksmith services for all residential, commercial, and automotive needs."
       },
       {
-        question: "How quickly can you arrive?",
-        answer: "We typically arrive within 20-30 minutes for emergency calls in our service area."
+        question: "Are your technicians certified?",
+        answer: "Yes, all our technicians are certified, licensed, and insured professionals."
       },
       {
         question: `What are your most popular services in ${location.name}?`,
