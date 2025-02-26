@@ -1,5 +1,5 @@
 
-import { Phone, Clock, MapPin, ChevronDown } from "lucide-react";
+import { Phone, Clock, MapPin, ChevronDown, Shield } from "lucide-react";
 import { Link } from "react-router-dom";
 import {
   DropdownMenu,
@@ -52,6 +52,7 @@ const TopBar = () => {
               <span>24/7 Emergency Service</span>
             </div>
             <div className="flex items-center gap-1">
+              <Shield className="h-4 w-4 text-secondary" />
               <span className="text-sm">NJ DCA License #13VH12595700</span>
             </div>
           </div>
