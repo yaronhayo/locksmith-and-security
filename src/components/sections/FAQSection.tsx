@@ -1,11 +1,9 @@
 
 import { useState, useEffect, useRef } from "react";
-import FAQCard from "@/components/faq/FAQCard";
-import LoadMoreButton from "@/components/faq/LoadMoreButton";
-import LoadingSkeleton from "@/components/faq/LoadingSkeleton";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
-import { ChevronRight } from "lucide-react";
+import { ChevronRight, HelpCircle } from "lucide-react";
 import { Link } from "react-router-dom";
 import { initialFaqs, additionalFaqs } from "@/data/faqData";
 
@@ -43,21 +41,46 @@ const FAQSection = () => {
   };
 
   return (
-    <section className="py-20">
+    <section className="py-20 bg-gradient-to-b from-gray-50 to-white rounded-xl">
       <div className="container mx-auto px-4">
-        <h2 className="text-3xl font-bold text-center mb-12">Frequently Asked Questions</h2>
+        <div className="text-center mb-12">
+          <HelpCircle className="w-12 h-12 mx-auto mb-4 text-primary animate-bounce" />
+          <h2 className="text-3xl font-bold mb-4">Frequently Asked Questions</h2>
+          <p className="text-gray-600 max-w-2xl mx-auto">
+            Find answers to common questions about our locksmith services. 
+            Can't find what you're looking for? Feel free to contact us.
+          </p>
+        </div>
+        
         <ScrollArea 
-          className="h-[600px] max-w-3xl mx-auto rounded-lg border border-gray-200 p-4"
+          className="h-[600px] max-w-6xl mx-auto rounded-lg border border-gray-200 p-4"
           onScroll={handleScroll}
           ref={scrollAreaRef}
         >
-          <div className="space-y-6">
+          <div className="grid md:grid-cols-2 gap-6">
             {displayedFaqs.map((faq, index) => (
-              <FAQCard key={index} question={faq.question} answer={faq.answer} />
+              <Accordion key={index} type="single" collapsible className="bg-white rounded-lg shadow-sm">
+                <AccordionItem value={`item-${index}`} className="border-none">
+                  <AccordionTrigger className="px-6 py-4 hover:no-underline">
+                    <div className="flex items-start text-left gap-3">
+                      <span className="font-bold text-primary text-lg">Q:</span>
+                      <span className="text-lg font-semibold">{faq.question}</span>
+                    </div>
+                  </AccordionTrigger>
+                  <AccordionContent className="px-6 pb-4">
+                    <div className="flex gap-3">
+                      <span className="font-bold text-secondary text-lg">A:</span>
+                      <p className="text-gray-600 leading-relaxed">
+                        {faq.answer}
+                      </p>
+                    </div>
+                  </AccordionContent>
+                </AccordionItem>
+              </Accordion>
             ))}
-            {loading && <LoadingSkeleton />}
           </div>
         </ScrollArea>
+        
         <div className="flex justify-center mt-8">
           <Button asChild variant="outline" size="lg" className="group">
             <Link to="/faq">
