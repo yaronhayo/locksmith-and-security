@@ -127,24 +127,25 @@ const ServicesSection = () => {
 
                   <div className="bg-gray-50 p-6 pt-4">
                     <div className="space-y-2 mb-6">
-                      {service.subServices.map((subService, subIndex) => (
-                        <div key={subIndex} className="flex items-center">
-                          <Link 
-                            to={subService.link}
-                            className="flex items-center text-sm text-gray-600 py-1.5 hover:text-primary relative w-full"
-                          >
-                            {service.subIcons[subService.name as keyof typeof service.subIcons] && (
-                              <service.subIcons[subService.name as keyof typeof service.subIcons] 
-                                className="w-4 h-4 mr-2 text-primary/70" 
-                              />
-                            )}
-                            <span className="relative inline-block">
-                              {subService.name}
-                              <span className="absolute bottom-0 left-0 right-0 w-0 h-[1px] bg-primary transition-all duration-300 hover:w-full"></span>
-                            </span>
-                          </Link>
-                        </div>
-                      ))}
+                      {service.subServices.map((subService, subIndex) => {
+                        const SubIcon = service.subIcons[subService.name as keyof typeof service.subIcons];
+                        return (
+                          <div key={subIndex} className="flex items-center">
+                            <Link 
+                              to={subService.link}
+                              className="flex items-center text-sm text-gray-600 py-1.5 hover:text-primary relative w-full"
+                            >
+                              {SubIcon && (
+                                <SubIcon className="w-4 h-4 mr-2 text-primary/70" />
+                              )}
+                              <span className="relative inline-block">
+                                {subService.name}
+                                <span className="absolute bottom-0 left-0 right-0 w-0 h-[1px] bg-primary transition-all duration-300 hover:w-full"></span>
+                              </span>
+                            </Link>
+                          </div>
+                        );
+                      })}
                     </div>
 
                     <div className="inline-block">
