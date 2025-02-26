@@ -6,52 +6,31 @@ import ServiceCard from './ServiceCard';
 const services = [
   { 
     icon: Lock, 
-    title: "House Lockout", 
-    description: "Expert locksmith service for residential lockouts. Available 24/7 with fast response times for homeowners and renters.", 
-    link: "/services/house-lockout", 
-    cta: "Unlock Your Home" 
-  },
-  { 
-    icon: Car, 
-    title: "Car Lockout", 
-    description: "Professional automotive lockout service available 24/7. We come to your location and safely unlock any vehicle make or model.", 
-    link: "/services/car-lockout", 
-    cta: "Unlock Your Car" 
+    title: "Emergency Locksmith", 
+    description: "24/7 emergency locksmith services for cars, homes, and businesses. Fast response times and professional service.", 
+    link: "/services/emergency-locksmith", 
+    cta: "Emergency Services" 
   },
   { 
     icon: Building2, 
-    title: "Business Lockout", 
-    description: "Commercial lockout solutions for all business types. Fast response service available 24/7 to get you back to work quickly.", 
-    link: "/services/business-lockout", 
-    cta: "Unlock Your Business" 
-  },
-  { 
-    icon: Key, 
-    title: "Lock Rekey", 
-    description: "Expert lock rekeying service to maintain security with new keys. Perfect solution for landlords and new property owners.", 
-    link: "/services/lock-rekey", 
-    cta: "Rekey Your Locks" 
+    title: "Residential Locksmith", 
+    description: "Complete residential locksmith services including lock replacement, rekeying, repairs, and security upgrades.", 
+    link: "/services/residential-locksmith", 
+    cta: "Residential Services" 
   },
   { 
     icon: Building2, 
-    title: "Business Lock Change", 
-    description: "Commercial-grade lock installation and security upgrades. Specialized solutions for offices, retail stores, and facilities.", 
-    link: "/services/business-lock-change", 
-    cta: "Secure Your Business" 
+    title: "Commercial Locksmith", 
+    description: "Professional commercial locksmith solutions for businesses, including access control and master key systems.", 
+    link: "/services/commercial-locksmith", 
+    cta: "Commercial Services" 
   },
   { 
     icon: Car, 
-    title: "New Car Key", 
-    description: "Lost your car key? We make and program new keys for all vehicle types using advanced equipment.", 
-    link: "/services/new-car-key", 
-    cta: "Get a New Car Key" 
-  },
-  { 
-    icon: Car, 
-    title: "Car Key Program", 
-    description: "Need a car key programmed? We program all types of electronic car keys and key fobs.", 
-    link: "/services/car-key-program", 
-    cta: "Program Your Car Key" 
+    title: "Auto Locksmith", 
+    description: "Comprehensive auto locksmith services including car key replacement, programming, and ignition repair.", 
+    link: "/services/auto-locksmith", 
+    cta: "Auto Services" 
   }
 ];
 

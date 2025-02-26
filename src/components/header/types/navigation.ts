@@ -3,7 +3,7 @@ export type NavItem = {
   path: string;
   label: string;
   showMobileOnly?: boolean;
-  children?: { path: string; label: string }[];
+  children?: { path: string; label: string; children?: { path: string; label: string }[] }[];
 };
 
 export interface NavigationProps {
