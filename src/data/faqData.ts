@@ -1,4 +1,3 @@
-
 import { Clock, Shield, Phone, Car, Home, Building } from 'lucide-react';
 
 export interface FAQ {
@@ -27,6 +26,34 @@ export const generalFaqs: FAQ[] = [
   {
     question: "Do you provide free estimates?",
     answer: "Yes, we provide free estimates for all our services. Contact us to get a quote."
+  },
+  {
+    question: "How quickly can you arrive in an emergency?",
+    answer: "In most cases, we can arrive within 20-30 minutes of your call in our service area."
+  },
+  {
+    question: "Are you licensed and insured?",
+    answer: "Yes, we are fully licensed, bonded, and insured for your peace of mind."
+  },
+  {
+    question: "Do you offer warranties on your work?",
+    answer: "Yes, we provide warranties on all our workmanship and installed products."
+  },
+  {
+    question: "Can you make high-security keys?",
+    answer: "Yes, we can duplicate and create high-security keys for most major brands."
+  },
+  {
+    question: "Do you work with smart home security systems?",
+    answer: "Yes, we install and service various smart home security systems and smart locks."
+  },
+  {
+    question: "What should I do if my key breaks in the lock?",
+    answer: "Don't try to remove it yourself as this could damage the lock. Call us immediately, and we'll safely extract the key and repair any damage."
+  },
+  {
+    question: "Do you provide written estimates?",
+    answer: "Yes, we provide detailed written estimates before beginning any work."
   }
 ];
 
@@ -90,12 +117,12 @@ export const emergencyFaqs: FAQ[] = [
   }
 ];
 
-// Show first 5 general FAQs initially
-export const initialFaqs = generalFaqs.slice(0, 5);
+// Show first 12 general FAQs initially (increased from 5)
+export const initialFaqs = generalFaqs.slice(0, 12);
 
 // Combine all remaining FAQs for infinite loading
 export const additionalFaqs = [
-  ...generalFaqs.slice(5),
+  ...generalFaqs.slice(12),
   ...residentialFaqs,
   ...automotiveFaqs,
   ...commercialFaqs,
