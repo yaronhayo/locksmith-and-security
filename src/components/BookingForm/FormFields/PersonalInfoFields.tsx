@@ -44,6 +44,7 @@ const PersonalInfoFields = ({ errors, isSubmitting }: PersonalInfoFieldsProps) =
           disabled={isSubmitting}
           autoComplete="tel"
           required
+          placeholder="Enter your phone number"
         />
         {errors.phone && (
           <Alert variant="destructive" className="py-2 px-3">
