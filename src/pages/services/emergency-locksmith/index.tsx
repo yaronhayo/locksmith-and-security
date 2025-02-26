@@ -11,7 +11,7 @@ const EmergencyLocksmith = () => {
     <main className="flex-grow">
       <ServicesHero 
         title="24/7 Emergency Locksmith Services"
-        description="Professional emergency locksmith services by certified technicians. Available 24/7 for all your security needs."
+        description="Professional locksmith services by certified, licensed technicians. Available 24/7 with expert solutions for all emergency situations."
       />
       <ServicesGrid />
       <ServicesFeatures />

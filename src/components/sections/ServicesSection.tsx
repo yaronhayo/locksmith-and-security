@@ -1,3 +1,4 @@
+
 import { BellRing, Car, Building2, ArrowRight, Key, Wrench, Shield, House, Lock } from 'lucide-react';
 import { motion } from "framer-motion";
 import { Link } from 'react-router-dom';
@@ -13,7 +14,7 @@ const services = [
       "Storage Unit Lockout": Lock
     },
     title: "Emergency Locksmith", 
-    description: "24/7 emergency locksmith services for cars, homes, and businesses. Fast response times and professional service.", 
+    description: "Professional emergency locksmith services by certified technicians. Licensed and insured experts available 24/7.", 
     link: "/services/emergency-locksmith",
     highlight: "Available 24/7",
     cta: "Emergency Services",
@@ -33,7 +34,7 @@ const services = [
       "Gate Locks": Shield
     },
     title: "Residential Locksmith", 
-    description: "Complete residential locksmith services including lock replacement, rekeying, repairs, and security upgrades.", 
+    description: "Professional residential locksmith services by certified technicians. Expert solutions for all your home security needs.", 
     link: "/services/residential-locksmith",
     highlight: "Home Security",
     cta: "Home Security",
@@ -53,7 +54,7 @@ const services = [
       "Emergency Exit Devices": Wrench
     },
     title: "Commercial Locksmith", 
-    description: "Professional commercial locksmith solutions for businesses, including access control and master key systems.", 
+    description: "Professional commercial security solutions by certified technicians. Expert systems for business protection.", 
     link: "/services/commercial-locksmith",
     highlight: "Business Security",
     cta: "Business Security",
@@ -73,7 +74,7 @@ const services = [
       "Ignition Repair": Wrench
     },
     title: "Auto Locksmith", 
-    description: "Comprehensive auto locksmith services including car key replacement, programming, and ignition repair.", 
+    description: "Professional automotive locksmith services by certified technicians. Expert solutions for all vehicle security needs.", 
     link: "/services/auto-locksmith",
     highlight: "Mobile Service",
     cta: "Auto Services",

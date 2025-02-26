@@ -16,8 +16,8 @@ const EmergencyCallout = () => {
         Need Emergency Locksmith Service?
       </h2>
       <p className="text-white/90 mb-6">
-        We provide 24/7 emergency locksmith services across all our service areas.
-        Professional technicians ready to help you anytime.
+        Our certified technicians provide professional emergency locksmith services 24/7.
+        Licensed and insured experts ready to assist with your security needs.
       </p>
       <div className="flex flex-col sm:flex-row justify-center gap-4">
         <Button 
