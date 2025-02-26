@@ -1,6 +1,6 @@
 
 import { FAQSchema } from "@/types/schema";
-import { QuestionMarkCircle } from "lucide-react";
+import { HelpCircle } from "lucide-react";
 import {
   Accordion,
   AccordionContent,
@@ -18,7 +18,7 @@ const ServiceAreaFAQ = ({ locationName, faqSchema }: ServiceAreaFAQProps) => {
     <section className="py-16 bg-gradient-to-b from-gray-50 to-white rounded-xl" id="faq">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <QuestionMarkCircle className="w-12 h-12 mx-auto mb-4 text-primary animate-bounce" />
+          <HelpCircle className="w-12 h-12 mx-auto mb-4 text-primary animate-bounce" />
           <h2 className="text-3xl font-bold mb-4">
             Frequently Asked Questions About Our {locationName} Services
           </h2>
