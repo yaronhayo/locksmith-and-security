@@ -6,7 +6,6 @@ import ServiceAreaFeatures from '../service-areas/shared/ServiceAreaFeatures';
 import EmergencyCallout from './service-areas/EmergencyCallout';
 import { useLocations } from '@/hooks/useLocations';
 import LoadingSpinner from '../LoadingSpinner';
-import GoogleMapsProvider from '../providers/GoogleMapsProvider';
 
 const ServiceAreasSection = () => {
   const [hoveredArea, setHoveredArea] = useState<string | null>(null);
@@ -53,15 +52,13 @@ const ServiceAreasSection = () => {
           />
           
           <div style={{ height: '600px' }} className="bg-white rounded-xl shadow-lg overflow-hidden">
-            <GoogleMapsProvider>
-              <GoogleMap 
-                markers={mapMarkers}
-                highlightedMarker={hoveredArea}
-                showAllMarkers={true}
-                zoom={11}
-                center={{ lat: 40.7795, lng: -74.0324 }}
-              />
-            </GoogleMapsProvider>
+            <GoogleMap 
+              markers={mapMarkers}
+              highlightedMarker={hoveredArea}
+              showAllMarkers={true}
+              zoom={11}
+              center={{ lat: 40.7795, lng: -74.0324 }}
+            />
           </div>
         </div>
       </div>

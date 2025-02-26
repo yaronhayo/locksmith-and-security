@@ -71,6 +71,7 @@ const GoogleMap = ({
       onClick={onClick}
       onLoad={onLoadCallback}
       onUnmount={onUnmountCallback}
+      loadingElement={<MapLoader />}
     >
       {visibleMarkers.length > 0 && (
         <MapMarkers
