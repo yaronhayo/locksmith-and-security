@@ -1,4 +1,3 @@
-
 import { memo } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
@@ -67,10 +66,10 @@ const NavigationLink = memo(({
               <NavigationMenuContent>
                 <div className="w-[850px] p-6 bg-white">
                   <div className="grid grid-cols-4 gap-6">
-                    <div className="space-y-4">
-                      <div className="flex items-center gap-2 text-secondary">
-                        <Key className="h-5 w-5" />
-                        <h3 className="font-semibold">Emergency</h3>
+                    <div className="space-y-3">
+                      <div className="flex items-center gap-2 text-secondary border-b border-gray-100 pb-2">
+                        <Key className="h-4 w-4" />
+                        <h3 className="text-sm font-medium">Emergency</h3>
                       </div>
                       <ul className="space-y-2">
                         <li>
@@ -111,10 +110,10 @@ const NavigationLink = memo(({
                         </li>
                       </ul>
                     </div>
-                    <div className="space-y-4">
-                      <div className="flex items-center gap-2 text-secondary">
-                        <Home className="h-5 w-5" />
-                        <h3 className="font-semibold">Residential</h3>
+                    <div className="space-y-3">
+                      <div className="flex items-center gap-2 text-secondary border-b border-gray-100 pb-2">
+                        <Home className="h-4 w-4" />
+                        <h3 className="text-sm font-medium">Residential</h3>
                       </div>
                       <ul className="space-y-2">
                         <li>
@@ -155,10 +154,10 @@ const NavigationLink = memo(({
                         </li>
                       </ul>
                     </div>
-                    <div className="space-y-4">
-                      <div className="flex items-center gap-2 text-secondary">
-                        <Building2 className="h-5 w-5" />
-                        <h3 className="font-semibold">Commercial</h3>
+                    <div className="space-y-3">
+                      <div className="flex items-center gap-2 text-secondary border-b border-gray-100 pb-2">
+                        <Building2 className="h-4 w-4" />
+                        <h3 className="text-sm font-medium">Commercial</h3>
                       </div>
                       <ul className="space-y-2">
                         <li>
@@ -208,10 +207,10 @@ const NavigationLink = memo(({
                         </li>
                       </ul>
                     </div>
-                    <div className="space-y-4">
-                      <div className="flex items-center gap-2 text-secondary">
-                        <Car className="h-5 w-5" />
-                        <h3 className="font-semibold">Automotive</h3>
+                    <div className="space-y-3">
+                      <div className="flex items-center gap-2 text-secondary border-b border-gray-100 pb-2">
+                        <Car className="h-4 w-4" />
+                        <h3 className="text-sm font-medium">Automotive</h3>
                       </div>
                       <ul className="space-y-2">
                         <li>
