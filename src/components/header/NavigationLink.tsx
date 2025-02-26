@@ -42,24 +42,32 @@ const NavigationLink = memo(({
       <NavigationMenu>
         <NavigationMenuList>
           <NavigationMenuItem>
-            <NavigationMenuTrigger
-              className={cn(
-                "text-base font-medium transition-colors duration-300 relative px-0 bg-transparent hover:bg-transparent focus:bg-transparent",
-                isActive ? "text-secondary" : "text-gray-700 hover:text-secondary"
-              )}
+            <Link 
+              to={path}
+              onClick={(e) => {
+                // Don't prevent default - allow navigation to overview page
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
             >
-              <span className="relative inline-flex">
-                {label}
-                <motion.div
-                  className="absolute -bottom-2 left-0 right-0 h-0.5 bg-secondary"
-                  initial={{ scaleX: isActive ? 1 : 0 }}
-                  animate={{ scaleX: isActive ? 1 : 0 }}
-                  whileHover={{ scaleX: 1 }}
-                  transition={{ duration: 0.2, ease: "easeInOut" }}
-                  style={{ transformOrigin: "left" }}
-                />
-              </span>
-            </NavigationMenuTrigger>
+              <NavigationMenuTrigger
+                className={cn(
+                  "text-base font-medium transition-colors duration-300 relative px-0 bg-transparent hover:bg-transparent focus:bg-transparent",
+                  isActive ? "text-secondary" : "text-gray-700 hover:text-secondary"
+                )}
+              >
+                <span className="relative inline-flex">
+                  {label}
+                  <motion.div
+                    className="absolute -bottom-2 left-0 right-0 h-0.5 bg-secondary"
+                    initial={{ scaleX: isActive ? 1 : 0 }}
+                    animate={{ scaleX: isActive ? 1 : 0 }}
+                    whileHover={{ scaleX: 1 }}
+                    transition={{ duration: 0.2, ease: "easeInOut" }}
+                    style={{ transformOrigin: "left" }}
+                  />
+                </span>
+              </NavigationMenuTrigger>
+            </Link>
             <NavigationMenuContent>
               <div className="grid w-[400px] gap-3 p-4 bg-white">
                 {children.map((child) => (
