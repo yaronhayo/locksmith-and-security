@@ -45,23 +45,20 @@ const ServiceAreaContent = ({
       </motion.div>
 
       <ServiceAreaFeatures />
-      <ServicesList />
+      <ServicesList areaName={locationName} />
       
-      <ServiceAreaForm 
-        locationName={locationName}
-        settings={settings}
-      />
+      <ServiceAreaForm />
       
       {displayedReviews && (
         <ServiceAreaReviews
           locationName={locationName}
-          reviews={displayedReviews}
-          isLoading={reviewsLoading}
-          totalReviews={totalReviews}
+          displayedReviews={displayedReviews}
+          isLoading={reviewsLoading || false}
+          totalReviews={totalReviews || 0}
         />
       )}
       
-      {faqSchema && <ServiceAreaFAQ schema={faqSchema} />}
+      {faqSchema && <ServiceAreaFAQ locationName={locationName} faqSchema={faqSchema} />}
     </div>
   );
 };

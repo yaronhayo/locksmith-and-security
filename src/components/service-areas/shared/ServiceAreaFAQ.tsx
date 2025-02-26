@@ -1,3 +1,4 @@
+
 import { FAQSchema } from "@/types/schema";
 
 interface ServiceAreaFAQProps {
