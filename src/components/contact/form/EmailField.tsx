@@ -1,18 +1,20 @@
 
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 interface EmailFieldProps {
   isSubmitting: boolean;
 }
 
 const EmailField = ({ isSubmitting }: EmailFieldProps) => {
+  const emailId = "contact-email";
   return (
     <div>
-      <label htmlFor="email" className="block text-sm font-medium mb-2">
+      <Label htmlFor={emailId} className="block text-sm font-medium mb-2">
         Email Address
-      </label>
+      </Label>
       <Input 
-        id="email" 
+        id={emailId}
         name="user_email" 
         type="email" 
         required 

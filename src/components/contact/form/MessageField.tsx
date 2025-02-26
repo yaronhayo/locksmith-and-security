@@ -1,18 +1,20 @@
 
 import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
 
 interface MessageFieldProps {
   isSubmitting: boolean;
 }
 
 const MessageField = ({ isSubmitting }: MessageFieldProps) => {
+  const messageId = "contact-message";
   return (
     <div>
-      <label htmlFor="message" className="block text-sm font-medium mb-2">
+      <Label htmlFor={messageId} className="block text-sm font-medium mb-2">
         How Can We Help You?
-      </label>
+      </Label>
       <Textarea 
-        id="message" 
+        id={messageId}
         name="message" 
         rows={4} 
         required 

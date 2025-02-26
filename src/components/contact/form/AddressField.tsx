@@ -1,6 +1,7 @@
 
 import AddressAutocomplete from "@/components/ui/address-autocomplete";
 import GoogleMapsProvider from "@/components/providers/GoogleMapsProvider";
+import { Label } from "@/components/ui/label";
 
 interface AddressFieldProps {
   value: string;
@@ -9,13 +10,15 @@ interface AddressFieldProps {
 }
 
 const AddressField = ({ value, onChange, isSubmitting }: AddressFieldProps) => {
+  const addressId = "contact-address";
   return (
     <div>
-      <label htmlFor="address" className="block text-sm font-medium mb-2">
+      <Label htmlFor={addressId} className="block text-sm font-medium mb-2">
         Service Address
-      </label>
+      </Label>
       <GoogleMapsProvider>
         <AddressAutocomplete
+          id={addressId}
           value={value}
           onChange={onChange}
           placeholder="123 Main St, North Bergen, NJ"

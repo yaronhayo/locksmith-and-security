@@ -1,19 +1,23 @@
 
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 interface PersonalInfoFieldsProps {
   isSubmitting: boolean;
 }
 
 const PersonalInfoFields = ({ isSubmitting }: PersonalInfoFieldsProps) => {
+  const nameId = "contact-name";
+  const phoneId = "contact-phone";
+  
   return (
     <div className="grid md:grid-cols-2 gap-4">
       <div>
-        <label htmlFor="name" className="block text-sm font-medium mb-2">
+        <Label htmlFor={nameId} className="block text-sm font-medium mb-2">
           Full Name
-        </label>
+        </Label>
         <Input 
-          id="name" 
+          id={nameId}
           name="user_name" 
           required 
           placeholder="John Doe"
@@ -21,11 +25,11 @@ const PersonalInfoFields = ({ isSubmitting }: PersonalInfoFieldsProps) => {
         />
       </div>
       <div>
-        <label htmlFor="phone" className="block text-sm font-medium mb-2">
+        <Label htmlFor={phoneId} className="block text-sm font-medium mb-2">
           Phone Number
-        </label>
+        </Label>
         <Input 
-          id="phone" 
+          id={phoneId}
           name="user_phone" 
           type="tel" 
           required 
