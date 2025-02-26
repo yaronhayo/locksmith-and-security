@@ -107,10 +107,12 @@ const ServicesSection = () => {
                         <Link 
                           key={subIndex}
                           to={subService.link}
-                          className="flex items-center text-sm text-gray-600 hover:text-primary transition-colors py-1.5 group/item"
+                          className="flex items-center text-sm text-gray-600 hover:text-primary transition-colors py-1.5 relative group"
                         >
-                          <ArrowRight className="w-4 h-4 mr-2 opacity-0 -translate-x-2 group-hover/item:opacity-100 group-hover/item:translate-x-0 transition-all duration-200" />
-                          {subService.name}
+                          <ArrowRight className="w-4 h-4 mr-2 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-200" />
+                          <span className="relative after:absolute after:bottom-0 after:left-0 after:h-px after:w-0 after:bg-primary after:transition-all hover:after:w-full">
+                            {subService.name}
+                          </span>
                         </Link>
                       ))}
                     </div>
