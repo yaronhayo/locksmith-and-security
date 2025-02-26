@@ -12,10 +12,10 @@ const HomeContent = () => {
   return (
     <>
       <ServicesSection />
+      <EmergencyServicesSection />
       <GoogleMapsProvider>
         <ServiceAreasSection />
       </GoogleMapsProvider>
-      <EmergencyServicesSection />
       <WhyChooseUs />
       <ProcessSection />
       <ReviewsSection />
