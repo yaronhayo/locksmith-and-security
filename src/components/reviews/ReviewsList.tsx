@@ -23,23 +23,20 @@ const ReviewsList = ({ reviews, isLoading }: ReviewsListProps) => {
       setCurrent(api.selectedScrollSnap());
     });
 
-    // Optimized auto-rotation with requestAnimationFrame
-    let rafId: number;
-    let lastRotation = performance.now();
-    const rotationInterval = 1800; // 1.8 seconds
-
-    const rotate = (timestamp: number) => {
-      if (!isPaused && timestamp - lastRotation >= rotationInterval) {
-        api.scrollPrev(); // Changed to scrollPrev for leftward rotation
-        lastRotation = timestamp;
-      }
-      rafId = requestAnimationFrame(rotate);
+    let interval: NodeJS.Timeout;
+    
+    const startRotation = () => {
+      interval = setInterval(() => {
+        if (!isPaused) {
+          api.scrollPrev();
+        }
+      }, 1800); // 1.8 seconds
     };
 
-    rafId = requestAnimationFrame(rotate);
+    startRotation();
 
     return () => {
-      cancelAnimationFrame(rafId);
+      clearInterval(interval);
       api.off("select", () => {});
     };
   }, [api, isPaused]);
@@ -54,7 +51,7 @@ const ReviewsList = ({ reviews, isLoading }: ReviewsListProps) => {
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
     >
-      <ReviewsCarousel reviews={reviews} />
+      <ReviewsCarousel reviews={reviews} setApi={setApi} />
       <CarouselDots 
         total={reviews.length} 
         current={current} 

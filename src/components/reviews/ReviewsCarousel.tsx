@@ -11,9 +11,10 @@ import ReviewCard from "./ReviewCard";
 
 interface ReviewsCarouselProps {
   reviews: Review[];
+  setApi?: (api: any) => void;
 }
 
-const ReviewsCarousel = ({ reviews }: ReviewsCarouselProps) => {
+const ReviewsCarousel = ({ reviews, setApi }: ReviewsCarouselProps) => {
   if (!reviews.length) return null;
   
   return (
@@ -23,6 +24,7 @@ const ReviewsCarousel = ({ reviews }: ReviewsCarouselProps) => {
         align: "start",
         loop: true,
       }}
+      setApi={setApi}
     >
       <CarouselContent>
         {reviews.map((review, index) => (
