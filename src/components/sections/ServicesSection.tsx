@@ -1,5 +1,5 @@
 
-import { Lock, Car, Building2, ArrowRight, Key, Tools, Shield, Wrench } from 'lucide-react';
+import { Lock, Car, Building2, ArrowRight, Key, Wrench, Shield } from 'lucide-react';
 import { motion } from "framer-motion";
 import { Link } from 'react-router-dom';
 import { Card, CardContent } from "@/components/ui/card";
@@ -29,7 +29,7 @@ const services = [
     subIcons: {
       "Lock Replacement": Lock,
       "Lock Rekey": Key,
-      "Lock Repair": Tools,
+      "Lock Repair": Wrench,
       "Gate Locks": Shield
     },
     title: "Residential Locksmith", 
@@ -49,7 +49,7 @@ const services = [
       "Lock Replacement": Lock,
       "Master Key Systems": Key,
       "Access Control": Shield,
-      "Emergency Exit Devices": Tools
+      "Emergency Exit Devices": Wrench
     },
     title: "Commercial Locksmith", 
     description: "Professional commercial locksmith solutions for businesses, including access control and master key systems.", 
@@ -67,7 +67,7 @@ const services = [
     subIcons: {
       "Car Key Replacement": Key,
       "Key Fob Programming": Shield,
-      "Car Key Duplicate": Tools,
+      "Car Key Duplicate": Wrench,
       "Ignition Repair": Wrench
     },
     title: "Auto Locksmith", 
