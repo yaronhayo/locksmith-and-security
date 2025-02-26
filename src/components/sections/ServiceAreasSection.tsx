@@ -2,8 +2,6 @@
 import { useState } from 'react';
 import GoogleMap from '../map/GoogleMap';
 import AreasList from './service-areas/AreasList';
-import ServiceAreaFeatures from '../service-areas/shared/ServiceAreaFeatures';
-import EmergencyCallout from './service-areas/EmergencyCallout';
 import { useLocations } from '@/hooks/useLocations';
 import LoadingSpinner from '../LoadingSpinner';
 

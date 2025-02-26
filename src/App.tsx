@@ -1,27 +1,30 @@
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ThemeProvider } from "@/components/theme-provider"
+import { BrowserRouter } from 'react-router-dom';
+import { Toaster } from "@/components/ui/toaster"
+import Routes from './Routes';
+import ScrollToTop from './utils/ScrollToTop';
+import { MobileMenuProvider } from './components/MobileMenuProvider';
+import GoogleMapsProvider from './components/providers/GoogleMapsProvider';
 
-import { BrowserRouter as Router } from "react-router-dom";
-import Routes from "./Routes";
-import { RouteErrorBoundary } from "./components/layouts/RouteErrorBoundary";
-import { Toaster } from "./components/ui/sonner";
-import CookieConsent from "./components/CookieConsent";
-import ScrollToTop from "./components/ScrollToTop";
-import Footer from "@/components/Footer";
-import Header from "@/components/Header";
+const queryClient = new QueryClient();
 
-function App() {
+const App = () => {
   return (
-    <Router>
-      <RouteErrorBoundary>
-        <ScrollToTop />
-        <Header />
-        <Routes />
-        <Footer />
-        <Toaster />
-        <CookieConsent />
-      </RouteErrorBoundary>
-    </Router>
+    <QueryClientProvider client={queryClient}>
+      <ThemeProvider attribute="class" defaultTheme="light">
+        <GoogleMapsProvider>
+          <BrowserRouter>
+            <MobileMenuProvider>
+              <ScrollToTop />
+              <Routes />
+              <Toaster />
+            </MobileMenuProvider>
+          </BrowserRouter>
+        </GoogleMapsProvider>
+      </ThemeProvider>
+    </QueryClientProvider>
   );
-}
+};
 
 export default App;
-
