@@ -6,6 +6,8 @@ import ServiceAreaFeatures from '../service-areas/shared/ServiceAreaFeatures';
 import EmergencyCallout from './service-areas/EmergencyCallout';
 import { useLocations } from '@/hooks/useLocations';
 import LoadingSpinner from '../LoadingSpinner';
+import GoogleMapsProvider from '../providers/GoogleMapsProvider';
+import MapError from '../map/MapError';
 
 const ServiceAreasSection = () => {
   const [hoveredArea, setHoveredArea] = useState<string | null>(null);
@@ -20,10 +22,9 @@ const ServiceAreasSection = () => {
   }
 
   if (error || !locations) {
-    console.error('Error loading locations:', error);
     return (
       <div className="flex justify-center items-center min-h-[400px]">
-        <div className="text-red-500">Error loading service areas. Please try again later.</div>
+        <MapError error={error?.message || 'Error loading service areas'} />
       </div>
     );
   }
@@ -51,14 +52,16 @@ const ServiceAreasSection = () => {
             setHoveredArea={setHoveredArea} 
           />
           
-          <div style={{ height: '600px' }} className="bg-white rounded-xl shadow-lg overflow-hidden">
-            <GoogleMap 
-              markers={mapMarkers}
-              highlightedMarker={hoveredArea}
-              showAllMarkers={true}
-              zoom={11}
-              center={{ lat: 40.7795, lng: -74.0324 }}
-            />
+          <div className="bg-white rounded-xl shadow-lg overflow-hidden" style={{ height: '600px' }}>
+            <GoogleMapsProvider>
+              <GoogleMap 
+                markers={mapMarkers}
+                highlightedMarker={hoveredArea}
+                showAllMarkers={true}
+                zoom={11}
+                center={{ lat: 40.7795, lng: -74.0324 }}
+              />
+            </GoogleMapsProvider>
           </div>
         </div>
       </div>
@@ -67,3 +70,4 @@ const ServiceAreasSection = () => {
 };
 
 export default ServiceAreasSection;
+

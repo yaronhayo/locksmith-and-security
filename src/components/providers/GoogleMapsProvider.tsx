@@ -17,6 +17,7 @@ const GoogleMapsProvider = ({ children }: GoogleMapsProviderProps) => {
 
   const handleLoad = useCallback(() => {
     console.log("Google Maps script loaded successfully");
+    setScriptError(null);
   }, []);
 
   const handleError = useCallback((error: Error) => {
@@ -49,3 +50,4 @@ const GoogleMapsProvider = ({ children }: GoogleMapsProviderProps) => {
 };
 
 export default GoogleMapsProvider;
+

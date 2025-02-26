@@ -1,17 +1,22 @@
+
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import GoogleMapsProvider from "@/components/providers/GoogleMapsProvider";
 import GoogleMap from "@/components/map/GoogleMap";
 import { useLocations } from "@/hooks/useLocations";
+import MapError from "@/components/map/MapError";
 
 interface ServiceAreaMapProps {
   locationName: string;
 }
 
 const ServiceAreaMap = ({ locationName }: ServiceAreaMapProps) => {
-  const { data: locations } = useLocations();
+  const { data: locations, error, isLoading } = useLocations();
   
-  if (!locations) {
-    console.error(`No locations data available`);
+  if (error) {
+    return <MapError error={error.message} />;
+  }
+
+  if (isLoading || !locations) {
     return null;
   }
 
@@ -21,7 +26,7 @@ const ServiceAreaMap = ({ locationName }: ServiceAreaMapProps) => {
 
   if (!location) {
     console.error(`Location not found: ${locationName}`);
-    return null;
+    return <MapError error={`Location not found: ${locationName}`} />;
   }
 
   const markers = [{
@@ -32,7 +37,7 @@ const ServiceAreaMap = ({ locationName }: ServiceAreaMapProps) => {
   }];
 
   return (
-    <div className="relative w-full h-[300px] rounded-xl overflow-hidden">
+    <div className="relative w-full rounded-xl overflow-hidden shadow-lg">
       <AspectRatio ratio={16/9}>
         <GoogleMapsProvider>
           <GoogleMap
@@ -48,3 +53,4 @@ const ServiceAreaMap = ({ locationName }: ServiceAreaMapProps) => {
 };
 
 export default ServiceAreaMap;
+
