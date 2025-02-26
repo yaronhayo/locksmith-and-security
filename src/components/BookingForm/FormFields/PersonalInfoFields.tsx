@@ -23,6 +23,7 @@ const PersonalInfoFields = ({ errors, isSubmitting }: PersonalInfoFieldsProps) =
           disabled={isSubmitting}
           autoComplete="name"
           required
+          placeholder="Enter your name"
         />
         {errors.name && (
           <Alert variant="destructive" className="py-2 px-3">
