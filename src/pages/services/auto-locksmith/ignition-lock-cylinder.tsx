@@ -10,7 +10,7 @@ const IgnitionLockCylinder = () => {
     <main className="flex-grow">
       <ServicesHero 
         title="Ignition Lock Cylinder Replacement"
-        description="Professional ignition lock cylinder replacement. Expert service for all vehicle makes and models."
+        description="Professional ignition lock cylinder service by certified technicians. Expert solutions for all vehicle makes and models."
       />
       <ServicesFeatures />
       <ServicesProof />

@@ -11,7 +11,7 @@ const CommercialLocksmith = () => {
     <main className="flex-grow">
       <ServicesHero 
         title="Commercial Locksmith Services"
-        description="Professional commercial locksmith solutions for businesses. Advanced security systems and expert installation services."
+        description="Professional commercial locksmith solutions by certified technicians. Expert security systems and installation services."
       />
       <ServicesGrid />
       <ServicesFeatures />

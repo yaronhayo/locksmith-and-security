@@ -4,7 +4,6 @@ import ServicesHero from "@/components/sections/services/ServicesHero";
 import ServicesFeatures from "@/components/sections/services/ServicesFeatures";
 import ServicesGrid from "@/components/sections/services/ServicesGrid";
 import ServicesCTA from "@/components/sections/services/ServicesCTA";
-import { motion } from "framer-motion";
 
 const ServicesPage = () => {
   return (
@@ -14,7 +13,7 @@ const ServicesPage = () => {
     >
       <ServicesHero 
         title="Professional Locksmith Services"
-        description="Expert residential, commercial, and automotive locksmith solutions available 24/7"
+        description="Expert residential, commercial, and automotive locksmith solutions by certified technicians"
       />
       <ServicesFeatures />
       <ServicesGrid />

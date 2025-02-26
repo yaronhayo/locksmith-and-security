@@ -11,7 +11,7 @@ const ResidentialLocksmith = () => {
     <main className="flex-grow">
       <ServicesHero 
         title="Residential Locksmith Services"
-        description="Professional residential locksmith solutions for homes and apartments. Expert installation, repair, and maintenance services."
+        description="Professional residential locksmith solutions by certified technicians. Expert installation, repair, and maintenance services."
       />
       <ServicesGrid />
       <ServicesFeatures />

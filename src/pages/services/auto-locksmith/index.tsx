@@ -11,7 +11,7 @@ const AutoLocksmith = () => {
     <main className="flex-grow">
       <ServicesHero 
         title="Auto Locksmith Services"
-        description="Professional automotive locksmith services. Car key replacement, programming, and emergency lockout assistance."
+        description="Professional automotive locksmith solutions by certified technicians. Expert service for all vehicle makes and models."
       />
       <ServicesGrid />
       <ServicesFeatures />
