@@ -10,7 +10,7 @@ const HouseLockout = () => {
     <main className="flex-grow">
       <ServicesHero 
         title="24/7 House Lockout Service"
-        description="Professional house lockout assistance available 24/7. Fast response times and damage-free home entry."
+        description="Emergency house lockout assistance. Fast and professional residential lockout solutions."
       />
       <ServicesFeatures />
       <ServicesProof />
