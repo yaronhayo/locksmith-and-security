@@ -30,27 +30,10 @@ const GoogleMapsProvider = ({ children }: GoogleMapsProviderProps) => {
     }
   }, [apiKeyError]);
 
-  // Show loading state while fetching API key
-  if (isLoading) {
-    return <MapLoader />;
-  }
-
-  // Show error if API key is missing or invalid
-  if (apiKeyError || !apiKey) {
-    return (
-      <MapError 
-        error={
-          apiKeyError?.message || 
-          "Google Maps API key not found. Please ensure the GOOGLE_MAPS_API_KEY is set in your Supabase settings."
-        } 
-      />
-    );
-  }
-
-  // Show error if script failed to load
-  if (scriptError) {
-    return <MapError error={scriptError} />;
-  }
+  if (isLoading) return <MapLoader />;
+  if (apiKeyError) return <MapError error={apiKeyError.message} />;
+  if (!apiKey) return <MapError error="Google Maps API key not found" />;
+  if (scriptError) return <MapError error={scriptError} />;
 
   return (
     <LoadScript 
