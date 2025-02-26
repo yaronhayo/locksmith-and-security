@@ -1,5 +1,5 @@
-
 import { AspectRatio } from "@/components/ui/aspect-ratio";
+import GoogleMapsProvider from "@/components/providers/GoogleMapsProvider";
 import GoogleMap from "@/components/map/GoogleMap";
 import { useLocations } from "@/hooks/useLocations";
 
@@ -34,12 +34,14 @@ const ServiceAreaMap = ({ locationName }: ServiceAreaMapProps) => {
   return (
     <div className="relative w-full h-[300px] rounded-xl overflow-hidden">
       <AspectRatio ratio={16/9}>
-        <GoogleMap
-          markers={markers}
-          showAllMarkers={true}
-          zoom={14}
-          center={{ lat: location.lat, lng: location.lng }}
-        />
+        <GoogleMapsProvider>
+          <GoogleMap
+            markers={markers}
+            showAllMarkers={true}
+            zoom={14}
+            center={{ lat: location.lat, lng: location.lng }}
+          />
+        </GoogleMapsProvider>
       </AspectRatio>
     </div>
   );
