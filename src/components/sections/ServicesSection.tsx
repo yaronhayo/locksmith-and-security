@@ -86,7 +86,7 @@ const services = [
 const ServicesSection = () => {
   return (
     <section className="py-24 bg-gradient-to-b from-white to-gray-50">
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto px-4 flex flex-col items-center">
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -101,17 +101,18 @@ const ServicesSection = () => {
           </p>
         </motion.div>
 
-        <div className="grid lg:grid-cols-4 md:grid-cols-2 gap-6 md:gap-8">
+        <div className="grid lg:grid-cols-4 md:grid-cols-2 gap-6 md:gap-8 justify-items-center w-full">
           {services.map((service, index) => (
             <motion.div
               key={index}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
+              className="w-full"
             >
               <Card className="relative h-full overflow-hidden border-0 bg-white shadow-md hover:shadow-xl transition-all duration-300">
                 <CardContent className="p-0">
-                  <div className="p-6 pb-4">
+                  <div className="p-6 pb-4 flex flex-col items-center text-center">
                     <div className="absolute top-4 right-4">
                       <span className="inline-flex items-center rounded-full bg-primary/10 px-3 py-1 text-sm font-medium text-primary">
                         {service.highlight}
@@ -125,15 +126,15 @@ const ServicesSection = () => {
                     <p className="text-muted-foreground mb-6">{service.description}</p>
                   </div>
 
-                  <div className="bg-gray-50 p-6 pt-4">
-                    <div className="space-y-2 mb-6">
+                  <div className="bg-gray-50 p-6 pt-4 flex flex-col items-center">
+                    <div className="space-y-2 mb-6 w-full">
                       {service.subServices.map((subService, subIndex) => {
                         const SubIcon = service.subIcons[subService.name as keyof typeof service.subIcons];
                         return (
-                          <div key={subIndex} className="flex items-center">
+                          <div key={subIndex} className="flex items-center justify-center">
                             <Link 
                               to={subService.link}
-                              className="flex items-center text-sm text-gray-600 py-1.5 hover:text-primary relative w-full"
+                              className="flex items-center text-sm text-gray-600 py-1.5 hover:text-primary relative"
                             >
                               {SubIcon && (
                                 <SubIcon className="w-4 h-4 mr-2 text-primary/70" />
