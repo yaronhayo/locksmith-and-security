@@ -10,7 +10,7 @@ export const useMapConfig = () => {
       const { data, error } = await supabase
         .from('settings')
         .select('value')
-        .eq('key', 'GOOGLE_MAPS_API_KEY')
+        .eq('value', 'GOOGLE_MAPS_API_KEY')
         .single();
 
       if (error) {
