@@ -38,6 +38,7 @@ const GoogleMap = ({
   onClick
 }: GoogleMapProps) => {
   const mapRef = useRef<google.maps.Map | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   const visibleMarkers = useMemo(() => 
     showAllMarkers ? markers : markers.filter(m => m.slug === highlightedMarker),
@@ -47,6 +48,7 @@ const GoogleMap = ({
   const onLoadCallback = useCallback((map: google.maps.Map) => {
     console.log('Map loaded successfully');
     mapRef.current = map;
+    setIsLoading(false);
     
     if (visibleMarkers.length > 0) {
       const bounds = new google.maps.LatLngBounds();
@@ -62,6 +64,10 @@ const GoogleMap = ({
     mapRef.current = null;
   }, []);
 
+  if (isLoading) {
+    return <MapLoader />;
+  }
+
   return (
     <GoogleMapComponent
       mapContainerStyle={containerStyle}
@@ -71,7 +77,6 @@ const GoogleMap = ({
       onClick={onClick}
       onLoad={onLoadCallback}
       onUnmount={onUnmountCallback}
-      loadingElement={<MapLoader />}
     >
       {visibleMarkers.length > 0 && (
         <MapMarkers
