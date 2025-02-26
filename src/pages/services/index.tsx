@@ -6,7 +6,7 @@ import ServicesFeatures from "@/components/sections/services/ServicesFeatures";
 import ServicesGrid from "@/components/sections/services/ServicesGrid";
 import ServicesCTA from "@/components/sections/services/ServicesCTA";
 import ReviewsSection from "@/components/sections/ReviewsSection";
-import { FAQSection } from "@/components/sections/FAQSection";
+import FAQSection from "@/components/sections/FAQSection";
 import { motion } from "framer-motion";
 import { Card } from "@/components/ui/card";
 import { generalFaqs } from "@/data/faqData";
