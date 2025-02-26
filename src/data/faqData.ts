@@ -28,10 +28,6 @@ export const generalFaqs: FAQ[] = [
     answer: "Yes, we provide free estimates for all our services. Contact us to get a quote."
   },
   {
-    question: "How quickly can you arrive in an emergency?",
-    answer: "In most cases, we can arrive within 20-30 minutes of your call in our service area."
-  },
-  {
     question: "Are you licensed and insured?",
     answer: "Yes, we are fully licensed, bonded, and insured for your peace of mind."
   },
@@ -54,6 +50,10 @@ export const generalFaqs: FAQ[] = [
   {
     question: "Do you provide written estimates?",
     answer: "Yes, we provide detailed written estimates before beginning any work."
+  },
+  {
+    question: "Do you handle emergency situations?",
+    answer: "Yes, we provide emergency locksmith services 24/7 throughout our service area."
   }
 ];
 
@@ -117,7 +117,7 @@ export const emergencyFaqs: FAQ[] = [
   }
 ];
 
-// Show first 12 general FAQs initially (increased from 5)
+// Show first 12 general FAQs initially
 export const initialFaqs = generalFaqs.slice(0, 12);
 
 // Combine all remaining FAQs for infinite loading
