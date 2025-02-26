@@ -1,10 +1,16 @@
 
+import React from 'react';
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Phone, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 
-const ServicesHero = () => {
+interface ServicesHeroProps {
+  title: string;
+  description: string;
+}
+
+const ServicesHero: React.FC<ServicesHeroProps> = ({ title, description }) => {
   return (
     <section className="py-20 bg-primary text-white">
       <div className="container mx-auto px-4">
@@ -15,10 +21,10 @@ const ServicesHero = () => {
           className="text-center max-w-3xl mx-auto"
         >
           <h1 className="text-3xl md:text-4xl font-bold mb-6">
-            Professional Locksmith Services
+            {title}
           </h1>
           <p className="text-xl mb-8 text-white/90">
-            Expert residential, commercial, and automotive locksmith solutions available 24/7
+            {description}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button 
