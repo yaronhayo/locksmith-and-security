@@ -2,7 +2,7 @@
 import { motion } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Lock, Car, Building2, Key, Wrench, Shield } from "lucide-react";
+import { ArrowRight, Lock, Car, Building2, Key, Wrench, Shield, Home } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const services = [
@@ -27,7 +27,7 @@ const services = [
     ]
   },
   { 
-    icon: House,
+    icon: Home, // Changed from House to Home
     subIcons: {
       "Lock Replacement": Lock,
       "Lock Rekey": Key,
