@@ -23,7 +23,7 @@ const ServiceCard = ({ icon: Icon, title, description, link, cta, index }: Servi
       transition={{ duration: 0.5, delay: index * 0.1 }}
     >
       <Card className="h-full hover:shadow-lg transition-all duration-300 group">
-        <CardContent className="p-6">
+        <CardContent className="p-6 flex flex-col items-center text-center">
           <Icon className="w-12 h-12 text-primary mb-4" />
           <h3 className="text-xl font-semibold mb-2 group-hover:text-primary transition-colors">
             {title}
