@@ -1,6 +1,4 @@
 
-import type { SiteSettings } from "@/hooks/useSettings";
-
 interface ServiceSchemaProps {
   title: string;
   description: string;
@@ -36,4 +34,3 @@ export const createServiceSchema = ({ title, description, baseUrl, settings, can
     }
   }
 });
-
