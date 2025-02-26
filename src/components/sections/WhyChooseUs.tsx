@@ -1,3 +1,4 @@
+
 import { motion } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
 import { CheckCircle2 } from "lucide-react";
@@ -5,7 +6,7 @@ import { CheckCircle2 } from "lucide-react";
 const benefits = [
   {
     title: "Fast and Efficient Service",
-    description: "15-30 minute response time in North Bergen area. We understand that being locked out is stressful and arrive quickly to help."
+    description: "Rapid emergency response in the North Bergen area. We understand that being locked out is stressful and prioritize your call."
   },
   {
     title: "Affordable and Transparent Pricing",
