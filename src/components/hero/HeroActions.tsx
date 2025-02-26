@@ -27,13 +27,13 @@ const HeroActions = () => {
       <Button 
         size="lg" 
         variant="outline" 
-        className="text-base sm:text-lg bg-white/10 hover:bg-white/20 text-white border-white group transform hover:scale-105 transition-all duration-300 hover:shadow-lg backdrop-blur-sm hover:text-white" 
+        className="text-base sm:text-lg bg-white/10 hover:bg-white/20 text-white border-white group transform hover:scale-105 transition-all duration-300 hover:shadow-lg backdrop-blur-sm" 
         asChild
         aria-label="View our services"
       >
         <a href="/services" className="inline-flex items-center">
           Our Services
-          <ArrowRight className="ml-2 h-5 w-5 transform transition-transform duration-300 group-hover:translate-x-2 group-hover:text-white" aria-hidden="true" />
+          <ArrowRight className="ml-2 h-5 w-5 transform transition-transform duration-300 group-hover:translate-x-2" aria-hidden="true" />
         </a>
       </Button>
     </motion.div>
