@@ -44,14 +44,14 @@ const NavigationLink = memo(({
           <NavigationMenuItem>
             <NavigationMenuTrigger
               className={cn(
-                "text-base font-medium transition-colors duration-300 relative group no-underline",
+                "text-base font-medium transition-colors duration-300 relative group px-0 bg-transparent hover:bg-transparent",
                 isActive ? "text-secondary" : "text-gray-700 hover:text-secondary"
               )}
             >
-              <span className="relative inline-block">
+              <span className="relative">
                 {label}
                 <motion.div
-                  className="absolute -bottom-1 left-0 h-0.5 bg-secondary"
+                  className="absolute -bottom-2 left-0 h-0.5 bg-secondary z-50"
                   initial={{ width: isActive ? "100%" : "0%" }}
                   animate={{ width: isActive ? "100%" : "0%" }}
                   whileHover={{ width: "100%" }}
@@ -98,11 +98,11 @@ const NavigationLink = memo(({
       onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
     >
       {isMenuOpen && icon}
-      <span className="relative inline-block">
+      <span className="relative">
         {label}
         {!isMenuOpen && (
           <motion.div
-            className="absolute -bottom-1 left-0 h-0.5 bg-secondary"
+            className="absolute -bottom-2 h-0.5 bg-secondary z-50"
             initial={{ width: isActive ? "100%" : "0%" }}
             animate={{ width: isActive ? "100%" : "0%" }}
             whileHover={{ width: "100%" }}
