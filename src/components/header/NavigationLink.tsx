@@ -45,6 +45,7 @@ const NavigationLink = memo(({
             <Link 
               to={path}
               onClick={(e) => {
+                // Don't prevent default - allow navigation to overview page
                 window.scrollTo({ top: 0, behavior: 'smooth' });
               }}
             >
@@ -56,19 +57,14 @@ const NavigationLink = memo(({
               >
                 <span className="relative inline-flex">
                   {label}
-                  <div className={cn(
-                    "absolute -bottom-2 left-0 right-0 h-0.5",
-                    isActive && "bg-secondary"
-                  )} />
-                  {!isActive && (
-                    <motion.div
-                      className="absolute -bottom-2 left-0 right-0 h-0.5 bg-secondary"
-                      initial={{ scaleX: 0 }}
-                      whileHover={{ scaleX: 1 }}
-                      transition={{ duration: 0.2, ease: "easeInOut" }}
-                      style={{ transformOrigin: "left" }}
-                    />
-                  )}
+                  <motion.div
+                    className="absolute -bottom-2 left-0 right-0 h-0.5 bg-secondary"
+                    initial={{ scaleX: isActive ? 1 : 0 }}
+                    animate={{ scaleX: isActive ? 1 : 0 }}
+                    whileHover={{ scaleX: 1 }}
+                    transition={{ duration: 0.2, ease: "easeInOut" }}
+                    style={{ transformOrigin: "left" }}
+                  />
                 </span>
               </NavigationMenuTrigger>
             </Link>
@@ -114,21 +110,14 @@ const NavigationLink = memo(({
       <span className="relative inline-flex">
         {label}
         {!isMenuOpen && (
-          <>
-            <div className={cn(
-              "absolute -bottom-2 left-0 right-0 h-0.5",
-              isActive && "bg-secondary"
-            )} />
-            {!isActive && (
-              <motion.div
-                className="absolute -bottom-2 left-0 right-0 h-0.5 bg-secondary"
-                initial={{ scaleX: 0 }}
-                whileHover={{ scaleX: 1 }}
-                transition={{ duration: 0.2, ease: "easeInOut" }}
-                style={{ transformOrigin: "left" }}
-              />
-            )}
-          </>
+          <motion.div
+            className="absolute -bottom-2 left-0 right-0 h-0.5 bg-secondary"
+            initial={{ scaleX: isActive ? 1 : 0 }}
+            animate={{ scaleX: isActive ? 1 : 0 }}
+            whileHover={{ scaleX: 1 }}
+            transition={{ duration: 0.2, ease: "easeInOut" }}
+            style={{ transformOrigin: "left" }}
+          />
         )}
       </span>
     </Link>
