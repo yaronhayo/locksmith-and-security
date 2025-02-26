@@ -9,6 +9,48 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      keywords: {
+        Row: {
+          category: string
+          competition: string | null
+          created_at: string | null
+          id: number
+          is_long_tail: boolean | null
+          keyword: string
+          location: string | null
+          relevance_score: number | null
+          search_volume: number | null
+          service_type: string[] | null
+          updated_at: string | null
+        }
+        Insert: {
+          category: string
+          competition?: string | null
+          created_at?: string | null
+          id?: number
+          is_long_tail?: boolean | null
+          keyword: string
+          location?: string | null
+          relevance_score?: number | null
+          search_volume?: number | null
+          service_type?: string[] | null
+          updated_at?: string | null
+        }
+        Update: {
+          category?: string
+          competition?: string | null
+          created_at?: string | null
+          id?: number
+          is_long_tail?: boolean | null
+          keyword?: string
+          location?: string | null
+          relevance_score?: number | null
+          search_volume?: number | null
+          service_type?: string[] | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       locations: {
         Row: {
           created_at: string | null
