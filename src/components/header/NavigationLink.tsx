@@ -44,11 +44,20 @@ const NavigationLink = memo(({
           <NavigationMenuItem>
             <NavigationMenuTrigger
               className={cn(
-                "text-base font-medium transition-colors duration-300",
+                "text-base font-medium transition-colors duration-300 relative group no-underline",
                 isActive ? "text-secondary" : "text-gray-700 hover:text-secondary"
               )}
             >
-              {label}
+              <span className="relative inline-block">
+                {label}
+                <motion.div
+                  className="absolute -bottom-1 left-0 h-0.5 bg-secondary"
+                  initial={{ width: isActive ? "100%" : "0%" }}
+                  animate={{ width: isActive ? "100%" : "0%" }}
+                  whileHover={{ width: "100%" }}
+                  transition={{ duration: 0.2, ease: "easeInOut" }}
+                />
+              </span>
             </NavigationMenuTrigger>
             <NavigationMenuContent>
               <div className="grid w-[400px] gap-3 p-4 bg-white">
@@ -89,16 +98,18 @@ const NavigationLink = memo(({
       onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
     >
       {isMenuOpen && icon}
-      {label}
-      {!isMenuOpen && (
-        <motion.div
-          className="absolute -bottom-1 left-0 h-0.5 bg-secondary"
-          initial={{ width: isActive ? "100%" : "0%" }}
-          animate={{ width: isActive ? "100%" : "0%" }}
-          whileHover={{ width: "100%" }}
-          transition={{ duration: 0.2, ease: "easeInOut" }}
-        />
-      )}
+      <span className="relative inline-block">
+        {label}
+        {!isMenuOpen && (
+          <motion.div
+            className="absolute -bottom-1 left-0 h-0.5 bg-secondary"
+            initial={{ width: isActive ? "100%" : "0%" }}
+            animate={{ width: isActive ? "100%" : "0%" }}
+            whileHover={{ width: "100%" }}
+            transition={{ duration: 0.2, ease: "easeInOut" }}
+          />
+        )}
+      </span>
     </Link>
   );
 });
