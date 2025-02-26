@@ -45,6 +45,7 @@ const HeroSection = () => {
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.2 }}
+              whileHover={{ scale: 1.05 }}
               role="status"
               aria-label="Top-rated local locksmith"
             >
