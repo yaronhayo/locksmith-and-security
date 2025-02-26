@@ -20,7 +20,7 @@ export const useMapConfig = () => {
       
       if (!data?.value) {
         console.error('No API key found in settings');
-        throw new Error('Google Maps API key not found in settings table. Please add it to your Supabase settings.');
+        throw new Error('Google Maps API key not found in settings table. Please ensure GOOGLE_MAPS_API_KEY is set.');
       }
 
       console.log('API key fetched successfully');
