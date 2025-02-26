@@ -46,7 +46,6 @@ const GoogleMap = ({
 }: GoogleMapProps) => {
   const mapRef = useRef<google.maps.Map | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [mapError, setMapError] = useState<string | null>(null);
 
   const visibleMarkers = useMemo(() => 
     showAllMarkers ? markers : markers.filter(m => m.slug === highlightedMarker),
@@ -75,19 +74,6 @@ const GoogleMap = ({
     mapRef.current = null;
   }, []);
 
-  const onErrorCallback = useCallback((error: Error) => {
-    console.error('Map error:', error);
-    setMapError(error.message);
-  }, []);
-
-  if (mapError) {
-    return (
-      <div className="bg-red-50 p-4 rounded-lg">
-        <p className="text-red-600">Failed to load map: {mapError}</p>
-      </div>
-    );
-  }
-
   if (isLoading) {
     return <MapLoader />;
   }
@@ -101,7 +87,6 @@ const GoogleMap = ({
       onClick={onClick}
       onLoad={onLoadCallback}
       onUnmount={onUnmountCallback}
-      onError={onErrorCallback}
     >
       {visibleMarkers.length > 0 && (
         <MapMarkers
@@ -114,4 +99,3 @@ const GoogleMap = ({
 };
 
 export default GoogleMap;
-
