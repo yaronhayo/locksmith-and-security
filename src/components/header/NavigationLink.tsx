@@ -41,11 +41,11 @@ const NavigationLink = memo(({
     return (
       <NavigationMenu>
         <NavigationMenuList>
-          <NavigationMenuItem>
+          <NavigationMenuItem className="flex items-center">
             <Link
               to={path}
               className={cn(
-                "text-base font-medium transition-colors duration-300 px-4 py-2 inline-flex items-center gap-1",
+                "text-base font-medium transition-colors duration-300 px-4 py-2",
                 isActive ? "text-secondary" : "text-gray-700 hover:text-secondary"
               )}
             >
@@ -53,7 +53,7 @@ const NavigationLink = memo(({
             </Link>
             <NavigationMenuTrigger
               className={cn(
-                "text-base font-medium transition-colors duration-300 -ml-2",
+                "text-base font-medium transition-colors duration-300",
                 isActive ? "text-secondary" : "text-gray-700 hover:text-secondary"
               )}
             >
