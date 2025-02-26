@@ -27,7 +27,7 @@ const services = [
     ]
   },
   { 
-    icon: Home, // Changed from House to Home
+    icon: Home,
     subIcons: {
       "Lock Replacement": Lock,
       "Lock Rekey": Key,
