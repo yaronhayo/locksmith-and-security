@@ -31,9 +31,9 @@ const HeroActions = () => {
         asChild
         aria-label="View our services"
       >
-        <a href="/services" className="inline-flex items-center group-hover:text-secondary transition-colors duration-300">
+        <a href="/services" className="inline-flex items-center">
           <Settings className="mr-2 h-5 w-5 transition-colors duration-300 group-hover:text-secondary" aria-hidden="true" />
-          Our Services
+          <span className="transition-colors duration-300 group-hover:text-secondary">Our Services</span>
           <ArrowRight className="ml-2 h-5 w-5 transform transition-transform duration-300 group-hover:translate-x-2 group-hover:text-secondary" aria-hidden="true" />
         </a>
       </Button>
