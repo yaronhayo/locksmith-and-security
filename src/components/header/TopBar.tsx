@@ -47,14 +47,13 @@ const TopBar = () => {
             </DropdownMenu>
           </div>
           <div className="flex items-center gap-4">
-            <div className="hidden sm:flex items-center gap-1">
+            <div className="flex items-center gap-1">
               <Clock className="h-4 w-4 text-secondary" />
               <span>24/7 Emergency Service</span>
             </div>
             <div className="flex items-center gap-1">
               <Shield className="h-4 w-4 text-secondary" />
-              <span className="text-sm">#13VH12595700</span>
-              <span className="hidden sm:inline">NJ DCA License</span>
+              <span className="text-sm">NJ DCA License #13VH12595700</span>
             </div>
           </div>
         </div>
