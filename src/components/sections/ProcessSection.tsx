@@ -6,7 +6,7 @@ const process = [
   { 
     icon: Phone, 
     title: "Contact Us", 
-    description: "Reach out through our 24/7 hotline or online form. Our team is always ready to assist you with any locksmith emergency.",
+    description: "Our team is available 24/7 to assist you with any locksmith needs through our hotline or online form.",
     steps: [
       "Call (201) 748-2070",
       "Describe your situation",
@@ -15,18 +15,18 @@ const process = [
   },
   { 
     icon: Car, 
-    title: "Quick Response", 
-    description: "A licensed and insured technician will be dispatched to your location immediately, typically arriving within 15-30 minutes.",
+    title: "Professional Service", 
+    description: "A licensed and insured technician will be dispatched to your location to assist you with your locksmith needs.",
     steps: [
       "Professional technician dispatch",
-      "Real-time arrival updates",
+      "Skilled service delivery",
       "Fully equipped service vehicle"
     ]
   },
   { 
     icon: Check, 
     title: "Problem Solved", 
-    description: "Our expert will resolve your lock-related issue quickly and efficiently, ensuring your complete satisfaction.",
+    description: "Our expert will resolve your lock-related issue efficiently, ensuring your complete satisfaction.",
     steps: [
       "Professional service delivery",
       "Quality guarantee",
@@ -49,7 +49,7 @@ const ProcessSection = () => {
             How Our Service Works
           </h2>
           <p className="text-xl text-muted-foreground">
-            Fast, reliable, and professional locksmith service in three simple steps
+            Professional and reliable locksmith service in three simple steps
           </p>
         </motion.div>
 
