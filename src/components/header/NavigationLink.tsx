@@ -44,18 +44,19 @@ const NavigationLink = memo(({
           <NavigationMenuItem>
             <NavigationMenuTrigger
               className={cn(
-                "text-base font-medium transition-colors duration-300 relative group px-0 bg-transparent hover:bg-transparent",
+                "text-base font-medium transition-colors duration-300 relative px-0 bg-transparent hover:bg-transparent focus:bg-transparent",
                 isActive ? "text-secondary" : "text-gray-700 hover:text-secondary"
               )}
             >
-              <span className="relative">
+              <span className="relative inline-flex">
                 {label}
                 <motion.div
-                  className="absolute -bottom-2 left-0 h-0.5 bg-secondary z-50"
-                  initial={{ width: isActive ? "100%" : "0%" }}
-                  animate={{ width: isActive ? "100%" : "0%" }}
-                  whileHover={{ width: "100%" }}
+                  className="absolute -bottom-2 left-0 right-0 h-0.5 bg-secondary"
+                  initial={{ scaleX: isActive ? 1 : 0 }}
+                  animate={{ scaleX: isActive ? 1 : 0 }}
+                  whileHover={{ scaleX: 1 }}
                   transition={{ duration: 0.2, ease: "easeInOut" }}
+                  style={{ transformOrigin: "left" }}
                 />
               </span>
             </NavigationMenuTrigger>
@@ -91,22 +92,23 @@ const NavigationLink = memo(({
     <Link
       to={path}
       className={cn(
-        "text-base font-medium transition-colors duration-300 relative group no-underline",
+        "text-base font-medium transition-colors duration-300 relative no-underline",
         isActive ? "text-secondary" : "text-gray-700 hover:text-secondary",
         isMenuOpen && "text-white hover:text-secondary w-full flex items-center gap-2 py-2"
       )}
       onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
     >
       {isMenuOpen && icon}
-      <span className="relative">
+      <span className="relative inline-flex">
         {label}
         {!isMenuOpen && (
           <motion.div
-            className="absolute -bottom-2 h-0.5 bg-secondary z-50"
-            initial={{ width: isActive ? "100%" : "0%" }}
-            animate={{ width: isActive ? "100%" : "0%" }}
-            whileHover={{ width: "100%" }}
+            className="absolute -bottom-2 left-0 right-0 h-0.5 bg-secondary"
+            initial={{ scaleX: isActive ? 1 : 0 }}
+            animate={{ scaleX: isActive ? 1 : 0 }}
+            whileHover={{ scaleX: 1 }}
             transition={{ duration: 0.2, ease: "easeInOut" }}
+            style={{ transformOrigin: "left" }}
           />
         )}
       </span>
