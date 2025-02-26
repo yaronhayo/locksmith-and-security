@@ -15,6 +15,8 @@ import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import AddressAutocomplete from "@/components/ui/address-autocomplete";
 import GoogleMapsProvider from "@/components/providers/GoogleMapsProvider";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 const BookingForm = () => {
   const navigate = useNavigate();
@@ -93,9 +95,9 @@ const BookingForm = () => {
         <PersonalInfoFields errors={errors} isSubmitting={isSubmitting} />
         
         <div className="form-group">
-          <label htmlFor="address" className="block text-sm font-medium text-gray-700 mb-1">
+          <Label htmlFor="address" className="block text-sm font-medium text-gray-700 mb-1">
             Service Address
-          </label>
+          </Label>
           <GoogleMapsProvider>
             <AddressAutocomplete
               value={address}
@@ -109,6 +111,38 @@ const BookingForm = () => {
             <p className="text-xs text-red-500 mt-1">{errors.address}</p>
           )}
         </div>
+
+        {address && (
+          <>
+            <div className="form-group">
+              <Label htmlFor="unit_number" className="block text-sm font-medium text-gray-700 mb-1">
+                Unit Number (Optional)
+              </Label>
+              <Input
+                id="unit_number"
+                name="unit_number"
+                type="text"
+                className="h-9 text-sm"
+                disabled={isSubmitting}
+                placeholder="Apartment, suite, unit number"
+              />
+            </div>
+
+            <div className="form-group">
+              <Label htmlFor="gate_code" className="block text-sm font-medium text-gray-700 mb-1">
+                Gate Code (Optional)
+              </Label>
+              <Input
+                id="gate_code"
+                name="gate_code"
+                type="text"
+                className="h-9 text-sm"
+                disabled={isSubmitting}
+                placeholder="Enter gate code if applicable"
+              />
+            </div>
+          </>
+        )}
         
         <ServiceSelection 
           error={errors.service}

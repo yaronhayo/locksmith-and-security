@@ -20,6 +20,8 @@ export interface BaseSubmission {
   name: string;
   phone: string;
   address: string;
+  unit_number?: string;
+  gate_code?: string;
   status: 'pending';
   visitor_info: Record<string, string>;  // Changed to match Json type
   source_url: string;
@@ -46,4 +48,3 @@ export interface BookingSubmission extends BaseSubmission {
 }
 
 export type SubmissionData = ContactSubmission | BookingSubmission;
-
