@@ -30,9 +30,9 @@ const ServiceCard = ({ icon: Icon, title, description, link, cta, index }: Servi
           </h3>
           <p className="text-muted-foreground mb-4">{description}</p>
           <Button asChild variant="secondary" className="w-full group">
-            <Link to={link} className="flex items-center justify-center">
+            <Link to={link} className="flex items-center justify-center group-hover:text-black transition-colors">
               {cta}
-              <ArrowRight className="ml-2 w-4 h-4 transform transition-transform duration-300 group-hover:translate-x-1" />
+              <ArrowRight className="ml-2 w-4 h-4 transform transition-transform duration-300 group-hover:translate-x-1 group-hover:text-black" />
             </Link>
           </Button>
         </CardContent>
