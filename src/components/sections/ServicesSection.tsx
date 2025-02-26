@@ -85,7 +85,7 @@ const ServicesSection = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
             >
-              <Card className="relative h-full overflow-hidden group border-0 bg-white shadow-md hover:shadow-xl transition-all duration-300">
+              <Card className="relative h-full overflow-hidden border-0 bg-white shadow-md hover:shadow-xl transition-all duration-300">
                 <CardContent className="p-0">
                   <div className="p-6 pb-4">
                     <div className="absolute top-4 right-4">
@@ -95,7 +95,7 @@ const ServicesSection = () => {
                     </div>
                     
                     <service.icon className="w-12 h-12 text-primary mb-4" />
-                    <h3 className="text-2xl font-bold mb-3 text-gray-900 group-hover:text-primary transition-colors">
+                    <h3 className="text-2xl font-bold mb-3 text-gray-900">
                       {service.title}
                     </h3>
                     <p className="text-muted-foreground mb-6">{service.description}</p>
@@ -104,30 +104,33 @@ const ServicesSection = () => {
                   <div className="bg-gray-50 p-6 pt-4">
                     <div className="space-y-2 mb-6">
                       {service.subServices.map((subService, subIndex) => (
-                        <Link 
-                          key={subIndex}
-                          to={subService.link}
-                          className="flex items-center text-sm text-gray-600 py-1.5 hover:text-primary group relative"
-                        >
-                          <ArrowRight className="w-4 h-4 mr-2 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-200" />
-                          <span className="relative inline-block">
-                            {subService.name}
-                            <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-primary transition-all duration-300 group-hover:w-full"></span>
-                          </span>
-                        </Link>
+                        <div key={subIndex} className="flex items-center">
+                          <Link 
+                            to={subService.link}
+                            className="flex items-center text-sm text-gray-600 py-1.5 hover:text-primary relative w-full"
+                          >
+                            <ArrowRight className="w-4 h-4 mr-2 opacity-0 -translate-x-2 transition-all duration-200 peer-hover:opacity-100 peer-hover:translate-x-0" />
+                            <span className="peer relative inline-block">
+                              {subService.name}
+                              <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-primary transition-all duration-300 peer-hover:w-full"></span>
+                            </span>
+                          </Link>
+                        </div>
                       ))}
                     </div>
 
-                    <Link
-                      to={service.link}
-                      className="inline-flex items-center text-primary font-semibold hover:text-primary/80 group relative px-1"
-                    >
-                      <span className="relative inline-block">
-                        Explore All Services
-                        <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-primary transition-all duration-300 group-hover:w-full"></span>
-                      </span>
-                      <ArrowRight className="ml-2 w-4 h-4 transform group-hover:translate-x-1 transition-transform" />
-                    </Link>
+                    <div className="inline-block">
+                      <Link
+                        to={service.link}
+                        className="inline-flex items-center text-primary font-semibold hover:text-primary/80 relative px-1"
+                      >
+                        <span className="peer relative inline-block">
+                          Explore All Services
+                          <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-primary transition-all duration-300 peer-hover:w-full"></span>
+                        </span>
+                        <ArrowRight className="ml-2 w-4 h-4 transform transition-transform peer-hover:translate-x-1" />
+                      </Link>
+                    </div>
                   </div>
                 </CardContent>
               </Card>
