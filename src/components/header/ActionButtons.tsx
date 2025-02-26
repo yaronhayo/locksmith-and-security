@@ -12,13 +12,14 @@ const ActionButtons = ({ isMenuOpen, setIsMenuOpen }: ActionButtonsProps) => {
     <div className="flex items-center gap-2">
       <Button
         size="sm"
-        className="hidden sm:flex gap-2 items-center"
+        variant="secondary"
+        className="hidden sm:flex gap-2 items-center group transform hover:scale-105 transition-all duration-300 hover:shadow-lg"
         asChild
       >
         <a href="tel:2017482070">
-          <Phone className="h-4 w-4" />
-          <span className="hidden md:inline">(201) 748-2070</span>
-          <span className="md:hidden">Call Now</span>
+          <Phone className="h-4 w-4 animate-phone-ring group-hover:text-black transition-transform duration-300" />
+          <span className="hidden md:inline group-hover:text-black transition-colors duration-300">(201) 748-2070</span>
+          <span className="md:hidden group-hover:text-black transition-colors duration-300">Call Now</span>
         </a>
       </Button>
 
