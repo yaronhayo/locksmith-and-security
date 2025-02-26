@@ -61,7 +61,7 @@ const HeroSection = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4 }}
             >
-              Available 24/7 for all your residential, commercial, and automotive locksmith needs. Fast response and reliable service guaranteed.
+              Available 24/7 for all your residential, commercial, and automotive locksmith needs. Professional service and reliable solutions when you need them.
             </motion.p>
 
             <HeroActions />
@@ -78,7 +78,7 @@ const HeroSection = () => {
           >
             <div className="text-center mb-3">
               <h2 className="text-lg sm:text-xl font-bold text-gray-900">Request Service</h2>
-              <p className="text-sm text-gray-600 mt-1">Get a quick response from our team</p>
+              <p className="text-sm text-gray-600 mt-1">Get a response from our team</p>
             </div>
             <BookingForm />
           </motion.div>

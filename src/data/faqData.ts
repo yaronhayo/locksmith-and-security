@@ -18,7 +18,7 @@ export const generalFaqs: FAQ[] = [
   },
   {
     question: "Can you help right now?",
-    answer: "Yes, we provide prompt emergency service throughout our service area."
+    answer: "Yes, we provide responsive emergency service throughout our service area."
   },
   {
     question: "What forms of payment do you accept?",
@@ -46,7 +46,7 @@ export const generalFaqs: FAQ[] = [
   },
   {
     question: "What should I do if my key breaks in the lock?",
-    answer: "Don't try to remove it yourself as this could damage the lock. Call us immediately, and we'll safely extract the key and repair any damage."
+    answer: "Don't try to remove it yourself as this could damage the lock. Contact us for professional assistance with key extraction and lock repair."
   },
   {
     question: "Do you provide written estimates?",
@@ -69,7 +69,7 @@ export const residentialFaqs: FAQ[] = [
   },
   {
     question: "What should I do if I'm locked out late at night?",
-    answer: "Call us immediately - we provide 24/7 emergency lockout services with reliable service."
+    answer: "Contact us anytime - we provide 24/7 emergency lockout services with professional service."
   }
 ];
 
