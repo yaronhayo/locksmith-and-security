@@ -15,12 +15,12 @@ export const useMapConfig = () => {
 
       if (error) {
         console.error('Error fetching API key:', error);
-        throw error;
+        throw new Error('Failed to fetch Google Maps API key from settings');
       }
       
       if (!data?.value) {
         console.error('No API key found in settings');
-        throw new Error('Google Maps API key not found in settings');
+        throw new Error('Google Maps API key not found in settings table. Please add it to your Supabase settings.');
       }
 
       console.log('API key fetched successfully');
