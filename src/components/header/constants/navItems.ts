@@ -16,22 +16,9 @@ export const navItems: readonly NavItem[] = [
       { path: "/services/car-key-program", label: "Car Key Program" }
     ]
   },
-  { 
-    path: "/service-areas", 
-    label: "Service Areas",
-    children: [
-      { path: "/service-areas/north-bergen", label: "North Bergen" },
-      { path: "/service-areas/union-city", label: "Union City" },
-      { path: "/service-areas/west-new-york", label: "West New York" },
-      { path: "/service-areas/weehawken", label: "Weehawken" },
-      { path: "/service-areas/jersey-city", label: "Jersey City" },
-      { path: "/service-areas/hoboken", label: "Hoboken" },
-      { path: "/service-areas/secaucus", label: "Secaucus" },
-      { path: "/service-areas/guttenberg", label: "Guttenberg" }
-    ]
-  },
   { path: "/about", label: "About" },
   { path: "/reviews", label: "Reviews" },
   { path: "/contact", label: "Contact" },
   { path: "/faq", label: "FAQ" }
 ] as const;
+
