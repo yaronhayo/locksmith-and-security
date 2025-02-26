@@ -10,7 +10,7 @@ const LockRekey = () => {
     <main className="flex-grow">
       <ServicesHero 
         title="Residential Lock Rekey"
-        description="Professional lock rekeying services. Keep your existing locks while updating your keys for improved security."
+        description="Professional lock rekeying services by experienced technicians. Maintain your existing locks while updating security."
       />
       <ServicesFeatures />
       <ServicesProof />

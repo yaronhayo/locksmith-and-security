@@ -10,7 +10,7 @@ const LockReplacement = () => {
     <main className="flex-grow">
       <ServicesHero 
         title="Residential Lock Replacement"
-        description="Professional lock replacement services for homes. Expert installation of high-security locks."
+        description="Professional lock replacement services by experienced technicians. Expert installation of high-security locks."
       />
       <ServicesFeatures />
       <ServicesProof />

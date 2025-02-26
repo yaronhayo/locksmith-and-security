@@ -9,8 +9,8 @@ const BusinessLockout = () => {
   return (
     <main className="flex-grow">
       <ServicesHero 
-        title="24/7 Business Lockout Service"
-        description="Professional business lockout assistance available 24/7. Fast response times and damage-free commercial property entry."
+        title="Business Lockout Service"
+        description="Professional locksmith services for commercial lockouts. Available 24/7 for all business security needs."
       />
       <ServicesFeatures />
       <ServicesProof />

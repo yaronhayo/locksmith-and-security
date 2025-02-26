@@ -10,7 +10,7 @@ const GateLocks = () => {
     <main className="flex-grow">
       <ServicesHero 
         title="Gate Lock Installation & Repair"
-        description="Professional gate lock services. Expert installation and repair of residential gate locks."
+        description="Professional gate lock services by experienced technicians. Expert installation and repair solutions."
       />
       <ServicesFeatures />
       <ServicesProof />
