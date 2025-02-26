@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 const FooterLinks = () => {
   return (
     <div className="space-y-4">
-      <h3 className="text-lg font-semibold">Quick Links</h3>
+      <h3 className="text-lg font-semibold text-white">Quick Links</h3>
       <ul className="space-y-2">
         <li>
           <Link to="/about" className="text-gray-300 hover:text-white transition-colors">
