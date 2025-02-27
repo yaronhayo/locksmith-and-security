@@ -1,7 +1,6 @@
 
 import { useSettings } from "@/hooks/useSettings";
 import PageLayout from "@/components/layouts/PageLayout";
-import ServiceAreaHero from "./ServiceAreaHero";
 import { useLocations } from "@/hooks/useLocations";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import { useReviews } from "@/components/reviews/useReviews";
@@ -9,6 +8,7 @@ import { createServiceAreaSchemas } from "./ServiceAreaSchemas";
 import ServiceAreaContent from "./ServiceAreaContent";
 import { FAQSchema } from "@/types/schema";
 import { Helmet } from "react-helmet";
+import { Card, CardContent } from "@/components/ui/card";
 
 interface ServiceAreaLayoutProps {
   areaSlug: string;
@@ -37,7 +37,8 @@ const ServiceAreaLayout = ({ areaSlug }: ServiceAreaLayoutProps) => {
       title={pageTitle}
       description={pageDescription}
       schema={schemas}
-      className="py-12 md:py-20"
+      heroTitle={`Locksmith Services in ${location.name}, NJ`}
+      heroDescription={`Professional 24/7 locksmith services for residential, commercial, and automotive needs in ${location.name}`}
     >
       <Helmet>
         <link rel="canonical" href={`https://247locksmithandsecurity.com/service-areas/${areaSlug}`} />
@@ -46,18 +47,27 @@ const ServiceAreaLayout = ({ areaSlug }: ServiceAreaLayoutProps) => {
         <meta name="geo.position" content={`${location.lat};${location.lng}`} />
         <meta name="ICBM" content={`${location.lat}, ${location.lng}`} />
       </Helmet>
-      <Breadcrumbs />
-      <ServiceAreaHero areaName={location.name} isLoading={settingsLoading || locationsLoading} />
-      <ServiceAreaContent 
-        locationName={location.name}
-        locationDescription={location.description}
-        locationSlug={areaSlug}
-        locationCoordinates={{lat: location.lat, lng: location.lng}}
-        displayedReviews={displayedReviews}
-        isLoading={reviewsLoading}
-        totalReviews={totalReviews}
-        faqSchema={faqSchema}
-      />
+
+      <div className="container mx-auto px-4 py-8">
+        <Breadcrumbs />
+        
+        <Card className="mt-8 border-secondary/20 shadow-md overflow-hidden">
+          <div className="bg-gradient-to-r from-secondary/10 to-secondary/5 p-8 md:p-12">
+            <CardContent className="p-0">
+              <ServiceAreaContent 
+                locationName={location.name}
+                locationDescription={location.description}
+                locationSlug={areaSlug}
+                locationCoordinates={{lat: location.lat, lng: location.lng}}
+                displayedReviews={displayedReviews}
+                isLoading={reviewsLoading}
+                totalReviews={totalReviews}
+                faqSchema={faqSchema}
+              />
+            </CardContent>
+          </div>
+        </Card>
+      </div>
     </PageLayout>
   );
 };

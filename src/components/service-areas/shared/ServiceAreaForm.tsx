@@ -1,7 +1,8 @@
 
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
-import { Phone, Mail, MessageSquare } from "lucide-react";
+import { Phone, Mail, MessageSquare, SendIcon } from "lucide-react";
+import { motion } from "framer-motion";
 
 interface ServiceAreaFormProps {
   locationName?: string;
@@ -43,20 +44,26 @@ const ServiceAreaForm = ({ locationName }: ServiceAreaFormProps) => {
   };
   
   return (
-    <section className="bg-white rounded-xl shadow-sm p-8 md:p-12" id="contact-form">
-      <div className="max-w-3xl mx-auto">
-        <h2 className="text-2xl md:text-3xl font-bold text-center mb-2">
-          Contact Your Local {locationName} Locksmith
+    <section className="bg-white rounded-xl shadow-md overflow-hidden" id="contact-form">
+      <div className="bg-gradient-to-r from-primary to-primary/90 text-white p-6 md:p-8">
+        <h2 className="text-2xl md:text-3xl font-bold mb-2">
+          Contact Your {locationName} Locksmith
         </h2>
-        <p className="text-gray-600 text-center mb-8">
-          Fill out the form below and our {locationName} locksmith team will get back to you promptly
+        <p className="text-white/90">
+          Fill out the form below and our team will get back to you promptly
         </p>
-        
+      </div>
+      
+      <div className="p-8 md:p-12 max-w-3xl mx-auto">
         {isSubmitted ? (
-          <div className="bg-green-50 border border-green-200 text-green-700 p-6 rounded-lg text-center">
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="bg-green-50 border border-green-200 text-green-700 p-6 rounded-lg text-center"
+          >
             <h3 className="text-xl font-semibold mb-2">Thank You!</h3>
             <p>Your message has been sent successfully. A member of our team will contact you shortly.</p>
-          </div>
+          </motion.div>
         ) : (
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="grid md:grid-cols-2 gap-6">
@@ -68,7 +75,7 @@ const ServiceAreaForm = ({ locationName }: ServiceAreaFormProps) => {
                   name="name"
                   value={formState.name}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-primary focus:border-primary"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-secondary focus:border-secondary"
                   required
                 />
               </div>
@@ -81,7 +88,7 @@ const ServiceAreaForm = ({ locationName }: ServiceAreaFormProps) => {
                   name="phone"
                   value={formState.phone}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-primary focus:border-primary"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-secondary focus:border-secondary"
                   required
                 />
               </div>
@@ -95,7 +102,7 @@ const ServiceAreaForm = ({ locationName }: ServiceAreaFormProps) => {
                 name="email"
                 value={formState.email}
                 onChange={handleChange}
-                className="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-primary focus:border-primary"
+                className="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-secondary focus:border-secondary"
                 required
               />
             </div>
@@ -107,7 +114,7 @@ const ServiceAreaForm = ({ locationName }: ServiceAreaFormProps) => {
                 name="service"
                 value={formState.service}
                 onChange={handleChange}
-                className="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-primary focus:border-primary"
+                className="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-secondary focus:border-secondary"
                 required
               >
                 <option value="">Select a service</option>
@@ -127,41 +134,46 @@ const ServiceAreaForm = ({ locationName }: ServiceAreaFormProps) => {
                 value={formState.message}
                 onChange={handleChange}
                 rows={4}
-                className="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-primary focus:border-primary"
+                className="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-secondary focus:border-secondary"
                 required
               />
             </div>
             
             <Button 
               type="submit" 
-              className="w-full py-3 text-white font-medium rounded-md shadow-sm"
+              className="w-full py-3 bg-secondary hover:bg-secondary/90 text-white font-medium rounded-md shadow-sm"
               disabled={isSubmitting}
             >
-              {isSubmitting ? "Sending..." : "Send Message"}
+              {isSubmitting ? "Sending..." : (
+                <span className="flex items-center gap-2">
+                  <SendIcon className="h-4 w-4" />
+                  Send Message
+                </span>
+              )}
             </Button>
           </form>
         )}
         
         <div className="mt-12 grid md:grid-cols-3 gap-6">
           <div className="flex flex-col items-center text-center">
-            <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-3">
-              <Phone className="h-5 w-5 text-primary" />
+            <div className="w-12 h-12 rounded-full bg-secondary/10 flex items-center justify-center mb-3">
+              <Phone className="h-5 w-5 text-secondary" />
             </div>
             <h3 className="text-lg font-medium mb-1">Call Us</h3>
-            <a href="tel:2017482070" className="text-primary hover:underline">(201) 748-2070</a>
+            <a href="tel:2017482070" className="text-secondary hover:underline">(201) 748-2070</a>
           </div>
           
           <div className="flex flex-col items-center text-center">
-            <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-3">
-              <Mail className="h-5 w-5 text-primary" />
+            <div className="w-12 h-12 rounded-full bg-secondary/10 flex items-center justify-center mb-3">
+              <Mail className="h-5 w-5 text-secondary" />
             </div>
             <h3 className="text-lg font-medium mb-1">Email Us</h3>
-            <a href="mailto:info@247locksmithandsecurity.com" className="text-primary hover:underline">info@247locksmithandsecurity.com</a>
+            <a href="mailto:info@247locksmithandsecurity.com" className="text-secondary hover:underline">info@247locksmithandsecurity.com</a>
           </div>
           
           <div className="flex flex-col items-center text-center">
-            <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-3">
-              <MessageSquare className="h-5 w-5 text-primary" />
+            <div className="w-12 h-12 rounded-full bg-secondary/10 flex items-center justify-center mb-3">
+              <MessageSquare className="h-5 w-5 text-secondary" />
             </div>
             <h3 className="text-lg font-medium mb-1">Emergency Service</h3>
             <p className="text-gray-700">Available 24/7 for urgent assistance</p>

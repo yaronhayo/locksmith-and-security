@@ -1,6 +1,4 @@
 
-import { useSettings } from "@/hooks/useSettings";
-import { useLocations } from "@/hooks/useLocations";
 import { motion } from "framer-motion";
 import ServiceAreaMap from "./ServiceAreaMap";
 import ServiceAreaInfo from "./ServiceAreaInfo";
@@ -15,6 +13,7 @@ import ServiceAreaTestimonial from "./ServiceAreaTestimonial";
 import ServiceAreaEmergency from "./ServiceAreaEmergency";
 import ServiceAreaNeighborhoods from "./ServiceAreaNeighborhoods";
 import ServiceAreaSecurityTips from "./ServiceAreaSecurityTips";
+import ServiceAreaHero from "./ServiceAreaHero";
 
 interface ServiceAreaContentProps {
   locationName: string;
@@ -37,15 +36,16 @@ const ServiceAreaContent = ({
   totalReviews,
   faqSchema
 }: ServiceAreaContentProps) => {
-  const { data: settings } = useSettings();
-  const { data: locations } = useLocations();
-
   return (
-    <div className="container mx-auto px-4 space-y-20">
+    <div className="space-y-12">
+      <div className="bg-white rounded-xl shadow-md overflow-hidden p-8">
+        <ServiceAreaHero areaName={locationName} />
+      </div>
+
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
+        transition={{ duration: 0.5, delay: 0.2 }}
         className="grid lg:grid-cols-2 gap-8 items-start"
       >
         <ServiceAreaInfo 
@@ -73,7 +73,7 @@ const ServiceAreaContent = ({
       
       <ServiceAreaTestimonial locationName={locationName} />
       
-      <ServiceAreaForm />
+      <ServiceAreaForm locationName={locationName} />
       
       {displayedReviews && (
         <ServiceAreaReviews
