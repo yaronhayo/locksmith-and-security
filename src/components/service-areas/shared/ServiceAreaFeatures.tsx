@@ -37,13 +37,13 @@ const features = [
 
 const ServiceAreaFeatures = () => {
   return (
-    <section className="bg-gradient-to-br from-white to-secondary/5 rounded-xl shadow-md p-8 md:p-12">
-      <div className="text-center mb-12">
+    <section className="bg-gradient-to-br from-white to-secondary/5 rounded-xl shadow-md p-4 sm:p-6 md:p-8 lg:p-12">
+      <div className="text-center mb-6 sm:mb-8 md:mb-12">
         <motion.span 
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
-          className="inline-block px-4 py-1 bg-secondary/20 text-secondary font-medium rounded-full text-sm mb-4"
+          className="inline-block px-3 py-1 sm:px-4 sm:py-1 bg-secondary/20 text-secondary font-medium rounded-full text-xs sm:text-sm mb-3 sm:mb-4"
         >
           Why Choose Us
         </motion.span>
@@ -51,7 +51,7 @@ const ServiceAreaFeatures = () => {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.2 }}
-          className="text-3xl font-bold text-gray-800 mb-4"
+          className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-800 mb-3 sm:mb-4"
         >
           Professional Locksmith Services You Can Trust
         </motion.h2>
@@ -59,26 +59,26 @@ const ServiceAreaFeatures = () => {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.3 }}
-          className="text-lg text-gray-600 max-w-2xl mx-auto"
+          className="text-base sm:text-lg text-gray-600 max-w-2xl mx-auto"
         >
           We provide expert locksmith services with a commitment to quality, reliability, and customer satisfaction.
         </motion.p>
       </div>
       
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
         {features.map((feature, index) => (
           <motion.div
             key={index}
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.1 * index }}
-            className="bg-white rounded-xl shadow-sm p-6 border border-secondary/10 hover:border-secondary/30 transition-all duration-300 hover:shadow-md group"
+            className="bg-white rounded-xl shadow-sm p-4 sm:p-6 border border-secondary/10 hover:border-secondary/30 transition-all duration-300 hover:shadow-md group"
           >
-            <div className="bg-secondary/10 text-secondary rounded-full w-12 h-12 flex items-center justify-center mb-4 group-hover:bg-secondary group-hover:text-white transition-all duration-300">
-              <feature.icon className="h-6 w-6" />
+            <div className="bg-secondary/10 text-secondary rounded-full w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center mb-3 sm:mb-4 group-hover:bg-secondary group-hover:text-white transition-all duration-300">
+              <feature.icon className="h-5 w-5 sm:h-6 sm:w-6" />
             </div>
-            <h3 className="text-xl font-semibold mb-2 text-gray-800">{feature.title}</h3>
-            <p className="text-gray-600">{feature.description}</p>
+            <h3 className="text-lg sm:text-xl font-semibold mb-1 sm:mb-2 text-gray-800">{feature.title}</h3>
+            <p className="text-sm sm:text-base text-gray-600">{feature.description}</p>
           </motion.div>
         ))}
       </div>

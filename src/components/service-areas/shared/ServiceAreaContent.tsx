@@ -37,8 +37,8 @@ const ServiceAreaContent = ({
   faqSchema
 }: ServiceAreaContentProps) => {
   return (
-    <div className="space-y-12">
-      <div className="bg-white rounded-xl shadow-md overflow-hidden p-8">
+    <div className="space-y-8 sm:space-y-10 md:space-y-12">
+      <div className="bg-white rounded-xl shadow-md overflow-hidden p-4 sm:p-6 md:p-8">
         <ServiceAreaHero areaName={locationName} />
       </div>
 
@@ -46,7 +46,7 @@ const ServiceAreaContent = ({
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.2 }}
-        className="grid lg:grid-cols-2 gap-8 items-start"
+        className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 items-start"
       >
         <ServiceAreaInfo 
           locationName={locationName} 
