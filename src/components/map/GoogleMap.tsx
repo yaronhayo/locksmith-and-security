@@ -77,6 +77,7 @@ const GoogleMap = ({
         updateMapView();
       } catch (error) {
         console.error("Error updating map view:", error);
+        setMapError("Failed to update map view");
       }
     }
   }, [visibleMarkers, highlightedMarker]);
@@ -126,12 +127,6 @@ const GoogleMap = ({
     mapRef.current = null;
   }, []);
 
-  const onErrorCallback = useCallback((error: Error) => {
-    console.error("Google Map error:", error);
-    setMapError(error.message || "An error occurred while loading the map");
-    setIsLoading(false);
-  }, []);
-
   if (mapError) {
     return <MapError error={mapError} />;
   }
@@ -152,7 +147,6 @@ const GoogleMap = ({
           onClick={onClick}
           onLoad={onLoadCallback}
           onUnmount={onUnmountCallback}
-          onError={onErrorCallback}
         >
           {!isLoading && visibleMarkers.length > 0 && (
             <MapMarkers
