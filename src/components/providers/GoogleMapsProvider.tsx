@@ -14,9 +14,11 @@ interface GoogleMapsProviderProps {
 const GoogleMapsProvider = ({ children }: GoogleMapsProviderProps) => {
   const { data: apiKey, error: apiKeyError, isLoading } = useMapConfig();
   const [scriptError, setScriptError] = useState<string | null>(null);
+  const [scriptLoaded, setScriptLoaded] = useState(false);
 
   const handleLoad = useCallback(() => {
     console.log("Google Maps script loaded successfully");
+    setScriptLoaded(true);
     setScriptError(null);
   }, []);
 
@@ -30,6 +32,17 @@ const GoogleMapsProvider = ({ children }: GoogleMapsProviderProps) => {
       console.error("API Key Error:", apiKeyError);
     }
   }, [apiKeyError]);
+
+  // For debugging
+  useEffect(() => {
+    console.log("GoogleMapsProvider state:", { 
+      apiKey: apiKey ? "Available" : "Not available", 
+      isLoading, 
+      hasError: !!apiKeyError,
+      scriptLoaded,
+      scriptError
+    });
+  }, [apiKey, isLoading, apiKeyError, scriptLoaded, scriptError]);
 
   if (isLoading) return <MapLoader />;
   if (apiKeyError) return <MapError error={apiKeyError.message} />;
@@ -50,4 +63,3 @@ const GoogleMapsProvider = ({ children }: GoogleMapsProviderProps) => {
 };
 
 export default GoogleMapsProvider;
-

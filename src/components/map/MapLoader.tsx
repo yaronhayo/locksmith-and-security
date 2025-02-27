@@ -8,7 +8,7 @@ interface MapLoaderProps {
 
 const MapLoader = ({ children }: MapLoaderProps) => {
   return (
-    <div className="w-full h-full flex items-center justify-center bg-gray-50">
+    <div className="w-full h-full flex items-center justify-center bg-gray-50 rounded-lg border border-gray-200">
       <div className="text-center">
         <LoadingSpinner />
         <p className="mt-2 text-sm text-gray-500">Loading map...</p>

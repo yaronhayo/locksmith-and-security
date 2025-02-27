@@ -1,17 +1,36 @@
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import GoogleMap from '../map/GoogleMap';
 import AreasList from './service-areas/AreasList';
-import ServiceAreaFeatures from '../service-areas/shared/ServiceAreaFeatures';
 import EmergencyCallout from './service-areas/EmergencyCallout';
 import { useLocations } from '@/hooks/useLocations';
 import LoadingSpinner from '../LoadingSpinner';
 import GoogleMapsProvider from '../providers/GoogleMapsProvider';
 import MapError from '../map/MapError';
+import { ErrorBoundary } from 'react-error-boundary';
 
 const ServiceAreasSection = () => {
   const [hoveredArea, setHoveredArea] = useState<string | null>(null);
+  const [mapKey, setMapKey] = useState(0); // Force re-render key
   const { data: locations, isLoading, error } = useLocations();
+
+  // Log locations data for debugging
+  useEffect(() => {
+    if (locations) {
+      console.log("Locations data loaded:", { count: locations.length });
+    }
+    if (error) {
+      console.error("Error loading locations:", error);
+    }
+  }, [locations, error]);
+
+  // Force re-render map after component is fully mounted
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setMapKey(prev => prev + 1);
+    }, 500);
+    return () => clearTimeout(timer);
+  }, []);
 
   if (isLoading) {
     return (
@@ -53,15 +72,18 @@ const ServiceAreasSection = () => {
           />
           
           <div className="bg-white rounded-xl shadow-lg overflow-hidden" style={{ height: '600px' }}>
-            <GoogleMapsProvider>
-              <GoogleMap 
-                markers={mapMarkers}
-                highlightedMarker={hoveredArea}
-                showAllMarkers={true}
-                zoom={11}
-                center={{ lat: 40.7795, lng: -74.0324 }}
-              />
-            </GoogleMapsProvider>
+            <ErrorBoundary FallbackComponent={MapError} key={`map-error-boundary-${mapKey}`}>
+              <GoogleMapsProvider>
+                <GoogleMap 
+                  key={`google-map-${mapKey}`}
+                  markers={mapMarkers}
+                  highlightedMarker={hoveredArea}
+                  showAllMarkers={true}
+                  zoom={11}
+                  center={{ lat: 40.7795, lng: -74.0324 }}
+                />
+              </GoogleMapsProvider>
+            </ErrorBoundary>
           </div>
         </div>
       </div>
@@ -70,4 +92,3 @@ const ServiceAreasSection = () => {
 };
 
 export default ServiceAreasSection;
-
