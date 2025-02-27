@@ -1,3 +1,4 @@
+
 import { memo } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
@@ -50,16 +51,20 @@ const NavigationLink = memo(({
                     isActive ? "text-secondary" : "text-gray-700 hover:text-secondary"
                   )}
                 >
-                  <span className="relative inline-block">
+                  <div className="relative">
                     {label}
-                    <motion.div
-                      className="absolute -bottom-2 left-0 h-0.5 bg-secondary"
-                      initial={{ width: isActive ? '100%' : 0 }}
-                      animate={{ width: isActive ? '100%' : 0 }}
-                      whileHover={{ width: '100%' }}
-                      transition={{ duration: 0.2, ease: "easeInOut" }}
-                    />
-                  </span>
+                    {isActive && (
+                      <div className="absolute -bottom-2 left-0 right-0 h-0.5 bg-secondary" />
+                    )}
+                    {!isActive && (
+                      <motion.div 
+                        className="absolute -bottom-2 left-0 h-0.5 bg-secondary"
+                        initial={{ width: 0 }}
+                        whileHover={{ width: '100%' }}
+                        transition={{ duration: 0.2 }}
+                      />
+                    )}
+                  </div>
                 </NavigationMenuTrigger>
               </Link>
               <NavigationMenuContent>
@@ -283,16 +288,20 @@ const NavigationLink = memo(({
                   isActive ? "text-secondary" : "text-gray-700 hover:text-secondary"
                 )}
               >
-                <span className="relative inline-block">
+                <div className="relative">
                   {label}
-                  <motion.div
-                    className="absolute -bottom-2 left-0 h-0.5 bg-secondary"
-                    initial={{ width: isActive ? '100%' : 0 }}
-                    animate={{ width: isActive ? '100%' : 0 }}
-                    whileHover={{ width: '100%' }}
-                    transition={{ duration: 0.2, ease: "easeInOut" }}
-                  />
-                </span>
+                  {isActive && (
+                    <div className="absolute -bottom-2 left-0 right-0 h-0.5 bg-secondary" />
+                  )}
+                  {!isActive && (
+                    <motion.div 
+                      className="absolute -bottom-2 left-0 h-0.5 bg-secondary"
+                      initial={{ width: 0 }}
+                      whileHover={{ width: '100%' }}
+                      transition={{ duration: 0.2 }}
+                    />
+                  )}
+                </div>
               </NavigationMenuTrigger>
             </Link>
             <NavigationMenuContent>
@@ -334,18 +343,24 @@ const NavigationLink = memo(({
       onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
     >
       {isMenuOpen && icon}
-      <span className="relative inline-block">
+      <div className="relative">
         {label}
         {!isMenuOpen && (
-          <motion.div
-            className="absolute -bottom-2 left-0 h-0.5 bg-secondary"
-            initial={{ width: isActive ? '100%' : 0 }}
-            animate={{ width: isActive ? '100%' : 0 }}
-            whileHover={{ width: '100%' }}
-            transition={{ duration: 0.2, ease: "easeInOut" }}
-          />
+          <>
+            {isActive && (
+              <div className="absolute -bottom-2 left-0 right-0 h-0.5 bg-secondary" />
+            )}
+            {!isActive && (
+              <motion.div 
+                className="absolute -bottom-2 left-0 h-0.5 bg-secondary"
+                initial={{ width: 0 }}
+                whileHover={{ width: '100%' }}
+                transition={{ duration: 0.2 }}
+              />
+            )}
+          </>
         )}
-      </span>
+      </div>
     </Link>
   );
 });
