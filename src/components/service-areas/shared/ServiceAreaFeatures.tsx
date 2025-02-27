@@ -1,5 +1,5 @@
 
-import { Shield, Key, Clock, Award, Tool, ThumbsUp } from "lucide-react";
+import { Shield, Key, Clock, Award, Wrench, ThumbsUp } from "lucide-react";
 import { motion } from "framer-motion";
 
 const features = [
@@ -24,7 +24,7 @@ const features = [
     description: "Highly rated by customers for quality, reliability, and professional service"
   },
   {
-    icon: Tool,
+    icon: Wrench,
     title: "Advanced Equipment",
     description: "Using the latest tools and technology for efficient, damage-free service"
   },
