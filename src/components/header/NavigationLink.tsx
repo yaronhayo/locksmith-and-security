@@ -53,10 +53,9 @@ const NavigationLink = memo(({
                 >
                   <div className="relative">
                     {label}
-                    {isActive && (
+                    {isActive ? (
                       <div className="absolute -bottom-2 left-0 right-0 h-0.5 bg-secondary" />
-                    )}
-                    {!isActive && (
+                    ) : (
                       <motion.div 
                         className="absolute -bottom-2 left-0 h-0.5 bg-secondary"
                         initial={{ width: 0 }}
@@ -290,10 +289,9 @@ const NavigationLink = memo(({
               >
                 <div className="relative">
                   {label}
-                  {isActive && (
+                  {isActive ? (
                     <div className="absolute -bottom-2 left-0 right-0 h-0.5 bg-secondary" />
-                  )}
-                  {!isActive && (
+                  ) : (
                     <motion.div 
                       className="absolute -bottom-2 left-0 h-0.5 bg-secondary"
                       initial={{ width: 0 }}
@@ -346,19 +344,16 @@ const NavigationLink = memo(({
       <div className="relative">
         {label}
         {!isMenuOpen && (
-          <>
-            {isActive && (
-              <div className="absolute -bottom-2 left-0 right-0 h-0.5 bg-secondary" />
-            )}
-            {!isActive && (
-              <motion.div 
-                className="absolute -bottom-2 left-0 h-0.5 bg-secondary"
-                initial={{ width: 0 }}
-                whileHover={{ width: '100%' }}
-                transition={{ duration: 0.2 }}
-              />
-            )}
-          </>
+          isActive ? (
+            <div className="absolute -bottom-2 left-0 right-0 h-0.5 bg-secondary" />
+          ) : (
+            <motion.div 
+              className="absolute -bottom-2 left-0 h-0.5 bg-secondary"
+              initial={{ width: 0 }}
+              whileHover={{ width: '100%' }}
+              transition={{ duration: 0.2 }}
+            />
+          )
         )}
       </div>
     </Link>
