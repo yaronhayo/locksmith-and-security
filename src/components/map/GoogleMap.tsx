@@ -55,46 +55,52 @@ const GoogleMap = ({
   const onLoadCallback = useCallback((map: google.maps.Map) => {
     console.log('Map loaded successfully');
     mapRef.current = map;
-    setIsLoading(false);
     
-    if (visibleMarkers.length > 1) {
-      const bounds = new google.maps.LatLngBounds();
-      visibleMarkers.forEach(marker => {
-        bounds.extend({ lat: marker.lat, lng: marker.lng });
-      });
-      map.fitBounds(bounds);
-    } else if (visibleMarkers.length === 1) {
-      map.setCenter({ lat: visibleMarkers[0].lat, lng: visibleMarkers[0].lng });
-      map.setZoom(zoom);
-    }
-  }, [visibleMarkers, zoom]);
+    // Delay setting isLoading to false to ensure map is fully rendered
+    setTimeout(() => {
+      setIsLoading(false);
+      
+      if (visibleMarkers.length > 1) {
+        const bounds = new google.maps.LatLngBounds();
+        visibleMarkers.forEach(marker => {
+          bounds.extend({ lat: marker.lat, lng: marker.lng });
+        });
+        map.fitBounds(bounds);
+      } else if (visibleMarkers.length === 1) {
+        map.setCenter({ lat: visibleMarkers[0].lat, lng: visibleMarkers[0].lng });
+        map.setZoom(zoom);
+      } else {
+        map.setCenter(center);
+        map.setZoom(zoom);
+      }
+    }, 100);
+  }, [visibleMarkers, zoom, center]);
 
   const onUnmountCallback = useCallback(() => {
     console.log('Map unmounting');
     mapRef.current = null;
   }, []);
 
-  if (isLoading) {
-    return <MapLoader />;
-  }
-
   return (
-    <GoogleMapComponent
-      mapContainerStyle={containerStyle}
-      center={center}
-      zoom={zoom}
-      options={mapOptions}
-      onClick={onClick}
-      onLoad={onLoadCallback}
-      onUnmount={onUnmountCallback}
-    >
-      {visibleMarkers.length > 0 && (
-        <MapMarkers
-          markers={visibleMarkers}
-          hoveredMarker={highlightedMarker}
-        />
-      )}
-    </GoogleMapComponent>
+    <div className="relative w-full h-full">
+      {isLoading && <MapLoader />}
+      <GoogleMapComponent
+        mapContainerStyle={containerStyle}
+        center={center}
+        zoom={zoom}
+        options={mapOptions}
+        onClick={onClick}
+        onLoad={onLoadCallback}
+        onUnmount={onUnmountCallback}
+      >
+        {!isLoading && visibleMarkers.length > 0 && (
+          <MapMarkers
+            markers={visibleMarkers}
+            hoveredMarker={highlightedMarker}
+          />
+        )}
+      </GoogleMapComponent>
+    </div>
   );
 };
 
