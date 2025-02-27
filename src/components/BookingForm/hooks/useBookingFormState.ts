@@ -1,6 +1,6 @@
 
 import { useState } from "react";
-import { carKeyServices } from "../constants";
+import { carKeyServices, allKeysLostServices } from "../constants";
 
 export const useBookingFormState = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -21,7 +21,7 @@ export const useBookingFormState = () => {
   };
 
   const showVehicleInfo = selectedService === "Car Lockout" || carKeyServices.includes(selectedService);
-  const showAllKeysLostField = carKeyServices.includes(selectedService);
+  const showAllKeysLostField = allKeysLostServices.includes(selectedService);
 
   return {
     isSubmitting,

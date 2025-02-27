@@ -36,6 +36,10 @@ export const carKeyServices = [
   "Car Key Cutting"
 ];
 
+export const allKeysLostServices = [
+  "Car Key Replacement"
+];
+
 export const timeframes = [
   "ASAP",
   "Same Day",
