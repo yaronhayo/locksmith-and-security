@@ -54,7 +54,7 @@ const ServicesHero: React.FC<ServicesHeroProps> = ({ title, description }) => {
             <Button 
               size="lg" 
               asChild 
-              className="bg-[#F97316] hover:bg-[#F97316]/90 text-white hover:text-black transition-all duration-300 text-base sm:text-lg py-6 sm:py-7 px-6"
+              className="bg-[#ffa500] hover:bg-[#ffa500]/90 text-white hover:text-black transition-all duration-300 text-base sm:text-lg py-6 sm:py-7 px-6"
             >
               <a href="tel:2017482070" className="flex items-center">
                 <Phone className="mr-3 h-5 w-5" />
