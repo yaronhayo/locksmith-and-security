@@ -258,8 +258,8 @@ const ServicesPage = () => {
         title="Complete Locksmith & Security Solutions" 
         description="Trusted by homeowners and businesses across New Jersey for professional locksmith services, emergency assistance, and modern security installations. Available 24/7 with certified technicians." 
       />
-      <ServicesFeatures />
       <ServicesGrid />
+      <ServicesFeatures />
       <RealLifeStories />
       <ReviewsSection location="North Bergen" />
       <FAQSection title="Frequently Asked Questions" description="Find answers to common questions about our locksmith services" faqs={generalFaqs} />
