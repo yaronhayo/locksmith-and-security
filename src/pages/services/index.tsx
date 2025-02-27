@@ -1,5 +1,5 @@
 
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import PageLayout from "@/components/layouts/PageLayout";
 import ServicesHero from "@/components/sections/services/ServicesHero";
 import ServicesFeatures from "@/components/sections/services/ServicesFeatures";
@@ -78,6 +78,8 @@ const RealLifeStories = () => {
   const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
   const [api, setApi] = useState<any>();
   const [current, setCurrent] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
   React.useEffect(() => {
     if (!api) return;
@@ -86,17 +88,33 @@ const RealLifeStories = () => {
       setCurrent(api.selectedScrollSnap());
     });
 
-    // Auto-advance carousel
-    const autoplayInterval = setInterval(() => {
-      if (api.canScrollNext()) {
-        api.scrollNext();
-      } else {
-        api.scrollTo(0);
-      }
-    }, 1800);
+    // Start the autoplay function
+    const startAutoplay = () => {
+      intervalRef.current = setInterval(() => {
+        if (!isPaused && api.canScrollNext()) {
+          api.scrollNext();
+        } else if (!isPaused) {
+          api.scrollTo(0);
+        }
+      }, 3500); // Increased to 3.5 seconds
+    };
 
-    return () => clearInterval(autoplayInterval);
-  }, [api]);
+    // Clear the interval
+    const stopAutoplay = () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+        intervalRef.current = null;
+      }
+    };
+
+    // Initialize autoplay
+    startAutoplay();
+
+    // Clean up on unmount
+    return () => {
+      stopAutoplay();
+    };
+  }, [api, isPaused]);
 
   return (
     <section className="py-20 bg-gray-50">
@@ -113,60 +131,65 @@ const RealLifeStories = () => {
           </p>
         </motion.div>
 
-        <Carousel
-          setApi={setApi}
-          className="w-full max-w-6xl mx-auto"
-          opts={{
-            align: "start",
-            loop: true,
-          }}
+        <div 
+          onMouseEnter={() => setIsPaused(true)}
+          onMouseLeave={() => setIsPaused(false)}
         >
-          <CarouselContent>
-            {successStories.map((story, index) => (
-              <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                >
-                  <Card className="p-6 h-full flex flex-col">
-                    <div className="flex items-start gap-4 mb-4">
-                      <div className="p-2 rounded-lg bg-primary/10">
-                        <story.icon className="h-6 w-6 text-primary" />
+          <Carousel
+            setApi={setApi}
+            className="w-full max-w-6xl mx-auto"
+            opts={{
+              align: "start",
+              loop: true,
+            }}
+          >
+            <CarouselContent>
+              {successStories.map((story, index) => (
+                <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: index * 0.1 }}
+                  >
+                    <Card className="p-6 h-full flex flex-col">
+                      <div className="flex items-start gap-4 mb-4">
+                        <div className="p-2 rounded-lg bg-primary/10">
+                          <story.icon className="h-6 w-6 text-primary" />
+                        </div>
+                        <div>
+                          <h3 className="text-xl font-semibold mb-1">{story.title}</h3>
+                          <p className="text-sm text-muted-foreground">{story.location}</p>
+                        </div>
                       </div>
-                      <div>
-                        <h3 className="text-xl font-semibold mb-1">{story.title}</h3>
-                        <p className="text-sm text-muted-foreground">{story.location}</p>
+                      
+                      <p className="text-muted-foreground mb-4">
+                        {expandedIndex === index ? story.fullDesc : story.shortDesc}
+                      </p>
+                      
+                      <div className="mt-auto pt-4 flex items-center justify-between">
+                        <span className="text-sm font-medium text-primary">{story.service}</span>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => setExpandedIndex(expandedIndex === index ? null : index)}
+                          className="text-sm"
+                        >
+                          {expandedIndex === index ? "Show Less" : "Continue Reading"}
+                        </Button>
                       </div>
-                    </div>
-                    
-                    <p className="text-muted-foreground mb-4">
-                      {expandedIndex === index ? story.fullDesc : story.shortDesc}
-                    </p>
-                    
-                    <div className="mt-auto pt-4 flex items-center justify-between">
-                      <span className="text-sm font-medium text-primary">{story.service}</span>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => setExpandedIndex(expandedIndex === index ? null : index)}
-                        className="text-sm"
-                      >
-                        {expandedIndex === index ? "Show Less" : "Continue Reading"}
-                      </Button>
-                    </div>
-                  </Card>
-                </motion.div>
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-          
-          <div className="flex items-center justify-center mt-8">
-            <CarouselPrevious className="relative static translate-y-0 mr-2" />
-            <CarouselDots total={successStories.length} current={current} onDotClick={(index) => api?.scrollTo(index)} />
-            <CarouselNext className="relative static translate-y-0 ml-2" />
-          </div>
-        </Carousel>
+                    </Card>
+                  </motion.div>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            
+            <div className="flex items-center justify-center mt-8">
+              <CarouselPrevious className="relative static translate-y-0 mr-2" />
+              <CarouselDots total={successStories.length} current={current} onDotClick={(index) => api?.scrollTo(index)} />
+              <CarouselNext className="relative static translate-y-0 ml-2" />
+            </div>
+          </Carousel>
+        </div>
       </div>
     </section>
   );
