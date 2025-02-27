@@ -1,6 +1,5 @@
 
 import { memo } from "react";
-import ReviewsHeader from "./ReviewsHeader";
 import ReviewsList from "./ReviewsList";
 import { ErrorBoundary } from "react-error-boundary";
 import ErrorFallback from "@/components/ErrorFallback";
@@ -28,9 +27,8 @@ const ReviewsContainer = memo(({
   return (
     <ErrorBoundary FallbackComponent={ErrorFallback}>
       <SchemaScripts schemas={[{ type: 'LocalBusiness', data: reviewsSchema }]} />
-      <section className="py-20 bg-white">
+      <section className="py-8 bg-white">
         <div className="container mx-auto px-4">
-          <ReviewsHeader location={location} />
           <ReviewsList reviews={displayedReviews} isLoading={isLoading} />
         </div>
       </section>
