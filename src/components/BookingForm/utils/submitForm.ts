@@ -17,6 +17,7 @@ export const submitBookingForm = async (
   const gateCode = formData.get("gate_code") as string;
   const otherService = formData.get("other_service") as string;
   const allKeysLost = formData.get("all_keys_lost") as string;
+  const hasUnusedKey = formData.get("has_unused_key") as string;
 
   // Format address with unit number if provided
   const formattedAddress = unitNumber 
@@ -30,7 +31,8 @@ export const submitBookingForm = async (
       year: formData.get("vehicle_year") as string,
       make: formData.get("vehicle_make") as string,
       model: formData.get("vehicle_model") as string,
-      all_keys_lost: allKeysLost === "yes"
+      all_keys_lost: allKeysLost === "yes",
+      has_unused_key: hasUnusedKey === "yes"
     };
   }
 

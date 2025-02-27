@@ -45,6 +45,7 @@ export interface BookingSubmission extends BaseSubmission {
     make: string;
     model: string;
     all_keys_lost?: boolean;
+    has_unused_key?: boolean;
   } | null;
 }
 

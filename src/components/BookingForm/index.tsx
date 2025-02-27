@@ -10,6 +10,7 @@ import TimeframeSelection from "./FormFields/TimeframeSelection";
 import OtherServiceField from "./FormFields/OtherServiceField";
 import AdditionalNotes from "./FormFields/AdditionalNotes";
 import AllKeysLostField from "./FormFields/AllKeysLostField";
+import UnusedKeyField from "./FormFields/UnusedKeyField";
 import SubmitButton from "./SubmitButton";
 import Recaptcha from "@/components/ui/recaptcha";
 import { useState } from "react";
@@ -30,12 +31,15 @@ const BookingForm = () => {
     setIsSubmitting,
     selectedService,
     allKeysLost,
+    hasUnusedKey,
     showVehicleInfo,
     showAllKeysLostField,
+    showUnusedKeyField,
     errors,
     setErrors,
     handleServiceChange,
     handleAllKeysLostChange,
+    handleUnusedKeyChange,
   } = useBookingFormState();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -55,6 +59,10 @@ const BookingForm = () => {
     
     if (showAllKeysLostField) {
       formData.set('all_keys_lost', allKeysLost);
+    }
+    
+    if (showUnusedKeyField) {
+      formData.set('has_unused_key', hasUnusedKey);
     }
     
     const validationResult = validateForm(formData, showVehicleInfo);
@@ -163,6 +171,14 @@ const BookingForm = () => {
             isSubmitting={isSubmitting}
             onChange={handleAllKeysLostChange}
             value={allKeysLost}
+          />
+        )}
+
+        {showUnusedKeyField && (
+          <UnusedKeyField
+            isSubmitting={isSubmitting}
+            onChange={handleUnusedKeyChange}
+            value={hasUnusedKey}
           />
         )}
 
