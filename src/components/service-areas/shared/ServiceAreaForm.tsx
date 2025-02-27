@@ -46,7 +46,7 @@ const ServiceAreaForm = ({ locationName }: ServiceAreaFormProps) => {
   return (
     <section className="bg-white rounded-xl shadow-md overflow-hidden" id="contact-form">
       <div className="bg-gradient-to-r from-primary to-primary/90 text-white p-6 md:p-8">
-        <h2 className="text-2xl md:text-3xl font-bold mb-2">
+        <h2 className="text-2xl md:text-3xl font-bold mb-2 text-white">
           Contact Your {locationName} Locksmith
         </h2>
         <p className="text-white/90">
