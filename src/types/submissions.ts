@@ -20,8 +20,8 @@ export interface BaseSubmission {
   name: string;
   phone: string;
   address: string;
-  unit_number?: string;
-  gate_code?: string;
+  unit_number?: string | null;
+  gate_code?: string | null;
   status: 'pending';
   visitor_info: Record<string, string>;  // Changed to match Json type
   source_url: string;
@@ -44,6 +44,7 @@ export interface BookingSubmission extends BaseSubmission {
     year: string;
     make: string;
     model: string;
+    all_keys_lost?: boolean;
   } | null;
 }
 

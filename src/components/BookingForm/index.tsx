@@ -9,6 +9,7 @@ import VehicleFields from "./FormFields/VehicleFields";
 import TimeframeSelection from "./FormFields/TimeframeSelection";
 import OtherServiceField from "./FormFields/OtherServiceField";
 import AdditionalNotes from "./FormFields/AdditionalNotes";
+import AllKeysLostField from "./FormFields/AllKeysLostField";
 import SubmitButton from "./SubmitButton";
 import Recaptcha from "@/components/ui/recaptcha";
 import { useState } from "react";
@@ -28,10 +29,13 @@ const BookingForm = () => {
     isSubmitting,
     setIsSubmitting,
     selectedService,
+    allKeysLost,
     showVehicleInfo,
+    showAllKeysLostField,
     errors,
     setErrors,
     handleServiceChange,
+    handleAllKeysLostChange,
   } = useBookingFormState();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -48,6 +52,10 @@ const BookingForm = () => {
 
     const formData = new FormData(e.currentTarget);
     formData.set('address', address);
+    
+    if (showAllKeysLostField) {
+      formData.set('all_keys_lost', allKeysLost);
+    }
     
     const validationResult = validateForm(formData, showVehicleInfo);
     if (!validationResult.isValid) {
@@ -149,6 +157,14 @@ const BookingForm = () => {
           isSubmitting={isSubmitting}
           onServiceChange={handleServiceChange}
         />
+
+        {showAllKeysLostField && (
+          <AllKeysLostField
+            isSubmitting={isSubmitting}
+            onChange={handleAllKeysLostChange}
+            value={allKeysLost}
+          />
+        )}
 
         {showVehicleInfo && (
           <VehicleFields errors={errors} isSubmitting={isSubmitting} />

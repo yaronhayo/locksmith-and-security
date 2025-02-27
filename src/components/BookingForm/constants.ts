@@ -1,12 +1,40 @@
 
 export const services = [
+  // Emergency Locksmith
   "Car Lockout",
-  "Car Key Programming",
   "House Lockout",
+  "Business Lockout",
+  "Storage Unit Lockout",
+  
+  // Residential Locksmith
+  "Lock Replacement",
   "Lock Rekey",
-  "Business Lock Change",
+  "Lock Repair",
+  "Gate Locks",
+  
+  // Commercial Locksmith
+  "Commercial Lock Replacement",
+  "Commercial Lock Rekey",
+  "Master Key System",
+  "Access Control",
+  "Emergency Exit Device",
+  
+  // Automotive Locksmith
+  "Car Key Replacement",
+  "Key Fob Programming",
+  "Car Key Duplicate",
+  "Car Key Cutting",
+  "Ignition Lock Cylinder Repair",
+  
   "Other"
 ] as const;
+
+export const carKeyServices = [
+  "Car Key Replacement",
+  "Key Fob Programming",
+  "Car Key Duplicate",
+  "Car Key Cutting"
+];
 
 export const timeframes = [
   "ASAP",

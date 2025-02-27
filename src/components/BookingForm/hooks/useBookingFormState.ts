@@ -1,41 +1,38 @@
 
 import { useState } from "react";
-import { BookingFormState } from "../types";
+import { carKeyServices } from "../constants";
 
 export const useBookingFormState = () => {
-  const [state, setState] = useState<BookingFormState>({
-    isSubmitting: false,
-    selectedService: "",
-    showVehicleInfo: false,
-    recaptchaToken: null,
-    errors: {},
-  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [selectedService, setSelectedService] = useState("");
+  const [allKeysLost, setAllKeysLost] = useState("no");
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
   const handleServiceChange = (value: string) => {
-    setState(prev => ({
-      ...prev,
-      selectedService: value,
-      showVehicleInfo: value.toLowerCase().includes("car")
-    }));
+    setSelectedService(value);
+    
+    // Clear vehicle info errors when changing service
+    const { vehicle_year, vehicle_make, vehicle_model, ...remainingErrors } = errors;
+    setErrors(remainingErrors);
   };
 
-  const setIsSubmitting = (isSubmitting: boolean) => {
-    setState(prev => ({ ...prev, isSubmitting }));
+  const handleAllKeysLostChange = (value: string) => {
+    setAllKeysLost(value);
   };
 
-  const setErrors = (errors: Record<string, string>) => {
-    setState(prev => ({ ...prev, errors }));
-  };
-
-  const setRecaptchaToken = (token: string | null) => {
-    setState(prev => ({ ...prev, recaptchaToken: token }));
-  };
+  const showVehicleInfo = selectedService === "Car Lockout" || carKeyServices.includes(selectedService);
+  const showAllKeysLostField = carKeyServices.includes(selectedService);
 
   return {
-    ...state,
+    isSubmitting,
     setIsSubmitting,
+    selectedService,
+    allKeysLost,
+    showVehicleInfo,
+    showAllKeysLostField,
+    errors,
     setErrors,
     handleServiceChange,
-    setRecaptchaToken,
+    handleAllKeysLostChange,
   };
 };
