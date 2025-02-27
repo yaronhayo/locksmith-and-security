@@ -69,7 +69,7 @@ const services = [
     icon: Car,
     subIcons: {
       "Car Key Replacement": Key,
-      "Key Fob Programming": Shield,
+      "Key Fob Programming": Key,
       "Car Key Duplicate": Wrench,
       "Ignition Repair": Wrench
     },
