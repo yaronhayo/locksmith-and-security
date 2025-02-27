@@ -254,7 +254,10 @@ const ServicesPage = () => {
       }]
     }
   }}>
-      <ServicesHero title="Professional Locksmith Services" description="Expert residential, commercial, and automotive locksmith solutions by certified technicians. Licensed, bonded, and insured for your peace of mind." />
+      <ServicesHero 
+        title="Complete Locksmith & Security Solutions" 
+        description="Trusted by homeowners and businesses across New Jersey for professional locksmith services, emergency assistance, and modern security installations. Available 24/7 with certified technicians." 
+      />
       <ServicesFeatures />
       <ServicesGrid />
       <RealLifeStories />
