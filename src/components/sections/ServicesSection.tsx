@@ -134,28 +134,6 @@ const ServicesSection = () => {
                     <div className="space-y-2 mb-6 w-full">
                       {service.subServices.map((subService, subIndex) => {
                         const SubIcon = service.subIcons[subService.name as keyof typeof service.subIcons];
-                        
-                        // Special case for "Key Fob Programming" to show two car key icons
-                        if (subService.name === "Key Fob Programming") {
-                          return (
-                            <div key={subIndex} className="flex items-center justify-center">
-                              <Link 
-                                to={subService.link}
-                                className="flex items-center text-sm text-gray-600 py-1.5 hover:text-primary relative"
-                              >
-                                <div className="flex -space-x-1 mr-2">
-                                  <Key className="w-3.5 h-3.5 text-primary/70" />
-                                  <Key className="w-3.5 h-3.5 text-primary/80" />
-                                </div>
-                                <span className="relative inline-block">
-                                  {subService.name}
-                                  <span className="absolute bottom-0 left-0 right-0 w-0 h-[1px] bg-primary transition-all duration-300 hover:w-full"></span>
-                                </span>
-                              </Link>
-                            </div>
-                          );
-                        }
-                        
                         return (
                           <div key={subIndex} className="flex items-center justify-center">
                             <Link 
