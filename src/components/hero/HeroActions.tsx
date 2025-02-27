@@ -1,7 +1,7 @@
 
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { Phone, ArrowRight, Settings } from "lucide-react";
+import { Phone, ArrowRight, Wrench } from "lucide-react";
 
 const HeroActions = () => {
   return (
@@ -32,7 +32,7 @@ const HeroActions = () => {
         aria-label="View our services"
       >
         <a href="/services" className="inline-flex items-center justify-center">
-          <Settings className="mr-2 h-5 w-5 transition-colors duration-300 group-hover:text-secondary" aria-hidden="true" />
+          <Wrench className="mr-2 h-5 w-5 transition-colors duration-300 group-hover:text-secondary" aria-hidden="true" />
           <span className="transition-colors duration-300 group-hover:text-secondary">Our Services</span>
           <ArrowRight className="ml-2 h-5 w-5 transform transition-transform duration-300 group-hover:translate-x-2 group-hover:text-secondary" aria-hidden="true" />
         </a>
