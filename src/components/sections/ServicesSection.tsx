@@ -9,7 +9,7 @@ const services = [
     icon: BellRing, 
     subIcons: {
       "Car Lockout": Car,
-      "House Lockout": Key,
+      "House Lockout": House,
       "Business Lockout": Building2,
       "Storage Unit Lockout": Lock
     },
