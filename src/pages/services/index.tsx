@@ -260,9 +260,9 @@ const ServicesPage = () => {
       />
       <ServicesGrid />
       <ServicesFeatures />
+      <RealLifeStories />
       <FAQSection title="Frequently Asked Questions" description="Find answers to common questions about our locksmith services" faqs={generalFaqs} />
       <ReviewsSection location="North Bergen" />
-      <RealLifeStories />
       <ServicesCTA />
     </PageLayout>;
 };
