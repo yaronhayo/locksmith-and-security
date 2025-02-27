@@ -255,9 +255,9 @@ const ServicesPage = () => {
     }
   }}>
       <ServicesHero title="Professional Locksmith Services" description="Expert residential, commercial, and automotive locksmith solutions by certified technicians. Licensed, bonded, and insured for your peace of mind." />
-      <RealLifeStories />
       <ServicesFeatures />
       <ServicesGrid />
+      <RealLifeStories />
       <ReviewsSection location="North Bergen" />
       <FAQSection title="Frequently Asked Questions" description="Find answers to common questions about our locksmith services" faqs={generalFaqs} />
       <ServicesCTA />
