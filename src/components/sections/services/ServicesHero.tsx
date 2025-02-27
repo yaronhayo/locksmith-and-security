@@ -53,8 +53,9 @@ const ServicesHero: React.FC<ServicesHeroProps> = ({ title, description }) => {
           >
             <Button 
               size="lg" 
+              variant="outline" 
               asChild 
-              className="bg-[#ffa500] hover:bg-[#ffa500]/90 text-white hover:text-black transition-all duration-300 text-base sm:text-lg py-6 sm:py-7 px-6"
+              className="border-2 border-white text-white bg-transparent hover:bg-white/15 transition-all duration-300 text-base sm:text-lg py-6 sm:py-7 px-6"
             >
               <a href="tel:2017482070" className="flex items-center">
                 <Phone className="mr-3 h-5 w-5" />
@@ -62,9 +63,10 @@ const ServicesHero: React.FC<ServicesHeroProps> = ({ title, description }) => {
               </a>
             </Button>
             <Button 
-              size="lg"
+              size="lg" 
+              variant="secondary" 
               asChild 
-              className="bg-primary text-white hover:bg-primary-hover transition-all duration-300 font-medium text-base sm:text-lg py-6 sm:py-7 px-6"
+              className="text-primary bg-secondary hover:bg-secondary-hover transition-all duration-300 font-medium text-base sm:text-lg py-6 sm:py-7 px-6"
             >
               <Link to="/book-online" className="flex items-center">
                 Book Online
