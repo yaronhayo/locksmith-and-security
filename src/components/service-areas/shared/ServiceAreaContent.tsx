@@ -9,7 +9,6 @@ import ServiceAreaReviews from "./ServiceAreaReviews";
 import { FAQSchema } from "@/types/schema";
 import ServicesList from "./ServicesList";
 import { Review } from "@/types/reviews";
-import ServiceAreaTestimonial from "./ServiceAreaTestimonial";
 import ServiceAreaEmergency from "./ServiceAreaEmergency";
 import ServiceAreaNeighborhoods from "./ServiceAreaNeighborhoods";
 import ServiceAreaSecurityTips from "./ServiceAreaSecurityTips";
@@ -70,8 +69,6 @@ const ServiceAreaContent = ({
       <ServiceAreaNeighborhoods locationName={locationName} locationSlug={locationSlug} />
       
       <ServiceAreaSecurityTips locationName={locationName} />
-      
-      <ServiceAreaTestimonial locationName={locationName} />
       
       <ServiceAreaForm locationName={locationName} />
       
