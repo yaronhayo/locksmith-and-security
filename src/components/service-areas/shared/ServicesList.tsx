@@ -12,21 +12,21 @@ const services = [
     icon: House,
     title: "Residential Locksmith",
     description: "House lockouts, lock changes, rekeying, and security upgrades for your home.",
-    link: "/services/house-lockout",
+    link: "/services/residential-locksmith",
     features: ["24/7 Emergency Service", "Key Duplication", "Lock Installation", "Security Consultation"]
   },
   {
     icon: Car,
     title: "Automotive Locksmith",
     description: "Car lockouts, key replacement, and programming for all vehicle makes and models.",
-    link: "/services/car-lockout",
+    link: "/services/auto-locksmith",
     features: ["Emergency Car Lockout", "Key Programming", "Key Replacement", "Transponder Keys"]
   },
   {
     icon: Building2,
     title: "Commercial Locksmith",
     description: "Business security solutions, master key systems, and access control installation.",
-    link: "/services/business-lockout",
+    link: "/services/commercial-locksmith",
     features: ["Access Control", "Master Key Systems", "Lock Maintenance", "Security Upgrades"]
   }
 ];
