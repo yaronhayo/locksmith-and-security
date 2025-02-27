@@ -90,7 +90,7 @@ const BookingForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-2.5" role="form" aria-label="Service booking form">
+    <form onSubmit={handleSubmit} className="space-y-2.5 max-w-full overflow-x-hidden" role="form" aria-label="Service booking form">
       <div className="space-y-2.5">
         <PersonalInfoFields errors={errors} isSubmitting={isSubmitting} />
         

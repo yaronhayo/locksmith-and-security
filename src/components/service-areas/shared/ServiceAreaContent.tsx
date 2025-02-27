@@ -37,7 +37,7 @@ const ServiceAreaContent = ({
   faqSchema
 }: ServiceAreaContentProps) => {
   return (
-    <div className="space-y-8 sm:space-y-10 md:space-y-12">
+    <div className="space-y-8 sm:space-y-10 md:space-y-12 max-w-full">
       <div className="bg-white rounded-xl shadow-md overflow-hidden p-4 sm:p-6 md:p-8">
         <ServiceAreaHero areaName={locationName} />
       </div>

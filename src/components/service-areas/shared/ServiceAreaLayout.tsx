@@ -48,12 +48,12 @@ const ServiceAreaLayout = ({ areaSlug }: ServiceAreaLayoutProps) => {
         <meta name="ICBM" content={`${location.lat}, ${location.lng}`} />
       </Helmet>
 
-      <div className="container mx-auto px-4 py-4 sm:py-6 md:py-8">
+      <div className="container mx-auto px-4 py-4 sm:py-6 md:py-8 overflow-hidden">
         <Breadcrumbs />
         
-        <Card className="mt-4 sm:mt-6 md:mt-8 border-secondary/20 shadow-md overflow-hidden">
-          <div className="bg-gradient-to-r from-secondary/10 to-secondary/5 p-4 sm:p-6 md:p-8 lg:p-12">
-            <CardContent className="p-0">
+        <Card className="mt-4 sm:mt-6 md:mt-8 border-secondary/20 shadow-md">
+          <div className="bg-gradient-to-r from-secondary/10 to-secondary/5 p-4 sm:p-6 md:p-8 lg:p-10">
+            <CardContent className="p-0 max-w-full overflow-hidden">
               <ServiceAreaContent 
                 locationName={location.name}
                 locationDescription={location.description}

@@ -29,15 +29,15 @@ const ServiceAreaHero = ({ areaName, isLoading = false }: ServiceAreaHeroProps) 
   }
 
   return (
-    <div className="grid md:grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+    <div className="flex flex-col lg:flex-row gap-8 items-start">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="space-y-6"
+        className="space-y-6 w-full lg:w-1/2"
       >
         <div className="flex items-center gap-2">
-          <MapPin className="h-5 w-5 md:h-6 md:w-6 text-primary" />
+          <MapPin className="h-5 w-5 md:h-6 md:w-6 text-primary flex-shrink-0" />
           <h1 className="text-xl sm:text-2xl md:text-3xl font-bold">Serving {areaName}, NJ</h1>
         </div>
         <p className="text-base sm:text-lg text-gray-700 md:text-xl">
@@ -64,7 +64,7 @@ const ServiceAreaHero = ({ areaName, isLoading = false }: ServiceAreaHeroProps) 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.2 }}
-        className="bg-white rounded-xl shadow-sm p-4 sm:p-6"
+        className="bg-white rounded-xl shadow-sm p-4 sm:p-6 w-full lg:w-1/2 overflow-hidden"
       >
         <h2 className="text-lg sm:text-xl font-bold mb-4 text-primary">Book Your Locksmith Service</h2>
         <BookingForm />

@@ -54,7 +54,7 @@ const ServiceAreaForm = ({ locationName }: ServiceAreaFormProps) => {
         </p>
       </div>
       
-      <div className="p-8 md:p-12 max-w-3xl mx-auto">
+      <div className="p-4 sm:p-6 md:p-8 lg:p-10 max-w-3xl mx-auto">
         {isSubmitted ? (
           <motion.div 
             initial={{ opacity: 0, scale: 0.9 }}
@@ -65,8 +65,8 @@ const ServiceAreaForm = ({ locationName }: ServiceAreaFormProps) => {
             <p>Your message has been sent successfully. A member of our team will contact you shortly.</p>
           </motion.div>
         ) : (
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="grid md:grid-cols-2 gap-6">
+          <form onSubmit={handleSubmit} className="space-y-4 max-w-full">
+            <div className="grid md:grid-cols-2 gap-4 sm:gap-6">
               <div>
                 <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">Your Name</label>
                 <input
@@ -75,7 +75,7 @@ const ServiceAreaForm = ({ locationName }: ServiceAreaFormProps) => {
                   name="name"
                   value={formState.name}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-secondary focus:border-secondary"
+                  className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-md focus:ring-secondary focus:border-secondary"
                   required
                 />
               </div>
@@ -88,7 +88,7 @@ const ServiceAreaForm = ({ locationName }: ServiceAreaFormProps) => {
                   name="phone"
                   value={formState.phone}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-secondary focus:border-secondary"
+                  className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-md focus:ring-secondary focus:border-secondary"
                   required
                 />
               </div>
@@ -102,7 +102,7 @@ const ServiceAreaForm = ({ locationName }: ServiceAreaFormProps) => {
                 name="email"
                 value={formState.email}
                 onChange={handleChange}
-                className="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-secondary focus:border-secondary"
+                className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-md focus:ring-secondary focus:border-secondary"
                 required
               />
             </div>
@@ -114,7 +114,7 @@ const ServiceAreaForm = ({ locationName }: ServiceAreaFormProps) => {
                 name="service"
                 value={formState.service}
                 onChange={handleChange}
-                className="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-secondary focus:border-secondary"
+                className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-md focus:ring-secondary focus:border-secondary"
                 required
               >
                 <option value="">Select a service</option>
@@ -134,7 +134,7 @@ const ServiceAreaForm = ({ locationName }: ServiceAreaFormProps) => {
                 value={formState.message}
                 onChange={handleChange}
                 rows={4}
-                className="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-secondary focus:border-secondary"
+                className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-md focus:ring-secondary focus:border-secondary"
                 required
               />
             </div>
@@ -154,7 +154,7 @@ const ServiceAreaForm = ({ locationName }: ServiceAreaFormProps) => {
           </form>
         )}
         
-        <div className="mt-12 grid md:grid-cols-3 gap-6">
+        <div className="mt-8 sm:mt-10 md:mt-12 grid grid-cols-1 sm:grid-cols-3 gap-6">
           <div className="flex flex-col items-center text-center">
             <div className="w-12 h-12 rounded-full bg-secondary/10 flex items-center justify-center mb-3">
               <Phone className="h-5 w-5 text-secondary" />
