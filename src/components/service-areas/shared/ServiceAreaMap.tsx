@@ -1,62 +1,45 @@
 
-import { AspectRatio } from "@/components/ui/aspect-ratio";
 import GoogleMapsProvider from "@/components/providers/GoogleMapsProvider";
 import GoogleMap from "@/components/map/GoogleMap";
-import { useLocations } from "@/hooks/useLocations";
-import MapError from "@/components/map/MapError";
+import { MapMarker } from "@/types/service-area";
 import { ErrorBoundary } from "react-error-boundary";
-import LoadingSpinner from "@/components/LoadingSpinner";
+import MapError from "@/components/map/MapError";
 
 interface ServiceAreaMapProps {
   locationName: string;
+  lat: number;
+  lng: number;
 }
 
-const ServiceAreaMap = ({ locationName }: ServiceAreaMapProps) => {
-  const { data: locations, error, isLoading } = useLocations();
-  
-  if (error) {
-    return <MapError error={error.message} />;
-  }
-
-  if (isLoading || !locations) {
-    return (
-      <div className="w-full h-[400px] flex items-center justify-center bg-gray-50 rounded-xl">
-        <LoadingSpinner />
-      </div>
-    );
-  }
-
-  const location = locations.find(
-    loc => loc.name.toLowerCase() === locationName.toLowerCase()
-  );
-
-  if (!location) {
-    console.error(`Location not found: ${locationName}`);
-    return <MapError error={`Location not found: ${locationName}`} />;
-  }
-
-  const markers = [{
-    lat: location.lat,
-    lng: location.lng,
-    title: location.name,
-    slug: location.slug
-  }];
+const ServiceAreaMap = ({ locationName, lat, lng }: ServiceAreaMapProps) => {
+  const markers: MapMarker[] = [
+    {
+      lat,
+      lng,
+      title: `${locationName} Locksmith Services`,
+      slug: locationName.toLowerCase().replace(/\s+/g, '-')
+    }
+  ];
 
   return (
-    <ErrorBoundary FallbackComponent={MapError}>
-      <div className="relative w-full rounded-xl overflow-hidden shadow-lg">
-        <AspectRatio ratio={16/9}>
+    <div className="bg-white rounded-xl shadow-sm overflow-hidden">
+      <div className="p-4 bg-gray-50 border-b border-gray-200">
+        <h3 className="text-lg font-semibold text-gray-800">Serving {locationName}, NJ</h3>
+        <p className="text-sm text-gray-600">Fast response to all areas of {locationName}</p>
+      </div>
+      <div className="h-[400px]">
+        <ErrorBoundary FallbackComponent={MapError}>
           <GoogleMapsProvider>
             <GoogleMap
               markers={markers}
               showAllMarkers={true}
               zoom={14}
-              center={{ lat: location.lat, lng: location.lng }}
+              center={{ lat, lng }}
             />
           </GoogleMapsProvider>
-        </AspectRatio>
+        </ErrorBoundary>
       </div>
-    </ErrorBoundary>
+    </div>
   );
 };
 

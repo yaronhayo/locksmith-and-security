@@ -11,9 +11,16 @@ import ServiceAreaReviews from "./ServiceAreaReviews";
 import { FAQSchema } from "@/types/schema";
 import ServicesList from "./ServicesList";
 import { Review } from "@/types/reviews";
+import ServiceAreaTestimonial from "./ServiceAreaTestimonial";
+import ServiceAreaEmergency from "./ServiceAreaEmergency";
+import ServiceAreaNeighborhoods from "./ServiceAreaNeighborhoods";
+import ServiceAreaSecurityTips from "./ServiceAreaSecurityTips";
 
 interface ServiceAreaContentProps {
   locationName: string;
+  locationDescription?: string;
+  locationSlug: string;
+  locationCoordinates: {lat: number, lng: number};
   displayedReviews?: Review[];
   isLoading?: boolean;
   totalReviews?: number;
@@ -22,6 +29,9 @@ interface ServiceAreaContentProps {
 
 const ServiceAreaContent = ({
   locationName,
+  locationDescription,
+  locationSlug,
+  locationCoordinates,
   displayedReviews,
   isLoading: reviewsLoading,
   totalReviews,
@@ -38,14 +48,30 @@ const ServiceAreaContent = ({
         transition={{ duration: 0.5 }}
         className="grid lg:grid-cols-2 gap-8 items-start"
       >
-        <ServiceAreaInfo locationName={locationName} />
+        <ServiceAreaInfo 
+          locationName={locationName} 
+          locationDescription={locationDescription}
+        />
         <div className="lg:sticky lg:top-24">
-          <ServiceAreaMap locationName={locationName} />
+          <ServiceAreaMap 
+            locationName={locationName} 
+            lat={locationCoordinates.lat} 
+            lng={locationCoordinates.lng} 
+          />
         </div>
       </motion.div>
 
+      <ServiceAreaEmergency locationName={locationName} />
+      
       <ServiceAreaFeatures />
+      
       <ServicesList areaName={locationName} />
+      
+      <ServiceAreaNeighborhoods locationName={locationName} locationSlug={locationSlug} />
+      
+      <ServiceAreaSecurityTips locationName={locationName} />
+      
+      <ServiceAreaTestimonial locationName={locationName} />
       
       <ServiceAreaForm />
       

@@ -60,24 +60,36 @@ export const createServiceAreaSchemas = (
   const faqSchema = createFAQSchema({
     questions: [
       {
+        question: `What locksmith services do you offer in ${location.name}?`,
+        answer: `We provide comprehensive locksmith services throughout ${location.name}, including residential locksmith services (lock installation, rekeying, repair), commercial locksmith services (master key systems, access control), and automotive locksmith services (car key replacement, programming, ignition repair).`
+      },
+      {
+        question: `How quickly can a locksmith arrive at my location in ${location.name}?`,
+        answer: `As a local locksmith service with technicians based in and around ${location.name}, we can typically arrive quickly to assist you. We prioritize emergency situations and aim to provide the fastest possible response.`
+      },
+      {
+        question: "Are your locksmith technicians licensed and insured?",
+        answer: "Yes, all our technicians are fully licensed, bonded, and insured professionals. We maintain all necessary certifications and stay up-to-date with the latest security technologies and techniques."
+      },
+      {
+        question: `What types of locks do you service in ${location.name}?`,
+        answer: `We service all types of locks in ${location.name}, including traditional deadbolts, smart locks, high-security locks, keyless entry systems, mortise locks, and padlocks. Our technicians are experienced with all major brands and lock types.`
+      },
+      {
+        question: `Do you offer emergency lockout services in ${location.name}?`,
+        answer: `Yes, we provide 24/7 emergency lockout services throughout ${location.name}. Whether you're locked out of your home, business, or vehicle, our emergency technicians can help you regain access quickly and safely.`
+      },
+      {
+        question: "Can you cut and program transponder keys and key fobs?",
+        answer: "Yes, we have the advanced equipment necessary to cut and program all types of transponder keys and key fobs for virtually all vehicle makes and models. Our automotive locksmith specialists are extensively trained in modern vehicle key technology."
+      },
+      {
         question: `What areas of ${location.name} do you serve?`,
-        answer: `We provide comprehensive locksmith services throughout all of ${location.name}, NJ and surrounding areas.`
+        answer: `We provide locksmith services to all neighborhoods and districts throughout ${location.name}, NJ. Our local technicians are familiar with the area and can reach any location in ${location.name} efficiently.`
       },
       {
-        question: "Are you available 24/7 for emergencies?",
-        answer: "Yes, we offer 24/7 emergency locksmith services for all residential, commercial, and automotive needs."
-      },
-      {
-        question: "Are your technicians certified?",
-        answer: "Yes, all our technicians are certified, licensed, and insured professionals."
-      },
-      {
-        question: `What are your most popular services in ${location.name}?`,
-        answer: "Our most requested services include emergency lockouts, car key replacement, and commercial lock installation."
-      },
-      {
-        question: "Do you provide written estimates?",
-        answer: "Yes, we provide detailed written estimates before beginning any work, ensuring complete transparency."
+        question: "What payment methods do you accept?",
+        answer: "We accept all major credit cards, cash, and contactless payment options. We can provide itemized receipts for all services performed."
       }
     ]
   });
