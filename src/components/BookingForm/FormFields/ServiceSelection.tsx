@@ -1,7 +1,7 @@
 
 import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { AlertCircle } from "lucide-react";
+import { AlertCircle, Star, Home, Building, Car } from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -52,9 +52,12 @@ const ServiceSelection = ({ error, isSubmitting, onServiceChange }: ServiceSelec
         >
           <SelectValue placeholder="Select Service Needed" />
         </SelectTrigger>
-        <SelectContent>
+        <SelectContent className="max-h-[300px]">
           <SelectGroup>
-            <SelectLabel>Emergency Services</SelectLabel>
+            <SelectLabel className="flex items-center">
+              <Star className="h-4 w-4 mr-2 text-yellow-500" />
+              Emergency Services
+            </SelectLabel>
             {emergencyServices.map((service) => (
               <SelectItem key={service} value={service}>
                 {service}
@@ -63,7 +66,10 @@ const ServiceSelection = ({ error, isSubmitting, onServiceChange }: ServiceSelec
           </SelectGroup>
           
           <SelectGroup>
-            <SelectLabel>Residential Services</SelectLabel>
+            <SelectLabel className="flex items-center">
+              <Home className="h-4 w-4 mr-2 text-primary" />
+              Residential Services
+            </SelectLabel>
             {residentialServices.map((service) => (
               <SelectItem key={service} value={service}>
                 {service}
@@ -72,7 +78,10 @@ const ServiceSelection = ({ error, isSubmitting, onServiceChange }: ServiceSelec
           </SelectGroup>
           
           <SelectGroup>
-            <SelectLabel>Commercial Services</SelectLabel>
+            <SelectLabel className="flex items-center">
+              <Building className="h-4 w-4 mr-2 text-primary" />
+              Commercial Services
+            </SelectLabel>
             {commercialServices.map((service) => (
               <SelectItem key={service} value={service}>
                 {service}
@@ -81,7 +90,10 @@ const ServiceSelection = ({ error, isSubmitting, onServiceChange }: ServiceSelec
           </SelectGroup>
           
           <SelectGroup>
-            <SelectLabel>Automotive Services</SelectLabel>
+            <SelectLabel className="flex items-center">
+              <Car className="h-4 w-4 mr-2 text-primary" />
+              Automotive Services
+            </SelectLabel>
             {automotiveServices.map((service) => (
               <SelectItem key={service} value={service}>
                 {service}

@@ -2,7 +2,7 @@
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { AlertCircle } from "lucide-react";
+import { AlertCircle, User, Phone } from "lucide-react";
 import { useState, useEffect } from "react";
 import { formatPhoneNumber, getNameError, getPhoneError } from "@/utils/inputValidation";
 
@@ -52,23 +52,26 @@ const PersonalInfoFields = ({ errors: externalErrors, isSubmitting }: PersonalIn
   const phoneError = externalErrors.phone || (isDirty.phone ? internalErrors.phone : null);
 
   return (
-    <>
+    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
       <div className="space-y-1.5">
         <Label htmlFor="name" className="text-sm">Your Name</Label>
-        <Input
-          id="name"
-          name="name"
-          type="text"
-          aria-describedby="name-error"
-          className={`h-9 text-sm ${nameError ? 'border-red-500' : ''}`}
-          disabled={isSubmitting}
-          autoComplete="name"
-          required
-          placeholder="Enter your name"
-          value={name}
-          onChange={handleNameChange}
-          onBlur={() => setIsDirty(prev => ({ ...prev, name: true }))}
-        />
+        <div className="relative">
+          <User className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+          <Input
+            id="name"
+            name="name"
+            type="text"
+            aria-describedby="name-error"
+            className={`h-10 text-sm pl-10 ${nameError ? 'border-red-500' : ''}`}
+            disabled={isSubmitting}
+            autoComplete="name"
+            required
+            placeholder="Enter your name"
+            value={name}
+            onChange={handleNameChange}
+            onBlur={() => setIsDirty(prev => ({ ...prev, name: true }))}
+          />
+        </div>
         {nameError && (
           <Alert variant="destructive" className="py-2 px-3">
             <AlertCircle className="h-4 w-4" />
@@ -79,20 +82,23 @@ const PersonalInfoFields = ({ errors: externalErrors, isSubmitting }: PersonalIn
 
       <div className="space-y-1.5">
         <Label htmlFor="phone" className="text-sm">Phone Number</Label>
-        <Input
-          id="phone"
-          name="phone"
-          type="tel"
-          aria-describedby="phone-error"
-          className={`h-9 text-sm ${phoneError ? 'border-red-500' : ''}`}
-          disabled={isSubmitting}
-          autoComplete="tel"
-          required
-          placeholder="Enter your phone number"
-          value={phone}
-          onChange={handlePhoneChange}
-          onBlur={() => setIsDirty(prev => ({ ...prev, phone: true }))}
-        />
+        <div className="relative">
+          <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+          <Input
+            id="phone"
+            name="phone"
+            type="tel"
+            aria-describedby="phone-error"
+            className={`h-10 text-sm pl-10 ${phoneError ? 'border-red-500' : ''}`}
+            disabled={isSubmitting}
+            autoComplete="tel"
+            required
+            placeholder="Enter your phone number"
+            value={phone}
+            onChange={handlePhoneChange}
+            onBlur={() => setIsDirty(prev => ({ ...prev, phone: true }))}
+          />
+        </div>
         {phoneError && (
           <Alert variant="destructive" className="py-2 px-3">
             <AlertCircle className="h-4 w-4" />
@@ -100,7 +106,7 @@ const PersonalInfoFields = ({ errors: externalErrors, isSubmitting }: PersonalIn
           </Alert>
         )}
       </div>
-    </>
+    </div>
   );
 };
 
