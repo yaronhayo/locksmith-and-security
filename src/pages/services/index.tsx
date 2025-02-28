@@ -193,7 +193,7 @@ const RealLifeStories = () => {
                       </p>
                       
                       <div className="mt-auto pt-4 flex items-center justify-between">
-                        <span className="text-sm font-medium text-primary">{story.service}</span>
+                        <span className="text-sm font-medium text-[#F97316]">{story.service}</span>
                         {expandedIndex === index && (
                           <Button 
                             variant="ghost" 
