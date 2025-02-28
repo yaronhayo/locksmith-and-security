@@ -13,7 +13,7 @@ const CarKeyCutting = () => {
         description="Professional car key cutting by experienced technicians. Expert service for all vehicle makes and models."
       />
       <ServicesFeatures />
-      <ServicesProof />
+      <ServicesProof category="car" />
       <ServicesCTA />
     </main>
   );

@@ -13,7 +13,7 @@ const CommercialLockRekey = () => {
         description="Professional commercial lock rekeying by certified technicians. Expert security solutions for your business."
       />
       <ServicesFeatures />
-      <ServicesProof />
+      <ServicesProof category="commercial" />
       <ServicesCTA />
     </main>
   );

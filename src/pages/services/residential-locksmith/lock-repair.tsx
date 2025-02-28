@@ -13,7 +13,7 @@ const LockRepair = () => {
         description="Professional lock repair services by experienced technicians. Expert solutions for all lock issues."
       />
       <ServicesFeatures />
-      <ServicesProof />
+      <ServicesProof category="residential" />
       <ServicesCTA />
     </main>
   );

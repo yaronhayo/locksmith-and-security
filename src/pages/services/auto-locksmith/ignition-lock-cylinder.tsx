@@ -13,7 +13,7 @@ const IgnitionLockCylinder = () => {
         description="Professional ignition lock cylinder service by certified technicians. Expert solutions for all vehicle makes and models."
       />
       <ServicesFeatures />
-      <ServicesProof />
+      <ServicesProof category="car" />
       <ServicesCTA />
     </main>
   );

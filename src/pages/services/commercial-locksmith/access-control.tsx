@@ -13,7 +13,7 @@ const AccessControl = () => {
         description="Professional access control system installation and maintenance by certified technicians. Expert security solutions for your business."
       />
       <ServicesFeatures />
-      <ServicesProof />
+      <ServicesProof category="commercial" />
       <ServicesCTA />
     </main>
   );

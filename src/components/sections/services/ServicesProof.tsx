@@ -3,14 +3,20 @@ import React from 'react';
 import { Review } from '@/types/reviews';
 import { StarIcon } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { reviews, reviewsByCategory } from '@/data/reviewsData';
 
 interface ServicesProofProps {
-  reviewsData: Review[];
+  reviewsData?: Review[];
+  category?: 'car' | 'residential' | 'commercial';
 }
 
-const ServicesProof: React.FC<ServicesProofProps> = ({ reviewsData }) => {
+const ServicesProof: React.FC<ServicesProofProps> = ({ reviewsData, category }) => {
+  // Use provided reviews data if available, otherwise use reviews based on category or default to all reviews
+  const displaySourceReviews = reviewsData || 
+    (category ? reviewsByCategory[category] : reviews);
+  
   // Take only the first 3 reviews for display
-  const displayReviews = reviewsData.slice(0, 3);
+  const displayReviews = displaySourceReviews.slice(0, 3);
   
   return (
     <section className="bg-gray-50 py-16">

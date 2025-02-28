@@ -13,7 +13,7 @@ const LockRekey = () => {
         description="Professional lock rekeying services by experienced technicians. Maintain your existing locks while updating security."
       />
       <ServicesFeatures />
-      <ServicesProof />
+      <ServicesProof category="residential" />
       <ServicesCTA />
     </main>
   );

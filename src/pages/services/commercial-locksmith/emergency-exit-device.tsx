@@ -13,7 +13,7 @@ const EmergencyExitDevice = () => {
         description="Professional emergency exit device installation by certified technicians. Expert solutions for commercial safety requirements."
       />
       <ServicesFeatures />
-      <ServicesProof />
+      <ServicesProof category="commercial" />
       <ServicesCTA />
     </main>
   );

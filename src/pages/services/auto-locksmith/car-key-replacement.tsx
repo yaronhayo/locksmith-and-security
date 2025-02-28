@@ -13,7 +13,7 @@ const CarKeyReplacement = () => {
         description="Professional car key replacement by certified technicians. Available 24/7 for all vehicle makes and models."
       />
       <ServicesFeatures />
-      <ServicesProof />
+      <ServicesProof category="car" />
       <ServicesCTA />
     </main>
   );

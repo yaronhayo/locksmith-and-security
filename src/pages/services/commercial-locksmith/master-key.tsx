@@ -13,7 +13,7 @@ const MasterKey = () => {
         description="Professional master key system design and implementation by certified technicians. Expert access control solutions for your business."
       />
       <ServicesFeatures />
-      <ServicesProof />
+      <ServicesProof category="commercial" />
       <ServicesCTA />
     </main>
   );

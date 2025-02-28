@@ -13,7 +13,7 @@ const CarKeyDuplicate = () => {
         description="Professional car key duplication services. Fast and accurate key copying for all vehicle types."
       />
       <ServicesFeatures />
-      <ServicesProof />
+      <ServicesProof category="car" />
       <ServicesCTA />
     </main>
   );

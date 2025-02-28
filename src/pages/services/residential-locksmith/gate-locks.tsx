@@ -13,7 +13,7 @@ const GateLocks = () => {
         description="Professional gate lock services by experienced technicians. Expert installation and repair solutions."
       />
       <ServicesFeatures />
-      <ServicesProof />
+      <ServicesProof category="residential" />
       <ServicesCTA />
     </main>
   );

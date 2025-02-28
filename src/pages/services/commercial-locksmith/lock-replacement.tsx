@@ -13,7 +13,7 @@ const CommercialLockReplacement = () => {
         description="Professional commercial lock replacement by certified technicians. Expert installation of high-security commercial grade locks."
       />
       <ServicesFeatures />
-      <ServicesProof />
+      <ServicesProof category="commercial" />
       <ServicesCTA />
     </main>
   );

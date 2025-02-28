@@ -13,7 +13,7 @@ const KeyFobProgramming = () => {
         description="Professional key fob programming by certified technicians. Expert service for all vehicle makes and models."
       />
       <ServicesFeatures />
-      <ServicesProof />
+      <ServicesProof category="car" />
       <ServicesCTA />
     </main>
   );
