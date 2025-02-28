@@ -65,8 +65,8 @@ export const navItems: readonly NavItem[] = [
       { path: "/service-areas/guttenberg", label: "Guttenberg" }
     ]
   },
-  { path: "/about", label: "About" },
+  { path: "/faq", label: "FAQ" },
   { path: "/reviews", label: "Reviews" },
-  { path: "/contact", label: "Contact" },
-  { path: "/faq", label: "FAQ" }
+  { path: "/about", label: "About" },
+  { path: "/contact", label: "Contact" }
 ] as const;
