@@ -1,4 +1,3 @@
-
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
 
 @tailwind base;
@@ -53,43 +52,6 @@
   
   h2 {
     @apply text-2xl sm:text-3xl md:text-4xl font-bold text-heading-primary;
-  }
-  
-  /* Override for h2 on blue/primary backgrounds */
-  [class*="bg-primary"] h2, 
-  [class*="from-primary"] h2,
-  [class*="to-primary"] h2,
-  [class*="via-primary"] h2,
-  .bg-gradient-to-br h2 {
-    @apply text-white !important;
-  }
-
-  /* Override for all headings (h1-h6) on blue/primary backgrounds */
-  [class*="bg-primary"] h1, 
-  [class*="bg-primary"] h2, 
-  [class*="bg-primary"] h3, 
-  [class*="bg-primary"] h4, 
-  [class*="bg-primary"] h5, 
-  [class*="bg-primary"] h6,
-  [class*="from-primary"] h1, 
-  [class*="from-primary"] h2, 
-  [class*="from-primary"] h3, 
-  [class*="from-primary"] h4, 
-  [class*="from-primary"] h5, 
-  [class*="from-primary"] h6,
-  [class*="to-primary"] h1, 
-  [class*="to-primary"] h2, 
-  [class*="to-primary"] h3, 
-  [class*="to-primary"] h4, 
-  [class*="to-primary"] h5, 
-  [class*="to-primary"] h6,
-  [class*="via-primary"] h1, 
-  [class*="via-primary"] h2, 
-  [class*="via-primary"] h3, 
-  [class*="via-primary"] h4, 
-  [class*="via-primary"] h5, 
-  [class*="via-primary"] h6 {
-    @apply text-white !important;
   }
   
   h3 {
@@ -163,20 +125,6 @@
   [class*="bg-secondary"]:hover svg {
     @apply text-black;
   }
-}
-
-/* Map marker styles for better visibility */
-.marker-label {
-  background-color: rgba(255, 255, 255, 0.8);
-  padding: 2px 5px;
-  border-radius: 3px;
-  border: 1px solid #ccc;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
-}
-
-.gm-style .gm-style-iw-d {
-  color: #222222;
-  font-weight: 500;
 }
 
 .hero-gradient {
