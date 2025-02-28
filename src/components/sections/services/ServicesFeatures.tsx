@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { motion } from "framer-motion";
 import { Shield, Award, Clock, Key, Check, Star } from "lucide-react";
@@ -8,22 +7,21 @@ const ServicesFeatures = () => {
     <section className="py-16 bg-gray-50 border-t border-b border-gray-100">
       <div className="container mx-auto px-4 text-center">
         <div className="mb-12">
-          <motion.span 
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            transition={{ duration: 0.5 }}
-            className="inline-block px-4 py-1 bg-primary/20 text-primary font-medium rounded-full text-sm mb-3"
-          >
-            Why Choose Us
-          </motion.span>
           <motion.h2 
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
-            className="text-2xl sm:text-3xl font-bold text-gray-800 mb-4 group inline-block relative hover:text-primary transition-colors duration-300"
+            className="text-2xl sm:text-3xl font-bold text-gray-800 mb-4"
           >
+            <motion.span 
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              transition={{ duration: 0.5 }}
+              className="inline-block px-4 py-1 bg-primary/20 text-primary font-medium rounded-full text-sm mb-3 block mx-auto"
+            >
+              Why Choose Us
+            </motion.span>
             Trusted <span className="border-b-2 border-primary pb-1">Professional Service</span>
-            <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-secondary group-hover:w-full transition-all duration-500"></span>
           </motion.h2>
         </div>
 
