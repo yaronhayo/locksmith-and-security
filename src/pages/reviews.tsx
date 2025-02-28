@@ -1,18 +1,18 @@
 
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React from "react";
 import PageLayout from "@/components/layouts/PageLayout";
 import ReviewCard from "@/components/reviews/ReviewCard";
 import { useReviews } from "@/components/reviews/useReviews";
 import { motion, AnimatePresence } from "framer-motion";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { createReviewsSchema } from "@/schemas/reviewsSchema";
+import LoadingSpinner from "@/components/LoadingSpinner";
 
 const ReviewsPage = () => {
   const { 
     displayedReviews, 
     isLoading, 
     loadingRef, 
-    loadMoreReviews, 
     totalReviews,
     hasMore 
   } = useReviews();
@@ -77,27 +77,19 @@ const ReviewsPage = () => {
             {/* Loading indicator and intersection observer target */}
             <div 
               ref={loadingRef} 
-              className="h-20 flex justify-center items-center"
-              onClick={() => !isLoading && hasMore && loadMoreReviews()}
+              className="h-24 flex justify-center items-center mb-8"
             >
               {isLoading && (
-                <div className="flex space-x-4">
-                  <div className="w-3 h-3 rounded-full bg-primary animate-bounce" style={{ animationDelay: "0ms" }}></div>
-                  <div className="w-3 h-3 rounded-full bg-primary animate-bounce" style={{ animationDelay: "150ms" }}></div>
-                  <div className="w-3 h-3 rounded-full bg-primary animate-bounce" style={{ animationDelay: "300ms" }}></div>
+                <div className="flex flex-col items-center space-y-2">
+                  <LoadingSpinner size="lg" className="text-primary" />
+                  <p className="text-sm text-gray-500 animate-pulse">
+                    Loading more reviews...
+                  </p>
                 </div>
-              )}
-              {!isLoading && hasMore && (
-                <button 
-                  className="text-primary hover:text-primary-dark transition-colors font-medium"
-                  onClick={loadMoreReviews}
-                >
-                  Load more reviews
-                </button>
               )}
               {!isLoading && !hasMore && displayedReviews.length > 0 && (
                 <p className="text-gray-500">
-                  Showing all {displayedReviews.length} reviews
+                  Showing all {displayedReviews.length} of {totalReviews} reviews
                 </p>
               )}
             </div>
@@ -110,11 +102,7 @@ const ReviewsPage = () => {
               transition={{ duration: 0.3 }}
               className="flex flex-col items-center gap-4"
             >
-              <div className="flex space-x-4">
-                <div className="w-3 h-3 rounded-full bg-primary animate-bounce" style={{ animationDelay: "0ms" }}></div>
-                <div className="w-3 h-3 rounded-full bg-primary animate-bounce" style={{ animationDelay: "150ms" }}></div>
-                <div className="w-3 h-3 rounded-full bg-primary animate-bounce" style={{ animationDelay: "300ms" }}></div>
-              </div>
+              <LoadingSpinner size="xl" className="text-primary" />
               <p className="text-xl text-gray-500">Loading reviews...</p>
             </motion.div>
           </div>
