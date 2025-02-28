@@ -9,7 +9,7 @@ export const useReviews = (location?: string, category?: ServiceCategory) => {
   const [page, setPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const loadingRef = useRef(null);
-  const pageSize = 6;
+  const pageSize = 9; // Increased from 6 to 9 to load more reviews at once
 
   const filteredReviews = useMemo(() => {
     if (!location && !category) return reviews;
