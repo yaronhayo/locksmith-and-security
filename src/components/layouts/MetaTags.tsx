@@ -37,9 +37,13 @@ const MetaTags = ({
       <title>{title}</title>
       
       <BasicMetaTags 
+        title={title}
         description={description}
         keywords={keywords}
-        robotsContent={robotsContent}
+        noindex={noindex}
+        nofollow={nofollow}
+        canonicalUrl={canonicalUrl || ""}
+        modifiedDate={new Date().toISOString()}
       />
       
       <OpenGraphTags 
