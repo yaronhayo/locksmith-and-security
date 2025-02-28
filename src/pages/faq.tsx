@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import PageLayout from "@/components/layouts/PageLayout";
 import { TabsContent, Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -11,7 +10,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
-import { Phone, Search, Home, Settings, Car, Building, AlertCircle } from "lucide-react";
+import { Phone, Search, Home, Settings, Car, Building, AlertCircle, HelpCircle, BookOpen } from "lucide-react";
 import { generalFaqs, residentialFaqs, automotiveFaqs, commercialFaqs, emergencyFaqs } from "@/data/faqData";
 import { motion } from "framer-motion";
 
@@ -157,40 +156,82 @@ const FAQPage = () => {
       canonicalUrl="https://www.locksmiths.com/faq"
       keywords="locksmith FAQ, locksmith questions, locksmith services, residential locksmith, commercial locksmith, automotive locksmith, emergency locksmith"
     >
-      <div className="bg-gradient-to-b from-gray-50 to-white">
-        <div className="container mx-auto px-4 py-12">
+      {/* Enhanced Hero Section */}
+      <div className="relative overflow-hidden bg-gradient-to-br from-primary/90 to-primary-hover text-white">
+        {/* Decorative elements */}
+        <div className="absolute top-0 left-0 w-full h-full">
+          <div className="absolute top-1/3 right-10 h-40 w-40 rounded-full bg-secondary/20 blur-2xl"></div>
+          <div className="absolute bottom-1/4 left-10 h-60 w-60 rounded-full bg-white/10 blur-3xl"></div>
+          <div className="absolute top-10 left-1/4 h-20 w-20 rounded-full bg-secondary/30 blur-xl"></div>
+          
+          {/* Question mark patterns */}
+          <div className="absolute top-20 right-1/4 opacity-10">
+            <HelpCircle size={80} />
+          </div>
+          <div className="absolute bottom-10 left-1/3 opacity-5">
+            <HelpCircle size={120} />
+          </div>
+          <div className="absolute top-1/3 left-10 opacity-5">
+            <BookOpen size={60} />
+          </div>
+        </div>
+        
+        <div className="container mx-auto px-4 py-20 md:py-28 relative z-10">
           <motion.div 
-            className="text-center mb-12"
+            className="max-w-3xl mx-auto text-center"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           >
-            <h1 className="text-4xl md:text-5xl font-bold text-primary mb-4">
-              Frequently Asked Questions
+            <div className="inline-flex items-center justify-center mb-6 bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full">
+              <HelpCircle className="w-5 h-5 mr-2 text-secondary" />
+              <span className="text-sm font-medium">Expert Answers to Your Questions</span>
+            </div>
+            
+            <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
+              Frequently Asked <span className="text-secondary">Questions</span>
             </h1>
-            <p className="text-gray-600 max-w-3xl mx-auto text-lg">
+            
+            <p className="text-xl text-white/80 max-w-2xl mx-auto mb-10">
               Browse our comprehensive collection of FAQs to find answers to your locksmith and security questions.
             </p>
+            
+            <motion.div 
+              className="relative max-w-2xl mx-auto"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+            >
+              <div className="relative bg-white/10 backdrop-blur-md rounded-lg p-1.5 flex items-center">
+                <Search className="absolute left-4 text-white/70" />
+                <Input
+                  type="text"
+                  placeholder="Search for questions or keywords..."
+                  value={searchQuery}
+                  onChange={handleSearch}
+                  className="pl-10 py-6 text-lg bg-transparent border-none text-white placeholder:text-white/50 focus:ring-secondary focus:ring-offset-0"
+                />
+              </div>
+            </motion.div>
           </motion.div>
-
-          <motion.div 
-            className="max-w-4xl mx-auto mb-10 relative"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.1 }}
+        </div>
+        
+        {/* Wave divider */}
+        <div className="absolute bottom-0 left-0 w-full overflow-hidden">
+          <svg 
+            xmlns="http://www.w3.org/2000/svg" 
+            viewBox="0 0 1200 120" 
+            preserveAspectRatio="none"
+            className="relative block w-full h-[60px]"
+            style={{ fill: '#f8fafc' }}  // Using a light background color
           >
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-              <Input
-                type="text"
-                placeholder="Search for questions or keywords..."
-                value={searchQuery}
-                onChange={handleSearch}
-                className="pl-10 py-6 text-lg rounded-lg border-gray-300 focus:border-primary shadow-sm"
-              />
-            </div>
-          </motion.div>
+            <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V120H0V0C90.3,0,192.79,26.59,281.58,44.06,336.09,55.07,378.2,62.24,435.34,64.94Z"></path>
+          </svg>
+        </div>
+      </div>
 
+      <div className="bg-gradient-to-b from-gray-50 to-white">
+        <div className="container mx-auto px-4 py-12">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
