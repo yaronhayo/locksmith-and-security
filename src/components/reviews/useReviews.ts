@@ -9,7 +9,8 @@ export const useReviews = (location?: string, category?: ServiceCategory) => {
   const [page, setPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const loadingRef = useRef(null);
-  const pageSize = 9; // Increased from 6 to 9 to load more reviews at once
+  const pageSize = 12; // Increased from 9 to 12 to show more reviews at once
+  const loadDelay = 150; // Reduced from default loading delay for faster perceived loading
 
   const filteredReviews = useMemo(() => {
     if (!location && !category) return reviews;
@@ -27,6 +28,19 @@ export const useReviews = (location?: string, category?: ServiceCategory) => {
     return filtered;
   }, [category, location]);
 
+  // Preload initial batch immediately when component renders
+  useEffect(() => {
+    const initialBatch = filteredReviews.slice(0, pageSize);
+    if (initialBatch.length > 0) {
+      // Use setTimeout with 0ms to push execution to the next event loop
+      // This creates a smoother initial load without delay
+      setTimeout(() => {
+        setDisplayedReviews(initialBatch);
+        setPage(2); // Start from page 2 for subsequent loads
+      }, 0);
+    }
+  }, [filteredReviews, pageSize]);
+
   const loadMoreReviews = useCallback(() => {
     if (isLoading) return;
     
@@ -38,36 +52,38 @@ export const useReviews = (location?: string, category?: ServiceCategory) => {
     const newReviews = filteredReviews.slice(startIndex, endIndex);
     
     if (newReviews.length > 0) {
-      setDisplayedReviews(prev => [...prev, ...newReviews]);
-      setPage(prev => prev + 1);
+      // Use a shorter timeout for a faster perceived loading experience
+      setTimeout(() => {
+        setDisplayedReviews(prev => [...prev, ...newReviews]);
+        setPage(prev => prev + 1);
+        setIsLoading(false);
+        
+        // Log performance metrics only in production
+        if (process.env.NODE_ENV === 'production') {
+          const duration = performance.now() - startTime;
+          logToService('info', 'Reviews load performance', {
+            duration,
+            batchSize: pageSize,
+            totalLoaded: displayedReviews.length + newReviews.length
+          });
+        }
+      }, loadDelay);
+    } else {
+      setIsLoading(false);
     }
-    setIsLoading(false);
-    
-    // Log performance metrics only in production
-    if (process.env.NODE_ENV === 'production') {
-      const duration = performance.now() - startTime;
-      logToService('info', 'Reviews load performance', {
-        duration,
-        batchSize: pageSize,
-        totalLoaded: displayedReviews.length + newReviews.length
-      });
-    }
-  }, [page, filteredReviews, isLoading, displayedReviews.length]);
+  }, [page, filteredReviews, isLoading, displayedReviews.length, pageSize, loadDelay]);
 
   useEffect(() => {
     setDisplayedReviews([]);
     setPage(1);
   }, [location, category]);
 
-  useEffect(() => {
-    loadMoreReviews();
-  }, [loadMoreReviews]);
-
   return {
     displayedReviews,
     isLoading,
     loadingRef,
     loadMoreReviews,
-    totalReviews: filteredReviews.length
+    totalReviews: filteredReviews.length,
+    hasMore: displayedReviews.length < filteredReviews.length
   };
 };

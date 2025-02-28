@@ -2,66 +2,44 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import PageLayout from "@/components/layouts/PageLayout";
 import ReviewCard from "@/components/reviews/ReviewCard";
-import { reviews } from "@/data/reviewsData";
-import { motion } from "framer-motion";
+import { useReviews } from "@/components/reviews/useReviews";
+import { motion, AnimatePresence } from "framer-motion";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { createReviewsSchema } from "@/schemas/reviewsSchema";
 
-const ITEMS_PER_PAGE = 12;
-
 const ReviewsPage = () => {
-  const [displayedReviews, setDisplayedReviews] = useState(reviews.slice(0, ITEMS_PER_PAGE));
-  const [currentPage, setCurrentPage] = useState(1);
-  const [loading, setLoading] = useState(false);
-  const loadingRef = useRef<HTMLDivElement>(null);
+  const { 
+    displayedReviews, 
+    isLoading, 
+    loadingRef, 
+    loadMoreReviews, 
+    totalReviews,
+    hasMore 
+  } = useReviews();
 
-  // Load more reviews when scrolling
-  const loadMoreReviews = useCallback(() => {
-    if (loading) return;
-    
-    const nextItems = reviews.slice(
-      displayedReviews.length,
-      displayedReviews.length + ITEMS_PER_PAGE
-    );
-    
-    if (nextItems.length > 0) {
-      setLoading(true);
-      // Simulate loading delay
-      setTimeout(() => {
-        setDisplayedReviews(prev => [...prev, ...nextItems]);
-        setCurrentPage(prev => prev + 1);
-        setLoading(false);
-      }, 500);
-    }
-  }, [displayedReviews.length, loading]);
-
-  // Intersection Observer for infinite scrolling
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting && !loading) {
-          loadMoreReviews();
-        }
-      },
-      { threshold: 0.1 }
-    );
-
-    if (loadingRef.current) {
-      observer.observe(loadingRef.current);
-    }
-
-    return () => {
-      if (loadingRef.current) {
-        observer.unobserve(loadingRef.current);
-      }
-    };
-  }, [loadMoreReviews, loading]);
-
-  // Get whether there are more reviews to load
-  const hasMoreReviews = displayedReviews.length < reviews.length;
-
-  // Generate schema for reviews with 4.9 average rating
+  // Generate schema for reviews
   const reviewsSchema = createReviewsSchema(displayedReviews);
+
+  // Animation variants for reviews
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: { 
+      opacity: 1,
+      transition: { 
+        staggerChildren: 0.03,
+        delayChildren: 0.01
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 10 },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: { duration: 0.25 }
+    }
+  };
 
   return (
     <PageLayout
@@ -75,31 +53,52 @@ const ReviewsPage = () => {
         {displayedReviews.length > 0 ? (
           <>
             <ScrollArea className="rounded-md">
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
-                {displayedReviews.map((review, index) => (
-                  <motion.div
-                    key={index}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.3, delay: index % ITEMS_PER_PAGE * 0.05 }}
-                  >
-                    <ReviewCard review={review} index={index} />
-                  </motion.div>
-                ))}
-              </div>
+              <motion.div 
+                className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16"
+                variants={containerVariants}
+                initial="hidden"
+                animate="visible"
+              >
+                <AnimatePresence>
+                  {displayedReviews.map((review, index) => (
+                    <motion.div
+                      key={`${review.name}-${index}`}
+                      variants={itemVariants}
+                      layout
+                      className="will-change-transform"
+                    >
+                      <ReviewCard review={review} index={index} />
+                    </motion.div>
+                  ))}
+                </AnimatePresence>
+              </motion.div>
             </ScrollArea>
 
             {/* Loading indicator and intersection observer target */}
-            <div ref={loadingRef} className="h-20 flex justify-center items-center">
-              {loading && (
+            <div 
+              ref={loadingRef} 
+              className="h-20 flex justify-center items-center"
+              onClick={() => !isLoading && hasMore && loadMoreReviews()}
+            >
+              {isLoading && (
                 <div className="flex space-x-4">
                   <div className="w-3 h-3 rounded-full bg-primary animate-bounce" style={{ animationDelay: "0ms" }}></div>
                   <div className="w-3 h-3 rounded-full bg-primary animate-bounce" style={{ animationDelay: "150ms" }}></div>
                   <div className="w-3 h-3 rounded-full bg-primary animate-bounce" style={{ animationDelay: "300ms" }}></div>
                 </div>
               )}
-              {!loading && !hasMoreReviews && (
-                <p className="text-gray-500">No more reviews to load</p>
+              {!isLoading && hasMore && (
+                <button 
+                  className="text-primary hover:text-primary-dark transition-colors font-medium"
+                  onClick={loadMoreReviews}
+                >
+                  Load more reviews
+                </button>
+              )}
+              {!isLoading && !hasMore && displayedReviews.length > 0 && (
+                <p className="text-gray-500">
+                  Showing all {displayedReviews.length} reviews
+                </p>
               )}
             </div>
           </>
@@ -109,8 +108,14 @@ const ReviewsPage = () => {
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.3 }}
+              className="flex flex-col items-center gap-4"
             >
-              <p className="text-xl text-gray-500 mb-4">Loading reviews...</p>
+              <div className="flex space-x-4">
+                <div className="w-3 h-3 rounded-full bg-primary animate-bounce" style={{ animationDelay: "0ms" }}></div>
+                <div className="w-3 h-3 rounded-full bg-primary animate-bounce" style={{ animationDelay: "150ms" }}></div>
+                <div className="w-3 h-3 rounded-full bg-primary animate-bounce" style={{ animationDelay: "300ms" }}></div>
+              </div>
+              <p className="text-xl text-gray-500">Loading reviews...</p>
             </motion.div>
           </div>
         )}
