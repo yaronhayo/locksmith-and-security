@@ -65,48 +65,59 @@ const ServicePageTemplate: React.FC<ServicePageTemplateProps> = ({
   
   return (
     <main className="flex-grow">
-      {/* Hero Section - Clean, Professional & Conversion-Focused */}
-      <section className="bg-gradient-to-r from-primary-900 to-primary-800 text-white">
-        <div className="container mx-auto px-4 py-12 lg:py-16">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+      {/* Hero Section - Redesigned for better conversion */}
+      <section className="relative bg-gradient-to-br from-primary-900 via-primary-800 to-primary-700 text-white overflow-hidden">
+        {/* Background Pattern */}
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute top-20 left-10 w-72 h-72 rounded-full bg-white/10 blur-xl"></div>
+          <div className="absolute bottom-10 right-10 w-80 h-80 rounded-full bg-secondary/20 blur-xl"></div>
+        </div>
+        
+        <div className="container mx-auto px-4 py-12 relative z-10">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
             {/* Left content - Text & CTA */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
-              className="space-y-6"
+              className="lg:col-span-7 space-y-6"
             >
-              <Badge variant="secondary" className="mb-4">Professional Service • Licensed & Insured</Badge>
-              <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold">
+              <div className="flex items-center space-x-2 mb-4">
+                <Badge variant="secondary" className="text-xs px-2 py-1">Professional Service</Badge>
+                <Badge variant="outline" className="bg-white/10 text-xs px-2 py-1">24/7 Emergency Service</Badge>
+              </div>
+              
+              <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight">
                 {title}
               </h1>
-              <p className="text-lg text-white/90 leading-relaxed">
+              
+              <p className="text-lg md:text-xl text-white/90 leading-relaxed max-w-2xl">
                 {description}
               </p>
               
               {/* Trust indicators */}
-              <div className="flex flex-wrap gap-4 py-4">
+              <div className="flex flex-wrap gap-y-3 gap-x-6 py-2">
                 <div className="flex items-center gap-2">
-                  <Shield className="h-5 w-5 text-secondary" />
+                  <Shield className="h-5 w-5 text-secondary flex-shrink-0" />
                   <span className="text-sm">Licensed & Insured</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Clock className="h-5 w-5 text-secondary" />
-                  <span className="text-sm">24/7 Service</span>
+                  <Clock className="h-5 w-5 text-secondary flex-shrink-0" />
+                  <span className="text-sm">Fast Response Time</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <BadgeCheck className="h-5 w-5 text-secondary" />
+                  <BadgeCheck className="h-5 w-5 text-secondary flex-shrink-0" />
                   <span className="text-sm">Certified Technicians</span>
                 </div>
               </div>
               
               {/* CTA Buttons */}
-              <div className="flex flex-col sm:flex-row gap-4 pt-2">
+              <div className="flex flex-col sm:flex-row gap-4 pt-4">
                 <Button 
                   size="lg" 
                   variant="secondary" 
                   asChild 
-                  className="font-medium"
+                  className="font-medium text-base sm:text-lg"
                 >
                   <a href="tel:2017482070" className="flex items-center gap-2">
                     <Phone className="h-5 w-5" />
@@ -118,7 +129,7 @@ const ServicePageTemplate: React.FC<ServicePageTemplateProps> = ({
                   size="lg" 
                   variant="outline" 
                   asChild 
-                  className="bg-white/10 hover:bg-white/20 text-white border-white/20"
+                  className="bg-white/10 hover:bg-white/20 text-white border-white/20 text-base sm:text-lg"
                 >
                   <Link to="/book-online" className="flex items-center gap-2">
                     Book Online
@@ -126,35 +137,100 @@ const ServicePageTemplate: React.FC<ServicePageTemplateProps> = ({
                   </Link>
                 </Button>
               </div>
+              
+              {/* Social Proof */}
+              <div className="pt-5 border-t border-white/10 mt-5">
+                <div className="flex items-center flex-wrap gap-4">
+                  <div className="flex items-center">
+                    <div className="flex -space-x-2">
+                      {[1, 2, 3, 4].map((i) => (
+                        <div key={i} className="w-8 h-8 rounded-full bg-gradient-to-br from-gray-200 to-gray-300 border-2 border-white flex items-center justify-center text-xs font-medium text-primary-800">
+                          {String.fromCharCode(64 + i)}
+                        </div>
+                      ))}
+                    </div>
+                    <div className="ml-3">
+                      <p className="text-sm font-medium">Trusted by 1,000+ clients</p>
+                      <div className="flex items-center mt-1">
+                        {[1, 2, 3, 4, 5].map((i) => (
+                          <Star key={i} className="w-3.5 h-3.5 text-secondary" fill="currentColor" />
+                        ))}
+                        <span className="text-xs ml-1 font-medium">4.9/5</span>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <Badge variant="outline" className="border-white/20 px-3 py-1.5">
+                    <Clock className="mr-1 h-3.5 w-3.5" /> Average Response: 15-30 Min
+                  </Badge>
+                </div>
+              </div>
             </motion.div>
             
             {/* Right content - Hero image */}
             <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
+              initial={{ opacity: 0, scale: 0.96 }}
               animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              className="lg:col-span-5"
             >
-              <div className="relative rounded-lg overflow-hidden shadow-xl">
-                <img 
-                  src={heroImage || defaultHeroImage} 
-                  alt={title} 
-                  className="w-full h-auto object-cover"
-                />
-                
-                {/* Quick response overlay */}
-                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6">
-                  <div className="flex items-center gap-3">
-                    <div className="bg-secondary text-primary p-2 rounded-full">
-                      <Clock className="h-5 w-5" />
-                    </div>
-                    <div>
-                      <p className="font-semibold">Fast Response</p>
-                      <p className="text-sm text-white/80">24/7 Emergency Service Available</p>
+              <div className="relative">
+                <div className="absolute -inset-0.5 bg-gradient-to-tr from-secondary/30 to-white/20 rounded-xl blur-sm"></div>
+                <div className="relative rounded-lg overflow-hidden shadow-2xl">
+                  <img 
+                    src={heroImage || defaultHeroImage} 
+                    alt={title} 
+                    className="w-full h-auto object-cover"
+                  />
+                  
+                  {/* Service Guarantee Badge */}
+                  <div className="absolute bottom-4 right-4">
+                    <div className="bg-white rounded-lg shadow-lg p-3 flex items-center space-x-2">
+                      <Shield className="h-8 w-8 text-secondary" />
+                      <div>
+                        <p className="text-xs font-bold text-primary">100% Satisfaction</p>
+                        <p className="text-xs text-gray-600">Guaranteed Service</p>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
             </motion.div>
+          </div>
+        </div>
+      </section>
+      
+      {/* Key Benefits Section - Right after hero for conversion */}
+      <section className="bg-white border-b">
+        <div className="container mx-auto px-4 py-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="flex items-center p-3">
+              <div className="bg-primary-50 p-2 rounded-full mr-3">
+                <Clock className="h-5 w-5 text-primary" />
+              </div>
+              <div>
+                <h3 className="font-semibold text-sm">Fast, Reliable Service</h3>
+                <p className="text-xs text-gray-600">Quick response to your emergency</p>
+              </div>
+            </div>
+            <div className="flex items-center p-3">
+              <div className="bg-primary-50 p-2 rounded-full mr-3">
+                <Shield className="h-5 w-5 text-primary" />
+              </div>
+              <div>
+                <h3 className="font-semibold text-sm">Licensed & Insured</h3>
+                <p className="text-xs text-gray-600">Professional certified technicians</p>
+              </div>
+            </div>
+            <div className="flex items-center p-3">
+              <div className="bg-primary-50 p-2 rounded-full mr-3">
+                <Wrench className="h-5 w-5 text-primary" />
+              </div>
+              <div>
+                <h3 className="font-semibold text-sm">Damage-Free Solutions</h3>
+                <p className="text-xs text-gray-600">Advanced techniques & equipment</p>
+              </div>
+            </div>
           </div>
         </div>
       </section>
