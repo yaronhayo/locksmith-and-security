@@ -22,7 +22,7 @@ const ServicesFeatures = () => {
             transition={{ duration: 0.5, delay: 0.2 }}
             className="text-2xl sm:text-3xl font-bold text-gray-800 mb-4 group inline-block relative hover:text-primary transition-colors duration-300"
           >
-            Trusted <span className="border-b-2 border-primary pb-1">Professional Service</span>
+            Trusted Professional Service
             <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-secondary group-hover:w-full transition-all duration-500"></span>
           </motion.h2>
         </div>
