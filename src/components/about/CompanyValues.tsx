@@ -1,56 +1,67 @@
 
 import { motion } from "framer-motion";
-import { Heart } from "lucide-react";
+import { Heart, Shield, Clock, CheckCircle, Award, Users, Lock, Star } from "lucide-react";
 
 const values = [
-  "Professionalism",
-  "Reliability", 
-  "Quality", 
-  "Integrity", 
-  "Excellence",
-  "Security",
-  "Trust",
-  "Innovation"
+  { name: "Integrity", icon: Heart, color: "bg-red-50 text-red-500 border-red-100" },
+  { name: "Security", icon: Shield, color: "bg-blue-50 text-blue-500 border-blue-100" },
+  { name: "Reliability", icon: Clock, color: "bg-indigo-50 text-indigo-500 border-indigo-100" },
+  { name: "Quality", icon: CheckCircle, color: "bg-green-50 text-green-500 border-green-100" },
+  { name: "Excellence", icon: Award, color: "bg-yellow-50 text-yellow-500 border-yellow-100" },
+  { name: "Trust", icon: Users, color: "bg-purple-50 text-purple-500 border-purple-100" },
+  { name: "Innovation", icon: Star, color: "bg-pink-50 text-pink-500 border-pink-100" },
+  { name: "Protection", icon: Lock, color: "bg-teal-50 text-teal-500 border-teal-100" }
 ];
 
 const CompanyValues = () => {
   return (
-    <section className="mb-20">
+    <section>
       <motion.div 
-        className="flex justify-center"
+        className="text-center mb-12"
         initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
+        whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
+        viewport={{ once: true }}
       >
-        <div className="w-full max-w-4xl bg-white rounded-xl p-8 shadow-md border border-gray-100">
-          <div className="flex flex-col md:flex-row items-center gap-8">
-            <div className="w-full md:w-1/3 flex justify-center">
-              <div className="rounded-full bg-primary/10 p-8">
-                <Heart className="w-16 h-16 text-primary" />
-              </div>
+        <h2 className="text-3xl md:text-4xl font-bold text-primary relative inline-block mb-1">
+          Our Core Values
+        </h2>
+        <div className="h-1 w-24 bg-gradient-to-r from-secondary to-secondary/60 mx-auto mb-6"></div>
+        <p className="text-gray-600 mt-4 max-w-3xl mx-auto">
+          These principles guide everything we do as we work to secure your homes, businesses, and vehicles.
+        </p>
+      </motion.div>
+
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        {values.map((value, index) => (
+          <motion.div
+            key={index}
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.3, delay: index * 0.05 }}
+            viewport={{ once: true }}
+            whileHover={{ y: -5, boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.1)" }}
+            className="bg-white rounded-lg p-5 shadow-sm border border-gray-100 flex flex-col items-center transition-all duration-300"
+          >
+            <div className={`w-12 h-12 rounded-full ${value.color} flex items-center justify-center border mb-3`}>
+              <value.icon className="w-6 h-6" />
             </div>
-            <div className="w-full md:w-2/3">
-              <h3 className="text-2xl font-bold text-gray-800 mb-4">Our Core Values</h3>
-              <p className="text-gray-600 mb-6">
-                At Locksmith & Security LLC, we understand that security is about more than just locks and keys—it's about providing peace of mind. 
-                Our core values drive everything we do and shape how we serve our community.
-              </p>
-              <div className="flex flex-wrap gap-4">
-                {values.map((value, index) => (
-                  <motion.span 
-                    key={index} 
-                    className="px-4 py-2 bg-gray-50 rounded-full text-primary shadow-sm border border-primary/20"
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.3, delay: index * 0.1 }}
-                  >
-                    {value}
-                  </motion.span>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
+            <h3 className="text-lg font-semibold text-gray-800">{value.name}</h3>
+          </motion.div>
+        ))}
+      </div>
+
+      <motion.div 
+        className="mt-12 p-6 bg-white rounded-lg shadow-md border border-gray-100 text-center"
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.2 }}
+        viewport={{ once: true }}
+      >
+        <p className="text-gray-700 italic">
+          "At Locksmith & Security LLC, we understand that security is about more than just locks and keys—it's about providing peace of mind. 
+          Our core values drive everything we do and shape how we serve our community."
+        </p>
       </motion.div>
     </section>
   );

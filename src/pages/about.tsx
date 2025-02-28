@@ -4,8 +4,6 @@ import MissionVision from "@/components/about/MissionVision";
 import CompanyStats from "@/components/about/CompanyStats";
 import CompanyValues from "@/components/about/CompanyValues";
 import CompanyFeatures from "@/components/about/CompanyFeatures";
-import CompanyTimeline from "@/components/about/CompanyTimeline";
-import TeamSection from "@/components/about/TeamSection";
 import Testimonials from "@/components/about/Testimonials";
 import ContactCTA from "@/components/about/ContactCTA";
 import ReviewsSection from "@/components/sections/ReviewsSection";
@@ -16,8 +14,8 @@ const AboutPage = () => {
     <PageLayout
       title="About Us | Professional Locksmith Services in North Bergen"
       description="Learn about Locksmith & Security LLC - your trusted local locksmith serving North Bergen since 2010 with professional, reliable security solutions."
-      heroTitle="About Our Company"
-      heroDescription="Professional locksmith services with a commitment to excellence and security"
+      heroTitle="Our Story & Mission"
+      heroDescription="Building trust through exceptional locksmith services and a commitment to your security"
       schema={{
         "@type": "AboutPage",
         "mainEntity": {
@@ -35,39 +33,50 @@ const AboutPage = () => {
         }
       }}
     >
-      <div className="bg-gradient-to-b from-gray-50 to-white">
+      <div className="bg-gradient-to-b from-blue-50 to-white">
         <div className="container mx-auto px-4 py-12">
+          {/* Enhanced Mission Vision Section */}
           <MissionVision />
           
+          {/* Stats with Animation */}
           <motion.div 
             className="text-center mt-20 mb-8"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
+            viewport={{ once: true }}
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-primary relative inline-block">
+            <h2 className="text-3xl md:text-4xl font-bold text-primary relative inline-block mb-1">
               Our Achievements
-              <span className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-primary to-primary/30"></span>
             </h2>
+            <div className="h-1 w-24 bg-gradient-to-r from-secondary to-secondary/60 mx-auto mb-6"></div>
             <p className="text-gray-600 mt-4 max-w-3xl mx-auto">
-              With years of dedicated service, we've established ourselves as a trusted name in the locksmith industry.
+              With over a decade of dedicated service, we've built a reputation as North Bergen's most trusted security professionals.
             </p>
           </motion.div>
           
           <CompanyStats />
           
-          <CompanyValues />
+          {/* Values Section with Visual Enhancement */}
+          <div className="relative py-16 my-12">
+            <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-primary/10 rounded-3xl"></div>
+            <div className="relative z-10">
+              <CompanyValues />
+            </div>
+          </div>
           
+          {/* Why Choose Us Section */}
           <motion.div 
             className="text-center mt-20 mb-8"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
+            viewport={{ once: true }}
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-primary relative inline-block">
+            <h2 className="text-3xl md:text-4xl font-bold text-primary relative inline-block mb-1">
               Why Choose Us
-              <span className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-primary to-primary/30"></span>
             </h2>
+            <div className="h-1 w-24 bg-gradient-to-r from-secondary to-secondary/60 mx-auto mb-6"></div>
             <p className="text-gray-600 mt-4 max-w-3xl mx-auto">
               Discover what sets us apart and why our clients trust us with their security needs.
             </p>
@@ -75,15 +84,31 @@ const AboutPage = () => {
           
           <CompanyFeatures />
           
-          <CompanyTimeline />
+          {/* Enhanced Testimonials Section */}
+          <div className="py-12 mt-12">
+            <Testimonials />
+          </div>
           
-          <TeamSection />
-          
-          <Testimonials />
-          
+          {/* CTA Section */}
           <ContactCTA />
           
+          {/* Reviews Section */}
           <div className="mt-20">
+            <motion.div 
+              className="text-center mb-12"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              viewport={{ once: true }}
+            >
+              <h2 className="text-3xl md:text-4xl font-bold text-primary relative inline-block mb-1">
+                Customer Reviews
+              </h2>
+              <div className="h-1 w-24 bg-gradient-to-r from-secondary to-secondary/60 mx-auto mb-6"></div>
+              <p className="text-gray-600 mt-4 max-w-3xl mx-auto">
+                Read what our customers are saying about our locksmith services.
+              </p>
+            </motion.div>
             <ReviewsSection />
           </div>
         </div>
