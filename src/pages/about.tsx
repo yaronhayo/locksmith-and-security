@@ -6,7 +6,6 @@ import CompanyStats from "@/components/about/CompanyStats";
 import CompanyValues from "@/components/about/CompanyValues";
 import CompanyFeatures from "@/components/about/CompanyFeatures";
 import Testimonials from "@/components/about/Testimonials";
-import ContactCTA from "@/components/about/ContactCTA";
 import { motion } from "framer-motion";
 
 const About = () => {
@@ -27,7 +26,6 @@ const About = () => {
         <CompanyValues />
         <CompanyFeatures />
         <Testimonials />
-        <ContactCTA />
       </motion.div>
     </main>
   );
