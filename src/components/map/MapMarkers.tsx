@@ -23,21 +23,11 @@ const MapMarkers = ({ markers, hoveredMarker }: MapMarkersProps) => {
       const position = { lat: marker.lat, lng: marker.lng };
       const isHovered = hoveredMarker === marker.slug;
       
-      // Custom marker label options for better visibility
-      const label = {
-        text: marker.title,
-        color: '#222222', // Dark text color for better contrast
-        fontWeight: 'bold',
-        fontSize: '14px',
-        className: 'marker-label'
-      };
-      
       return (
         <Marker
           key={`${marker.slug || ''}-${index}`}
           position={position}
           title={marker.title}
-          label={label}
           onClick={() => handleMarkerClick(marker.slug)}
           animation={isHovered ? google.maps.Animation.BOUNCE : undefined}
         />
