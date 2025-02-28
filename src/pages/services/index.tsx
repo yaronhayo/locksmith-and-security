@@ -11,7 +11,7 @@ import { motion } from "framer-motion";
 import { Card } from "@/components/ui/card";
 import { generalFaqs } from "@/data/faqData";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
-import { House, Car, Building2, Lock, Shield, User } from "lucide-react";
+import { House, Car, Building2, Lock, Shield, User, ChevronDown } from "lucide-react";
 import CarouselDots from "@/components/reviews/CarouselDots";
 import { Button } from "@/components/ui/button";
 
@@ -183,9 +183,10 @@ const RealLifeStories = () => {
                                 variant="ghost" 
                                 size="sm" 
                                 onClick={() => setExpandedIndex(index)} 
-                                className="text-sm font-medium text-[#F97316] ml-1 p-0 h-auto hover:bg-transparent"
+                                className="text-sm font-medium text-[#F97316] ml-1 p-0 h-auto hover:bg-transparent group"
                               >
                                 Continue Reading
+                                <ChevronDown className="h-3 w-3 ml-1 text-[#F97316] group-hover:animate-bounce" />
                               </Button>
                             </>
                           )
