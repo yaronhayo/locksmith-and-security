@@ -1,3 +1,4 @@
+
 import React, { useState, useRef } from "react";
 import PageLayout from "@/components/layouts/PageLayout";
 import ServicesHero from "@/components/sections/services/ServicesHero";
@@ -13,6 +14,7 @@ import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious
 import { House, Car, Building2, Lock, Shield, User } from "lucide-react";
 import CarouselDots from "@/components/reviews/CarouselDots";
 import { Button } from "@/components/ui/button";
+
 const successStories = [{
   icon: House,
   title: "Emergency House Lockout in Jersey City",
@@ -63,12 +65,14 @@ const successStories = [{
   fullDesc: "A tech-savvy homeowner in Guttenberg wanted to upgrade to smart locks for their home. We installed WiFi-enabled smart locks on all exterior doors, integrated them with their existing home automation system, and set up backup key override options. We also provided training on the mobile app features and emergency access protocols.",
   service: "Smart Lock Installation"
 }];
+
 const RealLifeStories = () => {
   const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
   const [api, setApi] = useState<any>();
   const [current, setCurrent] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
+
   React.useEffect(() => {
     if (!api) return;
     api.on("select", () => {
@@ -102,6 +106,28 @@ const RealLifeStories = () => {
       stopAutoplay();
     };
   }, [api, isPaused]);
+
+  // Function to truncate text and add ellipsis at the end of a word
+  const truncateText = (text: string, maxLength: number) => {
+    if (text.length <= maxLength) return text;
+    
+    // Find the last space before maxLength
+    const lastSpaceIndex = text.lastIndexOf(' ', maxLength);
+    
+    if (lastSpaceIndex === -1) {
+      // If no space found, just cut at maxLength
+      return text.substring(0, maxLength) + '...';
+    }
+    
+    // Find the last word and truncate it in the middle
+    const truncatedText = text.substring(0, lastSpaceIndex);
+    const lastWord = text.substring(lastSpaceIndex + 1).split(' ')[0];
+    const halfWordLength = Math.floor(lastWord.length / 2);
+    const truncatedWord = lastWord.substring(0, halfWordLength);
+    
+    return truncatedText + ' ' + truncatedWord + '...';
+  };
+
   return <section className="py-20 bg-gray-50">
       <div className="container mx-auto px-4">
         <motion.div initial={{
@@ -148,14 +174,36 @@ const RealLifeStories = () => {
                       </div>
                       
                       <p className="text-muted-foreground mb-4">
-                        {expandedIndex === index ? story.fullDesc : story.shortDesc}
+                        {expandedIndex === index 
+                          ? story.fullDesc 
+                          : (
+                            <>
+                              {truncateText(story.fullDesc, 120)}
+                              <Button 
+                                variant="ghost" 
+                                size="sm" 
+                                onClick={() => setExpandedIndex(index)} 
+                                className="text-sm font-medium text-primary ml-1 p-0 h-auto hover:bg-transparent"
+                              >
+                                Continue Reading
+                              </Button>
+                            </>
+                          )
+                        }
                       </p>
                       
                       <div className="mt-auto pt-4 flex items-center justify-between">
                         <span className="text-sm font-medium text-primary">{story.service}</span>
-                        <Button variant="ghost" size="sm" onClick={() => setExpandedIndex(expandedIndex === index ? null : index)} className="text-sm">
-                          {expandedIndex === index ? "Show Less" : "Continue Reading"}
-                        </Button>
+                        {expandedIndex === index && (
+                          <Button 
+                            variant="ghost" 
+                            size="sm" 
+                            onClick={() => setExpandedIndex(null)} 
+                            className="text-sm"
+                          >
+                            Show Less
+                          </Button>
+                        )}
                       </div>
                     </Card>
                   </motion.div>
@@ -172,6 +220,7 @@ const RealLifeStories = () => {
       </div>
     </section>;
 };
+
 const ServicesPage = () => {
   return <PageLayout title="Professional Locksmith Services in North Bergen, NJ | Expert Security Solutions" description="Comprehensive locksmith services including residential, commercial, and automotive solutions. Licensed, bonded, and insured experts available 24/7 for all your security needs." keywords="locksmith services, emergency locksmith, residential locksmith, commercial locksmith, auto locksmith, North Bergen locksmith" schema={{
     "@context": "https://schema.org",
@@ -240,4 +289,5 @@ const ServicesPage = () => {
       <ServicesCTA />
     </PageLayout>;
 };
+
 export default ServicesPage;
