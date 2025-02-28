@@ -1,11 +1,11 @@
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useRef } from "react";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
 import { ChevronRight, HelpCircle } from "lucide-react";
 import { Link } from "react-router-dom";
-import { initialFaqs, additionalFaqs } from "@/data/faqData";
+import { initialFaqs } from "@/data/faqData";
 import { FAQ } from "@/data/faqData";
 
 interface FAQSectionProps {
@@ -15,37 +15,9 @@ interface FAQSectionProps {
 }
 
 const FAQSection = ({ title = "Frequently Asked Questions", description = "Find answers to common questions about our services.", faqs = initialFaqs }: FAQSectionProps) => {
-  const [displayedFaqs, setDisplayedFaqs] = useState([...faqs]);
-  const [loading, setLoading] = useState(false);
-  const [hasMore, setHasMore] = useState(true);
+  // Only take the first 12 FAQs from the provided FAQs or initialFAQs
+  const displayedFaqs = faqs.slice(0, 12);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
-  const currentIndex = useRef(initialFaqs.length);
-
-  const loadMoreFaqs = () => {
-    if (loading || !hasMore) return;
-    
-    setLoading(true);
-    setTimeout(() => {
-      const nextBatch = additionalFaqs.slice(currentIndex.current, currentIndex.current + 10);
-      if (nextBatch.length > 0) {
-        setDisplayedFaqs(prev => [...prev, ...nextBatch]);
-        currentIndex.current += 10;
-        if (currentIndex.current >= additionalFaqs.length) {
-          setHasMore(false);
-        }
-      } else {
-        setHasMore(false);
-      }
-      setLoading(false);
-    }, 500);
-  };
-
-  const handleScroll = (event: React.UIEvent<HTMLDivElement>) => {
-    const { scrollTop, scrollHeight, clientHeight } = event.currentTarget;
-    if (scrollHeight - scrollTop <= clientHeight * 1.5) {
-      loadMoreFaqs();
-    }
-  };
 
   return (
     <section className="py-20 bg-gradient-to-b from-gray-50 to-white rounded-xl">
@@ -60,7 +32,6 @@ const FAQSection = ({ title = "Frequently Asked Questions", description = "Find 
         
         <ScrollArea 
           className="h-[600px] max-w-6xl mx-auto rounded-lg border border-gray-200 p-4"
-          onScroll={handleScroll}
           ref={scrollAreaRef}
         >
           <div className="grid md:grid-cols-2 gap-6">
