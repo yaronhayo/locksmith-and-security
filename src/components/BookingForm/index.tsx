@@ -106,7 +106,7 @@ const BookingForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-2.5 max-w-full overflow-x-hidden" role="form" aria-label="Service booking form">
+    <form onSubmit={handleSubmit} className="space-y-2.5 max-w-full overflow-visible" role="form" aria-label="Service booking form">
       <div className="space-y-2.5">
         <PersonalInfoFields errors={errors} isSubmitting={isSubmitting} />
         
@@ -195,7 +195,7 @@ const BookingForm = () => {
         <AdditionalNotes isSubmitting={isSubmitting} />
       </div>
 
-      <div className="pt-2">
+      <div className="pt-2 w-full overflow-x-auto">
         <Recaptcha onChange={setRecaptchaToken} />
       </div>
 

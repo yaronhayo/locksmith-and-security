@@ -12,7 +12,7 @@ const Recaptcha: React.FC<RecaptchaProps> = ({ onChange }) => {
   const { data: siteKey, isLoading, error } = useRecaptchaKey();
 
   if (isLoading) {
-    return <Skeleton className="h-[78px] w-[304px] mx-auto" />;
+    return <Skeleton className="h-[78px] w-full max-w-[304px] mx-auto" />;
   }
 
   if (error || !siteKey) {
@@ -21,11 +21,13 @@ const Recaptcha: React.FC<RecaptchaProps> = ({ onChange }) => {
   }
 
   return (
-    <div className="flex justify-center my-4">
-      <ReCAPTCHA
-        sitekey={siteKey}
-        onChange={onChange}
-      />
+    <div className="flex justify-center my-4 w-full overflow-x-auto">
+      <div className="max-w-full">
+        <ReCAPTCHA
+          sitekey={siteKey}
+          onChange={onChange}
+        />
+      </div>
     </div>
   );
 };

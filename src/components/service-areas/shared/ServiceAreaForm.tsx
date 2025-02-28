@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { Phone, Mail, MessageSquare, SendIcon } from "lucide-react";
 import { motion } from "framer-motion";
+import Recaptcha from "@/components/ui/recaptcha";
 
 interface ServiceAreaFormProps {
   locationName?: string;
@@ -19,6 +20,7 @@ const ServiceAreaForm = ({ locationName }: ServiceAreaFormProps) => {
   
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
   
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -27,6 +29,12 @@ const ServiceAreaForm = ({ locationName }: ServiceAreaFormProps) => {
   
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (!recaptchaToken) {
+      alert("Please complete the reCAPTCHA verification");
+      return;
+    }
+    
     setIsSubmitting(true);
     
     // Simulate form submission
@@ -45,28 +53,28 @@ const ServiceAreaForm = ({ locationName }: ServiceAreaFormProps) => {
   
   return (
     <section className="bg-white rounded-xl shadow-md overflow-hidden" id="contact-form">
-      <div className="bg-gradient-to-r from-primary to-primary/90 text-white p-6 md:p-8">
-        <h2 className="text-2xl md:text-3xl font-bold mb-2 text-white">
+      <div className="bg-gradient-to-r from-primary to-primary/90 text-white p-4 sm:p-6 md:p-8">
+        <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-2 text-white">
           Contact Your {locationName} Locksmith
         </h2>
-        <p className="text-white/90">
+        <p className="text-white/90 text-sm sm:text-base">
           Fill out the form below and our team will get back to you promptly
         </p>
       </div>
       
-      <div className="p-4 sm:p-6 md:p-8 lg:p-10 max-w-3xl mx-auto">
+      <div className="p-4 sm:p-6 md:p-8 max-w-3xl mx-auto">
         {isSubmitted ? (
           <motion.div 
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="bg-green-50 border border-green-200 text-green-700 p-6 rounded-lg text-center"
+            className="bg-green-50 border border-green-200 text-green-700 p-4 sm:p-6 rounded-lg text-center"
           >
-            <h3 className="text-xl font-semibold mb-2">Thank You!</h3>
+            <h3 className="text-lg sm:text-xl font-semibold mb-2">Thank You!</h3>
             <p>Your message has been sent successfully. A member of our team will contact you shortly.</p>
           </motion.div>
         ) : (
           <form onSubmit={handleSubmit} className="space-y-4 max-w-full">
-            <div className="grid md:grid-cols-2 gap-4 sm:gap-6">
+            <div className="grid sm:grid-cols-2 gap-4">
               <div>
                 <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">Your Name</label>
                 <input
@@ -75,7 +83,7 @@ const ServiceAreaForm = ({ locationName }: ServiceAreaFormProps) => {
                   name="name"
                   value={formState.name}
                   onChange={handleChange}
-                  className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-md focus:ring-secondary focus:border-secondary"
+                  className="w-full px-3 sm:px-4 py-2 border border-gray-300 rounded-md focus:ring-secondary focus:border-secondary"
                   required
                 />
               </div>
@@ -88,7 +96,7 @@ const ServiceAreaForm = ({ locationName }: ServiceAreaFormProps) => {
                   name="phone"
                   value={formState.phone}
                   onChange={handleChange}
-                  className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-md focus:ring-secondary focus:border-secondary"
+                  className="w-full px-3 sm:px-4 py-2 border border-gray-300 rounded-md focus:ring-secondary focus:border-secondary"
                   required
                 />
               </div>
@@ -102,7 +110,7 @@ const ServiceAreaForm = ({ locationName }: ServiceAreaFormProps) => {
                 name="email"
                 value={formState.email}
                 onChange={handleChange}
-                className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-md focus:ring-secondary focus:border-secondary"
+                className="w-full px-3 sm:px-4 py-2 border border-gray-300 rounded-md focus:ring-secondary focus:border-secondary"
                 required
               />
             </div>
@@ -114,7 +122,7 @@ const ServiceAreaForm = ({ locationName }: ServiceAreaFormProps) => {
                 name="service"
                 value={formState.service}
                 onChange={handleChange}
-                className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-md focus:ring-secondary focus:border-secondary"
+                className="w-full px-3 sm:px-4 py-2 border border-gray-300 rounded-md focus:ring-secondary focus:border-secondary"
                 required
               >
                 <option value="">Select a service</option>
@@ -134,14 +142,18 @@ const ServiceAreaForm = ({ locationName }: ServiceAreaFormProps) => {
                 value={formState.message}
                 onChange={handleChange}
                 rows={4}
-                className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-md focus:ring-secondary focus:border-secondary"
+                className="w-full px-3 sm:px-4 py-2 border border-gray-300 rounded-md focus:ring-secondary focus:border-secondary"
                 required
               />
             </div>
             
+            <div className="pt-2 overflow-x-auto">
+              <Recaptcha onChange={setRecaptchaToken} />
+            </div>
+            
             <Button 
               type="submit" 
-              className="w-full py-3 bg-secondary hover:bg-secondary/90 text-white font-medium rounded-md shadow-sm"
+              className="w-full py-2 sm:py-3 bg-secondary hover:bg-secondary/90 text-white font-medium rounded-md shadow-sm"
               disabled={isSubmitting}
             >
               {isSubmitting ? "Sending..." : (
@@ -154,7 +166,7 @@ const ServiceAreaForm = ({ locationName }: ServiceAreaFormProps) => {
           </form>
         )}
         
-        <div className="mt-8 sm:mt-10 md:mt-12 grid grid-cols-1 sm:grid-cols-3 gap-6">
+        <div className="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-6">
           <div className="flex flex-col items-center text-center">
             <div className="w-12 h-12 rounded-full bg-secondary/10 flex items-center justify-center mb-3">
               <Phone className="h-5 w-5 text-secondary" />
@@ -168,7 +180,7 @@ const ServiceAreaForm = ({ locationName }: ServiceAreaFormProps) => {
               <Mail className="h-5 w-5 text-secondary" />
             </div>
             <h3 className="text-lg font-medium mb-1">Email Us</h3>
-            <a href="mailto:info@247locksmithandsecurity.com" className="text-secondary hover:underline">info@247locksmithandsecurity.com</a>
+            <a href="mailto:info@247locksmithandsecurity.com" className="text-secondary hover:underline text-sm sm:text-base">info@247locksmithandsecurity.com</a>
           </div>
           
           <div className="flex flex-col items-center text-center">
