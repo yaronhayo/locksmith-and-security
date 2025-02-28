@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import PageLayout from "@/components/layouts/PageLayout";
+import PageHero from "@/components/layouts/PageHero";
 import { TabsContent, Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Accordion,
@@ -10,7 +11,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
-import { Phone, Search, Home, Settings, Car, Building, AlertCircle, HelpCircle, BookOpen } from "lucide-react";
+import { Phone, Search, Home, Settings, Car, Building, AlertCircle, HelpCircle } from "lucide-react";
 import { generalFaqs, residentialFaqs, automotiveFaqs, commercialFaqs, emergencyFaqs } from "@/data/faqData";
 import { motion } from "framer-motion";
 
@@ -23,7 +24,6 @@ const FAQPage = () => {
   const loaderRef = useRef<HTMLDivElement>(null);
   const pageSize = 10;
   
-  // Determine which FAQs to display based on the active tab
   const getFaqsByCategory = useCallback(() => {
     switch (activeTab) {
       case "residential":
@@ -47,7 +47,6 @@ const FAQPage = () => {
     }
   }, [activeTab]);
 
-  // Filter FAQs based on search query
   const filteredFaqs = useCallback(() => {
     return getFaqsByCategory().filter(faq => 
       faq.question.toLowerCase().includes(searchQuery.toLowerCase()) || 
@@ -55,7 +54,6 @@ const FAQPage = () => {
     );
   }, [getFaqsByCategory, searchQuery]);
   
-  // Load more FAQs when scrolling
   const loadMoreFaqs = useCallback(() => {
     if (isLoading) return;
     
@@ -66,7 +64,6 @@ const FAQPage = () => {
     if (startIndex < allFaqs.length) {
       setIsLoading(true);
       
-      // Simulate loading delay
       setTimeout(() => {
         const newFaqs = allFaqs.slice(startIndex, endIndex);
         setDisplayedFaqs(prev => [...prev, ...newFaqs]);
@@ -76,18 +73,15 @@ const FAQPage = () => {
     }
   }, [filteredFaqs, isLoading, page, pageSize]);
   
-  // Reset when tab or search changes
   useEffect(() => {
     setDisplayedFaqs([]);
     setPage(1);
   }, [activeTab, searchQuery]);
   
-  // Load initial FAQs
   useEffect(() => {
     loadMoreFaqs();
   }, [loadMoreFaqs]);
   
-  // Intersection Observer for infinite scrolling
   useEffect(() => {
     const options = {
       root: null,
@@ -144,7 +138,6 @@ const FAQPage = () => {
     }))
   };
 
-  // Get total FAQs count for the current filter/category
   const totalFaqs = filteredFaqs().length;
   const hasMore = displayedFaqs.length < totalFaqs;
 
@@ -155,78 +148,26 @@ const FAQPage = () => {
       schema={faqSchema}
       canonicalUrl="https://www.locksmiths.com/faq"
       keywords="locksmith FAQ, locksmith questions, locksmith services, residential locksmith, commercial locksmith, automotive locksmith, emergency locksmith"
+      heroTitle="Frequently Asked Questions"
+      heroDescription="Browse our comprehensive collection of FAQs to find answers to your locksmith and security questions."
     >
-      {/* Enhanced Hero Section */}
-      <div className="relative overflow-hidden bg-gradient-to-br from-primary/90 to-primary-hover text-white">
-        {/* Decorative elements */}
-        <div className="absolute top-0 left-0 w-full h-full">
-          <div className="absolute top-1/3 right-10 h-40 w-40 rounded-full bg-secondary/20 blur-2xl"></div>
-          <div className="absolute bottom-1/4 left-10 h-60 w-60 rounded-full bg-white/10 blur-3xl"></div>
-          <div className="absolute top-10 left-1/4 h-20 w-20 rounded-full bg-secondary/30 blur-xl"></div>
-          
-          {/* Question mark patterns */}
-          <div className="absolute top-20 right-1/4 opacity-10">
-            <HelpCircle size={80} />
-          </div>
-          <div className="absolute bottom-10 left-1/3 opacity-5">
-            <HelpCircle size={120} />
-          </div>
-          <div className="absolute top-1/3 left-10 opacity-5">
-            <BookOpen size={60} />
-          </div>
-        </div>
-        
-        <div className="container mx-auto px-4 py-20 md:py-28 relative z-10">
-          <motion.div 
-            className="max-w-3xl mx-auto text-center"
+      <div className="container mx-auto px-4 -mt-12 mb-10">
+        <div className="relative max-w-2xl mx-auto">
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
+            className="bg-white rounded-lg shadow-md p-2 flex items-center"
           >
-            <div className="inline-flex items-center justify-center mb-6 bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full">
-              <HelpCircle className="w-5 h-5 mr-2 text-secondary" />
-              <span className="text-sm font-medium">Expert Answers to Your Questions</span>
-            </div>
-            
-            <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
-              Frequently Asked <span className="text-secondary">Questions</span>
-            </h1>
-            
-            <p className="text-xl text-white/80 max-w-2xl mx-auto mb-10">
-              Browse our comprehensive collection of FAQs to find answers to your locksmith and security questions.
-            </p>
-            
-            <motion.div 
-              className="relative max-w-2xl mx-auto"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-            >
-              <div className="relative bg-white/10 backdrop-blur-md rounded-lg p-1.5 flex items-center">
-                <Search className="absolute left-4 text-white/70" />
-                <Input
-                  type="text"
-                  placeholder="Search for questions or keywords..."
-                  value={searchQuery}
-                  onChange={handleSearch}
-                  className="pl-10 py-6 text-lg bg-transparent border-none text-white placeholder:text-white/50 focus:ring-secondary focus:ring-offset-0"
-                />
-              </div>
-            </motion.div>
+            <Search className="ml-3 text-gray-400" />
+            <Input
+              type="text"
+              placeholder="Search for questions or keywords..."
+              value={searchQuery}
+              onChange={handleSearch}
+              className="pl-2 py-6 text-lg border-none focus:ring-primary focus:ring-offset-0"
+            />
           </motion.div>
-        </div>
-        
-        {/* Wave divider */}
-        <div className="absolute bottom-0 left-0 w-full overflow-hidden">
-          <svg 
-            xmlns="http://www.w3.org/2000/svg" 
-            viewBox="0 0 1200 120" 
-            preserveAspectRatio="none"
-            className="relative block w-full h-[60px]"
-            style={{ fill: '#f8fafc' }}  // Using a light background color
-          >
-            <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V120H0V0C90.3,0,192.79,26.59,281.58,44.06,336.09,55.07,378.2,62.24,435.34,64.94Z"></path>
-          </svg>
         </div>
       </div>
 
@@ -301,7 +242,6 @@ const FAQPage = () => {
                       ))}
                     </motion.div>
                     
-                    {/* Loading indicator and intersection observer target */}
                     <div ref={loaderRef} className="py-8 flex justify-center">
                       {isLoading && (
                         <div className="animate-pulse flex space-x-4">
