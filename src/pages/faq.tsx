@@ -1,5 +1,5 @@
 
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import PageLayout from "@/components/layouts/PageLayout";
 import { TabsContent, Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
@@ -18,9 +18,14 @@ import { motion } from "framer-motion";
 const FAQPage = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [activeTab, setActiveTab] = useState("all");
+  const [displayedFaqs, setDisplayedFaqs] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [page, setPage] = useState(1);
+  const loaderRef = useRef<HTMLDivElement>(null);
+  const pageSize = 10;
   
   // Determine which FAQs to display based on the active tab
-  const getFaqsByCategory = () => {
+  const getFaqsByCategory = useCallback(() => {
     switch (activeTab) {
       case "residential":
         return residentialFaqs;
@@ -41,13 +46,72 @@ const FAQPage = () => {
           ...emergencyFaqs
         ];
     }
-  };
+  }, [activeTab]);
 
   // Filter FAQs based on search query
-  const filteredFaqs = getFaqsByCategory().filter(faq => 
-    faq.question.toLowerCase().includes(searchQuery.toLowerCase()) || 
-    faq.answer.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const filteredFaqs = useCallback(() => {
+    return getFaqsByCategory().filter(faq => 
+      faq.question.toLowerCase().includes(searchQuery.toLowerCase()) || 
+      faq.answer.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  }, [getFaqsByCategory, searchQuery]);
+  
+  // Load more FAQs when scrolling
+  const loadMoreFaqs = useCallback(() => {
+    if (isLoading) return;
+    
+    const allFaqs = filteredFaqs();
+    const startIndex = (page - 1) * pageSize;
+    const endIndex = Math.min(startIndex + pageSize, allFaqs.length);
+    
+    if (startIndex < allFaqs.length) {
+      setIsLoading(true);
+      
+      // Simulate loading delay
+      setTimeout(() => {
+        const newFaqs = allFaqs.slice(startIndex, endIndex);
+        setDisplayedFaqs(prev => [...prev, ...newFaqs]);
+        setPage(prev => prev + 1);
+        setIsLoading(false);
+      }, 300);
+    }
+  }, [filteredFaqs, isLoading, page, pageSize]);
+  
+  // Reset when tab or search changes
+  useEffect(() => {
+    setDisplayedFaqs([]);
+    setPage(1);
+  }, [activeTab, searchQuery]);
+  
+  // Load initial FAQs
+  useEffect(() => {
+    loadMoreFaqs();
+  }, [loadMoreFaqs]);
+  
+  // Intersection Observer for infinite scrolling
+  useEffect(() => {
+    const options = {
+      root: null,
+      rootMargin: '0px',
+      threshold: 0.1
+    };
+    
+    const observer = new IntersectionObserver((entries) => {
+      if (entries[0]?.isIntersecting) {
+        loadMoreFaqs();
+      }
+    }, options);
+    
+    if (loaderRef.current) {
+      observer.observe(loaderRef.current);
+    }
+    
+    return () => {
+      if (loaderRef.current) {
+        observer.unobserve(loaderRef.current);
+      }
+    };
+  }, [loadMoreFaqs]);
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
@@ -80,6 +144,10 @@ const FAQPage = () => {
       }
     }))
   };
+
+  // Get total FAQs count for the current filter/category
+  const totalFaqs = filteredFaqs().length;
+  const hasMore = displayedFaqs.length < totalFaqs;
 
   return (
     <PageLayout
@@ -133,7 +201,7 @@ const FAQPage = () => {
               className="max-w-5xl mx-auto"
               onValueChange={setActiveTab}
             >
-              <div className="flex justify-center mb-8">
+              <div className="flex justify-center mb-8 overflow-x-auto">
                 <TabsList className="bg-gray-100 p-1 rounded-full">
                   {tabItems.map((tab) => (
                     <TabsTrigger 
@@ -151,55 +219,81 @@ const FAQPage = () => {
               </div>
 
               <TabsContent value={activeTab} className="mt-6">
-                {filteredFaqs.length > 0 ? (
-                  <motion.div 
-                    className="grid md:grid-cols-2 gap-6"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ staggerChildren: 0.05 }}
-                  >
-                    {filteredFaqs.map((faq, index) => (
-                      <motion.div
-                        key={index}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.3, delay: index * 0.05 }}
-                      >
-                        <Card className="h-full overflow-hidden hover:shadow-md transition-shadow duration-300">
-                          <CardContent className="p-0">
-                            <Accordion type="single" collapsible>
-                              <AccordionItem value={`item-${index}`} className="border-none">
-                                <AccordionTrigger className="px-6 py-4 bg-gray-50 hover:bg-gray-100 transition-colors hover:no-underline text-left">
-                                  <div className="flex items-start text-left gap-3">
-                                    <span className="font-bold text-primary text-lg">Q:</span>
-                                    <span className="text-lg font-semibold">{faq.question}</span>
-                                  </div>
-                                </AccordionTrigger>
-                                <AccordionContent className="px-6 py-4 bg-white">
-                                  <div className="flex gap-3">
-                                    <span className="font-bold text-secondary text-lg">A:</span>
-                                    <p className="text-gray-700 leading-relaxed">
-                                      {faq.answer}
-                                    </p>
-                                  </div>
-                                </AccordionContent>
-                              </AccordionItem>
-                            </Accordion>
-                          </CardContent>
-                        </Card>
-                      </motion.div>
-                    ))}
-                  </motion.div>
-                ) : (
-                  <div className="text-center py-12">
-                    <p className="text-gray-500 text-lg mb-4">No results found for "{searchQuery}"</p>
-                    <Button 
-                      variant="outline" 
-                      onClick={() => setSearchQuery("")}
+                {displayedFaqs.length > 0 ? (
+                  <>
+                    <motion.div 
+                      className="grid md:grid-cols-2 gap-6"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ staggerChildren: 0.05 }}
                     >
-                      Clear search
-                    </Button>
-                  </div>
+                      {displayedFaqs.map((faq, index) => (
+                        <motion.div
+                          key={index}
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 0.3, delay: index * 0.05 }}
+                        >
+                          <Card className="h-full overflow-hidden hover:shadow-md transition-shadow duration-300">
+                            <CardContent className="p-0">
+                              <Accordion type="single" collapsible>
+                                <AccordionItem value={`item-${index}`} className="border-none">
+                                  <AccordionTrigger className="px-6 py-4 bg-gray-50 hover:bg-gray-100 transition-colors hover:no-underline text-left">
+                                    <div className="flex items-start text-left gap-3">
+                                      <span className="font-bold text-primary text-lg">Q:</span>
+                                      <span className="text-lg font-semibold">{faq.question}</span>
+                                    </div>
+                                  </AccordionTrigger>
+                                  <AccordionContent className="px-6 py-4 bg-white">
+                                    <div className="flex gap-3">
+                                      <span className="font-bold text-secondary text-lg">A:</span>
+                                      <p className="text-gray-700 leading-relaxed">
+                                        {faq.answer}
+                                      </p>
+                                    </div>
+                                  </AccordionContent>
+                                </AccordionItem>
+                              </Accordion>
+                            </CardContent>
+                          </Card>
+                        </motion.div>
+                      ))}
+                    </motion.div>
+                    
+                    {/* Loading indicator and intersection observer target */}
+                    <div ref={loaderRef} className="py-8 flex justify-center">
+                      {isLoading && (
+                        <div className="animate-pulse flex space-x-4">
+                          <div className="h-3 w-3 bg-gray-300 rounded-full"></div>
+                          <div className="h-3 w-3 bg-gray-300 rounded-full"></div>
+                          <div className="h-3 w-3 bg-gray-300 rounded-full"></div>
+                        </div>
+                      )}
+                      {!isLoading && !hasMore && displayedFaqs.length > 0 && (
+                        <p className="text-gray-500">No more questions to load</p>
+                      )}
+                    </div>
+                  </>
+                ) : (
+                  searchQuery ? (
+                    <div className="text-center py-12">
+                      <p className="text-gray-500 text-lg mb-4">No results found for "{searchQuery}"</p>
+                      <Button 
+                        variant="outline" 
+                        onClick={() => setSearchQuery("")}
+                      >
+                        Clear search
+                      </Button>
+                    </div>
+                  ) : (
+                    <div className="flex justify-center py-12">
+                      <div className="animate-pulse flex space-x-4">
+                        <div className="h-3 w-3 bg-gray-300 rounded-full"></div>
+                        <div className="h-3 w-3 bg-gray-300 rounded-full"></div>
+                        <div className="h-3 w-3 bg-gray-300 rounded-full"></div>
+                      </div>
+                    </div>
+                  )
                 )}
               </TabsContent>
             </Tabs>
