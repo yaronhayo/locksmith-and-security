@@ -1,6 +1,6 @@
 
 import { motion } from "framer-motion";
-import { Shield, Key, Tool } from "lucide-react";
+import { Shield, Key, Wrench } from "lucide-react";
 
 const team = [
   {
@@ -22,7 +22,7 @@ const team = [
     role: "Automotive Expert",
     avatar: "/uploads/308ce2b0-551b-48b6-b078-c7e793fa2153.png",
     description: "David is our automotive locksmith expert, with specialized training in modern vehicle security systems and key programming.",
-    icon: Tool
+    icon: Wrench
   }
 ];
 
