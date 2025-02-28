@@ -2,7 +2,7 @@
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { AlertCircle, Car } from "lucide-react";
+import { AlertCircle } from "lucide-react";
 
 interface VehicleFieldsProps {
   errors: Record<string, string>;
@@ -12,12 +12,8 @@ interface VehicleFieldsProps {
 const VehicleFields = ({ errors, isSubmitting }: VehicleFieldsProps) => {
   return (
     <div className="space-y-3">
-      <div className="flex items-center gap-2">
-        <Car className="h-5 w-5 text-secondary" />
-        <Label htmlFor="vehicleYear" className="font-medium">Vehicle Information</Label>
-      </div>
-      
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+      <Label htmlFor="vehicleYear">Vehicle Information</Label>
+      <div className="grid grid-cols-3 gap-3">
         <div>
           <Input
             id="vehicleYear"
