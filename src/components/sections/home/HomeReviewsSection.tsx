@@ -4,6 +4,8 @@ import { Review } from '@/types/reviews';
 import ReviewsList from '@/components/reviews/ReviewsList';
 import { motion } from 'framer-motion';
 import { reviews } from '@/data/reviewsData';
+import { Button } from '@/components/ui/button';
+import { Star } from 'lucide-react';
 
 // Select 26 diverse reviews representing different service areas and services
 const getHomePageReviews = (): Review[] => {
@@ -75,15 +77,23 @@ const HomeReviewsSection = () => {
             animate={{ opacity: 1 }}
             transition={{ delay: 0.5, duration: 0.3 }}
           >
-            <a 
-              href="/reviews" 
-              className="inline-flex items-center text-primary hover:text-primary/90 font-medium transition-colors"
+            <Button
+              asChild
+              variant="default"
+              size="lg"
+              className="group shadow-md hover:shadow-lg transition-all duration-300"
             >
-              View all reviews
-              <svg className="ml-1 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-              </svg>
-            </a>
+              <a 
+                href="/reviews" 
+                className="no-underline inline-flex items-center gap-2"
+              >
+                <Star className="w-5 h-5 text-secondary group-hover:text-white transition-colors" />
+                View all reviews
+                <svg className="ml-1 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                </svg>
+              </a>
+            </Button>
           </motion.div>
         </div>
       </div>
