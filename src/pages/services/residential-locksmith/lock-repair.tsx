@@ -4,7 +4,7 @@ import EnhancedServicesHero from '@/components/sections/services/EnhancedService
 import ServicesCTA from '@/components/sections/services/ServicesCTA';
 import ServicesProof from '@/components/sections/services/ServicesProof';
 import { motion } from 'framer-motion';
-import { CheckCircle2, ShieldCheck, Tool, Clock, Award } from "lucide-react";
+import { CheckCircle2, ShieldCheck, Wrench, Clock, Award } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 
@@ -130,7 +130,7 @@ const LockRepair = () => {
                   </li>
                   <li className="flex items-start">
                     <div className="bg-secondary/20 p-1.5 rounded-full mr-3 mt-0.5">
-                      <Tool className="h-5 w-5 text-primary" />
+                      <Wrench className="h-5 w-5 text-primary" />
                     </div>
                     <div>
                       <span className="font-semibold block text-gray-800">Specialized Equipment</span>

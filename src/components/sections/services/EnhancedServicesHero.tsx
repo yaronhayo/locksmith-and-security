@@ -2,7 +2,7 @@
 import React from 'react';
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { Phone, ArrowRight, ShieldCheck, Star, Clock, Tool } from "lucide-react";
+import { Phone, ArrowRight, ShieldCheck, Star, Clock, Wrench } from "lucide-react";
 import { Link } from "react-router-dom";
 
 interface EnhancedServicesHeroProps {
@@ -146,7 +146,7 @@ const EnhancedServicesHero: React.FC<EnhancedServicesHeroProps> = ({
               <ul className="space-y-4 mb-8">
                 <li className="flex items-start">
                   <div className="bg-secondary/20 p-1 rounded-full mr-3 mt-1">
-                    <Tool className="h-4 w-4 text-secondary" />
+                    <Wrench className="h-4 w-4 text-secondary" />
                   </div>
                   <span>Trained and certified locksmith technicians</span>
                 </li>
@@ -158,7 +158,7 @@ const EnhancedServicesHero: React.FC<EnhancedServicesHeroProps> = ({
                 </li>
                 <li className="flex items-start">
                   <div className="bg-secondary/20 p-1 rounded-full mr-3 mt-1">
-                    <Tool className="h-4 w-4 text-secondary" />
+                    <Wrench className="h-4 w-4 text-secondary" />
                   </div>
                   <span>Advanced tools and latest techniques</span>
                 </li>
