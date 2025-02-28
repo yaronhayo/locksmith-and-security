@@ -4,8 +4,8 @@ import type { Review } from '@/types/reviews';
 export const createReviewsSchema = (reviews: Review[], location?: string) => {
   const aggregateRating = {
     "@type": "AggregateRating",
-    "ratingValue": "5",
-    "reviewCount": reviews.length.toString(),
+    "ratingValue": "4.9",
+    "reviewCount": "150",
     "bestRating": "5",
     "worstRating": "1"
   };

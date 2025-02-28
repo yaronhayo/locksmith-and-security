@@ -12,7 +12,7 @@ export const carServiceReviews: Review[] = [
   },
   {
     name: "Sarah Martinez",
-    rating: 5,
+    rating: 4,
     text: "Found myself locked out of my car after shopping in Jersey City. Their locksmith was professional and careful with my car's lock. Great service!",
     service: "Car Lockout",
     location: "Jersey City, NJ",
@@ -36,7 +36,7 @@ export const carServiceReviews: Review[] = [
   },
   {
     name: "Robert Thompson",
-    rating: 5,
+    rating: 4,
     text: "Excellent service when I got locked out in Union City. The technician was skilled and got me back in my car quickly without any damage.",
     service: "Car Lockout",
     location: "Union City, NJ",
@@ -60,7 +60,7 @@ export const carServiceReviews: Review[] = [
   },
   {
     name: "Jessica Wong",
-    rating: 5,
+    rating: 4,
     text: "My car wouldn't start due to an ignition issue in Jersey City. They diagnosed and fixed the problem on the spot. Excellent service!",
     service: "Ignition Repair",
     location: "Jersey City, NJ",
@@ -84,7 +84,7 @@ export const carServiceReviews: Review[] = [
   },
   {
     name: "Daniel Kim",
-    rating: 5,
+    rating: 4,
     text: "Excellent car locksmith service in West New York. They helped me get into my car when I locked my keys inside during a rainstorm.",
     service: "Car Lockout",
     location: "West New York, NJ",
@@ -100,7 +100,7 @@ export const carServiceReviews: Review[] = [
   },
   {
     name: "Brian Wilson",
-    rating: 5,
+    rating: 4,
     text: "My car's push-to-start button wasn't working in Jersey City. Their technician diagnosed and fixed the issue efficiently. Great service!",
     service: "Car Key Repair",
     location: "Jersey City, NJ",
@@ -124,7 +124,7 @@ export const carServiceReviews: Review[] = [
   },
   {
     name: "Olivia Martinez",
-    rating: 5,
+    rating: 4,
     text: "Lost my key fob in Union City. They programmed a new one quickly and at a fair price. Very happy with the service!",
     service: "Key Fob Programming",
     location: "Union City, NJ",
@@ -140,7 +140,7 @@ export const carServiceReviews: Review[] = [
   },
   {
     name: "Emily Johnson",
-    rating: 5,
+    rating: 4,
     text: "Got a duplicate car key made in Jersey City. The locksmith was knowledgeable and finished the job quickly.",
     service: "Key Duplication",
     location: "Jersey City, NJ",
@@ -156,7 +156,7 @@ export const carServiceReviews: Review[] = [
   },
   {
     name: "Natalie Patel",
-    rating: 5,
+    rating: 4,
     text: "My push-to-start button wasn't working in Secaucus. Their automotive locksmith fixed it on the spot. Excellent service!",
     service: "Car Key Repair",
     location: "Secaucus, NJ",
@@ -172,7 +172,7 @@ export const carServiceReviews: Review[] = [
   },
   {
     name: "Grace Harris",
-    rating: 5,
+    rating: 4,
     text: "Needed a high-security car key in North Bergen. They had all the equipment needed and completed the job efficiently.",
     service: "Car Key Cutting",
     location: "North Bergen, NJ",
@@ -188,7 +188,7 @@ export const carServiceReviews: Review[] = [
   },
   {
     name: "Isabella Rodriguez",
-    rating: 5,
+    rating: 4,
     text: "Needed my car's ignition rekeyed in Union City. The service was professional and completed faster than expected.",
     service: "Ignition Rekey",
     location: "Union City, NJ",

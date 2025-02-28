@@ -12,7 +12,7 @@ export const commercialReviews: Review[] = [
   },
   {
     name: "James Wilson",
-    rating: 5,
+    rating: 4,
     text: "Regular maintenance service for our apartment complex. Always reliable, professional, and thorough. Great team to work with!",
     service: "Commercial Maintenance",
     location: "Hoboken, NJ",
@@ -28,7 +28,7 @@ export const commercialReviews: Review[] = [
   },
   {
     name: "William Anderson",
-    rating: 5,
+    rating: 4,
     text: "Great experience with their master key system installation. Perfect solution for our multi-unit property management needs.",
     service: "Master Key System",
     location: "Union City, NJ",
@@ -52,7 +52,7 @@ export const commercialReviews: Review[] = [
   },
   {
     name: "James Oliver",
-    rating: 5,
+    rating: 4,
     text: "Professional installation of high-security locks for my jewelry store. Very satisfied with the security upgrade.",
     service: "Commercial Security",
     location: "Union City, NJ",
@@ -76,7 +76,7 @@ export const commercialReviews: Review[] = [
   },
   {
     name: "Mark Johnson",
-    rating: 5,
+    rating: 4,
     text: "Professional lock repair service for my office. Quick response and excellent workmanship.",
     service: "Commercial Lock Repair",
     location: "North Bergen, NJ",

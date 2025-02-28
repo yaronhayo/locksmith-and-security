@@ -12,7 +12,7 @@ export const residentialReviews: Review[] = [
   },
   {
     name: "Maria Garcia",
-    rating: 5,
+    rating: 4,
     text: "Excellent emergency service when I was locked out of my house late at night. The technician was professional and got me back inside quickly.",
     service: "House Lockout",
     location: "West New York, NJ",
@@ -36,7 +36,7 @@ export const residentialReviews: Review[] = [
   },
   {
     name: "Thomas Brown",
-    rating: 5,
+    rating: 4,
     text: "Installed new high-security locks on all my doors. Very knowledgeable about different security options and provided great recommendations.",
     service: "Security Upgrade",
     location: "North Bergen, NJ",
@@ -60,7 +60,7 @@ export const residentialReviews: Review[] = [
   },
   {
     name: "Daniel Foster",
-    rating: 5,
+    rating: 4,
     text: "Excellent work rekeying all the locks in my new home. Very thorough and professional service. Great attention to detail.",
     service: "Residential Rekey",
     location: "Hoboken, NJ",
