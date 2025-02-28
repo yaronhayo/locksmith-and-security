@@ -1,9 +1,12 @@
 
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Phone, Mail, MessageSquare, SendIcon } from "lucide-react";
 import { motion } from "framer-motion";
 import Recaptcha from "@/components/ui/recaptcha";
+import { formatPhoneNumber, getEmailError, getNameError, getPhoneError } from "@/utils/inputValidation";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { AlertCircle } from "lucide-react";
 
 interface ServiceAreaFormProps {
   locationName?: string;
@@ -18,20 +21,105 @@ const ServiceAreaForm = ({ locationName }: ServiceAreaFormProps) => {
     service: ""
   });
   
+  const [errors, setErrors] = useState({
+    name: null as string | null,
+    email: null as string | null,
+    phone: null as string | null
+  });
+  
+  const [isDirty, setIsDirty] = useState({
+    name: false,
+    email: false,
+    phone: false
+  });
+  
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
   
+  useEffect(() => {
+    if (isDirty.name) {
+      setErrors(prev => ({ ...prev, name: getNameError(formState.name) }));
+    }
+  }, [formState.name, isDirty.name]);
+  
+  useEffect(() => {
+    if (isDirty.email) {
+      setErrors(prev => ({ ...prev, email: getEmailError(formState.email) }));
+    }
+  }, [formState.email, isDirty.email]);
+  
+  useEffect(() => {
+    if (isDirty.phone) {
+      setErrors(prev => ({ ...prev, phone: getPhoneError(formState.phone) }));
+    }
+  }, [formState.phone, isDirty.phone]);
+  
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-    setFormState(prev => ({ ...prev, [name]: value }));
+    
+    if (name === 'phone') {
+      // Format the phone number as it's typed
+      const formattedPhone = formatPhoneNumber(value);
+      setFormState(prev => ({ ...prev, [name]: formattedPhone }));
+      
+      if (!isDirty.phone) {
+        setIsDirty(prev => ({ ...prev, phone: true }));
+      }
+    } else {
+      setFormState(prev => ({ ...prev, [name]: value }));
+      
+      // Set the corresponding field as dirty
+      if (name === 'name' && !isDirty.name) {
+        setIsDirty(prev => ({ ...prev, name: true }));
+      } else if (name === 'email' && !isDirty.email) {
+        setIsDirty(prev => ({ ...prev, email: true }));
+      }
+    }
+  };
+  
+  const handleBlur = (field: 'name' | 'email' | 'phone') => {
+    setIsDirty(prev => ({ ...prev, [field]: true }));
+  };
+  
+  const isFormValid = () => {
+    return (
+      !errors.name && 
+      !errors.email && 
+      !errors.phone && 
+      formState.name.trim() !== '' && 
+      formState.email.trim() !== '' && 
+      formState.phone.trim() !== '' && 
+      formState.service !== '' && 
+      !!recaptchaToken
+    );
   };
   
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
+    // Mark all fields as dirty to show validation errors
+    setIsDirty({
+      name: true,
+      email: true,
+      phone: true
+    });
+    
+    // Update all errors
+    const newErrors = {
+      name: getNameError(formState.name) || (formState.name.trim() === '' ? 'Name is required' : null),
+      email: getEmailError(formState.email) || (formState.email.trim() === '' ? 'Email is required' : null),
+      phone: getPhoneError(formState.phone) || (formState.phone.trim() === '' ? 'Phone number is required' : null)
+    };
+    
+    setErrors(newErrors);
+    
     if (!recaptchaToken) {
       alert("Please complete the reCAPTCHA verification");
+      return;
+    }
+    
+    if (newErrors.name || newErrors.email || newErrors.phone || formState.service === '') {
       return;
     }
     
@@ -83,9 +171,18 @@ const ServiceAreaForm = ({ locationName }: ServiceAreaFormProps) => {
                   name="name"
                   value={formState.name}
                   onChange={handleChange}
-                  className="w-full px-3 sm:px-4 py-2 border border-gray-300 rounded-md focus:ring-secondary focus:border-secondary"
+                  onBlur={() => handleBlur('name')}
+                  className={`w-full px-3 sm:px-4 py-2 border ${errors.name ? 'border-red-500' : 'border-gray-300'} rounded-md focus:ring-secondary focus:border-secondary`}
                   required
+                  aria-invalid={!!errors.name}
+                  aria-describedby={errors.name ? "name-error" : undefined}
                 />
+                {errors.name && (
+                  <Alert variant="destructive" className="mt-1 py-2">
+                    <AlertCircle className="h-4 w-4" />
+                    <AlertDescription id="name-error">{errors.name}</AlertDescription>
+                  </Alert>
+                )}
               </div>
               
               <div>
@@ -96,9 +193,18 @@ const ServiceAreaForm = ({ locationName }: ServiceAreaFormProps) => {
                   name="phone"
                   value={formState.phone}
                   onChange={handleChange}
-                  className="w-full px-3 sm:px-4 py-2 border border-gray-300 rounded-md focus:ring-secondary focus:border-secondary"
+                  onBlur={() => handleBlur('phone')}
+                  className={`w-full px-3 sm:px-4 py-2 border ${errors.phone ? 'border-red-500' : 'border-gray-300'} rounded-md focus:ring-secondary focus:border-secondary`}
                   required
+                  aria-invalid={!!errors.phone}
+                  aria-describedby={errors.phone ? "phone-error" : undefined}
                 />
+                {errors.phone && (
+                  <Alert variant="destructive" className="mt-1 py-2">
+                    <AlertCircle className="h-4 w-4" />
+                    <AlertDescription id="phone-error">{errors.phone}</AlertDescription>
+                  </Alert>
+                )}
               </div>
             </div>
             
@@ -110,9 +216,18 @@ const ServiceAreaForm = ({ locationName }: ServiceAreaFormProps) => {
                 name="email"
                 value={formState.email}
                 onChange={handleChange}
-                className="w-full px-3 sm:px-4 py-2 border border-gray-300 rounded-md focus:ring-secondary focus:border-secondary"
+                onBlur={() => handleBlur('email')}
+                className={`w-full px-3 sm:px-4 py-2 border ${errors.email ? 'border-red-500' : 'border-gray-300'} rounded-md focus:ring-secondary focus:border-secondary`}
                 required
+                aria-invalid={!!errors.email}
+                aria-describedby={errors.email ? "email-error" : undefined}
               />
+              {errors.email && (
+                <Alert variant="destructive" className="mt-1 py-2">
+                  <AlertCircle className="h-4 w-4" />
+                  <AlertDescription id="email-error">{errors.email}</AlertDescription>
+                </Alert>
+              )}
             </div>
             
             <div>
@@ -154,7 +269,7 @@ const ServiceAreaForm = ({ locationName }: ServiceAreaFormProps) => {
             <Button 
               type="submit" 
               className="w-full py-2 sm:py-3 bg-secondary hover:bg-secondary/90 text-white font-medium rounded-md shadow-sm"
-              disabled={isSubmitting}
+              disabled={isSubmitting || !isFormValid()}
             >
               {isSubmitting ? "Sending..." : (
                 <span className="flex items-center gap-2">

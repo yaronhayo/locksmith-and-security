@@ -1,5 +1,5 @@
 
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
@@ -9,6 +9,7 @@ import PersonalInfoFields from "./form/PersonalInfoFields";
 import EmailField from "./form/EmailField";
 import AddressField from "./form/AddressField";
 import MessageField from "./form/MessageField";
+import { getEmailError, getNameError, getPhoneError } from "@/utils/inputValidation";
 
 const ContactForm = () => {
   const form = useRef<HTMLFormElement>(null);
@@ -17,6 +18,40 @@ const ContactForm = () => {
   const [address, setAddress] = useState("");
   const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errors, setErrors] = useState<Record<string, string>>({});
+
+  // Check form validity before submission
+  const validateForm = () => {
+    if (!form.current) return false;
+
+    const formData = new FormData(form.current);
+    const name = String(formData.get('user_name'));
+    const email = String(formData.get('user_email'));
+    const phone = String(formData.get('user_phone'));
+    const message = String(formData.get('message'));
+
+    const newErrors: Record<string, string> = {};
+    
+    const nameError = getNameError(name);
+    if (nameError) newErrors.name = nameError;
+    
+    const emailError = getEmailError(email);
+    if (emailError) newErrors.email = emailError;
+    
+    const phoneError = getPhoneError(phone);
+    if (phoneError) newErrors.phone = phoneError;
+    
+    if (!address.trim()) {
+      newErrors.address = "Please enter your address";
+    }
+    
+    if (!message.trim()) {
+      newErrors.message = "Please enter a message";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -25,6 +60,15 @@ const ContactForm = () => {
       toast({
         title: "Verification Required",
         description: "Please complete the reCAPTCHA verification",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (!validateForm()) {
+      toast({
+        title: "Form Error",
+        description: "Please fix the errors in the form before submitting",
         variant: "destructive",
       });
       return;
@@ -92,8 +136,9 @@ const ContactForm = () => {
           value={address}
           onChange={setAddress}
           isSubmitting={isSubmitting}
+          error={errors.address}
         />
-        <MessageField isSubmitting={isSubmitting} />
+        <MessageField isSubmitting={isSubmitting} error={errors.message} />
         <Recaptcha onChange={setRecaptchaToken} />
 
         <Button 

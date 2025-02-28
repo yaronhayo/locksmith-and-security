@@ -2,6 +2,10 @@
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Mail } from "lucide-react";
+import { useState, useEffect } from "react";
+import { getEmailError } from "@/utils/inputValidation";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { AlertCircle } from "lucide-react";
 
 interface EmailFieldProps {
   isSubmitting: boolean;
@@ -9,6 +13,21 @@ interface EmailFieldProps {
 
 const EmailField = ({ isSubmitting }: EmailFieldProps) => {
   const emailId = "contact-email";
+  const [value, setValue] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const [isDirty, setIsDirty] = useState(false);
+
+  useEffect(() => {
+    if (isDirty) {
+      setError(getEmailError(value));
+    }
+  }, [value, isDirty]);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setValue(e.target.value);
+    if (!isDirty) setIsDirty(true);
+  };
+
   return (
     <div>
       <Label htmlFor={emailId} className="block text-sm font-medium mb-2">
@@ -25,9 +44,20 @@ const EmailField = ({ isSubmitting }: EmailFieldProps) => {
           required 
           placeholder="john@example.com"
           disabled={isSubmitting}
-          className="pl-10"
+          className={`pl-10 ${error ? 'border-red-500' : ''}`}
+          value={value}
+          onChange={handleChange}
+          onBlur={() => setIsDirty(true)}
+          aria-invalid={!!error}
+          aria-describedby={error ? `${emailId}-error` : undefined}
         />
       </div>
+      {error && (
+        <Alert variant="destructive" className="mt-1 py-2">
+          <AlertCircle className="h-4 w-4" />
+          <AlertDescription id={`${emailId}-error`}>{error}</AlertDescription>
+        </Alert>
+      )}
     </div>
   );
 };
