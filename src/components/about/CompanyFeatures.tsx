@@ -1,6 +1,6 @@
 
 import { motion } from "framer-motion";
-import { Shield, Award, Users, CheckCircle, Wrench, Clock } from "lucide-react";
+import { Shield, Award, Users, CheckCircle, Tool, Clock } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 
 const features = [
@@ -25,7 +25,7 @@ const features = [
     description: "We use only high-quality, durable products and parts to ensure the longevity and reliability of our security solutions.",
   },
   {
-    icon: Wrench,
+    icon: Tool,
     title: "Comprehensive Security Solutions",
     description: "From traditional locks to advanced electronic systems, we provide all-inclusive security services for homes, businesses, and vehicles.",
   },
