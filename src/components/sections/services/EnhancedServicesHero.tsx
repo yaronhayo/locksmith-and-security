@@ -74,7 +74,7 @@ const EnhancedServicesHero: React.FC<EnhancedServicesHeroProps> = ({
                 size="lg" 
                 variant="secondary" 
                 asChild 
-                className="text-primary hover:text-primary-dark font-medium text-base sm:text-lg py-6 px-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-secondary/20"
+                className="text-primary font-semibold hover:text-primary-dark hover:bg-secondary-hover text-base sm:text-lg py-6 px-6 shadow-lg hover:shadow-xl transition-all duration-300"
               >
                 <a href="tel:2017482070" className="flex items-center">
                   <Phone className="mr-3 h-5 w-5" />
@@ -171,7 +171,7 @@ const EnhancedServicesHero: React.FC<EnhancedServicesHeroProps> = ({
               </ul>
               
               <Button 
-                className="w-full bg-secondary hover:bg-secondary-hover text-primary font-medium shadow-lg hover:shadow-xl transition-all duration-300" 
+                className="w-full bg-secondary hover:bg-secondary-hover text-primary font-semibold shadow-lg hover:shadow-xl transition-all duration-300" 
                 size="lg" 
                 asChild
               >
