@@ -204,7 +204,7 @@ const CarLockout = () => {
         <div className="bg-white p-6 rounded-lg shadow-md border border-gray-100">
           <div className="flex items-start">
             <div className="bg-primary/10 p-2 rounded-lg mr-4">
-              <Tool className="h-8 w-8 text-primary" />
+              <Wrench className="h-8 w-8 text-primary" />
             </div>
             <div>
               <h3 className="font-semibold text-xl mb-2">Comprehensive Service</h3>
