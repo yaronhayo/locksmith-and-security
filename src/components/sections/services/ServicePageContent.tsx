@@ -146,8 +146,9 @@ const ServicePageContent: React.FC<ServicePageContentProps> = ({
         </div>
       </div>
 
-      {/* Add a style block to enhance body text with orange accents */}
-      <style jsx>{`
+      {/* Replace the problematic <style jsx> tag with <style> */}
+      <style>
+        {`
         .service-content h3 {
           color: #1E3A8A;
           border-left: 3px solid #FFA500;
@@ -192,7 +193,8 @@ const ServicePageContent: React.FC<ServicePageContentProps> = ({
           color: #1E3A8A;
           text-decoration-color: #1E3A8A;
         }
-      `}</style>
+        `}
+      </style>
     </div>
   );
 };
