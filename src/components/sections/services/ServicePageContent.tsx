@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Button } from "@/components/ui/button";
-import { Phone, ArrowRight, Calendar, ArrowUpRight, MessageSquare, ShieldCheck } from "lucide-react";
+import { Phone, ArrowRight, Calendar, ArrowUpRight, MessageSquare, ShieldCheck, Star } from "lucide-react";
 import FAQAccordion from "@/components/sections/FAQAccordion";
 import { Link } from "react-router-dom";
 
@@ -42,14 +42,22 @@ const ServicePageContent: React.FC<ServicePageContentProps> = ({
           {/* Main content area - 2/3 width on desktop */}
           <div className="lg:col-span-2">
             <div className="prose prose-lg max-w-none">
-              <h1 className="text-3xl lg:text-4xl font-bold text-primary mb-6">{title}</h1>
+              <h1 className="text-3xl lg:text-4xl font-bold text-primary mb-6 border-l-4 border-secondary pl-4">{title}</h1>
               <p className="text-lg text-gray-600 mb-8">{description}</p>
+              
+              <div className="bg-secondary/5 p-6 rounded-lg border-l-4 border-secondary mb-8">
+                <div className="flex items-center mb-3">
+                  <Star className="text-secondary h-5 w-5 mr-2" />
+                  <h3 className="text-xl font-semibold text-gray-800">Professional {serviceName} Service</h3>
+                </div>
+                <p className="text-gray-700">Our certified technicians provide fast, reliable {serviceName.toLowerCase()} solutions with guaranteed workmanship. Available 24/7 for emergency assistance.</p>
+              </div>
               
               {mainContent}
               
               {faqs.length > 0 && (
                 <div className="mt-16">
-                  <h2 className="text-2xl lg:text-3xl font-bold text-primary mb-6">
+                  <h2 className="text-2xl lg:text-3xl font-bold text-primary mb-6 border-l-4 border-secondary pl-4">
                     Frequently Asked Questions
                   </h2>
                   <FAQAccordion faqs={faqs} />
@@ -100,17 +108,20 @@ const ServicePageContent: React.FC<ServicePageContentProps> = ({
               
               {/* Services card */}
               {relatedServices.length > 0 && (
-                <div className="bg-gray-50 rounded-xl overflow-hidden shadow-md">
-                  <div className="p-6">
-                    <h3 className="text-xl font-bold mb-4 text-primary">
+                <div className="bg-gray-50 rounded-xl overflow-hidden shadow-md border border-secondary/20">
+                  <div className="bg-secondary/10 p-3 border-b border-secondary/20">
+                    <h3 className="text-xl font-bold text-primary flex items-center">
+                      <Star className="mr-2 h-5 w-5 text-secondary" />
                       Related Services
                     </h3>
+                  </div>
+                  <div className="p-6">
                     <div className="space-y-4">
                       {relatedServices.map((service, index) => (
                         <Link 
                           key={index} 
                           to={service.path}
-                          className="block p-4 bg-white rounded-lg hover:shadow-md transition-shadow duration-300 no-underline"
+                          className="block p-4 bg-white rounded-lg hover:shadow-md transition-shadow duration-300 no-underline border border-gray-100 hover:border-secondary/30"
                         >
                           <div className="flex justify-between items-center">
                             <div>
