@@ -22,7 +22,7 @@ const ServicesFeatures = () => {
             transition={{ duration: 0.5, delay: 0.2 }}
             className="text-2xl sm:text-3xl font-bold text-gray-800 mb-4"
           >
-            Trusted Professional Service
+            Trusted <span className="border-b-2 border-secondary pb-1">Professional Service</span>
           </motion.h2>
         </div>
 
@@ -31,14 +31,14 @@ const ServicesFeatures = () => {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="bg-white p-6 rounded-lg shadow-sm border border-gray-100 hover:border-secondary/30 transition-colors group"
+            className="bg-white p-6 rounded-lg shadow-sm border border-gray-100 hover:border-secondary/50 transition-colors group"
           >
-            <div className="w-12 h-12 bg-secondary/10 rounded-full flex items-center justify-center mb-4 group-hover:bg-secondary/20 transition-colors">
+            <div className="w-12 h-12 bg-secondary/10 rounded-full flex items-center justify-center mb-4 group-hover:bg-secondary/30 transition-colors">
               <Clock className="w-6 h-6 text-secondary" />
             </div>
-            <h3 className="text-lg font-semibold mb-2">24/7 Service</h3>
+            <h3 className="text-lg font-semibold mb-2 group-hover:text-secondary transition-colors">24/7 Service</h3>
             <p className="text-gray-600">
-              Professional service available around the clock for your security needs
+              Professional service available <span className="text-secondary font-medium">around the clock</span> for your security needs
             </p>
           </motion.div>
 
@@ -46,14 +46,14 @@ const ServicesFeatures = () => {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.1 }}
-            className="bg-white p-6 rounded-lg shadow-sm border border-gray-100 hover:border-secondary/30 transition-colors group"
+            className="bg-white p-6 rounded-lg shadow-sm border border-gray-100 hover:border-secondary/50 transition-colors group"
           >
-            <div className="w-12 h-12 bg-secondary/10 rounded-full flex items-center justify-center mb-4 group-hover:bg-secondary/20 transition-colors">
+            <div className="w-12 h-12 bg-secondary/10 rounded-full flex items-center justify-center mb-4 group-hover:bg-secondary/30 transition-colors">
               <Shield className="w-6 h-6 text-secondary" />
             </div>
-            <h3 className="text-lg font-semibold mb-2">Licensed & Insured</h3>
+            <h3 className="text-lg font-semibold mb-2 group-hover:text-secondary transition-colors">Licensed & Insured</h3>
             <p className="text-gray-600">
-              Fully licensed and insured for your peace of mind
+              <span className="text-secondary font-medium">Fully licensed</span> and insured for your peace of mind
             </p>
           </motion.div>
 
@@ -61,14 +61,14 @@ const ServicesFeatures = () => {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
-            className="bg-white p-6 rounded-lg shadow-sm border border-gray-100 hover:border-secondary/30 transition-colors group"
+            className="bg-white p-6 rounded-lg shadow-sm border border-gray-100 hover:border-secondary/50 transition-colors group"
           >
-            <div className="w-12 h-12 bg-secondary/10 rounded-full flex items-center justify-center mb-4 group-hover:bg-secondary/20 transition-colors">
+            <div className="w-12 h-12 bg-secondary/10 rounded-full flex items-center justify-center mb-4 group-hover:bg-secondary/30 transition-colors">
               <Award className="w-6 h-6 text-secondary" />
             </div>
-            <h3 className="text-lg font-semibold mb-2">Certified Experts</h3>
+            <h3 className="text-lg font-semibold mb-2 group-hover:text-secondary transition-colors">Certified Experts</h3>
             <p className="text-gray-600">
-              Professional technicians with extensive training and expertise
+              Professional technicians with <span className="text-secondary font-medium">extensive training</span> and expertise
             </p>
           </motion.div>
 
@@ -76,14 +76,14 @@ const ServicesFeatures = () => {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.3 }}
-            className="bg-white p-6 rounded-lg shadow-sm border border-gray-100 hover:border-secondary/30 transition-colors group"
+            className="bg-white p-6 rounded-lg shadow-sm border border-gray-100 hover:border-secondary/50 transition-colors group"
           >
-            <div className="w-12 h-12 bg-secondary/10 rounded-full flex items-center justify-center mb-4 group-hover:bg-secondary/20 transition-colors">
+            <div className="w-12 h-12 bg-secondary/10 rounded-full flex items-center justify-center mb-4 group-hover:bg-secondary/30 transition-colors">
               <Star className="w-6 h-6 text-secondary" />
             </div>
-            <h3 className="text-lg font-semibold mb-2">5-Star Service</h3>
+            <h3 className="text-lg font-semibold mb-2 group-hover:text-secondary transition-colors">5-Star Service</h3>
             <p className="text-gray-600">
-              Consistently rated 5 stars by our satisfied customers
+              Consistently rated <span className="text-secondary font-medium">5 stars</span> by our satisfied customers
             </p>
           </motion.div>
         </div>

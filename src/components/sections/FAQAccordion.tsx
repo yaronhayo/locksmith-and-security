@@ -19,8 +19,14 @@ const FAQAccordion: React.FC<FAQAccordionProps> = ({ faqs }) => {
           <AccordionTrigger className="text-left font-medium text-gray-900 hover:text-secondary transition-colors py-4">
             {faq.question}
           </AccordionTrigger>
-          <AccordionContent className="text-gray-700 border-l-2 border-secondary/20 pl-4">
-            {faq.answer}
+          <AccordionContent className="text-gray-700 border-l-2 border-secondary/50 pl-4">
+            <div dangerouslySetInnerHTML={{ __html: faq.answer.replace(
+              /\*\*(.*?)\*\*/g, 
+              '<strong class="text-primary">$1</strong>'
+            ).replace(
+              /\*(.*?)\*/g, 
+              '<em class="text-secondary font-medium">$1</em>'
+            ) }} />
           </AccordionContent>
         </AccordionItem>
       ))}
