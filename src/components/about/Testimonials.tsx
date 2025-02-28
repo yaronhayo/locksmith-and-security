@@ -6,7 +6,7 @@ const testimonials = [
   {
     name: "Jennifer L.",
     location: "North Bergen",
-    text: "I was locked out of my house late at night, and their locksmith arrived in no time. Professional, courteous, and efficient. I highly recommend their services!",
+    text: "Their locksmith was professional, courteous, and efficient. The service exceeded my expectations, and I felt completely at ease. I highly recommend their services!",
     rating: 5
   },
   {
@@ -18,7 +18,7 @@ const testimonials = [
   {
     name: "Amanda W.",
     location: "Hoboken",
-    text: "After losing my car keys, I was worried about the hassle of replacement. Their team made the process smooth and stress-free. Outstanding service!",
+    text: "After losing my car keys, I was worried about the hassle of replacement. Their team made the process smooth and stress-free. Outstanding service and great attention to detail!",
     rating: 5
   }
 ];
