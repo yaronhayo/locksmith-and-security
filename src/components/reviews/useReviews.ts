@@ -9,9 +9,8 @@ export const useReviews = (location?: string, category?: ServiceCategory) => {
   const [page, setPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const loadingRef = useRef(null);
-  const observerRef = useRef<IntersectionObserver | null>(null);
-  const pageSize = 12; // Showing 12 reviews per batch
-  const loadDelay = 800; // Set to 0.8 seconds (800ms) as requested
+  const pageSize = 12; // Increased from 9 to 12 to show more reviews at once
+  const loadDelay = 150; // Reduced from default loading delay for faster perceived loading
 
   const filteredReviews = useMemo(() => {
     if (!location && !category) return reviews;
@@ -53,7 +52,7 @@ export const useReviews = (location?: string, category?: ServiceCategory) => {
     const newReviews = filteredReviews.slice(startIndex, endIndex);
     
     if (newReviews.length > 0) {
-      // Use exactly 800ms delay as requested by the user
+      // Use a shorter timeout for a faster perceived loading experience
       setTimeout(() => {
         setDisplayedReviews(prev => [...prev, ...newReviews]);
         setPage(prev => prev + 1);
@@ -73,39 +72,6 @@ export const useReviews = (location?: string, category?: ServiceCategory) => {
       setIsLoading(false);
     }
   }, [page, filteredReviews, isLoading, displayedReviews.length, pageSize, loadDelay]);
-
-  // Setup intersection observer for automatic loading
-  useEffect(() => {
-    const options = {
-      root: null,
-      rootMargin: '100px', // Start loading before user reaches the bottom
-      threshold: 0.1
-    };
-
-    const handleObserver = (entries: IntersectionObserverEntry[]) => {
-      const [entry] = entries;
-      if (entry?.isIntersecting && !isLoading && displayedReviews.length < filteredReviews.length) {
-        loadMoreReviews();
-      }
-    };
-
-    // Clean up previous observer before creating a new one
-    if (observerRef.current) {
-      observerRef.current.disconnect();
-    }
-
-    observerRef.current = new IntersectionObserver(handleObserver, options);
-    
-    if (loadingRef.current) {
-      observerRef.current.observe(loadingRef.current);
-    }
-
-    return () => {
-      if (observerRef.current) {
-        observerRef.current.disconnect();
-      }
-    };
-  }, [loadMoreReviews, isLoading, displayedReviews.length, filteredReviews.length]);
 
   useEffect(() => {
     setDisplayedReviews([]);
