@@ -1,8 +1,7 @@
-
 import React from 'react';
 import { Helmet } from "react-helmet";
 import ServicePageTemplate from '@/components/services/ServicePageTemplate';
-import { Tool, Clock, Shield, Home, Key, MapPin, Lock, Unlock, AlertTriangle } from "lucide-react";
+import { Wrench, Clock, Shield, Home, Key, MapPin, Lock, Unlock, AlertTriangle } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { createServiceSchema } from '@/utils/schema/localBusinessSchema';
 
@@ -51,7 +50,7 @@ const HouseLockout = () => {
     {
       title: "Advanced Equipment",
       description: "Our technicians carry specialized tools designed specifically for modern residential locks and high-security systems.",
-      icon: <Tool className="w-6 h-6 text-primary" />
+      icon: <Wrench className="w-6 h-6 text-primary" />
     },
     {
       title: "Local Expertise",
@@ -217,7 +216,7 @@ const HouseLockout = () => {
         <div className="bg-white p-6 rounded-lg shadow-md border border-gray-100">
           <div className="flex items-start">
             <div className="bg-primary/10 p-2 rounded-lg mr-4">
-              <Tool className="h-8 w-8 text-primary" />
+              <Wrench className="h-8 w-8 text-primary" />
             </div>
             <div>
               <h3 className="font-semibold text-xl mb-2">On-the-Spot Solutions</h3>

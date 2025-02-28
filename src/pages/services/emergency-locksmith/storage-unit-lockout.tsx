@@ -1,8 +1,7 @@
-
 import React from 'react';
 import { Helmet } from "react-helmet";
 import ServicePageTemplate from '@/components/services/ServicePageTemplate';
-import { Tool, Clock, Shield, Package, Key, MapPin, Lock, Unlock, AlertTriangle } from "lucide-react";
+import { Wrench, Clock, Shield, Package, Key, MapPin, Lock, Unlock, AlertTriangle } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { createServiceSchema } from '@/utils/schema/localBusinessSchema';
 
@@ -51,7 +50,7 @@ const StorageUnitLockout = () => {
     {
       title: "Advanced Equipment",
       description: "Our technicians carry specialized tools designed specifically for the types of locks commonly used in storage facilities.",
-      icon: <Tool className="w-6 h-6 text-primary" />
+      icon: <Wrench className="w-6 h-6 text-primary" />
     },
     {
       title: "Local Expertise",

@@ -2,7 +2,7 @@
 import React from 'react';
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { Phone, MapPin, Clock, Shield, Tool, Star, BadgeCheck, ArrowRight } from "lucide-react";
+import { Phone, MapPin, Clock, Shield, Wrench, Star, BadgeCheck, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";

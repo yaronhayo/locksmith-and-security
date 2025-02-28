@@ -2,7 +2,8 @@
 import React from 'react';
 import { Helmet } from "react-helmet";
 import ServicePageTemplate from '@/components/services/ServicePageTemplate';
-import { Tool, Clock, Shield, Search, Key, MapPin, Car, Brush, AlertTriangle } from "lucide-react";
+import { Wrench, Clock, Shield, Search, Key, MapPin, Car, Brush, AlertTriangle } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 import { createServiceSchema } from '@/utils/schema/localBusinessSchema';
 
 const CarLockout = () => {
@@ -40,7 +41,7 @@ const CarLockout = () => {
     {
       title: "Certified Technicians",
       description: "All our automotive locksmiths are fully certified, insured, and extensively trained in the latest vehicle entry techniques.",
-      icon: <Badge className="w-6 h-6 text-primary" />
+      icon: <Shield className="w-6 h-6 text-primary" />
     },
     {
       title: "All Vehicle Types",
@@ -50,7 +51,7 @@ const CarLockout = () => {
     {
       title: "Advanced Equipment",
       description: "Our technicians carry specialized tools designed specifically for modern vehicles with advanced security systems.",
-      icon: <Tool className="w-6 h-6 text-primary" />
+      icon: <Wrench className="w-6 h-6 text-primary" />
     },
     {
       title: "Local Expertise",
