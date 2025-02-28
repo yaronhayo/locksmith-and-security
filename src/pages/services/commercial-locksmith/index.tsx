@@ -277,28 +277,28 @@ const CommercialLocksmith = () => {
               viewport={{ once: true }}
             >
               <div className="bg-white/10 p-6 rounded-lg backdrop-blur-sm">
-                <h3 className="text-xl font-semibold mb-3">Implement Access Controls</h3>
+                <h3 className="text-xl font-semibold mb-3 text-sky-100">Implement Access Controls</h3>
                 <p className="text-white/80">
                   Use electronic access control systems to monitor and restrict entry to sensitive areas.
                 </p>
               </div>
               
               <div className="bg-white/10 p-6 rounded-lg backdrop-blur-sm">
-                <h3 className="text-xl font-semibold mb-3">Maintain Key Control</h3>
+                <h3 className="text-xl font-semibold mb-3 text-sky-100">Maintain Key Control</h3>
                 <p className="text-white/80">
                   Keep detailed records of all keys and establish clear protocols for issuing and returning keys.
                 </p>
               </div>
               
               <div className="bg-white/10 p-6 rounded-lg backdrop-blur-sm">
-                <h3 className="text-xl font-semibold mb-3">Regular Security Audits</h3>
+                <h3 className="text-xl font-semibold mb-3 text-sky-100">Regular Security Audits</h3>
                 <p className="text-white/80">
                   Conduct periodic security assessments to identify and address potential vulnerabilities.
                 </p>
               </div>
               
               <div className="bg-white/10 p-6 rounded-lg backdrop-blur-sm">
-                <h3 className="text-xl font-semibold mb-3">Employee Training</h3>
+                <h3 className="text-xl font-semibold mb-3 text-sky-100">Employee Training</h3>
                 <p className="text-white/80">
                   Ensure all staff members understand security protocols and their role in maintaining facility security.
                 </p>

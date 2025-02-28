@@ -236,7 +236,7 @@ const EmergencyLocksmith = () => {
                   <span className="font-bold">1</span>
                 </div>
                 <div>
-                  <h3 className="text-xl font-semibold mb-2">Stay Calm</h3>
+                  <h3 className="text-xl font-semibold mb-2 text-sky-100">Stay Calm</h3>
                   <p className="text-white/80">
                     Take a deep breath. Panicking can lead to poor decisions. Remember that help is just a phone call away.
                   </p>
@@ -248,7 +248,7 @@ const EmergencyLocksmith = () => {
                   <span className="font-bold">2</span>
                 </div>
                 <div>
-                  <h3 className="text-xl font-semibold mb-2">Call Our Emergency Number</h3>
+                  <h3 className="text-xl font-semibold mb-2 text-sky-100">Call Our Emergency Number</h3>
                   <p className="text-white/80">
                     Contact us at (201) 748-2070 for immediate assistance. Our dispatchers are available 24/7.
                   </p>
@@ -260,7 +260,7 @@ const EmergencyLocksmith = () => {
                   <span className="font-bold">3</span>
                 </div>
                 <div>
-                  <h3 className="text-xl font-semibold mb-2">Provide Your Location</h3>
+                  <h3 className="text-xl font-semibold mb-2 text-sky-100">Provide Your Location</h3>
                   <p className="text-white/80">
                     Share your exact location and the nature of your emergency. This helps us dispatch the right technician with the proper equipment.
                   </p>
@@ -272,7 +272,7 @@ const EmergencyLocksmith = () => {
                   <span className="font-bold">4</span>
                 </div>
                 <div>
-                  <h3 className="text-xl font-semibold mb-2">Wait in a Safe Location</h3>
+                  <h3 className="text-xl font-semibold mb-2 text-sky-100">Wait in a Safe Location</h3>
                   <p className="text-white/80">
                     If it's late at night or you're in an unfamiliar area, wait in a well-lit, populated location if possible.
                   </p>

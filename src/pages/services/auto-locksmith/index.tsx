@@ -277,28 +277,28 @@ const AutoLocksmith = () => {
               viewport={{ once: true }}
             >
               <div className="bg-white/10 p-6 rounded-lg backdrop-blur-sm">
-                <h3 className="text-xl font-semibold mb-3">Traditional Car Keys</h3>
+                <h3 className="text-xl font-semibold mb-3 text-sky-100">Traditional Car Keys</h3>
                 <p className="text-white/80">
                   Basic mechanical keys for older vehicles that don't contain electronic components.
                 </p>
               </div>
               
               <div className="bg-white/10 p-6 rounded-lg backdrop-blur-sm">
-                <h3 className="text-xl font-semibold mb-3">Transponder Keys</h3>
+                <h3 className="text-xl font-semibold mb-3 text-sky-100">Transponder Keys</h3>
                 <p className="text-white/80">
                   Keys with embedded chips that must be programmed to start your vehicle.
                 </p>
               </div>
               
               <div className="bg-white/10 p-6 rounded-lg backdrop-blur-sm">
-                <h3 className="text-xl font-semibold mb-3">Remote Head Keys</h3>
+                <h3 className="text-xl font-semibold mb-3 text-sky-100">Remote Head Keys</h3>
                 <p className="text-white/80">
                   Keys with built-in remote controls for locking/unlocking and sometimes remote start.
                 </p>
               </div>
               
               <div className="bg-white/10 p-6 rounded-lg backdrop-blur-sm">
-                <h3 className="text-xl font-semibold mb-3">Smart Keys & Proximity Fobs</h3>
+                <h3 className="text-xl font-semibold mb-3 text-sky-100">Smart Keys & Proximity Fobs</h3>
                 <p className="text-white/80">
                   Advanced keyless systems that allow for push-button start and passive entry.
                 </p>

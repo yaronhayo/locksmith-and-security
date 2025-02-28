@@ -270,28 +270,28 @@ const ResidentialLocksmith = () => {
               viewport={{ once: true }}
             >
               <div className="bg-white/10 p-6 rounded-lg backdrop-blur-sm">
-                <h3 className="text-xl font-semibold mb-3">Install Quality Deadbolts</h3>
+                <h3 className="text-xl font-semibold mb-3 text-sky-100">Install Quality Deadbolts</h3>
                 <p className="text-white/80">
                   All exterior doors should have quality deadbolts with a minimum 1-inch throw bolt for maximum security.
                 </p>
               </div>
               
               <div className="bg-white/10 p-6 rounded-lg backdrop-blur-sm">
-                <h3 className="text-xl font-semibold mb-3">Secure Sliding Doors</h3>
+                <h3 className="text-xl font-semibold mb-3 text-sky-100">Secure Sliding Doors</h3>
                 <p className="text-white/80">
                   Use specialized locks or security bars to prevent sliding doors from being forced open.
                 </p>
               </div>
               
               <div className="bg-white/10 p-6 rounded-lg backdrop-blur-sm">
-                <h3 className="text-xl font-semibold mb-3">Rekey After Moving</h3>
+                <h3 className="text-xl font-semibold mb-3 text-sky-100">Rekey After Moving</h3>
                 <p className="text-white/80">
                   Always rekey your locks when moving into a new home to ensure previous residents can't access your property.
                 </p>
               </div>
               
               <div className="bg-white/10 p-6 rounded-lg backdrop-blur-sm">
-                <h3 className="text-xl font-semibold mb-3">Consider Smart Locks</h3>
+                <h3 className="text-xl font-semibold mb-3 text-sky-100">Consider Smart Locks</h3>
                 <p className="text-white/80">
                   Smart locks offer convenience and enhanced security with features like activity logs and remote access.
                 </p>
