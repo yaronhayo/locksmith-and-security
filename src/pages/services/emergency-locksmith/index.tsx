@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { motion } from 'framer-motion';
 import ServicesHero from '@/components/sections/services/ServicesHero';
@@ -12,33 +11,6 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Clock, Car, Home, Building2, ArrowRight, ShieldCheck } from 'lucide-react';
 import ServicesGrid from '@/components/sections/services/ServicesGrid';
-
-const emergencyServices = [
-  {
-    icon: Car,
-    title: "Car Lockout",
-    description: "Locked out of your vehicle? Our skilled automotive locksmiths can quickly get you back in without damage.",
-    path: "/services/emergency-locksmith/car-lockout"
-  },
-  {
-    icon: Home,
-    title: "House Lockout",
-    description: "Locked out of your home? Our residential specialists will safely get you back inside with minimal disruption.",
-    path: "/services/emergency-locksmith/house-lockout"
-  },
-  {
-    icon: Building2,
-    title: "Business Lockout",
-    description: "Business access problems? Our commercial experts use specialized techniques for damage-free commercial entry.",
-    path: "/services/emergency-locksmith/business-lockout"
-  },
-  {
-    icon: ShieldCheck,
-    title: "Storage Unit Lockout",
-    description: "Can't access your storage unit? Our technicians have specialized tools to help you regain access quickly.",
-    path: "/services/emergency-locksmith/storage-unit-lockout"
-  }
-];
 
 const EmergencyLocksmith = () => {
   return (
@@ -65,145 +37,51 @@ const EmergencyLocksmith = () => {
             </p>
           </motion.div>
           
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {emergencyServices.map((service, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-              >
-                <Card className="h-full border-0 shadow-md hover:shadow-xl transition-all duration-300">
-                  <CardContent className="p-6">
-                    <div className="mb-4 w-14 h-14 bg-primary/10 rounded-full flex items-center justify-center">
-                      <service.icon className="h-7 w-7 text-primary" />
-                    </div>
-                    <h3 className="text-xl font-bold mb-3">{service.title}</h3>
-                    <p className="text-gray-600 mb-6">{service.description}</p>
-                    <Button asChild variant="outline" className="group w-full">
-                      <Link to={service.path} className="flex items-center justify-center">
-                        Learn More
-                        <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-                      </Link>
-                    </Button>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-      
-      <section className="py-20 bg-gradient-to-b from-gray-50 to-white">
-        <div className="container mx-auto px-4">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5 }}
-              viewport={{ once: true }}
-            >
-              <Clock className="h-12 w-12 text-secondary mb-6" />
-              <h2 className="text-3xl font-bold mb-6">
-                Available 24/7 For All Emergency Locksmith Needs
-              </h2>
-              <p className="text-gray-600 mb-8 leading-relaxed">
-                Emergencies don't follow a schedule. That's why our team of certified locksmith professionals is available around the clock, including weekends and holidays. We arrive quickly with all the necessary tools and equipment to resolve your emergency on the spot.
-              </p>
-              <div className="space-y-4">
-                <div className="flex items-start">
-                  <div className="mr-4 mt-1 bg-primary/10 p-1 rounded-full">
-                    <ShieldCheck className="h-5 w-5 text-primary" />
-                  </div>
+          <div className="grid md:grid-cols-2 gap-6">
+            <Card className="bg-white shadow-md hover:shadow-lg transition-shadow duration-300">
+              <CardContent>
+                <div className="flex items-center">
+                  <Clock className="h-6 w-6 text-primary mr-3" />
                   <div>
-                    <h3 className="font-semibold mb-1">Rapid Response</h3>
-                    <p className="text-gray-600">Our mobile locksmith units are stationed throughout the service area for fast arrival.</p>
+                    <h3 className="text-lg font-semibold">Fast Response</h3>
+                    <p className="text-gray-600">Our team is available 24/7 to respond to your emergency locksmith needs.</p>
                   </div>
                 </div>
-                <div className="flex items-start">
-                  <div className="mr-4 mt-1 bg-primary/10 p-1 rounded-full">
-                    <ShieldCheck className="h-5 w-5 text-primary" />
-                  </div>
+              </CardContent>
+            </Card>
+            <Card className="bg-white shadow-md hover:shadow-lg transition-shadow duration-300">
+              <CardContent>
+                <div className="flex items-center">
+                  <Car className="h-6 w-6 text-primary mr-3" />
                   <div>
-                    <h3 className="font-semibold mb-1">Non-Destructive Entry</h3>
-                    <p className="text-gray-600">We use specialized techniques to gain entry without causing damage whenever possible.</p>
+                    <h3 className="text-lg font-semibold">Automotive Services</h3>
+                    <p className="text-gray-600">We provide emergency lockout services for all vehicle makes and models.</p>
                   </div>
                 </div>
-                <div className="flex items-start">
-                  <div className="mr-4 mt-1 bg-primary/10 p-1 rounded-full">
-                    <ShieldCheck className="h-5 w-5 text-primary" />
-                  </div>
+              </CardContent>
+            </Card>
+            <Card className="bg-white shadow-md hover:shadow-lg transition-shadow duration-300">
+              <CardContent>
+                <div className="flex items-center">
+                  <Home className="h-6 w-6 text-primary mr-3" />
                   <div>
-                    <h3 className="font-semibold mb-1">Licensed & Insured</h3>
-                    <p className="text-gray-600">All our technicians are fully licensed, bonded, and insured for your peace of mind.</p>
+                    <h3 className="text-lg font-semibold">Residential Services</h3>
+                    <p className="text-gray-600">Locked out of your home? Our technicians can help you regain access quickly.</p>
                   </div>
                 </div>
-              </div>
-            </motion.div>
-            
-            <motion.div
-              className="bg-white p-8 rounded-xl shadow-xl border border-gray-100"
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              viewport={{ once: true }}
-            >
-              <h3 className="text-2xl font-bold mb-6 text-center">Emergency Services Include</h3>
-              <ul className="space-y-4">
-                <li className="flex items-center p-4 border-b border-gray-100">
-                  <div className="bg-secondary/10 p-2 rounded-full mr-4">
-                    <Car className="h-5 w-5 text-secondary" />
-                  </div>
+              </CardContent>
+            </Card>
+            <Card className="bg-white shadow-md hover:shadow-lg transition-shadow duration-300">
+              <CardContent>
+                <div className="flex items-center">
+                  <Building2 className="h-6 w-6 text-primary mr-3" />
                   <div>
-                    <h4 className="font-semibold">Vehicle Lockouts</h4>
-                    <p className="text-gray-600 text-sm">All makes and models, including smart key systems</p>
+                    <h3 className="text-lg font-semibold">Commercial Services</h3>
+                    <p className="text-gray-600">We offer comprehensive locksmith services for businesses and commercial properties.</p>
                   </div>
-                </li>
-                <li className="flex items-center p-4 border-b border-gray-100">
-                  <div className="bg-secondary/10 p-2 rounded-full mr-4">
-                    <Home className="h-5 w-5 text-secondary" />
-                  </div>
-                  <div>
-                    <h4 className="font-semibold">Residential Lockouts</h4>
-                    <p className="text-gray-600 text-sm">Homes, apartments, condos, and rental properties</p>
-                  </div>
-                </li>
-                <li className="flex items-center p-4 border-b border-gray-100">
-                  <div className="bg-secondary/10 p-2 rounded-full mr-4">
-                    <Building2 className="h-5 w-5 text-secondary" />
-                  </div>
-                  <div>
-                    <h4 className="font-semibold">Commercial Lockouts</h4>
-                    <p className="text-gray-600 text-sm">Offices, retail stores, and other business facilities</p>
-                  </div>
-                </li>
-                <li className="flex items-center p-4 border-b border-gray-100">
-                  <div className="bg-secondary/10 p-2 rounded-full mr-4">
-                    <ShieldCheck className="h-5 w-5 text-secondary" />
-                  </div>
-                  <div>
-                    <h4 className="font-semibold">Broken Key Extraction</h4>
-                    <p className="text-gray-600 text-sm">Safely remove broken keys from any lock</p>
-                  </div>
-                </li>
-                <li className="flex items-center p-4">
-                  <div className="bg-secondary/10 p-2 rounded-full mr-4">
-                    <ShieldCheck className="h-5 w-5 text-secondary" />
-                  </div>
-                  <div>
-                    <h4 className="font-semibold">Lock Repairs & Replacements</h4>
-                    <p className="text-gray-600 text-sm">Emergency fixes for damaged or malfunctioning locks</p>
-                  </div>
-                </li>
-              </ul>
-              
-              <Button className="w-full mt-8 py-6" size="lg">
-                <Link to="/contact" className="flex items-center justify-center">
-                  Request Emergency Service
-                  <ArrowRight className="ml-2 h-5 w-5" />
-                </Link>
-              </Button>
-            </motion.div>
+                </div>
+              </CardContent>
+            </Card>
           </div>
         </div>
       </section>
