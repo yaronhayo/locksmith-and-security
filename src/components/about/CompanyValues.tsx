@@ -3,14 +3,14 @@ import { motion } from "framer-motion";
 import { Heart, Shield, Clock, CheckCircle, Award, Users, Lock, Star } from "lucide-react";
 
 const values = [
-  { name: "Integrity", icon: Heart, color: "bg-red-50 text-red-500 border-red-100" },
-  { name: "Security", icon: Shield, color: "bg-blue-50 text-blue-500 border-blue-100" },
-  { name: "Reliability", icon: Clock, color: "bg-indigo-50 text-indigo-500 border-indigo-100" },
-  { name: "Quality", icon: CheckCircle, color: "bg-green-50 text-green-500 border-green-100" },
-  { name: "Excellence", icon: Award, color: "bg-yellow-50 text-yellow-500 border-yellow-100" },
-  { name: "Trust", icon: Users, color: "bg-purple-50 text-purple-500 border-purple-100" },
-  { name: "Innovation", icon: Star, color: "bg-pink-50 text-pink-500 border-pink-100" },
-  { name: "Protection", icon: Lock, color: "bg-teal-50 text-teal-500 border-teal-100" }
+  { name: "Integrity", icon: Heart, color: "bg-primary/10 text-primary border-primary/20" },
+  { name: "Security", icon: Shield, color: "bg-primary/10 text-primary border-primary/20" },
+  { name: "Reliability", icon: Clock, color: "bg-primary/10 text-primary border-primary/20" },
+  { name: "Quality", icon: CheckCircle, color: "bg-primary/10 text-primary border-primary/20" },
+  { name: "Excellence", icon: Award, color: "bg-secondary/10 text-secondary border-secondary/20" },
+  { name: "Trust", icon: Users, color: "bg-secondary/10 text-secondary border-secondary/20" },
+  { name: "Innovation", icon: Star, color: "bg-secondary/10 text-secondary border-secondary/20" },
+  { name: "Protection", icon: Lock, color: "bg-secondary/10 text-secondary border-secondary/20" }
 ];
 
 const CompanyValues = () => {

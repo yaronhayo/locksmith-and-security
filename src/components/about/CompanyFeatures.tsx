@@ -8,49 +8,43 @@ const features = [
     icon: Shield,
     title: "Trusted Security Expertise",
     description: "Years of trusted experience in North Bergen, bringing in-depth lock and security expertise to protect what matters most to you.",
-    color: "border-blue-400 bg-blue-50",
-    iconColor: "text-blue-500"
+    color: "border-primary"
   },
   {
     icon: Award,
     title: "Licensed & Certified Professionals",
     description: "Our team consists of licensed, insured, and certified locksmith professionals trained in the latest security technologies.",
-    color: "border-purple-400 bg-purple-50",
-    iconColor: "text-purple-500"
+    color: "border-primary"
   },
   {
     icon: Users,
     title: "Customer Satisfaction Guarantee",
     description: "Committed to exceeding your expectations with personalized security solutions tailored to your specific needs.",
-    color: "border-green-400 bg-green-50",
-    iconColor: "text-green-500"
+    color: "border-secondary"
   },
   {
     icon: CheckCircle,
     title: "Quality You Can Count On",
     description: "We use only high-quality, durable products and parts to ensure the longevity and reliability of our security solutions.",
-    color: "border-yellow-400 bg-yellow-50",
-    iconColor: "text-yellow-600"
+    color: "border-secondary"
   },
   {
     icon: Wrench,
     title: "Comprehensive Security Solutions",
     description: "From traditional locks to advanced electronic systems, we provide all-inclusive security services for homes, businesses, and vehicles.",
-    color: "border-red-400 bg-red-50",
-    iconColor: "text-red-500"
+    color: "border-primary"
   },
   {
     icon: Clock,
     title: "Available When You Need Us",
     description: "Security concerns can arise at any time, which is why our team is ready to assist you whenever you need professional help.",
-    color: "border-teal-400 bg-teal-50",
-    iconColor: "text-teal-500"
+    color: "border-secondary"
   },
 ];
 
 const CompanyFeatures = () => {
   return (
-    <section className="my-16">
+    <section>
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
         {features.map((feature, index) => (
           <motion.div
@@ -65,7 +59,7 @@ const CompanyFeatures = () => {
             <Card className={`h-full rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 border-t-4 ${feature.color}`}>
               <div className="p-6">
                 <div className="mb-6 w-16 h-16 rounded-full bg-white flex items-center justify-center border-2 border-gray-100 group-hover:scale-110 transition-all duration-300 shadow-sm">
-                  <feature.icon className={`w-8 h-8 ${feature.iconColor}`} />
+                  <feature.icon className={`w-8 h-8 ${index % 2 === 0 ? 'text-primary' : 'text-secondary'}`} />
                 </div>
                 <h3 className="text-xl font-semibold mb-3 group-hover:text-primary transition-colors duration-300">{feature.title}</h3>
                 <p className="text-gray-600">{feature.description}</p>

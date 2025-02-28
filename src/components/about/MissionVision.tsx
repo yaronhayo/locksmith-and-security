@@ -33,7 +33,7 @@ const MissionVision = () => {
             </p>
             
             <div className="mt-8 p-6 bg-white/80 rounded-lg shadow-sm border border-primary/10">
-              <p className="text-primary-dark font-medium italic text-lg">
+              <p className="text-primary font-medium italic text-lg">
                 "We believe everyone deserves to feel secure in their home, business, and vehicle."
               </p>
             </div>

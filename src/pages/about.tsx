@@ -16,17 +16,20 @@ const About = () => {
         description="Professional locksmith services with a commitment to quality, reliability, and customer satisfaction."
       />
       
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.5 }}
-      >
-        <MissionVision />
-        <CompanyStats />
-        <CompanyValues />
-        <CompanyFeatures />
-        <Testimonials />
-      </motion.div>
+      <div className="container mx-auto px-4 py-12">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5 }}
+          className="space-y-20"
+        >
+          <MissionVision />
+          <CompanyStats />
+          <CompanyValues />
+          <CompanyFeatures />
+          <Testimonials />
+        </motion.div>
+      </div>
     </main>
   );
 };

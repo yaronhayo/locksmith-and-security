@@ -3,10 +3,10 @@ import { motion } from "framer-motion";
 import { Clock, Users, CheckCircle, Shield } from "lucide-react";
 
 const stats = [
-  { number: "15+", label: "Years Experience", icon: Clock, color: "from-blue-500 to-blue-700" },
-  { number: "97%", label: "Satisfaction Rate", icon: Users, color: "from-purple-500 to-purple-700" },
-  { number: "3K+", label: "Projects Completed", icon: CheckCircle, color: "from-green-500 to-green-700" },
-  { number: "24/7", label: "Customer Support", icon: Shield, color: "from-secondary to-yellow-600" },
+  { number: "15+", label: "Years Experience", icon: Clock, color: "from-primary/80 to-primary" },
+  { number: "97%", label: "Satisfaction Rate", icon: Users, color: "from-primary/70 to-primary/90" },
+  { number: "3K+", label: "Projects Completed", icon: CheckCircle, color: "from-secondary/80 to-secondary" },
+  { number: "24/7", label: "Customer Support", icon: Shield, color: "from-secondary/70 to-secondary/90" },
 ];
 
 const CompanyStats = () => {
