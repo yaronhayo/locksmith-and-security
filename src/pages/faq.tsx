@@ -157,7 +157,7 @@ const FAQPage = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="bg-white rounded-lg shadow-md p-2 flex items-center"
+            className="bg-white rounded-lg shadow-md p-2 flex items-center border-l-4 border-[#F97316]"
           >
             <Search className="ml-3 text-gray-400" />
             <Input
@@ -165,7 +165,7 @@ const FAQPage = () => {
               placeholder="Search for questions or keywords..."
               value={searchQuery}
               onChange={handleSearch}
-              className="pl-2 py-6 text-lg border-none focus:ring-primary focus:ring-offset-0"
+              className="pl-2 py-6 text-lg border-none focus:ring-[#F97316] focus:ring-offset-0"
             />
           </motion.div>
         </div>
@@ -189,7 +189,7 @@ const FAQPage = () => {
                     <TabsTrigger 
                       key={tab.id} 
                       value={tab.id}
-                      className="rounded-full px-4 py-2 data-[state=active]:bg-white data-[state=active]:shadow-sm"
+                      className="rounded-full px-4 py-2 data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:text-[#F97316]"
                     >
                       <div className="flex items-center gap-2">
                         {tab.icon}
@@ -216,19 +216,19 @@ const FAQPage = () => {
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ duration: 0.3, delay: index * 0.05 }}
                         >
-                          <Card className="h-full overflow-hidden hover:shadow-md transition-shadow duration-300">
+                          <Card className="h-full overflow-hidden hover:shadow-md transition-shadow duration-300 hover:border-[#FEC6A1]">
                             <CardContent className="p-0">
                               <Accordion type="single" collapsible>
                                 <AccordionItem value={`item-${index}`} className="border-none">
                                   <AccordionTrigger className="px-6 py-4 bg-gray-50 hover:bg-gray-100 transition-colors hover:no-underline text-left">
                                     <div className="flex items-start text-left gap-3">
-                                      <span className="font-bold text-primary text-lg">Q:</span>
+                                      <span className="font-bold text-[#F97316] text-lg">Q:</span>
                                       <span className="text-lg font-semibold">{faq.question}</span>
                                     </div>
                                   </AccordionTrigger>
                                   <AccordionContent className="px-6 py-4 bg-white">
                                     <div className="flex gap-3">
-                                      <span className="font-bold text-secondary text-lg">A:</span>
+                                      <span className="font-bold text-[#F97316] text-lg">A:</span>
                                       <p className="text-gray-700 leading-relaxed">
                                         {faq.answer}
                                       </p>
@@ -245,9 +245,9 @@ const FAQPage = () => {
                     <div ref={loaderRef} className="py-8 flex justify-center">
                       {isLoading && (
                         <div className="animate-pulse flex space-x-4">
-                          <div className="h-3 w-3 bg-gray-300 rounded-full"></div>
-                          <div className="h-3 w-3 bg-gray-300 rounded-full"></div>
-                          <div className="h-3 w-3 bg-gray-300 rounded-full"></div>
+                          <div className="h-3 w-3 bg-[#FEC6A1] rounded-full"></div>
+                          <div className="h-3 w-3 bg-[#F97316] rounded-full"></div>
+                          <div className="h-3 w-3 bg-[#FEC6A1] rounded-full"></div>
                         </div>
                       )}
                       {!isLoading && !hasMore && displayedFaqs.length > 0 && (
@@ -262,6 +262,7 @@ const FAQPage = () => {
                       <Button 
                         variant="outline" 
                         onClick={() => setSearchQuery("")}
+                        className="border-[#F97316] text-[#F97316] hover:bg-[#FEC6A1]/10"
                       >
                         Clear search
                       </Button>
@@ -269,9 +270,9 @@ const FAQPage = () => {
                   ) : (
                     <div className="flex justify-center py-12">
                       <div className="animate-pulse flex space-x-4">
-                        <div className="h-3 w-3 bg-gray-300 rounded-full"></div>
-                        <div className="h-3 w-3 bg-gray-300 rounded-full"></div>
-                        <div className="h-3 w-3 bg-gray-300 rounded-full"></div>
+                        <div className="h-3 w-3 bg-[#FEC6A1] rounded-full"></div>
+                        <div className="h-3 w-3 bg-[#F97316] rounded-full"></div>
+                        <div className="h-3 w-3 bg-[#FEC6A1] rounded-full"></div>
                       </div>
                     </div>
                   )
@@ -281,7 +282,7 @@ const FAQPage = () => {
           </motion.div>
 
           <motion.div 
-            className="mt-16 text-center bg-gradient-to-r from-gray-100 to-gray-50 rounded-lg p-8 shadow-sm max-w-4xl mx-auto"
+            className="mt-16 text-center bg-gradient-to-r from-gray-100 to-gray-50 rounded-lg p-8 shadow-sm max-w-4xl mx-auto border-l-4 border-[#F97316]"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.4 }}
@@ -291,7 +292,7 @@ const FAQPage = () => {
               Our team is always here to help. Contact us anytime for immediate assistance 
               with your locksmith and security needs.
             </p>
-            <Button size="lg" className="bg-primary hover:bg-primary/90">
+            <Button size="lg" className="bg-[#F97316] hover:bg-[#F97316]/90">
               <a href="tel:2017482070" className="flex items-center">
                 <Phone className="mr-2 h-5 w-5" />
                 Call (201) 748-2070
