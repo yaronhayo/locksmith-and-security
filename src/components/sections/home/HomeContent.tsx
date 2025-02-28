@@ -5,7 +5,7 @@ import EmergencyServicesSection from '../EmergencyServicesSection';
 import ProcessSection from '../ProcessSection';
 import ServicesSection from '../ServicesSection';
 import FAQSection from '../FAQSection';
-import ReviewsSection from '../ReviewsSection';
+import HomeReviewsSection from './HomeReviewsSection';
 import GoogleMapsProvider from '@/components/providers/GoogleMapsProvider';
 
 const HomeContent = () => {
@@ -15,7 +15,7 @@ const HomeContent = () => {
       <EmergencyServicesSection />
       <ProcessSection />
       <WhyChooseUs />
-      <ReviewsSection />
+      <HomeReviewsSection />
       <GoogleMapsProvider>
         <ServiceAreasSection />
       </GoogleMapsProvider>
