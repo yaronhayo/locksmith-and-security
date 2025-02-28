@@ -64,7 +64,7 @@ const ServicePageContent: React.FC<ServicePageContentProps> = ({
               {/* Contact card */}
               <div className="bg-gradient-to-br from-primary to-primary-hover rounded-xl overflow-hidden shadow-lg text-white mb-8">
                 <div className="p-6">
-                  <h3 className="text-xl font-bold mb-4 flex items-center">
+                  <h3 className="text-xl font-bold mb-4 flex items-center text-white">
                     <ShieldCheck className="mr-2 h-5 w-5 text-secondary" />
                     Need {serviceName} Service?
                   </h3>
