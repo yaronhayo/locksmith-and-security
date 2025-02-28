@@ -52,18 +52,6 @@ const Testimonials = () => {
             onDotClick={(index) => api?.scrollTo(index)} 
           />
         </div>
-        
-        <motion.div 
-          className="mt-12 text-center"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.4 }}
-          viewport={{ once: true }}
-        >
-          <p className="text-gray-600">
-            Read more reviews on <a href="#" className="text-primary font-medium hover:underline">Google</a> and <a href="#" className="text-primary font-medium hover:underline">Yelp</a>.
-          </p>
-        </motion.div>
       </div>
     </section>
   );
