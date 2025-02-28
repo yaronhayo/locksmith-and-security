@@ -183,7 +183,7 @@ const RealLifeStories = () => {
                                 variant="ghost" 
                                 size="sm" 
                                 onClick={() => setExpandedIndex(index)} 
-                                className="text-sm font-medium text-primary ml-1 p-0 h-auto hover:bg-transparent"
+                                className="text-sm font-medium text-[#F97316] ml-1 p-0 h-auto hover:bg-transparent"
                               >
                                 Continue Reading
                               </Button>
