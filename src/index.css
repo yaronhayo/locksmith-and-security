@@ -1,4 +1,5 @@
 
+
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
 
 @tailwind base;
@@ -61,7 +62,35 @@
   [class*="to-primary"] h2,
   [class*="via-primary"] h2,
   .bg-gradient-to-br h2 {
-    @apply text-white;
+    @apply text-white !important;
+  }
+
+  /* Override for all headings (h1-h6) on blue/primary backgrounds */
+  [class*="bg-primary"] h1, 
+  [class*="bg-primary"] h2, 
+  [class*="bg-primary"] h3, 
+  [class*="bg-primary"] h4, 
+  [class*="bg-primary"] h5, 
+  [class*="bg-primary"] h6,
+  [class*="from-primary"] h1, 
+  [class*="from-primary"] h2, 
+  [class*="from-primary"] h3, 
+  [class*="from-primary"] h4, 
+  [class*="from-primary"] h5, 
+  [class*="from-primary"] h6,
+  [class*="to-primary"] h1, 
+  [class*="to-primary"] h2, 
+  [class*="to-primary"] h3, 
+  [class*="to-primary"] h4, 
+  [class*="to-primary"] h5, 
+  [class*="to-primary"] h6,
+  [class*="via-primary"] h1, 
+  [class*="via-primary"] h2, 
+  [class*="via-primary"] h3, 
+  [class*="via-primary"] h4, 
+  [class*="via-primary"] h5, 
+  [class*="via-primary"] h6 {
+    @apply text-white !important;
   }
   
   h3 {
