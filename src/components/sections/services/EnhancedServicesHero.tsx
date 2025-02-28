@@ -136,7 +136,7 @@ const EnhancedServicesHero: React.FC<EnhancedServicesHeroProps> = ({
                   <div className="inline-block p-4 rounded-full bg-secondary/20 mb-4">
                     <ShieldCheck className="h-12 w-12 text-secondary" />
                   </div>
-                  <h2 className="text-2xl font-bold">Fast {serviceName} Service</h2>
+                  <h2 className="text-2xl font-bold text-white">Fast {serviceName} Service</h2>
                   <p className="text-white/80 mt-2">
                     Professional, reliable, and efficient security solutions
                   </p>

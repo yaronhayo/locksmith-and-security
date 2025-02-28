@@ -1,3 +1,4 @@
+
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
 
 @tailwind base;
@@ -52,6 +53,15 @@
   
   h2 {
     @apply text-2xl sm:text-3xl md:text-4xl font-bold text-heading-primary;
+  }
+  
+  /* Override for h2 on blue/primary backgrounds */
+  [class*="bg-primary"] h2, 
+  [class*="from-primary"] h2,
+  [class*="to-primary"] h2,
+  [class*="via-primary"] h2,
+  .bg-gradient-to-br h2 {
+    @apply text-white;
   }
   
   h3 {

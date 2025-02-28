@@ -33,7 +33,7 @@ const ServicesCTA = () => {
             </div>
           </div>
           
-          <h2 className="text-3xl md:text-4xl font-bold mb-6">
+          <h2 className="text-3xl md:text-4xl font-bold mb-6 text-white">
             Need Emergency Locksmith Service?
           </h2>
           
