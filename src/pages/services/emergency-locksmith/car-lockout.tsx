@@ -2,7 +2,7 @@
 import React from 'react';
 import { Helmet } from "react-helmet";
 import ServicePageTemplate from '@/components/services/ServicePageTemplate';
-import { Wrench, Clock, Shield, Search, Key, MapPin, Car, Brush, AlertTriangle } from "lucide-react";
+import { Wrench, Clock, Shield, Car, Key, MapPin, AlertTriangle } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { createServiceSchema } from '@/utils/schema/localBusinessSchema';
 
@@ -88,7 +88,7 @@ const CarLockout = () => {
   const faqQuestions = [
     {
       question: "How quickly can you respond to a car lockout emergency?",
-      answer: "Our average response time for car lockout emergencies is 15-30 minutes in most service areas, depending on your location and current demand. We prioritize emergency situations and dispatch the nearest available technician to your location as quickly as possible."
+      answer: "Our average response time for car lockout emergencies depends on your location and current demand. We prioritize emergency situations and dispatch the nearest available technician to your location as quickly as possible."
     },
     {
       question: "Can you unlock any type of vehicle?",
@@ -164,63 +164,94 @@ const CarLockout = () => {
           <li>Key fob battery failure</li>
         </ul>
       </div>
+      
+      <h3 className="text-xl font-bold text-gray-800 mt-8 mb-4">Our Car Lockout Service Process</h3>
+      
+      <p>When you contact us for a car lockout emergency, our professional locksmiths follow a careful procedure to ensure your vehicle is accessed safely and efficiently:</p>
+      
+      <ol className="list-decimal pl-5 space-y-2 mb-6">
+        <li><strong>Initial Assessment:</strong> We evaluate the specific make and model of your vehicle to determine the best entry method.</li>
+        <li><strong>Non-Destructive Entry:</strong> Using specialized tools, we access your vehicle without causing any damage to the locks or doors.</li>
+        <li><strong>Verification:</strong> Once access is gained, we ensure all locks and mechanisms function properly.</li>
+        <li><strong>Preventative Advice:</strong> We provide recommendations to help prevent future lockouts.</li>
+      </ol>
+      
+      <h3 className="text-xl font-bold text-gray-800 mb-4">Modern Vehicle Lockout Solutions</h3>
+      
+      <p>Today's vehicles come with increasingly sophisticated security systems, including transponder keys, keyless entry systems, and advanced anti-theft mechanisms. Our technicians are continually trained on the latest vehicle technologies and carry specialized equipment capable of addressing lockout situations for even the newest vehicle models.</p>
+      
+      <p>Whether you drive a domestic or imported vehicle, a sedan, SUV, truck, or commercial vehicle, our locksmiths have the knowledge and tools to get you back on the road quickly and safely.</p>
+      
+      <h3 className="text-xl font-bold text-gray-800 mt-8 mb-4">Emergency Automotive Locksmith Services</h3>
+      
+      <p>Our emergency car lockout service includes:</p>
+      
+      <ul className="list-disc pl-5 space-y-2 mb-6">
+        <li>Vehicle door unlocking</li>
+        <li>Trunk unlocking</li>
+        <li>Broken key extraction</li>
+        <li>Ignition key retrieval</li>
+        <li>On-the-spot key cutting (when applicable)</li>
+        <li>Lock repair for damaged vehicle locks</li>
+      </ul>
     </div>
   );
   
   // Benefits content
   const benefitsContent = (
     <div className="max-w-4xl mx-auto">
-      <div className="text-center mb-12">
-        <Badge variant="outline" className="mb-4 px-4 py-1 text-primary border-primary">Key Benefits</Badge>
-        <h2 className="text-3xl font-bold text-gray-900">Why Choose Our Car Lockout Service</h2>
-        <div className="w-24 h-1 bg-secondary mx-auto mt-6"></div>
+      <div className="text-center mb-8">
+        <h2 className="text-3xl font-bold mb-4">Benefits of Professional Car Lockout Service</h2>
+        <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+          When you're locked out of your vehicle, our professional service offers significant advantages over DIY attempts.
+        </p>
       </div>
       
-      <div className="grid md:grid-cols-2 gap-8">
-        <div className="bg-white p-6 rounded-lg shadow-md border border-gray-100">
+      <div className="grid md:grid-cols-2 gap-6">
+        <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
           <div className="flex items-start">
             <div className="bg-primary/10 p-2 rounded-lg mr-4">
-              <Clock className="h-8 w-8 text-primary" />
+              <Wrench className="h-6 w-6 text-primary" />
             </div>
             <div>
-              <h3 className="font-semibold text-xl mb-2">Fast Response Time</h3>
-              <p className="text-gray-600">Our mobile locksmiths are strategically located throughout the service area to provide the quickest possible response to your emergency. We understand that when you're locked out, every minute counts.</p>
+              <h3 className="font-semibold text-xl mb-2">Damage Prevention</h3>
+              <p className="text-gray-600">Amateur attempts to unlock a vehicle often result in damage to the door, window, or lock mechanism. Our professional techniques and specialized tools ensure your vehicle remains undamaged during the unlocking process.</p>
             </div>
           </div>
         </div>
         
-        <div className="bg-white p-6 rounded-lg shadow-md border border-gray-100">
+        <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
           <div className="flex items-start">
             <div className="bg-primary/10 p-2 rounded-lg mr-4">
-              <Shield className="h-8 w-8 text-primary" />
+              <Shield className="h-6 w-6 text-primary" />
             </div>
             <div>
-              <h3 className="font-semibold text-xl mb-2">Non-Destructive Entry</h3>
-              <p className="text-gray-600">Our technicians are trained in the latest non-destructive entry techniques. We use specialized tools and methods that ensure your vehicle remains undamaged during the unlocking process.</p>
+              <h3 className="font-semibold text-xl mb-2">Insurance Compliance</h3>
+              <p className="text-gray-600">Our professional locksmith services are fully insured, meaning that in the rare event of any issues, you're protected. DIY methods or unlicensed services may void vehicle warranties or insurance policies.</p>
             </div>
           </div>
         </div>
         
-        <div className="bg-white p-6 rounded-lg shadow-md border border-gray-100">
+        <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
           <div className="flex items-start">
             <div className="bg-primary/10 p-2 rounded-lg mr-4">
-              <Wrench className="h-8 w-8 text-primary" />
+              <Clock className="h-6 w-6 text-primary" />
             </div>
             <div>
-              <h3 className="font-semibold text-xl mb-2">Comprehensive Service</h3>
-              <p className="text-gray-600">Beyond simply unlocking your car, we can address related issues like extracting broken keys, repairing damaged locks, or creating new keys on the spot if yours are lost or damaged.</p>
+              <h3 className="font-semibold text-xl mb-2">Time Efficiency</h3>
+              <p className="text-gray-600">What might take hours of frustration with DIY methods can be resolved in minutes by our experienced locksmiths. We help you get back to your day quickly and with minimal disruption.</p>
             </div>
           </div>
         </div>
         
-        <div className="bg-white p-6 rounded-lg shadow-md border border-gray-100">
+        <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
           <div className="flex items-start">
             <div className="bg-primary/10 p-2 rounded-lg mr-4">
-              <Car className="h-8 w-8 text-primary" />
+              <Key className="h-6 w-6 text-primary" />
             </div>
             <div>
-              <h3 className="font-semibold text-xl mb-2">All Vehicle Types</h3>
-              <p className="text-gray-600">From sedans and SUVs to trucks and luxury vehicles, our technicians have the expertise and equipment to handle any type of automobile, regardless of make, model, or year.</p>
+              <h3 className="font-semibold text-xl mb-2">Additional Services</h3>
+              <p className="text-gray-600">Beyond simply unlocking your vehicle, our technicians can provide additional services on the spot, such as extracting broken keys, making spare keys, or addressing other lock-related issues.</p>
             </div>
           </div>
         </div>
