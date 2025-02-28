@@ -1,8 +1,8 @@
 
-import BasicMetaTags from "@/components/meta/BasicMetaTags";
-import OpenGraphTags from "@/components/meta/OpenGraphTags";
-import TwitterTags from "@/components/meta/TwitterTags";
-import SchemaScripts from "@/components/meta/SchemaScripts";
+import { BasicMetaTags } from "@/components/meta/BasicMetaTags";
+import { OpenGraphTags } from "@/components/meta/OpenGraphTags";
+import { TwitterTags } from "@/components/meta/TwitterTags";
+import { SchemaScripts } from "@/components/meta/SchemaScripts";
 import { Helmet } from "react-helmet";
 
 interface MetaTagsProps {
@@ -45,14 +45,17 @@ const MetaTags = ({
       <OpenGraphTags 
         title={title}
         description={description}
-        ogImage={ogImage}
-        canonicalUrl={canonicalUrl}
+        image={ogImage}
+        url={canonicalUrl}
+        modifiedDate={new Date().toISOString()}
+        baseUrl=""
       />
       
       <TwitterTags 
         title={title}
         description={description}
-        twitterImage={ogImage}
+        image={ogImage}
+        baseUrl=""
       />
       
       {canonicalUrl && (
@@ -60,7 +63,7 @@ const MetaTags = ({
       )}
       
       {schema && (
-        <SchemaScripts schema={schema} />
+        <SchemaScripts schemas={[{ type: "schema", data: schema }]} />
       )}
     </Helmet>
   );
