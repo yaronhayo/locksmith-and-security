@@ -1,25 +1,47 @@
 
 import React from 'react';
+import { ShieldCheck, Key, Wrench, Clock } from 'lucide-react';
+import ExpertSolution, { ExpertSolutionProps } from '../../shared/ExpertSolution';
 
 const ExpertSolutions = () => {
+  const solutions: ExpertSolutionProps[] = [
+    {
+      icon: <Key className="h-8 w-8 text-primary" />,
+      title: "Lock Picking",
+      description: "Our skilled locksmiths use specialized tools to manipulate the lock pins, allowing us to open many types of storage unit locks without damage."
+    },
+    {
+      icon: <Wrench className="h-8 w-8 text-primary" />,
+      title: "Lock Drilling",
+      description: "For high-security locks that can't be picked, we can perform precision drilling that targets only the lock's critical components, minimizing damage."
+    },
+    {
+      icon: <Clock className="h-8 w-8 text-primary" />,
+      title: "Broken Key Extraction",
+      description: "If your key has broken off in the lock, we have specialized tools to remove the broken piece without damaging the lock mechanism."
+    },
+    {
+      icon: <ShieldCheck className="h-8 w-8 text-primary" />,
+      title: "Lock Replacement",
+      description: "When necessary, we can completely replace your storage unit lock with a new, secure option that meets the facility's requirements."
+    }
+  ];
+
   return (
-    <>
-      <h3 className="text-2xl font-bold mb-4 mt-8">Expert Storage Unit Lockout Solutions</h3>
-      <p className="mb-4">
-        Our certified locksmiths specialize in all types of storage unit lockout situations and can handle virtually any lock type. We use specialized tools and techniques to safely gain entry to your unit without damaging the door or frame.
-      </p>
+    <div className="my-8">
+      <h3 className="text-2xl font-bold mb-6">Expert Storage Unit Lockout Solutions</h3>
       
-      <div className="bg-gray-50 p-6 rounded-lg border border-gray-100 my-8">
-        <h4 className="text-xl font-bold mb-3">Our Storage Unit Lockout Services Include:</h4>
-        <ul className="list-disc pl-5 space-y-2">
-          <li>Emergency storage unit lockout assistance</li>
-          <li>Lock drilling and cutting services</li>
-          <li>Padlock removal</li>
-          <li>Rekeying or replacement of locks</li>
-          <li>Assistance with lost or forgotten combinations</li>
-        </ul>
+      <div className="grid md:grid-cols-2 gap-6">
+        {solutions.map((solution, index) => (
+          <ExpertSolution 
+            key={index}
+            icon={solution.icon}
+            title={solution.title}
+            description={solution.description}
+          />
+        ))}
       </div>
-    </>
+    </div>
   );
 };
 

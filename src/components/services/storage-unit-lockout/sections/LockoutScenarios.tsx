@@ -2,34 +2,30 @@
 import React from 'react';
 import LockoutScenario from '../../shared/LockoutScenario';
 
-const scenarios = [
-  {
-    title: "Lost or Misplaced Keys",
-    description: "If you've lost or misplaced your storage unit keys, our locksmith can quickly gain access and provide replacement keys."
-  },
-  {
-    title: "Broken Key in Lock",
-    description: "If your key has broken off inside the lock, we can carefully extract it and repair or replace the lock if necessary."
-  },
-  {
-    title: "Lock Malfunction",
-    description: "Storage unit locks can become jammed or malfunction over time. Our locksmiths can diagnose and fix the issue promptly."
-  },
-  {
-    title: "Padlock Cutting",
-    description: "If you've lost the key to your padlock, we can safely cut it off without damaging your storage unit door or frame."
-  }
-];
-
 const LockoutScenarios = () => {
+  const scenarios = [
+    {
+      title: "Forgotten Lock Combination",
+      description: "You remember setting a combination for your storage unit lock, but now you can't recall the correct sequence of numbers. Our locksmith can help you gain access without damaging the lock."
+    },
+    {
+      title: "Lost Storage Unit Key",
+      description: "If you've lost your storage unit key, our locksmiths can create a new key or replace the lock entirely, depending on your preference and the storage facility's policies."
+    },
+    {
+      title: "Broken Key in Lock",
+      description: "If your key breaks off inside the lock, our skilled technicians can extract the broken piece and either repair the lock or replace it if necessary."
+    },
+    {
+      title: "Damaged or Malfunctioning Lock",
+      description: "Weather exposure or wear and tear can cause storage unit locks to malfunction. We can repair or replace damaged locks to restore secure access to your unit."
+    }
+  ];
+
   return (
-    <>
-      <h3 className="text-2xl font-bold mb-4 mt-8">Common Storage Unit Lockout Scenarios We Solve</h3>
-      <p className="mb-4">
-        Our experienced locksmiths have helped countless customers with various storage unit lockout situations, including:
-      </p>
-      
-      <div className="grid md:grid-cols-2 gap-6 my-6">
+    <div className="my-8">
+      <h3 className="text-2xl font-bold mb-4">Common Storage Unit Lockout Scenarios</h3>
+      <div className="grid md:grid-cols-2 gap-4">
         {scenarios.map((scenario, index) => (
           <LockoutScenario 
             key={index}
@@ -38,7 +34,7 @@ const LockoutScenarios = () => {
           />
         ))}
       </div>
-    </>
+    </div>
   );
 };
 

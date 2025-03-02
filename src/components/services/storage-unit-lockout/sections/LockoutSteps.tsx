@@ -1,28 +1,45 @@
 
 import React from 'react';
+import LockoutStep, { LockoutStepProps } from '../../shared/LockoutStep';
 
 const LockoutSteps = () => {
+  const steps: LockoutStepProps[] = [
+    {
+      title: "Call Our Emergency Line",
+      description: "Contact our 24/7 hotline to speak with a professional locksmith. Explain your storage unit lockout situation and provide your location."
+    },
+    {
+      title: "Verification Process",
+      description: "We'll ask for proof of ownership or authorization to access the storage unit, which may include ID, a lease agreement, or contacting the facility management."
+    },
+    {
+      title: "Professional Locksmith Arrival",
+      description: "Our licensed locksmith will arrive promptly with specialized tools to open your storage unit lock without causing damage when possible."
+    },
+    {
+      title: "Non-Destructive Entry",
+      description: "Using advanced techniques, we'll open your storage unit with minimal or no damage to the lock or door, preserving your security."
+    },
+    {
+      title: "Lock Repair or Replacement",
+      description: "After gaining access, we can repair your existing lock or install a new one to ensure your belongings remain secure."
+    }
+  ];
+
   return (
-    <>
-      <h3 className="text-2xl font-bold mb-4 mt-8">What to Do When Locked Out of Your Storage Unit</h3>
-      <p className="mb-4">
-        If you find yourself locked out of your storage unit, follow these steps:
-      </p>
+    <div className="my-8">
+      <h3 className="text-2xl font-bold mb-6">Our Storage Unit Lockout Process</h3>
       
-      <ol className="list-decimal pl-5 space-y-2 mb-6">
-        <li>Verify that you have the correct unit number and that your account is in good standing with the storage facility</li>
-        <li>Contact our 24/7 emergency locksmith service</li>
-        <li>Provide your exact location and storage unit details</li>
-        <li>Have identification and your storage unit rental agreement ready to prove ownership</li>
-      </ol>
-      
-      <div className="bg-primary/5 p-6 rounded-lg border-l-4 border-primary my-8">
-        <h4 className="text-xl font-bold mb-2">Professional Tip</h4>
-        <p>
-          Consider purchasing a high-quality padlock for your storage unit to deter theft and ensure the security of your belongings. Our locksmiths can recommend and install a variety of secure padlocks.
-        </p>
+      <div className="space-y-6">
+        {steps.map((step, index) => (
+          <LockoutStep 
+            key={index}
+            title={step.title}
+            description={step.description}
+          />
+        ))}
       </div>
-    </>
+    </div>
   );
 };
 
