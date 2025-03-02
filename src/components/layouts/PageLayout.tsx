@@ -102,6 +102,7 @@ const PageLayout = ({
         <PageHero 
           title={heroTitle || title}
           description={heroDescription || description}
+          showBreadcrumbs={!hideBreadcrumbs} // Pass the hideBreadcrumbs value inverted
         />
       )}
       
