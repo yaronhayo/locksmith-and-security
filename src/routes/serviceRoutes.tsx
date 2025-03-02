@@ -1,205 +1,87 @@
-
 import { lazy } from 'react';
-import { createPageRoute } from './utils';
-import { RouteConfig } from './types';
+import { createPageRoute } from './utils.tsx';
 
-// Category Landing Pages
-const EmergencyLocksmith = lazy(() => import("@/pages/services/emergency-locksmith"));
-const ResidentialLocksmith = lazy(() => import("@/pages/services/residential-locksmith"));
-const CommercialLocksmith = lazy(() => import("@/pages/services/commercial-locksmith"));
-const AutoLocksmith = lazy(() => import("@/pages/services/auto-locksmith"));
+// Lazy load service pages
+const EmergencyLockout = lazy(() => import("@/pages/services/emergency-lockout"));
+const CarKeyReplacement = lazy(() => import("@/pages/services/car-key-replacement"));
+const LockRepair = lazy(() => import("@/pages/services/lock-repair"));
+const KeyDuplication = lazy(() => import("@/pages/services/key-duplication"));
+const MasterKeySystems = lazy(() => import("@/pages/services/master-key-systems"));
+const AccessControlSystems = lazy(() => import("@/pages/services/access-control-systems"));
+const SecuritySystemInstallation = lazy(() => import("@/pages/services/security-system-installation"));
+const SafeInstallation = lazy(() => import("@/pages/services/safe-installation"));
 
-// Emergency Locksmith Services
-const CarLockout = lazy(() => import("@/pages/services/emergency-locksmith/car-lockout"));
-const HouseLockout = lazy(() => import("@/pages/services/emergency-locksmith/house-lockout"));
-const BusinessLockout = lazy(() => import("@/pages/services/emergency-locksmith/business-lockout"));
-const StorageUnitLockout = lazy(() => import("@/pages/services/emergency-locksmith/storage-unit-lockout"));
-
-// Residential Locksmith Services
-const LockReplacement = lazy(() => import("@/pages/services/residential-locksmith/lock-replacement"));
-const LockRekey = lazy(() => import("@/pages/services/residential-locksmith/lock-rekey"));
-const LockRepair = lazy(() => import("@/pages/services/residential-locksmith/lock-repair"));
-const GateLocks = lazy(() => import("@/pages/services/residential-locksmith/gate-locks"));
-
-// Commercial Locksmith Services
-const CommercialLockReplacement = lazy(() => import("@/pages/services/commercial-locksmith/lock-replacement"));
-const CommercialLockRekey = lazy(() => import("@/pages/services/commercial-locksmith/lock-rekey"));
-const EmergencyExitDevice = lazy(() => import("@/pages/services/commercial-locksmith/emergency-exit-device"));
-const MasterKey = lazy(() => import("@/pages/services/commercial-locksmith/master-key"));
-const AccessControl = lazy(() => import("@/pages/services/commercial-locksmith/access-control"));
-
-// Auto Locksmith Services
-const CarKeyReplacement = lazy(() => import("@/pages/services/auto-locksmith/car-key-replacement"));
-const KeyFobProgramming = lazy(() => import("@/pages/services/auto-locksmith/key-fob-programming"));
-const CarKeyDuplicate = lazy(() => import("@/pages/services/auto-locksmith/car-key-duplicate"));
-const CarKeyCutting = lazy(() => import("@/pages/services/auto-locksmith/car-key-cutting"));
-const IgnitionLockCylinder = lazy(() => import("@/pages/services/auto-locksmith/ignition-lock-cylinder"));
-
-// Category routes
-const categoryRoutes: RouteConfig[] = [
-  createPageRoute(
-    "/services/emergency-locksmith",
-    <EmergencyLocksmith />,
-    {
-      title: "Emergency Locksmith Services | 24/7 Urgent Locksmith Solutions",
-      description: "Immediate 24/7 emergency locksmith services for car lockouts, home lockouts, business lockouts and more. Fast response, competitive rates, and licensed professionals.",
-      keywords: "emergency locksmith, 24/7 locksmith, lockout service, car lockout, house lockout, business lockout, urgent locksmith",
-      canonicalUrl: "/services/emergency-locksmith",
-      breadcrumbs: [
-        { name: "Home", item: "/" },
-        { name: "Services", item: "/services" },
-        { name: "Emergency Locksmith", item: "/services/emergency-locksmith" }
-      ],
-      ogImage: "/lovable-uploads/308ce2b0-551b-48b6-b078-c7e793fa2153.png",
-      ogType: "article"
-    }
-  ),
-  createPageRoute(
-    "/services/residential-locksmith",
-    <ResidentialLocksmith />,
-    {
-      title: "Residential Locksmith Services | Home Security Solutions",
-      description: "Professional residential locksmith solutions including lock installation, repair, rekey, and upgrade services. Enhance your home security with our expert locksmiths.",
-      keywords: "residential locksmith, home locksmith, house locks, door locks, lock installation, lock repair, lock rekey, deadbolt installation",
-      canonicalUrl: "/services/residential-locksmith",
-      breadcrumbs: [
-        { name: "Home", item: "/" },
-        { name: "Services", item: "/services" },
-        { name: "Residential Locksmith", item: "/services/residential-locksmith" }
-      ],
-      ogImage: "/lovable-uploads/5769d20e-e251-4e5f-a743-870d5c267bd1.png",
-      ogType: "article"
-    }
-  ),
-  createPageRoute(
-    "/services/commercial-locksmith",
-    <CommercialLocksmith />,
-    {
-      title: "Commercial Locksmith Services | Business Security Solutions",
-      description: "Expert commercial locksmith solutions including master key systems, access control, high-security locks, and emergency exit devices for businesses of all sizes.",
-      keywords: "commercial locksmith, business locksmith, commercial security, master key system, access control, high-security locks, emergency exit device",
-      canonicalUrl: "/services/commercial-locksmith",
-      breadcrumbs: [
-        { name: "Home", item: "/" },
-        { name: "Services", item: "/services" },
-        { name: "Commercial Locksmith", item: "/services/commercial-locksmith" }
-      ],
-      ogImage: "/lovable-uploads/1bbeb1e6-5581-4e09-9600-7d1859bb17c5.png",
-      ogType: "article"
-    }
-  ),
-  createPageRoute(
-    "/services/auto-locksmith",
-    <AutoLocksmith />,
-    {
-      title: "Auto Locksmith Services | Car Key & Lock Solutions",
-      description: "Professional automotive locksmith services including car key replacement, key fob programming, ignition repair, and car lockouts. Service for all vehicle makes and models.",
-      keywords: "auto locksmith, car locksmith, car key replacement, key fob programming, car lockout, ignition repair, car key duplication",
-      canonicalUrl: "/services/auto-locksmith",
-      breadcrumbs: [
-        { name: "Home", item: "/" },
-        { name: "Services", item: "/services" },
-        { name: "Auto Locksmith", item: "/services/auto-locksmith" }
-      ],
-      ogImage: "/lovable-uploads/88d354ba-8149-4bb1-9347-d5d0ff65dfe5.png",
-      ogType: "article"
-    }
-  )
-];
-
-// Emergency Locksmith service routes
-const emergencyServiceRoutes: RouteConfig[] = [
-  createPageRoute("/services/emergency-locksmith/car-lockout", <CarLockout />, {
-    title: "24/7 Car Lockout Service",
-    description: "Emergency car lockout assistance"
+export const serviceRoutes = [
+  createPageRoute("/services/emergency-lockout", <EmergencyLockout />, {
+    title: "24/7 Emergency Lockout Service | Fast Response Locksmith",
+    description: "24/7 emergency lockout services for homes, businesses, and vehicles. Fast and reliable locksmith service in North Bergen and surrounding areas.",
+    keywords: "emergency lockout, 24/7 locksmith, car lockout, house lockout, business lockout",
+    canonicalUrl: "https://247locksmithandsecurity.com/services/emergency-lockout",
+    noindex: false,
+    nofollow: false,
+    modifiedDate: "2023-12-15"
   }),
-  createPageRoute("/services/emergency-locksmith/house-lockout", <HouseLockout />, {
-    title: "24/7 House Lockout Service",
-    description: "Emergency house lockout solutions"
+  createPageRoute("/services/car-key-replacement", <CarKeyReplacement />, {
+    title: "Car Key Replacement | Professional Car Key Services",
+    description: "Professional car key replacement services for all makes and models. Car key cutting and programming by certified technicians.",
+    keywords: "car key replacement, car key cutting, car key programming, lost car key, car key locksmith",
+    canonicalUrl: "https://247locksmithandsecurity.com/services/car-key-replacement",
+    noindex: false,
+    nofollow: false,
+    modifiedDate: "2023-12-15"
   }),
-  createPageRoute("/services/emergency-locksmith/business-lockout", <BusinessLockout />, {
-    title: "24/7 Business Lockout Service",
-    description: "Emergency business lockout assistance"
+  createPageRoute("/services/lock-repair", <LockRepair />, {
+    title: "Professional Lock Repair Services | Residential & Commercial",
+    description: "Expert lock repair services for residential and commercial properties. Repairing damaged locks and ensuring your security.",
+    keywords: "lock repair, residential lock repair, commercial lock repair, damaged lock, broken lock",
+    canonicalUrl: "https://247locksmithandsecurity.com/services/lock-repair",
+    noindex: false,
+    nofollow: false,
+    modifiedDate: "2023-12-15"
   }),
-  createPageRoute("/services/emergency-locksmith/storage-unit-lockout", <StorageUnitLockout />, {
-    title: "Storage Unit Lockout Service",
-    description: "Emergency storage unit lockout solutions"
-  })
-];
-
-// Residential Locksmith service routes
-const residentialServiceRoutes: RouteConfig[] = [
-  createPageRoute("/services/residential-locksmith/lock-replacement", <LockReplacement />, {
-    title: "Residential Lock Replacement",
-    description: "Professional lock replacement services"
+  createPageRoute("/services/key-duplication", <KeyDuplication />, {
+    title: "Key Duplication Services | Fast & Accurate Key Cutting",
+    description: "Fast and accurate key duplication services for all types of keys. Get your keys duplicated by professional locksmiths.",
+    keywords: "key duplication, key cutting, duplicate keys, key copy, locksmith key services",
+    canonicalUrl: "https://247locksmithandsecurity.com/services/key-duplication",
+    noindex: false,
+    nofollow: false,
+    modifiedDate: "2023-12-15"
   }),
-  createPageRoute("/services/residential-locksmith/lock-rekey", <LockRekey />, {
-    title: "Residential Lock Rekey",
-    description: "Expert lock rekeying solutions"
+  createPageRoute("/services/master-key-systems", <MasterKeySystems />, {
+    title: "Master Key Systems | Customized Security Solutions",
+    description: "Customized master key systems for businesses and properties. Control access and enhance security with our master key solutions.",
+    keywords: "master key system, commercial security, access control, key control, business security",
+    canonicalUrl: "https://247locksmithandsecurity.com/services/master-key-systems",
+    noindex: false,
+    nofollow: false,
+    modifiedDate: "2023-12-15"
   }),
-  createPageRoute("/services/residential-locksmith/lock-repair", <LockRepair />, {
-    title: "Lock Repair Service",
-    description: "Professional lock repair solutions"
+  createPageRoute("/services/access-control-systems", <AccessControlSystems />, {
+    title: "Access Control Systems | Advanced Security Solutions",
+    description: "Advanced access control systems for businesses. Keyless entry, card access, and biometric systems for enhanced security.",
+    keywords: "access control, keyless entry, card access, biometric systems, commercial access control",
+    canonicalUrl: "https://247locksmithandsecurity.com/services/access-control-systems",
+    noindex: false,
+    nofollow: false,
+    modifiedDate: "2023-12-15"
   }),
-  createPageRoute("/services/residential-locksmith/gate-locks", <GateLocks />, {
-    title: "Gate Lock Installation & Repair",
-    description: "Professional gate lock services"
-  })
-];
-
-// Commercial Locksmith service routes
-const commercialServiceRoutes: RouteConfig[] = [
-  createPageRoute("/services/commercial-locksmith/lock-replacement", <CommercialLockReplacement />, {
-    title: "Commercial Lock Replacement",
-    description: "Professional commercial lock replacement"
+  createPageRoute("/services/security-system-installation", <SecuritySystemInstallation />, {
+    title: "Security System Installation | Professional Security Solutions",
+    description: "Professional security system installation for homes and businesses. Protect your property with our advanced security solutions.",
+    keywords: "security system installation, home security, business security, alarm system, security solutions",
+    canonicalUrl: "https://247locksmithandsecurity.com/services/security-system-installation",
+    noindex: false,
+    nofollow: false,
+    modifiedDate: "2023-12-15"
   }),
-  createPageRoute("/services/commercial-locksmith/lock-rekey", <CommercialLockRekey />, {
-    title: "Commercial Lock Rekey",
-    description: "Expert commercial lock rekeying"
+  createPageRoute("/services/safe-installation", <SafeInstallation />, {
+    title: "Safe Installation Services | Secure Your Valuables",
+    description: "Professional safe installation services for homes and businesses. Secure your valuables with our expert safe installation.",
+    keywords: "safe installation, home safe, business safe, secure safe, valuables protection",
+    canonicalUrl: "https://247locksmithandsecurity.com/services/safe-installation",
+    noindex: false,
+    nofollow: false,
+    modifiedDate: "2023-12-15"
   }),
-  createPageRoute("/services/commercial-locksmith/emergency-exit-device", <EmergencyExitDevice />, {
-    title: "Emergency Exit Device Installation",
-    description: "Professional push-bar installation"
-  }),
-  createPageRoute("/services/commercial-locksmith/master-key", <MasterKey />, {
-    title: "Master Key System",
-    description: "Professional master key system solutions"
-  }),
-  createPageRoute("/services/commercial-locksmith/access-control", <AccessControl />, {
-    title: "Access Control Systems",
-    description: "Professional access control solutions"
-  })
-];
-
-// Auto Locksmith service routes
-const autoServiceRoutes: RouteConfig[] = [
-  createPageRoute("/services/auto-locksmith/car-key-replacement", <CarKeyReplacement />, {
-    title: "Car Key Replacement",
-    description: "Professional car key replacement service"
-  }),
-  createPageRoute("/services/auto-locksmith/key-fob-programming", <KeyFobProgramming />, {
-    title: "Key Fob Programming",
-    description: "Professional key fob programming service"
-  }),
-  createPageRoute("/services/auto-locksmith/car-key-duplicate", <CarKeyDuplicate />, {
-    title: "Car Key Duplication",
-    description: "Professional car key duplication service"
-  }),
-  createPageRoute("/services/auto-locksmith/car-key-cutting", <CarKeyCutting />, {
-    title: "Car Key Cutting",
-    description: "Professional car key cutting service"
-  }),
-  createPageRoute("/services/auto-locksmith/ignition-lock-cylinder", <IgnitionLockCylinder />, {
-    title: "Ignition Lock Cylinder Replacement",
-    description: "Professional ignition lock cylinder service"
-  })
-];
-
-// Export combined service routes
-export const serviceRoutes: RouteConfig[] = [
-  ...categoryRoutes,
-  ...emergencyServiceRoutes,
-  ...residentialServiceRoutes,
-  ...commercialServiceRoutes,
-  ...autoServiceRoutes
 ];
