@@ -1,294 +1,254 @@
-import React, { useState, useRef } from "react";
-import PageLayout from "@/components/layouts/PageLayout";
-import ServicesHero from "@/components/sections/services/ServicesHero";
-import ServicesFeatures from "@/components/sections/services/ServicesFeatures";
-import ServicesGrid from "@/components/sections/services/ServicesGrid";
-import ServicesCTA from "@/components/sections/services/ServicesCTA";
-import ReviewsSection from "@/components/sections/ReviewsSection";
-import FAQSection from "@/components/sections/FAQSection";
-import { motion } from "framer-motion";
-import { Card } from "@/components/ui/card";
-import { Building2, Lock, Key, Shield, ChevronDown } from "lucide-react";
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
-import CarouselDots from "@/components/reviews/CarouselDots";
-import { Button } from "@/components/ui/button";
-import { commercialReviews } from "@/data/reviews";
 
-const successStories = [{
-  icon: Building2,
-  title: "Office Security Upgrade in Hoboken",
-  location: "Hoboken",
-  shortDesc: "A startup needed to upgrade their office security after expansion.",
-  fullDesc: "A growing tech startup in Hoboken needed to upgrade their access control system after expanding to a second floor. We installed a modern keycard system with individual access levels for different areas, integrated it with their existing security cameras, and provided detailed access logs for management. The entire system was up and running within a day, with minimal disruption to their operations.",
-  service: "Commercial Security"
-}, {
-  icon: Lock,
-  title: "Master Key System in North Bergen",
-  location: "North Bergen",
-  shortDesc: "An apartment complex needed a new master key system for 50 units.",
-  fullDesc: "A property manager in North Bergen needed to overhaul their building's entire key system after a master key was lost. We designed and implemented a new hierarchical master key system for all 50 units, common areas, and maintenance rooms. The project was completed over a weekend to minimize resident disruption, with each tenant receiving new keys and clear instructions.",
-  service: "Commercial Locksmith"
-}, {
-  icon: Key,
-  title: "Emergency Exit Device Repair",
-  location: "Jersey City",
-  shortDesc: "A retail store had a malfunctioning emergency exit door before inspection.",
-  fullDesc: "A large retail store in Jersey City discovered their emergency exit device was malfunctioning just two days before a fire safety inspection. Our commercial locksmith team arrived within hours of their call, diagnosed a faulty internal mechanism, and completed a full repair the same day. The store passed their inspection without any issues, avoiding potential fines and ensuring customer safety.",
-  service: "Emergency Exit Repair"
-}, {
-  icon: Shield,
-  title: "Security Audit in Union City",
-  location: "Union City",
-  shortDesc: "A jewelry store requested a complete security assessment.",
-  fullDesc: "After a series of break-ins in the area, a Union City jewelry store owner requested a comprehensive security audit. We evaluated their existing locks, safes, and security protocols, identifying several vulnerabilities. Our team upgraded their locks to high-security cylinders, installed motion sensors, and implemented a monitored alarm system, all while working around their business hours.",
-  service: "Security Consultation"
-}];
-
-const commercialFaqs = [
-  {
-    question: "What commercial security solutions do you offer?",
-    answer: "We provide comprehensive commercial security solutions including high-security lock systems, master key systems, access control systems, panic bars and emergency exit devices, file cabinet and desk locks, commercial safe services, and security consultation. All our solutions are tailored to your specific business needs and security requirements."
-  },
-  {
-    question: "How quickly can you service a commercial property?",
-    answer: "For standard commercial services like lock installations or master key systems, we typically schedule appointments within 1-2 business days. For commercial lockouts or security emergencies, we provide same-day emergency service with response times averaging 15-30 minutes in our service areas."
-  },
-  {
-    question: "Can you create a master key system for my business?",
-    answer: "Yes, we design and implement customized master key systems for businesses of all sizes. Our systems can include multiple levels of access (master, sub-master, individual) and can be expanded as your business grows. We maintain detailed records of your key system for future modifications."
-  },
-  {
-    question: "Do you offer maintenance contracts for commercial properties?",
-    answer: "Yes, we offer maintenance contracts that include regular inspections, preventive maintenance of locks and security hardware, priority emergency service, and discounted rates on repairs and replacements. These contracts help ensure your security systems remain in optimal condition."
-  },
-  {
-    question: "Can you work after business hours to avoid disruption?",
-    answer: "Yes, we regularly schedule commercial locksmith work during evenings, nights, and weekends to minimize disruption to your business operations. For extensive projects like access control installation, we can develop a phased implementation plan that works around your business schedule."
-  },
-  {
-    question: "Are your commercial locks ADA compliant?",
-    answer: "Yes, we offer and install ADA-compliant commercial hardware including lever handles, low-force door closers, and appropriate mounting heights. We can evaluate your current setup and recommend necessary modifications to ensure compliance with accessibility requirements."
-  }
-];
-
-const RealLifeStories = () => {
-  const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
-  const [api, setApi] = useState<any>();
-  const [current, setCurrent] = useState(0);
-  const [isPaused, setIsPaused] = useState(false);
-  const intervalRef = useRef<NodeJS.Timeout | null>(null);
-
-  React.useEffect(() => {
-    if (!api) return;
-    api.on("select", () => {
-      setCurrent(api.selectedScrollSnap());
-    });
-
-    const startAutoplay = () => {
-      intervalRef.current = setInterval(() => {
-        if (!isPaused && api.canScrollNext()) {
-          api.scrollNext();
-        } else if (!isPaused) {
-          api.scrollTo(0);
-        }
-      }, 3500);
-    };
-
-    const stopAutoplay = () => {
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current);
-        intervalRef.current = null;
-      }
-    };
-
-    startAutoplay();
-
-    return () => {
-      stopAutoplay();
-    };
-  }, [api, isPaused]);
-
-  const truncateText = (text: string, maxLength: number) => {
-    if (text.length <= maxLength) return text;
-    
-    const lastSpaceIndex = text.lastIndexOf(' ', maxLength);
-    
-    if (lastSpaceIndex === -1) {
-      return text.substring(0, maxLength) + '...';
-    }
-    
-    const truncatedText = text.substring(0, lastSpaceIndex);
-    const lastWord = text.substring(lastSpaceIndex + 1).split(' ')[0];
-    const halfWordLength = Math.floor(lastWord.length / 2);
-    const truncatedWord = lastWord.substring(0, halfWordLength);
-    
-    return truncatedText + ' ' + truncatedWord + '...';
-  };
-
-  return <section className="py-20 bg-gray-50">
-      <div className="container mx-auto px-4">
-        <motion.div initial={{
-        opacity: 0,
-        y: 20
-      }} whileInView={{
-        opacity: 1,
-        y: 0
-      }} transition={{
-        duration: 0.5
-      }} className="text-center max-w-3xl mx-auto mb-12">
-          <h2 className="text-3xl font-bold mb-4">Commercial Security Success Stories</h2>
-          <p className="text-lg text-muted-foreground">
-            Real-world examples of how we've helped businesses across New Jersey improve their security
-          </p>
-        </motion.div>
-
-        <div onMouseEnter={() => setIsPaused(true)} onMouseLeave={() => setIsPaused(false)}>
-          <Carousel setApi={setApi} className="w-full max-w-6xl mx-auto" opts={{
-          align: "start",
-          loop: true
-        }}>
-            <CarouselContent>
-              {successStories.map((story, index) => <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
-                  <motion.div initial={{
-                opacity: 0,
-                y: 20
-              }} whileInView={{
-                opacity: 1,
-                y: 0
-              }} transition={{
-                duration: 0.5,
-                delay: index * 0.1
-              }}>
-                    <Card className="p-6 h-full flex flex-col">
-                      <div className="flex items-start gap-4 mb-4">
-                        <div className="p-2 rounded-lg bg-primary/10">
-                          <story.icon className="h-6 w-6 text-primary" />
-                        </div>
-                        <div>
-                          <h3 className="text-xl font-semibold mb-1">{story.title}</h3>
-                          <p className="text-sm text-muted-foreground">{story.location}</p>
-                        </div>
-                      </div>
-                      
-                      <p className="text-muted-foreground mb-4">
-                        {expandedIndex === index 
-                          ? story.fullDesc 
-                          : (
-                            <>
-                              {truncateText(story.fullDesc, 120)}
-                              <Button 
-                                variant="ghost" 
-                                size="sm" 
-                                onClick={() => setExpandedIndex(index)} 
-                                className="text-sm font-medium text-[#F97316] ml-1 p-0 h-auto hover:bg-transparent group"
-                              >
-                                Continue Reading
-                                <ChevronDown className="h-3 w-3 ml-1 text-[#F97316] group-hover:animate-bounce" />
-                              </Button>
-                            </>
-                          )
-                        }
-                      </p>
-                      
-                      <div className="mt-auto pt-4 flex items-center justify-between">
-                        <span className="text-sm font-medium text-primary">{story.service}</span>
-                        {expandedIndex === index && (
-                          <Button 
-                            variant="ghost" 
-                            size="sm" 
-                            onClick={() => setExpandedIndex(null)} 
-                            className="text-sm"
-                          >
-                            Show Less
-                          </Button>
-                        )}
-                      </div>
-                    </Card>
-                  </motion.div>
-                </CarouselItem>)}
-            </CarouselContent>
-            
-            <div className="flex items-center justify-center mt-8">
-              <CarouselPrevious className="relative static translate-y-0 mr-2" />
-              <CarouselDots total={successStories.length} current={current} onDotClick={index => api?.scrollTo(index)} />
-              <CarouselNext className="relative static translate-y-0 ml-2" />
-            </div>
-          </Carousel>
-        </div>
-      </div>
-    </section>;
-};
+import React from 'react';
+import PageLayout from '@/components/layouts/PageLayout';
+import ServicesProof from '@/components/sections/services/ServicesProof';
+import CategoryHero from '@/components/sections/services/CategoryHero';
+import CategoryFeatures from '@/components/sections/services/CategoryFeatures';
+import CategorySuccessStories from '@/components/sections/services/CategorySuccessStories';
+import ReviewsSection from '@/components/sections/ReviewsSection';
+import ServicesGrid from '@/components/sections/services/ServicesGrid';
+import { Button } from '@/components/ui/button';
+import { Building, Lock, Key, Shield, KeyRound, CheckCircle, ChevronRight, Phone, Users, FileKey } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { getReviewsByCategory } from '@/data/reviewsData';
 
 const CommercialLocksmithPage = () => {
-  return <PageLayout title="Professional Commercial Locksmith Services in North Bergen, NJ | Business Security Solutions" description="Expert commercial locksmith services including access control systems, master key systems, lock installation, and security consultation for businesses of all sizes." keywords="commercial locksmith, business locksmith, access control, master key system, commercial security, North Bergen locksmith" schema={{
-    "@context": "https://schema.org",
-    "@type": "Service",
-    "name": "Commercial Locksmith Services",
-    "provider": {
-      "@type": "LocalBusiness",
-      "name": "Locksmith & Security LLC",
-      "image": "/website-uploads/950b5c4c-f0b8-4d22-beb0-66a7d7554476.png",
-      "address": {
-        "@type": "PostalAddress",
-        "streetAddress": "123 Main Street",
-        "addressLocality": "North Bergen",
-        "addressRegion": "NJ",
-        "postalCode": "07047",
-        "addressCountry": "US"
-      },
-      "telephone": "+12017482070",
-      "priceRange": "$$"
-    },
-    "areaServed": {
-      "@type": "City",
-      "name": "North Bergen",
-      "sameAs": "https://en.wikipedia.org/wiki/North_Bergen,_New_Jersey"
-    },
-    "hasOfferCatalog": {
-      "@type": "OfferCatalog",
-      "name": "Commercial Locksmith Services",
-      "itemListElement": [{
-        "@type": "Offer",
-        "itemOffered": {
-          "@type": "Service",
-          "name": "Access Control Systems",
-          "description": "Advanced electronic access control solutions for businesses"
-        }
-      }, {
-        "@type": "Offer",
-        "itemOffered": {
-          "@type": "Service",
-          "name": "Master Key Systems",
-          "description": "Custom master key solutions for efficient access management"
-        }
-      }, {
-        "@type": "Offer",
-        "itemOffered": {
-          "@type": "Service",
-          "name": "Commercial Lock Installation",
-          "description": "Professional installation of high-security commercial locks"
-        }
-      }, {
-        "@type": "Offer",
-        "itemOffered": {
-          "@type": "Service",
-          "name": "Emergency Exit Devices",
-          "description": "Installation and repair of panic bars and emergency exit hardware"
-        }
-      }]
-    }
-  }}>
-      <ServicesHero title="Professional Commercial Locksmith Services" description="Comprehensive security solutions for businesses of all sizes. From access control systems to master key implementation, we provide expert commercial locksmith services throughout New Jersey." />
-      <ServicesGrid 
-        title="Complete Commercial Security Solutions"
-        description="Professional security services to protect your business, assets, and people"
+  const commercialReviews = getReviewsByCategory('commercial');
+  const commercialStories = [{
+    title: "Office Complex Master Key System",
+    description: "Multi-level access solution for large office building with multiple tenants.",
+    challenge: "A property management company overseeing a 10-story office building needed an organized access system for different tenants, maintenance staff, and emergency personnel. They had over 50 doors and were dealing with disorganized key management.",
+    solution: "We designed and implemented a comprehensive master key system with multiple levels of access. Building management received grand master keys, while each tenant received master keys for only their suite. Maintenance received limited access master keys.",
+    result: "The system dramatically simplified key management while maintaining strict security protocols. Each tenant now has appropriate access, and building management has comprehensive control over the entire property's security.",
+    customerName: "Westside Properties",
+    customerLocation: "Jersey City, NJ",
+    date: "3 months ago"
+  }, {
+    title: "Retail Store Security Upgrade",
+    description: "Comprehensive security solution for a chain of retail stores after a break-in attempt.",
+    challenge: "A local retail chain experienced an attempted break-in at one location and needed an immediate security evaluation and upgrade for all six of their stores. They were particularly concerned about their back entrances and storage areas.",
+    solution: "Our team conducted thorough security assessments at each location and installed high-security commercial-grade deadbolts, reinforced door frames, and panic bars where needed. We also implemented an access control system for employee entrance tracking.",
+    result: "The upgraded security measures prevented another attempted break-in just weeks later. The access control system has also improved employee accountability and simplified opening/closing procedures.",
+    customerName: "Metro Retail Group",
+    customerLocation: "North Bergen, NJ",
+    date: "Last month"
+  }];
+
+  return (
+    <PageLayout 
+      title="Commercial Locksmith Services | Business Security Solutions" 
+      description="Professional commercial locksmith services for businesses of all sizes. Advanced security solutions, access control systems, and expert installations." 
+      heroTitle="Commercial Locksmith Services" 
+      heroDescription="Comprehensive business security solutions from industry experts. Protect your assets, employees, and operations."
+    >
+      <CategoryHero 
+        title="Commercial Locksmith & Security Solutions" 
+        description="Secure your business with our comprehensive commercial locksmith services. From basic lock systems to advanced access control, we provide reliable security solutions for businesses of all sizes." 
+        category="commercial" 
+        features={[{
+          title: "Business Security Experts",
+          description: "Industry specialists"
+        }, {
+          title: "Commercial-Grade Hardware",
+          description: "Built for high traffic"
+        }, {
+          title: "Custom Solutions",
+          description: "Tailored to your business"
+        }, {
+          title: "Regulatory Compliance",
+          description: "ADA and fire code compliant"
+        }]} 
       />
-      <ServicesFeatures />
-      <RealLifeStories />
-      <FAQSection title="Commercial Locksmith FAQs" description="Common questions about our business security services" faqs={commercialFaqs} />
+      
+      <div className="bg-gray-50 py-12">
+        <div className="container mx-auto px-4">
+          <div className="bg-white p-6 rounded-xl shadow-md border border-gray-200">
+            <div className="flex items-center gap-4 mb-6">
+              <div className="bg-gray-100 p-3 rounded-full">
+                <Building className="h-8 w-8 text-gray-700" />
+              </div>
+              <div>
+                <h2 className="text-2xl font-bold text-gray-800">Business Security Systems</h2>
+                <p className="text-gray-600">Comprehensive locksmith services for commercial properties</p>
+              </div>
+            </div>
+            
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+              <div className="border border-gray-100 rounded-lg p-5 bg-gray-50">
+                <div className="flex items-center gap-3 mb-3">
+                  <Lock className="h-6 w-6 text-primary" />
+                  <h3 className="font-semibold">High-Security Locks</h3>
+                </div>
+                <p className="text-gray-600 text-sm">Commercial-grade locks designed to withstand tampering and forced entry attempts.</p>
+              </div>
+              
+              <div className="border border-gray-100 rounded-lg p-5 bg-gray-50">
+                <div className="flex items-center gap-3 mb-3">
+                  <FileKey className="h-6 w-6 text-primary" />
+                  <h3 className="font-semibold">Master Key Systems</h3>
+                </div>
+                <p className="text-gray-600 text-sm">Hierarchical access solutions allowing different levels of entry for various staff members.</p>
+              </div>
+              
+              <div className="border border-gray-100 rounded-lg p-5 bg-gray-50">
+                <div className="flex items-center gap-3 mb-3">
+                  <Users className="h-6 w-6 text-primary" />
+                  <h3 className="font-semibold">Access Control</h3>
+                </div>
+                <p className="text-gray-600 text-sm">Electronic systems that manage and monitor entry to secured areas through credentials.</p>
+              </div>
+              
+              <div className="border border-gray-100 rounded-lg p-5 bg-gray-50">
+                <div className="flex items-center gap-3 mb-3">
+                  <Shield className="h-6 w-6 text-primary" />
+                  <h3 className="font-semibold">Emergency Exit Devices</h3>
+                </div>
+                <p className="text-gray-600 text-sm">Panic bars and emergency exit hardware that meet building safety code requirements.</p>
+              </div>
+            </div>
+            
+            <div className="mt-8 flex justify-center">
+              <Button size="lg" asChild className="bg-gray-800 hover:bg-gray-900 text-white">
+                <a href="tel:2017482070" className="flex items-center gap-2">
+                  <Phone className="h-5 w-5" />
+                  Call Now: (201) 748-2070
+                </a>
+              </Button>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <CategoryFeatures 
+        category="Commercial" 
+        description="Our commercial locksmith services are designed to meet the unique security challenges of business environments. 
+          We provide scalable solutions that protect your assets while facilitating appropriate access." 
+        services={[{
+          title: "Commercial Lock Installation",
+          description: "Professional installation of high-grade commercial locks suitable for business environments with high traffic and security needs.",
+          icon: <Lock className="h-6 w-6" />,
+          link: "/services/commercial-locksmith/lock-installation"
+        }, {
+          title: "Commercial Lock Replacement",
+          description: "Upgrade or replace existing commercial locks with modern security solutions that offer enhanced protection.",
+          icon: <KeyRound className="h-6 w-6" />,
+          link: "/services/commercial-locksmith/lock-replacement"
+        }, {
+          title: "Master Key Systems",
+          description: "Design and implementation of hierarchical key systems that provide controlled access across your organization.",
+          icon: <FileKey className="h-6 w-6" />,
+          link: "/services/commercial-locksmith/master-key"
+        }, {
+          title: "Access Control Systems",
+          description: "Installation of electronic access control solutions that allow keyless entry and detailed access logging capabilities.",
+          icon: <Users className="h-6 w-6" />,
+          link: "/services/commercial-locksmith/access-control"
+        }, {
+          title: "Emergency Exit Devices",
+          description: "Supply and installation of code-compliant panic bars and emergency exit hardware for safe building evacuation.",
+          icon: <Shield className="h-6 w-6" />,
+          link: "/services/commercial-locksmith/emergency-exit-device"
+        }, {
+          title: "Commercial Lock Rekey",
+          description: "Cost-effective security updates by changing the internal mechanisms of existing locks rather than full replacement.",
+          icon: <Key className="h-6 w-6" />,
+          link: "/services/commercial-locksmith/lock-rekey"
+        }]} 
+      />
+      
+      <div className="bg-gradient-to-br from-primary-50 to-primary-100 py-16">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold mb-4">Why Choose Our Commercial Locksmith Service?</h2>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+              We understand the unique security needs of businesses and deliver reliable, professional solutions.
+            </p>
+          </div>
+          
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="bg-white p-6 rounded-xl shadow-sm">
+              <div className="rounded-full w-12 h-12 bg-gray-100 flex items-center justify-center mb-4">
+                <Building className="h-6 w-6 text-gray-700" />
+              </div>
+              <h3 className="text-xl font-semibold mb-3">Business Security Specialists</h3>
+              <p className="text-gray-600">
+                Our technicians specialize in commercial security and understand the unique challenges businesses face regarding access control and asset protection.
+              </p>
+            </div>
+            
+            <div className="bg-white p-6 rounded-xl shadow-sm">
+              <div className="rounded-full w-12 h-12 bg-green-100 flex items-center justify-center mb-4">
+                <CheckCircle className="h-6 w-6 text-green-600" />
+              </div>
+              <h3 className="text-xl font-semibold mb-3">Code Compliance</h3>
+              <p className="text-gray-600">
+                We ensure all installations meet ADA requirements, fire codes, and local building regulations while maintaining optimal security.
+              </p>
+            </div>
+            
+            <div className="bg-white p-6 rounded-xl shadow-sm">
+              <div className="rounded-full w-12 h-12 bg-blue-100 flex items-center justify-center mb-4">
+                <Shield className="h-6 w-6 text-blue-600" />
+              </div>
+              <h3 className="text-xl font-semibold mb-3">Scalable Solutions</h3>
+              <p className="text-gray-600">
+                Whether you have a small retail store or a multi-location business, our solutions can be tailored to your specific needs and can grow with your business.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <CategorySuccessStories category="Commercial Locksmith" stories={commercialStories} />
+      
+      <ServicesProof reviewsData={commercialReviews.slice(0, 6)} category="commercial" />
+      
+      <div className="py-16 bg-gray-50">
+        <div className="container mx-auto px-4">
+          <div className="bg-white p-8 rounded-xl shadow-md border border-gray-200 max-w-4xl mx-auto">
+            <h2 className="text-2xl font-bold mb-4 text-center">Commercial Locksmith FAQ</h2>
+            
+            <div className="space-y-6 mt-8">
+              <div>
+                <h3 className="text-lg font-semibold text-primary mb-2">How do master key systems work for businesses?</h3>
+                <p className="text-gray-600">Master key systems create a hierarchy of access, where certain keys (master keys) can open multiple locks, while others are limited to specific doors. This allows business owners and managers to have comprehensive access while restricting employee access to only necessary areas.</p>
+              </div>
+              
+              <div>
+                <h3 className="text-lg font-semibold text-primary mb-2">What's the advantage of access control over traditional locks?</h3>
+                <p className="text-gray-600">Access control systems offer several advantages: they eliminate the need for physical keys that can be lost or copied, provide detailed entry logs, allow for immediate permission changes without rekeying locks, and can integrate with other security systems for comprehensive protection.</p>
+              </div>
+              
+              <div>
+                <h3 className="text-lg font-semibold text-primary mb-2">Are your commercial locks ADA compliant?</h3>
+                <p className="text-gray-600">Yes, we provide and install ADA-compliant hardware that meets accessibility requirements while maintaining security standards. This includes appropriate lever handles, opening force requirements, and proper installation heights.</p>
+              </div>
+              
+              <div>
+                <h3 className="text-lg font-semibold text-primary mb-2">How often should a business rekey or change their locks?</h3>
+                <p className="text-gray-600">Businesses should rekey or change locks after employee turnover involving key holders, if keys are lost or stolen, following security incidents, or during renovations. Many businesses also implement regular security updates on an annual or bi-annual schedule as best practice.</p>
+              </div>
+              
+              <div>
+                <h3 className="text-lg font-semibold text-primary mb-2">Can you work around our business hours?</h3>
+                <p className="text-gray-600">Absolutely. We understand that security work needs to minimize disruption to your operations. We can schedule installations and service during off-hours, weekends, or in stages to ensure your business remains functional throughout the process.</p>
+              </div>
+            </div>
+            
+            <div className="mt-8 flex justify-center">
+              <Button asChild>
+                <Link to="/book-online" className="flex items-center gap-2">
+                  Book Commercial Service <ChevronRight className="h-4 w-4" />
+                </Link>
+              </Button>
+            </div>
+          </div>
+        </div>
+      </div>
+      
       <ReviewsSection location="North Bergen" category="commercial" reviewData={commercialReviews} />
-      <ServicesCTA />
-    </PageLayout>;
+    </PageLayout>
+  );
 };
 
 export default CommercialLocksmithPage;
