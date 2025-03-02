@@ -52,10 +52,6 @@ const Header = () => {
 
   return (
     <>
-      {/* Skip to content link for keyboard users */}
-      <a href="#main-content" className="skip-to-content">
-        Skip to content
-      </a>
       <TopBar />
       <header 
         className={`sticky top-0 w-full z-50 transition-all duration-300 ${
@@ -93,7 +89,6 @@ const Header = () => {
           </div>
         </div>
       </header>
-      {/* Main content marker for skip link */}
       <div id="main-content" tabIndex={-1} className="sr-only focus:not-sr-only">
         Main content starts here
       </div>

@@ -88,27 +88,6 @@
   border-radius: 2px;
 }
 
-/* Skip to content link for keyboard users */
-.skip-to-content {
-  position: absolute;
-  left: -9999px;
-  top: 1rem;
-  z-index: 9999;
-  background: white;
-  color: black;
-  padding: 0.5rem 1rem;
-  border-radius: 4px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-  text-decoration: none;
-  transform: translateY(-100%);
-  transition: transform 0.3s;
-}
-
-.skip-to-content:focus {
-  left: 1rem;
-  transform: translateY(0);
-}
-
 /* Prevent animation for users who prefer reduced motion */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {

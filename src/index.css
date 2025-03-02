@@ -47,19 +47,19 @@
   }
   
   h1 {
-    @apply text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-heading-dark;
+    @apply text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-primary;
   }
   
   h2 {
-    @apply text-2xl sm:text-3xl md:text-4xl font-bold text-heading-primary;
+    @apply text-2xl sm:text-3xl md:text-4xl font-bold text-secondary;
   }
   
   h3 {
-    @apply text-xl sm:text-2xl md:text-3xl font-semibold text-heading-secondary;
+    @apply text-xl sm:text-2xl md:text-3xl font-semibold text-primary;
   }
   
   h4 {
-    @apply text-lg sm:text-xl md:text-2xl font-semibold text-heading-dark;
+    @apply text-lg sm:text-xl md:text-2xl font-semibold text-secondary;
   }
   
   .subtitle {
