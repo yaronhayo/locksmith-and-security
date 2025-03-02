@@ -7,7 +7,7 @@ import ServicesProof from '@/components/sections/services/ServicesProof';
 import { SchemaScripts } from '@/components/meta/SchemaScripts';
 import { Helmet } from 'react-helmet';
 import { CarLockoutContent } from '@/components/services/car-lockout/CarLockoutContent';
-import { carLockoutSchema, carLockoutFaqs } from '@/components/services/car-lockout/CarLockoutSchema';
+import { carLockoutSchema, carLockoutFaqs, carLockoutFaqSchema } from '@/components/services/car-lockout/CarLockoutSchema';
 import { relatedEmergencyServices } from '@/components/services/car-lockout/relatedServices';
 
 const CarLockout = () => {

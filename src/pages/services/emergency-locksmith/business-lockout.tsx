@@ -75,51 +75,40 @@ const BusinessLockout = () => {
     }))
   };
 
+  const businessLockoutFaqs = [
+    {
+      question: "What types of businesses do you provide lockout services for?",
+      answer: "We provide lockout services for a wide range of businesses, including offices, retail stores, restaurants, warehouses, and more. No matter the type of business, our experienced locksmiths can help you regain access quickly and safely."
+    },
+    {
+      question: "How quickly can you respond to a business lockout call?",
+      answer: "We understand that time is of the essence when you're locked out of your business. That's why we offer 24/7 emergency lockout services with a fast response time. In most cases, we can arrive at your location within 30 minutes to an hour, depending on traffic and location."
+    },
+    {
+      question: "What information do I need to provide when calling for a business lockout service?",
+      answer: "When you call us for a business lockout service, please provide the following information: your business name, address, contact person, and a brief description of the situation. This will help us dispatch the right technician with the appropriate tools for your specific needs."
+    },
+    {
+      question: "Can you unlock all types of commercial doors and locks?",
+      answer: "Yes, our technicians are trained to handle virtually all types of commercial doors and locks, including standard doors, high-security doors, and electronic access control systems. We use specialized tools and techniques to safely unlock your business without causing damage."
+    },
+    {
+      question: "Do I need to provide proof of ownership or authorization to access the business?",
+      answer: "Yes, for security purposes, we require proof of ownership or authorization to access the business. This typically involves showing identification and business registration or lease documentation. We may also contact the property owner or manager to verify your authorization."
+    }
+  ];
+
   const faqSchema = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
-    "mainEntity": [
-      {
-        "@type": "Question",
-        "name": "What types of businesses do you provide lockout services for?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "We provide lockout services for a wide range of businesses, including offices, retail stores, restaurants, warehouses, and more. No matter the type of business, our experienced locksmiths can help you regain access quickly and safely."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "How quickly can you respond to a business lockout call?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "We understand that time is of the essence when you're locked out of your business. That's why we offer 24/7 emergency lockout services with a fast response time. In most cases, we can arrive at your location within 30 minutes to an hour, depending on traffic and location."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "What information do I need to provide when calling for a business lockout service?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "When you call us for a business lockout service, please provide the following information: your business name, address, contact person, and a brief description of the situation. This will help us dispatch the right technician with the appropriate tools for your specific needs."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Can you unlock all types of commercial doors and locks?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Yes, our technicians are trained to handle virtually all types of commercial doors and locks, including standard doors, high-security doors, and electronic access control systems. We use specialized tools and techniques to safely unlock your business without causing damage."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Do I need to provide proof of ownership or authorization to access the business?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Yes, for security purposes, we require proof of ownership or authorization to access the business. This typically involves showing identification and business registration or lease documentation. We may also contact the property owner or manager to verify your authorization."
-        }
+    "mainEntity": businessLockoutFaqs.map((faq) => ({
+      "@type": "Question",
+      "name": faq.question,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": faq.answer
       }
-    ]
+    }))
   };
 
   // Main content to be passed to the ServicePageContent component
@@ -282,7 +271,7 @@ const BusinessLockout = () => {
         serviceCategory="Emergency Locksmith"
         mainContent={mainContent}
         relatedServices={relatedEmergencyServices}
-        faqs={faqSchema.mainEntity}
+        faqs={businessLockoutFaqs}
       />
       
       <ServicesProof reviewsData={commercialReviews.slice(0, 8)} />

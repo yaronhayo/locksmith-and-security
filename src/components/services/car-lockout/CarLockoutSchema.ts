@@ -76,6 +76,7 @@ export const carLockoutSchema = {
   }
 };
 
+// Add the FAQ schema that was missing
 export const carLockoutFaqSchema = {
   "@context": "https://schema.org",
   "@type": "FAQPage",
