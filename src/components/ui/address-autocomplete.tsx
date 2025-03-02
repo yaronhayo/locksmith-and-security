@@ -3,8 +3,9 @@ import { useEffect, useRef, useState } from "react";
 import { Input } from "./input";
 import { useMapConfig } from "@/hooks/useMap";
 import { InputHTMLAttributes } from "react";
-import { Loader2 } from "lucide-react";
+import { Loader2, RefreshCw } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Button } from "@/components/ui/button";
 
 type AddressAutocompleteProps = Omit<InputHTMLAttributes<HTMLInputElement>, 'onChange'> & {
   value: string;
@@ -21,19 +22,19 @@ const AddressAutocomplete = ({
 }: AddressAutocompleteProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const autocompleteRef = useRef<google.maps.places.Autocomplete | null>(null);
-  const { data: apiKey, error: apiKeyError, isLoading } = useMapConfig();
+  const { data: apiKey, error: apiKeyError, isLoading, refetch } = useMapConfig();
   const [error, setError] = useState<string | null>(null);
   const [isInitialized, setIsInitialized] = useState(false);
+  const [initAttempts, setInitAttempts] = useState(0);
 
-  useEffect(() => {
-    // Only initialize if Google Maps API is loaded
+  const initializeAutocomplete = () => {
     if (!inputRef.current || !window.google?.maps?.places || !apiKey) {
       console.log("Not initializing autocomplete - dependencies not ready", {
         inputRef: !!inputRef.current,
         googleMapsPlaces: !!window.google?.maps?.places,
         apiKey: !!apiKey
       });
-      return;
+      return false;
     }
 
     try {
@@ -67,25 +68,33 @@ const AddressAutocomplete = ({
 
       setIsInitialized(true);
       setError(null);
-      
-      return () => {
-        // Only attempt cleanup if Google Maps is still available
-        if (window.google?.maps?.event && listener) {
-          console.log("Removing place_changed listener");
-          listener.remove();
-        }
-        if (window.google?.maps?.event && autocompleteRef.current) {
-          console.log("Clearing instance listeners");
-          google.maps.event.clearInstanceListeners(autocompleteRef.current);
-          autocompleteRef.current = null;
-        }
-      };
+      return true;
     } catch (err) {
       console.error('Error initializing address autocomplete:', err);
       setError(err instanceof Error ? err.message : 'Failed to initialize address autocomplete');
       setIsInitialized(false);
+      return false;
     }
-  }, [onChange, apiKey]);
+  };
+
+  useEffect(() => {
+    // Only initialize if Google Maps API is loaded
+    const success = initializeAutocomplete();
+    
+    if (!success && window.google?.maps?.event && autocompleteRef.current) {
+      google.maps.event.clearInstanceListeners(autocompleteRef.current);
+      autocompleteRef.current = null;
+    }
+    
+    return () => {
+      // Only attempt cleanup if Google Maps is still available
+      if (window.google?.maps?.event && autocompleteRef.current) {
+        console.log("Clearing address autocomplete instance listeners");
+        google.maps.event.clearInstanceListeners(autocompleteRef.current);
+        autocompleteRef.current = null;
+      }
+    };
+  }, [apiKey, initAttempts]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -106,6 +115,12 @@ const AddressAutocomplete = ({
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     onChange(e.target.value);
     if (error) setError(null);
+  };
+
+  const retryInitialization = () => {
+    setError(null);
+    refetch();
+    setInitAttempts(prev => prev + 1);
   };
 
   const displayError = error || (apiKeyError?.message ?? null);
@@ -134,11 +149,21 @@ const AddressAutocomplete = ({
       </div>
       
       {displayError && (
-        <Alert variant="destructive">
-          <AlertDescription id="address-error">
-            {displayError}
-          </AlertDescription>
-        </Alert>
+        <div className="space-y-2">
+          <Alert variant="destructive">
+            <AlertDescription id="address-error">
+              {displayError}
+            </AlertDescription>
+          </Alert>
+          <Button 
+            onClick={retryInitialization} 
+            variant="outline" 
+            size="sm"
+            className="flex items-center gap-2"
+          >
+            <RefreshCw className="h-4 w-4" /> Retry
+          </Button>
+        </div>
       )}
     </div>
   );

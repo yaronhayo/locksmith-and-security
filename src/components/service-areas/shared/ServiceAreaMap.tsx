@@ -19,6 +19,7 @@ const ServiceAreaMap = ({ locationName, lat, lng, isLoading = false }: ServiceAr
   const finishRenderTracking = trackComponentRender('ServiceAreaMap');
   const [mapReady, setMapReady] = useState(false);
   const [mapError, setMapError] = useState<string | null>(null);
+  const [retryCount, setRetryCount] = useState(0);
   
   useEffect(() => {
     finishRenderTracking();
@@ -45,6 +46,11 @@ const ServiceAreaMap = ({ locationName, lat, lng, isLoading = false }: ServiceAr
     setMapError(error.message || "Failed to load map");
   };
 
+  const handleRetry = () => {
+    setMapError(null);
+    setRetryCount(prev => prev + 1);
+  };
+
   return (
     <div className="bg-white rounded-xl shadow-sm overflow-hidden">
       <div className="p-4 bg-gray-50 border-b border-gray-200">
@@ -60,6 +66,8 @@ const ServiceAreaMap = ({ locationName, lat, lng, isLoading = false }: ServiceAr
           <ErrorBoundary 
             FallbackComponent={MapError}
             onError={handleMapError}
+            key={`map-error-boundary-${retryCount}`}
+            onReset={handleRetry}
           >
             <GoogleMapsProvider>
               <GoogleMap
@@ -67,11 +75,19 @@ const ServiceAreaMap = ({ locationName, lat, lng, isLoading = false }: ServiceAr
                 showAllMarkers={true}
                 zoom={14}
                 center={{ lat, lng }}
+                key={`google-map-instance-${retryCount}`}
               />
             </GoogleMapsProvider>
           </ErrorBoundary>
         )}
-        {mapError && <MapError error={mapError} />}
+        {mapError && (
+          <div className="absolute inset-0 bg-white/90 flex items-center justify-center">
+            <MapError 
+              error={mapError} 
+              resetErrorBoundary={handleRetry}
+            />
+          </div>
+        )}
       </div>
     </div>
   );

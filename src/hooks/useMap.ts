@@ -31,9 +31,9 @@ export const useMapConfig = () => {
         throw error;
       }
     },
-    staleTime: Infinity,
-    gcTime: Infinity,
-    retry: 2,
-    retryDelay: 1000,
+    staleTime: Infinity, // Keep the API key indefinitely until manual invalidation
+    gcTime: Infinity,    // Don't garbage collect the query
+    retry: 3,            // Try up to 3 times if the request fails
+    retryDelay: 1000,    // Wait 1 second between retries
   });
 };

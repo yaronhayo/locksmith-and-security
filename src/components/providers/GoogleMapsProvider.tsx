@@ -1,5 +1,5 @@
 
-import { ReactNode, useEffect, useState, useCallback } from "react";
+import { ReactNode, useEffect, useState, useCallback, useRef } from "react";
 import { LoadScript, LoadScriptProps } from "@react-google-maps/api";
 import { useMapConfig } from "@/hooks/useMap";
 import MapError from "../map/MapError";
@@ -15,6 +15,7 @@ const GoogleMapsProvider = ({ children }: GoogleMapsProviderProps) => {
   const { data: apiKey, error: apiKeyError, isLoading, isError } = useMapConfig();
   const [scriptError, setScriptError] = useState<string | null>(null);
   const [scriptLoaded, setScriptLoaded] = useState(false);
+  const providerIdRef = useRef(`google-maps-provider-${Math.random().toString(36).substring(2, 9)}`);
 
   const handleLoad = useCallback(() => {
     console.log("Google Maps script loaded successfully");
@@ -29,13 +30,17 @@ const GoogleMapsProvider = ({ children }: GoogleMapsProviderProps) => {
 
   // For debugging
   useEffect(() => {
-    console.log("GoogleMapsProvider state:", { 
+    console.log(`GoogleMapsProvider(${providerIdRef.current}) state:`, { 
       apiKey: apiKey ? "Available" : "Not available", 
       isLoading, 
       hasError: !!apiKeyError || isError,
       scriptLoaded,
       scriptError
     });
+    
+    return () => {
+      console.log(`GoogleMapsProvider(${providerIdRef.current}) unmounted`);
+    };
   }, [apiKey, isLoading, apiKeyError, isError, scriptLoaded, scriptError]);
 
   if (isLoading) return <MapLoader />;
@@ -50,6 +55,7 @@ const GoogleMapsProvider = ({ children }: GoogleMapsProviderProps) => {
       onLoad={handleLoad}
       onError={handleError}
       loadingElement={<MapLoader />}
+      key={providerIdRef.current}
     >
       {children}
     </LoadScript>
