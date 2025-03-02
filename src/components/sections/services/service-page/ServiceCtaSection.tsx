@@ -11,7 +11,7 @@ interface ServiceCtaSectionProps {
 const ServiceCtaSection: React.FC<ServiceCtaSectionProps> = ({ serviceName }) => {
   return (
     <div className="bg-gradient-to-r from-primary to-primary-hover rounded-lg overflow-hidden shadow-lg text-white p-8 mt-12">
-      <h3 className="text-2xl font-bold mb-4">Need {serviceName} Service Now?</h3>
+      <h3 className="text-2xl font-bold mb-4 text-white">Need {serviceName} Service Now?</h3>
       <p className="mb-6 text-white/90">Our team is ready to help you with professional, reliable service. Contact us now for immediate assistance.</p>
       <div className="flex flex-col sm:flex-row gap-4">
         <Button 
