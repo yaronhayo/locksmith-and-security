@@ -1,6 +1,8 @@
 
 import React, { useEffect, useState, ReactNode } from "react";
 import { LoadingState } from "@/components/layouts/LoadingState";
+import { useMapConfig } from "@/hooks/useMap";
+import { toast } from "sonner";
 
 interface GoogleMapsProviderProps {
   children: ReactNode;
@@ -9,12 +11,18 @@ interface GoogleMapsProviderProps {
 
 const GoogleMapsProvider: React.FC<GoogleMapsProviderProps> = ({ 
   children, 
-  apiKey = "AIzaSyD_lT8RmSAMEHUlTEgNIxHhLGGUMdLtFiE" // Public API key, safe to be in code
+  apiKey
 }) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [hasError, setHasError] = useState(false);
+  const { data: configApiKey, isLoading, error } = useMapConfig();
+  
+  // Use provided apiKey or fall back to the one from Supabase settings
+  const effectiveApiKey = apiKey || configApiKey;
 
   useEffect(() => {
+    if (isLoading || !effectiveApiKey) return;
+    
     // Check if API is already loaded
     if (window.google?.maps) {
       console.log("Google Maps API already loaded");
@@ -24,7 +32,7 @@ const GoogleMapsProvider: React.FC<GoogleMapsProviderProps> = ({
 
     // Load Google Maps API
     const script = document.createElement("script");
-    script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places&callback=initGoogleMaps`;
+    script.src = `https://maps.googleapis.com/maps/api/js?key=${effectiveApiKey}&libraries=places&callback=initGoogleMaps`;
     script.async = true;
     script.defer = true;
     
@@ -38,6 +46,7 @@ const GoogleMapsProvider: React.FC<GoogleMapsProviderProps> = ({
     script.onerror = () => {
       console.error("Error loading Google Maps API");
       setHasError(true);
+      toast.error("Failed to load Google Maps API");
     };
 
     document.head.appendChild(script);
@@ -53,9 +62,9 @@ const GoogleMapsProvider: React.FC<GoogleMapsProviderProps> = ({
         document.head.removeChild(script);
       }
     };
-  }, [apiKey]);
+  }, [effectiveApiKey, isLoading]);
 
-  if (hasError) {
+  if (error || hasError) {
     return (
       <div className="p-4 bg-red-50 text-red-700 rounded">
         <p>There was an error loading the Google Maps API.</p>
@@ -64,7 +73,7 @@ const GoogleMapsProvider: React.FC<GoogleMapsProviderProps> = ({
     );
   }
 
-  if (!isLoaded) {
+  if (!isLoaded || isLoading) {
     return <LoadingState />;
   }
 

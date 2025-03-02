@@ -1,5 +1,6 @@
 
 import { useState, useEffect, useRef, useCallback } from "react";
+import { toast } from "sonner";
 
 interface UseAddressAutocompleteProps {
   initialValue?: string;
@@ -20,14 +21,26 @@ export function useAddressAutocomplete({
 
   // Initialize Google Maps Places Autocomplete
   useEffect(() => {
-    if (!window.google?.maps?.places || !inputRef.current) return;
+    // Guard clause - make sure Google is loaded and input exists
+    if (!window.google?.maps?.places) {
+      console.warn("Google Maps Places API not available yet");
+      return;
+    }
+    
+    if (!inputRef.current) {
+      console.warn("Input reference not available yet");
+      return;
+    }
     
     try {
+      // Create the autocomplete instance
       autocompleteRef.current = new window.google.maps.places.Autocomplete(inputRef.current, {
         componentRestrictions: { country: "us" },
         fields: ["address_components", "formatted_address", "geometry", "name"],
         types: ["address"],
       });
+
+      console.log("Address autocomplete initialized successfully");
 
       // Add listener for place selection
       const listener = autocompleteRef.current.addListener("place_changed", () => {
@@ -36,11 +49,16 @@ export function useAddressAutocomplete({
         const place = autocompleteRef.current.getPlace();
         console.log("Place selected:", place);
         
-        if (place && onPlaceSelected) {
+        if (!place || !place.formatted_address) {
+          console.warn("Selected place has no formatted address");
+          return;
+        }
+        
+        if (onPlaceSelected) {
           onPlaceSelected(place);
         }
         
-        if (place?.formatted_address) {
+        if (place.formatted_address) {
           setInternalValue(place.formatted_address);
           
           // Call the onAddressSelect callback if provided
@@ -69,6 +87,9 @@ export function useAddressAutocomplete({
       };
     } catch (error) {
       console.error("Error initializing Google Maps Places Autocomplete:", error);
+      toast.error("Address search unavailable", {
+        description: "Please enter your address manually"
+      });
     }
   }, [onPlaceSelected, onChange, onAddressSelect]);
 

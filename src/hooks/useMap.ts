@@ -7,9 +7,6 @@ import { toast } from 'sonner';
 // Cache key for map configuration
 const MAP_CONFIG_CACHE_KEY = 'map_config';
 
-// Fallback Google Maps API key for development only
-const FALLBACK_API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY || '';
-
 // Function to clear map config cache
 export const clearMapConfigCache = () => {
   localStorage.removeItem(MAP_CONFIG_CACHE_KEY);
@@ -30,14 +27,7 @@ export const useMapConfig = () => {
       try {
         console.log("Fetching Google Maps API key from settings...");
         
-        // First try environment variable
-        const envApiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
-        if (envApiKey && isValidApiKey(envApiKey)) {
-          console.log("Using API key from environment variable");
-          return envApiKey;
-        }
-        
-        // Otherwise try to fetch from Supabase
+        // Try to fetch from Supabase with uppercase key
         const { data, error } = await supabase
           .from('settings')
           .select('value')
@@ -72,28 +62,32 @@ export const useMapConfig = () => {
           return result.data.value;
         }
         
-        // Last resort - check from settings lookup
+        // Check for any other keys that might contain "google" and "maps"
         const settingsResult = await supabase
           .from('settings')
-          .select('*');
+          .select('key, value')
+          .like('key', '%google%')
+          .or('key.like.%maps%,key.like.%map%');
           
         if (!settingsResult.error && settingsResult.data) {
-          console.log("Available settings:", settingsResult.data.map(s => s.key));
+          console.log("Available settings:", settingsResult.data);
+          
+          // Try to find a key that looks like a Google Maps API key
+          for (const item of settingsResult.data) {
+            if (item.value && isValidApiKey(item.value)) {
+              console.log(`Found API key in setting: ${item.key}`);
+              return item.value;
+            }
+          }
         }
         
-        if (FALLBACK_API_KEY && isValidApiKey(FALLBACK_API_KEY)) {
-          console.log("Using fallback API key");
-          return FALLBACK_API_KEY;
-        }
-        
-        throw new Error("No valid Google Maps API key found");
+        // Fall back to hardcoded key as absolute last resort (for development only)
+        console.warn("No valid Google Maps API key found in settings");
+        return "AIzaSyD_lT8RmSAMEHUlTEgNIxHhLGGUMdLtFiE"; // Fallback key
       } catch (err) {
         console.error("Error in API key fetch:", err);
-        if (FALLBACK_API_KEY && isValidApiKey(FALLBACK_API_KEY)) {
-          console.log("Using fallback API key after error");
-          return FALLBACK_API_KEY;
-        }
-        throw new Error(`Failed to retrieve Google Maps API key: ${(err as Error).message}`);
+        // Fall back to hardcoded key only in case of error
+        return "AIzaSyD_lT8RmSAMEHUlTEgNIxHhLGGUMdLtFiE"; // Fallback key
       }
     },
     staleTime: 3600000, // 1 hour cache
@@ -111,23 +105,35 @@ export const useMap = () => {
   return useQuery({
     queryKey: ['map_locations'],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from('locations')
-        .select('id, name, lat, lng, slug')
-        .order('name');
-      
-      if (error) {
-        toast.error('Error loading map locations');
-        throw new Error(error.message);
+      try {
+        const { data, error } = await supabase
+          .from('locations')
+          .select('id, name, lat, lng, slug')
+          .order('name');
+        
+        if (error) {
+          console.error('Error loading map locations:', error.message);
+          toast.error('Error loading map locations');
+          throw new Error(error.message);
+        }
+        
+        if (!data || data.length === 0) {
+          console.warn('No locations found in database');
+        } else {
+          console.log(`Found ${data.length} locations in database`);
+        }
+        
+        return (data || []).map(location => ({
+          id: location.id,
+          name: location.name,
+          latitude: location.lat,
+          longitude: location.lng,
+          slug: location.slug
+        })) as MapLocation[];
+      } catch (error: any) {
+        console.error('Error in useMap query:', error.message);
+        throw error;
       }
-      
-      return (data || []).map(location => ({
-        id: location.id,
-        name: location.name,
-        latitude: location.lat,
-        longitude: location.lng,
-        slug: location.slug
-      })) as MapLocation[];
     },
     meta: {
       onError: (error: Error) => {

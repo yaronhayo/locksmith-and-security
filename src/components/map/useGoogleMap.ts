@@ -2,7 +2,6 @@
 import { useState, useRef, useCallback, useEffect } from "react";
 import { mapPerformance } from "@/utils/performanceMonitoring";
 import { MapMarker } from "@/types/service-area";
-import { toast } from "sonner";
 
 export const useGoogleMap = (
   markers: MapMarker[] = [],
@@ -48,37 +47,51 @@ export const useGoogleMap = (
       markersProcessed.current = true;
       
       if (visibleMarkersList.length > 1) {
+        // Handle multiple markers - fit bounds
         const bounds = new google.maps.LatLngBounds();
         visibleMarkersList.forEach(marker => {
-          bounds.extend({ lat: marker.lat, lng: marker.lng });
+          if (marker && typeof marker.lat === 'number' && typeof marker.lng === 'number') {
+            bounds.extend({ lat: marker.lat, lng: marker.lng });
+          }
         });
         
-        // Add padding to bounds
-        const ne = bounds.getNorthEast();
-        const sw = bounds.getSouthWest();
-        const latPadding = Math.abs(ne.lat() - sw.lat()) * 0.1;
-        const lngPadding = Math.abs(ne.lng() - sw.lng()) * 0.1;
-        
-        bounds.extend({ 
-          lat: ne.lat() + latPadding, 
-          lng: ne.lng() + lngPadding 
-        });
-        bounds.extend({ 
-          lat: sw.lat() - latPadding, 
-          lng: sw.lng() - lngPadding 
-        });
-        
-        map.fitBounds(bounds);
-        
-        // Set minimum zoom level
-        const listener = google.maps.event.addListener(map, 'idle', () => {
-          if (map.getZoom() && map.getZoom() > 15) map.setZoom(15);
-          google.maps.event.removeListener(listener);
-        });
-      } else if (visibleMarkersList.length === 1) {
+        // Only proceed if we have valid markers
+        if (!bounds.isEmpty()) {
+          // Add padding to bounds
+          const ne = bounds.getNorthEast();
+          const sw = bounds.getSouthWest();
+          const latPadding = Math.abs(ne.lat() - sw.lat()) * 0.1;
+          const lngPadding = Math.abs(ne.lng() - sw.lng()) * 0.1;
+          
+          bounds.extend({ 
+            lat: ne.lat() + latPadding, 
+            lng: ne.lng() + lngPadding 
+          });
+          bounds.extend({ 
+            lat: sw.lat() - latPadding, 
+            lng: sw.lng() - lngPadding 
+          });
+          
+          map.fitBounds(bounds);
+          
+          // Set minimum zoom level
+          const listener = google.maps.event.addListener(map, 'idle', () => {
+            if (map.getZoom() && map.getZoom() > 15) map.setZoom(15);
+            google.maps.event.removeListener(listener);
+          });
+        } else {
+          // Fallback if bounds are empty
+          map.setCenter(initialCenter);
+          map.setZoom(initialZoom);
+        }
+      } else if (visibleMarkersList.length === 1 && 
+                typeof visibleMarkersList[0].lat === 'number' && 
+                typeof visibleMarkersList[0].lng === 'number') {
+        // Handle single marker
         map.setCenter({ lat: visibleMarkersList[0].lat, lng: visibleMarkersList[0].lng });
         map.setZoom(initialZoom);
       } else {
+        // Fallback to default view
         map.setCenter(initialCenter);
         map.setZoom(initialZoom);
       }
