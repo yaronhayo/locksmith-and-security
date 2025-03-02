@@ -25,59 +25,68 @@ export const AddressAutocomplete = forwardRef<HTMLInputElement, InputProps & Add
     const autocomplete = useRef<google.maps.places.Autocomplete | null>(null);
 
     const initAutocomplete = useCallback(() => {
-      if (window.google && inputRef.current) {
-        autocomplete.current = new window.google.maps.places.Autocomplete(
-          inputRef.current,
-          {
-            types: ["address"],
-            componentRestrictions: { country: "us" },
-            fields: ["address_components", "geometry", "formatted_address"],
-          }
-        );
+      if (window.google && window.google.maps && window.google.maps.places && inputRef.current) {
+        console.log("Initializing autocomplete with input:", inputRef.current);
+        try {
+          autocomplete.current = new window.google.maps.places.Autocomplete(
+            inputRef.current,
+            {
+              types: ["address"],
+              componentRestrictions: { country: "us" },
+              fields: ["address_components", "geometry", "formatted_address"],
+            }
+          );
 
-        autocomplete.current.addListener("place_changed", () => {
-          const place = autocomplete.current?.getPlace();
-          if (!place?.formatted_address) {
-            return;
-          }
+          autocomplete.current.addListener("place_changed", () => {
+            const place = autocomplete.current?.getPlace();
+            if (!place?.formatted_address) {
+              console.log("No formatted address available");
+              return;
+            }
+            
+            console.log("Address selected:", place.formatted_address);
+            // Pass the formatted address string to the onChange handler
+            onChange(place.formatted_address);
+          });
           
-          // Pass the formatted address string to the onChange handler
-          onChange(place.formatted_address);
-        });
+          console.log("Autocomplete initialized successfully");
+        } catch (error) {
+          console.error("Error initializing autocomplete:", error);
+        }
+      } else {
+        console.warn("Google Maps or Places not available for autocomplete initialization");
       }
     }, [onChange]);
 
     useEffect(() => {
-      let googleMapScript: HTMLScriptElement | null = document.querySelector(
-        'script[src*="maps.googleapis.com"]'
-      );
-
-      if (!googleMapScript) {
-        // Get the API key from environment variables
-        const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY || '';
-        
-        googleMapScript = document.createElement("script");
-        googleMapScript.src =
-          `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places`;
-        googleMapScript.async = true;
-        googleMapScript.defer = true;
-        document.head.appendChild(googleMapScript);
-
-        googleMapScript.addEventListener("load", () => {
-          setIsLoading(false);
-          initAutocomplete();
-        });
-      } else {
+      if (isGoogleMapsLoaded()) {
+        console.log("Google Maps already loaded, initializing autocomplete");
         setIsLoading(false);
         initAutocomplete();
+        return;
       }
-
-      return () => {
-        if (googleMapScript) {
-          googleMapScript.removeEventListener("load", initAutocomplete);
+      
+      setIsLoading(true);
+      const checkGoogleMapsInterval = setInterval(() => {
+        if (isGoogleMapsLoaded()) {
+          console.log("Google Maps became available, initializing autocomplete");
+          clearInterval(checkGoogleMapsInterval);
+          setIsLoading(false);
+          initAutocomplete();
         }
+      }, 500);
+      
+      return () => {
+        clearInterval(checkGoogleMapsInterval);
       };
     }, [initAutocomplete]);
+
+    const isGoogleMapsLoaded = () => {
+      return typeof window !== 'undefined' && 
+             typeof window.google !== 'undefined' && 
+             typeof window.google.maps !== 'undefined' &&
+             typeof window.google.maps.places !== 'undefined';
+    };
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       // Just pass the event to the onChange handler

@@ -1,4 +1,3 @@
-
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { MapLocation } from '@/types/map';
@@ -7,10 +6,11 @@ import { MapLocation } from '@/types/map';
 const MAP_CONFIG_CACHE_KEY = 'map_config';
 
 // Fallback Google Maps API key for development only
-const FALLBACK_API_KEY = 'AIzaSyDNzw7fQJRpOxChV8hO1oT1wuXd980UYcE';
+const FALLBACK_API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY || 'AIzaSyDNzw7fQJRpOxChV8hO1oT1wuXd980UYcE';
 
 // Function to clear map config cache
 export const clearMapConfigCache = () => {
+  localStorage.removeItem(MAP_CONFIG_CACHE_KEY);
   console.log('Map config cache cleared');
 };
 
@@ -21,7 +21,15 @@ export const useMapConfig = () => {
     queryFn: async () => {
       try {
         console.log("Fetching Google Maps API key from settings...");
-        // Try to fetch the API key
+        
+        // First try environment variable
+        const envApiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
+        if (envApiKey) {
+          console.log("Using API key from environment variable");
+          return envApiKey;
+        }
+        
+        // Otherwise try to fetch from Supabase
         const { data, error } = await supabase
           .from('settings')
           .select('value')

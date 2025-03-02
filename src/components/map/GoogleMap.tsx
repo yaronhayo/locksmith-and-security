@@ -1,5 +1,5 @@
 
-import React, { CSSProperties, useState } from "react";
+import React, { CSSProperties, useState, useEffect } from "react";
 import { GoogleMap as GoogleMapComponent } from "@react-google-maps/api";
 import MapLoader from "./MapLoader";
 import MapMarkers from "./MapMarkers";
@@ -8,6 +8,7 @@ import { MapMarker } from "@/types/service-area";
 import MapControls from "./MapControls";
 import { useGoogleMap } from "./useGoogleMap";
 import { clearMapConfigCache } from '@/hooks/useMap';
+import { toast } from "sonner";
 
 const mapOptions: google.maps.MapOptions = {
   zoomControl: false,
@@ -48,6 +49,7 @@ const GoogleMap = ({
   onClick
 }: GoogleMapProps) => {
   const [retryCount, setRetryCount] = useState(0);
+  const [mapInitFailed, setMapInitFailed] = useState(false);
   
   const {
     isLoading,
@@ -60,13 +62,32 @@ const GoogleMap = ({
     centerMap
   } = useGoogleMap(markers, highlightedMarker, showAllMarkers, zoom, center);
   
+  useEffect(() => {
+    // If Google Maps fails to initialize completely, show a toast and set error state
+    const checkMapStatus = setTimeout(() => {
+      if (window.google && (!window.google.maps || !window.google.maps.Map)) {
+        console.error("Google Maps failed to initialize properly");
+        toast.error("Map failed to load properly. Please refresh the page or try again later.");
+        setMapInitFailed(true);
+      }
+    }, 5000);
+    
+    return () => clearTimeout(checkMapStatus);
+  }, [retryCount]);
+  
   const handleRetry = () => {
+    console.log("Retrying map load...");
     setRetryCount(prev => prev + 1);
+    setMapInitFailed(false);
     clearMapConfigCache();
+    toast.info("Retrying map load...");
   };
   
-  if (mapError) {
-    return <MapError error={mapError} resetErrorBoundary={handleRetry} />;
+  if (mapError || mapInitFailed) {
+    return <MapError 
+      error={mapError || "Google Maps failed to initialize properly"} 
+      resetErrorBoundary={handleRetry} 
+    />;
   }
 
   return (

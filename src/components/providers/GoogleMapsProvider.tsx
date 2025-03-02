@@ -134,7 +134,7 @@ const GoogleMapsProvider = ({ children }: GoogleMapsProviderProps) => {
       onLoad={handleLoad}
       onError={handleError}
       loadingElement={<MapLoader text="Loading Google Maps..." />}
-      key={providerIdRef.current}
+      key={`gmaps-script-${apiKey}-${retryCount.current}`}
       preventGoogleFontsLoading={false}
     >
       {children}
