@@ -32,8 +32,8 @@ const ServiceAreaFAQ = ({ locationName, faqSchema }: ServiceAreaFAQProps) => {
         <div className="max-w-6xl mx-auto">
           <div className="grid md:grid-cols-2 gap-6">
             {faqSchema.data.mainEntity.map((faq: any, index: number) => {
-              // Create a unique ID for each FAQ item
-              const uniqueId = `area-faq-${locationName.replace(/\s+/g, "-")}-${index}-${Math.random().toString(36).substring(2, 9)}`;
+              // Create a unique ID for each FAQ item using random string to ensure uniqueness
+              const uniqueId = `area-faq-${index}-${Math.random().toString(36).substring(2, 9)}`;
               
               return (
                 <Accordion

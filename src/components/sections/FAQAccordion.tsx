@@ -13,6 +13,11 @@ interface FAQAccordionProps {
   index: number;
 }
 
+interface FAQsAccordionProps {
+  faqs: FAQ[];
+}
+
+// Component that renders a single FAQ item
 const FAQAccordion = ({ faq, index }: FAQAccordionProps) => {
   // Create a unique value for each accordion item that is truly unique
   const itemId = `faq-item-${index}-${Math.random().toString(36).substring(2, 9)}`;
@@ -34,6 +39,17 @@ const FAQAccordion = ({ faq, index }: FAQAccordionProps) => {
         </AccordionContent>
       </AccordionItem>
     </Accordion>
+  );
+};
+
+// New component that renders multiple FAQs
+export const FAQsAccordion = ({ faqs }: FAQsAccordionProps) => {
+  return (
+    <div className="space-y-4">
+      {faqs.map((faq, index) => (
+        <FAQAccordion key={`faq-${index}`} faq={faq} index={index} />
+      ))}
+    </div>
   );
 };
 
