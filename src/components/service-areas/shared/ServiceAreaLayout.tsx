@@ -11,6 +11,7 @@ import { Helmet } from "react-helmet";
 import { Card, CardContent } from "@/components/ui/card";
 import { memo, useMemo } from "react";
 import PageLoading from "@/components/layouts/PageLoading";
+import { ServiceAreaLocation } from "@/types/service-area";
 
 interface ServiceAreaLayoutProps {
   areaSlug: string;
@@ -27,7 +28,7 @@ const ServiceAreaLayout = memo(({ areaSlug }: ServiceAreaLayoutProps) => {
   const { displayedReviews, isLoading: reviewsLoading, totalReviews } = useReviews(location?.name);
 
   const schemas = useMemo(() => {
-    return createServiceAreaSchemas(location, settings, areaSlug);
+    return createServiceAreaSchemas(location as any, settings, areaSlug);
   }, [location, settings, areaSlug]);
   
   const rawFaqSchema = useMemo(() => {

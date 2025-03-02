@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useMemo, Suspense, memo } from 'react';
 import GoogleMap from '../map/GoogleMap';
 import AreasList from './service-areas/AreasList';
@@ -10,8 +9,8 @@ import MapError from '../map/MapError';
 import { ErrorBoundary } from 'react-error-boundary';
 import { Skeleton } from '@/components/ui/skeleton';
 import { toast } from 'sonner';
+import { ServiceAreaLocation } from '@/types/service-area';
 
-// Create a map loading component
 const MapLoadingPlaceholder = () => (
   <div className="h-[600px] bg-white rounded-xl shadow-lg overflow-hidden flex items-center justify-center">
     <div className="text-center">
@@ -20,7 +19,6 @@ const MapLoadingPlaceholder = () => (
   </div>
 );
 
-// Create a locations loading component
 const LocationsLoadingPlaceholder = () => (
   <div className="space-y-4">
     <Skeleton className="h-8 w-3/4" />
@@ -40,10 +38,8 @@ const ServiceAreasSection = () => {
   const { data: locations, isLoading, error } = useLocations();
   const [retryCount, setRetryCount] = useState(0);
 
-  // Set up intersection observer to lazy load the map when it comes into view
   useEffect(() => {
     if (!('IntersectionObserver' in window)) {
-      // Fallback for browsers without IntersectionObserver support
       console.log("IntersectionObserver not supported, immediately showing map");
       setIsMapVisible(true);
       return;
@@ -54,7 +50,6 @@ const ServiceAreasSection = () => {
         if (entries[0].isIntersecting) {
           console.log("Map section is now visible, loading map");
           setIsMapVisible(true);
-          // Force re-render map after it becomes visible
           setMapKey(prev => prev + 1);
           observer.disconnect();
         }
@@ -68,7 +63,6 @@ const ServiceAreasSection = () => {
       console.log("Observing service-areas-section for visibility");
     } else {
       console.warn("Could not find service-areas-section element");
-      // Fallback if element not found
       setIsMapVisible(true);
     }
 
@@ -77,7 +71,6 @@ const ServiceAreasSection = () => {
     };
   }, []);
 
-  // Log locations data for debugging
   useEffect(() => {
     if (locations) {
       console.log("Locations data loaded:", { count: locations.length });
@@ -89,7 +82,6 @@ const ServiceAreasSection = () => {
     }
   }, [locations, error]);
 
-  // Memoize map markers to prevent unnecessary recalculations
   const mapMarkers = useMemo(() => {
     if (!locations) return [];
     
@@ -156,7 +148,7 @@ const ServiceAreasSection = () => {
 
         <div className="grid lg:grid-cols-2 gap-8 items-start">
           <AreasList 
-            areas={locations} 
+            areas={locations as ServiceAreaLocation[]} 
             hoveredArea={hoveredArea} 
             setHoveredArea={setHoveredArea} 
           />

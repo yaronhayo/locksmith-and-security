@@ -1,7 +1,6 @@
-
-import { useEffect, useRef, useState } from "react";
-import { Input } from "./input";
-import { useMapConfig } from "@/hooks/useMap";
+import React from 'react';
+import { Input } from './input';
+import { useMapConfig } from '@/hooks/useMap';
 import { InputHTMLAttributes } from "react";
 import { Loader2, RefreshCw } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
@@ -27,7 +26,6 @@ const AddressAutocomplete = ({
   const [isInitialized, setIsInitialized] = useState(false);
   const [initAttempts, setInitAttempts] = useState(0);
 
-  // Check if Google Maps API is loaded
   const isGoogleMapsLoaded = () => {
     return typeof window !== 'undefined' && 
            typeof window.google !== 'undefined' && 
@@ -36,10 +34,8 @@ const AddressAutocomplete = ({
   };
 
   const initializeAutocomplete = () => {
-    // Clear any previous errors
     setError(null);
     
-    // Don't proceed if dependencies aren't ready
     if (!inputRef.current || !isGoogleMapsLoaded() || !apiKey) {
       console.log("Not initializing autocomplete - dependencies not ready", {
         inputRef: !!inputRef.current,
@@ -52,7 +48,6 @@ const AddressAutocomplete = ({
     try {
       console.log("Initializing address autocomplete");
       
-      // Clear existing listeners before creating new autocomplete instance
       if (autocompleteRef.current) {
         google.maps.event.clearInstanceListeners(autocompleteRef.current);
         autocompleteRef.current = null;
@@ -92,10 +87,8 @@ const AddressAutocomplete = ({
     }
   };
 
-  // Initialize when API key and Google Maps are available
   useEffect(() => {
     if (apiKey && !isInitialized) {
-      // Short delay to ensure Google Maps is fully loaded
       const timer = setTimeout(() => {
         if (isGoogleMapsLoaded()) {
           initializeAutocomplete();
@@ -109,7 +102,6 @@ const AddressAutocomplete = ({
     }
   }, [apiKey, isInitialized, initAttempts]);
 
-  // Add check for Google Maps loading after component mounts
   useEffect(() => {
     if (!isInitialized && apiKey) {
       const checkGoogleMapsInterval = setInterval(() => {
@@ -120,7 +112,6 @@ const AddressAutocomplete = ({
         }
       }, 1000);
       
-      // Clear interval after 10 seconds if Google Maps isn't loaded
       setTimeout(() => {
         if (!isInitialized) {
           clearInterval(checkGoogleMapsInterval);
@@ -134,7 +125,6 @@ const AddressAutocomplete = ({
     }
   }, [apiKey, isInitialized]);
 
-  // Cleanup on unmount
   useEffect(() => {
     return () => {
       if (window.google?.maps?.event && autocompleteRef.current) {
@@ -145,7 +135,6 @@ const AddressAutocomplete = ({
     };
   }, []);
 
-  // Prevent form submission on Enter when using autocomplete
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Enter' && autocompleteRef.current) {

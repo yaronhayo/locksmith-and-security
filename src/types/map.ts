@@ -1,9 +1,13 @@
 
 export interface MapLocation {
-  lat: number;
-  lng: number;
-  title?: string;
+  id: string | number;
+  name: string;
+  latitude: number;
+  longitude: number;
   slug?: string;
+  lat?: number;
+  lng?: number;
+  title?: string;
 }
 
 export interface MapProps {
