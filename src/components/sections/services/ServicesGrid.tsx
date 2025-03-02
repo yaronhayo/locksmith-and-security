@@ -8,12 +8,14 @@ interface ServicesGridProps {
   title?: string;
   description?: string;
   className?: string;
+  serviceCategory?: string;
 }
 
 const ServicesGrid = memo(({ 
   title = "Professional Locksmith Services",
   description = "Expert security solutions for all your residential, commercial, and automotive needs",
-  className = "py-24 bg-gradient-to-b from-white to-gray-50"
+  className = "py-24 bg-gradient-to-b from-white to-gray-50",
+  serviceCategory
 }: ServicesGridProps) => {
   const finishRenderTracking = trackComponentRender('ServicesGrid');
   
@@ -29,7 +31,7 @@ const ServicesGrid = memo(({
           description={description}
         />
         
-        <ServicesCardGrid />
+        <ServicesCardGrid category={serviceCategory} />
       </div>
     </section>
   );
