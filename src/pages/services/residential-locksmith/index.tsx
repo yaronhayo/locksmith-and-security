@@ -1,4 +1,3 @@
-
 import React from 'react';
 import PageLayout from '@/components/layouts/PageLayout';
 import ServicesProof from '@/components/sections/services/ServicesProof';
@@ -8,7 +7,7 @@ import CategorySuccessStories from '@/components/sections/services/CategorySucce
 import ReviewsSection from '@/components/sections/ReviewsSection';
 import ServicesGrid from '@/components/sections/services/ServicesGrid';
 import { Button } from '@/components/ui/button';
-import { Home, Key, Lock, Shield, Tool, KeyRound, CheckCircle, ChevronRight, Phone } from 'lucide-react';
+import { Home, Key, Lock, Shield, Wrench, KeyRound, CheckCircle, ChevronRight, Phone } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { getReviewsByCategory } from '@/data/reviewsData';
 
@@ -88,11 +87,11 @@ const ResidentialLocksmithPage = () => {
                   <h3 className="font-semibold">Lock Rekeying</h3>
                 </div>
                 <p className="text-gray-600 text-sm">Change your lock's internal pins to work with new keys, rendering old ones useless.</p>
-              </div>
+                </div>
               
               <div className="border border-gray-100 rounded-lg p-5 bg-gray-50">
                 <div className="flex items-center gap-3 mb-3">
-                  <Tool className="h-6 w-6 text-primary" />
+                  <Wrench className="h-6 w-6 text-primary" />
                   <h3 className="font-semibold">Lock Repair</h3>
                 </div>
                 <p className="text-gray-600 text-sm">Fix malfunctioning locks to restore security and proper function to your doors.</p>
@@ -141,7 +140,7 @@ const ResidentialLocksmithPage = () => {
         }, {
           title: "Lock Repair",
           description: "Expert diagnosis and repair of malfunctioning locks, restoring security and function to your doors.",
-          icon: <Tool className="h-6 w-6" />,
+          icon: <Wrench className="h-6 w-6" />,
           link: "/services/residential-locksmith/lock-repair"
         }, {
           title: "High-Security Locks",

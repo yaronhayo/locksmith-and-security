@@ -8,7 +8,7 @@ import CategorySuccessStories from '@/components/sections/services/CategorySucce
 import ReviewsSection from '@/components/sections/ReviewsSection';
 import ServicesGrid from '@/components/sections/services/ServicesGrid';
 import { Button } from '@/components/ui/button';
-import { Car, Key, Wifi, Tool, KeyRound, CheckCircle, ChevronRight, Phone, Scissors, Settings } from 'lucide-react';
+import { Car, Key, Wifi, Wrench, KeyRound, CheckCircle, ChevronRight, Phone, Scissors, Settings } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { getReviewsByCategory } from '@/data/reviewsData';
 
@@ -188,7 +188,7 @@ const AutoLocksmithPage = () => {
             
             <div className="bg-white p-6 rounded-xl shadow-sm">
               <div className="rounded-full w-12 h-12 bg-purple-100 flex items-center justify-center mb-4">
-                <Tool className="h-6 w-6 text-purple-600" />
+                <Wrench className="h-6 w-6 text-purple-600" />
               </div>
               <h3 className="text-xl font-semibold mb-3">Mobile Service</h3>
               <p className="text-gray-600">
