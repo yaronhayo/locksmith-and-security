@@ -18,29 +18,57 @@ const queryClient = new QueryClient({
   },
 })
 
-// Declare hasRendered at the top level so it's accessible everywhere
-let hasRendered = false;
+// Enhanced error logging function
+const logError = (error: any, info: string) => {
+  console.error(`[Error] ${info}:`, error);
+  
+  // Log additional information that might help debug
+  if (error?.stack) {
+    console.error('[Stack]:', error.stack);
+  }
+  
+  // Check for specific error types
+  if (error?.name === 'ChunkLoadError' || (error?.message && error.message.includes('Loading chunk'))) {
+    console.error('[ChunkLoadError] This might be a code splitting issue');
+  }
+};
+
+// Declare hasRendered variable in global scope
+window.hasRendered = false;
 
 // Add global error handler to log any unhandled errors
 if (typeof window !== 'undefined') {
   window.addEventListener('error', (event) => {
-    console.error('Global error caught:', event.error);
+    logError(event.error, 'Global error caught');
   });
 
   window.addEventListener('unhandledrejection', (event) => {
-    console.error('Unhandled promise rejection:', event.reason);
+    logError(event.reason, 'Unhandled promise rejection');
   });
   
   // Try to detect if we're in a white screen situation
   setTimeout(() => {
-    if (!hasRendered) {
+    if (!window.hasRendered) {
       console.error('Potential white screen detected - application did not render within 5 seconds');
+      
+      // Try to render a basic message if possible
+      const rootElement = document.getElementById('root');
+      if (rootElement) {
+        rootElement.innerHTML = `
+          <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; font-family: system-ui, sans-serif;">
+            <h1 style="color: #E11D48; margin-bottom: 1rem;">Application Loading Error</h1>
+            <p style="margin-bottom: 1rem;">We're having trouble loading the application. Please try refreshing the page.</p>
+            <button style="background: #2563EB; color: white; padding: 0.5rem 1rem; border: none; border-radius: 0.25rem; cursor: pointer;" onclick="location.reload()">Reload Page</button>
+          </div>
+        `;
+      }
     }
   }, 5000);
 }
 
 // Render the application with error boundaries
 const renderApp = () => {
+  console.log('Starting application render...');
   const rootElement = document.getElementById('root');
   
   if (!rootElement) {
@@ -49,12 +77,13 @@ const renderApp = () => {
   }
   
   try {
+    console.log('Creating React root...');
     ReactDOM.createRoot(rootElement).render(
       <React.StrictMode>
         <ErrorBoundary 
           FallbackComponent={ErrorFallback}
           onError={(error, info) => {
-            console.error('Caught error:', error, info);
+            logError(error, `Error boundary caught error: ${info.componentStack}`);
           }}
         >
           <React.Suspense fallback={<div className="min-h-screen flex items-center justify-center"><LoadingSpinner size="lg" text="Loading application..." /></div>}>
@@ -67,15 +96,16 @@ const renderApp = () => {
     );
     
     console.log('Application rendered successfully');
-    hasRendered = true;
+    window.hasRendered = true;
   } catch (error) {
-    console.error('Failed to render application:', error);
+    logError(error, 'Failed to render application');
     
     // Attempt to render a minimal error message if regular rendering fails
     rootElement.innerHTML = `
       <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; font-family: system-ui, sans-serif;">
         <h1 style="color: #E11D48; margin-bottom: 1rem;">Application Error</h1>
         <p style="margin-bottom: 1rem;">We're sorry, but something went wrong.</p>
+        <p style="margin-bottom: 1rem; font-size: 0.875rem; color: #6B7280;">Technical details: ${error instanceof Error ? error.message : 'Unknown error'}</p>
         <button style="background: #2563EB; color: white; padding: 0.5rem 1rem; border: none; border-radius: 0.25rem; cursor: pointer;" onclick="location.reload()">Reload Page</button>
       </div>
     `;
@@ -83,4 +113,5 @@ const renderApp = () => {
 };
 
 // Execute the render function
+console.log('Initializing application...');
 renderApp();
