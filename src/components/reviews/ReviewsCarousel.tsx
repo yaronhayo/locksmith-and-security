@@ -29,7 +29,7 @@ const ReviewsCarousel = memo(({ reviews, setApi }: ReviewsCarouselProps) => {
     >
       <CarouselContent>
         {reviews.map((review, index) => (
-          <CarouselItem key={`review-${review.id || index}`} className="md:basis-1/2 lg:basis-1/3">
+          <CarouselItem key={`review-${index}-${review.name}`} className="md:basis-1/2 lg:basis-1/3">
             <ReviewCard review={review} index={index} />
           </CarouselItem>
         ))}
