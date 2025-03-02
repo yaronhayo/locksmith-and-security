@@ -25,7 +25,11 @@ export interface PageMetaProps {
   ogImage?: string;
   ogType?: "website" | "article" | "product" | "profile" | "book";
   breadcrumbs?: BreadcrumbItem[];
+  customBreadcrumbs?: Array<{name: string, path: string}>;
   noindex?: boolean;
   nofollow?: boolean;
   modifiedDate?: string;
+  hideBreadcrumbs?: boolean;
+  heroTitle?: string;
+  heroDescription?: string;
 }
