@@ -23,6 +23,12 @@ const KeyFobProgramming = () => {
         { type: 'faq', data: keyFobProgrammingFaqSchema }
       ]}
       canonicalUrl="/services/auto-locksmith/key-fob-programming"
+      customBreadcrumbs={[
+        { name: "Home", path: "/" },
+        { name: "Services", path: "/services" },
+        { name: "Auto Locksmith", path: "/services/auto-locksmith" },
+        { name: "Key Fob Programming", path: "/services/auto-locksmith/key-fob-programming" }
+      ]}
     />
   );
 };

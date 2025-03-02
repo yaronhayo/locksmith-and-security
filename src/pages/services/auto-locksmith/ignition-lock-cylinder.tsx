@@ -1,51 +1,35 @@
 
 import React from 'react';
-import EnhancedServicesHero from '@/components/sections/services/EnhancedServicesHero';
-import ServicePageContent from '@/components/sections/services/service-page';
-import { carServiceReviews } from '@/data/reviews/carServiceReviews';
-import ServicesProof from '@/components/sections/services/ServicesProof';
-import { SchemaScripts } from '@/components/meta/SchemaScripts';
-import { Helmet } from 'react-helmet';
+import ServiceLayout from '@/components/services/common/ServiceLayout';
 import { IgnitionLockCylinderContent } from '@/components/services/ignition-lock-cylinder/IgnitionLockCylinderContent';
 import { ignitionLockCylinderFaqs, ignitionLockCylinderServiceSchema, ignitionLockCylinderFaqSchema } from '@/components/services/ignition-lock-cylinder/IgnitionLockCylinderSchema';
 import { relatedAutomotiveServices } from '@/components/services/ignition-lock-cylinder/relatedServices';
+import { carServiceReviews } from '@/data/reviews/carServiceReviews';
 
 const IgnitionLockCylinder = () => {
   return (
-    <main className="flex-grow">
-      <Helmet>
-        <title>Ignition Lock Cylinder Replacement & Repair | Auto Locksmith Services</title>
-        <meta name="description" content="Professional ignition lock cylinder replacement and repair for all vehicle makes and models. Expert service with fast response and fair pricing." />
-        <meta name="keywords" content="ignition lock cylinder, ignition repair, ignition replacement, car ignition problems, ignition switch, automotive locksmith, car ignition repair" />
-        <link rel="canonical" href="https://247locksmithandsecurity.com/services/auto-locksmith/ignition-lock-cylinder" />
-      </Helmet>
-      
-      <SchemaScripts 
-        schemas={[
-          { type: 'service', data: ignitionLockCylinderServiceSchema },
-          { type: 'faq', data: ignitionLockCylinderFaqSchema }
-        ]} 
-      />
-      
-      <EnhancedServicesHero 
-        title="Ignition Lock Cylinder Service"
-        description="Professional ignition lock cylinder replacement and repair for all vehicle makes and models. Our certified technicians provide reliable solutions at competitive rates."
-        serviceName="Ignition Lock Cylinder"
-        serviceLabel="Auto Locksmith"
-      />
-      
-      <ServicePageContent
-        title="Professional Ignition Lock Cylinder Replacement & Repair"
-        description="Expert ignition repair services by certified automotive locksmiths"
-        serviceName="Ignition Lock Cylinder"
-        serviceCategory="Auto Locksmith"
-        mainContent={<IgnitionLockCylinderContent />}
-        faqs={ignitionLockCylinderFaqs}
-        relatedServices={relatedAutomotiveServices}
-      />
-      
-      <ServicesProof reviewsData={carServiceReviews.slice(0, 8)} />
-    </main>
+    <ServiceLayout
+      title="Ignition Lock Cylinder Replacement & Repair | Auto Locksmith Services"
+      description="Professional ignition lock cylinder replacement and repair for all vehicle makes and models. Expert service with fast response and fair pricing."
+      keywords="ignition lock cylinder, ignition repair, ignition replacement, car ignition problems, ignition switch, automotive locksmith, car ignition repair"
+      serviceName="Ignition Lock Cylinder"
+      serviceCategory="Auto Locksmith"
+      mainContent={<IgnitionLockCylinderContent />}
+      faqs={ignitionLockCylinderFaqs}
+      relatedServices={relatedAutomotiveServices}
+      reviewsData={carServiceReviews.slice(0, 8)}
+      schemas={[
+        { type: 'service', data: ignitionLockCylinderServiceSchema },
+        { type: 'faq', data: ignitionLockCylinderFaqSchema }
+      ]}
+      canonicalUrl="/services/auto-locksmith/ignition-lock-cylinder"
+      customBreadcrumbs={[
+        { name: "Home", path: "/" },
+        { name: "Services", path: "/services" },
+        { name: "Auto Locksmith", path: "/services/auto-locksmith" },
+        { name: "Ignition Lock Cylinder", path: "/services/auto-locksmith/ignition-lock-cylinder" }
+      ]}
+    />
   );
 };
 
