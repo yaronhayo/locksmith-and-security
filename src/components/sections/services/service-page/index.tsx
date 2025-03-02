@@ -1,4 +1,4 @@
 
-import ServicePageContent from "./ServicePageContent";
+import ServicePageContent from './ServicePageContent';
 
 export default ServicePageContent;

@@ -1,59 +1,17 @@
-
 import React from 'react';
 import EnhancedServicesHero from '@/components/sections/services/EnhancedServicesHero';
-import ServicePageContent from '@/components/sections/services/ServicePageContent';
+import ServicePageContent from '@/components/sections/services/service-page';
+import { residentialReviews } from '@/data/reviews';
 import ServicesProof from '@/components/sections/services/ServicesProof';
 import { SchemaScripts } from '@/components/meta/SchemaScripts';
 import { Helmet } from 'react-helmet';
-import { residentialReviews } from '@/data/reviews';
-
-const relatedEmergencyServices = [
-  {
-    title: "Car Lockout Service",
-    path: "/services/emergency-locksmith/car-lockout",
-    description: "Professional assistance when you're locked out of your vehicle. Quick, damage-free entry methods."
-  },
-  {
-    title: "Business Lockout Service",
-    path: "/services/emergency-locksmith/business-lockout",
-    description: "Secure, professional commercial lockout solutions for all types of businesses and commercial properties."
-  },
-  {
-    title: "Lock Replacement",
-    path: "/services/residential-locksmith/lock-replacement",
-    description: "Upgrade your home security with professional lock replacement services for added protection and peace of mind."
-  },
-];
-
-const houseLockoutFaqs = [
-  {
-    question: "How long does it typically take to unlock a house?",
-    answer: "Most residential lockouts can be resolved within 15-30 minutes after our technician arrives. The exact time depends on the type of lock, security features, and complexity of your home's locking system."
-  },
-  {
-    question: "Will unlocking my house door cause any damage?",
-    answer: "Our professional locksmiths use specialized tools and techniques designed to open your door without causing damage. We prioritize non-destructive entry methods to protect your property's integrity."
-  },
-  {
-    question: "What information should I have ready when calling for house lockout service?",
-    answer: "To provide efficient service, please have your address, type of lock if known, and be prepared to show proof of residence upon the locksmith's arrival for security purposes."
-  },
-  {
-    question: "Can you unlock all types of residential locks?",
-    answer: "Yes, our technicians are trained to handle virtually all types of residential locks, including standard doorknobs, deadbolts, mortise locks, smart locks, high-security locks, and keypad systems."
-  },
-  {
-    question: "How do I prove the house is mine when the locksmith arrives?",
-    answer: "For security purposes, you'll need to provide identification that matches the address or documents showing proof of residence such as a utility bill, lease agreement, or property deed."
-  }
-];
 
 const HouseLockout = () => {
   // Schema data for SEO
   const serviceSchema = {
     "@context": "https://schema.org",
     "@type": "Service",
-    "name": "Residential Lockout Service",
+    "name": "House Lockout Service",
     "description": "Professional residential locksmith services for house lockouts. Our certified technicians provide fast, reliable, and damage-free home entry.",
     "provider": {
       "@type": "LocalBusiness",
@@ -77,7 +35,7 @@ const HouseLockout = () => {
     ],
     "hasOfferCatalog": {
       "@type": "OfferCatalog",
-      "name": "Residential Lockout Services",
+      "name": "House Lockout Services",
       "itemListElement": [
         {
           "@type": "Offer",
@@ -97,7 +55,7 @@ const HouseLockout = () => {
           "@type": "Offer",
           "itemOffered": {
             "@type": "Service",
-            "name": "Lock Repair and Replacement"
+            "name": "Lock Repair After Break-in"
           }
         }
       ]
@@ -120,150 +78,145 @@ const HouseLockout = () => {
   const faqSchema = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
-    "mainEntity": houseLockoutFaqs.map(faq => ({
-      "@type": "Question",
-      "name": faq.question,
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": faq.answer
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What should I do if I'm locked out of my house?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Stay calm and assess the situation. Check all doors and windows to ensure they are locked. If you cannot find a way in, call a professional locksmith for assistance."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How quickly can you get to my location for a house lockout?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Our response time varies depending on your location and our current workload. However, we strive to arrive as quickly as possible, typically within 30 minutes to an hour."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Will you damage my door or locks when unlocking my house?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Our experienced locksmiths use specialized tools and techniques to minimize the risk of damage to your door or locks. In most cases, we can unlock your house without causing any damage."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What information do I need to provide when calling for a house lockout service?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Please provide your name, address, and a brief description of the situation. If possible, also provide the type of lock you have on your door."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can you make a new key for me if I've lost mine?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes, our locksmiths can create a new key for you on the spot. We can also rekey your locks to ensure that your old key no longer works."
+        }
       }
-    }))
+    ]
   };
 
   // Main content to be passed to the ServicePageContent component
   const mainContent = (
     <>
       <p className="mb-4">
-        Being locked out of your home can be a frustrating and sometimes frightening experience. Whether you've misplaced your keys, left them inside, or have a malfunctioning lock, our professional house lockout service provides fast, reliable assistance to get you back into your home safely and with minimal disruption.
+        Being locked out of your house can be a frustrating and stressful experience, especially during inclement weather or late at night. Our professional house lockout service provides fast and reliable assistance to get you back inside your home safely and quickly.
       </p>
-      
-      <h3 className="text-2xl font-bold mb-4 mt-8">Comprehensive Residential Lockout Solutions</h3>
+
+      <h3 className="text-2xl font-bold mb-4 mt-8">Expert House Lockout Solutions</h3>
       <p className="mb-4">
-        Our certified residential locksmiths specialize in all types of home lockout situations and can handle any residential lock on the market. We use specialized tools and techniques to safely gain entry to your home without causing unnecessary damage to your doors or locks.
+        Our certified residential locksmiths specialize in all types of house lockout situations and can handle virtually any type of door and lock. We use specialized tools and techniques to safely gain entry to your home without causing damage to the door, lock, or frame.
       </p>
-      
+
       <div className="bg-gray-50 p-6 rounded-lg border border-gray-100 my-8">
         <h4 className="text-xl font-bold mb-3">Our House Lockout Services Include:</h4>
         <ul className="list-disc pl-5 space-y-2">
-          <li>Emergency residential lockout assistance</li>
-          <li>Lock picking and non-destructive entry</li>
-          <li>Broken key extraction</li>
-          <li>Smart lock and electronic lock solutions</li>
-          <li>Lock repair after entry</li>
-          <li>On-the-spot key making if needed</li>
+          <li>Emergency house lockout assistance</li>
+          <li>Key extraction from locks</li>
+          <li>Lock repair and replacement</li>
+          <li>Rekeying of locks</li>
+          <li>New key creation</li>
+          <li>Security assessments and upgrades</li>
         </ul>
       </div>
-      
-      <h3 className="text-2xl font-bold mb-4 mt-8">Expert Solutions for All Types of Residential Locks</h3>
-      <p className="mb-6">
-        Modern homes often feature a variety of locking mechanisms, from traditional deadbolts to advanced smart locks. Our technicians are trained and equipped to handle all residential security systems, including:
-      </p>
-      
-      <ul className="list-disc pl-5 space-y-2 mb-6">
-        <li>Standard doorknob locks</li>
-        <li>Deadbolts (single and double cylinder)</li>
-        <li>Smart locks and keyless entry systems</li>
-        <li>Mortise locks</li>
-        <li>High-security locks (Medeco, Mul-T-Lock, etc.)</li>
-        <li>Lever handle locks</li>
-        <li>Electronic keypads and card readers</li>
-      </ul>
-      
+
       <h3 className="text-2xl font-bold mb-4 mt-8">Common House Lockout Scenarios We Solve</h3>
       <p className="mb-4">
-        Our experienced locksmiths have assisted countless homeowners with various residential lockout situations, including:
+        Our experienced locksmiths have helped countless customers with various house lockout situations, including:
       </p>
-      
+
       <div className="grid md:grid-cols-2 gap-6 my-6">
-        <div className="bg-gray-50 p-5 rounded-lg">
-          <h4 className="font-bold mb-2">Lost House Keys</h4>
-          <p className="text-gray-700">
-            We'll get you back inside and can make new keys on the spot if needed.
-          </p>
-        </div>
-        
         <div className="bg-gray-50 p-5 rounded-lg">
           <h4 className="font-bold mb-2">Keys Locked Inside</h4>
           <p className="text-gray-700">
-            Our technicians can quickly gain entry without damaging your door or lock.
+            The most common scenario – we'll safely unlock your door without damage to retrieve your keys from inside.
           </p>
         </div>
-        
+
+        <div className="bg-gray-50 p-5 rounded-lg">
+          <h4 className="font-bold mb-2">Lost or Stolen Keys</h4>
+          <p className="text-gray-700">
+            If your keys have been lost or stolen, we can get you back into your home and provide key replacement services if needed.
+          </p>
+        </div>
+
         <div className="bg-gray-50 p-5 rounded-lg">
           <h4 className="font-bold mb-2">Broken Key in Lock</h4>
           <p className="text-gray-700">
-            We can extract broken keys and repair or replace the lock if necessary.
+            If your key has broken off in the door lock, we can extract it without damaging the lock mechanism.
           </p>
         </div>
-        
+
         <div className="bg-gray-50 p-5 rounded-lg">
-          <h4 className="font-bold mb-2">Malfunctioning Locks</h4>
+          <h4 className="font-bold mb-2">Damaged or Malfunctioning Locks</h4>
           <p className="text-gray-700">
-            Whether your lock is jammed, stuck, or not working properly, we can diagnose and fix the issue.
+            If your lock is damaged or malfunctioning, we can repair or replace it to restore your home's security.
           </p>
         </div>
       </div>
-      
-      <h3 className="text-2xl font-bold mb-4 mt-8">The Importance of Professional Locksmith Service</h3>
+
+      <h3 className="text-2xl font-bold mb-4 mt-8">Why You Should Call a Professional</h3>
       <p className="mb-4">
-        When locked out of your home, it's tempting to try DIY methods or call the cheapest service available. However, inexperienced attempts can lead to:
+        While it might be tempting to try unlocking your house yourself, DIY methods can potentially cause expensive damage to your door, lock, or frame. Our professional locksmiths:
       </p>
-      
+
       <ul className="list-disc pl-5 space-y-2 mb-6">
-        <li>Damaged doors that are expensive to repair</li>
-        <li>Broken locks that compromise your home's security</li>
-        <li>Voided home insurance in some cases</li>
-        <li>Higher overall costs when amateur attempts fail</li>
+        <li>Use specialized tools designed specifically for residential entry</li>
+        <li>Apply techniques that protect your home from damage</li>
+        <li>Have experience with virtually all types of residential locks</li>
+        <li>Provide fast service to minimize your inconvenience</li>
+        <li>Offer additional services such as key replacement if needed</li>
       </ul>
-      
-      <p className="mb-4">
-        Our professional locksmiths:
-      </p>
-      
-      <ul className="list-disc pl-5 space-y-2 mb-6">
-        <li>Are licensed, insured, and background-checked</li>
-        <li>Use specialized tools designed for non-destructive entry</li>
-        <li>Have extensive training on all types of residential locks</li>
-        <li>Follow industry best practices</li>
-        <li>Provide warranty on services performed</li>
-      </ul>
-      
+
       <h3 className="text-2xl font-bold mb-4 mt-8">What to Do When Locked Out of Your House</h3>
       <p className="mb-4">
         If you find yourself locked out of your home, follow these steps:
       </p>
-      
+
       <ol className="list-decimal pl-5 space-y-2 mb-6">
-        <li>Check all doors and windows for possible entry (while ensuring safety)</li>
+        <li>Check all doors and windows to make sure they're actually locked</li>
+        <li>Look for a spare key hidden outside</li>
         <li>Call our 24/7 emergency locksmith service</li>
-        <li>Provide your exact address and lock details if known</li>
-        <li>Have identification ready to prove residency</li>
-        <li>Wait in a safe location until the locksmith arrives</li>
+        <li>Provide your exact location and a description of the situation</li>
+        <li>Have identification ready to prove ownership of the property</li>
       </ol>
-      
+
       <div className="bg-primary/5 p-6 rounded-lg border-l-4 border-primary my-8">
-        <h4 className="text-xl font-bold mb-2">Security Tip</h4>
+        <h4 className="text-xl font-bold mb-2">Professional Tip</h4>
         <p>
-          After experiencing a lockout, consider implementing a key management system or upgrading to smart locks that provide alternative entry methods. We can advise on the best security solutions for your specific needs.
+          Consider having a spare key made and giving it to a trusted neighbor or friend. This can save you time and money in future lockout situations.
         </p>
       </div>
-      
-      <h3 className="text-2xl font-bold mb-4 mt-8">Preventative Measures</h3>
-      <p className="mb-4">
-        To avoid future lockouts, consider these preventative measures:
-      </p>
-      
-      <ul className="list-disc pl-5 space-y-2 mb-6">
-        <li>Keep spare keys with trusted friends or family members</li>
-        <li>Install a smart lock with keypad or mobile access</li>
-        <li>Consider a key lockbox for emergency access</li>
-        <li>Establish a routine for checking for keys before leaving home</li>
-        <li>Regular maintenance of locks to prevent malfunctions</li>
-      </ul>
-      
+
       <h3 className="text-2xl font-bold mb-4 mt-8">Service Areas</h3>
       <p className="mb-4">
-        We provide residential lockout services throughout North Bergen, Jersey City, Hoboken, Weehawken, Union City, West New York, Secaucus, Guttenberg, and surrounding areas in New Jersey. Our mobile locksmiths come to your location with all the necessary equipment to resolve your home lockout situation.
+        We provide house lockout services throughout North Bergen, Jersey City, Hoboken, Weehawken, Union City, West New York, Secaucus, Guttenberg, and surrounding areas in New Jersey. Our mobile locksmiths come to your location with all the necessary equipment to resolve your house lockout situation.
       </p>
     </>
   );
@@ -271,36 +224,36 @@ const HouseLockout = () => {
   return (
     <main className="flex-grow">
       <Helmet>
-        <title>Professional Residential Lockout Service | 24/7 Emergency Home Locksmith</title>
-        <meta name="description" content="Expert house lockout service by certified residential locksmiths. Fast, damage-free home entry 24/7. Serving North Bergen, Jersey City, Hoboken & all NJ areas." />
-        <meta name="keywords" content="house lockout, residential lockout, home locksmith, emergency house lockout, locked out of house, home door unlock, residential locksmith, home security" />
+        <title>24/7 House Lockout Service | Emergency Residential Locksmith</title>
+        <meta name="description" content="Emergency house lockout service by certified residential locksmiths. Fast, damage-free home entry 24/7. Serving North Bergen, Jersey City, Hoboken & all NJ areas." />
+        <meta name="keywords" content="house lockout, locked out of house, residential locksmith, emergency house lockout, home lockout service, house door unlock, house key locked in house, residential locksmith" />
         <link rel="canonical" href="https://247locksmithandsecurity.com/services/emergency-locksmith/house-lockout" />
       </Helmet>
-      
-      <SchemaScripts 
+
+      <SchemaScripts
         schemas={[
           { type: 'service', data: serviceSchema },
           { type: 'faq', data: faqSchema }
-        ]} 
+        ]}
       />
-      
-      <EnhancedServicesHero 
-        title="Residential Lockout Service"
-        description="Professional locksmith assistance when you're locked out of your home. Our certified technicians provide fast, reliable, and damage-free entry methods."
+
+      <EnhancedServicesHero
+        title="House Lockout Service"
+        description="Professional residential locksmith services for when you're locked out of your home. Our certified technicians provide fast, reliable, and damage-free entry methods."
         serviceName="House Lockout"
         serviceLabel="Emergency Residential Locksmith"
       />
-      
+
       <ServicePageContent
         title="Professional House Lockout Assistance"
-        description="Expert residential lockout services by certified home locksmiths"
+        description="Expert house lockout services by certified residential locksmiths"
         serviceName="House Lockout"
         serviceCategory="Emergency Locksmith"
         mainContent={mainContent}
-        relatedServices={relatedEmergencyServices}
-        faqs={houseLockoutFaqs}
+        relatedServices={[]}
+        faqs={faqSchema.mainEntity}
       />
-      
+
       <ServicesProof reviewsData={residentialReviews.slice(0, 8)} />
     </main>
   );
