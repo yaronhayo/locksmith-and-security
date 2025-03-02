@@ -2,6 +2,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { trackApiCall } from "@/utils/performanceMonitoring";
 
 // Cache key to prevent excessive database queries
 let cachedRecaptchaKey: string | null = null;
@@ -10,14 +11,15 @@ export const useRecaptchaKey = () => {
   return useQuery({
     queryKey: ['recaptcha-key'],
     queryFn: async () => {
-      // Return cached key if available
-      if (cachedRecaptchaKey) {
-        console.log('Using cached reCAPTCHA site key');
-        return cachedRecaptchaKey;
-      }
-      
-      console.log('Fetching reCAPTCHA site key from database...');
+      const startTime = performance.now();
       try {
+        // Return cached key if available
+        if (cachedRecaptchaKey) {
+          console.log('Using cached reCAPTCHA site key');
+          return cachedRecaptchaKey;
+        }
+        
+        console.log('Fetching reCAPTCHA site key from database...');
         const { data, error } = await supabase
           .from('settings')
           .select('value')
@@ -37,9 +39,24 @@ export const useRecaptchaKey = () => {
         // Cache the key
         cachedRecaptchaKey = data.value;
         console.log('reCAPTCHA key fetched and cached successfully');
+        
+        const duration = performance.now() - startTime;
+        trackApiCall({
+          url: 'recaptcha-key',
+          method: 'GET',
+          duration,
+          success: true
+        });
+        
         return cachedRecaptchaKey;
       } catch (error) {
-        console.error('Failed to fetch reCAPTCHA site key:', error);
+        const duration = performance.now() - startTime;
+        trackApiCall({
+          url: 'recaptcha-key',
+          method: 'GET',
+          duration,
+          success: false
+        });
         throw error;
       }
     },
@@ -47,9 +64,12 @@ export const useRecaptchaKey = () => {
     gcTime: Infinity,    // Don't garbage collect the query
     retry: 3,            // Try up to 3 times if the request fails
     retryDelay: attemptIndex => Math.min(1000 * 2 ** attemptIndex, 10000),
-    onError: (error) => {
-      console.error('reCAPTCHA key error:', error);
-      toast.error('Failed to load security verification. Some features may be limited.');
+    meta: {
+      errorMessage: 'Failed to load reCAPTCHA key',
+      onError: (error: Error) => {
+        console.error('reCAPTCHA key error:', error);
+        toast.error('Failed to load security verification. Some features may be limited.');
+      }
     }
   });
 };

@@ -2,6 +2,7 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
+import { trackApiCall } from '@/utils/performanceMonitoring';
 
 // Cache for the API key to prevent excessive database queries
 let cachedApiKey: string | null = null;
@@ -12,14 +13,16 @@ export const useMapConfig = () => {
   return useQuery({
     queryKey: ['GOOGLE_MAPS_API_KEY'],
     queryFn: async () => {
-      // Return cached key if available
-      if (cachedApiKey) {
-        console.log('Using cached Google Maps API key');
-        return cachedApiKey;
-      }
-
-      console.log('Fetching Google Maps API key from database...');
+      const startTime = performance.now();
+      
       try {
+        // Return cached key if available
+        if (cachedApiKey) {
+          console.log('Using cached Google Maps API key');
+          return cachedApiKey;
+        }
+
+        console.log('Fetching Google Maps API key from database...');
         const { data, error } = await supabase
           .from('settings')
           .select('value')
@@ -45,9 +48,24 @@ export const useMapConfig = () => {
         // Cache the API key
         cachedApiKey = data.value;
         console.log('API key fetched and cached successfully');
+        
+        const duration = performance.now() - startTime;
+        trackApiCall({
+          url: 'map-config',
+          method: 'GET',
+          duration,
+          success: true
+        });
+        
         return cachedApiKey;
       } catch (error) {
-        console.error('Failed to fetch Google Maps API key:', error);
+        const duration = performance.now() - startTime;
+        trackApiCall({
+          url: 'map-config',
+          method: 'GET',
+          duration,
+          success: false
+        });
         throw error;
       }
     },
@@ -55,9 +73,12 @@ export const useMapConfig = () => {
     gcTime: Infinity,    // Don't garbage collect the query
     retry: 3,            // Try up to 3 times if the request fails
     retryDelay: attemptIndex => Math.min(1000 * 2 ** attemptIndex, 10000), // Exponential backoff
-    onError: (error) => {
-      console.error('Map config error:', error);
-      toast.error('Failed to load map settings. Some features may not work correctly.');
+    meta: {
+      errorMessage: 'Failed to load map settings',
+      onError: (error: Error) => {
+        console.error('Map config error:', error);
+        toast.error('Failed to load map settings. Some features may not work correctly.');
+      }
     }
   });
 };
