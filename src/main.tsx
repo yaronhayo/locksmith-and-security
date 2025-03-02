@@ -27,6 +27,14 @@ if (typeof window !== 'undefined') {
   window.addEventListener('unhandledrejection', (event) => {
     console.error('Unhandled promise rejection:', event.reason);
   });
+  
+  // Try to detect if we're in a white screen situation
+  let hasRendered = false;
+  setTimeout(() => {
+    if (!hasRendered) {
+      console.error('Potential white screen detected - application did not render within 5 seconds');
+    }
+  }, 5000);
 }
 
 // Render the application with error boundaries
@@ -57,6 +65,7 @@ const renderApp = () => {
     );
     
     console.log('Application rendered successfully');
+    hasRendered = true;
   } catch (error) {
     console.error('Failed to render application:', error);
     
