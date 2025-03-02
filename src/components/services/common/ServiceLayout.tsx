@@ -52,13 +52,15 @@ const ServiceLayout: React.FC<ServiceLayoutProps> = ({
       hideBreadcrumbs={false}
       preselectedService={preselectedService}
     >
-      <EnhancedServicesHero 
-        title={title}
-        description={description}
-        serviceName={serviceName}
-        serviceLabel={serviceCategory}
-        preselectedService={preselectedService}
-      />
+      <div className="-mt-8"> {/* Added negative margin to bring content higher */}
+        <EnhancedServicesHero 
+          title={title}
+          description={description}
+          serviceName={serviceName}
+          serviceLabel={serviceCategory}
+          preselectedService={preselectedService}
+        />
+      </div>
       
       <ServicePageContent
         title={title}
