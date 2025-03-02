@@ -80,6 +80,7 @@ const FAQPage = () => {
       keywords="locksmith FAQ, locksmith questions, locksmith services, residential locksmith, commercial locksmith, automotive locksmith, emergency locksmith"
       heroTitle="Frequently Asked Questions"
       heroDescription="Browse our comprehensive collection of FAQs to find answers to your locksmith and security questions."
+      hideBreadcrumbs={false} // Let PageLayout handle breadcrumbs
     >
       <FaqSearch searchQuery={searchQuery} handleSearch={handleSearch} />
 

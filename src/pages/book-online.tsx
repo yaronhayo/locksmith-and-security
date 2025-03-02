@@ -15,6 +15,7 @@ const BookOnlinePage = () => {
         "name": "Book Online - Professional Locksmith Services",
         "description": "Book your locksmith service online. Available 24/7 for residential, commercial, and automotive locksmith needs in North Bergen and surrounding areas.",
       }}
+      hideBreadcrumbs={false} // Let PageLayout handle breadcrumbs
     >
       <div className="container mx-auto px-4 py-12">
         <div className="max-w-4xl mx-auto">

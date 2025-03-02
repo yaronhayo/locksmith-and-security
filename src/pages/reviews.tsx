@@ -48,6 +48,7 @@ const ReviewsPage = () => {
       heroTitle="Customer Testimonials"
       heroDescription="See what our clients have to say about our locksmith services in North Bergen and surrounding areas"
       schema={reviewsSchema}
+      hideBreadcrumbs={false} // Let PageLayout handle breadcrumbs
     >
       <div className="container mx-auto px-4 py-12">
         {displayedReviews.length > 0 ? (

@@ -7,7 +7,7 @@ interface PageHeroProps {
   description?: string;
   className?: string;
   children?: React.ReactNode;
-  showBreadcrumbs?: boolean;
+  showBreadcrumbs?: boolean; // Keeping this prop for backward compatibility, but it will be ignored
   customBreadcrumbs?: Array<{name: string, path: string}>;
 }
 
@@ -16,7 +16,7 @@ const PageHero = ({
   description,
   className,
   children,
-  showBreadcrumbs = false, // Default to false to prevent duplication
+  showBreadcrumbs = false, // This will be ignored as breadcrumbs are now managed by PageLayout
   customBreadcrumbs,
 }: PageHeroProps) => {
   return (
@@ -30,7 +30,7 @@ const PageHero = ({
       
       {/* Content */}
       <div className="relative container mx-auto px-4 py-16 md:py-24">
-        {/* No breadcrumbs rendering here to prevent duplication */}
+        {/* No breadcrumbs rendering here - all handled by PageLayout */}
         
         <div className={cn("max-w-4xl mx-auto text-center", className)}>
           <motion.h1 

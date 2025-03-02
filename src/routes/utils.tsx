@@ -25,7 +25,7 @@ export const createPageRoute = (
       noindex={meta.noindex}
       nofollow={meta.nofollow}
       modifiedDate={meta.modifiedDate}
-      hideBreadcrumbs={meta.hideBreadcrumbs}
+      hideBreadcrumbs={meta.hideBreadcrumbs ?? false} // Explicitly set default to false
       heroTitle={meta.heroTitle}
       heroDescription={meta.heroDescription}
     >
