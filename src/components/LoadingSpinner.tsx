@@ -1,6 +1,7 @@
 
 import { cn } from "@/lib/utils";
 import { Loader2 } from "lucide-react";
+import { memo } from "react";
 
 type SpinnerSize = "sm" | "md" | "lg" | "xl";
 
@@ -25,4 +26,4 @@ const LoadingSpinner = ({ size = "md", className }: LoadingSpinnerProps) => {
   );
 };
 
-export default LoadingSpinner;
+export default memo(LoadingSpinner);

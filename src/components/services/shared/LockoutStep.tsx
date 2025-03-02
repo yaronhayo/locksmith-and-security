@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { CheckCircle } from 'lucide-react';
+import { memo } from 'react';
 
 export interface LockoutStepProps {
   title: string;
@@ -23,4 +24,4 @@ const LockoutStep = ({ title, description }: LockoutStepProps) => {
   );
 };
 
-export default LockoutStep;
+export default memo(LockoutStep);

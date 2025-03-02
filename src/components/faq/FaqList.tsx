@@ -1,8 +1,9 @@
 
-import React from "react";
+import React, { memo } from "react";
 import { motion } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface FaqItem {
   question: string;
@@ -15,6 +16,24 @@ interface FaqListProps {
   loaderRef: React.RefObject<HTMLDivElement>;
   hasMore: boolean;
 }
+
+// Optimized loading skeleton for FAQ items
+export const FaqItemSkeleton = memo(() => (
+  <Card className="h-full overflow-hidden">
+    <CardContent className="p-0">
+      <div className="px-6 py-4 bg-gray-50">
+        <Skeleton className="h-6 w-3/4" />
+      </div>
+      <div className="px-6 py-4">
+        <Skeleton className="h-4 w-full mb-2" />
+        <Skeleton className="h-4 w-5/6 mb-2" />
+        <Skeleton className="h-4 w-4/6" />
+      </div>
+    </CardContent>
+  </Card>
+));
+
+FaqItemSkeleton.displayName = 'FaqItemSkeleton';
 
 const FaqList = ({ displayedFaqs, isLoading, loaderRef, hasMore }: FaqListProps) => {
   return (
@@ -74,4 +93,4 @@ const FaqList = ({ displayedFaqs, isLoading, loaderRef, hasMore }: FaqListProps)
   );
 };
 
-export default FaqList;
+export default memo(FaqList);

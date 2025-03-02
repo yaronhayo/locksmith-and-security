@@ -2,7 +2,7 @@
 import { useState, useEffect, useCallback, useRef, useMemo } from 'react';
 import { reviews, getReviewsByCategory, getReviewsByLocation } from '@/data/reviewsData';
 import type { Review, ServiceCategory } from '@/types/reviews';
-import { logToService } from '@/utils/performanceMonitoring';
+import { logToService, measurePerformance } from '@/utils/performanceMonitoring';
 
 export const useReviews = (location?: string, category?: ServiceCategory) => {
   const [displayedReviews, setDisplayedReviews] = useState<Review[]>([]);
@@ -11,31 +11,41 @@ export const useReviews = (location?: string, category?: ServiceCategory) => {
   const loadingRef = useRef<HTMLDivElement | null>(null);
   const pageSize = 12; // Show 12 reviews at once
   const loadDelay = 800; // 0.8 seconds delay between batches
+  const initialLoadComplete = useRef(false);
 
   const filteredReviews = useMemo(() => {
-    if (!location && !category) return reviews;
-    
-    let filtered = [...reviews];
-    
-    if (category) {
-      filtered = getReviewsByCategory(category);
-    }
-    
-    if (location) {
-      filtered = filtered.filter(review => review.location.includes(location));
-    }
-    
-    return filtered;
+    return measurePerformance('Filter Reviews', () => {
+      if (!location && !category) return reviews;
+      
+      let filtered = [...reviews];
+      
+      if (category) {
+        filtered = getReviewsByCategory(category);
+      }
+      
+      if (location) {
+        filtered = filtered.filter(review => review.location.includes(location));
+      }
+      
+      return filtered;
+    });
   }, [category, location]);
 
   // Preload initial batch immediately when component renders
   useEffect(() => {
+    if (initialLoadComplete.current) {
+      setDisplayedReviews([]);
+      setPage(1);
+      initialLoadComplete.current = false;
+    }
+    
     const initialBatch = filteredReviews.slice(0, pageSize);
     if (initialBatch.length > 0) {
       // Use setTimeout with 0ms to push execution to the next event loop
       setTimeout(() => {
         setDisplayedReviews(initialBatch);
         setPage(2); // Start from page 2 for subsequent loads
+        initialLoadComplete.current = true;
       }, 0);
     }
   }, [filteredReviews, pageSize]);
@@ -93,11 +103,6 @@ export const useReviews = (location?: string, category?: ServiceCategory) => {
       }
     };
   }, [loadMoreReviews, isLoading, displayedReviews.length, filteredReviews.length]);
-
-  useEffect(() => {
-    setDisplayedReviews([]);
-    setPage(1);
-  }, [location, category]);
 
   return {
     displayedReviews,

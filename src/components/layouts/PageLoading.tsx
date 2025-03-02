@@ -1,7 +1,33 @@
 
 import LoadingSpinner from "@/components/LoadingSpinner";
+import { Skeleton } from "@/components/ui/skeleton";
+import { memo } from "react";
 
-const PageLoading = () => {
+interface PageLoadingProps {
+  type?: 'spinner' | 'skeleton';
+}
+
+const PageLoading = ({ type = 'spinner' }: PageLoadingProps) => {
+  if (type === 'skeleton') {
+    return (
+      <div className="min-h-[60vh] w-full max-w-7xl mx-auto px-4 py-12">
+        <Skeleton className="h-10 w-1/3 mx-auto mb-12" />
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {Array(6).fill(0).map((_, i) => (
+            <div key={i} className="flex flex-col p-4 border rounded-lg space-y-4">
+              <Skeleton className="h-6 w-3/4" />
+              <Skeleton className="h-4 w-full" />
+              <Skeleton className="h-4 w-5/6" />
+              <Skeleton className="h-4 w-4/5" />
+              <Skeleton className="h-8 w-1/3 mt-2" />
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+  
   return (
     <div className="min-h-[60vh] flex justify-center items-center">
       <LoadingSpinner size="lg" />
@@ -9,4 +35,4 @@ const PageLoading = () => {
   );
 };
 
-export default PageLoading;
+export default memo(PageLoading);

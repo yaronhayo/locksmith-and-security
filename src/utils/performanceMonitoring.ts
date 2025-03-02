@@ -11,6 +11,17 @@ export const logToService = (level: LogLevel, message: string, data?: any) => {
   }
 };
 
+// Component rendering performance tracking
+export const trackComponentRender = (componentName: string) => {
+  const startTime = performance.now();
+  
+  return () => {
+    const duration = performance.now() - startTime;
+    logToService('info', `Component Render: ${componentName}`, { duration });
+    return duration;
+  };
+};
+
 // Map specific performance monitoring
 interface MapLoadMetrics {
   scriptLoadTime: number;
@@ -58,10 +69,38 @@ class MapPerformanceTracker {
 export const mapPerformance = MapPerformanceTracker.getInstance();
 
 // General performance monitoring
-export const measurePerformance = (label: string, callback: () => void) => {
+export const measurePerformance = <T>(label: string, callback: () => T): T => {
   const start = performance.now();
-  callback();
-  const duration = performance.now() - start;
-  logToService('info', `Performance measurement: ${label}`, { duration });
+  try {
+    const result = callback();
+    const duration = performance.now() - start;
+    logToService('info', `Performance measurement: ${label}`, { duration });
+    return result;
+  } catch (error) {
+    const duration = performance.now() - start;
+    logToService('error', `Performance measurement error: ${label}`, { duration, error });
+    throw error;
+  }
 };
 
+// Image loading performance tracker
+export const trackImageLoad = (imageUrl: string, element?: HTMLImageElement) => {
+  const startTime = performance.now();
+  
+  const onLoad = () => {
+    const duration = performance.now() - startTime;
+    logToService('info', 'Image loaded', { url: imageUrl, duration });
+  };
+  
+  const onError = (error: any) => {
+    const duration = performance.now() - startTime;
+    logToService('error', 'Image load failed', { url: imageUrl, duration, error });
+  };
+  
+  if (element) {
+    element.addEventListener('load', onLoad, { once: true });
+    element.addEventListener('error', onError, { once: true });
+  }
+  
+  return { onLoad, onError };
+};

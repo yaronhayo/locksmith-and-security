@@ -1,5 +1,6 @@
 
 import React, { ReactNode } from 'react';
+import { memo } from 'react';
 
 export interface ExpertSolutionProps {
   icon: ReactNode;
@@ -9,14 +10,16 @@ export interface ExpertSolutionProps {
 
 const ExpertSolution = ({ icon, title, description }: ExpertSolutionProps) => {
   return (
-    <div className="bg-white p-5 rounded-lg shadow-sm border border-gray-100">
+    <div className="bg-white p-4 sm:p-5 rounded-lg shadow-sm border border-gray-100 transition-all duration-200 hover:shadow-md hover:border-gray-200">
       <div className="flex items-center mb-3">
-        {icon}
+        <div className="text-primary">
+          {icon}
+        </div>
         <h4 className="font-bold text-lg ml-3">{title}</h4>
       </div>
-      <p className="text-gray-700">{description}</p>
+      <p className="text-gray-700 leading-relaxed">{description}</p>
     </div>
   );
 };
 
-export default ExpertSolution;
+export default memo(ExpertSolution);
