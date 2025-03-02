@@ -17,11 +17,11 @@ export const HreflangTags = ({
 }: HreflangTagsProps) => {
   return (
     <Helmet>
-      <link rel="alternate" hreflang={defaultLang} href={defaultHref} />
-      <link rel="alternate" hreflang="x-default" href={defaultHref} />
+      <link rel="alternate" hrefLang={defaultLang} href={defaultHref} />
+      <link rel="alternate" hrefLang="x-default" href={defaultHref} />
       
       {alternateLanguages.map(({ lang, href }) => (
-        <link key={lang} rel="alternate" hreflang={lang} href={href} />
+        <link key={lang} rel="alternate" hrefLang={lang} href={href} />
       ))}
     </Helmet>
   );
