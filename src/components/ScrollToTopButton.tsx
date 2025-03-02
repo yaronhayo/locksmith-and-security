@@ -31,11 +31,11 @@ const ScrollToTopButton = () => {
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.8 }}
           transition={{ duration: 0.2 }}
-          className="fixed bottom-8 right-8 z-50"
+          className="fixed right-8 bottom-1/3 z-50" // Positioned between center and bottom
         >
           <Button
             onClick={scrollToTop}
-            className="p-2.5 rounded-full bg-primary hover:bg-primary/90 text-white shadow-md transition-transform duration-300 hover:scale-110 focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+            className="p-2.5 rounded-full bg-[#fa7315] hover:bg-[#fa7315]/90 text-white shadow-md transition-transform duration-300 hover:scale-110 focus-visible:ring-2 focus-visible:ring-[#fa7315] focus-visible:ring-offset-2"
             size="icon"
             aria-label="Scroll to top of page"
           >
