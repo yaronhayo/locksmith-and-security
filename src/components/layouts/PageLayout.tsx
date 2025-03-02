@@ -74,8 +74,8 @@ const PageLayout = ({
     allSchemas.push({ type: 'schema', data: schema });
   }
   
-  // Add breadcrumb schema if breadcrumbs are provided
-  if (breadcrumbs && breadcrumbs.length > 0) {
+  // Add breadcrumb schema if breadcrumbs are provided and not hidden
+  if (!hideBreadcrumbs && breadcrumbs && breadcrumbs.length > 0) {
     const breadcrumbSchema = createBreadcrumbSchema({ breadcrumbs });
     allSchemas.push(breadcrumbSchema);
   }

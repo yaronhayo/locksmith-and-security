@@ -5,7 +5,6 @@ import ServicePageContent from '@/components/sections/services/service-page';
 import { SchemaScripts } from '@/components/meta/SchemaScripts';
 import { Helmet } from 'react-helmet';
 import ServicesProof from '@/components/sections/services/ServicesProof';
-import Breadcrumbs from '@/components/Breadcrumbs';
 
 interface ServiceLayoutProps {
   title: string;
@@ -57,10 +56,6 @@ const ServiceLayout: React.FC<ServiceLayoutProps> = ({
         serviceLabel={serviceCategory}
       />
       
-      <div className="container mx-auto px-4 py-4">
-        <Breadcrumbs items={customBreadcrumbs} showSchema={true} />
-      </div>
-      
       <ServicePageContent
         title={title}
         description={description}
@@ -69,6 +64,7 @@ const ServiceLayout: React.FC<ServiceLayoutProps> = ({
         mainContent={mainContent}
         faqs={faqs}
         relatedServices={relatedServices}
+        customBreadcrumbs={customBreadcrumbs}
       />
       
       {reviewsData.length > 0 && (
