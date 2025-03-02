@@ -1,5 +1,6 @@
 
-import { Route } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
+import { Fragment } from 'react';
 import { RouteConfig } from '@/types/routes';
 
 interface RouteRendererProps {
@@ -8,7 +9,7 @@ interface RouteRendererProps {
 
 const RouteRenderer = ({ routes }: RouteRendererProps) => {
   return (
-    <>
+    <Fragment>
       {routes.map(({ path, element }) => (
         <Route
           key={path}
@@ -16,7 +17,7 @@ const RouteRenderer = ({ routes }: RouteRendererProps) => {
           element={element}
         />
       ))}
-    </>
+    </Fragment>
   );
 };
 
