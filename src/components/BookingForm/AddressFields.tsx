@@ -15,12 +15,6 @@ interface AddressFieldsProps {
 }
 
 const AddressFields = ({ address, onChange, errors, isSubmitting }: AddressFieldsProps) => {
-  // Create a handler that converts the string parameter to a format 
-  // the AddressAutocomplete component can handle
-  const handleAddressChange = (value: string) => {
-    onChange(value);
-  };
-
   return (
     <>
       <div className="form-group">
@@ -30,7 +24,7 @@ const AddressFields = ({ address, onChange, errors, isSubmitting }: AddressField
         <GoogleMapsProvider>
           <AddressAutocomplete
             value={address}
-            onChange={handleAddressChange}
+            onChange={onChange}
             placeholder="Enter your service address"
             disabled={isSubmitting}
             required

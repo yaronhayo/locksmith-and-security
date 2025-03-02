@@ -1,12 +1,13 @@
+
 import { useRef, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import Recaptcha from "@/components/ui/recaptcha";
-import PersonalInfoFields from "./form/PersonalInfoFields";
-import EmailField from "./form/EmailField";
-import AddressField from "./form/AddressField";
-import MessageField from "./form/MessageField";
+import PersonalInfoFields from "@/components/contact/form/PersonalInfoFields";
+import EmailField from "@/components/contact/form/EmailField";
+import AddressField from "@/components/contact/form/AddressField";
+import MessageField from "@/components/contact/form/MessageField";
 import { getEmailError, getNameError, getPhoneError } from "@/utils/inputValidation";
 
 const ContactForm = () => {

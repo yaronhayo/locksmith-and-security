@@ -24,11 +24,6 @@ const AddressField = ({ value, onChange, isSubmitting, error }: AddressFieldProp
     }
   }, [value, isDirty]);
 
-  const handleChange = (newValue: string) => {
-    onChange(newValue);
-    if (!isDirty) setIsDirty(true);
-  };
-
   const handleBlur = () => {
     setIsDirty(true);
   };
@@ -43,7 +38,7 @@ const AddressField = ({ value, onChange, isSubmitting, error }: AddressFieldProp
       </Label>
       <AddressAutocomplete
         value={value}
-        onChange={handleChange}
+        onChange={onChange}
         id="address"
         disabled={isSubmitting}
         placeholder="Enter your address"

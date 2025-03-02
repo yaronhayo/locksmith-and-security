@@ -1,3 +1,4 @@
+
 import { InputProps } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import {
@@ -6,10 +7,16 @@ import {
   useEffect,
   useRef,
   useCallback,
+  ChangeEvent,
 } from "react";
 
+// Define a union type that accepts both a string and a ChangeEvent
+type AddressChangeHandler = 
+  | ((address: string) => void)
+  | ((event: ChangeEvent<HTMLInputElement>) => void);
+
 interface AddressAutocompleteProps {
-  onChange: (address: string) => void;
+  onChange: AddressChangeHandler;
 }
 
 export const AddressAutocomplete = forwardRef<HTMLInputElement, InputProps & AddressAutocompleteProps>(
@@ -35,7 +42,15 @@ export const AddressAutocomplete = forwardRef<HTMLInputElement, InputProps & Add
           if (!place?.formatted_address) {
             return;
           }
-          onChange(place.formatted_address);
+          
+          // Handle both function signatures
+          if (typeof onChange === 'function') {
+            // Check if the onChange handler expects a string or an event
+            if (onChange.length === 1) {
+              // If it expects one parameter, we pass the address as string
+              (onChange as (address: string) => void)(place.formatted_address);
+            }
+          }
         });
       }
     }, [onChange]);
@@ -46,9 +61,12 @@ export const AddressAutocomplete = forwardRef<HTMLInputElement, InputProps & Add
       );
 
       if (!googleMapScript) {
+        // Get the API key from the MapConfig hook
+        const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY || '';
+        
         googleMapScript = document.createElement("script");
         googleMapScript.src =
-          `https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&libraries=places`;
+          `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places`;
         googleMapScript.async = true;
         googleMapScript.defer = true;
         document.head.appendChild(googleMapScript);
@@ -70,7 +88,16 @@ export const AddressAutocomplete = forwardRef<HTMLInputElement, InputProps & Add
     }, [initAutocomplete]);
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      onChange(e.target.value);
+      // Handle both function signatures
+      if (typeof onChange === 'function') {
+        if (onChange.length === 1) {
+          // For components expecting just the string value
+          (onChange as (address: string) => void)(e.target.value);
+        } else {
+          // For components expecting the full event
+          (onChange as (event: ChangeEvent<HTMLInputElement>) => void)(e);
+        }
+      }
     };
     
     return (
