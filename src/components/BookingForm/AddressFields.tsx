@@ -25,6 +25,11 @@ const AddressFields = ({ address, onChange, errors, isSubmitting }: AddressField
     }
   };
 
+  // Dedicated handler for address selection from autocomplete
+  const handleAddressSelect = (selectedAddress: string) => {
+    onChange(selectedAddress);
+  };
+
   return (
     <>
       <div className="form-group">
@@ -36,7 +41,7 @@ const AddressFields = ({ address, onChange, errors, isSubmitting }: AddressField
             <AddressAutocomplete
               value={address}
               onChange={handleAddressChange}
-              onAddressSelect={onChange}
+              onAddressSelect={handleAddressSelect}
               placeholder="Enter your service address"
               disabled={isSubmitting}
               required

@@ -44,6 +44,18 @@ const ContactFields = ({
     handleChange(event);
   };
 
+  const handleAddressSelect = (selectedAddress: string) => {
+    const event = {
+      target: {
+        name: 'address',
+        value: selectedAddress
+      }
+    } as React.ChangeEvent<HTMLInputElement>;
+    
+    handleChange(event);
+    handleBlur('address');
+  };
+
   return (
     <div className="space-y-4">
       <div>
@@ -100,7 +112,7 @@ const ContactFields = ({
               name="address"
               value={formState.address || ''}
               onChange={handleAddressChange}
-              onAddressSelect={(address) => handleAddressChange(address)}
+              onAddressSelect={handleAddressSelect}
               onBlur={() => handleBlur('address')}
               disabled={isSubmitting}
               placeholder="Enter your address"

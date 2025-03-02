@@ -40,6 +40,12 @@ const AddressField = ({ value, onChange, isSubmitting, error }: AddressFieldProp
     if (!isDirty) setIsDirty(true);
   };
 
+  // Dedicated handler for address selection from autocomplete
+  const handleAddressSelect = (selectedAddress: string) => {
+    onChange(selectedAddress);
+    if (!isDirty) setIsDirty(true);
+  };
+
   // Show external error (from form submission) or internal error (from validation)
   const displayError = error || (isDirty ? localError : null);
 
@@ -53,7 +59,7 @@ const AddressField = ({ value, onChange, isSubmitting, error }: AddressFieldProp
           <AddressAutocomplete
             value={value}
             onChange={handleAddressChange}
-            onAddressSelect={onChange}
+            onAddressSelect={handleAddressSelect}
             id="address"
             disabled={isSubmitting}
             placeholder="Enter your address"

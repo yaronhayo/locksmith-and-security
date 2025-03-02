@@ -23,6 +23,7 @@ const AddressAutocomplete = forwardRef<HTMLInputElement, AddressAutocompleteProp
   (
     {
       onAddressSelect,
+      onChange,
       placeholder = "Enter your address",
       disabled = false,
       error = false,
@@ -72,24 +73,44 @@ const AddressAutocomplete = forwardRef<HTMLInputElement, AddressAutocompleteProp
             
             if (place && place.formatted_address) {
               console.log("Place selected:", place.formatted_address);
+              
+              // Update the input value directly to ensure it shows the full address
+              if (inputRef.current) {
+                inputRef.current.value = place.formatted_address;
+              }
+              
+              // Call the onAddressSelect callback if provided
               if (onAddressSelect) {
                 onAddressSelect(place.formatted_address, place.place_id);
               }
               
-              // For traditional onChange handlers via the props
-              if (props.onChange && typeof props.onChange === 'function') {
-                // Create synthetic event
-                const syntheticEvent = {
-                  target: {
-                    name: props.name || 'address',
-                    value: place.formatted_address
-                  },
-                  currentTarget: inputRef.current,
-                  preventDefault: () => {},
-                  stopPropagation: () => {}
-                } as React.ChangeEvent<HTMLInputElement>;
-                
-                props.onChange(syntheticEvent);
+              // Also trigger the onChange handler for form state updates
+              if (onChange) {
+                // Create a synthetic event if needed
+                if (typeof onChange === 'function') {
+                  const nativeInputValueSetter = Object.getOwnPropertyDescriptor(
+                    window.HTMLInputElement.prototype,
+                    "value"
+                  )?.set;
+                  
+                  if (nativeInputValueSetter && inputRef.current) {
+                    nativeInputValueSetter.call(inputRef.current, place.formatted_address);
+                    const event = new Event('input', { bubbles: true });
+                    inputRef.current.dispatchEvent(event);
+                  }
+                  
+                  const syntheticEvent = {
+                    target: {
+                      name: props.name || 'address',
+                      value: place.formatted_address
+                    },
+                    currentTarget: inputRef.current,
+                    preventDefault: () => {},
+                    stopPropagation: () => {},
+                  } as React.ChangeEvent<HTMLInputElement>;
+                  
+                  onChange(syntheticEvent);
+                }
               }
             } else {
               console.warn("Invalid place selected");
@@ -111,7 +132,7 @@ const AddressAutocomplete = forwardRef<HTMLInputElement, AddressAutocompleteProp
           console.log("Address autocomplete cleaned up");
         }
       };
-    }, [onAddressSelect, placesOptions, initializationAttempts, props.name, props.onChange]);
+    }, [onAddressSelect, placesOptions, initializationAttempts, props.name, onChange]);
 
     useEffect(() => {
       const handleKeyDown = (e: KeyboardEvent) => {
@@ -154,6 +175,7 @@ const AddressAutocomplete = forwardRef<HTMLInputElement, AddressAutocompleteProp
           disabled={disabled}
           required={required}
           aria-invalid={error ? "true" : "false"}
+          onChange={onChange}
           {...props}
         />
         {!isInitialized && initializationAttempts >= maxAttempts && (
