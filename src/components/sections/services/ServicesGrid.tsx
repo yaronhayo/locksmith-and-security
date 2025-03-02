@@ -1,9 +1,9 @@
-
 import { motion } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Lock, Car, Building2, Key, Wrench, Shield, Home } from "lucide-react";
 import { Link } from "react-router-dom";
+
 const services = [{
   icon: Lock,
   subIcons: {
@@ -109,6 +109,7 @@ const services = [{
     link: "/services/auto-locksmith/ignition-lock-cylinder"
   }]
 }];
+
 const ServicesGrid = () => {
   return <section className="py-24 bg-gradient-to-b from-white to-gray-50">
       <div className="container mx-auto px-4 flex flex-col items-center">
@@ -182,4 +183,5 @@ const ServicesGrid = () => {
       </div>
     </section>;
 };
+
 export default ServicesGrid;
