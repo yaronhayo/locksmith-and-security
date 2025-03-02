@@ -30,8 +30,8 @@ const FAQAccordion = memo(({
   
   return (
     <>
-      {includeSchema && (
-        <SchemaScripts schemas={[{ type: 'FAQPage', data: faqSchema.data }]} />
+      {includeSchema && faqSchema && (
+        <SchemaScripts schemas={[{ type: 'FAQPage', data: faqSchema.data || faqSchema }]} />
       )}
       <div className="space-y-4">
         {faqs.map((faq, index) => (

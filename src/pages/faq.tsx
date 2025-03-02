@@ -10,6 +10,7 @@ import FaqList from "@/components/faq/FaqList";
 import FaqEmptyState from "@/components/faq/FaqEmptyState";
 import FaqCallToAction from "@/components/faq/FaqCallToAction";
 import { useFaqData } from "@/components/faq/hooks/useFaqData";
+import { createBreadcrumbSchema } from "@/components/meta/schema/BreadcrumbSchema";
 
 const FAQPage = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -25,6 +26,15 @@ const FAQPage = () => {
     loaderRef, 
     hasMore 
   } = useFaqData(activeTab, searchQuery);
+
+  // Create breadcrumb schema
+  const breadcrumbSchema = createBreadcrumbSchema({
+    breadcrumbs: [
+      { name: "Home", path: "/", item: "/" },
+      { name: "FAQ", path: "/faq", item: "/faq" }
+    ],
+    baseUrl: "https://247locksmithandsecurity.com"
+  });
 
   // Create FAQ Schema for SEO
   const faqSchema = {
@@ -80,7 +90,8 @@ const FAQPage = () => {
       keywords="locksmith FAQ, locksmith questions, locksmith services, residential locksmith, commercial locksmith, automotive locksmith, emergency locksmith"
       heroTitle="Frequently Asked Questions"
       heroDescription="Browse our comprehensive collection of FAQs to find answers to your locksmith and security questions."
-      hideBreadcrumbs={false} // Let PageLayout handle breadcrumbs
+      hideBreadcrumbs={false} 
+      schemas={[faqSchema, breadcrumbSchema]}
     >
       <FaqSearch searchQuery={searchQuery} handleSearch={handleSearch} />
 
