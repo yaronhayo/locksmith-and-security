@@ -1,5 +1,5 @@
 
-import { createFAQPage } from "@/schemas/faqSchema";
+import { createFAQSchema } from "@/schemas/faqSchema";
 
 export const carKeyFaqs = [
   {
@@ -36,7 +36,7 @@ export const carKeyFaqs = [
   }
 ];
 
-export const carKeyFaqSchema = createFAQPage(carKeyFaqs);
+export const carKeyFaqSchema = createFAQSchema(carKeyFaqs);
 
 export const carKeyServiceSchema = {
   "@context": "https://schema.org",

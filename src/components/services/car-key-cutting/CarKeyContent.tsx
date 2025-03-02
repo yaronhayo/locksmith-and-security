@@ -1,6 +1,5 @@
-
 import React from 'react';
-import { CheckCircle2, Key, Clock, Shield, Tool } from "lucide-react";
+import { CheckCircle2, Key, Clock, Shield, Wrench } from "lucide-react";
 
 export const CarKeyContent = () => {
   return (
@@ -107,7 +106,7 @@ export const CarKeyContent = () => {
         <h3 className="text-xl font-semibold text-primary mb-4">Benefits of Professional Car Key Cutting</h3>
         <div className="grid md:grid-cols-2 gap-6">
           <div className="flex items-start space-x-3">
-            <Tool className="h-5 w-5 text-secondary mt-1 flex-shrink-0" />
+            <Wrench className="h-5 w-5 text-secondary mt-1 flex-shrink-0" />
             <div>
               <h4 className="font-medium text-gray-900">Precision & Accuracy</h4>
               <p className="text-gray-600 text-sm">Professional equipment produces keys with exact measurements for perfect operation</p>
@@ -128,7 +127,7 @@ export const CarKeyContent = () => {
             </div>
           </div>
           <div className="flex items-start space-x-3">
-            <Tool className="h-5 w-5 text-secondary mt-1 flex-shrink-0" />
+            <Wrench className="h-5 w-5 text-secondary mt-1 flex-shrink-0" />
             <div>
               <h4 className="font-medium text-gray-900">Expertise</h4>
               <p className="text-gray-600 text-sm">Professional locksmiths with extensive experience cutting keys for all vehicle types</p>
