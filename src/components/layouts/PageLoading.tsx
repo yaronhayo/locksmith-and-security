@@ -31,7 +31,7 @@ const PageLoading = ({ type = 'spinner', message, count = 6 }: PageLoadingProps)
   
   useEffect(() => {
     finishRenderTracking();
-  }, []);
+  }, [finishRenderTracking]);
 
   if (type === 'skeleton') {
     return (

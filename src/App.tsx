@@ -5,7 +5,6 @@ import Routes from "./Routes";
 import { RouteErrorBoundary } from "./components/layouts/RouteErrorBoundary";
 import { Toaster } from "./components/ui/sonner";
 import CookieConsent from "./components/CookieConsent";
-import Footer from "@/components/Footer";
 import { NavigationProvider } from "./contexts/NavigationContext";
 import ScrollToTopButton from "@/components/ScrollToTopButton";
 import LoadingSpinner from "@/components/LoadingSpinner";

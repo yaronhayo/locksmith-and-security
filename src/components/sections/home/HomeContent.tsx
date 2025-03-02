@@ -5,17 +5,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { motion } from 'framer-motion';
 
 // Lazy loaded components with prefetching hints
-// This technique helps browsers prioritize important script downloads
-const ServicesSectionComponent = lazy(() => {
-  // Add a hint for the browser to prefetch this component
-  const link = document.createElement('link');
-  link.rel = 'prefetch';
-  link.href = '/src/components/sections/ServicesSection.tsx';
-  link.as = 'script';
-  document.head.appendChild(link);
-  return import('../ServicesSection')
-});
-
+const ServicesSectionComponent = lazy(() => import('../ServicesSection'));
 const EmergencyServicesSectionComponent = lazy(() => import('../EmergencyServicesSection'));
 const ProcessSectionComponent = lazy(() => import('../ProcessSection'));
 const WhyChooseUsComponent = lazy(() => import('../WhyChooseUs'));
@@ -46,7 +36,7 @@ const SectionLoading = () => (
 );
 
 // Intersection Observer for better lazy loading
-const LazySection = ({ children, id }) => {
+const LazySection = ({ children, id }: { children: React.ReactNode, id: string }) => {
   return (
     <div id={id} data-section={id}>
       <Suspense fallback={<SectionLoading />}>

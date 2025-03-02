@@ -31,6 +31,8 @@ RouteWrapper.displayName = 'RouteWrapper';
  * Renders all application routes with error boundaries and suspense
  */
 const Routes = () => {
+  console.log('Routes component rendered');
+  
   // Map route data to Route components
   const renderRouteComponents = (routes: RouteConfig[]) => {
     return routes.map(({ path, element }) => (
