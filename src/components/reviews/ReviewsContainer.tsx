@@ -1,38 +1,82 @@
 
+import { Review, ServiceCategory } from "@/types/reviews";
 import { memo } from "react";
-import ReviewsList from "./ReviewsList";
-import { ErrorBoundary } from "react-error-boundary";
-import ErrorFallback from "@/components/ErrorFallback";
-import { createReviewsSchema } from "@/schemas/reviewsSchema";
-import { SchemaScripts } from "@/components/meta/SchemaScripts";
-import type { ServiceCategory, Review } from "@/types/reviews";
+import ReviewCard from "./ReviewCard";
+import { motion, AnimatePresence } from "framer-motion";
+import ReviewsHeader from "./ReviewsHeader";
 
 interface ReviewsContainerProps {
-  location?: string;
-  category?: ServiceCategory;
   displayedReviews: Review[];
   isLoading: boolean;
   totalReviews: number;
+  location?: string;
+  category?: ServiceCategory;
 }
 
-const ReviewsContainer = memo(({ 
-  location, 
-  category, 
-  displayedReviews, 
-  isLoading, 
-  totalReviews 
+const ReviewsContainer = memo(({
+  displayedReviews,
+  isLoading,
+  totalReviews,
+  location,
+  category
 }: ReviewsContainerProps) => {
-  const reviewsSchema = createReviewsSchema(displayedReviews, location);
+  // Animation variants
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: { 
+      opacity: 1,
+      transition: { 
+        staggerChildren: 0.05,
+        delayChildren: 0.03
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: { duration: 0.3 }
+    }
+  };
 
   return (
-    <ErrorBoundary FallbackComponent={ErrorFallback}>
-      <SchemaScripts schemas={[{ type: 'LocalBusiness', data: reviewsSchema }]} />
-      <section className="py-8 bg-white">
-        <div className="container mx-auto px-4">
-          <ReviewsList reviews={displayedReviews} isLoading={isLoading} />
-        </div>
-      </section>
-    </ErrorBoundary>
+    <div className="w-full">
+      <ReviewsHeader 
+        totalReviews={totalReviews} 
+        location={location} 
+        category={category} 
+      />
+      
+      {displayedReviews.length > 0 ? (
+        <motion.div 
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+        >
+          <AnimatePresence>
+            {displayedReviews.map((review, index) => (
+              <motion.div 
+                key={`${review.name}-${index}`}
+                variants={itemVariants}
+                layout
+                className="will-change-transform"
+              >
+                <ReviewCard review={review} index={index} />
+              </motion.div>
+            ))}
+          </AnimatePresence>
+        </motion.div>
+      ) : (
+        !isLoading && (
+          <div className="text-center py-8">
+            <p className="text-gray-500">No reviews found.</p>
+          </div>
+        )
+      )}
+    </div>
   );
 });
 

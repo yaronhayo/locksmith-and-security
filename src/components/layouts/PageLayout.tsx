@@ -1,143 +1,118 @@
 
-import React from "react";
-import { cn } from "@/lib/utils";
-import { motion } from "framer-motion";
-import { ErrorBoundary } from "react-error-boundary";
-import ErrorFallback from "@/components/ErrorFallback";
-import MetaTags from "./MetaTags";
-import PageHero from "./PageHero";
-import PageLoading from "./PageLoading";
-import Breadcrumbs from "@/components/Breadcrumbs";
-import { createBreadcrumbSchema } from "../meta/schema/BreadcrumbSchema";
-import { createLocalBusinessSchema } from "../meta/schema/LocalBusinessSchema";
-import { createWebSiteSchema } from "../meta/schema/WebSiteSchema";
-import ScrollToTopButton from "@/components/ScrollToTopButton";
+import React, { useEffect } from 'react';
+import MetaTags from './MetaTags';
+import { BreadcrumbSchema } from '../meta/schema/BreadcrumbSchema';
+import { SchemaScripts } from '../meta/SchemaScripts';
+import { ScrollToTop } from '../ScrollToTop';
+import Breadcrumbs from '../Breadcrumbs';
+import { ScrollToTopButton } from '../ScrollToTopButton';
+import LoadingState from './LoadingState';
+import { AnimatePresence, motion } from 'framer-motion';
+import PageHero from './PageHero';
+import { cn } from '@/lib/utils';
 
-interface Schema {
-  type: string;
-  data: object;
-}
-
-interface PageLayoutProps {
-  title: string;
-  description: string;
-  children: React.ReactNode;
-  className?: string;
-  heroTitle?: string;
-  heroDescription?: string;
-  schema?: object;
-  schemas?: Schema[];
+export interface PageLayoutProps {
+  title?: string;
+  description?: string;
+  keywords?: string;
   canonicalUrl?: string;
   ogImage?: string;
-  keywords?: string;
-  isLoading?: boolean;
+  ogType?: string;
+  children: React.ReactNode;
+  schema?: any;
+  className?: string;
+  breadcrumbs?: Array<{name: string, path: string}>;
+  customBreadcrumbs?: Array<{name: string, path: string}>;
   noindex?: boolean;
   nofollow?: boolean;
-  breadcrumbs?: Array<{name: string, item: string}>;
-  customBreadcrumbs?: Array<{name: string, path: string}>;
-  ogType?: "website" | "article" | "product" | "profile" | "book";
-  hideBreadcrumbs?: boolean;
   modifiedDate?: string;
+  hideBreadcrumbs?: boolean; // When true, breadcrumbs are hidden
+  heroTitle?: string;
+  heroDescription?: string;
 }
 
-const PageLayout = ({
+const PageLayout: React.FC<PageLayoutProps> = ({
   title,
   description,
-  children,
-  className,
-  heroTitle,
-  heroDescription,
-  schema,
-  schemas = [],
+  keywords,
   canonicalUrl,
   ogImage,
-  keywords,
-  isLoading = false,
-  noindex = false,
-  nofollow = false,
+  ogType,
+  children,
+  schema,
+  className,
   breadcrumbs,
   customBreadcrumbs,
-  ogType = "website",
-  hideBreadcrumbs = false,
-  modifiedDate = new Date().toISOString().split('T')[0],
-}: PageLayoutProps) => {
-  if (isLoading) {
-    return <PageLoading />;
-  }
+  noindex,
+  nofollow,
+  modifiedDate,
+  hideBreadcrumbs = false, // Default to false (show breadcrumbs)
+  heroTitle,
+  heroDescription,
+}) => {
+  useEffect(() => {
+    // Auto-scroll to top when component mounts
+    window.scrollTo(0, 0);
+  }, [title]); // Re-trigger on title change (new page)
 
-  // Determine if we have a hero section
-  const hasHero = Boolean(heroTitle || heroDescription);
+  // Generate breadcrumb schema if breadcrumbs are present
+  const breadcrumbSchema = ((breadcrumbs && breadcrumbs.length > 0) || (customBreadcrumbs && customBreadcrumbs.length > 0)) 
+    ? <BreadcrumbSchema breadcrumbs={customBreadcrumbs || breadcrumbs} /> 
+    : null;
 
-  // Add schema to schemas array if provided
-  const allSchemas = [...schemas];
-  if (schema) {
-    allSchemas.push({ type: 'schema', data: schema });
-  }
-  
-  // Add breadcrumb schema if breadcrumbs are provided and not hidden
-  if (!hideBreadcrumbs && breadcrumbs && breadcrumbs.length > 0) {
-    const breadcrumbSchema = createBreadcrumbSchema({ breadcrumbs });
-    allSchemas.push(breadcrumbSchema);
-  }
-  
-  // Add default LocalBusiness schema
-  const localBusinessSchema = createLocalBusinessSchema();
-  allSchemas.push(localBusinessSchema);
-  
-  // Add default WebSite schema
-  const websiteSchema = createWebSiteSchema();
-  allSchemas.push(websiteSchema);
+  // Combine all schemas for the page
+  const schemas = [];
+  if (schema) schemas.push({ type: 'WebPage', data: schema });
+  if (breadcrumbSchema) schemas.push({ type: 'BreadcrumbList', data: breadcrumbSchema });
 
   return (
-    <ErrorBoundary FallbackComponent={ErrorFallback}>
+    <>
       <MetaTags
         title={title}
         description={description}
-        schemas={allSchemas}
+        keywords={keywords}
         canonicalUrl={canonicalUrl}
         ogImage={ogImage}
-        keywords={keywords}
+        ogType={ogType}
         noindex={noindex}
         nofollow={nofollow}
-        ogType={ogType}
         modifiedDate={modifiedDate}
       />
       
-      {/* Render breadcrumbs only if not hidden */}
-      {!hideBreadcrumbs && (
-        <div className="container mx-auto px-4 py-3 md:py-4">
-          <Breadcrumbs 
-            items={customBreadcrumbs} 
-            showSchema={false} // Schema is handled in MetaTags
-          />
-        </div>
-      )}
+      <SchemaScripts schemas={schemas} />
       
-      {/* Hero section if present - always pass showBreadcrumbs=false to prevent double rendering */}
-      {hasHero && (
-        <PageHero 
-          title={heroTitle || title}
-          description={heroDescription || description}
-          showBreadcrumbs={false} // Always false to prevent duplication
-          customBreadcrumbs={customBreadcrumbs}
-        />
-      )}
+      <ScrollToTop />
       
-      <motion.main
-        className={cn("flex-grow", !hasHero && "pt-0")}
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: 20 }}
-        transition={{ duration: 0.3 }}
-        role="main"
-        tabIndex={-1}
-      >
-        <div className={cn(className)}>{children}</div>
-      </motion.main>
+      <AnimatePresence mode="wait">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.3 }}
+          className={cn("min-h-screen flex flex-col", className)}
+        >
+          {/* Only render breadcrumbs once at the top level if not hidden */}
+          {!hideBreadcrumbs && (breadcrumbs || customBreadcrumbs) && (
+            <div className="container mx-auto px-4 py-4">
+              <Breadcrumbs breadcrumbs={customBreadcrumbs || breadcrumbs} includeSchema={false} />
+            </div>
+          )}
+          
+          {/* Hero section */}
+          {heroTitle && (
+            <PageHero 
+              title={heroTitle} 
+              description={heroDescription} 
+              // Don't pass showBreadcrumbs to PageHero to avoid duplicate breadcrumbs
+            />
+          )}
+          
+          {children}
+        </motion.div>
+      </AnimatePresence>
       
-      {/* Scroll to top button */}
       <ScrollToTopButton />
-    </ErrorBoundary>
+    </>
   );
 };
 
