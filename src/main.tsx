@@ -5,8 +5,11 @@ import App from './App.tsx'
 import './index.css'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import LoadingSpinner from './components/LoadingSpinner.tsx'
-import { toast } from 'sonner'
+import { toast, Toaster } from 'sonner'
 import { logToService } from './utils/performanceMonitoring.ts'
+
+// Track active toasts for error deduplication
+const activeToasts = new Set<string>();
 
 // Create Query Client with optimized settings
 const queryClient = new QueryClient({
@@ -25,42 +28,56 @@ const queryClient = new QueryClient({
       refetchOnWindowFocus: false, // Reduce unnecessary refetches
       refetchOnMount: true,
       gcTime: 1000 * 60 * 30, // 30 minutes (previously cacheTime)
-      onError: (error) => {
-        // Global default error handler for queries
-        console.error('Query error:', error);
-        
-        // Log the error
-        logToService('error', 'Query Error', { 
-          error: error instanceof Error ? error.message : String(error),
-          stack: error instanceof Error ? error.stack : undefined
-        });
-        
-        // Only show one toast notification for errors
-        if (!toast.isActive('query-error')) {
-          toast.error('Failed to load data. Please try again later.', {
-            id: 'query-error',
-            duration: 4000
+      meta: {
+        onError: (error: Error) => {
+          // Global default error handler for queries
+          console.error('Query error:', error);
+          
+          // Log the error
+          logToService('error', 'Query Error', { 
+            error: error instanceof Error ? error.message : String(error),
+            stack: error instanceof Error ? error.stack : undefined
           });
+          
+          // Only show one toast notification for errors
+          const toastId = 'query-error';
+          if (!activeToasts.has(toastId)) {
+            activeToasts.add(toastId);
+            toast.error('Failed to load data. Please try again later.', {
+              id: toastId,
+              duration: 4000,
+              onDismiss: () => {
+                activeToasts.delete(toastId);
+              }
+            });
+          }
         }
       }
     },
     mutations: {
-      onError: (error) => {
-        // Global default error handler for mutations
-        console.error('Mutation error:', error);
-        
-        // Log the error
-        logToService('error', 'Mutation Error', { 
-          error: error instanceof Error ? error.message : String(error),
-          stack: error instanceof Error ? error.stack : undefined
-        });
-        
-        // Only show one toast notification for errors
-        if (!toast.isActive('mutation-error')) {
-          toast.error('Failed to update data. Please try again later.', {
-            id: 'mutation-error',
-            duration: 4000
+      meta: {
+        onError: (error: Error) => {
+          // Global default error handler for mutations
+          console.error('Mutation error:', error);
+          
+          // Log the error
+          logToService('error', 'Mutation Error', { 
+            error: error instanceof Error ? error.message : String(error),
+            stack: error instanceof Error ? error.stack : undefined
           });
+          
+          // Only show one toast notification for errors
+          const toastId = 'mutation-error';
+          if (!activeToasts.has(toastId)) {
+            activeToasts.add(toastId);
+            toast.error('Failed to update data. Please try again later.', {
+              id: toastId,
+              duration: 4000,
+              onDismiss: () => {
+                activeToasts.delete(toastId);
+              }
+            });
+          }
         }
       }
     }
@@ -72,14 +89,18 @@ const supportsIntersectionObserver = 'IntersectionObserver' in window;
 
 // Add performance monitoring
 if (process.env.NODE_ENV === 'production') {
-  // Report web vitals on mount
-  window.addEventListener('load', () => {
-    setTimeout(() => {
-      const { CLS, FID, LCP } = performance.getEntriesByType('navigation')[0] as any;
-      if (CLS) console.log('CLS:', CLS);
-      if (FID) console.log('FID:', FID);
-      if (LCP) console.log('LCP:', LCP);
-    }, 2000);
+  // Dynamically import the performance monitoring module
+  import('./utils/performanceMonitoring.ts').then(({ trackCoreWebVitals }) => {
+    // Report web vitals on mount
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        trackCoreWebVitals();
+        const { CLS, FID, LCP } = performance.getEntriesByType('navigation')[0] as any;
+        if (CLS) console.log('CLS:', CLS);
+        if (FID) console.log('FID:', FID);
+        if (LCP) console.log('LCP:', LCP);
+      }, 2000);
+    });
   });
 }
 

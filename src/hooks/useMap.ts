@@ -55,9 +55,11 @@ export const useMapConfig = () => {
     gcTime: Infinity,    // Don't garbage collect the query
     retry: 3,            // Try up to 3 times if the request fails
     retryDelay: attemptIndex => Math.min(1000 * 2 ** attemptIndex, 10000), // Exponential backoff
-    onError: (error) => {
-      console.error('Map config error:', error);
-      toast.error('Failed to load map settings. Some features may not work correctly.');
+    meta: {
+      onError: (error: Error) => {
+        console.error('Map config error:', error);
+        toast.error('Failed to load map settings. Some features may not work correctly.');
+      }
     }
   });
 };

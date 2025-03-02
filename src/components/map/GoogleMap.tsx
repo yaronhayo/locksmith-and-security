@@ -1,6 +1,6 @@
 
-import React, { CSSProperties, useEffect, useState } from "react";
-import { GoogleMap as GoogleMapComponent, useJsApiLoader } from "@react-google-maps/api";
+import React, { CSSProperties, useEffect, useState, lazy, Suspense } from "react";
+import { GoogleMap as GoogleMapComponent } from "@react-google-maps/api";
 import MapLoader from "./MapLoader";
 import MapMarkers from "./MapMarkers";
 import MapError from "./MapError";
@@ -9,6 +9,9 @@ import MapControls from "./MapControls";
 import { useGoogleMap } from "./useGoogleMap";
 import { toast } from "sonner";
 import { useMapConfig, clearMapConfigCache } from '@/hooks/useMap';
+
+// Dynamically import heavy parts to reduce initial bundle
+const useJsApiLoader = () => import("@react-google-maps/api").then(m => m.useJsApiLoader);
 
 const mapOptions: google.maps.MapOptions = {
   zoomControl: false, // We'll use our custom controls
@@ -50,12 +53,46 @@ const GoogleMap = ({
 }: GoogleMapProps) => {
   const { data: apiKey, isLoading: isKeyLoading, error: keyError, refetch } = useMapConfig();
   const [retryCount, setRetryCount] = useState(0);
+  const [apiLoader, setApiLoader] = useState<any>(null);
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [loadError, setLoadError] = useState<Error | null>(null);
   
-  const { isLoaded, loadError } = useJsApiLoader({
-    id: 'google-map-script',
-    googleMapsApiKey: apiKey || '',
-    libraries: ['places'],
-  });
+  // Dynamically load the JS API loader
+  useEffect(() => {
+    let isMounted = true;
+    
+    const loadApiLoader = async () => {
+      try {
+        const jsApiLoader = await useJsApiLoader();
+        if (isMounted) {
+          setApiLoader(() => jsApiLoader);
+        }
+      } catch (error) {
+        console.error("Failed to load JS API loader:", error);
+        setLoadError(error instanceof Error ? error : new Error("Failed to load map API"));
+      }
+    };
+    
+    loadApiLoader();
+    
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+  
+  // Initialize the JS API loader once available
+  useEffect(() => {
+    if (apiLoader && apiKey) {
+      const { isLoaded: loaded, loadError: error } = apiLoader({
+        id: 'google-map-script',
+        googleMapsApiKey: apiKey,
+        libraries: ['places'],
+      });
+      
+      setIsLoaded(loaded);
+      if (error) setLoadError(error);
+    }
+  }, [apiLoader, apiKey]);
 
   const {
     mapRef,
@@ -101,6 +138,7 @@ const GoogleMap = ({
     setRetryCount(prev => prev + 1);
     clearMapConfigCache();
     refetch();
+    setLoadError(null);
     toast.info("Retrying map initialization...");
   };
 
@@ -129,7 +167,7 @@ const GoogleMap = ({
     />;
   }
   
-  if (!isLoaded) {
+  if (!isLoaded || !apiLoader) {
     return <MapLoader text="Loading Google Maps..." />;
   }
   

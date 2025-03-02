@@ -4,11 +4,11 @@ import LockoutIntro from '../shared/LockoutIntro';
 import ServiceAreas from '../shared/ServiceAreas';
 import LoadingSpinner from '@/components/LoadingSpinner';
 
-// Lazy-loaded components
-const ExpertSolutions = lazy(() => import('./sections/ExpertSolutions'));
-const LockoutScenarios = lazy(() => import('./sections/LockoutScenarios'));
-const ProfessionalAdvantages = lazy(() => import('./sections/ProfessionalAdvantages'));
-const LockoutSteps = lazy(() => import('./sections/LockoutSteps'));
+// Lazy-loaded components with better dynamic import naming
+const ExpertSolutions = lazy(() => import(/* webpackChunkName: "storage-expert-solutions" */ './sections/ExpertSolutions'));
+const LockoutScenarios = lazy(() => import(/* webpackChunkName: "storage-lockout-scenarios" */ './sections/LockoutScenarios'));
+const ProfessionalAdvantages = lazy(() => import(/* webpackChunkName: "storage-professional-advantages" */ './sections/ProfessionalAdvantages'));
+const LockoutSteps = lazy(() => import(/* webpackChunkName: "storage-lockout-steps" */ './sections/LockoutSteps'));
 
 // Loading fallback component
 const SectionLoading = () => (

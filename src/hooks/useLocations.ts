@@ -40,11 +40,11 @@ export const useLocations = () => {
     retry: 3,                  // Retry failed requests 3 times
     retryDelay: attemptIndex => Math.min(1000 * 2 ** attemptIndex, 30000), // Exponential backoff
     meta: {
-      errorMessage: 'Failed to load service area locations'
-    },
-    onError: (error) => {
-      console.error('Location fetch error:', error);
-      toast.error('Could not load service locations. Please try again later.');
+      errorMessage: 'Failed to load service area locations',
+      onError: (error: Error) => {
+        console.error('Location fetch error:', error);
+        toast.error('Could not load service locations. Please try again later.');
+      }
     }
   });
 };
