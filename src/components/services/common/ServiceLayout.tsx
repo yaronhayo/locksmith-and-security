@@ -50,7 +50,7 @@ const ServiceLayout: React.FC<ServiceLayoutProps> = ({
       hideBreadcrumbs={false}
       preselectedService={preselectedService}
     >
-      <div className="-mt-8">
+      <div className="-mt-8 sm:-mt-6">
         <EnhancedServicesHero 
           title={title}
           description={description}
@@ -71,7 +71,9 @@ const ServiceLayout: React.FC<ServiceLayoutProps> = ({
       />
       
       {reviewsData.length > 0 && (
-        <ServicesProof reviewsData={reviewsData} />
+        <div className="mx-auto px-4 sm:px-6 md:px-8">
+          <ServicesProof reviewsData={reviewsData} />
+        </div>
       )}
     </PageLayout>
   );

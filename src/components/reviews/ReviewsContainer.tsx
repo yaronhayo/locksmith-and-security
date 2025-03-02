@@ -49,7 +49,7 @@ const ReviewsContainer = memo(({
   };
   
   return (
-    <div className="w-full">
+    <div className="w-full px-4 sm:px-0">
       <ReviewsHeader 
         totalReviews={totalReviews} 
         location={location} 
@@ -58,7 +58,7 @@ const ReviewsContainer = memo(({
       
       {displayedReviews.length > 0 ? (
         <motion.div 
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6"
           variants={containerVariants}
           initial="hidden"
           animate="visible"

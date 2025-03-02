@@ -71,6 +71,35 @@
     min-width: 44px;
     padding: 0.5rem;
   }
+  
+  /* Increase font size for better readability on small screens */
+  h1 {
+    font-size: clamp(1.75rem, 7vw, 2.5rem);
+  }
+  
+  h2 {
+    font-size: clamp(1.5rem, 6vw, 2rem);
+  }
+  
+  h3 {
+    font-size: clamp(1.25rem, 5vw, 1.75rem);
+  }
+  
+  p, li {
+    font-size: clamp(0.875rem, 4vw, 1rem);
+  }
+  
+  /* Fix padding for mobile containers */
+  .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  
+  /* Fix spacing for sections on mobile */
+  section {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+  }
 }
 
 /* Improve form elements on mobile Safari */
@@ -133,4 +162,22 @@ img:not([width]):not([height]) {
 button, a, [role="button"] {
   cursor: pointer;
   touch-action: manipulation;
+}
+
+/* Mobile-specific optimizations */
+@media (max-width: 768px) {
+  /* Prevent overflow issues */
+  .overflow-x-auto {
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  /* Improve tap targets */
+  .nav-link, .button, .card {
+    margin-bottom: 0.5rem;
+  }
+  
+  /* Better spacing for mobile */
+  .grid {
+    row-gap: 1.5rem;
+  }
 }

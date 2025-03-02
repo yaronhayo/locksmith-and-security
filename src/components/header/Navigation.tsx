@@ -24,6 +24,19 @@ const Navigation = ({ className, isMenuOpen = false, isScrolled = false }: Navig
     setIsOpen(false);
   }, [location]);
 
+  // Handle body scroll lock when mobile menu is open
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isOpen]);
+
   const isActive = (path: string) => {
     if (path === location.pathname) return true;
     const matchingNavItem = navItems.find(item => 
@@ -43,7 +56,7 @@ const Navigation = ({ className, isMenuOpen = false, isScrolled = false }: Navig
     <nav 
       className={cn(
         "hidden lg:flex items-center space-x-8",
-        isOpen && "fixed inset-0 top-[65px] bg-primary/95 flex flex-col items-start px-6 py-6 space-y-3 overflow-y-auto lg:relative lg:top-0 lg:bg-transparent lg:flex-row lg:items-center lg:space-x-8 lg:space-y-0 lg:p-0 max-h-[calc(100vh-65px)]",
+        isOpen && "fixed inset-0 top-[65px] bg-primary/95 flex flex-col items-start px-6 py-6 space-y-3 overflow-y-auto lg:relative lg:top-0 lg:bg-transparent lg:flex-row lg:items-center lg:space-x-8 lg:space-y-0 lg:p-0 max-h-[calc(100vh-65px)] z-50",
         isOpen && "!flex",
         className
       )}
