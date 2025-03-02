@@ -8,6 +8,9 @@ interface OpenGraphTagsProps {
   url: string;
   modifiedDate: string;
   baseUrl: string;
+  type?: "website" | "article" | "product" | "profile" | "book";
+  siteName?: string;
+  locale?: string;
 }
 
 export const OpenGraphTags = ({ 
@@ -16,7 +19,10 @@ export const OpenGraphTags = ({
   image, 
   url, 
   modifiedDate,
-  baseUrl 
+  baseUrl,
+  type = "website",
+  siteName = "Locksmith & Security LLC",
+  locale = "en_US" 
 }: OpenGraphTagsProps) => {
   // Ensure OG description stays within recommended length (150-157 characters to be safe)
   const optimizedDescription = description.length > 157 
@@ -33,10 +39,13 @@ export const OpenGraphTags = ({
       <meta property="og:title" content={title} />
       <meta property="og:description" content={optimizedDescription} />
       <meta property="og:image" content={absoluteImageUrl} />
+      <meta property="og:image:alt" content={`Image for ${title}`} />
+      <meta property="og:image:width" content="1200" />
+      <meta property="og:image:height" content="630" />
       <meta property="og:url" content={url} />
-      <meta property="og:type" content="website" />
-      <meta property="og:site_name" content="Locksmith & Security LLC" />
-      <meta property="og:locale" content="en_US" />
+      <meta property="og:type" content={type} />
+      <meta property="og:site_name" content={siteName} />
+      <meta property="og:locale" content={locale} />
       <meta property="og:updated_time" content={modifiedDate} />
     </Helmet>
   );

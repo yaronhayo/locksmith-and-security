@@ -9,6 +9,9 @@ interface BasicMetaTagsProps {
   nofollow: boolean;
   canonicalUrl: string;
   modifiedDate: string;
+  language?: string;
+  viewport?: string;
+  themeColor?: string;
 }
 
 export const BasicMetaTags = ({
@@ -18,34 +21,34 @@ export const BasicMetaTags = ({
   noindex,
   nofollow,
   canonicalUrl,
-  modifiedDate
+  modifiedDate,
+  language = "en",
+  viewport = "width=device-width, initial-scale=1.0, maximum-scale=5.0",
+  themeColor = "#1E3A8A"
 }: BasicMetaTagsProps) => {
   // Ensure description stays within recommended length (150-157 characters to be safe)
   const optimizedDescription = description.length > 157 
     ? `${description.substring(0, 157)}...` 
     : description;
 
+  // Create robots content based on props
+  const robotsContent = `${noindex ? 'noindex' : 'index'},${nofollow ? 'nofollow' : 'follow'}${!noindex ? ',max-image-preview:large,max-snippet:-1,max-video-preview:-1' : ''}`;
+
   return (
     <Helmet>
-      <html lang="en" />
+      <html lang={language} />
       <title>{title}</title>
       <meta name="description" content={optimizedDescription} />
       <meta name="keywords" content={keywords} />
-      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
-      {(noindex || nofollow) && (
-        <meta 
-          name="robots" 
-          content={`${noindex ? 'noindex' : 'index'},${nofollow ? 'nofollow' : 'follow'}`} 
-        />
-      )}
+      <meta name="viewport" content={viewport} />
+      <meta name="robots" content={robotsContent} />
       <link rel="canonical" href={canonicalUrl} />
-      <meta name="theme-color" content="#1E3A8A" />
+      <meta name="theme-color" content={themeColor} />
       <meta name="apple-mobile-web-app-capable" content="yes" />
       <meta name="apple-mobile-web-app-status-bar-style" content="default" />
       <meta name="format-detection" content="telephone=yes" />
-      <meta name="robots" content={noindex ? "noindex,nofollow" : "index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1"} />
       <meta name="author" content="Locksmith & Security LLC" />
-      <meta name="copyright" content="© 2024 Locksmith & Security LLC. All rights reserved." />
+      <meta name="copyright" content={`© ${new Date().getFullYear()} Locksmith & Security LLC. All rights reserved.`} />
       <meta name="last-modified" content={modifiedDate} />
     </Helmet>
   );

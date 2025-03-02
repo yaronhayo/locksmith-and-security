@@ -1,11 +1,13 @@
 
 import { Helmet } from "react-helmet";
 
+interface Schema {
+  type: string;
+  data: object;
+}
+
 interface SchemaScriptsProps {
-  schemas: Array<{
-    type: string;
-    data: object;
-  }>;
+  schemas: Schema[];
 }
 
 export const SchemaScripts = ({ schemas }: SchemaScriptsProps) => (

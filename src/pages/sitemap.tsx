@@ -3,12 +3,25 @@ import { useEffect, useState } from 'react';
 import PageLayout from "@/components/layouts/PageLayout";
 import { Link } from "react-router-dom";
 import { Separator } from "@/components/ui/separator";
+import { SchemaScripts } from "@/components/meta/SchemaScripts";
 
 // Group links by category
 interface LinkGroup {
   title: string;
   links: { path: string; label: string }[];
 }
+
+const sitemapSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Website Sitemap",
+  "description": "Complete site map of Locksmith & Security services and locations",
+  "mainContentOfPage": {
+    "@type": "WebPageElement",
+    "isAccessibleForFree": "True",
+    "cssSelector": ".sitemap-container"
+  }
+};
 
 const Sitemap = () => {
   const [linkGroups, setLinkGroups] = useState<LinkGroup[]>([]);
@@ -108,32 +121,39 @@ const Sitemap = () => {
       heroTitle="Website Sitemap"
       heroDescription="Find all the pages on our website organized by category"
     >
-      <div className="container mx-auto px-4 py-8">
+      <SchemaScripts schemas={[{ type: "WebPage", data: sitemapSchema }]} />
+      
+      <div className="container mx-auto px-4 py-8 sitemap-container">
+        <h1 className="sr-only">Sitemap</h1>
+        
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           <div className="col-span-1 md:col-span-2 lg:col-span-3">
-            <h2 className="sr-only">Main Navigation</h2>
-            <Link to="/" className="text-primary hover:text-primary/90 font-bold text-xl" aria-label="Home page">
-              Home
-            </Link>
+            <nav aria-label="Main Navigation">
+              <Link to="/" className="text-primary hover:text-primary/90 font-bold text-xl" aria-label="Home page">
+                Home
+              </Link>
+            </nav>
           </div>
           
           {linkGroups.map((group, index) => (
             <div key={index} className="space-y-4">
               <h2 className="text-xl font-bold text-gray-800">{group.title}</h2>
               <Separator aria-hidden="true" />
-              <ul className="space-y-2" role="list">
-                {group.links.map((link, linkIndex) => (
-                  <li key={linkIndex}>
-                    <Link 
-                      to={link.path} 
-                      className="text-primary/80 hover:text-primary transition-colors"
-                      aria-label={`Navigate to ${link.label} page`}
-                    >
-                      {link.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
+              <nav aria-label={`${group.title} Navigation`}>
+                <ul className="space-y-2" role="list">
+                  {group.links.map((link, linkIndex) => (
+                    <li key={linkIndex}>
+                      <Link 
+                        to={link.path} 
+                        className="text-primary/80 hover:text-primary transition-colors"
+                        aria-label={`Navigate to ${link.label} page`}
+                      >
+                        {link.label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </nav>
             </div>
           ))}
         </div>

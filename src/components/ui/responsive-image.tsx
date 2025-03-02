@@ -3,6 +3,7 @@ import { memo, useState, useEffect } from 'react';
 import { trackImageLoad } from '@/utils/performanceMonitoring';
 import { Skeleton } from '@/components/ui/skeleton';
 import { cn } from '@/lib/utils';
+import { Helmet } from 'react-helmet';
 
 interface ResponsiveImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
   src: string;
@@ -12,9 +13,12 @@ interface ResponsiveImageProps extends React.ImgHTMLAttributes<HTMLImageElement>
   fallbackSrc?: string;
   aspectRatio?: string;
   lazyLoad?: boolean;
+  priority?: boolean;
   className?: string;
   containerClassName?: string;
   loadingSkeletonClassName?: string;
+  structuredData?: boolean;
+  caption?: string;
 }
 
 const getImageSrcSet = (src: string): string => {
@@ -51,19 +55,24 @@ const ResponsiveImage = ({
   fallbackSrc = '/placeholder.svg',
   aspectRatio = 'aspect-auto',
   lazyLoad = true,
+  priority = false,
   className,
   containerClassName,
   loadingSkeletonClassName,
+  structuredData = false,
+  caption,
   onLoad: externalOnLoadHandler,
   onError: externalOnErrorHandler,
   ...props
 }: ResponsiveImageProps) => {
   const [isLoading, setIsLoading] = useState(true);
-  const [imgSrc, setImgSrc] = useState<string>(lazyLoad ? fallbackSrc : src);
-  const [imgSrcSet, setImgSrcSet] = useState<string | undefined>(lazyLoad ? undefined : srcSet || getImageSrcSet(src));
+  const [imgSrc, setImgSrc] = useState<string>(lazyLoad && !priority ? fallbackSrc : src);
+  const [imgSrcSet, setImgSrcSet] = useState<string | undefined>(
+    lazyLoad && !priority ? undefined : srcSet || getImageSrcSet(src)
+  );
   
   useEffect(() => {
-    if (lazyLoad) {
+    if (lazyLoad && !priority) {
       const img = new Image();
       img.src = src;
       
@@ -96,7 +105,7 @@ const ResponsiveImage = ({
     } else {
       setIsLoading(false);
     }
-  }, [src, srcSet, fallbackSrc, lazyLoad, externalOnLoadHandler, externalOnErrorHandler]);
+  }, [src, srcSet, fallbackSrc, lazyLoad, priority, externalOnLoadHandler, externalOnErrorHandler]);
 
   const handleImageLoad = () => {
     setIsLoading(false);
@@ -125,32 +134,54 @@ const ResponsiveImage = ({
   // Ensure alt text is never empty - use a descriptive fallback if needed
   const safeAlt = alt || getFilenameFromPath(src);
 
+  // Generate structured data for image if requested
+  const imageStructuredData = structuredData ? {
+    "@context": "https://schema.org/",
+    "@type": "ImageObject",
+    "contentUrl": src,
+    "description": safeAlt,
+    "caption": caption || safeAlt
+  } : null;
+
   return (
-    <div className={cn(`relative overflow-hidden ${aspectRatio}`, containerClassName)}>
-      {isLoading && (
-        <Skeleton 
-          className={cn(
-            "absolute inset-0 bg-gray-200 animate-pulse", 
-            loadingSkeletonClassName
-          )} 
-        />
+    <>
+      {structuredData && imageStructuredData && (
+        <Helmet>
+          <script type="application/ld+json">
+            {JSON.stringify(imageStructuredData)}
+          </script>
+        </Helmet>
       )}
-      <img
-        src={imgSrc}
-        srcSet={imgSrcSet}
-        sizes={sizes}
-        alt={safeAlt}
-        loading={lazyLoad ? "lazy" : "eager"}
-        onLoad={handleImageLoad}
-        onError={handleImageError}
-        className={cn(
-          "w-full h-full object-cover transition-opacity duration-300",
-          isLoading ? "opacity-0" : "opacity-100",
-          className
+      <div className={cn(`relative overflow-hidden ${aspectRatio}`, containerClassName)}>
+        {isLoading && (
+          <Skeleton 
+            className={cn(
+              "absolute inset-0 bg-gray-200 animate-pulse", 
+              loadingSkeletonClassName
+            )} 
+          />
         )}
-        {...props}
-      />
-    </div>
+        <img
+          src={imgSrc}
+          srcSet={imgSrcSet}
+          sizes={sizes}
+          alt={safeAlt}
+          loading={priority ? "eager" : (lazyLoad ? "lazy" : "eager")}
+          fetchPriority={priority ? "high" : "auto"}
+          onLoad={handleImageLoad}
+          onError={handleImageError}
+          className={cn(
+            "w-full h-full object-cover transition-opacity duration-300",
+            isLoading ? "opacity-0" : "opacity-100",
+            className
+          )}
+          {...props}
+        />
+        {caption && (
+          <figcaption className="text-sm text-gray-600 mt-2">{caption}</figcaption>
+        )}
+      </div>
+    </>
   );
 };
 

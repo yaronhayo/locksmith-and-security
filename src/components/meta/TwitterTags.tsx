@@ -6,13 +6,17 @@ interface TwitterTagsProps {
   description: string;
   image: string;
   baseUrl: string;
+  twitterHandle?: string;
+  cardType?: "summary" | "summary_large_image" | "app" | "player";
 }
 
 export const TwitterTags = ({ 
   title, 
   description, 
   image,
-  baseUrl 
+  baseUrl,
+  twitterHandle = "@LocksmithSecurity",
+  cardType = "summary_large_image"
 }: TwitterTagsProps) => {
   // Ensure Twitter description stays within recommended length (150-157 characters to be safe)
   const optimizedDescription = description.length > 157 
@@ -26,10 +30,13 @@ export const TwitterTags = ({
 
   return (
     <Helmet>
-      <meta name="twitter:card" content="summary_large_image" />
+      <meta name="twitter:card" content={cardType} />
+      <meta name="twitter:site" content={twitterHandle} />
+      <meta name="twitter:creator" content={twitterHandle} />
       <meta name="twitter:title" content={title} />
       <meta name="twitter:description" content={optimizedDescription} />
       <meta name="twitter:image" content={absoluteImageUrl} />
+      <meta name="twitter:image:alt" content={`Image for ${title}`} />
     </Helmet>
   );
 };
