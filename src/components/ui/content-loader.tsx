@@ -11,7 +11,7 @@ type ContentLoaderVariant =
   | "table" 
   | "form";
 
-type ContentLoaderSize = "sm" | "md" | "lg";
+type ContentLoaderSize = "xs" | "sm" | "md" | "lg";
 
 interface ContentLoaderProps extends React.HTMLAttributes<HTMLDivElement> {
   variant?: ContentLoaderVariant;
@@ -33,6 +33,7 @@ const ContentLoader = ({
   const getVariantClasses = (variant: ContentLoaderVariant, size: ContentLoaderSize) => {
     const baseClasses = animate ? "animate-pulse" : "";
     const sizeMap: Record<ContentLoaderSize, string> = {
+      xs: "h-3",
       sm: "h-4",
       md: "h-6",
       lg: "h-8",
@@ -41,7 +42,7 @@ const ContentLoader = ({
     const variants: Record<ContentLoaderVariant, string> = {
       text: `${sizeMap[size]} ${fullWidth ? 'w-full' : 'w-3/4'}`,
       card: "w-full h-32 sm:h-40 md:h-48 rounded-lg",
-      avatar: `${size === 'sm' ? 'h-8 w-8' : size === 'md' ? 'h-12 w-12' : 'h-16 w-16'} rounded-full`,
+      avatar: `${size === 'xs' ? 'h-6 w-6' : size === 'sm' ? 'h-8 w-8' : size === 'md' ? 'h-12 w-12' : 'h-16 w-16'} rounded-full`,
       banner: "w-full h-24 sm:h-32 md:h-40 rounded-md",
       table: "w-full grid grid-cols-4 gap-2",
       form: "w-full space-y-4"
