@@ -5,6 +5,7 @@ import { TwitterTags } from "@/components/meta/TwitterTags";
 import { SchemaScripts } from "@/components/meta/SchemaScripts";
 import { HreflangTags } from "@/components/meta/HreflangTags";
 import React from "react";
+import { Helmet } from "react-helmet";
 
 interface Schema {
   type: string;
@@ -56,6 +57,13 @@ const MetaTags = ({
     
   return (
     <>
+      <Helmet>
+        <link rel="icon" type="image/png" href="https://mtbgayqzjrxjjmsjikcg.supabase.co/storage/v1/object/public/uploads//Favicon.png" />
+        <link rel="apple-touch-icon" sizes="180x180" href="https://mtbgayqzjrxjjmsjikcg.supabase.co/storage/v1/object/public/uploads//Favicon.png" />
+        <link rel="icon" type="image/png" sizes="32x32" href="https://mtbgayqzjrxjjmsjikcg.supabase.co/storage/v1/object/public/uploads//Favicon.png" />
+        <link rel="icon" type="image/png" sizes="16x16" href="https://mtbgayqzjrxjjmsjikcg.supabase.co/storage/v1/object/public/uploads//Favicon.png" />
+      </Helmet>
+    
       <BasicMetaTags 
         title={title}
         description={description}
