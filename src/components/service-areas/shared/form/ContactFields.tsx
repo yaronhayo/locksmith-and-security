@@ -100,10 +100,12 @@ const ContactFields = ({
               name="address"
               value={formState.address || ''}
               onChange={handleAddressChange}
+              onAddressSelect={(address) => handleAddressChange(address)}
               onBlur={() => handleBlur('address')}
               disabled={isSubmitting}
               placeholder="Enter your address"
               className={errors.address ? "border-red-500" : ""}
+              error={!!errors.address}
             />
           </GoogleMapsProvider>
         </div>

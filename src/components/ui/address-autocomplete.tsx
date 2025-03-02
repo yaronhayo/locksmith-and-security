@@ -75,6 +75,22 @@ const AddressAutocomplete = forwardRef<HTMLInputElement, AddressAutocompleteProp
               if (onAddressSelect) {
                 onAddressSelect(place.formatted_address, place.place_id);
               }
+              
+              // For traditional onChange handlers via the props
+              if (props.onChange && typeof props.onChange === 'function') {
+                // Create synthetic event
+                const syntheticEvent = {
+                  target: {
+                    name: props.name || 'address',
+                    value: place.formatted_address
+                  },
+                  currentTarget: inputRef.current,
+                  preventDefault: () => {},
+                  stopPropagation: () => {}
+                } as React.ChangeEvent<HTMLInputElement>;
+                
+                props.onChange(syntheticEvent);
+              }
             } else {
               console.warn("Invalid place selected");
             }
@@ -95,7 +111,7 @@ const AddressAutocomplete = forwardRef<HTMLInputElement, AddressAutocompleteProp
           console.log("Address autocomplete cleaned up");
         }
       };
-    }, [onAddressSelect, placesOptions, initializationAttempts]);
+    }, [onAddressSelect, placesOptions, initializationAttempts, props.name, props.onChange]);
 
     useEffect(() => {
       const handleKeyDown = (e: KeyboardEvent) => {

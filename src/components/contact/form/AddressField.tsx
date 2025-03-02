@@ -4,6 +4,7 @@ import { Label } from "@/components/ui/label";
 import { AddressAutocomplete } from "@/components/ui/address-autocomplete";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { AlertCircle } from "lucide-react";
+import GoogleMapsProvider from "@/components/providers/GoogleMapsProvider";
 
 interface AddressFieldProps {
   value: string;
@@ -48,16 +49,20 @@ const AddressField = ({ value, onChange, isSubmitting, error }: AddressFieldProp
         Address
       </Label>
       <div className="relative">
-        <AddressAutocomplete
-          value={value}
-          onChange={handleAddressChange}
-          id="address"
-          disabled={isSubmitting}
-          placeholder="Enter your address"
-          aria-invalid={!!displayError}
-          aria-describedby={displayError ? "address-error" : undefined}
-          onBlur={handleBlur}
-        />
+        <GoogleMapsProvider>
+          <AddressAutocomplete
+            value={value}
+            onChange={handleAddressChange}
+            onAddressSelect={onChange}
+            id="address"
+            disabled={isSubmitting}
+            placeholder="Enter your address"
+            aria-invalid={!!displayError}
+            aria-describedby={displayError ? "address-error" : undefined}
+            onBlur={handleBlur}
+            error={!!displayError}
+          />
+        </GoogleMapsProvider>
       </div>
       {displayError && (
         <Alert variant="destructive" className="mt-1 py-2">

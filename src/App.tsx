@@ -7,6 +7,7 @@ import CookieConsent from "./components/CookieConsent";
 import { NavigationProvider } from "./contexts/NavigationContext";
 import ScrollToTopButton from "@/components/ScrollToTopButton";
 import LoadingSpinner from "@/components/LoadingSpinner";
+import GoogleMapsProvider from "@/components/providers/GoogleMapsProvider";
 
 function App() {
   // Log when the app is mounted for debugging purposes
@@ -29,10 +30,12 @@ function App() {
     <Router>
       <RouteErrorBoundary>
         <NavigationProvider>
-          <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><LoadingSpinner size="lg" text="Loading content..." /></div>}>
-            <Routes />
-          </Suspense>
-          <ScrollToTopButton />
+          <GoogleMapsProvider>
+            <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><LoadingSpinner size="lg" text="Loading content..." /></div>}>
+              <Routes />
+            </Suspense>
+            <ScrollToTopButton />
+          </GoogleMapsProvider>
         </NavigationProvider>
         <CookieConsent />
       </RouteErrorBoundary>

@@ -36,12 +36,14 @@ const AddressFields = ({ address, onChange, errors, isSubmitting }: AddressField
             <AddressAutocomplete
               value={address}
               onChange={handleAddressChange}
+              onAddressSelect={onChange}
               placeholder="Enter your service address"
               disabled={isSubmitting}
               required
               id="address"
               name="address"
               className="text-gray-900 placeholder:text-gray-500"
+              error={!!errors.address}
             />
           </GoogleMapsProvider>
         </div>
