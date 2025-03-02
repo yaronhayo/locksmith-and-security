@@ -46,7 +46,7 @@ export default defineConfig(({ mode }) => ({
     },
   },
   build: {
-    // Improved chunk splitting strategy
+    // Enhanced chunk splitting strategy for better performance
     rollupOptions: {
       output: {
         manualChunks: (id) => {
@@ -70,8 +70,40 @@ export default defineConfig(({ mode }) => ({
             if (id.includes('react-router')) {
               return 'vendor-router';
             }
+            if (id.includes('react-hook-form')) {
+              return 'vendor-form';
+            }
+            if (id.includes('@supabase')) {
+              return 'vendor-supabase';
+            }
+            if (id.includes('recaptcha') || id.includes('captcha')) {
+              return 'vendor-recaptcha';
+            }
             // Group remaining node_modules
             return 'vendor';
+          }
+          
+          // Split route components for better code splitting
+          if (id.includes('/pages/')) {
+            if (id.includes('/services/')) {
+              if (id.includes('/auto-locksmith/')) {
+                return 'route-services-auto';
+              }
+              if (id.includes('/commercial-locksmith/')) {
+                return 'route-services-commercial';
+              }
+              if (id.includes('/residential-locksmith/')) {
+                return 'route-services-residential';
+              }
+              if (id.includes('/emergency-locksmith/')) {
+                return 'route-services-emergency';
+              }
+              return 'route-services';
+            }
+            if (id.includes('/service-areas/')) {
+              return 'route-service-areas';
+            }
+            return 'route-pages';
           }
           
           // Split component types
@@ -83,6 +115,12 @@ export default defineConfig(({ mode }) => ({
           }
           if (id.includes('/components/services/')) {
             return 'service-components';
+          }
+          if (id.includes('/components/reviews/')) {
+            return 'review-components';
+          }
+          if (id.includes('/components/meta/')) {
+            return 'meta-components';
           }
         },
       },

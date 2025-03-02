@@ -32,12 +32,22 @@ export const useLocations = () => {
         description: location.description || '',
         lat: Number(location.lat),
         lng: Number(location.lng),
-        title: location.title || `${location.name} Locksmith Services`
+        title: location.title || `${location.name} Locksmith Services`,
+        // Add structured data properties for better SEO
+        postalCode: location.postal_code || '',
+        region: 'NJ',
+        country: 'US',
+        // Add neighborhood data if available
+        neighborhoods: location.neighborhoods || [],
+        // Add business data
+        businessName: `Locksmith & Security LLC - ${location.name}`,
+        telephone: "(201) 748-2070",
+        priceRange: "$$"
       })) as ServiceAreaLocation[];
     },
-    staleTime: 10 * 60 * 1000, // Cache for 10 minutes instead of 5
-    gcTime: 60 * 60 * 1000,    // Keep in cache for 1 hour
-    retry: 3,                  // Retry failed requests 3 times
+    staleTime: 60 * 60 * 1000, // Cache for 1 hour
+    gcTime: 24 * 60 * 60 * 1000, // Keep in cache for 24 hours
+    retry: 3,
     retryDelay: attemptIndex => Math.min(1000 * 2 ** attemptIndex, 30000), // Exponential backoff
     meta: {
       errorMessage: 'Failed to load service area locations'

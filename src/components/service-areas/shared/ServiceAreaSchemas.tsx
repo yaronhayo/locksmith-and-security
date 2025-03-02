@@ -36,12 +36,21 @@ export const createServiceAreaSchemas = (
           "addressLocality": location.name,
           "addressRegion": "NJ",
           "addressCountry": "US"
-        }
+        },
+        "telephone": settings?.company_phone || "(201) 748-2070",
+        "priceRange": "$$",
+        "openingHours": "Mo,Tu,We,Th,Fr,Sa,Su 00:00-23:59"
       },
       "areaServed": {
         "@type": "City",
         "name": location.name,
         "sameAs": `https://en.wikipedia.org/wiki/${location.name.replace(/ /g, '_')},_New_Jersey`
+      },
+      "serviceType": "Locksmith Service",
+      "availableChannel": {
+        "@type": "ServiceChannel",
+        "serviceUrl": `https://247locksmithandsecurity.com/service-areas/${areaSlug}`,
+        "servicePhone": settings?.company_phone || "(201) 748-2070"
       }
     }
   };
@@ -65,7 +74,7 @@ export const createServiceAreaSchemas = (
       },
       {
         question: `How quickly can a locksmith arrive at my location in ${location.name}?`,
-        answer: `As a local locksmith service with technicians based in and around ${location.name}, we can typically arrive quickly to assist you. We prioritize emergency situations and aim to provide the fastest possible response.`
+        answer: `As a local locksmith service with technicians based in and around ${location.name}, we can typically arrive within 15-30 minutes to assist you. We prioritize emergency situations and aim to provide the fastest possible response.`
       },
       {
         question: "Are your locksmith technicians licensed and insured?",
@@ -94,5 +103,50 @@ export const createServiceAreaSchemas = (
     ]
   });
 
-  return [breadcrumbSchema, serviceSchema, locationSchema, faqSchema].filter(Boolean);
+  // Add local business schema 
+  const localBusinessSchema = {
+    type: 'LocalBusiness',
+    data: {
+      "@context": "https://schema.org",
+      "@type": "LocalBusiness",
+      "@id": `https://247locksmithandsecurity.com/service-areas/${areaSlug}#localbusiness`,
+      "name": settings?.company_name || "Locksmith & Security LLC",
+      "description": `Professional locksmith services in ${location.name}, NJ. We provide emergency lockout assistance, lock repair, key cutting, and security solutions for homes, businesses, and vehicles.`,
+      "url": `https://247locksmithandsecurity.com/service-areas/${areaSlug}`,
+      "telephone": settings?.company_phone || "(201) 748-2070",
+      "priceRange": "$$",
+      "image": "/lovable-uploads/1bbeb1e6-5581-4e09-9600-7d1859bb17c5.png",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": settings?.company_address || "",
+        "addressLocality": location.name,
+        "addressRegion": "NJ",
+        "addressCountry": "US"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": location.lat,
+        "longitude": location.lng
+      },
+      "openingHoursSpecification": [
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+          "opens": "00:00",
+          "closes": "23:59"
+        }
+      ],
+      "serviceArea": {
+        "@type": "GeoCircle",
+        "geoMidpoint": {
+          "@type": "GeoCoordinates",
+          "latitude": location.lat,
+          "longitude": location.lng
+        },
+        "geoRadius": "10000"
+      }
+    }
+  };
+
+  return [breadcrumbSchema, serviceSchema, locationSchema, faqSchema, localBusinessSchema].filter(Boolean);
 };
