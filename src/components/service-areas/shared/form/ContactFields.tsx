@@ -64,7 +64,7 @@ const ContactFields = ({
         <Input
           id="name"
           name="name"
-          value={formState.name}
+          value={formState.name || ''}
           onChange={handleChange}
           onBlur={() => handleBlur('name')}
           disabled={isSubmitting}

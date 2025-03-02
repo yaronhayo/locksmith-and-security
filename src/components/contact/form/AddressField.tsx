@@ -68,6 +68,7 @@ const AddressField = ({ value, onChange, isSubmitting, error }: AddressFieldProp
             aria-describedby={displayError ? "address-error" : undefined}
             onBlur={handleBlur}
             error={!!displayError}
+            name="address"
           />
         </GoogleMapsProvider>
       </div>

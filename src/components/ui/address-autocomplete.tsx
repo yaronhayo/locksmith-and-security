@@ -1,75 +1,72 @@
 
-import React, { useRef, useEffect, useState, forwardRef } from "react";
+import React, { useState, useEffect, useRef, forwardRef } from "react";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 
-// Define a union type that can handle both event handlers and direct string updates
-export type AddressChangeHandler = 
-  | ((address: string, placeId?: string) => void) 
-  | React.ChangeEventHandler<HTMLInputElement>;
-
-export interface AddressAutocompleteProps
+// Interface for the Google Maps Autocomplete component
+interface AddressAutocompleteProps
   extends React.InputHTMLAttributes<HTMLInputElement> {
-  onAddressSelect?: (address: string, placeId?: string) => void;
-  placeholder?: string;
-  disabled?: boolean;
+  onAddressSelect?: (address: string) => void;
   error?: boolean;
-  required?: boolean;
-  className?: string;
-  placesOptions?: google.maps.places.AutocompleteOptions;
 }
 
-const AddressAutocomplete = forwardRef<HTMLInputElement, AddressAutocompleteProps>(
-  (
-    {
-      onAddressSelect,
-      onChange,
-      placeholder = "Enter your address",
-      disabled = false,
-      error = false,
-      required = false,
-      className,
-      placesOptions,
-      ...props
-    },
-    ref
-  ) => {
-    const inputRef = useRef<HTMLInputElement | null>(null);
-    const autocompleteRef = useRef<google.maps.places.Autocomplete | null>(null);
-    const [isInitialized, setIsInitialized] = useState(false);
-    const [initializationAttempts, setInitializationAttempts] = useState(0);
-    const maxAttempts = 5;
+// Default options for the Places Autocomplete
+const defaultPlacesOptions = {
+  componentRestrictions: { country: "us" },
+  fields: ["formatted_address", "geometry", "name"],
+};
 
+/**
+ * AddressAutocomplete component that enhances an input with Google Places Autocomplete
+ */
+export const AddressAutocomplete = forwardRef<HTMLInputElement, AddressAutocompleteProps>(
+  ({ className, onAddressSelect, error, ...props }, ref) => {
+    const [autocomplete, setAutocomplete] = useState<google.maps.places.Autocomplete | null>(null);
+    const [initializationAttempts, setInitializationAttempts] = useState(0);
+    const inputRef = useRef<HTMLInputElement>(null);
+    const combinedRef = useCombinedRefs(ref, inputRef);
+    const placesOptions = { ...defaultPlacesOptions };
+
+    // Initialize Google Maps Places Autocomplete
     useEffect(() => {
-      if (!window.google || !window.google.maps || !window.google.maps.places) {
-        if (initializationAttempts < maxAttempts) {
-          console.log(`Waiting for Google Maps Places API... (attempt ${initializationAttempts + 1}/${maxAttempts})`);
+      // Make sure Google Maps API is loaded
+      if (
+        typeof window === "undefined" ||
+        !window.google ||
+        !window.google.maps ||
+        !window.google.maps.places
+      ) {
+        // If Google Maps API isn't loaded yet, try again in 500ms
+        if (initializationAttempts < 10) {
           const timer = setTimeout(() => {
             setInitializationAttempts(prev => prev + 1);
-          }, 1000);
+          }, 500);
           return () => clearTimeout(timer);
-        } else {
-          console.error("Google Maps Places API not available after multiple attempts");
-          return;
         }
+        
+        console.error("Google Maps API not loaded after multiple attempts");
+        return;
       }
 
-      if (inputRef.current && !autocompleteRef.current) {
-        try {
-          const options: google.maps.places.AutocompleteOptions = {
-            types: ["address"],
-            componentRestrictions: { country: "us" },
-            fields: ["address_components", "formatted_address", "place_id", "geometry"],
-            ...placesOptions
-          };
+      // If the autocomplete already exists, skip initialization
+      if (autocomplete) {
+        return;
+      }
 
-          const autocomplete = new google.maps.places.Autocomplete(
+      try {
+        if (inputRef.current) {
+          // Create the autocomplete instance
+          const newAutocomplete = new window.google.maps.places.Autocomplete(
             inputRef.current,
-            options
+            placesOptions
           );
-
-          autocomplete.addListener("place_changed", () => {
-            const place = autocomplete.getPlace();
+          
+          // Store the autocomplete instance
+          setAutocomplete(newAutocomplete);
+          
+          // Add place_changed listener
+          newAutocomplete.addListener("place_changed", () => {
+            const place = newAutocomplete.getPlace();
             
             if (place && place.formatted_address) {
               console.log("Place selected:", place.formatted_address);
@@ -84,8 +81,13 @@ const AddressAutocomplete = forwardRef<HTMLInputElement, AddressAutocompleteProp
                 
                 if (nativeInputValueSetter) {
                   nativeInputValueSetter.call(inputRef.current, place.formatted_address);
-                  const event = new Event('input', { bubbles: true });
-                  inputRef.current.dispatchEvent(event);
+                  
+                  // Create and dispatch both input and change events to ensure all listeners are notified
+                  const inputEvent = new Event('input', { bubbles: true });
+                  inputRef.current.dispatchEvent(inputEvent);
+                  
+                  const changeEvent = new Event('change', { bubbles: true });
+                  inputRef.current.dispatchEvent(changeEvent);
                 } else {
                   // Fallback if native setter isn't available
                   inputRef.current.value = place.formatted_address;
@@ -94,24 +96,21 @@ const AddressAutocomplete = forwardRef<HTMLInputElement, AddressAutocompleteProp
               
               // Call the onAddressSelect callback if provided
               if (onAddressSelect) {
-                onAddressSelect(place.formatted_address, place.place_id);
+                onAddressSelect(place.formatted_address);
               }
               
               // Also trigger the onChange handler for form state updates
-              if (onChange) {
+              if (props.onChange) {
                 // Create a synthetic event if onChange expects an event
-                if (typeof onChange === 'function') {
-                  const syntheticEvent = {
-                    target: {
-                      name: props.name || 'address',
-                      value: place.formatted_address
-                    },
-                    currentTarget: inputRef.current,
-                    preventDefault: () => {},
-                    stopPropagation: () => {},
-                  } as React.ChangeEvent<HTMLInputElement>;
-                  
-                  onChange(syntheticEvent);
+                if (typeof props.onChange === 'function') {
+                   const syntheticEvent = {
+                     target: {
+                       name: props.name || 'address',
+                       value: place.formatted_address,
+                     },
+                   } as React.ChangeEvent<HTMLInputElement>;
+                   
+                   props.onChange(syntheticEvent);
                 }
               }
             } else {
@@ -119,22 +118,21 @@ const AddressAutocomplete = forwardRef<HTMLInputElement, AddressAutocompleteProp
             }
           });
 
-          autocompleteRef.current = autocomplete;
-          setIsInitialized(true);
-          console.log("Address autocomplete initialized successfully");
-        } catch (error) {
-          console.error("Error initializing address autocomplete:", error);
+          console.info("Address autocomplete initialized successfully");
         }
+      } catch (error) {
+        console.error("Error initializing address autocomplete:", error);
       }
 
+      // Cleanup function
       return () => {
-        if (autocompleteRef.current && window.google && window.google.maps) {
-          google.maps.event.clearInstanceListeners(autocompleteRef.current);
-          autocompleteRef.current = null;
-          console.log("Address autocomplete cleaned up");
+        if (autocomplete) {
+          // Remove all event listeners to prevent memory leaks
+          google.maps.event.clearInstanceListeners(autocomplete);
         }
+        console.info("Address autocomplete cleaned up");
       };
-    }, [onAddressSelect, placesOptions, initializationAttempts, props.name, onChange]);
+    }, [onAddressSelect, placesOptions, initializationAttempts, props.name, props.onChange, autocomplete]);
 
     // Prevent form submission on Enter key press when autocomplete is active
     useEffect(() => {
@@ -144,53 +142,52 @@ const AddressAutocomplete = forwardRef<HTMLInputElement, AddressAutocompleteProp
         }
       };
 
-      if (inputRef.current) {
-        inputRef.current.addEventListener("keydown", handleKeyDown);
-      }
-
+      document.addEventListener("keydown", handleKeyDown);
       return () => {
-        if (inputRef.current) {
-          inputRef.current.removeEventListener("keydown", handleKeyDown);
-        }
+        document.removeEventListener("keydown", handleKeyDown);
       };
     }, []);
 
-    const setRefs = (element: HTMLInputElement) => {
-      inputRef.current = element;
-      if (typeof ref === 'function') {
-        ref(element);
-      } else if (ref) {
-        ref.current = element;
+    // Ensure the value is properly set when the component is first rendered or when the value prop changes
+    useEffect(() => {
+      if (inputRef.current && props.value !== undefined) {
+        inputRef.current.value = props.value.toString();
       }
-    };
+    }, [props.value]);
 
     return (
-      <div className="relative w-full">
-        <Input
-          ref={setRefs}
-          className={cn(
-            "w-full",
-            error ? "border-red-500 focus-visible:ring-red-500" : "",
-            className
-          )}
-          type="text"
-          placeholder={placeholder}
-          disabled={disabled}
-          required={required}
-          aria-invalid={error ? "true" : "false"}
-          onChange={onChange}
-          {...props}
-        />
-        {!isInitialized && initializationAttempts >= maxAttempts && (
-          <div className="text-xs text-red-500 mt-1">
-            Address autocomplete unavailable
-          </div>
+      <Input
+        {...props}
+        ref={combinedRef}
+        className={cn(
+          error ? "border-red-500 focus-visible:ring-red-500" : "",
+          className
         )}
-      </div>
+        autoComplete="off"
+      />
     );
   }
 );
 
 AddressAutocomplete.displayName = "AddressAutocomplete";
 
-export { AddressAutocomplete };
+// Utility function to combine refs
+function useCombinedRefs<T>(
+  ...refs: (React.Ref<T> | React.MutableRefObject<T> | null)[]
+) {
+  const targetRef = useRef<T>(null);
+
+  useEffect(() => {
+    refs.forEach((ref) => {
+      if (!ref) return;
+
+      if (typeof ref === "function") {
+        ref(targetRef.current);
+      } else {
+        (ref as React.MutableRefObject<T | null>).current = targetRef.current;
+      }
+    });
+  }, [refs]);
+
+  return targetRef;
+}
