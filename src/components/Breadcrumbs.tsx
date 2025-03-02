@@ -1,4 +1,3 @@
-
 import { useLocation, Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { ChevronRight, Home } from "lucide-react";
@@ -58,20 +57,15 @@ const Breadcrumbs = ({ className, baseUrl = "https://247locksmithandsecurity.com
   const location = useLocation();
   
   const breadcrumbs = useMemo(() => {
-    // If custom breadcrumb items are provided, use those
     if (items && items.length > 0) {
       return items;
     }
     
-    // Otherwise, generate from the current path
     const pathSegments = location.pathname.split('/').filter(Boolean);
     
-    // Generate breadcrumb array
     return pathSegments.map((segment, index) => {
-      // Create the path up to this point
       const path = `/${pathSegments.slice(0, index + 1).join('/')}`;
       
-      // Get readable name from map or use capitalized segment
       const name = pathNameMap[segment] || 
         segment.split('-').map(word => 
           word.charAt(0).toUpperCase() + word.slice(1)
@@ -81,73 +75,38 @@ const Breadcrumbs = ({ className, baseUrl = "https://247locksmithandsecurity.com
     });
   }, [location.pathname, items]);
 
-  // Generate the schema JSON for breadcrumbs
-  const breadcrumbSchema = useMemo(() => {
-    // Always start with the home page in schema
-    const schemaItems = [
-      { name: "Home", item: "/" }
-    ].concat(
-      breadcrumbs.map(crumb => ({ 
-        name: crumb.name, 
-        item: crumb.path 
-      }))
-    );
-    
-    return {
-      "@context": "https://schema.org",
-      "@type": "BreadcrumbList",
-      "itemListElement": schemaItems.map((item, index) => ({
-        "@type": "ListItem",
-        "position": index + 1,
-        "name": item.name,
-        "item": `${baseUrl}${item.item}`
-      }))
-    };
-  }, [breadcrumbs, baseUrl]);
-
-  // If we're on the home page or no breadcrumbs, don't show
   if (breadcrumbs.length === 0 || location.pathname === '/') {
     return null;
   }
 
   return (
-    <>
-      {/* Only render schema if showSchema is true */}
-      {showSchema && (
-        <script 
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
-        />
-      )}
+    <nav 
+      className={cn("flex items-center space-x-1 text-sm", className)} 
+      aria-label="Breadcrumb"
+    >
+      <Link to="/" className="flex items-center text-gray-500 hover:text-primary transition-colors">
+        <Home className="h-4 w-4" />
+        <span className="sr-only">Home</span>
+      </Link>
       
-      <nav 
-        className={cn("flex items-center space-x-1 text-sm", className)} 
-        aria-label="Breadcrumb"
-      >
-        <Link to="/" className="flex items-center text-gray-500 hover:text-primary transition-colors">
-          <Home className="h-4 w-4" />
-          <span className="sr-only">Home</span>
-        </Link>
-        
-        {breadcrumbs.map((crumb, index) => (
-          <div key={index} className="flex items-center">
-            <ChevronRight className="h-4 w-4 text-gray-400" aria-hidden="true" />
-            <Link
-              to={crumb.path}
-              className={cn(
-                "ml-1 hover:text-primary transition-colors",
-                index === breadcrumbs.length - 1 
-                  ? "font-medium text-primary" 
-                  : "text-gray-500"
-              )}
-              aria-current={index === breadcrumbs.length - 1 ? "page" : undefined}
-            >
-              {crumb.name}
-            </Link>
-          </div>
-        ))}
-      </nav>
-    </>
+      {breadcrumbs.map((crumb, index) => (
+        <div key={index} className="flex items-center">
+          <ChevronRight className="h-4 w-4 text-gray-400" aria-hidden="true" />
+          <Link
+            to={crumb.path}
+            className={cn(
+              "ml-1 hover:text-primary transition-colors",
+              index === breadcrumbs.length - 1 
+                ? "font-medium text-primary" 
+                : "text-gray-500"
+            )}
+            aria-current={index === breadcrumbs.length - 1 ? "page" : undefined}
+          >
+            {crumb.name}
+          </Link>
+        </div>
+      ))}
+    </nav>
   );
 };
 
