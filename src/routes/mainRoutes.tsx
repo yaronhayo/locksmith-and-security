@@ -72,7 +72,7 @@ export const mainRoutes = [
   
   createPageRoute('/reviews', <Reviews />, {
     title: 'Customer Reviews | 5-Star Rated Locksmith Services',
-    description: 'Read what our customers say about our locksmith services. See why we're rated 5 stars for our emergency locksmith services, car lockouts, and more.',
+    description: "Read what our customers say about our locksmith services. See why we are rated 5 stars for our emergency locksmith services, car lockouts, and more.",
     keywords: 'locksmith reviews, customer testimonials, 5 star locksmith, best locksmith reviews, emergency locksmith reviews',
     canonicalUrl: 'https://247locksmithandsecurity.com/reviews',
     noindex: false,
