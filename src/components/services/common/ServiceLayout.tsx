@@ -5,6 +5,7 @@ import ServicePageContent from '@/components/sections/services/service-page';
 import { SchemaScripts } from '@/components/meta/SchemaScripts';
 import { Helmet } from 'react-helmet';
 import ServicesProof from '@/components/sections/services/ServicesProof';
+import PageLayout from '@/components/layouts/PageLayout';
 
 interface ServiceLayoutProps {
   title: string;
@@ -39,16 +40,16 @@ const ServiceLayout: React.FC<ServiceLayoutProps> = ({
   customBreadcrumbs
 }) => {
   return (
-    <main className="flex-grow">
-      <Helmet>
-        <title>{title}</title>
-        <meta name="description" content={description} />
-        {keywords && <meta name="keywords" content={keywords} />}
-        {canonicalUrl && <link rel="canonical" href={`https://247locksmithandsecurity.com${canonicalUrl}`} />}
-      </Helmet>
-      
-      <SchemaScripts schemas={schemas} />
-      
+    <PageLayout
+      title={title}
+      description={description}
+      keywords={keywords}
+      canonicalUrl={canonicalUrl}
+      schemas={schemas}
+      customBreadcrumbs={customBreadcrumbs}
+      heroTitle={title}
+      heroDescription={description}
+    >
       <EnhancedServicesHero 
         title={title}
         description={description}
@@ -64,13 +65,12 @@ const ServiceLayout: React.FC<ServiceLayoutProps> = ({
         mainContent={mainContent}
         faqs={faqs}
         relatedServices={relatedServices}
-        customBreadcrumbs={customBreadcrumbs}
       />
       
       {reviewsData.length > 0 && (
         <ServicesProof reviewsData={reviewsData} />
       )}
-    </main>
+    </PageLayout>
   );
 };
 
