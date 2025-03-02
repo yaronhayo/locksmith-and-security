@@ -1,6 +1,7 @@
+
 import React, { useRef, useState, useEffect } from 'react';
 import { Input } from './input';
-import { useMapConfig } from '@/hooks/useMap';
+import { useMapConfig, clearMapConfigCache } from '@/hooks/useMap';
 import { InputHTMLAttributes } from "react";
 import { Loader2, RefreshCw } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
@@ -87,6 +88,7 @@ const AddressAutocomplete = ({
     }
   };
 
+  // When API key is available, try to initialize
   useEffect(() => {
     if (apiKey && !isInitialized) {
       const timer = setTimeout(() => {
@@ -102,6 +104,7 @@ const AddressAutocomplete = ({
     }
   }, [apiKey, isInitialized, initAttempts]);
 
+  // Continuously check for Google Maps availability
   useEffect(() => {
     if (!isInitialized && apiKey) {
       const checkGoogleMapsInterval = setInterval(() => {
@@ -125,6 +128,7 @@ const AddressAutocomplete = ({
     }
   }, [apiKey, isInitialized]);
 
+  // Cleanup on unmount
   useEffect(() => {
     return () => {
       if (window.google?.maps?.event && autocompleteRef.current) {
@@ -135,6 +139,7 @@ const AddressAutocomplete = ({
     };
   }, []);
 
+  // Prevent form submission on Enter key
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Enter' && autocompleteRef.current) {
@@ -158,6 +163,7 @@ const AddressAutocomplete = ({
 
   const retryInitialization = () => {
     setError(null);
+    clearMapConfigCache();
     refetch();
     setInitAttempts(prev => prev + 1);
     console.log("Retrying address search initialization...");

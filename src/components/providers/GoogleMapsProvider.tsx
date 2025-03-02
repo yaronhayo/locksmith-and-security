@@ -1,3 +1,4 @@
+
 import { ReactNode, useEffect, useState, useCallback, useRef } from "react";
 import { LoadScript, LoadScriptProps } from "@react-google-maps/api";
 import { useMapConfig, clearMapConfigCache } from "@/hooks/useMap";
@@ -89,19 +90,42 @@ const GoogleMapsProvider = ({ children }: GoogleMapsProviderProps) => {
     }
   }, [apiKey, scriptError]);
 
-  if (isLoading) return <MapLoader text="Loading map configuration..." />;
-  if (apiKeyError || isError) return <MapError error={apiKeyError?.message || "Failed to load Google Maps API key"} resetErrorBoundary={() => { clearMapConfigCache(); refetch(); }} />;
-  if (!apiKey) return <MapError error="Google Maps API key not found" resetErrorBoundary={() => { clearMapConfigCache(); refetch(); }} />;
-  if (scriptError) return <MapError error={scriptError} resetErrorBoundary={() => { setScriptError(null); clearMapConfigCache(); refetch(); }} />;
-
   // If Google Maps is already loaded globally, just render children
   if (isGoogleMapsLoaded()) {
     return <>{children}</>;
   }
 
+  if (isLoading) return <MapLoader text="Loading map configuration..." />;
+  
+  if (apiKeyError || isError) {
+    console.error("API key error:", apiKeyError || "Unknown error");
+    return <MapError 
+      error={apiKeyError?.message || "Failed to load Google Maps API key"} 
+      resetErrorBoundary={() => { clearMapConfigCache(); refetch(); }} 
+    />;
+  }
+  
+  if (!apiKey) {
+    console.error("No API key available");
+    return <MapError 
+      error="Google Maps API key not found" 
+      resetErrorBoundary={() => { clearMapConfigCache(); refetch(); }} 
+    />;
+  }
+  
+  if (scriptError) {
+    return <MapError 
+      error={scriptError} 
+      resetErrorBoundary={() => { setScriptError(null); clearMapConfigCache(); refetch(); }} 
+    />;
+  }
+
   // If a script load has been attempted and failed, show error
   if (scriptAttempted && !scriptLoaded) {
-    return <MapError error="Failed to load Google Maps script" resetErrorBoundary={() => { scriptAttempted = false; clearMapConfigCache(); refetch(); }} />;
+    return <MapError 
+      error="Failed to load Google Maps script" 
+      resetErrorBoundary={() => { scriptAttempted = false; clearMapConfigCache(); refetch(); }} 
+    />;
   }
 
   return (

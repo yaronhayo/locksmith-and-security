@@ -6,6 +6,10 @@ import { MapLocation } from '@/types/map';
 // Cache key for map configuration
 const MAP_CONFIG_CACHE_KEY = 'map_config';
 
+// Fallback Google Maps API key in case the DB one fails
+// This is just for development purposes - in production, the key from the database should be used
+const FALLBACK_API_KEY = '';
+
 // Function to clear map config cache
 export const clearMapConfigCache = () => {
   // This would be used with a queryClient in a component
@@ -17,18 +21,43 @@ export const useMapConfig = () => {
   return useQuery({
     queryKey: [MAP_CONFIG_CACHE_KEY],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from('settings')
-        .select('value')
-        .eq('key', 'google_maps_api_key')
-        .single();
-      
-      if (error) {
-        throw new Error(error.message);
+      try {
+        const { data, error } = await supabase
+          .from('settings')
+          .select('value')
+          .eq('key', 'google_maps_api_key')
+          .maybeSingle();
+        
+        if (error) {
+          console.error('Error fetching Google Maps API key:', error);
+          throw new Error(error.message);
+        }
+        
+        if (!data || !data.value) {
+          console.warn('No Google Maps API key found in database, using fallback');
+          
+          // If no key in the database and fallback is available, use that
+          if (FALLBACK_API_KEY) {
+            return FALLBACK_API_KEY;
+          }
+          
+          throw new Error('Google Maps API key not found in settings');
+        }
+        
+        return data.value;
+      } catch (err) {
+        console.error('Failed to retrieve Google Maps API key:', err);
+        
+        // Return fallback key if available, otherwise rethrow the error
+        if (FALLBACK_API_KEY) {
+          console.warn('Using fallback Google Maps API key');
+          return FALLBACK_API_KEY;
+        }
+        
+        throw err;
       }
-      
-      return data?.value as string;
     },
+    staleTime: 3600000, // 1 hour cache
     meta: {
       onError: (error: Error) => {
         console.error('Error fetching Google Maps API key:', error.message);
