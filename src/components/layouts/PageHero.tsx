@@ -16,7 +16,7 @@ const PageHero = ({
   description,
   className,
   children,
-  showBreadcrumbs = true,
+  showBreadcrumbs = false, // Changed default to false
 }: PageHeroProps) => {
   return (
     <div className="relative overflow-hidden">

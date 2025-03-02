@@ -10,7 +10,6 @@ import PageLoading from "./PageLoading";
 import { createBreadcrumbSchema } from "../meta/schema/BreadcrumbSchema";
 import { createLocalBusinessSchema } from "../meta/schema/LocalBusinessSchema";
 import { createWebSiteSchema } from "../meta/schema/WebSiteSchema";
-import Breadcrumbs from "@/components/Breadcrumbs";
 import ScrollToTopButton from "@/components/ScrollToTopButton";
 
 interface Schema {
@@ -102,13 +101,8 @@ const PageLayout = ({
         <PageHero 
           title={heroTitle || title}
           description={heroDescription || description}
+          showBreadcrumbs={false} // Ensure breadcrumbs never show in hero
         />
-      )}
-      
-      {!hideBreadcrumbs && !heroTitle && !heroDescription && (
-        <nav aria-label="Breadcrumb" className="container mx-auto px-4 py-3 md:py-4">
-          <Breadcrumbs />
-        </nav>
       )}
       
       <motion.main
