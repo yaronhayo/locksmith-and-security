@@ -1,3 +1,4 @@
+
 import { ReactNode, useEffect, useState, useCallback, useRef } from "react";
 import { LoadScript, LoadScriptProps } from "@react-google-maps/api";
 import { useMapConfig, clearMapConfigCache } from "@/hooks/useMap";
@@ -106,7 +107,7 @@ const GoogleMapsProvider = ({ children }: GoogleMapsProviderProps) => {
   if (!apiKey) {
     console.error("No API key available");
     return <MapError 
-      error="Google Maps API key not found in settings table in Supabase." 
+      error="Google Maps API key not found. Using fallback configuration." 
       resetErrorBoundary={() => { clearMapConfigCache(); refetch(); }} 
     />;
   }

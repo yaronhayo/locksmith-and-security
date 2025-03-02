@@ -7,7 +7,7 @@ import { MapLocation } from '@/types/map';
 const MAP_CONFIG_CACHE_KEY = 'map_config';
 
 // Fallback Google Maps API key for development only
-const FALLBACK_API_KEY = 'AIzaSyDxRw7-lukZWyTTPd7hr1i1rvmaUEzl_Ns';
+const FALLBACK_API_KEY = 'AIzaSyDNzw7fQJRpOxChV8hO1oT1wuXd980UYcE';
 
 // Function to clear map config cache
 export const clearMapConfigCache = () => {
@@ -20,6 +20,7 @@ export const useMapConfig = () => {
     queryKey: [MAP_CONFIG_CACHE_KEY],
     queryFn: async () => {
       try {
+        console.log("Fetching Google Maps API key from settings...");
         // Try to fetch the API key
         const { data, error } = await supabase
           .from('settings')
@@ -27,7 +28,13 @@ export const useMapConfig = () => {
           .eq('key', 'GOOGLE_MAPS_API_KEY')
           .maybeSingle();
         
-        if (error || !data?.value) {
+        if (error) {
+          console.error("Error fetching API key:", error.message);
+          throw error;
+        }
+        
+        if (!data?.value) {
+          console.log("GOOGLE_MAPS_API_KEY not found, trying lowercase...");
           // If the uppercase key fails, try lowercase
           const result = await supabase
             .from('settings')
@@ -35,17 +42,25 @@ export const useMapConfig = () => {
             .eq('key', 'google_maps_api_key')
             .maybeSingle();
             
-          if (result.error || !result.data?.value) {
-            // Use fallback if no key is found
+          if (result.error) {
+            console.error("Error fetching lowercase API key:", result.error.message);
+            throw result.error;
+          }
+          
+          if (!result.data?.value) {
+            console.log("No API key found, using fallback...");
             return FALLBACK_API_KEY;
           }
           
+          console.log("Found lowercase API key");
           return result.data.value;
         }
         
+        console.log("Found uppercase API key");
         return data.value;
       } catch (err) {
         // Return fallback key on error
+        console.error("Error in API key fetch, using fallback:", err);
         return FALLBACK_API_KEY;
       }
     },
