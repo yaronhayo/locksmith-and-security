@@ -60,3 +60,4 @@ export const createRouteGroup = (prefix: string, routes: RouteConfig[]): RouteCo
     path: `${prefix}${route.path}`
   }));
 };
+
