@@ -1,33 +1,85 @@
 
 import { FAQSchema } from "@/types/schema";
+import { createLocalBusinessSchema } from "@/components/meta/schema/LocalBusinessSchema";
 
 export const accessControlSchema = {
   "@context": "https://schema.org",
   "@type": "Service",
+  "@id": "https://247locksmithandsecurity.com/services/commercial-locksmith/access-control#service",
   "name": "Access Control Systems",
   "description": "Professional access control system design, installation and maintenance for enhanced business security",
   "provider": {
     "@type": "LocalBusiness",
-    "name": "Locksmith & Security LLC",
-    "address": {
-      "@type": "PostalAddress",
-      "streetAddress": "104 Harrison St",
-      "addressLocality": "Hoboken",
-      "addressRegion": "NJ",
-      "postalCode": "07030"
+    "@id": "https://247locksmithandsecurity.com/#localbusiness"
+  },
+  "areaServed": [
+    {
+      "@type": "State",
+      "name": "New Jersey"
     },
-    "telephone": "2017482070"
-  },
-  "areaServed": {
-    "@type": "State",
-    "name": "New Jersey"
-  },
+    {
+      "@type": "City",
+      "name": "Hoboken",
+      "sameAs": "https://en.wikipedia.org/wiki/Hoboken,_New_Jersey"
+    },
+    {
+      "@type": "City",
+      "name": "Jersey City",
+      "sameAs": "https://en.wikipedia.org/wiki/Jersey_City,_New_Jersey"
+    },
+    {
+      "@type": "City",
+      "name": "North Bergen",
+      "sameAs": "https://en.wikipedia.org/wiki/North_Bergen,_New_Jersey"
+    }
+  ],
   "serviceType": "Access Control System Installation",
   "offers": {
     "@type": "Offer",
     "price": "199.00",
-    "priceCurrency": "USD"
-  }
+    "priceCurrency": "USD",
+    "priceSpecification": {
+      "@type": "UnitPriceSpecification",
+      "priceType": "https://schema.org/MinimumPrice",
+      "price": "199.00",
+      "priceCurrency": "USD"
+    }
+  },
+  "hasOfferCatalog": {
+    "@type": "OfferCatalog",
+    "name": "Access Control Services",
+    "itemListElement": [
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Card Reader Installation"
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Biometric Access Systems"
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Keypad Entry Systems"
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Access Control Maintenance"
+        }
+      }
+    ]
+  },
+  "mainEntityOfPage": "https://247locksmithandsecurity.com/services/commercial-locksmith/access-control"
 };
 
 // FAQ data for the component display
@@ -55,6 +107,14 @@ export const accessControlFaqs = [
   {
     question: "Can an access control system track when employees enter and exit the building?",
     answer: "Yes, all of our access control systems include detailed reporting capabilities that track entry and exit events. These systems create logs showing who accessed which doors and when, providing valuable information for security monitoring, time tracking, and accountability purposes."
+  },
+  {
+    question: "Are access control systems cost-effective for small businesses?",
+    answer: "Yes, we offer scalable access control solutions designed specifically for small businesses. These systems provide essential security features at an affordable price point, with the ability to expand as your business grows. The investment typically pays for itself through improved security, reduced key management costs, and operational efficiencies."
+  },
+  {
+    question: "How secure are electronic access control systems compared to traditional locks?",
+    answer: "Electronic access control systems offer significantly higher security than traditional locks. They eliminate risks associated with lost keys, allow for immediate credential revocation, provide detailed access logs, support time-restricted access, and can integrate with other security systems for comprehensive protection."
   }
 ];
 
@@ -77,3 +137,10 @@ export const accessControlFAQSchema: FAQSchema = {
     "mainEntity": faqItems
   }
 };
+
+// Export the local business schema for this specific service
+export const accessControlLocalBusinessSchema = createLocalBusinessSchema({
+  name: "247 Locksmith & Security - Access Control Systems",
+  description: "Professional access control system installation, maintenance and support for businesses in New Jersey. Enhance your business security with modern access control solutions.",
+  priceRange: "$$$"
+});

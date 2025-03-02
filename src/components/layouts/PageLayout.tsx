@@ -8,6 +8,8 @@ import MetaTags from "./MetaTags";
 import PageHero from "./PageHero";
 import PageLoading from "./PageLoading";
 import { createBreadcrumbSchema } from "../meta/schema/BreadcrumbSchema";
+import { createLocalBusinessSchema } from "../meta/schema/LocalBusinessSchema";
+import { createWebSiteSchema } from "../meta/schema/WebSiteSchema";
 
 interface Schema {
   type: string;
@@ -66,6 +68,14 @@ const PageLayout = ({
     const breadcrumbSchema = createBreadcrumbSchema({ breadcrumbs });
     allSchemas.push(breadcrumbSchema);
   }
+  
+  // Add default LocalBusiness schema
+  const localBusinessSchema = createLocalBusinessSchema();
+  allSchemas.push(localBusinessSchema);
+  
+  // Add default WebSite schema
+  const websiteSchema = createWebSiteSchema();
+  allSchemas.push(websiteSchema);
 
   return (
     <ErrorBoundary FallbackComponent={ErrorFallback}>

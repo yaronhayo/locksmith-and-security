@@ -1,6 +1,6 @@
-
 import { lazy } from 'react';
 import PageLayout from "@/components/layouts/PageLayout";
+import { createBreadcrumbSchema } from "@/components/meta/schema/BreadcrumbSchema";
 
 // Category Landing Pages
 const EmergencyLocksmith = lazy(() => import("@/pages/services/emergency-locksmith"));
@@ -34,23 +34,91 @@ const CarKeyDuplicate = lazy(() => import("@/pages/services/auto-locksmith/car-k
 const CarKeyCutting = lazy(() => import("@/pages/services/auto-locksmith/car-key-cutting"));
 const IgnitionLockCylinder = lazy(() => import("@/pages/services/auto-locksmith/ignition-lock-cylinder"));
 
+// Helper function to create breadcrumbs for service pages
+const createServiceBreadcrumbs = (category: string, service: string) => {
+  return createBreadcrumbSchema({
+    breadcrumbs: [
+      { name: "Home", item: "/" },
+      { name: "Services", item: "/services" },
+      { name: category, item: `/services/${category.toLowerCase().replace(' ', '-')}` },
+      { name: service, item: `/services/${category.toLowerCase().replace(' ', '-')}/${service.toLowerCase().replace(' ', '-')}` }
+    ]
+  });
+};
+
 export const serviceRoutes = [
   // Category Landing Pages
   {
     path: "/services/emergency-locksmith",
-    element: <PageLayout title="Emergency Locksmith Services" description="24/7 emergency locksmith services"><EmergencyLocksmith /></PageLayout>
+    element: <PageLayout 
+      title="Emergency Locksmith Services | 24/7 Urgent Locksmith Solutions" 
+      description="Immediate 24/7 emergency locksmith services for car lockouts, home lockouts, business lockouts and more. Fast response, competitive rates, and licensed professionals."
+      keywords="emergency locksmith, 24/7 locksmith, lockout service, car lockout, house lockout, business lockout, urgent locksmith"
+      canonicalUrl="/services/emergency-locksmith"
+      breadcrumbs={[
+        { name: "Home", item: "/" },
+        { name: "Services", item: "/services" },
+        { name: "Emergency Locksmith", item: "/services/emergency-locksmith" }
+      ]}
+      ogImage="/lovable-uploads/308ce2b0-551b-48b6-b078-c7e793fa2153.png"
+      ogType="article"
+    >
+      <EmergencyLocksmith />
+    </PageLayout>
   },
   {
     path: "/services/residential-locksmith",
-    element: <PageLayout title="Residential Locksmith Services" description="Professional residential locksmith solutions"><ResidentialLocksmith /></PageLayout>
+    element: <PageLayout 
+      title="Residential Locksmith Services | Home Security Solutions" 
+      description="Professional residential locksmith solutions including lock installation, repair, rekey, and upgrade services. Enhance your home security with our expert locksmiths."
+      keywords="residential locksmith, home locksmith, house locks, door locks, lock installation, lock repair, lock rekey, deadbolt installation"
+      canonicalUrl="/services/residential-locksmith"
+      breadcrumbs={[
+        { name: "Home", item: "/" },
+        { name: "Services", item: "/services" },
+        { name: "Residential Locksmith", item: "/services/residential-locksmith" }
+      ]}
+      ogImage="/lovable-uploads/5769d20e-e251-4e5f-a743-870d5c267bd1.png"
+      ogType="article"
+    >
+      <ResidentialLocksmith />
+    </PageLayout>
   },
   {
     path: "/services/commercial-locksmith",
-    element: <PageLayout title="Commercial Locksmith Services" description="Expert commercial locksmith solutions"><CommercialLocksmith /></PageLayout>
+    element: <PageLayout 
+      title="Commercial Locksmith Services | Business Security Solutions" 
+      description="Expert commercial locksmith solutions including master key systems, access control, high-security locks, and emergency exit devices for businesses of all sizes."
+      keywords="commercial locksmith, business locksmith, commercial security, master key system, access control, high-security locks, emergency exit device"
+      canonicalUrl="/services/commercial-locksmith"
+      breadcrumbs={[
+        { name: "Home", item: "/" },
+        { name: "Services", item: "/services" },
+        { name: "Commercial Locksmith", item: "/services/commercial-locksmith" }
+      ]}
+      ogImage="/lovable-uploads/1bbeb1e6-5581-4e09-9600-7d1859bb17c5.png"
+      ogType="article"
+    >
+      <CommercialLocksmith />
+    </PageLayout>
   },
   {
     path: "/services/auto-locksmith",
-    element: <PageLayout title="Auto Locksmith Services" description="Professional automotive locksmith services"><AutoLocksmith /></PageLayout>
+    element: <PageLayout 
+      title="Auto Locksmith Services | Car Key & Lock Solutions" 
+      description="Professional automotive locksmith services including car key replacement, key fob programming, ignition repair, and car lockouts. Service for all vehicle makes and models."
+      keywords="auto locksmith, car locksmith, car key replacement, key fob programming, car lockout, ignition repair, car key duplication"
+      canonicalUrl="/services/auto-locksmith"
+      breadcrumbs={[
+        { name: "Home", item: "/" },
+        { name: "Services", item: "/services" },
+        { name: "Auto Locksmith", item: "/services/auto-locksmith" }
+      ]}
+      ogImage="/lovable-uploads/88d354ba-8149-4bb1-9347-d5d0ff65dfe5.png"
+      ogType="article"
+    >
+      <AutoLocksmith />
+    </PageLayout>
   },
 
   // Emergency Locksmith Services

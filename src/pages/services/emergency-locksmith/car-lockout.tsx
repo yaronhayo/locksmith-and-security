@@ -10,15 +10,16 @@ import { carLockoutSchema, carLockoutFaqs, carLockoutFaqSchema } from '@/compone
 import { relatedEmergencyServices } from '@/components/services/car-lockout/relatedServices';
 import { SchemaScripts } from '@/components/meta/SchemaScripts';
 import { createBreadcrumbSchema } from '@/components/meta/schema/BreadcrumbSchema';
-import { BasicMetaTags } from '@/components/meta/BasicMetaTags';
-import { OpenGraphTags } from '@/components/meta/OpenGraphTags';
-import { TwitterTags } from '@/components/meta/TwitterTags';
+import MetaTags from '@/components/layouts/MetaTags';
+import { createLocalBusinessSchema } from '@/components/meta/schema/LocalBusinessSchema';
+import { createWebSiteSchema } from '@/components/meta/schema/WebSiteSchema';
+import { createSiteNavigationSchema } from '@/components/meta/schema/SiteNavigationSchema';
 
 const CarLockout = () => {
   const pageTitle = "Professional Car Lockout Service | 24/7 Emergency Automotive Locksmith";
   const pageDescription = "Expert car lockout service by certified automotive locksmiths. Fast, damage-free vehicle entry 24/7. Serving North Bergen, Jersey City, Hoboken & all NJ areas.";
   const keywords = "car lockout, locked out of car, auto locksmith, emergency car lockout, vehicle lockout service, car door unlock, car key locked in car, automotive locksmith";
-  const canonicalUrl = "https://247locksmithandsecurity.com/services/emergency-locksmith/car-lockout";
+  const canonicalUrl = "/services/emergency-locksmith/car-lockout";
   const imageUrl = "/lovable-uploads/308ce2b0-551b-48b6-b078-c7e793fa2153.png";
   const baseUrl = "https://247locksmithandsecurity.com";
   
@@ -32,43 +33,53 @@ const CarLockout = () => {
     ],
     baseUrl
   });
+  
+  // Create LocalBusiness schema with customized info
+  const localBusinessSchema = createLocalBusinessSchema({
+    geo: {
+      latitude: 40.7366,
+      longitude: -74.0301
+    }
+  });
+  
+  // Create WebSite schema
+  const websiteSchema = createWebSiteSchema();
+  
+  // Create SiteNavigation schema
+  const navigationSchema = createSiteNavigationSchema({
+    items: [
+      { name: "Home", url: "/" },
+      { name: "Services", url: "/services" },
+      { name: "Emergency Locksmith", url: "/services/emergency-locksmith" },
+      { name: "Residential Locksmith", url: "/services/residential-locksmith" },
+      { name: "Commercial Locksmith", url: "/services/commercial-locksmith" },
+      { name: "Auto Locksmith", url: "/services/auto-locksmith" },
+      { name: "Service Areas", url: "/service-areas" },
+      { name: "About Us", url: "/about" },
+      { name: "Contact", url: "/contact" }
+    ]
+  });
 
   return (
     <main className="flex-grow">
-      <BasicMetaTags 
+      <MetaTags 
         title={pageTitle}
         description={pageDescription}
         keywords={keywords}
         noindex={false}
         nofollow={false}
         canonicalUrl={canonicalUrl}
+        ogImage={imageUrl}
         modifiedDate={new Date().toISOString()}
-      />
-      
-      <OpenGraphTags 
-        title={pageTitle}
-        description={pageDescription}
-        image={imageUrl}
-        url={canonicalUrl}
-        modifiedDate={new Date().toISOString()}
-        baseUrl={baseUrl}
-        type="article"
-      />
-      
-      <TwitterTags 
-        title={pageTitle}
-        description={pageDescription}
-        image={imageUrl}
-        baseUrl={baseUrl}
-        cardType="summary_large_image"
-      />
-      
-      <SchemaScripts 
+        ogType="article"
         schemas={[
           { type: 'service', data: carLockoutSchema },
           { type: 'faq', data: carLockoutFaqSchema },
-          breadcrumbSchema
-        ]} 
+          breadcrumbSchema,
+          localBusinessSchema,
+          websiteSchema,
+          navigationSchema
+        ]}
       />
       
       <EnhancedServicesHero 
