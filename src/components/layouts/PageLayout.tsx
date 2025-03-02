@@ -1,3 +1,4 @@
+
 import React from "react";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
@@ -11,7 +12,6 @@ import { createLocalBusinessSchema } from "../meta/schema/LocalBusinessSchema";
 import { createWebSiteSchema } from "../meta/schema/WebSiteSchema";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import ScrollToTopButton from "@/components/ScrollToTopButton";
-import AccessibilityWidget from "@/components/AccessibilityWidget";
 
 interface Schema {
   type: string;
@@ -61,19 +61,23 @@ const PageLayout = ({
     return <PageLoading />;
   }
 
+  // Add schema to schemas array if provided
   const allSchemas = [...schemas];
   if (schema) {
     allSchemas.push({ type: 'schema', data: schema });
   }
   
+  // Add breadcrumb schema if breadcrumbs are provided
   if (breadcrumbs && breadcrumbs.length > 0) {
     const breadcrumbSchema = createBreadcrumbSchema({ breadcrumbs });
     allSchemas.push(breadcrumbSchema);
   }
   
+  // Add default LocalBusiness schema
   const localBusinessSchema = createLocalBusinessSchema();
   allSchemas.push(localBusinessSchema);
   
+  // Add default WebSite schema
   const websiteSchema = createWebSiteSchema();
   allSchemas.push(websiteSchema);
 
@@ -115,9 +119,8 @@ const PageLayout = ({
         <div className={cn(className)}>{children}</div>
       </motion.div>
       
+      {/* Scroll to top button */}
       <ScrollToTopButton />
-      
-      <AccessibilityWidget />
     </ErrorBoundary>
   );
 };
