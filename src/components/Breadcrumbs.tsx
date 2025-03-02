@@ -1,14 +1,13 @@
-
 import { useLocation, Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { ChevronRight, Home } from "lucide-react";
 import { useMemo } from "react";
-import { BreadcrumbSchema } from "@/components/meta/schema/BreadcrumbSchema";
 
 interface BreadcrumbsProps {
   className?: string;
   baseUrl?: string;
-  includeSchema?: boolean;
+  items?: Array<{name: string, path: string}>;
+  showSchema?: boolean;
 }
 
 const pathNameMap: Record<string, string> = {
@@ -54,10 +53,16 @@ const pathNameMap: Record<string, string> = {
   "sitemap": "Sitemap"
 };
 
-const Breadcrumbs = ({ className, baseUrl = "https://247locksmithandsecurity.com", includeSchema = true }: BreadcrumbsProps) => {
+const Breadcrumbs = ({ className, baseUrl = "https://247locksmithandsecurity.com", items, showSchema = false }: BreadcrumbsProps) => {
   const location = useLocation();
   
   const breadcrumbs = useMemo(() => {
+    // If custom breadcrumb items are provided, use those
+    if (items && items.length > 0) {
+      return items;
+    }
+    
+    // Otherwise, generate from the current path
     const pathSegments = location.pathname.split('/').filter(Boolean);
     
     // Generate breadcrumb array
@@ -73,30 +78,50 @@ const Breadcrumbs = ({ className, baseUrl = "https://247locksmithandsecurity.com
       
       return { name, path };
     });
-  }, [location.pathname]);
+  }, [location.pathname, items]);
 
-  // Create schema breadcrumbs with home page
-  const schemaBreadcrumbs = useMemo(() => {
-    // Always start with the home page
-    const homeBreadcrumb = { name: "Home", item: "/" };
+  // Generate the schema JSON for breadcrumbs
+  const breadcrumbSchema = useMemo(() => {
+    // Always start with the home page in schema
+    const schemaItems = [
+      { name: "Home", item: "/" }
+    ].concat(
+      breadcrumbs.map(crumb => ({ 
+        name: crumb.name, 
+        item: crumb.path 
+      }))
+    );
     
-    // Add each breadcrumb path
-    return [
-      homeBreadcrumb,
-      ...breadcrumbs.map(crumb => ({ name: crumb.name, item: crumb.path }))
-    ];
-  }, [breadcrumbs]);
+    return {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": schemaItems.map((item, index) => ({
+        "@type": "ListItem",
+        "position": index + 1,
+        "name": item.name,
+        "item": `${baseUrl}${item.item}`
+      }))
+    };
+  }, [breadcrumbs, baseUrl]);
 
-  // If we're on the home page, don't show breadcrumbs
-  if (breadcrumbs.length === 0) {
+  // If we're on the home page or no breadcrumbs, don't show
+  if (breadcrumbs.length === 0 || location.pathname === '/') {
     return null;
   }
 
   return (
     <>
-      {includeSchema && <BreadcrumbSchema breadcrumbs={schemaBreadcrumbs} baseUrl={baseUrl} />}
+      {showSchema && (
+        <script 
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+        />
+      )}
       
-      <nav className={cn("flex items-center space-x-1 text-sm", className)} aria-label="Breadcrumb">
+      <nav 
+        className={cn("flex items-center space-x-1 text-sm", className)} 
+        aria-label="Breadcrumb"
+      >
         <Link to="/" className="flex items-center text-gray-500 hover:text-primary transition-colors">
           <Home className="h-4 w-4" />
           <span className="sr-only">Home</span>

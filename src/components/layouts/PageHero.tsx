@@ -9,6 +9,7 @@ interface PageHeroProps {
   className?: string;
   children?: React.ReactNode;
   showBreadcrumbs?: boolean;
+  customBreadcrumbs?: Array<{name: string, path: string}>;
 }
 
 const PageHero = ({
@@ -16,7 +17,8 @@ const PageHero = ({
   description,
   className,
   children,
-  showBreadcrumbs = false, // Changed default to false
+  showBreadcrumbs = false,
+  customBreadcrumbs,
 }: PageHeroProps) => {
   return (
     <div className="relative overflow-hidden">
@@ -29,7 +31,11 @@ const PageHero = ({
       
       {/* Content */}
       <div className="relative container mx-auto px-4 py-16 md:py-24">
-        {showBreadcrumbs && <Breadcrumbs />}
+        {showBreadcrumbs && (
+          <div className="mb-6">
+            <Breadcrumbs items={customBreadcrumbs} />
+          </div>
+        )}
         
         <div className={cn("max-w-4xl mx-auto text-center", className)}>
           <motion.h1 

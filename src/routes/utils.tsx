@@ -21,9 +21,13 @@ export const createPageRoute = (
       ogImage={meta.ogImage}
       ogType={meta.ogType}
       breadcrumbs={meta.breadcrumbs}
+      customBreadcrumbs={meta.customBreadcrumbs}
       noindex={meta.noindex}
       nofollow={meta.nofollow}
       modifiedDate={meta.modifiedDate}
+      hideBreadcrumbs={meta.hideBreadcrumbs}
+      heroTitle={meta.heroTitle}
+      heroDescription={meta.heroDescription}
     >
       {component}
     </PageLayout>

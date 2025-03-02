@@ -7,6 +7,7 @@ import ErrorFallback from "@/components/ErrorFallback";
 import MetaTags from "./MetaTags";
 import PageHero from "./PageHero";
 import PageLoading from "./PageLoading";
+import Breadcrumbs from "@/components/Breadcrumbs";
 import { createBreadcrumbSchema } from "../meta/schema/BreadcrumbSchema";
 import { createLocalBusinessSchema } from "../meta/schema/LocalBusinessSchema";
 import { createWebSiteSchema } from "../meta/schema/WebSiteSchema";
@@ -33,9 +34,10 @@ interface PageLayoutProps {
   noindex?: boolean;
   nofollow?: boolean;
   breadcrumbs?: Array<{name: string, item: string}>;
+  customBreadcrumbs?: Array<{name: string, path: string}>;
   ogType?: "website" | "article" | "product" | "profile" | "book";
   hideBreadcrumbs?: boolean;
-  modifiedDate?: string; // Added prop for last modified date
+  modifiedDate?: string;
 }
 
 const PageLayout = ({
@@ -54,13 +56,17 @@ const PageLayout = ({
   noindex = false,
   nofollow = false,
   breadcrumbs,
+  customBreadcrumbs,
   ogType = "website",
   hideBreadcrumbs = false,
-  modifiedDate = new Date().toISOString().split('T')[0], // Default to today in YYYY-MM-DD format
+  modifiedDate = new Date().toISOString().split('T')[0],
 }: PageLayoutProps) => {
   if (isLoading) {
     return <PageLoading />;
   }
+
+  // Determine if we have a hero section
+  const hasHero = Boolean(heroTitle || heroDescription);
 
   // Add schema to schemas array if provided
   const allSchemas = [...schemas];
@@ -97,16 +103,26 @@ const PageLayout = ({
         modifiedDate={modifiedDate}
       />
       
-      {(heroTitle || heroDescription) && (
+      {hasHero ? (
         <PageHero 
           title={heroTitle || title}
           description={heroDescription || description}
-          showBreadcrumbs={false} // Ensure breadcrumbs never show in hero
+          showBreadcrumbs={false}
         />
+      ) : null}
+      
+      {/* Show breadcrumbs if not hidden and not in hero */}
+      {!hideBreadcrumbs && (
+        <div className="container mx-auto px-4 py-3 md:py-4">
+          <Breadcrumbs 
+            items={customBreadcrumbs} 
+            showSchema={true}
+          />
+        </div>
       )}
       
       <motion.main
-        className={cn("flex-grow", !(heroTitle || heroDescription) && "pt-0")}
+        className={cn("flex-grow", !hasHero && "pt-0")}
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: 20 }}
@@ -117,7 +133,7 @@ const PageLayout = ({
         <div className={cn(className)}>{children}</div>
       </motion.main>
       
-      {/* Scroll to top button - now as a separate component */}
+      {/* Scroll to top button */}
       <ScrollToTopButton />
     </ErrorBoundary>
   );
