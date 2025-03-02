@@ -41,7 +41,7 @@ export const services = [{
   link: "/services/residential-locksmith",
   highlight: "Home Security",
   cta: "Home Security",
-  image: "/lovable-uploads/5769d20e-e251-4e5f-a743-870d5c267bd1.png",
+  image: "https://mtbgayqzjrxjjmsjikcg.supabase.co/storage/v1/object/public/uploads//House%20Lockout.JPG",
   subServices: [{
     name: "Lock Replacement",
     link: "/services/residential-locksmith/lock-replacement"
