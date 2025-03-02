@@ -70,13 +70,12 @@ const GoogleMap = ({
     const checkMapStatus = setTimeout(() => {
       if (window.google && (!window.google.maps || !window.google.maps.Map)) {
         console.error("Google Maps failed to initialize properly");
+        setMapInitFailed(true);
         
         // Only show error in development
         if (import.meta.env.DEV) {
           toast.error("Map failed to load properly. Retrying...");
         }
-        
-        setMapInitFailed(true);
       }
     }, 5000);
     

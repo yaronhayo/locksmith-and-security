@@ -90,9 +90,10 @@ export const useMapConfig = () => {
       } catch (err) {
         console.error("Error in API key fetch:", err);
         if (FALLBACK_API_KEY && isValidApiKey(FALLBACK_API_KEY)) {
+          console.log("Using fallback API key after error");
           return FALLBACK_API_KEY;
         }
-        throw new Error("Failed to retrieve Google Maps API key");
+        throw new Error(`Failed to retrieve Google Maps API key: ${(err as Error).message}`);
       }
     },
     staleTime: 3600000, // 1 hour cache

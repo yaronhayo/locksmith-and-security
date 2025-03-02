@@ -1,3 +1,4 @@
+
 import { ReactNode, useEffect, useState, useCallback, useRef } from "react";
 import { LoadScript, LoadScriptProps } from "@react-google-maps/api";
 import { useMapConfig, clearMapConfigCache } from "@/hooks/useMap";
@@ -21,13 +22,21 @@ const GoogleMapsProvider = ({ children }: GoogleMapsProviderProps) => {
   const [isScriptLoaded, setIsScriptLoaded] = useState(false);
   const providerIdRef = useRef(`google-maps-provider-${Math.random().toString(36).substring(2, 9)}`);
   const retryCount = useRef(0);
+  const maxRetries = 3;
 
   // Check if Google Maps is already available globally
   const isGoogleMapsLoaded = useCallback(() => {
-    return typeof window !== 'undefined' && 
+    const isLoaded = typeof window !== 'undefined' && 
            typeof window.google !== 'undefined' && 
-           typeof window.google.maps !== 'undefined' &&
-           typeof window.google.maps.places !== 'undefined';
+           typeof window.google.maps !== 'undefined';
+    
+    const hasPlaces = isLoaded && typeof window.google.maps.places !== 'undefined';
+    
+    if (isLoaded && !hasPlaces) {
+      console.warn("Google Maps loaded but Places API is missing. Check API key permissions.");
+    }
+    
+    return isLoaded && hasPlaces;
   }, []);
 
   const handleLoad = useCallback(() => {
@@ -35,6 +44,13 @@ const GoogleMapsProvider = ({ children }: GoogleMapsProviderProps) => {
     setIsScriptLoaded(true);
     setScriptError(null);
     scriptLoaded = true;
+    
+    // Verify Places API is available
+    if (window.google && window.google.maps && !window.google.maps.places) {
+      console.error("Google Maps loaded but Places API is unavailable. Check API key permissions.");
+      setScriptError("Places API unavailable. Check API key permissions.");
+      return;
+    }
     
     // Notify for debugging
     if (import.meta.env.DEV) {
@@ -47,14 +63,16 @@ const GoogleMapsProvider = ({ children }: GoogleMapsProviderProps) => {
     setScriptError(error.message || "Failed to load Google Maps");
     
     // If we've reached max retries, report the error
-    if (retryCount.current >= 3) {
-      console.error("Failed to load Google Maps after multiple attempts. Please refresh the page.");
+    if (retryCount.current >= maxRetries) {
+      console.error(`Failed to load Google Maps after ${maxRetries} attempts. Please refresh the page.`);
       toast.error("Failed to load Google Maps after multiple attempts");
     } else {
       // Otherwise increment retry count and attempt to refetch the API key
       retryCount.current += 1;
       clearMapConfigCache();
       refetch();
+      
+      toast.error(`Error loading maps. Retrying (${retryCount.current}/${maxRetries})...`);
     }
   }, [refetch]);
 
@@ -77,7 +95,8 @@ const GoogleMapsProvider = ({ children }: GoogleMapsProviderProps) => {
       isScriptLoaded,
       scriptError,
       googleMapsGloballyAvailable: isGoogleMapsLoaded(),
-      scriptLoaded
+      scriptLoaded,
+      retryCount: retryCount.current
     });
     
     return () => {
@@ -102,7 +121,7 @@ const GoogleMapsProvider = ({ children }: GoogleMapsProviderProps) => {
   if (apiKeyError || isError) {
     console.error("API key error:", apiKeyError || "Unknown error");
     return <MapError 
-      error={apiKeyError?.message || "Failed to load Google Maps API key"} 
+      error={(apiKeyError as Error)?.message || "Failed to load Google Maps API key"} 
       resetErrorBoundary={() => { clearMapConfigCache(); refetch(); }} 
     />;
   }
@@ -118,7 +137,11 @@ const GoogleMapsProvider = ({ children }: GoogleMapsProviderProps) => {
   if (scriptError) {
     return <MapError 
       error={scriptError} 
-      resetErrorBoundary={() => { setScriptError(null); clearMapConfigCache(); refetch(); }} 
+      resetErrorBoundary={() => { 
+        setScriptError(null); 
+        clearMapConfigCache(); 
+        refetch(); 
+      }} 
     />;
   }
 

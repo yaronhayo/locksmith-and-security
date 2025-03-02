@@ -10,6 +10,7 @@ import MapError from '../map/MapError';
 import { ErrorBoundary } from 'react-error-boundary';
 import { Skeleton } from '@/components/ui/skeleton';
 import { ServiceAreaLocation } from '@/types/service-area';
+import { toast } from 'sonner';
 
 const MapLoadingPlaceholder = () => (
   <div className="h-full bg-white rounded-xl shadow-lg overflow-hidden flex items-center justify-center">
@@ -39,36 +40,55 @@ const ServiceAreasSection = () => {
   const [retryCount, setRetryCount] = useState(0);
 
   useEffect(() => {
+    // Set a default timeout to show the map even if IntersectionObserver fails
+    const defaultTimeout = setTimeout(() => {
+      if (!isMapVisible) {
+        console.log("Showing map after timeout");
+        setIsMapVisible(true);
+      }
+    }, 3000);
+    
     if (!('IntersectionObserver' in window)) {
       console.log("IntersectionObserver not supported, immediately showing map");
       setIsMapVisible(true);
+      clearTimeout(defaultTimeout);
       return;
     }
     
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting) {
-          console.log("Map section is now visible, loading map");
-          setIsMapVisible(true);
-          setMapKey(prev => prev + 1);
-          observer.disconnect();
-        }
-      },
-      { threshold: 0.1 }
-    );
+    try {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          if (entries[0].isIntersecting) {
+            console.log("Map section is now visible, loading map");
+            setIsMapVisible(true);
+            setMapKey(prev => prev + 1);
+            observer.disconnect();
+            clearTimeout(defaultTimeout);
+          }
+        },
+        { threshold: 0.1 }
+      );
 
-    const sectionElement = document.getElementById('service-areas-section');
-    if (sectionElement) {
-      observer.observe(sectionElement);
-      console.log("Observing service-areas-section for visibility");
-    } else {
-      console.warn("Could not find service-areas-section element");
+      const sectionElement = document.getElementById('service-areas-section');
+      if (sectionElement) {
+        observer.observe(sectionElement);
+        console.log("Observing service-areas-section for visibility");
+      } else {
+        console.warn("Could not find service-areas-section element");
+        setIsMapVisible(true);
+        clearTimeout(defaultTimeout);
+      }
+
+      return () => {
+        observer.disconnect();
+        clearTimeout(defaultTimeout);
+      };
+    } catch (error) {
+      console.error("Error setting up intersection observer:", error);
       setIsMapVisible(true);
+      clearTimeout(defaultTimeout);
+      return () => clearTimeout(defaultTimeout);
     }
-
-    return () => {
-      observer.disconnect();
-    };
   }, []);
 
   useEffect(() => {
@@ -95,6 +115,10 @@ const ServiceAreasSection = () => {
   const handleMapError = (error: Error) => {
     console.error("Map error caught by error boundary:", error);
     setMapError(error.message || "Error displaying map");
+    
+    if (retryCount < 3) {
+      toast.error("Map error. Retrying...");
+    }
   };
 
   const handleRetry = () => {
@@ -102,6 +126,7 @@ const ServiceAreasSection = () => {
     setMapError(null);
     setRetryCount(prev => prev + 1);
     setMapKey(prev => prev + 1);
+    toast.info("Retrying map load...");
   };
 
   if (isLoading) {
@@ -189,6 +214,10 @@ const ServiceAreasSection = () => {
             )}
           </div>
         </div>
+      </div>
+      
+      <div className="container mx-auto px-4 mt-16">
+        <EmergencyCallout />
       </div>
     </section>
   );
