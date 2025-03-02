@@ -1,6 +1,11 @@
 
 import { residentialReviews } from "@/data/reviews";
-import type { FAQItem } from "@/components/sections/services/service-page/ServicePageContent";
+
+// Define the FAQItem interface since it's not exported from ServicePageContent
+export interface FAQItem {
+  question: string;
+  answer: string;
+}
 
 export const houseLockoutFaqs: FAQItem[] = [
   {
