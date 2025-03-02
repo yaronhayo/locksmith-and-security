@@ -35,16 +35,22 @@ const ReviewsCarousel = memo(({ reviews, setApi, className }: ReviewsCarouselPro
         loop: true,
       }}
       setApi={setApi}
+      aria-label="Customer Reviews"
     >
       <CarouselContent>
         {reviews.map((review, index) => (
-          <CarouselItem key={`review-${index}-${review.name}`} className="md:basis-1/2 lg:basis-1/3">
+          <CarouselItem 
+            key={`review-${index}-${review.name}`} 
+            className="md:basis-1/2 lg:basis-1/3"
+            role="group"
+            aria-roledescription="slide"
+          >
             <ReviewCard review={review} index={index} />
           </CarouselItem>
         ))}
       </CarouselContent>
-      <CarouselPrevious className="hidden md:flex" />
-      <CarouselNext className="hidden md:flex" />
+      <CarouselPrevious className="hidden md:flex" aria-label="Previous review" />
+      <CarouselNext className="hidden md:flex" aria-label="Next review" />
     </Carousel>
   );
 });

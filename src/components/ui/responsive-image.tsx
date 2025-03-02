@@ -6,7 +6,7 @@ import { cn } from '@/lib/utils';
 
 interface ResponsiveImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
   src: string;
-  alt: string;
+  alt: string; // Required alt text for accessibility
   srcSet?: string;
   sizes?: string;
   fallbackSrc?: string;
@@ -45,7 +45,7 @@ const getImageSrcSet = (src: string): string => {
 
 const ResponsiveImage = ({
   src,
-  alt,
+  alt, // Ensure this is descriptive and meaningful
   srcSet,
   sizes = '(max-width: 768px) 100vw, 50vw',
   fallbackSrc = '/placeholder.svg',
@@ -110,6 +110,9 @@ const ResponsiveImage = ({
     if (externalOnErrorHandler) externalOnErrorHandler({} as React.SyntheticEvent<HTMLImageElement>);
   };
 
+  // Ensure alt text is never empty - use a fallback if needed
+  const safeAlt = alt || 'Image';
+
   return (
     <div className={cn(`relative overflow-hidden ${aspectRatio}`, containerClassName)}>
       {isLoading && (
@@ -124,7 +127,7 @@ const ResponsiveImage = ({
         src={imgSrc}
         srcSet={imgSrcSet}
         sizes={sizes}
-        alt={alt}
+        alt={safeAlt}
         loading={lazyLoad ? "lazy" : "eager"}
         onLoad={handleImageLoad}
         onError={handleImageError}

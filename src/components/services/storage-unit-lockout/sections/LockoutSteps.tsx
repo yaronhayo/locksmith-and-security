@@ -28,7 +28,7 @@ const LockoutSteps = () => {
 
   return (
     <div className="my-8">
-      <h3 className="text-2xl font-bold mb-6">Our Storage Unit Lockout Process</h3>
+      <h2 className="text-2xl font-bold mb-6">Our Storage Unit Lockout Process</h2>
       
       <div className="space-y-6">
         {steps.map((step, index) => (

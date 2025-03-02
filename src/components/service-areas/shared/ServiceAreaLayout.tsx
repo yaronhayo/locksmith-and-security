@@ -46,8 +46,9 @@ const ServiceAreaLayout = memo(({ areaSlug }: ServiceAreaLayoutProps) => {
     return null;
   }
 
+  // Create optimized meta description (staying within 150-160 chars)
   const pageTitle = `Top-Rated Locksmith in ${location.name}, NJ | 24/7 Emergency Service`;
-  const pageDescription = `Professional locksmith services in ${location.name}, NJ. Licensed & insured experts providing residential, commercial & automotive locksmith solutions with fast 24/7 emergency response.`;
+  const pageDescription = `Professional locksmith services in ${location.name}. Licensed & insured experts providing residential, commercial & auto solutions with fast 24/7 response.`;
 
   return (
     <PageLayout

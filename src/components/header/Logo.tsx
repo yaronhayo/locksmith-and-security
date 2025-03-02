@@ -25,7 +25,7 @@ const Logo = () => {
         ) : (
           <img
             src={logoUrl}
-            alt="Locksmith & Security LLC Logo"
+            alt="Locksmith & Security LLC - Professional 24/7 Locksmith Services"
             className={`w-full h-full transition-opacity duration-300 ${isLoading ? 'opacity-0' : 'opacity-100'}`}
             style={{ objectFit: 'contain' }}
             width={200}

@@ -28,7 +28,7 @@ const FooterLogo = () => {
             ) : (
               <img 
                 src={logoUrl}
-                alt="Locksmith & Security LLC Logo" 
+                alt="Locksmith & Security LLC - 24/7 Professional Locksmith Services in North Bergen, NJ" 
                 className={`w-full h-full transition-opacity duration-300 ${isLoading ? 'opacity-0' : 'opacity-100'}`}
                 style={{ objectFit: 'contain' }}
                 width={300}

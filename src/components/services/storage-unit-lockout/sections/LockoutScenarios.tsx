@@ -36,7 +36,7 @@ const LockoutScenarios = () => {
 
   return (
     <div className="my-8">
-      <h3 className="text-2xl font-bold mb-4">Common Storage Unit Lockout Scenarios</h3>
+      <h2 className="text-2xl font-bold mb-4">Common Storage Unit Lockout Scenarios</h2>
       <div className="grid md:grid-cols-2 gap-4">
         {scenarios.map((scenario, index) => (
           <Suspense key={index} fallback={<ScenarioSkeleton />}>

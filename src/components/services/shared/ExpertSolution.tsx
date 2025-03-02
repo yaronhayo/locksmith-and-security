@@ -38,7 +38,7 @@ const ExpertSolution = ({
         <div className="text-primary">
           {icon}
         </div>
-        <h4 className="font-bold text-lg ml-3">{title}</h4>
+        <h3 className="font-bold text-lg ml-3">{title}</h3>
       </div>
       <p className="text-gray-700 leading-relaxed">{description}</p>
     </motion.div>

@@ -29,7 +29,7 @@ const ExpertSolutions = () => {
 
   return (
     <div className="my-8">
-      <h3 className="text-2xl font-bold mb-6">Expert Storage Unit Lockout Solutions</h3>
+      <h2 className="text-2xl font-bold mb-6">Expert Storage Unit Lockout Solutions</h2>
       
       <div className="grid md:grid-cols-2 gap-6">
         {solutions.map((solution, index) => (

@@ -40,7 +40,7 @@ const LockoutStep = ({
         </div>
       </div>
       <div>
-        <h4 className="font-bold text-lg mb-1">{title}</h4>
+        <h3 className="font-bold text-lg mb-1">{title}</h3>
         <p className="text-gray-700">{description}</p>
       </div>
     </motion.div>
