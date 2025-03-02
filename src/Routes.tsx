@@ -39,20 +39,29 @@ RouteWrapper.displayName = 'RouteWrapper';
 const Routes = () => {
   useEffect(() => {
     console.log('Routes component mounted');
-    console.log('Available routes:', 
-      [...mainRoutes, ...serviceRoutes, ...serviceAreaRoutes].map(r => r.path)
-    );
+    try {
+      console.log('Available routes:', 
+        [...mainRoutes, ...serviceRoutes, ...serviceAreaRoutes].map(r => r.path)
+      );
+    } catch (error) {
+      console.error('Error logging routes:', error);
+    }
   }, []);
 
-  // Map route data to Route components
+  // Map route data to Route components with better error handling
   const renderRouteComponents = (routes: RouteConfig[]) => {
-    return routes.map(({ path, element }) => (
-      <Route 
-        key={path} 
-        path={path} 
-        element={<RouteWrapper element={element} />} 
-      />
-    ));
+    try {
+      return routes.map(({ path, element }) => (
+        <Route 
+          key={path} 
+          path={path} 
+          element={<RouteWrapper element={element} />} 
+        />
+      ));
+    } catch (error) {
+      console.error('Error rendering route components:', error);
+      return null;
+    }
   };
 
   return (
@@ -69,7 +78,11 @@ const Routes = () => {
           {renderRouteComponents(serviceAreaRoutes)}
           
           {/* 404 page */}
-          <Route path="*" element={<NotFound />} />
+          <Route path="*" element={
+            <Suspense fallback={<PageLoading type="spinner" />}>
+              <NotFound />
+            </Suspense>
+          } />
         </RouterRoutes>
       </Suspense>
     </RouteErrorBoundary>

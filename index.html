@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -137,6 +138,32 @@
     
     <!-- Web App Manifest -->
     <link rel="manifest" href="/manifest.json" />
+    
+    <!-- Early error detection script -->
+    <script>
+      // Monitor for early errors, before the app starts
+      window.addEventListener('error', function(e) {
+        console.error('Early error caught:', e.error || e.message);
+      });
+      
+      // Create a safety timeout that will display an error message if the app doesn't load
+      window._loadTimeout = setTimeout(function() {
+        var rootEl = document.getElementById('root');
+        if (rootEl && (!rootEl.children || rootEl.children.length === 0)) {
+          console.error('App failed to load within the timeout period');
+          rootEl.innerHTML = `
+            <div style="text-align: center; padding: 30px; font-family: sans-serif;">
+              <h2>Loading Error</h2>
+              <p>The application failed to load. This might be due to a network issue or a JavaScript error.</p>
+              <button onclick="window.location.reload()" style="padding: 10px 20px; background: #1E3A8A; color: white; border: none; border-radius: 4px; cursor: pointer;">
+                Reload Page
+              </button>
+              <p style="margin-top: 20px; font-size: 0.8rem;">If this problem persists, please clear your browser cache or try a different browser.</p>
+            </div>
+          `;
+        }
+      }, 10000);
+    </script>
   </head>
   <body>
     <!-- Google Tag Manager (noscript) -->
@@ -146,24 +173,14 @@
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
     
-    <!-- Fallback for white screen -->
+    <!-- Clear the safety timeout once the script has loaded -->
     <script>
-      // Check if the app rendered after 5 seconds
-      setTimeout(() => {
-        const rootElement = document.getElementById('root');
-        if (rootElement && rootElement.children.length === 0) {
-          console.error('App did not render within 5 seconds');
-          rootElement.innerHTML = `
-            <div style="text-align: center; padding: 30px; font-family: sans-serif;">
-              <h1>Loading Error</h1>
-              <p>The application failed to load. Please try refreshing the page.</p>
-              <button onclick="window.location.reload()" style="padding: 10px 20px; background: #1E3A8A; color: white; border: none; border-radius: 4px; cursor: pointer;">
-                Reload Page
-              </button>
-            </div>
-          `;
+      document.addEventListener('DOMContentLoaded', function() {
+        if (window._loadTimeout) {
+          clearTimeout(window._loadTimeout);
+          console.log('App started loading, cleared safety timeout');
         }
-      }, 5000);
+      });
     </script>
   </body>
 </html>

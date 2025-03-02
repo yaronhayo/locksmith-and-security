@@ -56,25 +56,68 @@ const queryClient = new QueryClient({
   }
 });
 
-// Add console logging to debug rendering issues
+// Add enhanced console logging to debug rendering issues
 console.log('Initializing app render');
 
-try {
-  const rootElement = document.getElementById('root');
-  if (!rootElement) {
-    console.error('Root element not found in DOM');
-    throw new Error('Root element not found');
+// Function to render the app with better error handling
+const renderApp = () => {
+  try {
+    const rootElement = document.getElementById('root');
+    if (!rootElement) {
+      console.error('Root element not found in DOM');
+      document.body.innerHTML = '<div style="color: red; padding: 20px;">Root element not found. Please check your HTML structure.</div>';
+      return;
+    }
+    
+    console.log('Root element found, attempting to render app');
+    
+    const root = ReactDOM.createRoot(rootElement);
+    
+    // Wrap the app render in a try/catch to catch any React rendering errors
+    try {
+      root.render(
+        <React.StrictMode>
+          <QueryClientProvider client={queryClient}>
+            <App />
+          </QueryClientProvider>
+        </React.StrictMode>
+      );
+      console.log('App rendered successfully');
+    } catch (renderError) {
+      console.error('Error during React rendering:', renderError);
+      rootElement.innerHTML = `
+        <div style="color: red; padding: 20px; font-family: sans-serif; text-align: center;">
+          <h2>React Rendering Error</h2>
+          <p>${renderError instanceof Error ? renderError.message : 'Unknown error during rendering'}</p>
+          <button onclick="window.location.reload()" style="padding: 10px 20px; background: #1E3A8A; color: white; border: none; border-radius: 4px; cursor: pointer;">
+            Reload Page
+          </button>
+        </div>
+      `;
+    }
+  } catch (error) {
+    console.error('Critical error initializing the app:', error);
+    document.body.innerHTML = `
+      <div style="color: red; padding: 20px; font-family: sans-serif; text-align: center;">
+        <h2>Application Failed to Initialize</h2>
+        <p>${error instanceof Error ? error.message : 'An unexpected error occurred while initializing the application.'}</p>
+        <button onclick="window.location.reload()" style="padding: 10px 20px; background: #1E3A8A; color: white; border: none; border-radius: 4px; cursor: pointer;">
+          Reload Page
+        </button>
+      </div>
+    `;
   }
-  
-  ReactDOM.createRoot(rootElement).render(
-    <React.StrictMode>
-      <QueryClientProvider client={queryClient}>
-        <App />
-      </QueryClientProvider>
-    </React.StrictMode>
-  );
-  console.log('App rendered successfully');
-} catch (error) {
-  console.error('Error rendering the app:', error);
-  document.body.innerHTML = '<div style="color: red; padding: 20px;">Failed to load the application. Please check the console for errors.</div>';
-}
+};
+
+// Add window error handler to catch any unhandled errors
+window.addEventListener('error', (event) => {
+  console.error('Unhandled window error:', event.error || event.message);
+});
+
+// Add unhandled promise rejection handler
+window.addEventListener('unhandledrejection', (event) => {
+  console.error('Unhandled promise rejection:', event.reason);
+});
+
+// Execute the renderApp function
+renderApp();
