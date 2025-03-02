@@ -42,7 +42,7 @@ const FAQAccordion = ({ faq, index }: FAQAccordionProps) => {
   );
 };
 
-// New component that renders multiple FAQs
+// Component that renders multiple FAQs
 export const FAQsAccordion = ({ faqs }: FAQsAccordionProps) => {
   return (
     <div className="space-y-4">

@@ -6,7 +6,7 @@ import { ChevronRight, HelpCircle } from "lucide-react";
 import { Link } from "react-router-dom";
 import { initialFaqs } from "@/data/faqData";
 import { FAQ } from "@/data/faqData";
-import FAQAccordion from "./FAQAccordion";
+import { FAQsAccordion } from "./FAQAccordion";
 
 interface FAQSectionProps {
   title?: string;
@@ -37,9 +37,7 @@ const FAQSection = ({
           ref={scrollAreaRef}
         >
           <div className="grid md:grid-cols-2 gap-6">
-            {displayedFaqs.map((faq, index) => (
-              <FAQAccordion key={`home-faq-${index}`} faq={faq} index={index} />
-            ))}
+            <FAQsAccordion faqs={displayedFaqs} />
           </div>
         </ScrollArea>
 
