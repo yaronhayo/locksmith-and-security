@@ -18,6 +18,17 @@ const queryClient = new QueryClient({
   },
 })
 
+// Add global error handler to log any unhandled errors
+if (typeof window !== 'undefined') {
+  window.addEventListener('error', (event) => {
+    console.error('Global error caught:', event.error);
+  });
+
+  window.addEventListener('unhandledrejection', (event) => {
+    console.error('Unhandled promise rejection:', event.reason);
+  });
+}
+
 // Render the application with error boundaries
 const renderApp = () => {
   const rootElement = document.getElementById('root');
@@ -62,12 +73,3 @@ const renderApp = () => {
 
 // Execute the render function
 renderApp();
-
-// Add unhandled error listeners
-window.addEventListener('error', (event) => {
-  console.error('Unhandled error:', event.error);
-});
-
-window.addEventListener('unhandledrejection', (event) => {
-  console.error('Unhandled promise rejection:', event.reason);
-});
