@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from "react";
-import Recaptcha from "@/components/ui/recaptcha";
+import { toast } from "sonner";
 import { getEmailError, getNameError, getPhoneError } from "@/utils/inputValidation";
 import FormHeader from "./form/FormHeader";
 import ThankYouMessage from "./form/ThankYouMessage";
@@ -10,6 +10,7 @@ import ServiceField from "./form/ServiceField";
 import MessageField from "./form/MessageField";
 import ContactOptions from "./form/ContactOptions";
 import SubmitButton from "./form/SubmitButton";
+import RecaptchaField from "@/components/BookingForm/RecaptchaField";
 
 interface ServiceAreaFormProps {
   locationName?: string;
@@ -39,6 +40,7 @@ const ServiceAreaForm = ({ locationName }: ServiceAreaFormProps) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
+  const [recaptchaError, setRecaptchaError] = useState<string | null>(null);
   
   useEffect(() => {
     if (isDirty.name) {
@@ -77,6 +79,11 @@ const ServiceAreaForm = ({ locationName }: ServiceAreaFormProps) => {
     setIsDirty(prev => ({ ...prev, [field]: true }));
   };
   
+  const handleRecaptchaChange = (token: string | null) => {
+    setRecaptchaToken(token);
+    setRecaptchaError(token ? null : "Please complete the reCAPTCHA verification");
+  };
+  
   const isFormValid = () => {
     return (
       !errors.name && 
@@ -110,7 +117,7 @@ const ServiceAreaForm = ({ locationName }: ServiceAreaFormProps) => {
     setErrors(newErrors);
     
     if (!recaptchaToken) {
-      alert("Please complete the reCAPTCHA verification");
+      setRecaptchaError("Please complete the reCAPTCHA verification");
       return;
     }
     
@@ -124,6 +131,9 @@ const ServiceAreaForm = ({ locationName }: ServiceAreaFormProps) => {
     setTimeout(() => {
       setIsSubmitting(false);
       setIsSubmitted(true);
+      toast.success("Message sent successfully!", {
+        description: "We'll get back to you shortly."
+      });
       setFormState({
         name: "",
         email: "",
@@ -171,9 +181,11 @@ const ServiceAreaForm = ({ locationName }: ServiceAreaFormProps) => {
               handleChange={handleChange}
             />
             
-            <div className="pt-2 overflow-x-auto">
-              <Recaptcha onChange={setRecaptchaToken} />
-            </div>
+            <RecaptchaField 
+              onChange={handleRecaptchaChange} 
+              error={recaptchaError || undefined}
+              className="pt-2"
+            />
             
             <SubmitButton 
               isSubmitting={isSubmitting}
