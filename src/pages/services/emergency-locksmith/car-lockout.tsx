@@ -7,7 +7,7 @@ import ServicesProof from '@/components/sections/services/ServicesProof';
 import { SchemaScripts } from '@/components/meta/SchemaScripts';
 import { Helmet } from 'react-helmet';
 import { CarLockoutContent } from '@/components/services/car-lockout/CarLockoutContent';
-import { carLockoutSchema, carLockoutFaqSchema } from '@/components/services/car-lockout/CarLockoutSchema';
+import { carLockoutSchema, carLockoutFaqs } from '@/components/services/car-lockout/CarLockoutSchema';
 import { relatedEmergencyServices } from '@/components/services/car-lockout/relatedServices';
 
 const CarLockout = () => {
@@ -41,7 +41,7 @@ const CarLockout = () => {
         serviceCategory="Emergency Locksmith"
         mainContent={<CarLockoutContent />}
         relatedServices={relatedEmergencyServices}
-        faqs={carLockoutFaqSchema.mainEntity}
+        faqs={carLockoutFaqs}
       />
       
       <ServicesProof reviewsData={carServiceReviews.slice(0, 8)} />
