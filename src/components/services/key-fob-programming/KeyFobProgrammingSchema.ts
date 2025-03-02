@@ -1,4 +1,32 @@
 
+// Key Fob Programming FAQs
+export const keyFobProgrammingFaqs = [
+  {
+    question: "How long does key fob programming take?",
+    answer: "Most key fob programming services can be completed in 15-30 minutes, depending on your vehicle make and model. Our certified technicians work efficiently to minimize your wait time."
+  },
+  {
+    question: "Can you program a key fob I purchased online?",
+    answer: "Yes, we can program key fobs that you've purchased separately. However, we recommend consulting with us before buying to ensure compatibility with your vehicle. Not all aftermarket key fobs are programmable for all vehicles."
+  },
+  {
+    question: "Is key fob programming cheaper than going to the dealership?",
+    answer: "Yes, our key fob programming service typically costs 30-50% less than dealership prices. We provide the same professional service at more competitive rates without compromising quality."
+  },
+  {
+    question: "Do I need to bring my vehicle for key fob programming?",
+    answer: "Yes, your vehicle must be present for key fob programming as we need to connect to your vehicle's onboard computer system. However, as a mobile service, we come to your location."
+  },
+  {
+    question: "Will programming a new key fob delete my old ones?",
+    answer: "In most cases, programming a new key fob won't affect existing fobs. However, for security reasons, if a key fob was lost or stolen, we recommend reprogramming all fobs to ensure the missing one can't be used."
+  },
+  {
+    question: "What types of key fobs can you program?",
+    answer: "We can program virtually all types of automotive key fobs, including standard remote entry fobs, push-to-start smart keys, proximity keys, flip keys, and integrated key fobs for most vehicle makes and models."
+  }
+];
+
 // Key Fob Programming Service Schema
 export const keyFobProgrammingServiceSchema = {
   "@context": "https://schema.org",
@@ -56,34 +84,6 @@ export const keyFobProgrammingFaqSchema = {
     }
   }))
 };
-
-// Key Fob Programming FAQs
-export const keyFobProgrammingFaqs = [
-  {
-    question: "How long does key fob programming take?",
-    answer: "Most key fob programming services can be completed in 15-30 minutes, depending on your vehicle make and model. Our certified technicians work efficiently to minimize your wait time."
-  },
-  {
-    question: "Can you program a key fob I purchased online?",
-    answer: "Yes, we can program key fobs that you've purchased separately. However, we recommend consulting with us before buying to ensure compatibility with your vehicle. Not all aftermarket key fobs are programmable for all vehicles."
-  },
-  {
-    question: "Is key fob programming cheaper than going to the dealership?",
-    answer: "Yes, our key fob programming service typically costs 30-50% less than dealership prices. We provide the same professional service at more competitive rates without compromising quality."
-  },
-  {
-    question: "Do I need to bring my vehicle for key fob programming?",
-    answer: "Yes, your vehicle must be present for key fob programming as we need to connect to your vehicle's onboard computer system. However, as a mobile service, we come to your location."
-  },
-  {
-    question: "Will programming a new key fob delete my old ones?",
-    answer: "In most cases, programming a new key fob won't affect existing fobs. However, for security reasons, if a key fob was lost or stolen, we recommend reprogramming all fobs to ensure the missing one can't be used."
-  },
-  {
-    question: "What types of key fobs can you program?",
-    answer: "We can program virtually all types of automotive key fobs, including standard remote entry fobs, push-to-start smart keys, proximity keys, flip keys, and integrated key fobs for most vehicle makes and models."
-  }
-];
 
 // Related automotive services
 export const keyFobProgrammingRelatedServices = [
