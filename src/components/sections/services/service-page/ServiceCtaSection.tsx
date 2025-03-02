@@ -21,8 +21,8 @@ const ServiceCtaSection: React.FC<ServiceCtaSectionProps> = ({ serviceName }) =>
           asChild
         >
           <a href="tel:2017482070" className="flex items-center justify-center">
-            <Phone className="mr-2 h-5 w-5" />
-            (201) 748-2070
+            <Phone className="mr-2 h-5 w-5" aria-hidden="true" />
+            <span>(201) 748-2070</span>
           </a>
         </Button>
         <Button 
@@ -32,8 +32,8 @@ const ServiceCtaSection: React.FC<ServiceCtaSectionProps> = ({ serviceName }) =>
           asChild
         >
           <Link to="/book-online" className="flex items-center justify-center">
-            <Calendar className="mr-2 h-5 w-5" />
-            Book Online
+            <Calendar className="mr-2 h-5 w-5" aria-hidden="true" />
+            <span>Book Online</span>
           </Link>
         </Button>
       </div>

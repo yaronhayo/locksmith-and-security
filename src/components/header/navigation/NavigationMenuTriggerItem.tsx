@@ -17,10 +17,12 @@ const NavigationMenuTriggerItem = ({ path, label, isActive }: NavigationMenuTrig
     <Link 
       to={path}
       onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+      className="outline-none"
+      aria-current={isActive ? "page" : undefined}
     >
       <NavigationMenuTrigger
         className={cn(
-          "text-base font-medium transition-colors duration-300 relative px-0 bg-transparent hover:bg-transparent focus:bg-transparent",
+          "text-base font-medium transition-colors duration-300 relative px-0 bg-transparent hover:bg-transparent focus:bg-transparent focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 rounded-md",
           isActive ? "text-secondary" : "text-gray-700 hover:text-secondary"
         )}
       >

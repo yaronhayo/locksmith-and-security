@@ -56,6 +56,16 @@ export const BasicMetaTags = ({
       <meta name="copyright" content={`© ${new Date().getFullYear()} Locksmith & Security LLC. All rights reserved.`} />
       <meta name="last-modified" content={formattedModifiedDate} />
       <meta property="article:modified_time" content={formattedModifiedDate} />
+      
+      {/* Accessibility Metadata */}
+      <meta name="accessibility-control" content="fullKeyboardControl" />
+      <meta name="accessibility-control" content="fullMouseControl" />
+      <meta name="accessibility-control" content="fullTouchControl" />
+      <meta name="accessibility-hazard" content="noFlashingHazard" />
+      <meta name="accessibility-hazard" content="noMotionSimulationHazard" />
+      <meta name="accessibility-hazard" content="noSoundHazard" />
+      <meta name="accessMode" content="textual" />
+      <meta name="accessMode" content="visual" />
     </Helmet>
   );
 };

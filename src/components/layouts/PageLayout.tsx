@@ -106,21 +106,22 @@ const PageLayout = ({
       )}
       
       {!hideBreadcrumbs && !heroTitle && !heroDescription && (
-        <div className="container mx-auto px-4 py-3 md:py-4">
+        <nav aria-label="Breadcrumb" className="container mx-auto px-4 py-3 md:py-4">
           <Breadcrumbs />
-        </div>
+        </nav>
       )}
       
-      <motion.div 
+      <motion.main
         className={cn("flex-grow", !(heroTitle || heroDescription) && "pt-0")}
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: 20 }}
         transition={{ duration: 0.3 }}
         role="main"
+        tabIndex={-1}
       >
         <div className={cn(className)}>{children}</div>
-      </motion.div>
+      </motion.main>
       
       {/* Scroll to top button */}
       <ScrollToTopButton />

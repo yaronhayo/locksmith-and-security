@@ -26,8 +26,36 @@ const Header = () => {
     setIsMenuOpen(false);
   }, [location]);
 
+  // Close mobile menu with ESC key
+  useEffect(() => {
+    const handleEscKey = (event: KeyboardEvent) => {
+      if (event.key === 'Escape' && isMenuOpen) {
+        setIsMenuOpen(false);
+      }
+    };
+
+    document.addEventListener('keydown', handleEscKey);
+    return () => document.removeEventListener('keydown', handleEscKey);
+  }, [isMenuOpen]);
+
+  // Prevent scrolling when mobile menu is open
+  useEffect(() => {
+    if (isMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isMenuOpen]);
+
   return (
     <>
+      {/* Skip to content link for keyboard users */}
+      <a href="#main-content" className="skip-to-content">
+        Skip to content
+      </a>
       <TopBar />
       <header 
         className={`sticky top-0 w-full z-50 transition-all duration-300 ${
@@ -55,7 +83,7 @@ const Header = () => {
                 onClick={() => setIsMenuOpen(false)}
                 aria-label="Close menu"
               >
-                <X className="h-6 w-6 text-white" strokeWidth={2.5} />
+                <X className="h-6 w-6 text-white" strokeWidth={2.5} aria-hidden="true" />
               </Button>
             </div>
 
@@ -65,6 +93,10 @@ const Header = () => {
           </div>
         </div>
       </header>
+      {/* Main content marker for skip link */}
+      <div id="main-content" tabIndex={-1} className="sr-only focus:not-sr-only">
+        Main content starts here
+      </div>
     </>
   );
 };

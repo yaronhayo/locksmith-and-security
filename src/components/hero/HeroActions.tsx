@@ -16,7 +16,6 @@ const HeroActions = () => {
         variant="secondary" 
         className="text-base sm:text-lg group transform hover:scale-105 transition-all duration-300 hover:shadow-lg relative overflow-hidden w-full sm:w-auto" 
         asChild
-        aria-label="Call us now"
       >
         <a href="tel:2017482070" className="inline-flex items-center justify-center">
           <Phone className="mr-2 h-5 w-5 animate-phone-ring group-hover:rotate-12 transition-transform duration-300 group-hover:text-black" aria-hidden="true" />
@@ -29,7 +28,6 @@ const HeroActions = () => {
         variant="outline" 
         className="text-base sm:text-lg bg-white/10 hover:bg-white/20 text-white border-white group transform hover:scale-105 transition-all duration-300 hover:shadow-lg backdrop-blur-sm w-full sm:w-auto" 
         asChild
-        aria-label="View our services"
       >
         <a href="/services" className="inline-flex items-center justify-center">
           <Wrench className="mr-2 h-5 w-5 transition-colors duration-300 group-hover:text-secondary" aria-hidden="true" />

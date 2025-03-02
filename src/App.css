@@ -1,3 +1,4 @@
+
 #root {
   width: 100%;
   margin: 0 auto;
@@ -57,7 +58,7 @@
 }
 
 .read-the-docs {
-  color: #888;
+  color: #555; /* Improved from #888 for better contrast */
 }
 
 /* Ensure proper touch targets on mobile */
@@ -77,5 +78,43 @@
   select,
   textarea {
     font-size: 16px !important;
+  }
+}
+
+/* Global focus styles to meet WCAG requirements */
+:focus-visible {
+  outline: 3px solid #0EA5E9;
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* Skip to content link for keyboard users */
+.skip-to-content {
+  position: absolute;
+  left: -9999px;
+  top: 1rem;
+  z-index: 9999;
+  background: white;
+  color: black;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  text-decoration: none;
+  transform: translateY(-100%);
+  transition: transform 0.3s;
+}
+
+.skip-to-content:focus {
+  left: 1rem;
+  transform: translateY(0);
+}
+
+/* Prevent animation for users who prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }

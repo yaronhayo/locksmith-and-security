@@ -12,21 +12,23 @@ interface EmailFieldProps {
 }
 
 const EmailField = ({ email, error, isSubmitting, handleChange, handleBlur }: EmailFieldProps) => {
+  const emailInputId = "email-input";
+  
   return (
     <div>
-      <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+      <label htmlFor={emailInputId} className="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
       <div className="relative">
         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-          <Mail className="h-4 w-4 text-gray-400" />
+          <Mail className="h-4 w-4 text-gray-400" aria-hidden="true" />
         </div>
         <input
           type="email"
-          id="email"
+          id={emailInputId}
           name="email"
           value={email}
           onChange={handleChange}
           onBlur={handleBlur}
-          className={`w-full pl-10 pr-3 py-2 sm:py-2.5 border ${error ? 'border-red-500' : 'border-gray-300'} rounded-md focus:ring-secondary focus:border-secondary text-sm sm:text-base`}
+          className={`w-full pl-10 pr-3 py-2 sm:py-2.5 border ${error ? 'border-red-500' : 'border-gray-300'} rounded-md focus:ring-2 focus:ring-secondary focus:border-secondary text-sm sm:text-base`}
           placeholder="your@email.com"
           required
           disabled={isSubmitting}
@@ -35,8 +37,8 @@ const EmailField = ({ email, error, isSubmitting, handleChange, handleBlur }: Em
         />
       </div>
       {error && (
-        <Alert variant="destructive" className="mt-1 py-2">
-          <AlertCircle className="h-4 w-4" />
+        <Alert variant="destructive" className="mt-1 py-2" role="alert">
+          <AlertCircle className="h-4 w-4" aria-hidden="true" />
           <AlertDescription id="email-error">{error}</AlertDescription>
         </Alert>
       )}

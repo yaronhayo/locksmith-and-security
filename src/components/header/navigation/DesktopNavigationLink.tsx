@@ -14,10 +14,11 @@ const DesktopNavigationLink = ({ path, label, isActive }: DesktopNavigationLinkP
     <Link
       to={path}
       className={cn(
-        "text-base font-medium transition-colors duration-300 relative no-underline",
+        "text-base font-medium transition-colors duration-300 relative no-underline outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 rounded-md px-2 py-1",
         isActive ? "text-secondary" : "text-gray-700 hover:text-secondary"
       )}
       onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+      aria-current={isActive ? "page" : undefined}
     >
       <div className="relative">
         {label}
