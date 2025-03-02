@@ -14,8 +14,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 const MapLoadingPlaceholder = () => (
   <div className="h-[600px] bg-white rounded-xl shadow-lg overflow-hidden flex items-center justify-center">
     <div className="text-center">
-      <LoadingSpinner size="lg" />
-      <p className="mt-4 text-gray-500">Loading map...</p>
+      <LoadingSpinner size="lg" text="Loading map..." />
     </div>
   </div>
 );
@@ -35,7 +34,32 @@ const LocationsLoadingPlaceholder = () => (
 const ServiceAreasSection = () => {
   const [hoveredArea, setHoveredArea] = useState<string | null>(null);
   const [mapKey, setMapKey] = useState(0); // Force re-render key
+  const [isMapVisible, setIsMapVisible] = useState(false);
   const { data: locations, isLoading, error } = useLocations();
+
+  // Set up intersection observer to lazy load the map when it comes into view
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          setIsMapVisible(true);
+          // Force re-render map after it becomes visible
+          setMapKey(prev => prev + 1);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    const sectionElement = document.getElementById('service-areas-section');
+    if (sectionElement) {
+      observer.observe(sectionElement);
+    }
+
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
 
   // Log locations data for debugging
   useEffect(() => {
@@ -46,14 +70,6 @@ const ServiceAreasSection = () => {
       console.error("Error loading locations:", error);
     }
   }, [locations, error]);
-
-  // Force re-render map after component is fully mounted
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setMapKey(prev => prev + 1);
-    }, 500);
-    return () => clearTimeout(timer);
-  }, []);
 
   // Memoize map markers to prevent unnecessary recalculations
   const mapMarkers = useMemo(() => {
@@ -69,7 +85,7 @@ const ServiceAreasSection = () => {
 
   if (isLoading) {
     return (
-      <section className="py-20 bg-gray-50">
+      <section className="py-20 bg-gray-50" id="service-areas-section">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <Skeleton className="h-10 w-2/3 mx-auto mb-4" />
@@ -86,7 +102,7 @@ const ServiceAreasSection = () => {
 
   if (error || !locations) {
     return (
-      <div className="py-20 bg-gray-50">
+      <div className="py-20 bg-gray-50" id="service-areas-section">
         <div className="container mx-auto px-4 flex justify-center items-center min-h-[400px]">
           <MapError error={error?.message || 'Error loading service areas'} />
         </div>
@@ -95,7 +111,7 @@ const ServiceAreasSection = () => {
   }
 
   return (
-    <section className="py-20 bg-gray-50">
+    <section className="py-20 bg-gray-50" id="service-areas-section">
       <div className="container mx-auto px-4">
         <h2 className="text-4xl font-bold text-center mb-6">Our Service Areas</h2>
         <p className="text-lg text-gray-600 text-center mb-12 max-w-2xl mx-auto">
@@ -111,18 +127,22 @@ const ServiceAreasSection = () => {
           />
           
           <div className="bg-white rounded-xl shadow-lg overflow-hidden" style={{ height: '600px' }}>
-            <ErrorBoundary FallbackComponent={MapError} key={`map-error-boundary-${mapKey}`}>
-              <GoogleMapsProvider>
-                <GoogleMap 
-                  key={`google-map-${mapKey}`}
-                  markers={mapMarkers}
-                  highlightedMarker={hoveredArea}
-                  showAllMarkers={true}
-                  zoom={11}
-                  center={{ lat: 40.7795, lng: -74.0324 }}
-                />
-              </GoogleMapsProvider>
-            </ErrorBoundary>
+            {isMapVisible ? (
+              <ErrorBoundary FallbackComponent={MapError} key={`map-error-boundary-${mapKey}`}>
+                <GoogleMapsProvider>
+                  <GoogleMap 
+                    key={`google-map-${mapKey}`}
+                    markers={mapMarkers}
+                    highlightedMarker={hoveredArea}
+                    showAllMarkers={true}
+                    zoom={11}
+                    center={{ lat: 40.7795, lng: -74.0324 }}
+                  />
+                </GoogleMapsProvider>
+              </ErrorBoundary>
+            ) : (
+              <MapLoadingPlaceholder />
+            )}
           </div>
         </div>
       </div>

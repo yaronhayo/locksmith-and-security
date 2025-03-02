@@ -6,11 +6,12 @@ export interface ExpertSolutionProps {
   icon: ReactNode;
   title: string;
   description: string;
+  className?: string;
 }
 
-const ExpertSolution = ({ icon, title, description }: ExpertSolutionProps) => {
+const ExpertSolution = ({ icon, title, description, className }: ExpertSolutionProps) => {
   return (
-    <div className="bg-white p-4 sm:p-5 rounded-lg shadow-sm border border-gray-100 transition-all duration-200 hover:shadow-md hover:border-gray-200">
+    <div className={`bg-white p-4 sm:p-5 rounded-lg shadow-sm border border-gray-100 transition-all duration-200 hover:shadow-md hover:border-gray-200 ${className || ''}`}>
       <div className="flex items-center mb-3">
         <div className="text-primary">
           {icon}

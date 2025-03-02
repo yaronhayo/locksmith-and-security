@@ -1,5 +1,5 @@
 
-import { memo, Suspense } from "react";
+import { memo, Suspense, useCallback } from "react";
 import { useReviews } from "@/components/reviews/useReviews";
 import ReviewsContainer from "@/components/reviews/ReviewsContainer";
 import { ErrorBoundary } from "react-error-boundary";
@@ -33,8 +33,13 @@ const ReviewsContent = memo(({ location, category }: ReviewsSectionProps) => {
 ReviewsContent.displayName = 'ReviewsContent';
 
 const ReviewsSection = memo(({ location, category }: ReviewsSectionProps) => {
+  const errorHandler = useCallback((error: Error, info: { componentStack: string }) => {
+    console.error("Error in ReviewsSection:", error, info);
+    return <ErrorFallback error={error} resetErrorBoundary={() => window.location.reload()} />;
+  }, []);
+
   return (
-    <ErrorBoundary FallbackComponent={ErrorFallback}>
+    <ErrorBoundary FallbackComponent={ErrorFallback} onError={errorHandler}>
       <Suspense fallback={<ReviewsLoadingSkeleton />}>
         <ReviewsContent location={location} category={category} />
       </Suspense>

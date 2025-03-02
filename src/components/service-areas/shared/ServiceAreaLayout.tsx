@@ -9,25 +9,42 @@ import ServiceAreaContent from "./ServiceAreaContent";
 import { FAQSchema } from "@/types/schema";
 import { Helmet } from "react-helmet";
 import { Card, CardContent } from "@/components/ui/card";
+import { memo, useMemo } from "react";
+import PageLoading from "@/components/layouts/PageLoading";
 
 interface ServiceAreaLayoutProps {
   areaSlug: string;
 }
 
-const ServiceAreaLayout = ({ areaSlug }: ServiceAreaLayoutProps) => {
+const ServiceAreaLayout = memo(({ areaSlug }: ServiceAreaLayoutProps) => {
   const { data: settings, isLoading: settingsLoading } = useSettings();
   const { data: locations, isLoading: locationsLoading } = useLocations();
-  const location = locations?.find(loc => loc.slug === areaSlug);
+  
+  const location = useMemo(() => {
+    return locations?.find(loc => loc.slug === areaSlug);
+  }, [locations, areaSlug]);
+  
   const { displayedReviews, isLoading: reviewsLoading, totalReviews } = useReviews(location?.name);
 
-  const schemas = createServiceAreaSchemas(location, settings, areaSlug);
+  const schemas = useMemo(() => {
+    return createServiceAreaSchemas(location, settings, areaSlug);
+  }, [location, settings, areaSlug]);
+  
+  const rawFaqSchema = useMemo(() => {
+    return schemas.find(schema => schema.type === 'FAQPage');
+  }, [schemas]);
+  
+  const faqSchema = rawFaqSchema as FAQSchema | undefined;
+  
+  const isLoading = settingsLoading || locationsLoading;
+
+  if (isLoading) {
+    return <PageLoading type="skeleton" />;
+  }
 
   if (!location) {
     return null;
   }
-
-  const rawFaqSchema = schemas.find(schema => schema.type === 'FAQPage');
-  const faqSchema = rawFaqSchema as FAQSchema | undefined;
 
   const pageTitle = `Top-Rated Locksmith in ${location.name}, NJ | 24/7 Emergency Service`;
   const pageDescription = `Professional locksmith services in ${location.name}, NJ. Licensed & insured experts providing residential, commercial & automotive locksmith solutions with fast 24/7 emergency response.`;
@@ -70,6 +87,8 @@ const ServiceAreaLayout = ({ areaSlug }: ServiceAreaLayoutProps) => {
       </div>
     </PageLayout>
   );
-};
+});
+
+ServiceAreaLayout.displayName = 'ServiceAreaLayout';
 
 export default ServiceAreaLayout;

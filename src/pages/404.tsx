@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Phone, Home, ArrowLeft } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
+import { memo } from "react";
 
 const NotFoundPage = () => {
   const navigate = useNavigate();
@@ -50,4 +51,4 @@ const NotFoundPage = () => {
   );
 };
 
-export default NotFoundPage;
+export default memo(NotFoundPage);

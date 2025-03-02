@@ -8,6 +8,7 @@ type SpinnerSize = "sm" | "md" | "lg" | "xl";
 interface LoadingSpinnerProps {
   size?: SpinnerSize;
   className?: string;
+  text?: string;
 }
 
 const sizeMap: Record<SpinnerSize, string> = {
@@ -17,11 +18,12 @@ const sizeMap: Record<SpinnerSize, string> = {
   xl: "h-12 w-12"
 };
 
-const LoadingSpinner = ({ size = "md", className }: LoadingSpinnerProps) => {
+const LoadingSpinner = ({ size = "md", className, text }: LoadingSpinnerProps) => {
   return (
-    <div className="flex justify-center items-center">
+    <div className="flex flex-col justify-center items-center">
       <Loader2 className={cn("animate-spin text-primary", sizeMap[size], className)} />
-      <span className="sr-only">Loading...</span>
+      <span className="sr-only">{text || "Loading..."}</span>
+      {text && <span className="mt-2 text-sm text-gray-500">{text}</span>}
     </div>
   );
 };

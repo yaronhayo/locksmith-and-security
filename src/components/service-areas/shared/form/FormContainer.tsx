@@ -5,6 +5,7 @@ import ThankYouMessage from "./ThankYouMessage";
 import ContactOptions from "./ContactOptions";
 import RecaptchaField from "@/components/BookingForm/RecaptchaField";
 import SubmitButton from "./SubmitButton";
+import { memo } from "react";
 
 interface FormContainerProps {
   children: ReactNode;
@@ -18,7 +19,7 @@ interface FormContainerProps {
   onSubmit: (e: React.FormEvent) => void;
 }
 
-const FormContainer = ({
+const FormContainer = memo(({
   children,
   locationName,
   isSubmitting,
@@ -57,6 +58,8 @@ const FormContainer = ({
       </div>
     </section>
   );
-};
+});
+
+FormContainer.displayName = 'FormContainer';
 
 export default FormContainer;

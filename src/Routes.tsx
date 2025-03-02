@@ -1,17 +1,20 @@
 
 import { Routes as RouterRoutes, Route } from 'react-router-dom';
-import { Suspense } from "react";
+import { Suspense, lazy } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { mainRoutes } from "./routes/mainRoutes";
 import { serviceRoutes } from "./routes/serviceRoutes";
 import { serviceAreaRoutes } from "./routes/serviceAreaRoutes";
-import LoadingSpinner from "./components/LoadingSpinner";
+import PageLoading from "./components/layouts/PageLoading";
 import ErrorFallback from "./components/ErrorFallback";
+
+// Lazy load the 404 page
+const NotFound = lazy(() => import('./pages/404'));
 
 const Routes = () => {
   return (
     <ErrorBoundary FallbackComponent={ErrorFallback}>
-      <Suspense fallback={<LoadingSpinner />}>
+      <Suspense fallback={<PageLoading type="skeleton" />}>
         <RouterRoutes>
           {/* Render main routes */}
           {mainRoutes.map(({ path, element }) => (
@@ -27,6 +30,9 @@ const Routes = () => {
           {serviceAreaRoutes.map(({ path, element }) => (
             <Route key={path} path={path} element={element} />
           ))}
+          
+          {/* 404 page */}
+          <Route path="*" element={<NotFound />} />
         </RouterRoutes>
       </Suspense>
     </ErrorBoundary>

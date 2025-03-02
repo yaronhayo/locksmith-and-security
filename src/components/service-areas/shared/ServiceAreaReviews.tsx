@@ -6,6 +6,8 @@ import { SchemaScripts } from "@/components/meta/SchemaScripts";
 import { createReviewsSchema } from "@/schemas/reviewsSchema";
 import { ErrorBoundary } from "react-error-boundary";
 import ErrorFallback from "@/components/ErrorFallback";
+import { memo } from "react";
+import ReviewsLoadingSkeleton from "@/components/reviews/ReviewsLoadingSkeleton";
 
 interface ServiceAreaReviewsProps {
   locationName: string;
@@ -14,7 +16,7 @@ interface ServiceAreaReviewsProps {
   totalReviews: number;
 }
 
-const ServiceAreaReviews = ({ 
+const ServiceAreaReviews = memo(({ 
   locationName, 
   displayedReviews, 
   isLoading, 
@@ -49,11 +51,17 @@ const ServiceAreaReviews = ({
       
       <ErrorBoundary FallbackComponent={ErrorFallback}>
         <div className="container mx-auto px-4">
-          <ReviewsList reviews={displayedReviews} isLoading={isLoading} />
+          {isLoading ? (
+            <ReviewsLoadingSkeleton count={3} />
+          ) : (
+            <ReviewsList reviews={displayedReviews} isLoading={isLoading} />
+          )}
         </div>
       </ErrorBoundary>
     </section>
   );
-};
+});
+
+ServiceAreaReviews.displayName = 'ServiceAreaReviews';
 
 export default ServiceAreaReviews;

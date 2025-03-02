@@ -8,13 +8,14 @@ import {
 } from "@/components/ui/carousel";
 import { Review } from "@/types/reviews";
 import ReviewCard from "./ReviewCard";
+import { memo } from "react";
 
 interface ReviewsCarouselProps {
   reviews: Review[];
   setApi?: (api: any) => void;
 }
 
-const ReviewsCarousel = ({ reviews, setApi }: ReviewsCarouselProps) => {
+const ReviewsCarousel = memo(({ reviews, setApi }: ReviewsCarouselProps) => {
   if (!reviews.length) return null;
   
   return (
@@ -28,7 +29,7 @@ const ReviewsCarousel = ({ reviews, setApi }: ReviewsCarouselProps) => {
     >
       <CarouselContent>
         {reviews.map((review, index) => (
-          <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
+          <CarouselItem key={`review-${review.id || index}`} className="md:basis-1/2 lg:basis-1/3">
             <ReviewCard review={review} index={index} />
           </CarouselItem>
         ))}
@@ -37,6 +38,8 @@ const ReviewsCarousel = ({ reviews, setApi }: ReviewsCarouselProps) => {
       <CarouselNext className="hidden md:flex" />
     </Carousel>
   );
-};
+});
+
+ReviewsCarousel.displayName = 'ReviewsCarousel';
 
 export default ReviewsCarousel;

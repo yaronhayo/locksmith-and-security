@@ -1,25 +1,65 @@
 
-import ServiceAreasSection from '../ServiceAreasSection';
-import WhyChooseUs from '../WhyChooseUs';
-import EmergencyServicesSection from '../EmergencyServicesSection';
-import ProcessSection from '../ProcessSection';
-import ServicesSection from '../ServicesSection';
-import FAQSection from '../FAQSection';
-import HomeReviewsSection from './HomeReviewsSection';
-import GoogleMapsProvider from '@/components/providers/GoogleMapsProvider';
+import { lazy, Suspense } from 'react';
+import LoadingSpinner from '@/components/LoadingSpinner';
+import { Skeleton } from '@/components/ui/skeleton';
+
+// Lazy loaded components
+const ServiceAreasSection = lazy(() => import('../ServiceAreasSection'));
+const WhyChooseUs = lazy(() => import('../WhyChooseUs'));
+const EmergencyServicesSection = lazy(() => import('../EmergencyServicesSection'));
+const ProcessSection = lazy(() => import('../ProcessSection'));
+const ServicesSection = lazy(() => import('../ServicesSection'));
+const FAQSection = lazy(() => import('../FAQSection'));
+const HomeReviewsSection = lazy(() => import('./HomeReviewsSection'));
+const GoogleMapsProvider = lazy(() => import('@/components/providers/GoogleMapsProvider'));
+
+// Section loading component
+const SectionLoading = () => (
+  <div className="py-16 w-full">
+    <div className="container mx-auto px-4">
+      <Skeleton className="h-10 w-2/3 mx-auto mb-6" />
+      <Skeleton className="h-6 w-3/4 mx-auto mb-12" />
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {Array(3).fill(0).map((_, i) => (
+          <Skeleton key={i} className="h-64 w-full rounded-lg" />
+        ))}
+      </div>
+    </div>
+  </div>
+);
 
 const HomeContent = () => {
   return (
     <>
-      <ServicesSection />
-      <EmergencyServicesSection />
-      <ProcessSection />
-      <WhyChooseUs />
-      <HomeReviewsSection />
-      <GoogleMapsProvider>
-        <ServiceAreasSection />
-      </GoogleMapsProvider>
-      <FAQSection />
+      <Suspense fallback={<SectionLoading />}>
+        <ServicesSection />
+      </Suspense>
+      
+      <Suspense fallback={<SectionLoading />}>
+        <EmergencyServicesSection />
+      </Suspense>
+      
+      <Suspense fallback={<SectionLoading />}>
+        <ProcessSection />
+      </Suspense>
+      
+      <Suspense fallback={<SectionLoading />}>
+        <WhyChooseUs />
+      </Suspense>
+      
+      <Suspense fallback={<SectionLoading />}>
+        <HomeReviewsSection />
+      </Suspense>
+      
+      <Suspense fallback={<SectionLoading />}>
+        <GoogleMapsProvider>
+          <ServiceAreasSection />
+        </GoogleMapsProvider>
+      </Suspense>
+      
+      <Suspense fallback={<SectionLoading />}>
+        <FAQSection />
+      </Suspense>
     </>
   );
 };

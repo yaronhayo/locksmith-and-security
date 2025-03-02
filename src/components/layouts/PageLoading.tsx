@@ -5,9 +5,10 @@ import { memo } from "react";
 
 interface PageLoadingProps {
   type?: 'spinner' | 'skeleton';
+  message?: string;
 }
 
-const PageLoading = ({ type = 'spinner' }: PageLoadingProps) => {
+const PageLoading = ({ type = 'spinner', message }: PageLoadingProps) => {
   if (type === 'skeleton') {
     return (
       <div className="min-h-[60vh] w-full max-w-7xl mx-auto px-4 py-12">
@@ -30,7 +31,7 @@ const PageLoading = ({ type = 'spinner' }: PageLoadingProps) => {
   
   return (
     <div className="min-h-[60vh] flex justify-center items-center">
-      <LoadingSpinner size="lg" />
+      <LoadingSpinner size="lg" text={message} />
     </div>
   );
 };

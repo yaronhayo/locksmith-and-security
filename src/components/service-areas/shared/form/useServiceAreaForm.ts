@@ -1,5 +1,5 @@
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import { toast } from "sonner";
 import { getEmailError, getNameError, getPhoneError } from "@/utils/inputValidation";
 
@@ -68,7 +68,7 @@ export const useServiceAreaForm = () => {
     }
   }, [formState.phone, isDirty.phone]);
   
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     
     setFormState(prev => ({ ...prev, [name]: value }));
@@ -81,18 +81,18 @@ export const useServiceAreaForm = () => {
     } else if (name === 'phone' && !isDirty.phone) {
       setIsDirty(prev => ({ ...prev, phone: true }));
     }
-  };
+  }, [isDirty]);
   
-  const handleBlur = (field: 'name' | 'email' | 'phone') => {
+  const handleBlur = useCallback((field: 'name' | 'email' | 'phone') => {
     setIsDirty(prev => ({ ...prev, [field]: true }));
-  };
+  }, []);
   
-  const handleRecaptchaChange = (token: string | null) => {
+  const handleRecaptchaChange = useCallback((token: string | null) => {
     setRecaptchaToken(token);
     setRecaptchaError(token ? null : "Please complete the reCAPTCHA verification");
-  };
+  }, []);
   
-  const isFormValid = () => {
+  const isFormValid = useMemo(() => {
     return (
       !errors.name && 
       !errors.email && 
@@ -103,9 +103,9 @@ export const useServiceAreaForm = () => {
       formState.service !== '' && 
       !!recaptchaToken
     );
-  };
+  }, [errors, formState, recaptchaToken]);
   
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = useCallback((e: React.FormEvent) => {
     e.preventDefault();
     
     // Mark all fields as dirty to show validation errors
@@ -150,7 +150,7 @@ export const useServiceAreaForm = () => {
         service: ""
       });
     }, 1500);
-  };
+  }, [formState, recaptchaToken]);
 
   return {
     formState,
@@ -162,7 +162,7 @@ export const useServiceAreaForm = () => {
     handleChange,
     handleBlur,
     handleRecaptchaChange,
-    isFormValid: isFormValid(),
+    isFormValid,
     handleSubmit
   };
 };

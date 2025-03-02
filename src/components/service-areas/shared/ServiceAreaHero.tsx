@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Skeleton } from "@/components/ui/skeleton";
 import BookingForm from "@/components/BookingForm";
+import { memo } from "react";
 
 interface ServiceAreaHeroProps {
   areaName: string;
@@ -73,4 +74,4 @@ const ServiceAreaHero = ({ areaName, isLoading = false }: ServiceAreaHeroProps) 
   );
 };
 
-export default ServiceAreaHero;
+export default memo(ServiceAreaHero);
