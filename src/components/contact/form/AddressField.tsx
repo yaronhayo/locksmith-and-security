@@ -1,7 +1,7 @@
 
 import { useState, useEffect } from "react";
 import { Label } from "@/components/ui/label";
-import { AddressAutocomplete, AddressChangeHandler } from "@/components/ui/address-autocomplete";
+import { AddressAutocomplete } from "@/components/ui/address-autocomplete";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { AlertCircle } from "lucide-react";
 
@@ -29,7 +29,7 @@ const AddressField = ({ value, onChange, isSubmitting, error }: AddressFieldProp
   };
 
   // Create a handler that extracts the value from either a string or an event
-  const handleAddressChange: AddressChangeHandler = (addressOrEvent) => {
+  const handleAddressChange = (addressOrEvent: string | React.ChangeEvent<HTMLInputElement>) => {
     if (typeof addressOrEvent === 'string') {
       onChange(addressOrEvent);
     } else {

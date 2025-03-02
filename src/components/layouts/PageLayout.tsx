@@ -5,7 +5,7 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import MetaTags from './MetaTags';
 import Breadcrumbs from '../Breadcrumbs';
-import LoadingState from './LoadingState';
+import { LoadingState } from './LoadingState';
 import PageHero from './PageHero';
 import ScrollToTop from '../ScrollToTop';
 import { SchemaScripts } from '../meta/SchemaScripts';
@@ -21,7 +21,7 @@ interface PageLayoutProps {
   heroDescription?: string;
   customBreadcrumbs?: Array<{name: string, path: string}>;
   ogImage?: string;
-  ogType?: string;
+  ogType?: "website" | "article" | "product" | "profile" | "book";
   noindex?: boolean;
   nofollow?: boolean;
   modifiedDate?: string;
@@ -73,7 +73,7 @@ const PageLayout: React.FC<PropsWithChildren<PageLayoutProps>> = ({
         modifiedDate={modifiedDate}
       />
       
-      <SchemaScripts schema={schema} />
+      <SchemaScripts schemas={schema} />
       
       <ScrollToTop />
       

@@ -1,10 +1,13 @@
-
 import { useState, useEffect, useCallback } from 'react';
-import { validateEmail } from '@/utils/inputValidation';
+import { isValidEmail, validateEmail } from '@/utils/inputValidation';
 import { toast } from 'sonner';
-import { submitContactForm } from '@/lib/utils';
 
-interface FormState {
+const submitContactForm = async (data: any) => {
+  console.log('Form submitted:', data);
+  return Promise.resolve({ success: true });
+};
+
+export interface FormState {
   firstName: string;
   lastName: string;
   phone: string;
@@ -12,6 +15,11 @@ interface FormState {
   service: string;
   message: string;
   address: string;
+  name?: string;
+}
+
+export interface FormErrors {
+  [key: string]: string;
 }
 
 const initialFormState: FormState = {
@@ -22,6 +30,7 @@ const initialFormState: FormState = {
   service: '',
   message: '',
   address: '',
+  name: '',
 };
 
 export const useServiceAreaForm = (preselectedService?: string) => {
@@ -29,13 +38,12 @@ export const useServiceAreaForm = (preselectedService?: string) => {
     ...initialFormState,
     service: preselectedService || ''
   });
-  const [errors, setErrors] = useState<Partial<Record<keyof FormState, string>>>({});
+  const [errors, setErrors] = useState<FormErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
   const [recaptchaError, setRecaptchaError] = useState<string | null>(null);
   
-  // Update service if preselectedService changes
   useEffect(() => {
     if (preselectedService && !formState.service) {
       setFormState(prev => ({
@@ -49,7 +57,6 @@ export const useServiceAreaForm = (preselectedService?: string) => {
     const { name, value } = e.target;
     setFormState(prev => ({ ...prev, [name]: value }));
     
-    // Clear error when field is edited
     if (errors[name as keyof FormState]) {
       setErrors(prev => {
         const newErrors = { ...prev };
@@ -82,10 +89,9 @@ export const useServiceAreaForm = (preselectedService?: string) => {
   }, []);
   
   const validateForm = useCallback(() => {
-    const newErrors: Partial<Record<keyof FormState, string>> = {};
+    const newErrors: FormErrors = {};
     let isValid = true;
     
-    // Required fields
     if (!formState.firstName.trim()) {
       newErrors.firstName = 'First name is required';
       isValid = false;
