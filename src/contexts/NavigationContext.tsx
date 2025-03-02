@@ -1,5 +1,5 @@
 
-import { createContext, useContext, ReactNode } from 'react';
+import { createContext, useContext, ReactNode, useCallback } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 interface NavigationContextType {
@@ -14,17 +14,25 @@ export const NavigationProvider = ({ children }: { children: ReactNode }) => {
   const navigate = useNavigate();
   const location = useLocation();
   
-  const navigateTo = (path: string) => {
+  const navigateTo = useCallback((path: string) => {
+    // If we're already on this page, don't trigger unnecessary navigation
+    if (location.pathname === path) {
+      // Just scroll to top 
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+    
+    // Navigate and scroll to top
     navigate(path);
     window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
+  }, [navigate, location.pathname]);
   
-  const isActive = (path: string) => {
+  const isActive = useCallback((path: string) => {
     if (path === '/') {
       return location.pathname === '/';
     }
     return location.pathname.startsWith(path);
-  };
+  }, [location.pathname]);
   
   return (
     <NavigationContext.Provider value={{ 

@@ -48,6 +48,7 @@ const HomeLayout = ({ children }: HomeLayoutProps) => {
       schema={enhancedSchema}
       keywords="locksmith, emergency locksmith, car lockout, house lockout, business lockout, lock change, lock rekey, North Bergen locksmith, 24/7 locksmith, automotive locksmith, residential locksmith, commercial locksmith"
       ogImage="/lovable-uploads/950b5c4c-f0b8-4d22-beb0-66a7d7554476.png"
+      hideBreadcrumbs={true} // Hide breadcrumbs on home page
     >
       <AnimatePresence mode="wait">
         <motion.main 

@@ -8,6 +8,7 @@ import { SchemaScripts } from "@/components/meta/SchemaScripts";
 import { BasicMetaTags } from "@/components/meta/BasicMetaTags";
 import { OpenGraphTags } from "@/components/meta/OpenGraphTags";
 import { TwitterTags } from "@/components/meta/TwitterTags";
+import { createSiteNavigationSchema } from "@/components/meta/schema/SiteNavigationSchema";
 
 const Index = () => {
   // Page view tracking for analytics
@@ -73,6 +74,22 @@ const Index = () => {
       "https://www.yelp.com/biz/locksmith-and-security-north-bergen"
     ]
   };
+  
+  // Navigation schema for main navigation
+  const navigationSchema = createSiteNavigationSchema({
+    items: [
+      { name: "Home", url: "/" },
+      { name: "Services", url: "/services" },
+      { name: "Residential Locksmith", url: "/services/residential-locksmith" },
+      { name: "Commercial Locksmith", url: "/services/commercial-locksmith" },
+      { name: "Auto Locksmith", url: "/services/auto-locksmith" },
+      { name: "Emergency Locksmith", url: "/services/emergency-locksmith" },
+      { name: "Service Areas", url: "/service-areas" },
+      { name: "About Us", url: "/about" },
+      { name: "Contact", url: "/contact" },
+      { name: "Book Online", url: "/book-online" }
+    ]
+  });
 
   return (
     <>
@@ -107,7 +124,8 @@ const Index = () => {
       <SchemaScripts 
         schemas={[
           { type: 'website', data: websiteSchema },
-          { type: 'organization', data: organizationSchema }
+          { type: 'organization', data: organizationSchema },
+          navigationSchema
         ]} 
       />
       

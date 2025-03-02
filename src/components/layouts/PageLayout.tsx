@@ -10,6 +10,7 @@ import PageLoading from "./PageLoading";
 import { createBreadcrumbSchema } from "../meta/schema/BreadcrumbSchema";
 import { createLocalBusinessSchema } from "../meta/schema/LocalBusinessSchema";
 import { createWebSiteSchema } from "../meta/schema/WebSiteSchema";
+import Breadcrumbs from "@/components/Breadcrumbs";
 
 interface Schema {
   type: string;
@@ -33,6 +34,7 @@ interface PageLayoutProps {
   nofollow?: boolean;
   breadcrumbs?: Array<{name: string, item: string}>;
   ogType?: "website" | "article" | "product" | "profile" | "book";
+  hideBreadcrumbs?: boolean;
 }
 
 const PageLayout = ({
@@ -52,6 +54,7 @@ const PageLayout = ({
   nofollow = false,
   breadcrumbs,
   ogType = "website",
+  hideBreadcrumbs = false,
 }: PageLayoutProps) => {
   if (isLoading) {
     return <PageLoading />;
@@ -96,6 +99,12 @@ const PageLayout = ({
           title={heroTitle || title}
           description={heroDescription || description}
         />
+      )}
+      
+      {!hideBreadcrumbs && !heroTitle && !heroDescription && (
+        <div className="container mx-auto px-4 py-3 md:py-4">
+          <Breadcrumbs />
+        </div>
       )}
       
       <motion.div 

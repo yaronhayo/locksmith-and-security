@@ -2,6 +2,9 @@
 # Redirect domain aliases to primary domain
 https://www.247locksmithandsecurity.com/* https://247locksmithandsecurity.com/:splat 301!
 
+# Force HTTPS for all connections
+http://* https://:splat 301!
+
 # Old service URLs to new structure
 /services/car-lockout              /services/emergency-locksmith/car-lockout 301
 /services/house-lockout            /services/emergency-locksmith/house-lockout 301
@@ -23,6 +26,29 @@ https://www.247locksmithandsecurity.com/* https://247locksmithandsecurity.com/:s
 /services/car-key-duplicate       /services/auto-locksmith/car-key-duplicate 301
 /services/ignition-repair         /services/auto-locksmith/ignition-lock-cylinder 301
 
+# Common 404s and misspellings
+/home                             / 301
+/about-us                         /about 301
+/contactus                        /contact 301
+/locations                        /service-areas 301
+/locksmith-services               /services 301
+/emergency                        /services/emergency-locksmith 301
+/residential                      /services/residential-locksmith 301
+/commercial                       /services/commercial-locksmith 301
+/automotive                       /services/auto-locksmith 301
+/car-keys                         /services/auto-locksmith 301
+/service-area                     /service-areas 301
+/reviews-testimonials             /reviews 301
+/book                             /book-online 301
+/quote                            /book-online 301
+/estimate                         /book-online 301
+/faqs                             /faq 301
+/privacy                          /privacy-policy 301
+/terms                            /terms-conditions 301
+
+# Handle trailing slashes
+/*/ /:splat 301
+
 # Handle client-side routing
 /* /index.html 200
 
@@ -38,6 +64,3 @@ https://www.247locksmithandsecurity.com/* https://247locksmithandsecurity.com/:s
 /thank-you /index.html 200
 /book-online /index.html 200
 /sitemap /index.html 200
-
-# Force HTTPS
-http://* https://:splat 301!

@@ -4,15 +4,25 @@ import LoadingSpinner from '@/components/LoadingSpinner';
 import { Skeleton } from '@/components/ui/skeleton';
 import { motion } from 'framer-motion';
 
-// Lazy loaded components
-const ServiceAreasSection = lazy(() => import('../ServiceAreasSection'));
-const WhyChooseUs = lazy(() => import('../WhyChooseUs'));
-const EmergencyServicesSection = lazy(() => import('../EmergencyServicesSection'));
-const ProcessSection = lazy(() => import('../ProcessSection'));
-const ServicesSection = lazy(() => import('../ServicesSection'));
-const FAQSection = lazy(() => import('../FAQSection'));
-const HomeReviewsSection = lazy(() => import('./HomeReviewsSection'));
-const GoogleMapsProvider = lazy(() => import('@/components/providers/GoogleMapsProvider'));
+// Lazy loaded components with prefetching hints
+// This technique helps browsers prioritize important script downloads
+const ServicesSectionComponent = lazy(() => {
+  // Add a hint for the browser to prefetch this component
+  const link = document.createElement('link');
+  link.rel = 'prefetch';
+  link.href = '/src/components/sections/ServicesSection.tsx';
+  link.as = 'script';
+  document.head.appendChild(link);
+  return import('../ServicesSection')
+});
+
+const EmergencyServicesSectionComponent = lazy(() => import('../EmergencyServicesSection'));
+const ProcessSectionComponent = lazy(() => import('../ProcessSection'));
+const WhyChooseUsComponent = lazy(() => import('../WhyChooseUs'));
+const HomeReviewsSectionComponent = lazy(() => import('./HomeReviewsSection'));
+const GoogleMapsProviderComponent = lazy(() => import('@/components/providers/GoogleMapsProvider'));
+const ServiceAreasSectionComponent = lazy(() => import('../ServiceAreasSection'));
+const FAQSectionComponent = lazy(() => import('../FAQSection'));
 
 // Section loading component with animation
 const SectionLoading = () => (
@@ -35,38 +45,49 @@ const SectionLoading = () => (
   </div>
 );
 
+// Intersection Observer for better lazy loading
+const LazySection = ({ children, id }) => {
+  return (
+    <div id={id} data-section={id}>
+      <Suspense fallback={<SectionLoading />}>
+        {children}
+      </Suspense>
+    </div>
+  );
+};
+
 const HomeContent = () => {
   return (
     <>
-      <Suspense fallback={<SectionLoading />}>
-        <ServicesSection />
-      </Suspense>
+      <LazySection id="services">
+        <ServicesSectionComponent />
+      </LazySection>
       
-      <Suspense fallback={<SectionLoading />}>
-        <EmergencyServicesSection />
-      </Suspense>
+      <LazySection id="emergency">
+        <EmergencyServicesSectionComponent />
+      </LazySection>
       
-      <Suspense fallback={<SectionLoading />}>
-        <ProcessSection />
-      </Suspense>
+      <LazySection id="process">
+        <ProcessSectionComponent />
+      </LazySection>
       
-      <Suspense fallback={<SectionLoading />}>
-        <WhyChooseUs />
-      </Suspense>
+      <LazySection id="why-choose">
+        <WhyChooseUsComponent />
+      </LazySection>
       
-      <Suspense fallback={<SectionLoading />}>
-        <HomeReviewsSection />
-      </Suspense>
+      <LazySection id="reviews">
+        <HomeReviewsSectionComponent />
+      </LazySection>
       
-      <Suspense fallback={<SectionLoading />}>
-        <GoogleMapsProvider>
-          <ServiceAreasSection />
-        </GoogleMapsProvider>
-      </Suspense>
+      <LazySection id="service-areas">
+        <GoogleMapsProviderComponent>
+          <ServiceAreasSectionComponent />
+        </GoogleMapsProviderComponent>
+      </LazySection>
       
-      <Suspense fallback={<SectionLoading />}>
-        <FAQSection />
-      </Suspense>
+      <LazySection id="faq">
+        <FAQSectionComponent />
+      </LazySection>
     </>
   );
 };

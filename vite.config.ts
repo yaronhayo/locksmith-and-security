@@ -46,12 +46,56 @@ export default defineConfig(({ mode }) => ({
     },
   },
   build: {
+    // Improved chunk splitting strategy
     rollupOptions: {
       output: {
-        manualChunks: {
-          vendor: ['react', 'react-dom', 'react-router-dom'],
+        manualChunks: (id) => {
+          // Create separate chunks for major libraries
+          if (id.includes('node_modules')) {
+            if (id.includes('react/') || id.includes('react-dom/')) {
+              return 'vendor-react';
+            }
+            if (id.includes('framer-motion')) {
+              return 'vendor-framer-motion';
+            }
+            if (id.includes('lucide-react')) {
+              return 'vendor-icons';
+            }
+            if (id.includes('@radix-ui')) {
+              return 'vendor-radix';
+            }
+            if (id.includes('@tanstack')) {
+              return 'vendor-tanstack';
+            }
+            if (id.includes('react-router')) {
+              return 'vendor-router';
+            }
+            // Group remaining node_modules
+            return 'vendor';
+          }
+          
+          // Split component types
+          if (id.includes('/components/ui/')) {
+            return 'ui-components';
+          }
+          if (id.includes('/components/sections/')) {
+            return 'section-components';
+          }
+          if (id.includes('/components/services/')) {
+            return 'service-components';
+          }
         },
       },
     },
+    // Generate hashed file names for better caching
+    assetsDir: 'assets',
+    cssCodeSplit: true,
+    sourcemap: mode !== 'production',
+    // Add cache headers to output through headers file
+    emptyOutDir: true,
+  },
+  // Optimize for production
+  optimizeDeps: {
+    include: ['react', 'react-dom', 'react-router-dom', 'framer-motion', 'lucide-react'],
   },
 }));
