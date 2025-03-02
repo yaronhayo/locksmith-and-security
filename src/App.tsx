@@ -7,15 +7,18 @@ import CookieConsent from "./components/CookieConsent";
 import ScrollToTop from "./components/ScrollToTop";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
+import { NavigationProvider } from "./contexts/NavigationContext";
 
 function App() {
   return (
     <Router>
       <RouteErrorBoundary>
         <ScrollToTop />
-        <Header />
-        <Routes />
-        <Footer />
+        <NavigationProvider>
+          <Header />
+          <Routes />
+          <Footer />
+        </NavigationProvider>
         <Toaster />
         <CookieConsent />
       </RouteErrorBoundary>
@@ -24,4 +27,3 @@ function App() {
 }
 
 export default App;
-

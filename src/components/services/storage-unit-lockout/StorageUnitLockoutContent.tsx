@@ -1,21 +1,21 @@
 
 import React from 'react';
-import StorageUnitLockoutIntro from './sections/StorageUnitLockoutIntro';
+import LockoutIntro from '../shared/LockoutIntro';
 import ExpertSolutions from './sections/ExpertSolutions';
 import LockoutScenarios from './sections/LockoutScenarios';
 import ProfessionalAdvantages from './sections/ProfessionalAdvantages';
 import LockoutSteps from './sections/LockoutSteps';
-import ServiceAreas from './sections/ServiceAreas';
+import ServiceAreas from '../shared/ServiceAreas';
 
-export const StorageUnitLockoutContent = () => {
+const StorageUnitLockoutContent = () => {
   return (
     <>
-      <StorageUnitLockoutIntro />
+      <LockoutIntro serviceType="storage-unit" />
       <ExpertSolutions />
       <LockoutScenarios />
       <ProfessionalAdvantages />
       <LockoutSteps />
-      <ServiceAreas />
+      <ServiceAreas serviceType="storage-unit" />
     </>
   );
 };
