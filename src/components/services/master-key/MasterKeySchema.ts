@@ -1,4 +1,3 @@
-
 // We need to fix the Schema import - it doesn't exist in the types/schema.ts file
 export const masterKeyServiceSchema = {
   "@context": "https://schema.org",
@@ -136,21 +135,25 @@ export const masterKeyRelatedServices = [
   {
     title: "Access Control Systems",
     description: "Electronic access control systems with advanced security features.",
-    link: "/services/commercial-locksmith/access-control"
+    link: "/services/commercial-locksmith/access-control",
+    path: "/services/commercial-locksmith/access-control"
   },
   {
     title: "Commercial Lock Replacement",
     description: "Professional lock replacement for all types of commercial properties.",
-    link: "/services/commercial-locksmith/lock-replacement"
+    link: "/services/commercial-locksmith/lock-replacement",
+    path: "/services/commercial-locksmith/lock-replacement"
   },
   {
     title: "Commercial Lock Rekeying",
     description: "Rekeying services to maintain security without replacing hardware.",
-    link: "/services/commercial-locksmith/lock-rekey"
+    link: "/services/commercial-locksmith/lock-rekey",
+    path: "/services/commercial-locksmith/lock-rekey"
   },
   {
     title: "Emergency Exit Devices",
     description: "Installation and repair of panic bars and emergency exit hardware.",
-    link: "/services/commercial-locksmith/emergency-exit-device"
+    link: "/services/commercial-locksmith/emergency-exit-device",
+    path: "/services/commercial-locksmith/emergency-exit-device"
   }
 ];
