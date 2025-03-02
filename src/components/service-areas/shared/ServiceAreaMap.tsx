@@ -4,8 +4,9 @@ import GoogleMap from "@/components/map/GoogleMap";
 import { MapMarker } from "@/types/service-area";
 import { ErrorBoundary } from "react-error-boundary";
 import MapError from "@/components/map/MapError";
-import { memo } from "react";
+import { memo, useState, useEffect } from "react";
 import LoadingSpinner from "@/components/LoadingSpinner";
+import { trackComponentRender } from "@/utils/performanceMonitoring";
 
 interface ServiceAreaMapProps {
   locationName: string;
@@ -15,6 +16,13 @@ interface ServiceAreaMapProps {
 }
 
 const ServiceAreaMap = ({ locationName, lat, lng, isLoading = false }: ServiceAreaMapProps) => {
+  const finishRenderTracking = trackComponentRender('ServiceAreaMap');
+  const [mapReady, setMapReady] = useState(false);
+  
+  useEffect(() => {
+    finishRenderTracking();
+  }, []);
+  
   const markers: MapMarker[] = [
     {
       lat,
@@ -23,6 +31,15 @@ const ServiceAreaMap = ({ locationName, lat, lng, isLoading = false }: ServiceAr
       slug: locationName.toLowerCase().replace(/\s+/g, '-')
     }
   ];
+  
+  // Simulate map loading for better UX
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setMapReady(true);
+    }, 800);
+    
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
     <div className="bg-white rounded-xl shadow-sm overflow-hidden">
@@ -31,7 +48,7 @@ const ServiceAreaMap = ({ locationName, lat, lng, isLoading = false }: ServiceAr
         <p className="text-sm text-gray-600">Fast response to all areas of {locationName}</p>
       </div>
       <div className="h-[400px] relative">
-        {isLoading ? (
+        {(isLoading || !mapReady) ? (
           <div className="absolute inset-0 flex items-center justify-center bg-gray-50">
             <LoadingSpinner size="lg" text="Loading map..." />
           </div>

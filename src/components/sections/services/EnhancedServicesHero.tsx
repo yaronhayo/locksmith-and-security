@@ -1,9 +1,12 @@
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Phone, ArrowRight, ShieldCheck, Star, Clock, Wrench } from "lucide-react";
 import { Link } from "react-router-dom";
+import { memo } from "react";
+import { trackComponentRender } from "@/utils/performanceMonitoring";
+import ResponsiveImage from "@/components/ui/responsive-image";
 
 interface EnhancedServicesHeroProps {
   title: string;
@@ -13,13 +16,19 @@ interface EnhancedServicesHeroProps {
   serviceLabel?: string;
 }
 
-const EnhancedServicesHero: React.FC<EnhancedServicesHeroProps> = ({ 
+const EnhancedServicesHero: React.FC<EnhancedServicesHeroProps> = memo(({ 
   title, 
   description, 
   image,
   serviceName,
   serviceLabel = "Professional Service"
 }) => {
+  const finishRenderTracking = trackComponentRender('EnhancedServicesHero');
+  
+  useEffect(() => {
+    finishRenderTracking();
+  }, []);
+
   return (
     <section className="py-16 md:py-24 bg-gradient-to-br from-primary via-primary/90 to-primary-hover text-white relative overflow-hidden">
       {/* Background pattern elements */}
@@ -41,8 +50,9 @@ const EnhancedServicesHero: React.FC<EnhancedServicesHeroProps> = ({
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
+            whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
           >
             <div className="inline-block bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full border border-white/20 mb-6">
               <span className="flex items-center text-white/90 font-medium">
@@ -57,8 +67,9 @@ const EnhancedServicesHero: React.FC<EnhancedServicesHeroProps> = ({
             
             <motion.p 
               initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
+              whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
+              viewport={{ once: true }}
               className="text-lg md:text-xl mb-8 text-white/90 leading-relaxed"
             >
               {description}
@@ -66,8 +77,9 @@ const EnhancedServicesHero: React.FC<EnhancedServicesHeroProps> = ({
             
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
+              whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.4 }}
+              viewport={{ once: true }}
               className="flex flex-col sm:flex-row gap-5"
             >
               <Button 
@@ -97,8 +109,9 @@ const EnhancedServicesHero: React.FC<EnhancedServicesHeroProps> = ({
             {/* Trust indicators */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
+              whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.6 }}
+              viewport={{ once: true }}
               className="flex flex-wrap items-center gap-x-8 gap-y-4 mt-10"
             >
               <div className="flex items-center">
@@ -124,68 +137,83 @@ const EnhancedServicesHero: React.FC<EnhancedServicesHeroProps> = ({
           
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
+            whileInView={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.6, delay: 0.3 }}
+            viewport={{ once: true }}
             className="hidden lg:block"
           >
-            <div className="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-sm p-8 rounded-xl border border-white/20 shadow-xl">
-              <div className="relative mb-8">
-                <div className="absolute -top-10 -left-10 w-20 h-20 bg-secondary/20 rounded-full blur-xl"></div>
-                <div className="absolute -bottom-10 -right-10 w-20 h-20 bg-secondary/20 rounded-full blur-xl"></div>
-                <div className="text-center relative">
-                  <div className="inline-block p-4 rounded-full bg-secondary/20 mb-4">
-                    <ShieldCheck className="h-12 w-12 text-secondary" />
-                  </div>
-                  <h2 className="text-2xl font-bold text-white">Fast {serviceName} Service</h2>
-                  <p className="text-white/80 mt-2">
-                    Professional, reliable, and efficient security solutions
-                  </p>
-                </div>
+            {image ? (
+              <div className="relative w-full h-[400px] rounded-xl overflow-hidden shadow-2xl">
+                <ResponsiveImage
+                  src={image}
+                  alt={serviceName}
+                  className="w-full h-full object-cover"
+                  sizes="(max-width: 1280px) 100vw, 50vw"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-primary/60 to-transparent"></div>
               </div>
-              
-              <ul className="space-y-4 mb-8">
-                <li className="flex items-start">
-                  <div className="bg-secondary/20 p-1 rounded-full mr-3 mt-1">
-                    <Wrench className="h-4 w-4 text-secondary" />
+            ) : (
+              <div className="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-sm p-8 rounded-xl border border-white/20 shadow-xl">
+                <div className="relative mb-8">
+                  <div className="absolute -top-10 -left-10 w-20 h-20 bg-secondary/20 rounded-full blur-xl"></div>
+                  <div className="absolute -bottom-10 -right-10 w-20 h-20 bg-secondary/20 rounded-full blur-xl"></div>
+                  <div className="text-center relative">
+                    <div className="inline-block p-4 rounded-full bg-secondary/20 mb-4">
+                      <ShieldCheck className="h-12 w-12 text-secondary" />
+                    </div>
+                    <h2 className="text-2xl font-bold text-white">Fast {serviceName} Service</h2>
+                    <p className="text-white/80 mt-2">
+                      Professional, reliable, and efficient security solutions
+                    </p>
                   </div>
-                  <span>Trained and certified locksmith technicians</span>
-                </li>
-                <li className="flex items-start">
-                  <div className="bg-secondary/20 p-1 rounded-full mr-3 mt-1">
-                    <Clock className="h-4 w-4 text-secondary" />
-                  </div>
-                  <span>Quick response time for urgent situations</span>
-                </li>
-                <li className="flex items-start">
-                  <div className="bg-secondary/20 p-1 rounded-full mr-3 mt-1">
-                    <Wrench className="h-4 w-4 text-secondary" />
-                  </div>
-                  <span>Advanced tools and latest techniques</span>
-                </li>
-                <li className="flex items-start">
-                  <div className="bg-secondary/20 p-1 rounded-full mr-3 mt-1">
-                    <ShieldCheck className="h-4 w-4 text-secondary" />
-                  </div>
-                  <span>Fully insured service for your peace of mind</span>
-                </li>
-              </ul>
-              
-              <Button 
-                className="w-full bg-secondary hover:bg-secondary-hover text-primary font-semibold shadow-lg hover:shadow-xl transition-all duration-300" 
-                size="lg" 
-                asChild
-              >
-                <a href="tel:2017482070" className="flex items-center justify-center py-6">
-                  <Phone className="mr-2 h-5 w-5" />
-                  Call For Assistance
-                </a>
-              </Button>
-            </div>
+                </div>
+                
+                <ul className="space-y-4 mb-8">
+                  <li className="flex items-start">
+                    <div className="bg-secondary/20 p-1 rounded-full mr-3 mt-1">
+                      <Wrench className="h-4 w-4 text-secondary" />
+                    </div>
+                    <span>Trained and certified locksmith technicians</span>
+                  </li>
+                  <li className="flex items-start">
+                    <div className="bg-secondary/20 p-1 rounded-full mr-3 mt-1">
+                      <Clock className="h-4 w-4 text-secondary" />
+                    </div>
+                    <span>Quick response time for urgent situations</span>
+                  </li>
+                  <li className="flex items-start">
+                    <div className="bg-secondary/20 p-1 rounded-full mr-3 mt-1">
+                      <Wrench className="h-4 w-4 text-secondary" />
+                    </div>
+                    <span>Advanced tools and latest techniques</span>
+                  </li>
+                  <li className="flex items-start">
+                    <div className="bg-secondary/20 p-1 rounded-full mr-3 mt-1">
+                      <ShieldCheck className="h-4 w-4 text-secondary" />
+                    </div>
+                    <span>Fully insured service for your peace of mind</span>
+                  </li>
+                </ul>
+                
+                <Button 
+                  className="w-full bg-secondary hover:bg-secondary-hover text-primary font-semibold shadow-lg hover:shadow-xl transition-all duration-300" 
+                  size="lg" 
+                  asChild
+                >
+                  <a href="tel:2017482070" className="flex items-center justify-center py-6">
+                    <Phone className="mr-2 h-5 w-5" />
+                    Call For Assistance
+                  </a>
+                </Button>
+              </div>
+            )}
           </motion.div>
         </div>
       </div>
     </section>
   );
-};
+});
+
+EnhancedServicesHero.displayName = 'EnhancedServicesHero';
 
 export default EnhancedServicesHero;

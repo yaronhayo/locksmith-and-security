@@ -8,19 +8,28 @@ import {
 } from "@/components/ui/carousel";
 import { Review } from "@/types/reviews";
 import ReviewCard from "./ReviewCard";
-import { memo } from "react";
+import { memo, useEffect } from "react";
+import { trackComponentRender } from "@/utils/performanceMonitoring";
+import { cn } from "@/lib/utils";
 
 interface ReviewsCarouselProps {
   reviews: Review[];
   setApi?: (api: any) => void;
+  className?: string;
 }
 
-const ReviewsCarousel = memo(({ reviews, setApi }: ReviewsCarouselProps) => {
+const ReviewsCarousel = memo(({ reviews, setApi, className }: ReviewsCarouselProps) => {
+  const finishRenderTracking = trackComponentRender('ReviewsCarousel');
+  
+  useEffect(() => {
+    finishRenderTracking();
+  }, []);
+
   if (!reviews.length) return null;
   
   return (
     <Carousel
-      className="w-full relative"
+      className={cn("w-full relative", className)}
       opts={{
         align: "start",
         loop: true,

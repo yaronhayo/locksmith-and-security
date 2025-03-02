@@ -1,8 +1,12 @@
+
 import { motion } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Lock, Car, Building2, Key, Wrench, Shield, Home } from "lucide-react";
 import { Link } from "react-router-dom";
+import { memo, useEffect } from "react";
+import { trackComponentRender } from "@/utils/performanceMonitoring";
+import ResponsiveImage from "@/components/ui/responsive-image";
 
 const services = [{
   icon: Lock,
@@ -17,6 +21,7 @@ const services = [{
   link: "/services/emergency-locksmith",
   highlight: "Available 24/7",
   cta: "Emergency Services",
+  image: "/lovable-uploads/308ce2b0-551b-48b6-b078-c7e793fa2153.png",
   subServices: [{
     name: "Car Lockout",
     link: "/services/emergency-locksmith/car-lockout"
@@ -43,6 +48,7 @@ const services = [{
   link: "/services/residential-locksmith",
   highlight: "Home Security",
   cta: "Home Security",
+  image: "/lovable-uploads/5769d20e-e251-4e5f-a743-870d5c267bd1.png",
   subServices: [{
     name: "Lock Replacement",
     link: "/services/residential-locksmith/lock-replacement"
@@ -69,6 +75,7 @@ const services = [{
   link: "/services/commercial-locksmith",
   highlight: "Business Security",
   cta: "Business Security",
+  image: "/lovable-uploads/1bbeb1e6-5581-4e09-9600-7d1859bb17c5.png",
   subServices: [{
     name: "Lock Replacement",
     link: "/services/commercial-locksmith/lock-replacement"
@@ -95,6 +102,7 @@ const services = [{
   link: "/services/auto-locksmith",
   highlight: "Mobile Service",
   cta: "Auto Services",
+  image: "/lovable-uploads/88d354ba-8149-4bb1-9347-d5d0ff65dfe5.png",
   subServices: [{
     name: "Car Key Replacement",
     link: "/services/auto-locksmith/car-key-replacement"
@@ -110,35 +118,48 @@ const services = [{
   }]
 }];
 
-const ServicesGrid = () => {
-  return <section className="py-24 bg-gradient-to-b from-white to-gray-50">
+const ServicesGrid = memo(() => {
+  const finishRenderTracking = trackComponentRender('ServicesGrid');
+  
+  useEffect(() => {
+    finishRenderTracking();
+  }, []);
+
+  return (
+    <section className="py-24 bg-gradient-to-b from-white to-gray-50">
       <div className="container mx-auto px-4 flex flex-col items-center">
-        <motion.div initial={{
-        opacity: 0,
-        y: 20
-      }} animate={{
-        opacity: 1,
-        y: 0
-      }} transition={{
-        duration: 0.5
-      }} className="text-center max-w-3xl mx-auto mb-16">
-          
-          
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          viewport={{ once: true }}
+          className="text-center max-w-3xl mx-auto mb-16"
+        >
+          {/* Header content if needed */}
         </motion.div>
 
         <div className="grid lg:grid-cols-4 md:grid-cols-2 gap-6 md:gap-8 justify-items-center w-full">
-          {services.map((service, index) => <motion.div key={index} initial={{
-          opacity: 0,
-          y: 20
-        }} animate={{
-          opacity: 1,
-          y: 0
-        }} transition={{
-          duration: 0.5,
-          delay: index * 0.1
-        }} className="w-full">
+          {services.map((service, index) => (
+            <motion.div 
+              key={index}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
+              viewport={{ once: true }}
+              className="w-full"
+            >
               <Card className="relative h-full overflow-hidden border-0 bg-white shadow-md hover:shadow-xl transition-all duration-300">
                 <CardContent className="p-0">
+                  {service.image && (
+                    <div className="h-40 overflow-hidden">
+                      <ResponsiveImage
+                        src={service.image}
+                        alt={service.title}
+                        className="w-full h-full object-cover"
+                        sizes="(max-width: 768px) 100vw, 33vw"
+                      />
+                    </div>
+                  )}
                   <div className="p-6 pb-4 flex flex-col items-center text-center">
                     <div className="absolute top-4 right-4">
                       <span className="inline-flex items-center rounded-full bg-primary/10 px-3 py-1 text-sm font-medium text-primary">
@@ -156,8 +177,9 @@ const ServicesGrid = () => {
                   <div className="bg-gray-50 p-6 pt-4 flex flex-col items-center">
                     <div className="space-y-2 mb-6 w-full">
                       {service.subServices.map((subService, subIndex) => {
-                    const SubIcon = service.subIcons[subService.name as keyof typeof service.subIcons];
-                    return <div key={subIndex} className="flex items-center justify-center">
+                        const SubIcon = service.subIcons[subService.name as keyof typeof service.subIcons];
+                        return (
+                          <div key={subIndex} className="flex items-center justify-center">
                             <Link to={subService.link} className="flex items-center text-sm text-gray-600 py-1.5 hover:text-primary relative">
                               {SubIcon && <SubIcon className="w-4 h-4 mr-2 text-primary/70" />}
                               <span className="relative inline-block">
@@ -165,8 +187,9 @@ const ServicesGrid = () => {
                                 <span className="absolute bottom-0 left-0 right-0 w-0 h-[1px] bg-primary transition-all duration-300 hover:w-full"></span>
                               </span>
                             </Link>
-                          </div>;
-                  })}
+                          </div>
+                        );
+                      })}
                     </div>
 
                     <div className="inline-block">
@@ -178,10 +201,14 @@ const ServicesGrid = () => {
                   </div>
                 </CardContent>
               </Card>
-            </motion.div>)}
+            </motion.div>
+          ))}
         </div>
       </div>
-    </section>;
-};
+    </section>
+  );
+});
+
+ServicesGrid.displayName = 'ServicesGrid';
 
 export default ServicesGrid;

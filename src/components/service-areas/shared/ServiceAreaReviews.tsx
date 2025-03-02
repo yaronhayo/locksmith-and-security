@@ -6,8 +6,10 @@ import { SchemaScripts } from "@/components/meta/SchemaScripts";
 import { createReviewsSchema } from "@/schemas/reviewsSchema";
 import { ErrorBoundary } from "react-error-boundary";
 import ErrorFallback from "@/components/ErrorFallback";
-import { memo } from "react";
+import { memo, useEffect } from "react";
 import ReviewsLoadingSkeleton from "@/components/reviews/ReviewsLoadingSkeleton";
+import { trackComponentRender } from "@/utils/performanceMonitoring";
+import { motion } from "framer-motion";
 
 interface ServiceAreaReviewsProps {
   locationName: string;
@@ -22,12 +24,24 @@ const ServiceAreaReviews = memo(({
   isLoading, 
   totalReviews 
 }: ServiceAreaReviewsProps) => {
+  const finishRenderTracking = trackComponentRender('ServiceAreaReviews');
+  
+  useEffect(() => {
+    finishRenderTracking();
+  }, []);
+  
   const reviewsSchema = createReviewsSchema(displayedReviews, locationName);
   
   return (
     <section className="py-12" id="reviews">
       <SchemaScripts schemas={[{ type: 'LocalBusiness', data: reviewsSchema }]} />
-      <div className="text-center mb-12">
+      <motion.div 
+        className="text-center mb-12"
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        viewport={{ once: true }}
+      >
         <h2 className="text-3xl font-bold mb-3">
           What Our {locationName} Customers Say
         </h2>
@@ -36,7 +50,12 @@ const ServiceAreaReviews = memo(({
         </p>
         
         {totalReviews > 0 && (
-          <div className="flex items-center justify-center gap-2 mt-6">
+          <motion.div 
+            className="flex items-center justify-center gap-2 mt-6"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.3, duration: 0.5 }}
+          >
             <div className="flex">
               {[1, 2, 3, 4, 5].map((star) => (
                 <StarIcon key={star} className="h-5 w-5 text-yellow-500 fill-current" />
@@ -45,9 +64,9 @@ const ServiceAreaReviews = memo(({
             <span className="font-medium text-gray-800">
               5.0 from {totalReviews} reviews in {locationName}
             </span>
-          </div>
+          </motion.div>
         )}
-      </div>
+      </motion.div>
       
       <ErrorBoundary FallbackComponent={ErrorFallback}>
         <div className="container mx-auto px-4">
