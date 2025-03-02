@@ -22,6 +22,55 @@ export const trackComponentRender = (componentName: string) => {
   };
 };
 
+// Core Web Vitals tracking
+export const trackCoreWebVitals = () => {
+  if (typeof window !== 'undefined' && 'PerformanceObserver' in window) {
+    // Track Largest Contentful Paint (LCP)
+    try {
+      new PerformanceObserver((entryList) => {
+        const entries = entryList.getEntries();
+        const lastEntry = entries[entries.length - 1];
+        logToService('info', 'LCP Observed:', { 
+          value: lastEntry.startTime,
+          element: (lastEntry as any).element
+        });
+      }).observe({ type: 'largest-contentful-paint', buffered: true });
+    } catch (e) {
+      logToService('error', 'LCP tracking error', e);
+    }
+    
+    // Track First Input Delay (FID) / Interaction to Next Paint (INP)
+    try {
+      new PerformanceObserver((entryList) => {
+        const entries = entryList.getEntries();
+        entries.forEach(entry => {
+          logToService('info', 'Input Delay Observed:', {
+            value: (entry as PerformanceEventTiming).processingStart - entry.startTime
+          });
+        });
+      }).observe({ type: 'first-input', buffered: true });
+    } catch (e) {
+      logToService('error', 'FID tracking error', e);
+    }
+    
+    // Track Cumulative Layout Shift (CLS)
+    try {
+      let clsValue = 0;
+      new PerformanceObserver((entryList) => {
+        const entries = entryList.getEntries();
+        entries.forEach(entry => {
+          if (!(entry as any).hadRecentInput) {
+            clsValue += (entry as any).value;
+            logToService('info', 'CLS Updated:', { currentValue: clsValue });
+          }
+        });
+      }).observe({ type: 'layout-shift', buffered: true });
+    } catch (e) {
+      logToService('error', 'CLS tracking error', e);
+    }
+  }
+};
+
 // Map specific performance monitoring
 interface MapLoadMetrics {
   scriptLoadTime: number;
@@ -83,9 +132,18 @@ export const measurePerformance = <T>(label: string, callback: () => T): T => {
   }
 };
 
-// Image loading performance tracker
+// Image loading performance tracker with preload hint
 export const trackImageLoad = (imageUrl: string, element?: HTMLImageElement) => {
   const startTime = performance.now();
+  
+  // Add preload hint for important images
+  if (imageUrl && typeof document !== 'undefined' && !element) {
+    const preloadLink = document.createElement('link');
+    preloadLink.rel = 'preload';
+    preloadLink.as = 'image';
+    preloadLink.href = imageUrl;
+    document.head.appendChild(preloadLink);
+  }
   
   const onLoad = () => {
     const duration = performance.now() - startTime;
@@ -104,3 +162,11 @@ export const trackImageLoad = (imageUrl: string, element?: HTMLImageElement) => 
   
   return { onLoad, onError };
 };
+
+// Initialize Core Web Vitals tracking
+if (typeof window !== 'undefined') {
+  window.addEventListener('load', () => {
+    // Use setTimeout to ensure we measure after initial rendering is complete
+    setTimeout(() => trackCoreWebVitals(), 0);
+  });
+}

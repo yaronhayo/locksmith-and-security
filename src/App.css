@@ -28,6 +28,7 @@
   padding: clamp(1em, 2vw, 1.5em);
   will-change: filter;
   transition: filter 300ms;
+  contain: strict; /* CSS containment for better performance */
 }
 
 .logo:hover {
@@ -96,4 +97,40 @@
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+}
+
+/* Core Web Vitals optimizations */
+/* Prevent Layout Shifts (CLS) */
+img, video, iframe {
+  max-width: 100%;
+  height: auto;
+  aspect-ratio: attr(width) / attr(height);
+}
+
+/* Content visibility for improved LCP */
+.below-fold {
+  content-visibility: auto;
+  contain-intrinsic-size: 0 500px;
+}
+
+/* Optimize font display */
+@font-face {
+  font-display: swap;
+}
+
+/* Optimize loading for hero sections */
+.hero-section {
+  display: block;
+  height: auto;
+}
+
+/* Ensure images have explicit width and height */
+img:not([width]):not([height]) {
+  aspect-ratio: 16/9;
+}
+
+/* Better touch and click targets for accessibility */
+button, a, [role="button"] {
+  cursor: pointer;
+  touch-action: manipulation;
 }

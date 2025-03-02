@@ -14,8 +14,8 @@ const HeroTitle = ({ currentWord, words }: HeroTitleProps) => {
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.3 }}
     >
-      <div className="flex items-center gap-2 lg:gap-4">
-        <div className="w-[120px] sm:w-[150px] md:w-[180px] lg:w-[200px] h-[40px] sm:h-[50px] md:h-[60px] lg:h-[70px] relative">
+      <div className="inline-flex flex-wrap items-center gap-1 sm:gap-2 md:gap-3">
+        <div className="relative h-[40px] sm:h-[50px] md:h-[60px] lg:h-[70px] min-w-[120px] sm:min-w-[150px] md:min-w-[180px] lg:min-w-[200px]">
           <AnimatePresence mode="wait">
             <motion.span
               key={words[currentWord]}
@@ -29,7 +29,7 @@ const HeroTitle = ({ currentWord, words }: HeroTitleProps) => {
             </motion.span>
           </AnimatePresence>
         </div>
-        <span className="text-white ml-4">Locksmith</span>
+        <span className="text-white">Locksmith</span>
       </div>
       <div className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl mt-2">Services in North Bergen</div>
     </motion.h1>

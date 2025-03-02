@@ -9,11 +9,15 @@ import { BasicMetaTags } from "@/components/meta/BasicMetaTags";
 import { OpenGraphTags } from "@/components/meta/OpenGraphTags";
 import { TwitterTags } from "@/components/meta/TwitterTags";
 import { createSiteNavigationSchema } from "@/components/meta/schema/SiteNavigationSchema";
+import { trackComponentRender } from "@/utils/performanceMonitoring";
 
 const Index = () => {
+  const finishRenderTracking = trackComponentRender('HomePage');
+  
   // Page view tracking for analytics
   useEffect(() => {
     console.log("Home page viewed");
+    finishRenderTracking();
     // Future implementation: track page view in analytics
   }, []);
 
@@ -128,6 +132,19 @@ const Index = () => {
           navigationSchema
         ]} 
       />
+      
+      {/* Extra canonical tag to ensure proper indexing */}
+      <Helmet>
+        <link rel="canonical" href={canonicalUrl} />
+        {/* Preconnect to important domains to improve performance */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://www.google-analytics.com" />
+        
+        {/* Help browsers prioritize which resources to load first */}
+        <meta httpEquiv="Priority" content="High" />
+        <meta httpEquiv="Cache-Control" content="public, max-age=31536000, immutable" />
+      </Helmet>
       
       <HomeLayout>
         <HeroSection />

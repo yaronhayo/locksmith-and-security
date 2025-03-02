@@ -3,6 +3,7 @@ import { BasicMetaTags } from "@/components/meta/BasicMetaTags";
 import { OpenGraphTags } from "@/components/meta/OpenGraphTags";
 import { TwitterTags } from "@/components/meta/TwitterTags";
 import { SchemaScripts } from "@/components/meta/SchemaScripts";
+import { HreflangTags } from "@/components/meta/HreflangTags";
 import React from "react";
 
 interface Schema {
@@ -23,6 +24,11 @@ interface MetaTagsProps {
   modifiedDate?: string;
   ogType?: "website" | "article" | "product" | "profile" | "book";
   twitterCardType?: "summary" | "summary_large_image" | "app" | "player";
+  alternateLanguages?: {
+    lang: string;
+    href: string;
+  }[];
+  defaultLang?: string;
 }
 
 const MetaTags = ({
@@ -37,12 +43,16 @@ const MetaTags = ({
   baseUrl = "https://247locksmithandsecurity.com",
   modifiedDate = new Date().toISOString().split('T')[0], // Default to today's date in YYYY-MM-DD format
   ogType = "website",
-  twitterCardType = "summary_large_image"
+  twitterCardType = "summary_large_image",
+  alternateLanguages = [],
+  defaultLang = "en-US"
 }: MetaTagsProps) => {
-  // Ensure canonical URL has the proper base
+  // Ensure canonical URL has the proper base and remove trailing slashes for consistency
+  const normalizeUrl = (url: string) => url.replace(/\/+$/, '');
+  
   const fullCanonicalUrl = canonicalUrl ? 
-    (canonicalUrl.startsWith('http') ? canonicalUrl : `${baseUrl}${canonicalUrl}`) 
-    : baseUrl;
+    (canonicalUrl.startsWith('http') ? normalizeUrl(canonicalUrl) : `${normalizeUrl(baseUrl)}${canonicalUrl}`) 
+    : normalizeUrl(baseUrl);
     
   return (
     <>
@@ -73,6 +83,15 @@ const MetaTags = ({
         baseUrl={baseUrl}
         cardType={twitterCardType}
       />
+      
+      {/* Add hreflang tags if alternateLanguages are provided */}
+      {alternateLanguages.length > 0 && (
+        <HreflangTags
+          alternateLanguages={alternateLanguages}
+          defaultHref={fullCanonicalUrl}
+          defaultLang={defaultLang}
+        />
+      )}
       
       {schemas && schemas.length > 0 && (
         <SchemaScripts schemas={schemas} />
