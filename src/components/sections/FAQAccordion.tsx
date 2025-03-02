@@ -16,8 +16,8 @@ const FAQAccordion: React.FC<FAQAccordionProps> = ({ faqs }) => {
     <Accordion type="single" collapsible className="w-full">
       {faqs.map((faq, index) => (
         <AccordionItem 
-          key={index} 
-          value={`accordion-item-${index}-${faq.question.substring(0, 10)}`} 
+          key={`faq-accordion-item-${index}`} 
+          value={`faq-accordion-${index}-${faq.question.substring(0, 10).replace(/\s+/g, '-')}`} 
           className="border-l-0 border-r-0 border-b border-t-0 py-2 first:border-t"
         >
           <AccordionTrigger className="text-left font-medium text-gray-900 hover:text-secondary transition-colors py-4">

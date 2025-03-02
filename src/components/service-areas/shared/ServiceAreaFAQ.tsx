@@ -31,8 +31,16 @@ const ServiceAreaFAQ = ({ locationName, faqSchema }: ServiceAreaFAQProps) => {
         <div className="max-w-6xl mx-auto">
           <div className="grid md:grid-cols-2 gap-6">
             {faqSchema.data.mainEntity.map((faq: any, index: number) => (
-              <Accordion key={index} type="single" collapsible className="bg-white rounded-lg shadow-sm">
-                <AccordionItem value={`area-item-${index}-${faq.name.substring(0, 10)}`} className="border-none">
+              <Accordion 
+                key={`service-area-faq-${index}`} 
+                type="single" 
+                collapsible 
+                className="bg-white rounded-lg shadow-sm"
+              >
+                <AccordionItem 
+                  value={`service-area-${locationName.replace(/\s+/g, '-').toLowerCase()}-${index}-${faq.name.substring(0, 10).replace(/\s+/g, '-')}`} 
+                  className="border-none"
+                >
                   <AccordionTrigger className="px-6 py-4 hover:no-underline">
                     <div className="flex items-start text-left gap-3">
                       <span className="font-bold text-primary text-lg">Q:</span>

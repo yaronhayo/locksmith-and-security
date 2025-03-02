@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import PageLayout from "@/components/layouts/PageLayout";
 import PageHero from "@/components/layouts/PageHero";
@@ -212,7 +211,7 @@ const FAQPage = () => {
                     >
                       {displayedFaqs.map((faq, index) => (
                         <motion.div
-                          key={index}
+                          key={`main-faq-${index}`}
                           initial={{ opacity: 0, y: 20 }}
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ duration: 0.3, delay: index * 0.05 }}
@@ -220,7 +219,10 @@ const FAQPage = () => {
                           <Card className="h-full overflow-hidden hover:shadow-md transition-shadow duration-300 hover:border-[#FEC6A1]">
                             <CardContent className="p-0">
                               <Accordion type="single" collapsible>
-                                <AccordionItem value={`item-${index}-${faq.question.substring(0, 10)}`} className="border-none">
+                                <AccordionItem 
+                                  value={`main-faq-${activeTab}-${index}-${faq.question.substring(0, 10).replace(/\s+/g, '-')}`} 
+                                  className="border-none"
+                                >
                                   <AccordionTrigger className="px-6 py-4 bg-gray-50 hover:bg-gray-100 transition-colors hover:no-underline text-left">
                                     <div className="flex items-start text-left gap-3">
                                       <span className="font-bold text-[#F97316] text-lg">Q:</span>
