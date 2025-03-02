@@ -4,16 +4,14 @@ import EnhancedServicesHero from '@/components/sections/services/EnhancedService
 import ServicePageContent from '@/components/sections/services/service-page';
 import { carServiceReviews } from '@/data/reviews/carServiceReviews';
 import ServicesProof from '@/components/sections/services/ServicesProof';
-import { Helmet } from 'react-helmet';
 import { CarLockoutContent } from '@/components/services/car-lockout/CarLockoutContent';
 import { carLockoutSchema, carLockoutFaqs, carLockoutFaqSchema } from '@/components/services/car-lockout/CarLockoutSchema';
 import { relatedEmergencyServices } from '@/components/services/car-lockout/relatedServices';
-import { SchemaScripts } from '@/components/meta/SchemaScripts';
-import { createBreadcrumbSchema } from '@/components/meta/schema/BreadcrumbSchema';
 import MetaTags from '@/components/layouts/MetaTags';
 import { createLocalBusinessSchema } from '@/components/meta/schema/LocalBusinessSchema';
 import { createWebSiteSchema } from '@/components/meta/schema/WebSiteSchema';
 import { createSiteNavigationSchema } from '@/components/meta/schema/SiteNavigationSchema';
+import { createBreadcrumbSchema } from '@/components/meta/schema/BreadcrumbSchema';
 
 const CarLockout = () => {
   const pageTitle = "Professional Car Lockout Service | 24/7 Emergency Automotive Locksmith";
@@ -72,9 +70,9 @@ const CarLockout = () => {
         ogImage={imageUrl}
         modifiedDate={new Date().toISOString()}
         ogType="article"
-        schemas={[
-          { type: 'service', data: carLockoutSchema },
-          { type: 'faq', data: carLockoutFaqSchema },
+        schema={[
+          carLockoutSchema,
+          carLockoutFaqSchema,
           breadcrumbSchema,
           localBusinessSchema,
           websiteSchema,

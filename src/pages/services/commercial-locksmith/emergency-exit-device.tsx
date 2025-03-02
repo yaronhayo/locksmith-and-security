@@ -4,26 +4,22 @@ import EnhancedServicesHero from '@/components/sections/services/EnhancedService
 import ServicePageContent from '@/components/sections/services/service-page';
 import { commercialReviews } from '@/data/reviews';
 import ServicesProof from '@/components/sections/services/ServicesProof';
-import { SchemaScripts } from '@/components/meta/SchemaScripts';
-import { Helmet } from 'react-helmet';
 import { EmergencyExitDeviceContent } from '@/components/services/emergency-exit-device/EmergencyExitDeviceContent';
 import { emergencyExitDeviceFaqs, emergencyExitDeviceServiceSchema, emergencyExitDeviceFaqSchema, emergencyExitDeviceRelatedServices } from '@/components/services/emergency-exit-device/EmergencyExitDeviceSchema';
+import MetaTags from '@/components/layouts/MetaTags';
 
 const EmergencyExitDevice = () => {
   return (
     <main className="flex-grow">
-      <Helmet>
-        <title>Emergency Exit Device Installation | Commercial Panic Bar Services</title>
-        <meta name="description" content="Professional emergency exit device installation and repairs by certified technicians. Ensure your business meets fire code requirements with expert panic bar services." />
-        <meta name="keywords" content="emergency exit device, panic bar, push bar, exit device installation, commercial fire code, business emergency exit, panic hardware" />
-        <link rel="canonical" href="https://247locksmithandsecurity.com/services/commercial-locksmith/emergency-exit-device" />
-      </Helmet>
-      
-      <SchemaScripts 
-        schemas={[
-          { type: 'service', data: emergencyExitDeviceServiceSchema },
-          { type: 'faq', data: emergencyExitDeviceFaqSchema }
-        ]} 
+      <MetaTags
+        title="Emergency Exit Device Installation | Commercial Panic Bar Services"
+        description="Professional emergency exit device installation and repairs by certified technicians. Ensure your business meets fire code requirements with expert panic bar services."
+        keywords="emergency exit device, panic bar, push bar, exit device installation, commercial fire code, business emergency exit, panic hardware"
+        canonicalUrl="https://247locksmithandsecurity.com/services/commercial-locksmith/emergency-exit-device"
+        schema={[
+          emergencyExitDeviceServiceSchema,
+          emergencyExitDeviceFaqSchema
+        ]}
       />
       
       <EnhancedServicesHero 

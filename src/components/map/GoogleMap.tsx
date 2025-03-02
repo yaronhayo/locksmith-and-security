@@ -1,5 +1,5 @@
 
-import React, { CSSProperties, useEffect, useState } from "react";
+import React, { CSSProperties, useState } from "react";
 import { GoogleMap as GoogleMapComponent } from "@react-google-maps/api";
 import MapLoader from "./MapLoader";
 import MapMarkers from "./MapMarkers";
@@ -50,7 +50,6 @@ const GoogleMap = ({
   const [retryCount, setRetryCount] = useState(0);
   
   const {
-    mapRef,
     isLoading,
     mapError,
     visibleMarkers,

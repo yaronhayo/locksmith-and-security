@@ -12,6 +12,7 @@ export interface MetaTagsProps {
   noindex?: boolean;
   nofollow?: boolean;
   modifiedDate?: string;
+  schema?: any | any[]; // Add support for schema data
 }
 
 const MetaTags: React.FC<MetaTagsProps> = ({
@@ -23,8 +24,12 @@ const MetaTags: React.FC<MetaTagsProps> = ({
   ogType = "website",
   noindex,
   nofollow,
-  modifiedDate
+  modifiedDate,
+  schema
 }) => {
+  // Convert schema to array if it's a single object
+  const schemas = schema ? (Array.isArray(schema) ? schema : [schema]) : [];
+
   return (
     <Helmet>
       {title && <title>{title}</title>}
@@ -51,6 +56,13 @@ const MetaTags: React.FC<MetaTagsProps> = ({
       
       {/* Modified date for SEO */}
       {modifiedDate && <meta name="last-modified" content={modifiedDate} />}
+      
+      {/* Schema markup */}
+      {schemas.map((schemaItem, index) => (
+        <script key={`schema-${index}`} type="application/ld+json">
+          {JSON.stringify(schemaItem)}
+        </script>
+      ))}
     </Helmet>
   );
 };

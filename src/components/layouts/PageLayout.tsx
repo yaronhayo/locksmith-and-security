@@ -1,8 +1,6 @@
 
 import React, { useEffect } from 'react';
 import MetaTags from './MetaTags';
-import { BreadcrumbSchema } from '../meta/schema/BreadcrumbSchema';
-import { SchemaScripts } from '../meta/SchemaScripts';
 import ScrollToTop from '../ScrollToTop';
 import Breadcrumbs from '../Breadcrumbs';
 import ScrollToTopButton from '../ScrollToTopButton';
@@ -57,30 +55,6 @@ const PageLayout: React.FC<PageLayoutProps> = ({
   // Determine which breadcrumbs to use (custom or standard)
   const activeBreadcrumbs = customBreadcrumbs || breadcrumbs;
 
-  // Generate breadcrumb schema if breadcrumbs are present
-  const breadcrumbSchemaData = activeBreadcrumbs && activeBreadcrumbs.length > 0
-    ? <BreadcrumbSchema breadcrumbs={activeBreadcrumbs} /> 
-    : null;
-
-  // Combine all schemas for the page
-  const schemas = [];
-  if (schema) {
-    // Handle both array and single schema object
-    if (Array.isArray(schema)) {
-      schemas.push(...schema);
-    } else {
-      schemas.push({ type: 'WebPage', data: schema });
-    }
-  }
-  
-  // Only add breadcrumb schema if we have breadcrumbs and they're not hidden
-  if (breadcrumbSchemaData && !hideBreadcrumbs) {
-    schemas.push({ 
-      type: 'BreadcrumbList', 
-      data: breadcrumbSchemaData.props.children
-    });
-  }
-
   return (
     <>
       <MetaTags
@@ -93,9 +67,8 @@ const PageLayout: React.FC<PageLayoutProps> = ({
         noindex={noindex}
         nofollow={nofollow}
         modifiedDate={modifiedDate}
+        schema={schema}
       />
-      
-      <SchemaScripts schemas={schemas} />
       
       <ScrollToTop />
       
