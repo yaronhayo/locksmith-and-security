@@ -1,8 +1,10 @@
+
 import { Review, ServiceCategory } from "@/types/reviews";
 import { memo } from "react";
 import ReviewCard from "./ReviewCard";
 import { motion, AnimatePresence } from "framer-motion";
 import ReviewsHeader from "./ReviewsHeader";
+
 interface ReviewsContainerProps {
   displayedReviews: Review[];
   isLoading: boolean;
@@ -10,6 +12,7 @@ interface ReviewsContainerProps {
   location?: string;
   category?: ServiceCategory;
 }
+
 const ReviewsContainer = memo(({
   displayedReviews,
   isLoading,
@@ -30,6 +33,7 @@ const ReviewsContainer = memo(({
       }
     }
   };
+  
   const itemVariants = {
     hidden: {
       opacity: 0,
@@ -43,7 +47,45 @@ const ReviewsContainer = memo(({
       }
     }
   };
-  return;
+  
+  return (
+    <div className="w-full">
+      <ReviewsHeader 
+        totalReviews={totalReviews} 
+        location={location} 
+        category={category} 
+      />
+      
+      {displayedReviews.length > 0 ? (
+        <motion.div 
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+        >
+          <AnimatePresence>
+            {displayedReviews.map((review, index) => (
+              <motion.div 
+                key={`${review.name}-${index}`}
+                variants={itemVariants}
+                layout
+                className="will-change-transform"
+              >
+                <ReviewCard review={review} index={index} />
+              </motion.div>
+            ))}
+          </AnimatePresence>
+        </motion.div>
+      ) : (
+        !isLoading && (
+          <div className="text-center py-8">
+            <p className="text-gray-500">No reviews found.</p>
+          </div>
+        )
+      )}
+    </div>
+  );
 });
+
 ReviewsContainer.displayName = 'ReviewsContainer';
 export default ReviewsContainer;

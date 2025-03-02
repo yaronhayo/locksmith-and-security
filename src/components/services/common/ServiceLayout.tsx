@@ -47,18 +47,18 @@ const ServiceLayout: React.FC<ServiceLayoutProps> = ({
       canonicalUrl={canonicalUrl}
       schema={schemas}
       customBreadcrumbs={customBreadcrumbs}
-      heroTitle={title}
-      heroDescription={description}
       hideBreadcrumbs={false}
       preselectedService={preselectedService}
     >
-      <EnhancedServicesHero 
-        title={title}
-        description={description}
-        serviceName={serviceName}
-        serviceLabel={serviceCategory}
-        preselectedService={preselectedService}
-      />
+      <div className="-mt-8">
+        <EnhancedServicesHero 
+          title={title}
+          description={description}
+          serviceName={serviceName}
+          serviceLabel={serviceCategory}
+          preselectedService={preselectedService}
+        />
+      </div>
       
       <ServicePageContent
         title={title}

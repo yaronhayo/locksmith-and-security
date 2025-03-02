@@ -1,9 +1,10 @@
 
 # Redirect domain aliases to primary domain
 https://www.247locksmithandsecurity.com/* https://247locksmithandsecurity.com/:splat 301!
+http://www.247locksmithandsecurity.com/* https://247locksmithandsecurity.com/:splat 301!
 
 # Force HTTPS for all connections
-http://* https://:splat 301!
+http://247locksmithandsecurity.com/* https://247locksmithandsecurity.com/:splat 301!
 
 # Old service URLs to new structure
 /services/car-lockout              /services/emergency-locksmith/car-lockout 301
