@@ -48,54 +48,54 @@ const ServiceSelection = ({ error, isSubmitting, onServiceChange }: ServiceSelec
 
   return (
     <div className="space-y-2">
-      <Label htmlFor="service">Service Needed</Label>
+      <Label htmlFor="service" className="text-gray-800">Service Needed</Label>
       <Select onValueChange={onServiceChange} name="service" disabled={isSubmitting}>
         <SelectTrigger 
           id="service"
-          className={`h-10 text-base ${error ? 'border-red-500' : ''}`}
+          className={`h-10 text-base text-gray-900 placeholder:text-gray-500 ${error ? 'border-red-500' : ''}`}
           aria-label="Select the service you need"
         >
-          <SelectValue placeholder="Select Service Needed" />
+          <SelectValue placeholder="Select Service Needed" className="text-gray-500" />
         </SelectTrigger>
-        <SelectContent>
+        <SelectContent className="text-gray-900">
           <SelectGroup>
-            <SelectLabel>Emergency Services</SelectLabel>
+            <SelectLabel className="text-gray-800">Emergency Services</SelectLabel>
             {groupedServices.emergency.map((service) => (
-              <SelectItem key={service} value={service}>
+              <SelectItem key={service} value={service} className="text-gray-900">
                 {service}
               </SelectItem>
             ))}
           </SelectGroup>
           
           <SelectGroup>
-            <SelectLabel>Residential Services</SelectLabel>
+            <SelectLabel className="text-gray-800">Residential Services</SelectLabel>
             {groupedServices.residential.map((service) => (
-              <SelectItem key={service} value={service}>
+              <SelectItem key={service} value={service} className="text-gray-900">
                 {service}
               </SelectItem>
             ))}
           </SelectGroup>
           
           <SelectGroup>
-            <SelectLabel>Commercial Services</SelectLabel>
+            <SelectLabel className="text-gray-800">Commercial Services</SelectLabel>
             {groupedServices.commercial.map((service) => (
-              <SelectItem key={service} value={service}>
+              <SelectItem key={service} value={service} className="text-gray-900">
                 {service}
               </SelectItem>
             ))}
           </SelectGroup>
           
           <SelectGroup>
-            <SelectLabel>Automotive Services</SelectLabel>
+            <SelectLabel className="text-gray-800">Automotive Services</SelectLabel>
             {groupedServices.automotive.map((service) => (
-              <SelectItem key={service} value={service}>
+              <SelectItem key={service} value={service} className="text-gray-900">
                 {service}
               </SelectItem>
             ))}
           </SelectGroup>
           
           {groupedServices.other.map((service) => (
-            <SelectItem key={service} value={service}>
+            <SelectItem key={service} value={service} className="text-gray-900">
               {service}
             </SelectItem>
           ))}

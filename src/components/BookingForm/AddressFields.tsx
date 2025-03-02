@@ -18,7 +18,7 @@ const AddressFields = ({ address, onChange, errors, isSubmitting }: AddressField
   return (
     <>
       <div className="form-group">
-        <Label htmlFor="address" className="block text-sm font-medium text-gray-700 mb-1">
+        <Label htmlFor="address" className="block text-sm font-medium text-gray-800 mb-1">
           Service Address
         </Label>
         <GoogleMapsProvider>
@@ -30,6 +30,7 @@ const AddressFields = ({ address, onChange, errors, isSubmitting }: AddressField
             required
             id="address"
             name="address"
+            className="text-gray-900 placeholder:text-gray-500"
           />
         </GoogleMapsProvider>
         {errors.address && (
@@ -43,28 +44,28 @@ const AddressFields = ({ address, onChange, errors, isSubmitting }: AddressField
       {address && (
         <>
           <div className="form-group">
-            <Label htmlFor="unit_number" className="block text-sm font-medium text-gray-700 mb-1">
+            <Label htmlFor="unit_number" className="block text-sm font-medium text-gray-800 mb-1">
               Unit Number (Optional)
             </Label>
             <Input
               id="unit_number"
               name="unit_number"
               type="text"
-              className="h-9 text-sm"
+              className="h-9 text-sm text-gray-900 placeholder:text-gray-500"
               disabled={isSubmitting}
               placeholder="Apartment, suite, unit number"
             />
           </div>
 
           <div className="form-group">
-            <Label htmlFor="gate_code" className="block text-sm font-medium text-gray-700 mb-1">
+            <Label htmlFor="gate_code" className="block text-sm font-medium text-gray-800 mb-1">
               Gate Code (Optional)
             </Label>
             <Input
               id="gate_code"
               name="gate_code"
               type="text"
-              className="h-9 text-sm"
+              className="h-9 text-sm text-gray-900 placeholder:text-gray-500"
               disabled={isSubmitting}
               placeholder="Enter gate code if applicable"
             />
