@@ -1,47 +1,37 @@
 
-import { Helmet } from "react-helmet";
+import React from 'react';
 
-interface BreadcrumbItem {
+type BreadcrumbItemType = {
   name: string;
-  item: string;
-}
+  path?: string; // Make path optional to accommodate both structures
+  item?: string; // Make item optional to accommodate both structures
+};
 
 interface BreadcrumbSchemaProps {
-  breadcrumbs: BreadcrumbItem[];
-  baseUrl?: string;
+  breadcrumbs?: BreadcrumbItemType[];
 }
 
-export const BreadcrumbSchema = ({ breadcrumbs, baseUrl = "https://247locksmithandsecurity.com" }: BreadcrumbSchemaProps) => {
+export const BreadcrumbSchema: React.FC<BreadcrumbSchemaProps> = ({ breadcrumbs = [] }) => {
+  if (!breadcrumbs || breadcrumbs.length === 0) return null;
+
+  // Create schema for breadcrumbs
+  const itemListElement = breadcrumbs.map((breadcrumb, index) => {
+    // Handle both formats by using the appropriate property
+    const url = breadcrumb.path || breadcrumb.item || '';
+    
+    return {
+      "@type": "ListItem",
+      "position": index + 1,
+      "name": breadcrumb.name,
+      "item": url.startsWith('http') ? url : `https://247locksmithandsecurity.com${url}`
+    };
+  });
+
   const breadcrumbSchema = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
-    "itemListElement": breadcrumbs.map((item, index) => ({
-      "@type": "ListItem",
-      "position": index + 1,
-      "name": item.name,
-      "item": item.item.startsWith('http') ? item.item : `${baseUrl}${item.item}`
-    }))
+    "itemListElement": itemListElement
   };
 
-  return (
-    <Helmet>
-      <script type="application/ld+json">
-        {JSON.stringify(breadcrumbSchema)}
-      </script>
-    </Helmet>
-  );
+  return <script type="application/ld+json">{JSON.stringify(breadcrumbSchema)}</script>;
 };
-
-export const createBreadcrumbSchema = ({ breadcrumbs, baseUrl = "https://247locksmithandsecurity.com" }: BreadcrumbSchemaProps) => ({
-  type: 'BreadcrumbList',
-  data: {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    "itemListElement": breadcrumbs.map((item, index) => ({
-      "@type": "ListItem",
-      "position": index + 1,
-      "name": item.name,
-      "item": item.item.startsWith('http') ? item.item : `${baseUrl}${item.item}`
-    }))
-  }
-});

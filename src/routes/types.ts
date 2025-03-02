@@ -14,7 +14,7 @@ export interface RouteConfig {
 
 export interface BreadcrumbItem {
   name: string;
-  item: string;
+  path: string;
 }
 
 export interface PageMetaProps {
@@ -24,8 +24,8 @@ export interface PageMetaProps {
   canonicalUrl?: string;
   ogImage?: string;
   ogType?: "website" | "article" | "product" | "profile" | "book";
-  breadcrumbs?: BreadcrumbItem[];
-  customBreadcrumbs?: Array<{name: string, path: string}>;
+  breadcrumbs?: Array<{ name: string; path: string }>;
+  customBreadcrumbs?: Array<{ name: string; path: string }>;
   noindex?: boolean;
   nofollow?: boolean;
   modifiedDate?: string;

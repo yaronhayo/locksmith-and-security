@@ -52,7 +52,7 @@ const ServiceAreaLayout = memo(({ areaSlug }: ServiceAreaLayoutProps) => {
     <PageLayout
       title={pageTitle}
       description={pageDescription}
-      schemas={schemas}
+      schema={schemas}
       heroTitle={`Locksmith Services in ${location.name}, NJ`}
       heroDescription={`Professional 24/7 locksmith services for residential, commercial, and automotive needs in ${location.name}`}
       hideBreadcrumbs={false} // Let PageLayout handle breadcrumbs
