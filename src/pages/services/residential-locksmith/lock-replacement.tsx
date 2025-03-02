@@ -1,20 +1,50 @@
 
 import React from 'react';
-import ServicesHero from '@/components/sections/services/ServicesHero';
-import ServicesCTA from '@/components/sections/services/ServicesCTA';
-import ServicesFeatures from '@/components/sections/services/ServicesFeatures';
+import EnhancedServicesHero from '@/components/sections/services/EnhancedServicesHero';
+import ServicePageContent from '@/components/sections/services/service-page';
+import { residentialReviews } from '@/data/reviews';
 import ServicesProof from '@/components/sections/services/ServicesProof';
+import { SchemaScripts } from '@/components/meta/SchemaScripts';
+import { Helmet } from 'react-helmet';
+import { LockReplacementContent } from '@/components/services/lock-replacement/LockReplacementContent';
+import { lockReplacementFaqs, lockReplacementServiceSchema, lockReplacementFaqSchema } from '@/components/services/lock-replacement/LockReplacementSchema';
+import { relatedResidentialServices } from '@/components/services/lock-replacement/relatedServices';
 
 const LockReplacement = () => {
   return (
     <main className="flex-grow">
-      <ServicesHero 
-        title="Residential Lock Replacement"
-        description="Professional lock replacement services by experienced technicians. Expert installation of high-security locks."
+      <Helmet>
+        <title>Professional Residential Lock Replacement Service | Expert Locksmiths</title>
+        <meta name="description" content="Expert lock replacement service by certified residential locksmiths. Upgrade your home security with professional installation of high-quality locks." />
+        <meta name="keywords" content="lock replacement, change locks, new locks, deadbolt installation, smart lock installation, home security upgrade, residential locksmith" />
+        <link rel="canonical" href="https://247locksmithandsecurity.com/services/residential-locksmith/lock-replacement" />
+      </Helmet>
+      
+      <SchemaScripts 
+        schemas={[
+          { type: 'service', data: lockReplacementServiceSchema },
+          { type: 'faq', data: lockReplacementFaqSchema }
+        ]} 
       />
-      <ServicesFeatures />
-      <ServicesProof category="residential" />
-      <ServicesCTA />
+      
+      <EnhancedServicesHero 
+        title="Residential Lock Replacement Service"
+        description="Professional lock replacement services to enhance your home security. Our certified technicians provide expert installation of high-quality locks from trusted brands."
+        serviceName="Lock Replacement"
+        serviceLabel="Residential Locksmith"
+      />
+      
+      <ServicePageContent
+        title="Professional Lock Replacement Service"
+        description="Expert lock replacement solutions for enhanced home security"
+        serviceName="Lock Replacement"
+        serviceCategory="Residential Locksmith"
+        mainContent={<LockReplacementContent />}
+        relatedServices={relatedResidentialServices}
+        faqs={lockReplacementFaqs}
+      />
+      
+      <ServicesProof reviewsData={residentialReviews.slice(0, 8)} />
     </main>
   );
 };

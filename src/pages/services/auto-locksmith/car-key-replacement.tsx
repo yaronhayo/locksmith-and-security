@@ -1,20 +1,50 @@
 
 import React from 'react';
-import ServicesHero from '@/components/sections/services/ServicesHero';
-import ServicesCTA from '@/components/sections/services/ServicesCTA';
-import ServicesFeatures from '@/components/sections/services/ServicesFeatures';
+import EnhancedServicesHero from '@/components/sections/services/EnhancedServicesHero';
+import ServicePageContent from '@/components/sections/services/service-page';
+import { carServiceReviews } from '@/data/reviews/carServiceReviews';
 import ServicesProof from '@/components/sections/services/ServicesProof';
+import { SchemaScripts } from '@/components/meta/SchemaScripts';
+import { Helmet } from 'react-helmet';
+import { CarKeyReplacementContent } from '@/components/services/car-key-replacement/CarKeyReplacementContent';
+import { carKeyReplacementFaqs, carKeyReplacementServiceSchema, carKeyReplacementFaqSchema } from '@/components/services/car-key-replacement/CarKeyReplacementSchema';
+import { relatedAutoServices } from '@/components/services/car-key-replacement/relatedServices';
 
 const CarKeyReplacement = () => {
   return (
     <main className="flex-grow">
-      <ServicesHero 
-        title="Car Key Replacement Service"
-        description="Professional car key replacement by certified technicians. Available 24/7 for all vehicle makes and models."
+      <Helmet>
+        <title>Professional Car Key Replacement Service | Automotive Locksmith</title>
+        <meta name="description" content="Expert car key replacement service by certified automotive locksmiths. We replace traditional keys, transponders, remote fobs, and smart keys for all vehicle makes and models." />
+        <meta name="keywords" content="car key replacement, lost car keys, broken car key, car key fob, transponder key, smart key, replacement car keys, automotive locksmith, vehicle key" />
+        <link rel="canonical" href="https://247locksmithandsecurity.com/services/auto-locksmith/car-key-replacement" />
+      </Helmet>
+      
+      <SchemaScripts 
+        schemas={[
+          { type: 'service', data: carKeyReplacementServiceSchema },
+          { type: 'faq', data: carKeyReplacementFaqSchema }
+        ]} 
       />
-      <ServicesFeatures />
-      <ServicesProof category="car" />
-      <ServicesCTA />
+      
+      <EnhancedServicesHero 
+        title="Car Key Replacement Service"
+        description="Professional key replacement for all vehicle makes and models. Our certified automotive locksmiths provide expert key cutting and programming for traditional keys, transponders, remote fobs, and smart keys."
+        serviceName="Car Key Replacement"
+        serviceLabel="Automotive Locksmith"
+      />
+      
+      <ServicePageContent
+        title="Professional Car Key Replacement"
+        description="Expert solution for lost, broken or spare car keys"
+        serviceName="Car Key Replacement"
+        serviceCategory="Auto Locksmith"
+        mainContent={<CarKeyReplacementContent />}
+        relatedServices={relatedAutoServices}
+        faqs={carKeyReplacementFaqs}
+      />
+      
+      <ServicesProof reviewsData={carServiceReviews.slice(0, 8)} />
     </main>
   );
 };
