@@ -2,7 +2,6 @@
 import React, { useRef, useEffect, useState, forwardRef } from "react";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
-import { toast } from "sonner";
 
 // Define a union type that can handle both event handlers and direct string updates
 export type AddressChangeHandler = 
@@ -86,7 +85,6 @@ const AddressAutocomplete = forwardRef<HTMLInputElement, AddressAutocompleteProp
           console.log("Address autocomplete initialized successfully");
         } catch (error) {
           console.error("Error initializing address autocomplete:", error);
-          toast.error("Could not initialize address lookup");
         }
       }
 

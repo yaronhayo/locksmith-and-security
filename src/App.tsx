@@ -3,7 +3,6 @@ import React, { useEffect, Suspense } from "react";
 import { BrowserRouter as Router } from "react-router-dom";
 import Routes from "./Routes";
 import { RouteErrorBoundary } from "./components/layouts/RouteErrorBoundary";
-import { Toaster } from "./components/ui/sonner";
 import CookieConsent from "./components/CookieConsent";
 import { NavigationProvider } from "./contexts/NavigationContext";
 import ScrollToTopButton from "@/components/ScrollToTopButton";
@@ -35,7 +34,6 @@ function App() {
           </Suspense>
           <ScrollToTopButton />
         </NavigationProvider>
-        <Toaster />
         <CookieConsent />
       </RouteErrorBoundary>
     </Router>

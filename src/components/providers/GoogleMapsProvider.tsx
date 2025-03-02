@@ -1,10 +1,8 @@
-
 import { ReactNode, useEffect, useState, useCallback, useRef } from "react";
 import { LoadScript, LoadScriptProps } from "@react-google-maps/api";
 import { useMapConfig, clearMapConfigCache } from "@/hooks/useMap";
 import MapError from "../map/MapError";
 import MapLoader from "../map/MapLoader";
-import { toast } from "sonner";
 
 // Define libraries once to prevent reloading warnings
 const libraries: LoadScriptProps['libraries'] = ['places'];
@@ -51,11 +49,6 @@ const GoogleMapsProvider = ({ children }: GoogleMapsProviderProps) => {
       setScriptError("Places API unavailable. Check API key permissions.");
       return;
     }
-    
-    // Notify for debugging
-    if (import.meta.env.DEV) {
-      toast.success("Google Maps loaded successfully");
-    }
   }, []);
 
   const handleError = useCallback((error: Error) => {
@@ -65,14 +58,11 @@ const GoogleMapsProvider = ({ children }: GoogleMapsProviderProps) => {
     // If we've reached max retries, report the error
     if (retryCount.current >= maxRetries) {
       console.error(`Failed to load Google Maps after ${maxRetries} attempts. Please refresh the page.`);
-      toast.error("Failed to load Google Maps after multiple attempts");
     } else {
       // Otherwise increment retry count and attempt to refetch the API key
       retryCount.current += 1;
       clearMapConfigCache();
       refetch();
-      
-      toast.error(`Error loading maps. Retrying (${retryCount.current}/${maxRetries})...`);
     }
   }, [refetch]);
 
