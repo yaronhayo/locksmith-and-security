@@ -1,6 +1,6 @@
 
 import { Routes as RouterRoutes, Route } from 'react-router-dom';
-import { Suspense, lazy, ReactNode, memo } from "react";
+import { Suspense, lazy, ReactNode, memo, useEffect } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { mainRoutes } from "./routes/mainRoutes";
 import { serviceRoutes } from "./routes/serviceRoutes";
@@ -32,6 +32,12 @@ RouteWrapper.displayName = 'RouteWrapper';
  */
 const Routes = () => {
   console.log('Routes component rendered');
+  
+  useEffect(() => {
+    console.log('Routes mounted - checking for duplicate headers');
+    const headers = document.querySelectorAll('header');
+    console.log(`Found ${headers.length} header elements in the DOM`);
+  }, []);
   
   // Map route data to Route components
   const renderRouteComponents = (routes: RouteConfig[]) => {
