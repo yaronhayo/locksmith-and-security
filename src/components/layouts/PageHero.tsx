@@ -29,6 +29,7 @@ const PageHero = ({
       
       {/* Content */}
       <div className="relative container mx-auto px-4 py-16 md:py-24">
+        {/* Only show breadcrumbs if explicitly requested */}
         {showBreadcrumbs && <Breadcrumbs />}
         
         <div className={cn("max-w-4xl mx-auto text-center", className)}>

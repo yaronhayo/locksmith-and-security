@@ -83,6 +83,9 @@ const PageLayout = ({
   const websiteSchema = createWebSiteSchema();
   allSchemas.push(websiteSchema);
 
+  // Determine if we have a hero section
+  const hasHero = Boolean(heroTitle || heroDescription);
+
   return (
     <ErrorBoundary FallbackComponent={ErrorFallback}>
       <MetaTags
@@ -98,7 +101,8 @@ const PageLayout = ({
         modifiedDate={modifiedDate}
       />
       
-      {(heroTitle || heroDescription) && (
+      {/* Render hero section with breadcrumbs if hero content exists and breadcrumbs aren't hidden */}
+      {hasHero && (
         <PageHero 
           title={heroTitle || title}
           description={heroDescription || description}
@@ -107,14 +111,14 @@ const PageLayout = ({
       )}
       
       {/* Only show standalone breadcrumbs if there's no hero AND breadcrumbs are not hidden */}
-      {!hideBreadcrumbs && !(heroTitle || heroDescription) && (
+      {!hideBreadcrumbs && !hasHero && (
         <nav aria-label="Breadcrumb" className="container mx-auto px-4 py-3 md:py-4">
           <Breadcrumbs />
         </nav>
       )}
       
       <motion.main
-        className={cn("flex-grow", !(heroTitle || heroDescription) && "pt-0")}
+        className={cn("flex-grow", !hasHero && "pt-0")}
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: 20 }}
