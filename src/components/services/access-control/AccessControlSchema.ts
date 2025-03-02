@@ -58,20 +58,22 @@ export const accessControlFaqs = [
   }
 ];
 
-// Convert the FAQ data to match the FAQSchema interface
-const faqData = accessControlFaqs.map(faq => ({
+// Convert the FAQ data to schema format
+const faqItems = accessControlFaqs.map(faq => ({
+  "@type": "Question",
   "name": faq.question,
   "acceptedAnswer": {
+    "@type": "Answer",
     "text": faq.answer
   }
 }));
 
-// Create the FAQ schema according to the FAQSchema interface
+// Create the FAQ schema
 export const accessControlFAQSchema: FAQSchema = {
   type: "FAQPage",
   data: {
     "@context": "https://schema.org",
     "@type": "FAQPage",
-    mainEntity: faqData
+    "mainEntity": faqItems
   }
 };

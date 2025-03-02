@@ -1,291 +1,212 @@
 
-import { Link } from "react-router-dom";
+import React from 'react';
+import { Shield, Lock, Fingerprint, Smartphone, Users, Key, CheckCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Check, Key, Shield, Users, Lock, Fingerprint, Smartphone, Wifi, KeyRound } from "lucide-react";
-import { motion } from "framer-motion";
-import { accessControlSchema, accessControlFAQSchema } from "./AccessControlSchema";
-import ServicePageContent from "@/components/sections/services/service-page";
-
-export const relatedServices = [
-  {
-    title: "Master Key System",
-    description: "Custom master key system design and implementation",
-    link: "/services/commercial-locksmith/master-key",
-    path: "/services/commercial-locksmith/master-key",
-    icon: Key
-  },
-  {
-    title: "Commercial Lock Replacement",
-    description: "Complete replacement of commercial locks with high-security options",
-    link: "/services/commercial-locksmith/lock-replacement",
-    path: "/services/commercial-locksmith/lock-replacement",
-    icon: Lock
-  },
-  {
-    title: "Emergency Exit Devices",
-    description: "Installation and repair of emergency exit devices and push bars",
-    link: "/services/commercial-locksmith/emergency-exit-device",
-    path: "/services/commercial-locksmith/emergency-exit-device",
-    icon: Shield
-  }
-];
-
-// Convert FAQ schema to the format expected by ServicePageContent
-const faqs = accessControlFAQSchema.data.mainEntity.map(item => ({
-  question: item.name,
-  answer: item.acceptedAnswer.text
-}));
+import { Link } from "react-router-dom";
 
 const AccessControlContent = () => {
-  const mainContent = (
-    <div className="space-y-12">
-      <section>
-        <h2 className="text-2xl font-bold mb-6">Modern Access Control Solutions for Businesses</h2>
-        <div className="grid md:grid-cols-2 gap-8">
-          <div>
-            <p className="text-gray-700 mb-4">
-              Access control systems provide an advanced security solution that goes beyond traditional locks and keys, allowing businesses to manage and monitor who enters specific areas of their facility.
-            </p>
-            <p className="text-gray-700 mb-4">
-              Our comprehensive access control services include consultation, system design, professional installation, and ongoing maintenance to ensure your business security remains at its peak performance.
-            </p>
-            <p className="text-gray-700">
-              We work with industry-leading manufacturers to provide reliable, scalable systems that grow with your business needs, from small single-door setups to enterprise-level integrated security solutions.
-            </p>
-          </div>
-          <div className="bg-gray-50 p-6 rounded-lg border border-gray-100">
-            <h3 className="text-lg font-semibold mb-4">Key Benefits</h3>
-            <ul className="space-y-3">
-              <li className="flex items-start">
-                <Check className="h-5 w-5 text-primary mr-2 flex-shrink-0 mt-0.5" />
-                <span>Advanced security with customizable access privileges</span>
-              </li>
-              <li className="flex items-start">
-                <Check className="h-5 w-5 text-primary mr-2 flex-shrink-0 mt-0.5" />
-                <span>Detailed entry logs and security event tracking</span>
-              </li>
-              <li className="flex items-start">
-                <Check className="h-5 w-5 text-primary mr-2 flex-shrink-0 mt-0.5" />
-                <span>Immediate access revocation for lost credentials</span>
-              </li>
-              <li className="flex items-start">
-                <Check className="h-5 w-5 text-primary mr-2 flex-shrink-0 mt-0.5" />
-                <span>Remote management through mobile and web applications</span>
-              </li>
-              <li className="flex items-start">
-                <Check className="h-5 w-5 text-primary mr-2 flex-shrink-0 mt-0.5" />
-                <span>Integration with existing security and building systems</span>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </section>
-
-      <section>
-        <h2 className="text-2xl font-bold mb-6">Access Control Technology Options</h2>
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          <Card className="border-gray-200">
-            <CardContent className="pt-6">
-              <KeyRound className="h-10 w-10 text-primary mb-4" />
-              <h3 className="text-xl font-semibold mb-2">Card & Fob Systems</h3>
-              <p className="text-gray-600">
-                Traditional proximity card or key fob systems that offer reliable security with easy credential management and distribution.
-              </p>
-            </CardContent>
-          </Card>
-          <Card className="border-gray-200">
-            <CardContent className="pt-6">
-              <Fingerprint className="h-10 w-10 text-primary mb-4" />
-              <h3 className="text-xl font-semibold mb-2">Biometric Access</h3>
-              <p className="text-gray-600">
-                Advanced fingerprint, retina scan, or facial recognition systems for maximum security with unique personal identification.
-              </p>
-            </CardContent>
-          </Card>
-          <Card className="border-gray-200">
-            <CardContent className="pt-6">
-              <Smartphone className="h-10 w-10 text-primary mb-4" />
-              <h3 className="text-xl font-semibold mb-2">Mobile Credentials</h3>
-              <p className="text-gray-600">
-                Modern smartphone-based access using secure encrypted credentials, eliminating the need for physical cards or fobs.
-              </p>
-            </CardContent>
-          </Card>
-        </div>
-      </section>
-
-      <section>
-        <h2 className="text-2xl font-bold mb-6">System Components & Features</h2>
-        <Tabs defaultValue="components" className="w-full">
-          <TabsList className="grid grid-cols-3 mb-6">
-            <TabsTrigger value="components">Core Components</TabsTrigger>
-            <TabsTrigger value="features">Advanced Features</TabsTrigger>
-            <TabsTrigger value="integration">System Integration</TabsTrigger>
-          </TabsList>
-          <TabsContent value="components">
-            <div className="bg-white p-6 rounded-lg border border-gray-200">
-              <h3 className="text-lg font-semibold mb-4">Essential System Components</h3>
-              <div className="space-y-4">
-                <div className="flex items-start gap-3">
-                  <div className="bg-primary/10 p-2 rounded">
-                    <Lock className="h-5 w-5 text-primary" />
-                  </div>
-                  <div>
-                    <h4 className="font-medium">Electronic Door Hardware</h4>
-                    <p className="text-sm text-gray-600">Electromagnetic locks, electric strikes, or smart locksets installed on doors</p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3">
-                  <div className="bg-blue-100 p-2 rounded">
-                    <Shield className="h-5 w-5 text-blue-600" />
-                  </div>
-                  <div>
-                    <h4 className="font-medium">Access Control Panels</h4>
-                    <p className="text-sm text-gray-600">Central processing units that control multiple doors and store access permissions</p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3">
-                  <div className="bg-gray-100 p-2 rounded">
-                    <Fingerprint className="h-5 w-5 text-gray-600" />
-                  </div>
-                  <div>
-                    <h4 className="font-medium">Credential Readers</h4>
-                    <p className="text-sm text-gray-600">Card readers, keypads, or biometric scanners that authenticate users</p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3">
-                  <div className="bg-gray-50 p-2 rounded">
-                    <Wifi className="h-5 w-5 text-gray-500" />
-                  </div>
-                  <div>
-                    <h4 className="font-medium">Management Software</h4>
-                    <p className="text-sm text-gray-600">Software to program and monitor the entire system from a central location</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </TabsContent>
-          <TabsContent value="features">
-            <div className="bg-white p-6 rounded-lg border border-gray-200">
-              <h3 className="text-lg font-semibold mb-4">Advanced Security Features</h3>
-              <ol className="space-y-4">
-                <li className="flex items-start gap-3">
-                  <div className="bg-gray-100 rounded-full h-6 w-6 flex items-center justify-center flex-shrink-0 mt-0.5">
-                    <span className="font-medium text-sm">1</span>
-                  </div>
-                  <div>
-                    <h4 className="font-medium">Time-Based Access Control</h4>
-                    <p className="text-sm text-gray-600">Set specific hours when individuals can access particular areas</p>
-                  </div>
-                </li>
-                <li className="flex items-start gap-3">
-                  <div className="bg-gray-100 rounded-full h-6 w-6 flex items-center justify-center flex-shrink-0 mt-0.5">
-                    <span className="font-medium text-sm">2</span>
-                  </div>
-                  <div>
-                    <h4 className="font-medium">Anti-Passback</h4>
-                    <p className="text-sm text-gray-600">Prevents credential sharing by requiring proper entry/exit sequences</p>
-                  </div>
-                </li>
-                <li className="flex items-start gap-3">
-                  <div className="bg-gray-100 rounded-full h-6 w-6 flex items-center justify-center flex-shrink-0 mt-0.5">
-                    <span className="font-medium text-sm">3</span>
-                  </div>
-                  <div>
-                    <h4 className="font-medium">Two-Factor Authentication</h4>
-                    <p className="text-sm text-gray-600">Requires two different credentials for enhanced security</p>
-                  </div>
-                </li>
-                <li className="flex items-start gap-3">
-                  <div className="bg-gray-100 rounded-full h-6 w-6 flex items-center justify-center flex-shrink-0 mt-0.5">
-                    <span className="font-medium text-sm">4</span>
-                  </div>
-                  <div>
-                    <h4 className="font-medium">Lockdown Capabilities</h4>
-                    <p className="text-sm text-gray-600">Immediate lockdown of all or specific doors during emergency situations</p>
-                  </div>
-                </li>
-                <li className="flex items-start gap-3">
-                  <div className="bg-gray-100 rounded-full h-6 w-6 flex items-center justify-center flex-shrink-0 mt-0.5">
-                    <span className="font-medium text-sm">5</span>
-                  </div>
-                  <div>
-                    <h4 className="font-medium">Detailed Audit Trails</h4>
-                    <p className="text-sm text-gray-600">Comprehensive logs of all access attempts, successful or denied</p>
-                  </div>
-                </li>
-              </ol>
-            </div>
-          </TabsContent>
-          <TabsContent value="integration">
-            <div className="bg-white p-6 rounded-lg border border-gray-200">
-              <h3 className="text-lg font-semibold mb-4">Integration Capabilities</h3>
-              <div className="space-y-4">
-                <div className="flex items-start gap-3">
-                  <Check className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
-                  <div>
-                    <h4 className="font-medium">Video Surveillance</h4>
-                    <p className="text-sm text-gray-600">Link door events with video records for visual verification of access events</p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3">
-                  <Check className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
-                  <div>
-                    <h4 className="font-medium">Alarm Systems</h4>
-                    <p className="text-sm text-gray-600">Coordinate with intrusion detection for comprehensive security monitoring</p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3">
-                  <Check className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
-                  <div>
-                    <h4 className="font-medium">HR Systems</h4>
-                    <p className="text-sm text-gray-600">Synchronize with employee databases for automatic credential management</p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3">
-                  <Check className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
-                  <div>
-                    <h4 className="font-medium">Building Automation</h4>
-                    <p className="text-sm text-gray-600">Control lighting, HVAC, and other systems based on occupancy</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </TabsContent>
-        </Tabs>
-      </section>
-
-      <section className="bg-gray-50 p-6 rounded-lg">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
-          <div>
-            <h2 className="text-xl font-bold mb-2">Ready to upgrade your business security with modern access control?</h2>
-            <p className="text-gray-600">Contact our security experts for a customized system design and implementation plan.</p>
-          </div>
-          <div className="flex flex-col sm:flex-row gap-3">
-            <Button asChild size="lg">
-              <a href="tel:2017482070">Call Now</a>
-            </Button>
-            <Button asChild variant="outline" size="lg">
-              <Link to="/contact">Get a Quote</Link>
-            </Button>
-          </div>
-        </div>
-      </section>
-    </div>
-  );
-
   return (
-    <ServicePageContent
-      title="Access Control Systems"
-      description="Professional access control system design, installation and maintenance for enhanced business security"
-      serviceName="Access Control Systems"
-      serviceCategory="Commercial Locksmith"
-      mainContent={mainContent}
-      faqs={faqs}
-      relatedServices={relatedServices}
-    />
+    <div className="space-y-8">
+      {/* Main introduction */}
+      <div>
+        <p className="text-lg text-gray-700 mb-6">
+          Our professional access control systems provide secure, customizable entry management solutions for businesses of all sizes. From basic keypad systems to advanced biometric identification, we design and install comprehensive security solutions that protect your premises while offering convenient access for authorized personnel.
+        </p>
+        
+        <div className="bg-secondary/5 border border-secondary/20 rounded-lg p-6 my-6">
+          <h3 className="text-lg font-semibold text-primary mb-3 flex items-center">
+            <Shield className="h-5 w-5 text-secondary mr-2" />
+            Why You Need Professional Access Control
+          </h3>
+          <p className="mb-4">
+            Modern businesses face complex security challenges that traditional lock-and-key systems cannot adequately address. Access control systems provide enhanced security, accountability, and convenience:
+          </p>
+          <ul className="space-y-2">
+            <li className="flex items-start">
+              <CheckCircle className="h-5 w-5 text-secondary shrink-0 mr-2 mt-0.5" />
+              <span>Eliminate security risks from lost or stolen keys</span>
+            </li>
+            <li className="flex items-start">
+              <CheckCircle className="h-5 w-5 text-secondary shrink-0 mr-2 mt-0.5" />
+              <span>Instantly grant or revoke access privileges</span>
+            </li>
+            <li className="flex items-start">
+              <CheckCircle className="h-5 w-5 text-secondary shrink-0 mr-2 mt-0.5" />
+              <span>Track and log all entry and exit events</span>
+            </li>
+            <li className="flex items-start">
+              <CheckCircle className="h-5 w-5 text-secondary shrink-0 mr-2 mt-0.5" />
+              <span>Restrict access to sensitive areas based on authorization level</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+      
+      {/* Services section */}
+      <div>
+        <h2 className="text-2xl font-bold text-primary mb-6">Access Control Solutions We Offer</h2>
+        
+        <div className="grid md:grid-cols-2 gap-6 mb-8">
+          <div className="bg-white border border-gray-200 rounded-lg p-6 shadow-sm">
+            <div className="flex items-center mb-4">
+              <div className="bg-primary/10 p-3 rounded-full mr-4">
+                <Key className="h-6 w-6 text-primary" />
+              </div>
+              <h3 className="text-xl font-semibold">Keycard & Fob Systems</h3>
+            </div>
+            <p className="text-gray-700">
+              Convenient contactless systems using cards or fobs that can be easily issued to employees and visitors. Ideal for businesses with moderate security needs and regular staff turnover.
+            </p>
+          </div>
+          
+          <div className="bg-white border border-gray-200 rounded-lg p-6 shadow-sm">
+            <div className="flex items-center mb-4">
+              <div className="bg-primary/10 p-3 rounded-full mr-4">
+                <Lock className="h-6 w-6 text-primary" />
+              </div>
+              <h3 className="text-xl font-semibold">Keypad Entry Systems</h3>
+            </div>
+            <p className="text-gray-700">
+              Secure code-based entry systems with programmable access codes. Perfect for areas that need controlled access without requiring physical credentials.
+            </p>
+          </div>
+          
+          <div className="bg-white border border-gray-200 rounded-lg p-6 shadow-sm">
+            <div className="flex items-center mb-4">
+              <div className="bg-primary/10 p-3 rounded-full mr-4">
+                <Fingerprint className="h-6 w-6 text-primary" />
+              </div>
+              <h3 className="text-xl font-semibold">Biometric Systems</h3>
+            </div>
+            <p className="text-gray-700">
+              Advanced systems using fingerprint, retina scan, or facial recognition for the highest level of security. Eliminates credential sharing and provides definitive identification.
+            </p>
+          </div>
+          
+          <div className="bg-white border border-gray-200 rounded-lg p-6 shadow-sm">
+            <div className="flex items-center mb-4">
+              <div className="bg-primary/10 p-3 rounded-full mr-4">
+                <Smartphone className="h-6 w-6 text-primary" />
+              </div>
+              <h3 className="text-xl font-semibold">Mobile Access Systems</h3>
+            </div>
+            <p className="text-gray-700">
+              Modern smartphone-based access using secure Bluetooth or NFC technology. Offers convenience while maintaining robust security protocols.
+            </p>
+          </div>
+        </div>
+      </div>
+      
+      {/* Benefits section */}
+      <div className="bg-gray-50 p-6 rounded-lg border border-gray-200 mb-8">
+        <h2 className="text-2xl font-bold text-primary mb-6">Benefits of Professional Access Control</h2>
+        
+        <div className="grid sm:grid-cols-2 gap-4">
+          <div className="flex items-start">
+            <Shield className="h-5 w-5 text-secondary mr-3 mt-1" />
+            <div>
+              <h3 className="font-semibold mb-1">Enhanced Security</h3>
+              <p className="text-sm text-gray-600">
+                Prevent unauthorized access and protect sensitive areas with customizable security protocols.
+              </p>
+            </div>
+          </div>
+          
+          <div className="flex items-start">
+            <Users className="h-5 w-5 text-secondary mr-3 mt-1" />
+            <div>
+              <h3 className="font-semibold mb-1">Employee Management</h3>
+              <p className="text-sm text-gray-600">
+                Easily manage access privileges by department, seniority, or work schedule.
+              </p>
+            </div>
+          </div>
+          
+          <div className="flex items-start">
+            <Lock className="h-5 w-5 text-secondary mr-3 mt-1" />
+            <div>
+              <h3 className="font-semibold mb-1">Access Logs</h3>
+              <p className="text-sm text-gray-600">
+                Maintain detailed records of all entry and exit events for security audits.
+              </p>
+            </div>
+          </div>
+          
+          <div className="flex items-start">
+            <Smartphone className="h-5 w-5 text-secondary mr-3 mt-1" />
+            <div>
+              <h3 className="font-semibold mb-1">Remote Management</h3>
+              <p className="text-sm text-gray-600">
+                Control access from anywhere using cloud-based management platforms.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      {/* Installation process */}
+      <div>
+        <h2 className="text-2xl font-bold text-primary mb-6">Our Installation Process</h2>
+        
+        <ol className="space-y-4 mb-8">
+          <li className="flex">
+            <div className="bg-primary text-white font-bold rounded-full w-8 h-8 flex items-center justify-center mr-4 shrink-0">1</div>
+            <div>
+              <h3 className="font-semibold text-lg mb-1">Security Assessment</h3>
+              <p className="text-gray-700">We evaluate your facility to understand your security requirements, traffic patterns, and access points.</p>
+            </div>
+          </li>
+          
+          <li className="flex">
+            <div className="bg-primary text-white font-bold rounded-full w-8 h-8 flex items-center justify-center mr-4 shrink-0">2</div>
+            <div>
+              <h3 className="font-semibold text-lg mb-1">System Design</h3>
+              <p className="text-gray-700">Our experts design a customized access control solution that addresses your specific security needs and budget.</p>
+            </div>
+          </li>
+          
+          <li className="flex">
+            <div className="bg-primary text-white font-bold rounded-full w-8 h-8 flex items-center justify-center mr-4 shrink-0">3</div>
+            <div>
+              <h3 className="font-semibold text-lg mb-1">Professional Installation</h3>
+              <p className="text-gray-700">Our certified technicians install all hardware and software components with minimal disruption to your operations.</p>
+            </div>
+          </li>
+          
+          <li className="flex">
+            <div className="bg-primary text-white font-bold rounded-full w-8 h-8 flex items-center justify-center mr-4 shrink-0">4</div>
+            <div>
+              <h3 className="font-semibold text-lg mb-1">System Configuration</h3>
+              <p className="text-gray-700">We configure the system according to your access policies and provide thorough testing to ensure everything works properly.</p>
+            </div>
+          </li>
+          
+          <li className="flex">
+            <div className="bg-primary text-white font-bold rounded-full w-8 h-8 flex items-center justify-center mr-4 shrink-0">5</div>
+            <div>
+              <h3 className="font-semibold text-lg mb-1">Training & Support</h3>
+              <p className="text-gray-700">We provide comprehensive training for your staff and ongoing technical support for your access control system.</p>
+            </div>
+          </li>
+        </ol>
+      </div>
+      
+      {/* Call to action */}
+      <div className="bg-primary/5 border border-primary/20 rounded-lg p-6">
+        <h3 className="text-xl font-bold text-primary mb-3">Ready to Enhance Your Business Security?</h3>
+        <p className="mb-4">
+          Contact our commercial security experts today to schedule a consultation and discover how our access control solutions can protect your business.
+        </p>
+        <div className="flex flex-col sm:flex-row gap-3">
+          <Button className="bg-secondary hover:bg-secondary/90" asChild>
+            <a href="tel:2017482070">Call (201) 748-2070</a>
+          </Button>
+          <Button variant="outline" className="border-primary text-primary" asChild>
+            <Link to="/contact">Request a Consultation</Link>
+          </Button>
+        </div>
+      </div>
+    </div>
   );
 };
 

@@ -7,7 +7,8 @@ import { Helmet } from 'react-helmet';
 import { accessControlSchema, accessControlFAQSchema, accessControlFaqs } from '@/components/services/access-control/AccessControlSchema';
 import AccessControlContent from '@/components/services/access-control/AccessControlContent';
 import ServicesProof from '@/components/sections/services/ServicesProof';
-import { commercialReviews } from '@/data/reviews';
+import { commercialReviews } from '@/data/reviews/commercialReviews';
+import { relatedCommercialServices } from '@/components/services/access-control/relatedServices';
 
 const AccessControl = () => {
   return (
@@ -22,7 +23,7 @@ const AccessControl = () => {
       <SchemaScripts 
         schemas={[
           { type: 'service', data: accessControlSchema },
-          accessControlFAQSchema
+          { type: 'faq', data: accessControlFAQSchema }
         ]} 
       />
       
@@ -40,6 +41,7 @@ const AccessControl = () => {
         serviceCategory="Commercial Locksmith"
         mainContent={<AccessControlContent />}
         faqs={accessControlFaqs}
+        relatedServices={relatedCommercialServices}
       />
       
       <ServicesProof reviewsData={commercialReviews.slice(0, 8)} />
