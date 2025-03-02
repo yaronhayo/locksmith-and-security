@@ -31,3 +31,11 @@ export interface NavItemProps {
   isMenuOpen: boolean;
   getIcon: (label: string) => ReactNode;
 }
+
+// Add the missing MobileMenuActionsProps interface
+export interface MobileMenuActionsProps {
+  isMenuOpen: boolean;
+}
+
+// Fix the interface name - this was NavItem in the import but NavigationItem in the actual file
+export type NavItem = NavigationItem;
