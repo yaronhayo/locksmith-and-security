@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { CheckCheck, Clock, ShieldCheck, Tool, Map } from 'lucide-react';
+import { CheckCheck, Clock, ShieldCheck, Wrench, Map } from 'lucide-react';
 import { CaseStudy } from '@/components/services/shared/CaseStudies';
 
 interface CategorySuccessStoriesProps {
@@ -56,7 +56,7 @@ const CategorySuccessStories: React.FC<CategorySuccessStoriesProps> = ({
                   
                   <div className="flex items-start">
                     <div className="bg-blue-100 p-2 rounded-full mr-3 flex-shrink-0">
-                      <Tool className="h-5 w-5 text-blue-600" />
+                      <Wrench className="h-5 w-5 text-blue-600" />
                     </div>
                     <div>
                       <h4 className="font-semibold text-gray-800 mb-1">Our Solution</h4>
