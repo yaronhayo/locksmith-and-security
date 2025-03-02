@@ -59,12 +59,22 @@ const queryClient = new QueryClient({
 // Add console logging to debug rendering issues
 console.log('Initializing app render');
 
-ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
-    <QueryClientProvider client={queryClient}>
-      <App />
-    </QueryClientProvider>
-  </React.StrictMode>
-);
-
-console.log('App rendered');
+try {
+  const rootElement = document.getElementById('root');
+  if (!rootElement) {
+    console.error('Root element not found in DOM');
+    throw new Error('Root element not found');
+  }
+  
+  ReactDOM.createRoot(rootElement).render(
+    <React.StrictMode>
+      <QueryClientProvider client={queryClient}>
+        <App />
+      </QueryClientProvider>
+    </React.StrictMode>
+  );
+  console.log('App rendered successfully');
+} catch (error) {
+  console.error('Error rendering the app:', error);
+  document.body.innerHTML = '<div style="color: red; padding: 20px;">Failed to load the application. Please check the console for errors.</div>';
+}
