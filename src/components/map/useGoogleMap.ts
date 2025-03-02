@@ -21,23 +21,32 @@ export const useGoogleMap = (
   );
 
   const updateMapView = useCallback(() => {
-    if (!mapRef.current) return;
+    if (!mapRef.current) {
+      console.log("Cannot update map view - map not initialized");
+      return;
+    }
     
-    const map = mapRef.current;
-    const markers = visibleMarkers();
-    
-    if (markers.length > 1) {
-      const bounds = new google.maps.LatLngBounds();
-      markers.forEach(marker => {
-        bounds.extend({ lat: marker.lat, lng: marker.lng });
-      });
-      map.fitBounds(bounds);
-    } else if (markers.length === 1) {
-      map.setCenter({ lat: markers[0].lat, lng: markers[0].lng });
-      map.setZoom(initialZoom);
-    } else {
-      map.setCenter(initialCenter);
-      map.setZoom(initialZoom);
+    try {
+      const map = mapRef.current;
+      const visibleMarkersList = visibleMarkers();
+      console.log("Updating map view with markers:", visibleMarkersList.length);
+      
+      if (visibleMarkersList.length > 1) {
+        const bounds = new google.maps.LatLngBounds();
+        visibleMarkersList.forEach(marker => {
+          bounds.extend({ lat: marker.lat, lng: marker.lng });
+        });
+        map.fitBounds(bounds);
+      } else if (visibleMarkersList.length === 1) {
+        map.setCenter({ lat: visibleMarkersList[0].lat, lng: visibleMarkersList[0].lng });
+        map.setZoom(initialZoom);
+      } else {
+        map.setCenter(initialCenter);
+        map.setZoom(initialZoom);
+      }
+    } catch (error) {
+      console.error("Error updating map view:", error);
+      setMapError("Failed to update map view");
     }
   }, [visibleMarkers, initialZoom, initialCenter]);
 
@@ -79,7 +88,7 @@ export const useGoogleMap = (
       highlighted: highlightedMarker
     });
     
-    if (mapRef.current && visibleMarkers().length > 0) {
+    if (mapRef.current && !isLoading && visibleMarkers().length > 0) {
       try {
         updateMapView();
       } catch (error) {
@@ -87,7 +96,7 @@ export const useGoogleMap = (
         setMapError("Failed to update map view");
       }
     }
-  }, [markers, highlightedMarker, showAllMarkers, updateMapView, visibleMarkers]);
+  }, [markers, highlightedMarker, showAllMarkers, updateMapView, visibleMarkers, isLoading]);
   
   const zoomIn = useCallback(() => {
     if (mapRef.current) {

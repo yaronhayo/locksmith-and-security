@@ -4,6 +4,8 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import GoogleMapsProvider from "@/components/providers/GoogleMapsProvider";
 import AddressAutocomplete from "@/components/ui/address-autocomplete";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { AlertCircle } from "lucide-react";
 
 interface AddressFieldsProps {
   address: string;
@@ -26,10 +28,15 @@ const AddressFields = ({ address, onChange, errors, isSubmitting }: AddressField
             placeholder="Enter your service address"
             disabled={isSubmitting}
             required
+            id="address"
+            name="address"
           />
         </GoogleMapsProvider>
         {errors.address && (
-          <p className="text-xs text-red-500 mt-1">{errors.address}</p>
+          <Alert variant="destructive" className="mt-1 py-2">
+            <AlertCircle className="h-4 w-4" />
+            <AlertDescription>{errors.address}</AlertDescription>
+          </Alert>
         )}
       </div>
 

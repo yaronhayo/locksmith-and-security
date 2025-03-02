@@ -12,7 +12,7 @@ interface GoogleMapsProviderProps {
 }
 
 const GoogleMapsProvider = ({ children }: GoogleMapsProviderProps) => {
-  const { data: apiKey, error: apiKeyError, isLoading } = useMapConfig();
+  const { data: apiKey, error: apiKeyError, isLoading, isError } = useMapConfig();
   const [scriptError, setScriptError] = useState<string | null>(null);
   const [scriptLoaded, setScriptLoaded] = useState(false);
 
@@ -27,25 +27,19 @@ const GoogleMapsProvider = ({ children }: GoogleMapsProviderProps) => {
     setScriptError(error.message || "Failed to load Google Maps");
   }, []);
 
-  useEffect(() => {
-    if (apiKeyError) {
-      console.error("API Key Error:", apiKeyError);
-    }
-  }, [apiKeyError]);
-
   // For debugging
   useEffect(() => {
     console.log("GoogleMapsProvider state:", { 
       apiKey: apiKey ? "Available" : "Not available", 
       isLoading, 
-      hasError: !!apiKeyError,
+      hasError: !!apiKeyError || isError,
       scriptLoaded,
       scriptError
     });
-  }, [apiKey, isLoading, apiKeyError, scriptLoaded, scriptError]);
+  }, [apiKey, isLoading, apiKeyError, isError, scriptLoaded, scriptError]);
 
   if (isLoading) return <MapLoader />;
-  if (apiKeyError) return <MapError error={apiKeyError.message} />;
+  if (apiKeyError || isError) return <MapError error={apiKeyError?.message || "Failed to load Google Maps API key"} />;
   if (!apiKey) return <MapError error="Google Maps API key not found" />;
   if (scriptError) return <MapError error={scriptError} />;
 

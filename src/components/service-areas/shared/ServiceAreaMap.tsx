@@ -18,10 +18,18 @@ interface ServiceAreaMapProps {
 const ServiceAreaMap = ({ locationName, lat, lng, isLoading = false }: ServiceAreaMapProps) => {
   const finishRenderTracking = trackComponentRender('ServiceAreaMap');
   const [mapReady, setMapReady] = useState(false);
+  const [mapError, setMapError] = useState<string | null>(null);
   
   useEffect(() => {
     finishRenderTracking();
-  }, []);
+    
+    // Simulate map loading for better UX
+    const timer = setTimeout(() => {
+      setMapReady(true);
+    }, 800);
+    
+    return () => clearTimeout(timer);
+  }, [finishRenderTracking]);
   
   const markers: MapMarker[] = [
     {
@@ -32,14 +40,10 @@ const ServiceAreaMap = ({ locationName, lat, lng, isLoading = false }: ServiceAr
     }
   ];
   
-  // Simulate map loading for better UX
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setMapReady(true);
-    }, 800);
-    
-    return () => clearTimeout(timer);
-  }, []);
+  const handleMapError = (error: Error) => {
+    console.error("Map error:", error);
+    setMapError(error.message || "Failed to load map");
+  };
 
   return (
     <div className="bg-white rounded-xl shadow-sm overflow-hidden">
@@ -53,7 +57,10 @@ const ServiceAreaMap = ({ locationName, lat, lng, isLoading = false }: ServiceAr
             <LoadingSpinner size="lg" text="Loading map..." />
           </div>
         ) : (
-          <ErrorBoundary FallbackComponent={MapError}>
+          <ErrorBoundary 
+            FallbackComponent={MapError}
+            onError={handleMapError}
+          >
             <GoogleMapsProvider>
               <GoogleMap
                 markers={markers}
@@ -64,6 +71,7 @@ const ServiceAreaMap = ({ locationName, lat, lng, isLoading = false }: ServiceAr
             </GoogleMapsProvider>
           </ErrorBoundary>
         )}
+        {mapError && <MapError error={mapError} />}
       </div>
     </div>
   );

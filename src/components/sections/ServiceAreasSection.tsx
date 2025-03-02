@@ -35,13 +35,22 @@ const ServiceAreasSection = () => {
   const [hoveredArea, setHoveredArea] = useState<string | null>(null);
   const [mapKey, setMapKey] = useState(0); // Force re-render key
   const [isMapVisible, setIsMapVisible] = useState(false);
+  const [mapError, setMapError] = useState<string | null>(null);
   const { data: locations, isLoading, error } = useLocations();
 
   // Set up intersection observer to lazy load the map when it comes into view
   useEffect(() => {
+    if (!('IntersectionObserver' in window)) {
+      // Fallback for browsers without IntersectionObserver support
+      console.log("IntersectionObserver not supported, immediately showing map");
+      setIsMapVisible(true);
+      return;
+    }
+    
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting) {
+          console.log("Map section is now visible, loading map");
           setIsMapVisible(true);
           // Force re-render map after it becomes visible
           setMapKey(prev => prev + 1);
@@ -54,6 +63,11 @@ const ServiceAreasSection = () => {
     const sectionElement = document.getElementById('service-areas-section');
     if (sectionElement) {
       observer.observe(sectionElement);
+      console.log("Observing service-areas-section for visibility");
+    } else {
+      console.warn("Could not find service-areas-section element");
+      // Fallback if element not found
+      setIsMapVisible(true);
     }
 
     return () => {
@@ -68,6 +82,7 @@ const ServiceAreasSection = () => {
     }
     if (error) {
       console.error("Error loading locations:", error);
+      setMapError(error.message || "Error loading service areas");
     }
   }, [locations, error]);
 
@@ -82,6 +97,11 @@ const ServiceAreasSection = () => {
       slug: location.slug
     }));
   }, [locations]);
+
+  const handleMapError = (error: Error) => {
+    console.error("Map error caught by error boundary:", error);
+    setMapError(error.message || "Error displaying map");
+  };
 
   if (isLoading) {
     return (
@@ -128,7 +148,11 @@ const ServiceAreasSection = () => {
           
           <div className="bg-white rounded-xl shadow-lg overflow-hidden" style={{ height: '600px' }}>
             {isMapVisible ? (
-              <ErrorBoundary FallbackComponent={MapError} key={`map-error-boundary-${mapKey}`}>
+              <ErrorBoundary 
+                FallbackComponent={MapError} 
+                key={`map-error-boundary-${mapKey}`}
+                onError={handleMapError}
+              >
                 <GoogleMapsProvider>
                   <GoogleMap 
                     key={`google-map-${mapKey}`}
@@ -142,6 +166,12 @@ const ServiceAreasSection = () => {
               </ErrorBoundary>
             ) : (
               <MapLoadingPlaceholder />
+            )}
+            
+            {mapError && (
+              <div className="absolute inset-0 flex items-center justify-center bg-white/90 z-10">
+                <MapError error={mapError} />
+              </div>
             )}
           </div>
         </div>
