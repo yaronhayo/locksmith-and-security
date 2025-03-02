@@ -104,14 +104,15 @@ const Sitemap = () => {
   return (
     <PageLayout
       title="Sitemap | Locksmith & Security LLC"
-      description="Browse our complete sitemap to find all pages on our site. Navigate to information about our locksmith services, service areas, and more."
+      description="Browse our complete sitemap to find all pages on our site. Navigate to information about locksmith services and service areas."
       heroTitle="Website Sitemap"
       heroDescription="Find all the pages on our website organized by category"
     >
       <div className="container mx-auto px-4 py-8">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           <div className="col-span-1 md:col-span-2 lg:col-span-3">
-            <Link to="/" className="text-primary hover:text-primary/90 font-bold text-xl">
+            <h2 className="sr-only">Main Navigation</h2>
+            <Link to="/" className="text-primary hover:text-primary/90 font-bold text-xl" aria-label="Home page">
               Home
             </Link>
           </div>
@@ -119,13 +120,14 @@ const Sitemap = () => {
           {linkGroups.map((group, index) => (
             <div key={index} className="space-y-4">
               <h2 className="text-xl font-bold text-gray-800">{group.title}</h2>
-              <Separator />
-              <ul className="space-y-2">
+              <Separator aria-hidden="true" />
+              <ul className="space-y-2" role="list">
                 {group.links.map((link, linkIndex) => (
                   <li key={linkIndex}>
                     <Link 
                       to={link.path} 
                       className="text-primary/80 hover:text-primary transition-colors"
+                      aria-label={`Navigate to ${link.label} page`}
                     >
                       {link.label}
                     </Link>
@@ -146,6 +148,7 @@ const Sitemap = () => {
             target="_blank" 
             rel="noopener noreferrer"
             className="text-primary hover:underline font-medium"
+            aria-label="View XML sitemap in new tab"
           >
             sitemap.xml
           </a>

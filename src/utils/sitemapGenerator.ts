@@ -1,171 +1,105 @@
 
-import { format } from 'date-fns';
-
-// Define route structure
-interface RouteConfig {
-  path: string;
-  element: React.ReactNode;
-}
-
-// Interface for sitemap URL entry
-interface SitemapUrl {
-  path: string;
-  lastmod: string;
-  changefreq: 'always' | 'hourly' | 'daily' | 'weekly' | 'monthly' | 'yearly' | 'never';
-  priority: number;
-}
-
-// Priority mapping for different types of pages
-const PRIORITY_MAP = {
-  home: 1.0,
-  serviceCategory: 0.9,
-  service: 0.8,
-  serviceArea: 0.8,
-  mainPage: 0.8,
-  supportPage: 0.3,
-};
-
-// Change frequency mapping
-const CHANGEFREQ_MAP = {
-  home: 'daily',
-  serviceCategory: 'weekly',
-  service: 'weekly',
-  serviceArea: 'weekly',
-  mainPage: 'monthly',
-  supportPage: 'monthly',
-} as const;
-
 /**
- * Get the sitemap URL configuration for a path
+ * Utility to generate the sitemap.xml file during build
  */
-function getSitemapUrlConfig(path: string): SitemapUrl {
-  const today = format(new Date(), 'yyyy-MM-dd');
-  
-  // Default values
-  let priority = 0.5;
-  let changefreq: SitemapUrl['changefreq'] = 'weekly';
-  
-  // Determine priority and change frequency based on path
-  if (path === '/') {
-    priority = PRIORITY_MAP.home;
-    changefreq = CHANGEFREQ_MAP.home;
-  } else if (path.startsWith('/services') && path.split('/').length === 3) {
-    priority = PRIORITY_MAP.serviceCategory;
-    changefreq = CHANGEFREQ_MAP.serviceCategory;
-  } else if (path.startsWith('/services') && path.split('/').length > 3) {
-    priority = PRIORITY_MAP.service;
-    changefreq = CHANGEFREQ_MAP.service;
-  } else if (path.startsWith('/service-areas') && path.split('/').length > 2) {
-    priority = PRIORITY_MAP.serviceArea;
-    changefreq = CHANGEFREQ_MAP.serviceArea;
-  } else if (['/about', '/contact', '/reviews', '/book-online', '/service-areas'].includes(path)) {
-    priority = PRIORITY_MAP.mainPage;
-    changefreq = CHANGEFREQ_MAP.mainPage;
-  } else if (['/privacy-policy', '/terms-conditions', '/sitemap'].includes(path)) {
-    priority = PRIORITY_MAP.supportPage;
-    changefreq = CHANGEFREQ_MAP.supportPage;
-  }
-  
-  return {
-    path,
-    lastmod: today,
-    changefreq,
-    priority,
-  };
+
+// Define interfaces for route types
+interface SitemapRoute {
+  path: string;
+  priority: number;
+  changefreq: 'daily' | 'weekly' | 'monthly' | 'yearly';
+  lastmod?: string;
 }
+
+// Define static routes for the sitemap to avoid import issues
+const mainRoutes: SitemapRoute[] = [
+  { path: '/', priority: 1.0, changefreq: 'daily' },
+  { path: '/about', priority: 0.8, changefreq: 'monthly' },
+  { path: '/contact', priority: 0.9, changefreq: 'weekly' },
+  { path: '/reviews', priority: 0.8, changefreq: 'daily' },
+  { path: '/faq', priority: 0.7, changefreq: 'weekly' },
+  { path: '/book-online', priority: 1.0, changefreq: 'daily' },
+  { path: '/privacy-policy', priority: 0.3, changefreq: 'monthly' },
+  { path: '/terms-conditions', priority: 0.3, changefreq: 'monthly' },
+  { path: '/sitemap', priority: 0.3, changefreq: 'weekly' },
+];
+
+const serviceRoutes: SitemapRoute[] = [
+  // Service category pages
+  { path: '/services/emergency-locksmith', priority: 0.9, changefreq: 'weekly' },
+  { path: '/services/residential-locksmith', priority: 0.9, changefreq: 'weekly' },
+  { path: '/services/commercial-locksmith', priority: 0.9, changefreq: 'weekly' },
+  { path: '/services/auto-locksmith', priority: 0.9, changefreq: 'weekly' },
+  
+  // Emergency locksmith services
+  { path: '/services/emergency-locksmith/car-lockout', priority: 0.8, changefreq: 'weekly' },
+  { path: '/services/emergency-locksmith/house-lockout', priority: 0.8, changefreq: 'weekly' },
+  { path: '/services/emergency-locksmith/business-lockout', priority: 0.8, changefreq: 'weekly' },
+  { path: '/services/emergency-locksmith/storage-unit-lockout', priority: 0.8, changefreq: 'weekly' },
+  
+  // Residential locksmith services
+  { path: '/services/residential-locksmith/lock-replacement', priority: 0.8, changefreq: 'weekly' },
+  { path: '/services/residential-locksmith/lock-rekey', priority: 0.8, changefreq: 'weekly' },
+  { path: '/services/residential-locksmith/lock-repair', priority: 0.8, changefreq: 'weekly' },
+  { path: '/services/residential-locksmith/gate-locks', priority: 0.8, changefreq: 'weekly' },
+  
+  // Commercial locksmith services
+  { path: '/services/commercial-locksmith/lock-replacement', priority: 0.8, changefreq: 'weekly' },
+  { path: '/services/commercial-locksmith/lock-rekey', priority: 0.8, changefreq: 'weekly' },
+  { path: '/services/commercial-locksmith/emergency-exit-device', priority: 0.8, changefreq: 'weekly' },
+  { path: '/services/commercial-locksmith/master-key', priority: 0.8, changefreq: 'weekly' },
+  { path: '/services/commercial-locksmith/access-control', priority: 0.8, changefreq: 'weekly' },
+  
+  // Auto locksmith services
+  { path: '/services/auto-locksmith/car-key-replacement', priority: 0.8, changefreq: 'weekly' },
+  { path: '/services/auto-locksmith/key-fob-programming', priority: 0.8, changefreq: 'weekly' },
+  { path: '/services/auto-locksmith/car-key-duplicate', priority: 0.8, changefreq: 'weekly' },
+  { path: '/services/auto-locksmith/car-key-cutting', priority: 0.8, changefreq: 'weekly' },
+  { path: '/services/auto-locksmith/ignition-lock-cylinder', priority: 0.8, changefreq: 'weekly' },
+];
+
+const serviceAreaRoutes: SitemapRoute[] = [
+  { path: '/service-areas', priority: 0.9, changefreq: 'weekly' },
+  { path: '/service-areas/north-bergen', priority: 0.8, changefreq: 'weekly' },
+  { path: '/service-areas/union-city', priority: 0.8, changefreq: 'weekly' },
+  { path: '/service-areas/west-new-york', priority: 0.8, changefreq: 'weekly' },
+  { path: '/service-areas/weehawken', priority: 0.8, changefreq: 'weekly' },
+  { path: '/service-areas/jersey-city', priority: 0.8, changefreq: 'weekly' },
+  { path: '/service-areas/hoboken', priority: 0.8, changefreq: 'weekly' },
+  { path: '/service-areas/secaucus', priority: 0.8, changefreq: 'weekly' },
+  { path: '/service-areas/guttenberg', priority: 0.8, changefreq: 'weekly' },
+];
 
 /**
  * Generate the sitemap XML content
  */
 export function generateSitemapXml(baseUrl: string = 'https://247locksmithandsecurity.com'): string {
-  // Define static routes manually to avoid import issues
-  const staticRoutes = [
-    '/',
-    '/about',
-    '/contact',
-    '/services',
-    '/reviews',
-    '/faq',
-    '/book-online',
-    '/service-areas',
-    '/privacy-policy',
-    '/terms-conditions',
-    '/sitemap',
-    '/services/emergency-locksmith',
-    '/services/residential-locksmith',
-    '/services/commercial-locksmith',
-    '/services/auto-locksmith',
-    '/services/emergency-locksmith/car-lockout',
-    '/services/emergency-locksmith/house-lockout',
-    '/services/emergency-locksmith/business-lockout',
-    '/services/emergency-locksmith/storage-unit-lockout',
-    '/services/residential-locksmith/lock-replacement',
-    '/services/residential-locksmith/lock-rekey',
-    '/services/residential-locksmith/lock-repair',
-    '/services/residential-locksmith/gate-locks',
-    '/services/commercial-locksmith/lock-replacement',
-    '/services/commercial-locksmith/lock-rekey',
-    '/services/commercial-locksmith/emergency-exit-device',
-    '/services/commercial-locksmith/master-key',
-    '/services/commercial-locksmith/access-control',
-    '/services/auto-locksmith/car-key-replacement',
-    '/services/auto-locksmith/key-fob-programming',
-    '/services/auto-locksmith/car-key-duplicate',
-    '/services/auto-locksmith/car-key-cutting',
-    '/services/auto-locksmith/ignition-lock-cylinder',
-    '/service-areas/north-bergen',
-    '/service-areas/union-city',
-    '/service-areas/west-new-york',
-    '/service-areas/guttenberg',
-    '/service-areas/weehawken',
-    '/service-areas/jersey-city',
-    '/service-areas/hoboken',
-    '/service-areas/secaucus'
-  ];
+  // Get today's date for lastmod fields that don't have a specific date
+  const today = new Date().toISOString().split('T')[0];
   
-  // Filter out dynamic routes, 404 page and non-page routes
-  const validRoutes = staticRoutes.filter(path => 
-    path && 
-    !path.includes('*') && 
-    !path.includes(':')
-  );
-  
-  // Remove duplicates
-  const uniqueRoutes = Array.from(new Set(validRoutes));
-  
-  // Generate sitemap URLs
-  const sitemapUrls = uniqueRoutes.map(path => getSitemapUrlConfig(path));
-  
-  // Generate XML
-  const urlElements = sitemapUrls.map(({ path, lastmod, changefreq, priority }) => `
-  <url>
-    <loc>${baseUrl}${path}</loc>
-    <lastmod>${lastmod}</lastmod>
-    <changefreq>${changefreq}</changefreq>
-    <priority>${priority.toFixed(1)}</priority>
-  </url>`).join('');
-  
-  return `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xmlns:xhtml="http://www.w3.org/1999/xhtml"
-        xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
-        http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
-${urlElements}
-</urlset>`;
-}
+  // Start XML sitemap with appropriate headers
+  let xml = '<?xml version="1.0" encoding="UTF-8"?>\n';
+  xml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"\n';
+  xml += '        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"\n';
+  xml += '        xmlns:xhtml="http://www.w3.org/1999/xhtml"\n';
+  xml += '        xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9\n';
+  xml += '        http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">\n\n';
 
-/**
- * Write sitemap to file (for build process)
- */
-export async function writeSitemapToFile(outputPath: string): Promise<void> {
-  try {
-    const sitemap = generateSitemapXml();
-    // In a build process, you would write this to a file
-    console.log(`Successfully generated sitemap with ${sitemap.split('<url>').length - 1} URLs`);
-    return;
-  } catch (error) {
-    console.error('Error generating sitemap:', error);
-    throw error;
-  }
+  // Combined routes from all sections
+  const allRoutes = [...mainRoutes, ...serviceRoutes, ...serviceAreaRoutes];
+
+  // Generate URL entries for each route
+  allRoutes.forEach(route => {
+    xml += '  <url>\n';
+    xml += `    <loc>${baseUrl}${route.path}</loc>\n`;
+    xml += `    <lastmod>${route.lastmod || today}</lastmod>\n`;
+    xml += `    <changefreq>${route.changefreq}</changefreq>\n`;
+    xml += `    <priority>${route.priority.toFixed(1)}</priority>\n`;
+    xml += '  </url>\n';
+  });
+
+  // Close the XML sitemap
+  xml += '</urlset>';
+
+  return xml;
 }

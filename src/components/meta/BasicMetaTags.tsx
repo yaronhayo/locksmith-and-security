@@ -20,8 +20,8 @@ export const BasicMetaTags = ({
   canonicalUrl,
   modifiedDate
 }: BasicMetaTagsProps) => {
-  // Ensure description stays within recommended length (150-160 characters)
-  const optimizedDescription = description.length > 160 
+  // Ensure description stays within recommended length (150-157 characters to be safe)
+  const optimizedDescription = description.length > 157 
     ? `${description.substring(0, 157)}...` 
     : description;
 

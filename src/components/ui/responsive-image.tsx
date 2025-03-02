@@ -110,8 +110,20 @@ const ResponsiveImage = ({
     if (externalOnErrorHandler) externalOnErrorHandler({} as React.SyntheticEvent<HTMLImageElement>);
   };
 
-  // Ensure alt text is never empty - use a fallback if needed
-  const safeAlt = alt || 'Image';
+  // Extract filename from path for a fallback alt text if needed
+  const getFilenameFromPath = (path: string): string => {
+    if (!path) return 'Image';
+    const filename = path.split('/').pop() || 'Image';
+    // Convert filename to readable format
+    return filename
+      .replace(/[-_]/g, ' ')  // Replace dashes and underscores with spaces
+      .replace(/\.[^/.]+$/, '') // Remove file extension
+      .replace(/([A-Z])/g, ' $1') // Add space before capital letters
+      .replace(/^\w/, c => c.toUpperCase()); // Capitalize first letter
+  };
+
+  // Ensure alt text is never empty - use a descriptive fallback if needed
+  const safeAlt = alt || getFilenameFromPath(src);
 
   return (
     <div className={cn(`relative overflow-hidden ${aspectRatio}`, containerClassName)}>
