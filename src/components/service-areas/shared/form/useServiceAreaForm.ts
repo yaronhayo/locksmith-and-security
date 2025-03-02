@@ -1,6 +1,8 @@
+
 import { useState, useEffect, useCallback } from 'react';
-import { isValidEmail, validateEmail } from '@/utils/inputValidation';
-import { toast } from 'sonner';
+import { isValidEmail } from '@/utils/inputValidation';
+
+export const validateEmail = isValidEmail; // Alias for backward compatibility
 
 const submitContactForm = async (data: any) => {
   console.log('Form submitted:', data);
@@ -145,9 +147,8 @@ export const useServiceAreaForm = (preselectedService?: string) => {
       
       setIsSubmitted(true);
       setFormState(initialFormState);
-      toast.success('Your message has been sent. We will contact you shortly!');
+      console.log('Your message has been sent. We will contact you shortly!');
     } catch (error) {
-      toast.error('There was an error sending your message. Please try again.');
       console.error('Form submission error:', error);
     } finally {
       setIsSubmitting(false);

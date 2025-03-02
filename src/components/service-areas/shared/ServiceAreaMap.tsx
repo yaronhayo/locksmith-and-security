@@ -7,7 +7,6 @@ import MapError from "@/components/map/MapError";
 import { memo, useState, useEffect, useCallback } from "react";
 import LoadingSpinner from "@/components/LoadingSpinner";
 import { trackComponentRender } from "@/utils/performanceMonitoring";
-import { toast } from "sonner";
 
 interface ServiceAreaMapProps {
   locationName: string;
@@ -37,14 +36,12 @@ const ServiceAreaMap = ({ locationName, lat, lng, isLoading = false }: ServiceAr
   const handleMapError = useCallback((error: Error) => {
     console.error("Service area map error:", error);
     setMapError(error.message || "Failed to load location map");
-    toast.error("Map error: " + (error.message || "Failed to load"));
   }, []);
 
   const handleRetry = useCallback(() => {
     console.log("Retrying map load...");
     setMapError(null);
     setRetryCount(prev => prev + 1);
-    toast.info("Retrying map load...");
   }, []);
   
   const markers: MapMarker[] = [

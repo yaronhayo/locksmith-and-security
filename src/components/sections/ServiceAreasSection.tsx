@@ -10,7 +10,6 @@ import MapError from '../map/MapError';
 import { ErrorBoundary } from 'react-error-boundary';
 import { Skeleton } from '@/components/ui/skeleton';
 import { ServiceAreaLocation } from '@/types/service-area';
-import { toast } from 'sonner';
 
 const MapLoadingPlaceholder = () => (
   <div className="h-full bg-white rounded-xl shadow-lg overflow-hidden flex items-center justify-center">
@@ -115,10 +114,6 @@ const ServiceAreasSection = () => {
   const handleMapError = (error: Error) => {
     console.error("Map error caught by error boundary:", error);
     setMapError(error.message || "Error displaying map");
-    
-    if (retryCount < 3) {
-      toast.error("Map error. Retrying...");
-    }
   };
 
   const handleRetry = () => {
@@ -126,7 +121,6 @@ const ServiceAreasSection = () => {
     setMapError(null);
     setRetryCount(prev => prev + 1);
     setMapKey(prev => prev + 1);
-    toast.info("Retrying map load...");
   };
 
   if (isLoading) {

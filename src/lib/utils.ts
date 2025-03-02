@@ -1,25 +1,17 @@
 
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
-import { toast } from "sonner"
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
 /**
- * Handles API errors with standardized error logging and optional toast notifications
+ * Handles API errors with standardized error logging
  */
-export function handleApiError(error: any, showToast = true, prefix = 'API Error:') {
+export function handleApiError(error: any, showToast = false, prefix = 'API Error:') {
   const errorMessage = error?.message || 'An unexpected error occurred';
   console.error(`${prefix} ${errorMessage}`, error);
-  
-  if (showToast) {
-    toast.error(errorMessage, {
-      id: errorMessage, // Prevents duplicate toasts
-      duration: 5000
-    });
-  }
   
   return errorMessage;
 }
