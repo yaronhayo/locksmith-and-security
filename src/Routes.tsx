@@ -56,7 +56,7 @@ const Routes = () => {
           {renderRouteComponents(serviceAreaRoutes)}
           
           {/* 404 page */}
-          <Route path="*" element={<NotFound />} />
+          <Route path="*" element={<RouteWrapper element={<NotFound />} />} />
         </RouterRoutes>
       </Suspense>
     </RouteErrorBoundary>

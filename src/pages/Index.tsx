@@ -18,7 +18,6 @@ const Index = () => {
   useEffect(() => {
     console.log("Home page viewed");
     finishRenderTracking();
-    // Future implementation: track page view in analytics
   }, []);
 
   const pageTitle = "24/7 Locksmith & Security LLC | Trusted Emergency Locksmith Services";
