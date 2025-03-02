@@ -33,8 +33,10 @@ const logError = (error: any, info: string) => {
   }
 };
 
-// Declare hasRendered variable in global scope
-window.hasRendered = false;
+// Initialize hasRendered property
+if (typeof window !== 'undefined') {
+  window.hasRendered = false;
+}
 
 // Add global error handler to log any unhandled errors
 if (typeof window !== 'undefined') {
@@ -48,7 +50,7 @@ if (typeof window !== 'undefined') {
   
   // Try to detect if we're in a white screen situation
   setTimeout(() => {
-    if (!window.hasRendered) {
+    if (window.hasRendered === false) {
       console.error('Potential white screen detected - application did not render within 5 seconds');
       
       // Try to render a basic message if possible
@@ -96,7 +98,9 @@ const renderApp = () => {
     );
     
     console.log('Application rendered successfully');
-    window.hasRendered = true;
+    if (typeof window !== 'undefined') {
+      window.hasRendered = true;
+    }
   } catch (error) {
     logError(error, 'Failed to render application');
     

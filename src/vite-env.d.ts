@@ -6,6 +6,7 @@ interface Window {
   gtag?: (...args: any[]) => void;
   clarity?: (...args: any[]) => void;
   google?: any;
+  hasRendered?: boolean;
 }
 
 interface LayoutShiftEntry extends PerformanceEntry {
