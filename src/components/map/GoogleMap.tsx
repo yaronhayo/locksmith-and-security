@@ -7,7 +7,6 @@ import MapError from "./MapError";
 import { MapMarker } from "@/types/service-area";
 import MapControls from "./MapControls";
 import { useGoogleMap } from "./useGoogleMap";
-import { toast } from "sonner";
 import { useMapConfig, clearMapConfigCache } from '@/hooks/useMap';
 
 const mapOptions: google.maps.MapOptions = {
@@ -83,14 +82,13 @@ const GoogleMap = ({
   useEffect(() => {
     if (error) {
       console.error("Map error in GoogleMap component:", error);
-      toast.error("Map display error");
     }
   }, [error]);
   
   const handleRetry = () => {
     setRetryCount(prev => prev + 1);
     clearMapConfigCache();
-    toast.info("Retrying map initialization...");
+    console.info("Retrying map initialization...");
   };
   
   if (mapError) {

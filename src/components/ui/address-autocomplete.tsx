@@ -6,7 +6,6 @@ import { InputHTMLAttributes } from "react";
 import { Loader2, RefreshCw } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
-import { toast } from "sonner";
 
 type AddressAutocompleteProps = Omit<InputHTMLAttributes<HTMLInputElement>, 'onChange'> & {
   value: string;
@@ -71,7 +70,6 @@ const AddressAutocomplete = ({
           if (place?.formatted_address) {
             onChange(place.formatted_address);
             console.log("Selected address:", place.formatted_address);
-            toast.success("Address selected");
           }
         }
       );
@@ -176,7 +174,6 @@ const AddressAutocomplete = ({
     refetch();
     setInitAttempts(prev => prev + 1);
     console.log("Retrying address search initialization...");
-    toast.info("Retrying address search initialization...");
   };
 
   const displayError = error || (apiKeyError?.message ?? null);

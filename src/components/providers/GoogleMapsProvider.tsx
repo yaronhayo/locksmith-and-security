@@ -1,10 +1,8 @@
-
 import { ReactNode, useEffect, useState, useCallback, useRef } from "react";
 import { LoadScript, LoadScriptProps } from "@react-google-maps/api";
 import { useMapConfig, clearMapConfigCache } from "@/hooks/useMap";
 import MapError from "../map/MapError";
 import MapLoader from "../map/MapLoader";
-import { toast } from "sonner";
 
 // Define libraries once to prevent reloading warnings
 const libraries: LoadScriptProps['libraries'] = ['places'];
@@ -37,18 +35,16 @@ const GoogleMapsProvider = ({ children }: GoogleMapsProviderProps) => {
     setScriptError(null);
     scriptAttempted = true;
     scriptLoaded = true;
-    toast.success("Map loaded successfully");
   }, []);
 
   const handleError = useCallback((error: Error) => {
     console.error("Error loading Google Maps script:", error);
     setScriptError(error.message || "Failed to load Google Maps");
-    toast.error("Failed to load map: Script error");
     scriptAttempted = true;
     
     // If we've reached max retries, report the error
     if (retryCount.current >= 3) {
-      toast.error("Failed to load Google Maps after multiple attempts. Please refresh the page.");
+      console.error("Failed to load Google Maps after multiple attempts. Please refresh the page.");
     } else {
       // Otherwise increment retry count and attempt to refetch the API key
       retryCount.current += 1;
@@ -110,7 +106,7 @@ const GoogleMapsProvider = ({ children }: GoogleMapsProviderProps) => {
   if (!apiKey) {
     console.error("No API key available");
     return <MapError 
-      error="Google Maps API key not found. Please check your settings table in Supabase." 
+      error="Google Maps API key not found in settings table in Supabase." 
       resetErrorBoundary={() => { clearMapConfigCache(); refetch(); }} 
     />;
   }

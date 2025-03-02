@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useMemo, Suspense, memo } from 'react';
 import GoogleMap from '../map/GoogleMap';
 import AreasList from './service-areas/AreasList';
@@ -8,7 +9,6 @@ import GoogleMapsProvider from '../providers/GoogleMapsProvider';
 import MapError from '../map/MapError';
 import { ErrorBoundary } from 'react-error-boundary';
 import { Skeleton } from '@/components/ui/skeleton';
-import { toast } from 'sonner';
 import { ServiceAreaLocation } from '@/types/service-area';
 
 const MapLoadingPlaceholder = () => (
@@ -78,7 +78,6 @@ const ServiceAreasSection = () => {
     if (error) {
       console.error("Error loading locations:", error);
       setMapError(error.message || "Error loading service areas");
-      toast.error("Could not load service areas");
     }
   }, [locations, error]);
 
@@ -96,7 +95,6 @@ const ServiceAreasSection = () => {
   const handleMapError = (error: Error) => {
     console.error("Map error caught by error boundary:", error);
     setMapError(error.message || "Error displaying map");
-    toast.error("Map error: " + (error.message || "Failed to load"));
   };
 
   const handleRetry = () => {
@@ -104,7 +102,6 @@ const ServiceAreasSection = () => {
     setMapError(null);
     setRetryCount(prev => prev + 1);
     setMapKey(prev => prev + 1);
-    toast.info("Retrying map load...");
   };
 
   if (isLoading) {
@@ -130,7 +127,7 @@ const ServiceAreasSection = () => {
         <div className="container mx-auto px-4 flex justify-center items-center min-h-[400px]">
           <MapError 
             error={error?.message || 'Error loading service areas'} 
-            resetErrorBoundary={handleRetry}
+            resetErrorBoundary={handleRetry} 
           />
         </div>
       </div>
