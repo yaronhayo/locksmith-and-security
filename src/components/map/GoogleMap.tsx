@@ -1,15 +1,15 @@
 
-import { useMemo, useCallback, useRef, useState, useEffect } from "react";
+import React, { CSSProperties } from "react";
 import { GoogleMap as GoogleMapComponent } from "@react-google-maps/api";
 import MapLoader from "./MapLoader";
 import MapMarkers from "./MapMarkers";
 import MapError from "./MapError";
 import { MapMarker } from "@/types/service-area";
-import { CSSProperties } from "react";
-import { mapPerformance } from "@/utils/performanceMonitoring";
+import MapControls from "./MapControls";
+import { useGoogleMap } from "./useGoogleMap";
 
 const mapOptions: google.maps.MapOptions = {
-  zoomControl: true,
+  zoomControl: false, // We'll use our custom controls
   streetViewControl: false,
   mapTypeControl: false,
   fullscreenControl: false,
@@ -46,86 +46,17 @@ const GoogleMap = ({
   center = { lat: 40.7795, lng: -74.0324 },
   onClick
 }: GoogleMapProps) => {
-  const mapRef = useRef<google.maps.Map | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [mapError, setMapError] = useState<string | null>(null);
-  const loadStartTime = useRef(performance.now());
-  
-  // Log when component mounts/unmounts to track lifecycle
-  useEffect(() => {
-    console.log("GoogleMap component mounted");
-    return () => {
-      console.log("GoogleMap component unmounted");
-    };
-  }, []);
-
-  const visibleMarkers = useMemo(() => 
-    showAllMarkers ? markers : markers.filter(m => m.slug === highlightedMarker),
-    [markers, showAllMarkers, highlightedMarker]
-  );
-
-  useEffect(() => {
-    // Log when markers change
-    console.log("Markers updated:", { 
-      total: markers.length, 
-      visible: visibleMarkers.length,
-      highlighted: highlightedMarker
-    });
-    
-    if (mapRef.current && visibleMarkers.length > 0) {
-      try {
-        updateMapView();
-      } catch (error) {
-        console.error("Error updating map view:", error);
-        setMapError("Failed to update map view");
-      }
-    }
-  }, [visibleMarkers, highlightedMarker]);
-
-  const updateMapView = useCallback(() => {
-    if (!mapRef.current) return;
-    
-    const map = mapRef.current;
-    
-    if (visibleMarkers.length > 1) {
-      const bounds = new google.maps.LatLngBounds();
-      visibleMarkers.forEach(marker => {
-        bounds.extend({ lat: marker.lat, lng: marker.lng });
-      });
-      map.fitBounds(bounds);
-    } else if (visibleMarkers.length === 1) {
-      map.setCenter({ lat: visibleMarkers[0].lat, lng: visibleMarkers[0].lng });
-      map.setZoom(zoom);
-    } else {
-      map.setCenter(center);
-      map.setZoom(zoom);
-    }
-  }, [visibleMarkers, zoom, center]);
-
-  const onLoadCallback = useCallback((map: google.maps.Map) => {
-    try {
-      const loadTime = performance.now() - loadStartTime.current;
-      console.log(`Map loaded successfully in ${loadTime.toFixed(2)}ms`);
-      mapPerformance.trackInstanceLoad(loadStartTime.current);
-      
-      mapRef.current = map;
-      
-      // Delay setting isLoading to false to ensure map is fully rendered
-      setTimeout(() => {
-        setIsLoading(false);
-        updateMapView();
-      }, 200);
-    } catch (error) {
-      console.error("Error in map load callback:", error);
-      setMapError("Failed to initialize map properly");
-      setIsLoading(false);
-    }
-  }, [updateMapView]);
-
-  const onUnmountCallback = useCallback(() => {
-    console.log('Map unmounting');
-    mapRef.current = null;
-  }, []);
+  const {
+    mapRef,
+    isLoading,
+    mapError,
+    visibleMarkers,
+    onLoadCallback,
+    onUnmountCallback,
+    zoomIn,
+    zoomOut,
+    centerMap
+  } = useGoogleMap(markers, highlightedMarker, showAllMarkers, zoom, center);
 
   if (mapError) {
     return <MapError error={mapError} />;
@@ -155,6 +86,12 @@ const GoogleMap = ({
             />
           )}
         </GoogleMapComponent>
+        
+        <MapControls 
+          onZoomIn={zoomIn}
+          onZoomOut={zoomOut}
+          onCenterMap={centerMap}
+        />
       </div>
     </div>
   );

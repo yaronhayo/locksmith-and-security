@@ -1,9 +1,9 @@
 
 import React from 'react';
-import ProfessionalAdvantage from '../../shared/ProfessionalAdvantage';
+import ProfessionalAdvantagesSection, { AdvantageItem } from '../../shared/ProfessionalAdvantagesSection';
 import { Clock, CheckCircle, ShieldCheck, Wrench } from 'lucide-react';
 
-const advantages = [
+const storageUnitAdvantages: AdvantageItem[] = [
   {
     icon: <Clock className="h-5 w-5" />,
     title: "Fast Response Time",
@@ -28,20 +28,10 @@ const advantages = [
 
 const ProfessionalAdvantages = () => {
   return (
-    <>
-      <h3 className="text-2xl font-bold mb-4 mt-8">Why Choose Our Professional Storage Unit Lockout Service</h3>
-      
-      <div className="my-6">
-        {advantages.map((advantage, index) => (
-          <ProfessionalAdvantage 
-            key={index}
-            icon={advantage.icon}
-            title={advantage.title}
-            description={advantage.description}
-          />
-        ))}
-      </div>
-    </>
+    <ProfessionalAdvantagesSection 
+      title="Why Choose Our Professional Storage Unit Lockout Service"
+      advantages={storageUnitAdvantages}
+    />
   );
 };
 

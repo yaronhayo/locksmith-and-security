@@ -1,10 +1,11 @@
 
+import React from "react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { AlertCircle } from "lucide-react";
-import { useState, useEffect } from "react";
-import { formatPhoneNumber, getNameError, getPhoneError } from "@/utils/inputValidation";
+import { formatPhoneNumber } from "@/utils/inputValidation";
+import { useFieldValidation } from "../hooks/useFieldValidation";
 
 interface PersonalInfoFieldsProps {
   errors: Record<string, string>;
@@ -12,44 +13,17 @@ interface PersonalInfoFieldsProps {
 }
 
 const PersonalInfoFields = ({ errors: externalErrors, isSubmitting }: PersonalInfoFieldsProps) => {
-  const [name, setName] = useState("");
-  const [phone, setPhone] = useState("");
-  const [internalErrors, setInternalErrors] = useState({
-    name: null as string | null,
-    phone: null as string | null
-  });
-  const [isDirty, setIsDirty] = useState({
-    name: false,
-    phone: false
-  });
-
-  // Show validation feedback as user types
-  useEffect(() => {
-    if (isDirty.name) {
-      setInternalErrors(prev => ({ ...prev, name: getNameError(name) }));
-    }
-  }, [name, isDirty.name]);
-
-  useEffect(() => {
-    if (isDirty.phone) {
-      setInternalErrors(prev => ({ ...prev, phone: getPhoneError(phone) }));
-    }
-  }, [phone, isDirty.phone]);
-
-  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setName(e.target.value);
-    if (!isDirty.name) setIsDirty(prev => ({ ...prev, name: true }));
-  };
+  const { 
+    values, 
+    handlers, 
+    errors 
+  } = useFieldValidation({ externalErrors });
 
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const formattedPhone = formatPhoneNumber(e.target.value);
-    setPhone(formattedPhone);
-    if (!isDirty.phone) setIsDirty(prev => ({ ...prev, phone: true }));
+    e.target.value = formattedPhone;
+    handlers.handlePhoneChange(e);
   };
-
-  // Show the external error (from form submission) or the internal error (from validation)
-  const nameError = externalErrors.name || (isDirty.name ? internalErrors.name : null);
-  const phoneError = externalErrors.phone || (isDirty.phone ? internalErrors.phone : null);
 
   return (
     <>
@@ -60,19 +34,19 @@ const PersonalInfoFields = ({ errors: externalErrors, isSubmitting }: PersonalIn
           name="name"
           type="text"
           aria-describedby="name-error"
-          className={`h-9 text-sm ${nameError ? 'border-red-500' : ''}`}
+          className={`h-9 text-sm ${errors.name ? 'border-red-500' : ''}`}
           disabled={isSubmitting}
           autoComplete="name"
           required
           placeholder="Enter your name"
-          value={name}
-          onChange={handleNameChange}
-          onBlur={() => setIsDirty(prev => ({ ...prev, name: true }))}
+          value={values.name}
+          onChange={handlers.handleNameChange}
+          onBlur={() => handlers.markFieldAsDirty('name')}
         />
-        {nameError && (
+        {errors.name && (
           <Alert variant="destructive" className="py-2 px-3">
             <AlertCircle className="h-4 w-4" />
-            <AlertDescription className="text-xs" id="name-error">{nameError}</AlertDescription>
+            <AlertDescription className="text-xs" id="name-error">{errors.name}</AlertDescription>
           </Alert>
         )}
       </div>
@@ -84,19 +58,19 @@ const PersonalInfoFields = ({ errors: externalErrors, isSubmitting }: PersonalIn
           name="phone"
           type="tel"
           aria-describedby="phone-error"
-          className={`h-9 text-sm ${phoneError ? 'border-red-500' : ''}`}
+          className={`h-9 text-sm ${errors.phone ? 'border-red-500' : ''}`}
           disabled={isSubmitting}
           autoComplete="tel"
           required
           placeholder="Enter your phone number"
-          value={phone}
+          value={values.phone}
           onChange={handlePhoneChange}
-          onBlur={() => setIsDirty(prev => ({ ...prev, phone: true }))}
+          onBlur={() => handlers.markFieldAsDirty('phone')}
         />
-        {phoneError && (
+        {errors.phone && (
           <Alert variant="destructive" className="py-2 px-3">
             <AlertCircle className="h-4 w-4" />
-            <AlertDescription className="text-xs" id="phone-error">{phoneError}</AlertDescription>
+            <AlertDescription className="text-xs" id="phone-error">{errors.phone}</AlertDescription>
           </Alert>
         )}
       </div>
