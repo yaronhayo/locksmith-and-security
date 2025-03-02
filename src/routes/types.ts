@@ -24,13 +24,13 @@ export interface PageMetaProps {
   canonicalUrl?: string;
   ogImage?: string;
   ogType?: "website" | "article" | "product" | "profile" | "book";
-  breadcrumbs?: Array<{ name: string; path: string }>;
-  customBreadcrumbs?: Array<{ name: string; path: string }>;
+  breadcrumbs?: BreadcrumbItem[];
+  customBreadcrumbs?: BreadcrumbItem[];
   noindex?: boolean;
   nofollow?: boolean;
   modifiedDate?: string;
   hideBreadcrumbs?: boolean;
   heroTitle?: string;
   heroDescription?: string;
-  schema?: any; // Add schema property to match PageLayout props
+  schema?: any;
 }

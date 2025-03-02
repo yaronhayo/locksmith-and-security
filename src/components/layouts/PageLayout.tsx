@@ -10,6 +10,7 @@ import { LoadingState } from './LoadingState';
 import { AnimatePresence, motion } from 'framer-motion';
 import PageHero from './PageHero';
 import { cn } from '@/lib/utils';
+import { BreadcrumbItem } from '@/routes/types';
 
 export interface PageLayoutProps {
   title?: string;
@@ -21,12 +22,12 @@ export interface PageLayoutProps {
   children: React.ReactNode;
   schema?: any;
   className?: string;
-  breadcrumbs?: Array<{name: string, path: string}>;
-  customBreadcrumbs?: Array<{name: string, path: string}>;
+  breadcrumbs?: BreadcrumbItem[];
+  customBreadcrumbs?: BreadcrumbItem[];
   noindex?: boolean;
   nofollow?: boolean;
   modifiedDate?: string;
-  hideBreadcrumbs?: boolean; // When true, breadcrumbs are hidden
+  hideBreadcrumbs?: boolean;
   heroTitle?: string;
   heroDescription?: string;
 }
@@ -46,7 +47,7 @@ const PageLayout: React.FC<PageLayoutProps> = ({
   noindex,
   nofollow,
   modifiedDate,
-  hideBreadcrumbs = false, // Default to false (show breadcrumbs)
+  hideBreadcrumbs = false,
   heroTitle,
   heroDescription,
 }) => {
@@ -55,9 +56,12 @@ const PageLayout: React.FC<PageLayoutProps> = ({
     window.scrollTo(0, 0);
   }, [title]); // Re-trigger on title change (new page)
 
+  // Determine which breadcrumbs to use (custom or standard)
+  const activeBreadcrumbs = customBreadcrumbs || breadcrumbs;
+
   // Generate breadcrumb schema if breadcrumbs are present
-  const breadcrumbSchema = ((breadcrumbs && breadcrumbs.length > 0) || (customBreadcrumbs && customBreadcrumbs.length > 0)) 
-    ? <BreadcrumbSchema breadcrumbs={customBreadcrumbs || breadcrumbs} /> 
+  const breadcrumbSchemaData = activeBreadcrumbs && activeBreadcrumbs.length > 0
+    ? <BreadcrumbSchema breadcrumbs={activeBreadcrumbs} /> 
     : null;
 
   // Combine all schemas for the page
@@ -70,7 +74,14 @@ const PageLayout: React.FC<PageLayoutProps> = ({
       schemas.push({ type: 'WebPage', data: schema });
     }
   }
-  if (breadcrumbSchema) schemas.push({ type: 'BreadcrumbList', data: breadcrumbSchema });
+  
+  // Only add breadcrumb schema if we have breadcrumbs and they're not hidden
+  if (breadcrumbSchemaData && !hideBreadcrumbs) {
+    schemas.push({ 
+      type: 'BreadcrumbList', 
+      data: breadcrumbSchemaData.props.children
+    });
+  }
 
   return (
     <>
@@ -98,10 +109,10 @@ const PageLayout: React.FC<PageLayoutProps> = ({
           transition={{ duration: 0.3 }}
           className={cn("min-h-screen flex flex-col", className)}
         >
-          {/* Only render breadcrumbs once at the top level if not hidden */}
-          {!hideBreadcrumbs && (breadcrumbs || customBreadcrumbs) && (
+          {/* Only render breadcrumbs if not hidden and we have breadcrumbs to show */}
+          {!hideBreadcrumbs && activeBreadcrumbs && activeBreadcrumbs.length > 0 && (
             <div className="container mx-auto px-4 py-4">
-              <Breadcrumbs breadcrumbs={customBreadcrumbs || breadcrumbs} includeSchema={false} />
+              <Breadcrumbs breadcrumbs={activeBreadcrumbs} />
             </div>
           )}
           
@@ -110,7 +121,6 @@ const PageLayout: React.FC<PageLayoutProps> = ({
             <PageHero 
               title={heroTitle} 
               description={heroDescription} 
-              // Don't pass showBreadcrumbs to PageHero to avoid duplicate breadcrumbs
             />
           )}
           

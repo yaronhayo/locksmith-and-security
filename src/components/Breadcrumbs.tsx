@@ -3,21 +3,13 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Home, ChevronRight } from 'lucide-react';
 import { motion } from 'framer-motion';
-
-interface BreadcrumbItem {
-  name: string;
-  path: string;
-}
+import { BreadcrumbItem } from '@/routes/types';
 
 interface BreadcrumbsProps {
-  breadcrumbs?: BreadcrumbItem[];
-  includeSchema?: boolean; // No longer used, schema generation moved to PageLayout
+  breadcrumbs: BreadcrumbItem[];
 }
 
-const Breadcrumbs: React.FC<BreadcrumbsProps> = ({ 
-  breadcrumbs = [],
-  includeSchema = false // Parameter kept for backwards compatibility but ignored
-}) => {
+const Breadcrumbs: React.FC<BreadcrumbsProps> = ({ breadcrumbs }) => {
   if (!breadcrumbs || breadcrumbs.length === 0) return null;
 
   return (
