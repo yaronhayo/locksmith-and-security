@@ -6,11 +6,7 @@ import { Phone, ArrowRight, ShieldCheck, Star, Clock, Wrench } from "lucide-reac
 import { Link } from "react-router-dom";
 import { ServiceCategory } from "@/types/reviews";
 import { trackComponentRender } from "@/utils/performanceMonitoring";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { useNavigate } from "react-router-dom";
-import { formatPhoneNumber } from "@/utils/inputValidation";
+import BookingForm from "@/components/BookingForm";
 
 interface CategoryHeroProps {
   title: string;
@@ -29,43 +25,10 @@ const CategoryHero: React.FC<CategoryHeroProps> = ({
   features
 }) => {
   const finishRenderTracking = trackComponentRender('CategoryHero');
-  const navigate = useNavigate();
-  
-  const [name, setName] = useState('');
-  const [phone, setPhone] = useState('');
-  const [address, setAddress] = useState('');
-  const [isSubmitting, setIsSubmitting] = useState(false);
   
   useEffect(() => {
     finishRenderTracking();
   }, [finishRenderTracking]);
-
-  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setPhone(formatPhoneNumber(e.target.value));
-  };
-  
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!name || !phone || !address) return;
-    
-    setIsSubmitting(true);
-    
-    // Store form data in session storage to be used on the booking page
-    sessionStorage.setItem('bookingFormData', JSON.stringify({
-      name,
-      phone,
-      address,
-      service: category === 'car' ? 'Car Lockout' : 
-               category === 'residential' ? 'House Lockout' :
-               category === 'commercial' ? 'Business Lockout' : 
-               '24/7 Lockout Service'
-    }));
-    
-    // Navigate to booking page after short delay to simulate processing
-    setTimeout(() => {
-      navigate('/book-online');
-    }, 400);
-  };
 
   return (
     <section className="pt-8 pb-16 md:pt-12 md:pb-24 bg-gradient-to-br from-primary via-primary/90 to-primary-hover text-white relative overflow-hidden">
@@ -164,7 +127,7 @@ const CategoryHero: React.FC<CategoryHeroProps> = ({
             </motion.div>
           </motion.div>
           
-          {/* Right Column - Quick Booking Form */}
+          {/* Right Column - Main Booking Form */}
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}
@@ -179,61 +142,8 @@ const CategoryHero: React.FC<CategoryHeroProps> = ({
               </p>
             </div>
             
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div>
-                <Label htmlFor="name" className="text-white">Your Name</Label>
-                <Input 
-                  id="name" 
-                  placeholder="Full Name" 
-                  className="bg-white/20 text-white border-white/30 placeholder:text-white/50"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  required
-                />
-              </div>
-              
-              <div>
-                <Label htmlFor="phone" className="text-white">Phone Number</Label>
-                <Input 
-                  id="phone" 
-                  placeholder="(201) 555-1234" 
-                  className="bg-white/20 text-white border-white/30 placeholder:text-white/50"
-                  value={phone}
-                  onChange={handlePhoneChange}
-                  required
-                />
-              </div>
-              
-              <div>
-                <Label htmlFor="address" className="text-white">Service Address</Label>
-                <Input 
-                  id="address" 
-                  placeholder="Your Address" 
-                  className="bg-white/20 text-white border-white/30 placeholder:text-white/50"
-                  value={address}
-                  onChange={(e) => setAddress(e.target.value)}
-                  required
-                />
-              </div>
-              
-              <Button 
-                type="submit"
-                disabled={isSubmitting}
-                className="w-full bg-secondary hover:bg-secondary/90 text-primary text-base font-semibold py-6 mt-2 transition-all"
-              >
-                {isSubmitting ? "Processing..." : `Request ${category.charAt(0).toUpperCase() + category.slice(1)} Service`}
-              </Button>
-            </form>
-            
-            <div className="mt-6 grid grid-cols-2 gap-3">
-              {features.map((feature, index) => (
-                <div key={index} className="flex items-start">
-                  <div className="bg-secondary/20 p-1 rounded-full mr-2 mt-1 flex-shrink-0">
-                    <Clock className="h-4 w-4 text-secondary" />
-                  </div>
-                  <span className="text-sm">{feature.title}</span>
-                </div>
-              ))}
+            <div className="bg-white rounded-lg p-4">
+              <BookingForm />
             </div>
           </motion.div>
         </div>
