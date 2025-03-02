@@ -68,6 +68,25 @@ const PrivacyPolicyPage = () => {
       </section>
 
       <section className="mb-8">
+        <h2 className="text-2xl font-semibold mb-4">6. Cookies and Similar Technologies</h2>
+        <p className="mb-4">
+          Our website uses cookies and similar technologies to enhance your browsing experience. We use the following types of cookies:
+        </p>
+        <ul className="list-disc pl-6 mb-4">
+          <li><strong>Necessary Cookies:</strong> Essential for the website to function properly.</li>
+          <li><strong>Analytics Cookies:</strong> Help us understand how visitors interact with our website.</li>
+          <li><strong>Marketing Cookies:</strong> Used to deliver advertisements more relevant to you.</li>
+          <li><strong>Third-Party Cookies:</strong> Set by external services like Google reCAPTCHA and analytics tools.</li>
+        </ul>
+        <p className="mb-4">
+          <strong>Important Note on Third-Party Cookies:</strong> Web browsers are phasing out third-party cookies for enhanced privacy. Some features on our website may use third-party cookies with the SameSite=None; Secure attributes. You can manage your cookie preferences through our Cookie Settings dialog or your browser settings.
+        </p>
+        <p className="mb-4">
+          For most browsers, you can refuse to accept cookies by activating the setting on your browser that allows you to refuse cookies. Be aware that disabling some cookies may impact your experience on our website.
+        </p>
+      </section>
+
+      <section className="mb-8">
         <h2 className="text-2xl font-semibold mb-4">7. Google reCAPTCHA</h2>
         <p className="mb-4">
           We use Google reCAPTCHA on our website to help prevent spam and abuse. By using reCAPTCHA, you agree to the Google{' '}
@@ -89,6 +108,9 @@ const PrivacyPolicyPage = () => {
             Terms of Service
           </a>
           .
+        </p>
+        <p className="mb-4">
+          Google reCAPTCHA may use third-party cookies with SameSite=None; Secure attributes. As browsers phase out support for third-party cookies, we are working to ensure our website continues to function properly.
         </p>
       </section>
 
