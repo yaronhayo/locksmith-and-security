@@ -103,6 +103,17 @@ const PageLayout = ({
         modifiedDate={modifiedDate}
       />
       
+      {/* Show breadcrumbs only if they're not hidden and we're not using a hero */}
+      {!hideBreadcrumbs && !hasHero && (
+        <div className="container mx-auto px-4 py-3 md:py-4">
+          <Breadcrumbs 
+            items={customBreadcrumbs} 
+            showSchema={true}
+          />
+        </div>
+      )}
+      
+      {/* If using hero, pass showBreadcrumbs=false to prevent double rendering */}
       {hasHero ? (
         <PageHero 
           title={heroTitle || title}
@@ -110,17 +121,7 @@ const PageLayout = ({
           showBreadcrumbs={!hideBreadcrumbs}
           customBreadcrumbs={customBreadcrumbs}
         />
-      ) : (
-        // Only show breadcrumbs here if there's no hero and they're not hidden
-        !hideBreadcrumbs && (
-          <div className="container mx-auto px-4 py-3 md:py-4">
-            <Breadcrumbs 
-              items={customBreadcrumbs} 
-              showSchema={true}
-            />
-          </div>
-        )
-      )}
+      ) : null}
       
       <motion.main
         className={cn("flex-grow", !hasHero && "pt-0")}
