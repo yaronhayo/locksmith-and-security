@@ -16,7 +16,7 @@ const GoogleMapsProvider: React.FC<GoogleMapsProviderProps> = ({
 
   useEffect(() => {
     // Check if API is already loaded
-    if (window.google && window.google.maps) {
+    if (window.google?.maps) {
       console.log("Google Maps API already loaded");
       setIsLoaded(true);
       return;
