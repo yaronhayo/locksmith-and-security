@@ -5,7 +5,6 @@ import ReviewsContainer from "@/components/reviews/ReviewsContainer";
 import { ErrorBoundary } from "react-error-boundary";
 import ErrorFallback from "@/components/ErrorFallback";
 import type { Review, ServiceCategory } from "@/types/reviews";
-import LoadingSpinner from "@/components/LoadingSpinner";
 import ReviewsLoadingSkeleton from "@/components/reviews/ReviewsLoadingSkeleton";
 
 export interface ReviewsSectionProps {

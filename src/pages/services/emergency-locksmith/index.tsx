@@ -1,294 +1,283 @@
-import React, { useState, useRef } from "react";
-import PageLayout from "@/components/layouts/PageLayout";
-import ServicesHero from "@/components/sections/services/ServicesHero";
-import ServicesFeatures from "@/components/sections/services/ServicesFeatures";
-import ServicesGrid from "@/components/sections/services/ServicesGrid";
-import ServicesCTA from "@/components/sections/services/ServicesCTA";
-import ReviewsSection from "@/components/sections/ReviewsSection";
-import FAQSection from "@/components/sections/FAQSection";
-import { motion } from "framer-motion";
-import { Card } from "@/components/ui/card";
-import { Lock, Home, Car, Building2, ChevronDown } from "lucide-react";
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
-import CarouselDots from "@/components/reviews/CarouselDots";
-import { Button } from "@/components/ui/button";
-import { carServiceReviews } from "@/data/reviews/carServiceReviews";
 
-const successStories = [{
-  icon: Home,
-  title: "Emergency House Lockout in Jersey City",
-  location: "Jersey City",
-  shortDesc: "A family of four was locked out of their home at 11 PM after returning from vacation.",
-  fullDesc: "The Smiths returned from their vacation only to find their house key wouldn't turn in the lock. With temperatures dropping and two tired children, they needed immediate help. Our technician arrived within 20 minutes, diagnosed a seized lock mechanism due to weather exposure, and not only got them inside but also serviced the lock to prevent future issues. We also created spare keys for everyone in the family.",
-  service: "Residential Lockout"
-}, {
-  icon: Car,
-  title: "Car Lockout at Shopping Mall",
-  location: "North Bergen",
-  shortDesc: "A customer locked their keys in their car with groceries inside on a hot summer day.",
-  fullDesc: "A shopper at a busy North Bergen mall discovered they had locked their keys in their car along with all their groceries on a 95-degree summer day. With ice cream and frozen foods melting, they needed urgent assistance. Our emergency locksmith arrived within 15 minutes and used specialized tools to gain non-destructive entry to the vehicle, saving both the groceries and preventing any damage to the car.",
-  service: "Car Lockout"
-}, {
-  icon: Building2,
-  title: "Late Night Office Lockout",
-  location: "Hoboken",
-  shortDesc: "A business owner was locked out of their office with critical client files inside.",
-  fullDesc: "A consultant in Hoboken was preparing for an important morning presentation when they realized they had left critical files in their locked office. At 11 PM, they called our emergency service in a panic. Our locksmith arrived promptly, verified their ownership, and provided access to the office without damaging the high-security commercial locks. The client was able to retrieve their files and successfully deliver their presentation the next morning.",
-  service: "Commercial Lockout"
-}, {
-  icon: Lock,
-  title: "Broken Key Extraction",
-  location: "Weehawken",
-  shortDesc: "A tenant had their key break off in the apartment building's main entrance.",
-  fullDesc: "At 1 AM, a tenant in a Weehawken apartment complex had their key break inside the building's main entrance lock. With no superintendent available until morning, the entire building's security was compromised. Our emergency locksmith extracted the broken key piece, repaired the damaged lock, and created new keys for the tenant on the spot, restoring security to the building within an hour of receiving the call.",
-  service: "Emergency Lock Repair"
-}];
-
-const emergencyFaqs = [
-  {
-    question: "How quickly can you respond to an emergency lockout?",
-    answer: "We typically arrive within 15-30 minutes of your call in North Bergen and surrounding areas. Our emergency locksmiths are strategically positioned throughout New Jersey to provide the fastest possible response times, even during nights, weekends, and holidays."
-  },
-  {
-    question: "What types of lockouts can you handle?",
-    answer: "We handle all types of emergency lockout situations, including residential lockouts (houses, apartments), automotive lockouts (all vehicle makes and models), commercial lockouts (offices, retail spaces), and specialty lockouts like storage units or filing cabinets."
-  },
-  {
-    question: "Do you damage locks when responding to lockouts?",
-    answer: "No, our professional emergency locksmiths use specialized non-destructive entry techniques designed to open locks without causing damage. In over 99% of lockout situations, we can gain access without drilling or damaging your locks."
-  },
-  {
-    question: "Is emergency locksmith service available 24/7?",
-    answer: "Yes, our emergency locksmith service is available 24 hours a day, 7 days a week, 365 days a year. We understand that lockouts don't follow a schedule, so our team is always ready to respond to your emergency, even on holidays and weekends."
-  },
-  {
-    question: "What should I do while waiting for an emergency locksmith?",
-    answer: "While waiting for our locksmith to arrive: 1) Stay in a safe, well-lit area, 2) If you're locked out of your car, move away from traffic, 3) For home lockouts, wait with a neighbor if possible, 4) Keep your phone charged and available, and 5) Have your ID ready to verify your identity and ownership."
-  },
-  {
-    question: "How much does emergency locksmith service cost?",
-    answer: "Emergency locksmith service typically ranges from $75-$250 depending on the situation, time of day, and complexity. We provide upfront pricing before beginning work, with no hidden fees. We can provide a price estimate over the phone when you call."
-  }
-];
-
-const RealLifeStories = () => {
-  const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
-  const [api, setApi] = useState<any>();
-  const [current, setCurrent] = useState(0);
-  const [isPaused, setIsPaused] = useState(false);
-  const intervalRef = useRef<NodeJS.Timeout | null>(null);
-
-  React.useEffect(() => {
-    if (!api) return;
-    api.on("select", () => {
-      setCurrent(api.selectedScrollSnap());
-    });
-
-    const startAutoplay = () => {
-      intervalRef.current = setInterval(() => {
-        if (!isPaused && api.canScrollNext()) {
-          api.scrollNext();
-        } else if (!isPaused) {
-          api.scrollTo(0);
-        }
-      }, 3500);
-    };
-
-    const stopAutoplay = () => {
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current);
-        intervalRef.current = null;
-      }
-    };
-
-    startAutoplay();
-
-    return () => {
-      stopAutoplay();
-    };
-  }, [api, isPaused]);
-
-  const truncateText = (text: string, maxLength: number) => {
-    if (text.length <= maxLength) return text;
-    
-    const lastSpaceIndex = text.lastIndexOf(' ', maxLength);
-    
-    if (lastSpaceIndex === -1) {
-      return text.substring(0, maxLength) + '...';
-    }
-    
-    const truncatedText = text.substring(0, lastSpaceIndex);
-    const lastWord = text.substring(lastSpaceIndex + 1).split(' ')[0];
-    const halfWordLength = Math.floor(lastWord.length / 2);
-    const truncatedWord = lastWord.substring(0, halfWordLength);
-    
-    return truncatedText + ' ' + truncatedWord + '...';
-  };
-
-  return <section className="py-20 bg-gray-50">
-      <div className="container mx-auto px-4">
-        <motion.div initial={{
-        opacity: 0,
-        y: 20
-      }} whileInView={{
-        opacity: 1,
-        y: 0
-      }} transition={{
-        duration: 0.5
-      }} className="text-center max-w-3xl mx-auto mb-12">
-          <h2 className="text-3xl font-bold mb-4">Emergency Locksmith Success Stories</h2>
-          <p className="text-lg text-muted-foreground">
-            Real-world examples of how we've helped people in urgent lockout situations across New Jersey
-          </p>
-        </motion.div>
-
-        <div onMouseEnter={() => setIsPaused(true)} onMouseLeave={() => setIsPaused(false)}>
-          <Carousel setApi={setApi} className="w-full max-w-6xl mx-auto" opts={{
-          align: "start",
-          loop: true
-        }}>
-            <CarouselContent>
-              {successStories.map((story, index) => <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
-                  <motion.div initial={{
-                opacity: 0,
-                y: 20
-              }} whileInView={{
-                opacity: 1,
-                y: 0
-              }} transition={{
-                duration: 0.5,
-                delay: index * 0.1
-              }}>
-                    <Card className="p-6 h-full flex flex-col">
-                      <div className="flex items-start gap-4 mb-4">
-                        <div className="p-2 rounded-lg bg-primary/10">
-                          <story.icon className="h-6 w-6 text-primary" />
-                        </div>
-                        <div>
-                          <h3 className="text-xl font-semibold mb-1">{story.title}</h3>
-                          <p className="text-sm text-muted-foreground">{story.location}</p>
-                        </div>
-                      </div>
-                      
-                      <p className="text-muted-foreground mb-4">
-                        {expandedIndex === index 
-                          ? story.fullDesc 
-                          : (
-                            <>
-                              {truncateText(story.fullDesc, 120)}
-                              <Button 
-                                variant="ghost" 
-                                size="sm" 
-                                onClick={() => setExpandedIndex(index)} 
-                                className="text-sm font-medium text-[#F97316] ml-1 p-0 h-auto hover:bg-transparent group"
-                              >
-                                Continue Reading
-                                <ChevronDown className="h-3 w-3 ml-1 text-[#F97316] group-hover:animate-bounce" />
-                              </Button>
-                            </>
-                          )
-                        }
-                      </p>
-                      
-                      <div className="mt-auto pt-4 flex items-center justify-between">
-                        <span className="text-sm font-medium text-primary">{story.service}</span>
-                        {expandedIndex === index && (
-                          <Button 
-                            variant="ghost" 
-                            size="sm" 
-                            onClick={() => setExpandedIndex(null)} 
-                            className="text-sm"
-                          >
-                            Show Less
-                          </Button>
-                        )}
-                      </div>
-                    </Card>
-                  </motion.div>
-                </CarouselItem>)}
-            </CarouselContent>
-            
-            <div className="flex items-center justify-center mt-8">
-              <CarouselPrevious className="relative static translate-y-0 mr-2" />
-              <CarouselDots total={successStories.length} current={current} onDotClick={index => api?.scrollTo(index)} />
-              <CarouselNext className="relative static translate-y-0 ml-2" />
-            </div>
-          </Carousel>
-        </div>
-      </div>
-    </section>;
-};
+import React from 'react';
+import PageLayout from '@/components/layouts/PageLayout';
+import ServicesProof from '@/components/sections/services/ServicesProof';
+import CategoryHero from '@/components/sections/services/CategoryHero';
+import CategoryFeatures from '@/components/sections/services/CategoryFeatures';
+import CategorySuccessStories from '@/components/sections/services/CategorySuccessStories';
+import ReviewsSection from '@/components/sections/ReviewsSection';
+import ServicesGrid from '@/components/sections/services/ServicesGrid';
+import { Button } from '@/components/ui/button';
+import { 
+  Clock, AlertTriangle, Car, Home, Building, Shield,
+  KeyRound, CheckCircle, ChevronRight, Phone
+} from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { getReviewsByCategory } from '@/data/reviewsData';
 
 const EmergencyLocksmithPage = () => {
-  return <PageLayout title="24/7 Emergency Locksmith Services in North Bergen, NJ | Immediate Assistance" description="Professional 24/7 emergency locksmith services for home, business, and auto lockouts. Fast response within 15-30 minutes, damage-free entry methods, and affordable rates." keywords="emergency locksmith, 24/7 locksmith, lockout service, car lockout, house lockout, business lockout, North Bergen locksmith" schema={{
-    "@context": "https://schema.org",
-    "@type": "Service",
-    "name": "Emergency Locksmith Services",
-    "provider": {
-      "@type": "LocalBusiness",
-      "name": "Locksmith & Security LLC",
-      "image": "/website-uploads/950b5c4c-f0b8-4d22-beb0-66a7d7554476.png",
-      "address": {
-        "@type": "PostalAddress",
-        "streetAddress": "123 Main Street",
-        "addressLocality": "North Bergen",
-        "addressRegion": "NJ",
-        "postalCode": "07047",
-        "addressCountry": "US"
-      },
-      "telephone": "+12017482070",
-      "priceRange": "$$"
+  const emergencyReviews = getReviewsByCategory('emergency');
+  
+  const emergencyStories = [
+    {
+      title: "Late Night Car Lockout in North Bergen",
+      description: "A customer stranded at midnight with keys locked in their vehicle.",
+      challenge: "A customer called us at 1 AM after accidentally locking their keys inside their car at a shopping center parking lot. They had no spare key and needed to get home urgently.",
+      solution: "Our emergency technician arrived within 20 minutes of the call. Using specialized non-destructive entry tools, we safely unlocked the car door without causing any damage to the vehicle.",
+      result: "The customer was back on the road by 1:30 AM, avoiding an expensive tow and potentially unsafe situation late at night.",
+      customerName: "Michael R.",
+      customerLocation: "North Bergen, NJ",
+      date: "Last month"
     },
-    "areaServed": {
-      "@type": "City",
-      "name": "North Bergen",
-      "sameAs": "https://en.wikipedia.org/wiki/North_Bergen,_New_Jersey"
-    },
-    "hasOfferCatalog": {
-      "@type": "OfferCatalog",
-      "name": "Emergency Locksmith Services",
-      "itemListElement": [{
-        "@type": "Offer",
-        "itemOffered": {
-          "@type": "Service",
-          "name": "House Lockout Services",
-          "description": "Fast, damage-free entry when you're locked out of your home"
-        }
-      }, {
-        "@type": "Offer",
-        "itemOffered": {
-          "@type": "Service",
-          "name": "Car Lockout Services",
-          "description": "Professional automotive lockout assistance for all vehicle makes and models"
-        }
-      }, {
-        "@type": "Offer",
-        "itemOffered": {
-          "@type": "Service",
-          "name": "Business Lockout Services",
-          "description": "Emergency commercial lockout solutions for offices and retail spaces"
-        }
-      }, {
-        "@type": "Offer",
-        "itemOffered": {
-          "@type": "Service",
-          "name": "Emergency Lock Repair",
-          "description": "Immediate lock repair and broken key extraction services"
-        }
-      }]
+    {
+      title: "Broken Key Extraction at 3 AM",
+      description: "Emergency key extraction for a resident with a key broken in their front door lock.",
+      challenge: "A customer's key broke inside their front door lock at 3 AM when returning home. Half the key was stuck in the cylinder, preventing the door from being locked or unlocked.",
+      solution: "Our 24/7 emergency locksmith arrived with specialized extraction tools. We carefully removed the broken key fragment and fabricated a new key on the spot.",
+      result: "The customer gained entry to their home without damaging the lock, and received two new working keys, all within an hour of calling us.",
+      customerName: "Sarah T.",
+      customerLocation: "Jersey City, NJ",
+      date: "2 months ago"
     }
-  }}>
-      <ServicesHero title="24/7 Emergency Locksmith Services" description="Professional emergency lockout solutions when you need them most. Fast response within 15-30 minutes, damage-free entry methods, and affordable rates throughout New Jersey." />
-      <ServicesGrid 
-        title="Complete Emergency Locksmith Solutions"
-        description="Fast, professional assistance for all your lockout emergencies"
+  ];
+  
+  return (
+    <PageLayout
+      title="24/7 Emergency Locksmith Services | Fast Response"
+      description="Emergency locksmith services available 24/7. Fast response for lockouts, broken keys, and other urgent situations."
+      heroTitle="24/7 Emergency Locksmith Services"
+      heroDescription="Immediate assistance when you need it most. Our emergency locksmith team is available around the clock for fast, professional service."
+    >
+      <CategoryHero 
+        title="24/7 Emergency Locksmith Services"
+        description="Locked out of your car or home? Key broken in the lock? Don't panic - our emergency locksmith team is available 24 hours a day, 7 days a week to get you back in quickly and safely."
+        category="emergency"
+        features={[
+          { title: "30-Minute Response", description: "We aim to be there within 30 minutes" },
+          { title: "Available 24/7", description: "Day or night, we're available" },
+          { title: "No Damage Entry", description: "We use specialized tools for safe entry" },
+          { title: "All Makes & Models", description: "Cars, homes, and businesses" }
+        ]}
       />
-      <ServicesFeatures />
-      <RealLifeStories />
-      <FAQSection title="Emergency Locksmith FAQs" description="Common questions about our emergency locksmith services" faqs={emergencyFaqs} />
-      <ReviewsSection location="North Bergen" category="emergency" reviewData={carServiceReviews} />
-      <ServicesCTA />
-    </PageLayout>;
+      
+      <div className="bg-red-50 py-12">
+        <div className="container mx-auto px-4">
+          <div className="bg-white p-6 rounded-xl shadow-md border border-red-100">
+            <div className="flex items-center gap-4 mb-6">
+              <div className="bg-red-100 p-3 rounded-full">
+                <AlertTriangle className="h-8 w-8 text-red-600" />
+              </div>
+              <div>
+                <h2 className="text-2xl font-bold text-red-700">Emergency Locksmith Situations</h2>
+                <p className="text-gray-600">Immediate assistance for urgent locksmith needs</p>
+              </div>
+            </div>
+            
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+              <div className="border border-gray-100 rounded-lg p-5 bg-gray-50">
+                <div className="flex items-center gap-3 mb-3">
+                  <Car className="h-6 w-6 text-primary" />
+                  <h3 className="font-semibold">Car Lockouts</h3>
+                </div>
+                <p className="text-gray-600 text-sm">Locked keys in your vehicle? We'll get you back on the road quickly.</p>
+              </div>
+              
+              <div className="border border-gray-100 rounded-lg p-5 bg-gray-50">
+                <div className="flex items-center gap-3 mb-3">
+                  <Home className="h-6 w-6 text-primary" />
+                  <h3 className="font-semibold">Home Lockouts</h3>
+                </div>
+                <p className="text-gray-600 text-sm">Locked out of your house? We'll help you get back inside safely.</p>
+              </div>
+              
+              <div className="border border-gray-100 rounded-lg p-5 bg-gray-50">
+                <div className="flex items-center gap-3 mb-3">
+                  <Building className="h-6 w-6 text-primary" />
+                  <h3 className="font-semibold">Business Lockouts</h3>
+                </div>
+                <p className="text-gray-600 text-sm">Can't access your business? We provide rapid commercial assistance.</p>
+              </div>
+              
+              <div className="border border-gray-100 rounded-lg p-5 bg-gray-50">
+                <div className="flex items-center gap-3 mb-3">
+                  <KeyRound className="h-6 w-6 text-primary" />
+                  <h3 className="font-semibold">Broken Key Extraction</h3>
+                </div>
+                <p className="text-gray-600 text-sm">Key broken in the lock? We'll extract it without damaging your lock.</p>
+              </div>
+            </div>
+            
+            <div className="mt-8 flex justify-center">
+              <Button 
+                size="lg" 
+                asChild
+                className="bg-red-600 hover:bg-red-700 text-white"
+              >
+                <a href="tel:2017482070" className="flex items-center gap-2">
+                  <Phone className="h-5 w-5" />
+                  Call Now: (201) 748-2070
+                </a>
+              </Button>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <CategoryFeatures 
+        category="Emergency"
+        description="Our emergency locksmith services are available 24/7 to help you in any urgent situation. 
+        We specialize in rapid response and non-destructive entry techniques."
+        services={[
+          {
+            title: "24/7 Lockout Service",
+            description: "Around-the-clock assistance for car, home, and business lockouts. We're available holidays, weekends, and nights.",
+            icon: <Clock className="h-6 w-6" />,
+            link: "/services/emergency-locksmith/24-7-lockout-service"
+          },
+          {
+            title: "Emergency Car Lockout",
+            description: "Quick, damage-free car unlocking service for all vehicle makes and models, including high-security systems.",
+            icon: <Car className="h-6 w-6" />,
+            link: "/services/emergency-locksmith/car-lockout"
+          },
+          {
+            title: "Emergency House Lockout",
+            description: "Fast, professional house unlocking service using techniques that protect your door and lock from damage.",
+            icon: <Home className="h-6 w-6" />,
+            link: "/services/emergency-locksmith/house-lockout"
+          },
+          {
+            title: "Emergency Business Lockout",
+            description: "Commercial lockout solutions for offices, retail stores, and other business properties with priority service.",
+            icon: <Building className="h-6 w-6" />,
+            link: "/services/emergency-locksmith/business-lockout"
+          },
+          {
+            title: "Broken Key Extraction",
+            description: "Expert removal of broken keys from any lock without causing damage to the lock cylinder.",
+            icon: <KeyRound className="h-6 w-6" />,
+            link: "/services/emergency-locksmith/broken-key-extraction"
+          },
+          {
+            title: "Lock Repair & Replacement",
+            description: "Emergency repair or replacement for damaged locks, including fast service for security compromised situations.",
+            icon: <Shield className="h-6 w-6" />,
+            link: "/services/emergency-locksmith/lock-repair-replacement"
+          }
+        ]}
+      />
+      
+      <div className="bg-gradient-to-br from-primary-50 to-primary-100 py-16">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold mb-4">Why Choose Our Emergency Locksmith Service?</h2>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+              We prioritize your security and peace of mind with fast, reliable service.
+            </p>
+          </div>
+          
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="bg-white p-6 rounded-xl shadow-sm">
+              <div className="rounded-full w-12 h-12 bg-green-100 flex items-center justify-center mb-4">
+                <Clock className="h-6 w-6 text-green-600" />
+              </div>
+              <h3 className="text-xl font-semibold mb-3">Fast Response Time</h3>
+              <p className="text-gray-600">
+                Our typical response time is 15-30 minutes in most service areas. We understand 
+                that emergencies can't wait.
+              </p>
+            </div>
+            
+            <div className="bg-white p-6 rounded-xl shadow-sm">
+              <div className="rounded-full w-12 h-12 bg-blue-100 flex items-center justify-center mb-4">
+                <CheckCircle className="h-6 w-6 text-blue-600" />
+              </div>
+              <h3 className="text-xl font-semibold mb-3">Licensed & Insured</h3>
+              <p className="text-gray-600">
+                All our emergency locksmiths are fully licensed, insured, and background-checked for your safety.
+              </p>
+            </div>
+            
+            <div className="bg-white p-6 rounded-xl shadow-sm">
+              <div className="rounded-full w-12 h-12 bg-orange-100 flex items-center justify-center mb-4">
+                <Shield className="h-6 w-6 text-orange-600" />
+              </div>
+              <h3 className="text-xl font-semibold mb-3">Non-Destructive Entry</h3>
+              <p className="text-gray-600">
+                We use specialized tools and techniques to unlock doors without causing damage to your property.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <CategorySuccessStories 
+        category="Emergency Locksmith"
+        stories={emergencyStories}
+      />
+      
+      <ServicesProof 
+        reviewsData={emergencyReviews.slice(0, 6)} 
+        category="emergency" 
+      />
+      
+      <div className="py-16 bg-gray-50">
+        <div className="container mx-auto px-4">
+          <div className="bg-white p-8 rounded-xl shadow-md border border-gray-200 max-w-4xl mx-auto">
+            <h2 className="text-2xl font-bold mb-4 text-center">Emergency Locksmith FAQ</h2>
+            
+            <div className="space-y-6 mt-8">
+              <div>
+                <h3 className="text-lg font-semibold text-primary mb-2">How quickly can you respond to an emergency?</h3>
+                <p className="text-gray-600">Our average response time is 15-30 minutes in most service areas. We prioritize emergency calls and dispatch the nearest available technician immediately.</p>
+              </div>
+              
+              <div>
+                <h3 className="text-lg font-semibold text-primary mb-2">Are your emergency services available 24/7?</h3>
+                <p className="text-gray-600">Yes, our emergency locksmith services are available 24 hours a day, 7 days a week, including nights, weekends, and holidays.</p>
+              </div>
+              
+              <div>
+                <h3 className="text-lg font-semibold text-primary mb-2">Will unlocking my car door cause damage?</h3>
+                <p className="text-gray-600">Our locksmiths use specialized non-destructive entry tools designed to open your car without causing damage. We're trained in the latest techniques for all vehicle makes and models.</p>
+              </div>
+              
+              <div>
+                <h3 className="text-lg font-semibold text-primary mb-2">What information do I need to provide when I call?</h3>
+                <p className="text-gray-600">Please be ready to provide your location, the type of emergency (car, home, or business lockout), and any relevant details about the lock or vehicle. We may also ask for identification when we arrive.</p>
+              </div>
+              
+              <div>
+                <h3 className="text-lg font-semibold text-primary mb-2">Do you charge extra for emergency service?</h3>
+                <p className="text-gray-600">Our emergency service rates are transparent. While after-hours service may have a slightly higher rate than standard business hours, we don't charge excessive "emergency fees" and always provide upfront pricing.</p>
+              </div>
+            </div>
+            
+            <div className="mt-8 flex justify-center">
+              <Button asChild>
+                <Link to="/book-online" className="flex items-center gap-2">
+                  Book Emergency Service <ChevronRight className="h-4 w-4" />
+                </Link>
+              </Button>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div className="py-16">
+        <div className="container mx-auto px-4">
+          <h2 className="text-3xl font-bold mb-12 text-center">Related Emergency Services</h2>
+          <ServicesGrid serviceCategory="emergency" />
+        </div>
+      </div>
+      
+      <ReviewsSection 
+        location="North Bergen" 
+        category="emergency"
+        reviewData={emergencyReviews} 
+      />
+    </PageLayout>
+  );
 };
 
 export default EmergencyLocksmithPage;

@@ -1,6 +1,6 @@
 
 import React, { useEffect } from 'react';
-import { Review } from '@/types/reviews';
+import { Review, ServiceCategory } from '@/types/reviews';
 import { StarIcon } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { reviews, reviewsByCategory } from '@/data/reviewsData';
@@ -9,7 +9,7 @@ import { memo } from 'react';
 
 interface ServicesProofProps {
   reviewsData?: Review[];
-  category?: 'car' | 'residential' | 'commercial' | 'emergency';
+  category?: ServiceCategory;
 }
 
 const ServicesProof: React.FC<ServicesProofProps> = memo(({ reviewsData, category }) => {
@@ -17,7 +17,7 @@ const ServicesProof: React.FC<ServicesProofProps> = memo(({ reviewsData, categor
   
   useEffect(() => {
     finishRenderTracking();
-  }, []);
+  }, [finishRenderTracking]);
   
   // Use provided reviews data if available, otherwise use reviews based on category or default to all reviews
   const displaySourceReviews = reviewsData || 

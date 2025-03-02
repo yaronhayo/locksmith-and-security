@@ -1,11 +1,12 @@
 
-import { carServiceReviews, residentialReviews, commercialReviews, isCarService, isResidentialService, isCommercialService, isEmergencyService } from './reviews';
+import { carServiceReviews, residentialReviews, commercialReviews, emergencyReviews, isCarService, isResidentialService, isCommercialService, isEmergencyService } from './reviews';
 import type { Review, ReviewsByCategory, ServiceCategory } from '@/types/reviews';
 
 export const reviews: readonly Review[] = [
   ...carServiceReviews,
   ...residentialReviews,
   ...commercialReviews,
+  ...emergencyReviews,
 ] as const;
 
 const reviewsCache: Record<ServiceCategory, Review[]> = {
