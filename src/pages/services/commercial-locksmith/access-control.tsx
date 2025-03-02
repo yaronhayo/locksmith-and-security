@@ -1,21 +1,18 @@
 
 import React from 'react';
-import ServicesHero from '@/components/sections/services/ServicesHero';
-import ServicesCTA from '@/components/sections/services/ServicesCTA';
-import ServicesFeatures from '@/components/sections/services/ServicesFeatures';
-import ServicesProof from '@/components/sections/services/ServicesProof';
+import PageLayout from "@/components/layouts/PageLayout";
+import AccessControlContent from "@/components/services/access-control/AccessControlContent";
+import { accessControlSchema } from '@/components/services/access-control/AccessControlSchema';
 
 const AccessControl = () => {
   return (
-    <main className="flex-grow">
-      <ServicesHero 
-        title="Access Control Systems"
-        description="Professional access control system installation and maintenance by certified technicians. Expert security solutions for your business."
-      />
-      <ServicesFeatures />
-      <ServicesProof category="commercial" />
-      <ServicesCTA />
-    </main>
+    <PageLayout
+      title="Access Control Systems | Commercial Security Solutions"
+      description="Professional access control system design, installation and maintenance for enhanced business security by certified technicians."
+      schema={accessControlSchema}
+    >
+      <AccessControlContent />
+    </PageLayout>
   );
 };
 
