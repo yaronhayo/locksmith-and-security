@@ -28,6 +28,7 @@ interface ServicePageContentProps {
   mainContent: React.ReactNode;
   faqs?: FAQItem[];
   relatedServices?: RelatedService[];
+  customBreadcrumbs?: Array<{name: string, path: string}>;
 }
 
 const ServicePageContent: React.FC<ServicePageContentProps> = ({
@@ -37,7 +38,8 @@ const ServicePageContent: React.FC<ServicePageContentProps> = ({
   serviceCategory,
   mainContent,
   faqs = [],
-  relatedServices = []
+  relatedServices = [],
+  customBreadcrumbs
 }) => {
   return (
     <div className="py-16 bg-white">
