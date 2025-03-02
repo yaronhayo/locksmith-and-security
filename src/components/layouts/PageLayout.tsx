@@ -123,7 +123,7 @@ const PageLayout = ({
         <div className={cn(className)}>{children}</div>
       </motion.main>
       
-      {/* Scroll to top button */}
+      {/* Scroll to top button - now as a separate component */}
       <ScrollToTopButton />
     </ErrorBoundary>
   );

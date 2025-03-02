@@ -1,10 +1,13 @@
 
-export type NavItem = {
+import { ReactNode } from 'react';
+
+export interface NavigationItem {
   path: string;
   label: string;
+  children?: Omit<NavigationItem, 'children'>[];
   showMobileOnly?: boolean;
-  children?: { path: string; label: string; children?: { path: string; label: string }[] }[];
-};
+  className?: string;
+}
 
 export interface NavigationProps {
   className?: string;
@@ -15,19 +18,16 @@ export interface NavigationProps {
 export interface NavigationLinkProps {
   path: string;
   label: string;
-  isActive: boolean;
-  isMenuOpen: boolean;
+  isActive?: boolean;
+  isMenuOpen?: boolean;
   children?: { path: string; label: string }[];
-  icon?: React.ReactNode;
+  icon?: ReactNode;
+  className?: string;
 }
 
 export interface NavItemProps {
-  item: NavItem;
+  item: NavigationItem;
   isActive: boolean;
   isMenuOpen: boolean;
-  getIcon: (label: string) => React.ReactNode;
-}
-
-export interface MobileMenuActionsProps {
-  isMenuOpen: boolean;
+  getIcon: (label: string) => ReactNode;
 }
