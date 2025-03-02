@@ -22,7 +22,7 @@ const ServiceAreaEmergency = ({ locationName }: ServiceAreaEmergencyProps) => {
           </div>
           
           <p className="text-base sm:text-lg text-gray-700 mb-6 sm:mb-8">
-            Locked out of your home, business, or vehicle in {locationName}? Our emergency locksmith team is available day and night to help you regain access quickly and safely.
+            Locked out of your home, business, or vehicle in {locationName}? Our emergency locksmith team is available day and night to help you regain access safely.
           </p>
           
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8">
@@ -35,7 +35,7 @@ const ServiceAreaEmergency = ({ locationName }: ServiceAreaEmergencyProps) => {
             <div className="bg-white p-4 sm:p-6 rounded-lg shadow-sm border-l-4 border-secondary">
               <MapPin className="h-6 w-6 sm:h-8 sm:w-8 text-secondary mb-2 sm:mb-3" />
               <h3 className="font-semibold text-base sm:text-lg mb-1 sm:mb-2">Local Experts</h3>
-              <p className="text-sm sm:text-base text-gray-600">Based in {locationName} for fast response</p>
+              <p className="text-sm sm:text-base text-gray-600">Based in {locationName} for service</p>
             </div>
             
             <div className="bg-white p-4 sm:p-6 rounded-lg shadow-sm border-l-4 border-secondary sm:col-span-2 md:col-span-1">

@@ -23,7 +23,7 @@ const ServiceMainContent: React.FC<ServiceMainContentProps> = ({
           <Star className="text-secondary h-6 w-6 mr-2" />
           <h3 className="text-xl font-semibold text-primary">Professional {serviceName} Service</h3>
         </div>
-        <p className="text-gray-700 mb-4">Our certified technicians provide fast, reliable {serviceName.toLowerCase()} solutions with guaranteed workmanship. Available 24/7 for emergency assistance.</p>
+        <p className="text-gray-700 mb-4">Our certified technicians provide reliable {serviceName.toLowerCase()} solutions with guaranteed workmanship. Available 24/7 for emergency assistance.</p>
         <ul className="space-y-2">
           <li className="flex items-start">
             <Check className="h-5 w-5 text-secondary mr-2 mt-0.5" />
@@ -47,7 +47,7 @@ const ServiceMainContent: React.FC<ServiceMainContentProps> = ({
             <AlertTriangle className="h-6 w-6 text-red-500 mr-3 mt-0.5" />
             <div>
               <h4 className="text-lg font-semibold text-red-700 mb-2">Emergency Situation?</h4>
-              <p className="text-gray-700 mb-3">Don't wait - if you're in an urgent situation, call us immediately for the fastest response.</p>
+              <p className="text-gray-700 mb-3">Don't wait - if you're in an urgent situation, call us immediately for assistance.</p>
               <Button 
                 variant="destructive" 
                 size="sm" 
