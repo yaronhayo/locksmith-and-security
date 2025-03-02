@@ -29,14 +29,9 @@ const AddressField = ({ value, onChange, isSubmitting, error }: AddressFieldProp
     setIsDirty(true);
   };
 
-  // Create a handler that extracts the value from either a string or an event
-  const handleAddressChange = (addressOrEvent: string | React.ChangeEvent<HTMLInputElement>) => {
-    if (typeof addressOrEvent === 'string') {
-      onChange(addressOrEvent);
-    } else {
-      // It's an event
-      onChange(addressOrEvent.target.value);
-    }
+  // Handle input changes
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    onChange(e.target.value);
     if (!isDirty) setIsDirty(true);
   };
 
@@ -59,7 +54,7 @@ const AddressField = ({ value, onChange, isSubmitting, error }: AddressFieldProp
         <GoogleMapsProvider>
           <AddressAutocomplete
             value={value}
-            onChange={handleAddressChange}
+            onChange={handleInputChange}
             onAddressSelect={handleAddressSelect}
             id="address"
             disabled={isSubmitting}

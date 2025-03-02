@@ -18,17 +18,16 @@ export function useAddressAutocomplete({
   const inputRef = useRef<HTMLInputElement>(null);
   const autocompleteRef = useRef<google.maps.places.Autocomplete | null>(null);
   const [internalValue, setInternalValue] = useState<string>(initialValue);
+  const isInitialized = useRef(false);
 
   // Initialize Google Maps Places Autocomplete
   useEffect(() => {
-    // Guard clause - make sure Google is loaded and input exists
+    // Avoid multiple initializations
+    if (isInitialized.current || !inputRef.current) return;
+
+    // Guard clause - make sure Google is loaded
     if (!window.google?.maps?.places) {
       console.warn("Google Maps Places API not available yet");
-      return;
-    }
-    
-    if (!inputRef.current) {
-      console.warn("Input reference not available yet");
       return;
     }
     
@@ -40,6 +39,7 @@ export function useAddressAutocomplete({
         types: ["address"],
       });
 
+      isInitialized.current = true;
       console.log("Address autocomplete initialized successfully");
 
       // Add listener for place selection
@@ -83,6 +83,7 @@ export function useAddressAutocomplete({
       return () => {
         if (window.google?.maps && listener) {
           window.google.maps.event.removeListener(listener);
+          isInitialized.current = false;
         }
       };
     } catch (error) {
@@ -99,7 +100,7 @@ export function useAddressAutocomplete({
       const valueStr = typeof initialValue === 'string' ? initialValue : String(initialValue);
       setInternalValue(valueStr);
       
-      // Ensure the DOM input value is synchronized with the React state
+      // Only update the DOM input value if different
       if (inputRef.current && inputRef.current.value !== valueStr) {
         inputRef.current.value = valueStr;
       }

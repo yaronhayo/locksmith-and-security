@@ -31,22 +31,12 @@ const ContactFields = ({
     handleChange(e);
   };
 
-  const handleAddressChange = (addressOrEvent: string | React.ChangeEvent<HTMLInputElement>) => {
-    console.log("HandleAddressChange called in ContactFields with:", 
-      typeof addressOrEvent === 'string' ? addressOrEvent : addressOrEvent.target.value);
-    
-    const event = {
-      target: {
-        name: 'address',
-        value: typeof addressOrEvent === 'string' 
-          ? addressOrEvent 
-          : addressOrEvent.target.value
-      }
-    } as React.ChangeEvent<HTMLInputElement>;
-    
-    handleChange(event);
+  // Handle normal input changes for address field
+  const handleAddressInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    handleChange(e);
   };
 
+  // Handle selected address from autocomplete
   const handleAddressSelect = (selectedAddress: string) => {
     console.log("Address selected in ServiceAreaForm:", selectedAddress);
     const event = {
@@ -115,7 +105,7 @@ const ContactFields = ({
               id="address"
               name="address"
               value={formState.address || ''}
-              onChange={handleAddressChange}
+              onChange={handleAddressInputChange}
               onAddressSelect={handleAddressSelect}
               onBlur={() => handleBlur('address')}
               disabled={isSubmitting}

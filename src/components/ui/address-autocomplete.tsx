@@ -24,17 +24,20 @@ const AddressAutocomplete = forwardRef<HTMLInputElement, AddressAutocompleteProp
       onChange
     });
     
+    // Ensure proper ref handling
+    const handleRef = (node: HTMLInputElement | null) => {
+      // Set both refs - the forwarded one and our internal one
+      if (typeof ref === 'function') {
+        ref(node);
+      } else if (ref) {
+        ref.current = node;
+      }
+      inputRef.current = node;
+    };
+    
     return (
       <Input
-        ref={(node) => {
-          // Set both refs - the forwarded one and our internal one
-          if (typeof ref === 'function') {
-            ref(node);
-          } else if (ref) {
-            ref.current = node;
-          }
-          inputRef.current = node;
-        }}
+        ref={handleRef}
         value={internalValue}
         onChange={handleInputChange}
         className={cn(

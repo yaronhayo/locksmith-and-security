@@ -21,6 +21,7 @@ const GoogleMapsProvider: React.FC<GoogleMapsProviderProps> = ({
   const effectiveApiKey = apiKey || configApiKey;
 
   useEffect(() => {
+    // Only proceed if we have an API key and we're not already loading
     if (isLoading || !effectiveApiKey) return;
     
     // Check if API is already loaded
@@ -28,6 +29,12 @@ const GoogleMapsProvider: React.FC<GoogleMapsProviderProps> = ({
       console.log("Google Maps API already loaded");
       setIsLoaded(true);
       return;
+    }
+
+    // Make sure we don't have duplicate callback
+    if (window.initGoogleMaps) {
+      // @ts-ignore - Clean up any existing callback
+      window.initGoogleMaps = undefined;
     }
 
     // Load Google Maps API
@@ -38,7 +45,7 @@ const GoogleMapsProvider: React.FC<GoogleMapsProviderProps> = ({
     
     // Define callback function that Google will call when API is loaded
     window.initGoogleMaps = () => {
-      console.log("Google Maps API loaded successfully");
+      console.log("Google Maps API loaded successfully with key:", effectiveApiKey.substring(0, 5) + "...");
       setIsLoaded(true);
     };
     

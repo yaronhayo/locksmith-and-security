@@ -66,8 +66,7 @@ export const useMapConfig = () => {
         const settingsResult = await supabase
           .from('settings')
           .select('key, value')
-          .like('key', '%google%')
-          .or('key.like.%maps%,key.like.%map%');
+          .or('key.like.%google%,key.like.%maps%,key.like.%map%');
           
         if (!settingsResult.error && settingsResult.data) {
           console.log("Available settings:", settingsResult.data);
@@ -82,7 +81,7 @@ export const useMapConfig = () => {
         }
         
         // Fall back to hardcoded key as absolute last resort (for development only)
-        console.warn("No valid Google Maps API key found in settings");
+        console.warn("No valid Google Maps API key found in settings, using fallback");
         return "AIzaSyD_lT8RmSAMEHUlTEgNIxHhLGGUMdLtFiE"; // Fallback key
       } catch (err) {
         console.error("Error in API key fetch:", err);
