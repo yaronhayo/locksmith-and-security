@@ -1,8 +1,11 @@
 
 import { format } from 'date-fns';
-import { mainRoutes } from '@/routes/mainRoutes';
-import { serviceRoutes } from '@/routes/serviceRoutes';
-import { serviceAreaRoutes } from '@/routes/serviceAreaRoutes';
+
+// Define route structure
+interface RouteConfig {
+  path: string;
+  element: React.ReactNode;
+}
 
 // Interface for sitemap URL entry
 interface SitemapUrl {
@@ -72,22 +75,60 @@ function getSitemapUrlConfig(path: string): SitemapUrl {
 }
 
 /**
- * Generate the sitemap XML content
+ * Generate the sitemap XML content - uses the existing static sitemap routes when building 
+ * since we cannot import the routes directly in the build process
  */
 export function generateSitemapXml(baseUrl: string = 'https://247locksmithandsecurity.com'): string {
-  // Collect all routes
-  const allRoutes = [
-    ...mainRoutes.map(route => route.path),
-    ...serviceRoutes.map(route => route.path),
-    ...serviceAreaRoutes.map(route => route.path),
+  // For build process, use existing static routes from predefined list
+  const staticRoutes = [
+    '/',
+    '/about',
+    '/contact',
+    '/services',
+    '/reviews',
+    '/faq',
+    '/book-online',
+    '/service-areas',
+    '/privacy-policy',
+    '/terms-conditions',
+    '/sitemap',
+    '/services/emergency-locksmith',
+    '/services/residential-locksmith',
+    '/services/commercial-locksmith',
+    '/services/auto-locksmith',
+    '/services/emergency-locksmith/car-lockout',
+    '/services/emergency-locksmith/house-lockout',
+    '/services/emergency-locksmith/business-lockout',
+    '/services/emergency-locksmith/storage-unit-lockout',
+    '/services/residential-locksmith/lock-replacement',
+    '/services/residential-locksmith/lock-rekey',
+    '/services/residential-locksmith/lock-repair',
+    '/services/residential-locksmith/gate-locks',
+    '/services/commercial-locksmith/lock-replacement',
+    '/services/commercial-locksmith/lock-rekey',
+    '/services/commercial-locksmith/emergency-exit-device',
+    '/services/commercial-locksmith/master-key',
+    '/services/commercial-locksmith/access-control',
+    '/services/auto-locksmith/car-key-replacement',
+    '/services/auto-locksmith/key-fob-programming',
+    '/services/auto-locksmith/car-key-duplicate',
+    '/services/auto-locksmith/car-key-cutting',
+    '/services/auto-locksmith/ignition-lock-cylinder',
+    '/service-areas/north-bergen',
+    '/service-areas/union-city',
+    '/service-areas/west-new-york',
+    '/service-areas/guttenberg',
+    '/service-areas/weehawken',
+    '/service-areas/jersey-city',
+    '/service-areas/hoboken',
+    '/service-areas/secaucus'
   ];
   
   // Filter out dynamic routes, 404 page and non-page routes
-  const validRoutes = allRoutes.filter(path => 
+  const validRoutes = staticRoutes.filter(path => 
     path && 
     !path.includes('*') && 
-    !path.includes(':') && 
-    path !== '*'
+    !path.includes(':')
   );
   
   // Remove duplicates

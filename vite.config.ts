@@ -15,12 +15,12 @@ const generateSitemap = () => {
         const { generateSitemapXml } = await import('./src/utils/sitemapGenerator');
         const sitemap = generateSitemapXml();
         
-        // Ensure the public directory exists
+        // Ensure the dist directory exists
         if (!fs.existsSync('./dist')) {
           fs.mkdirSync('./dist', { recursive: true });
         }
         
-        // Write the sitemap to the public directory
+        // Write the sitemap to the dist directory
         fs.writeFileSync('./dist/sitemap.xml', sitemap);
         console.log('Generated sitemap.xml successfully');
       } catch (error) {

@@ -3,10 +3,6 @@ import { useEffect, useState } from 'react';
 import PageLayout from "@/components/layouts/PageLayout";
 import { Link } from "react-router-dom";
 import { Separator } from "@/components/ui/separator";
-import { generateSitemapXml } from '@/utils/sitemapGenerator';
-import { mainRoutes } from '@/routes/mainRoutes';
-import { serviceRoutes } from '@/routes/serviceRoutes';
-import { serviceAreaRoutes } from '@/routes/serviceAreaRoutes';
 
 // Group links by category
 interface LinkGroup {
@@ -18,56 +14,81 @@ const Sitemap = () => {
   const [linkGroups, setLinkGroups] = useState<LinkGroup[]>([]);
   
   useEffect(() => {
-    // Process routes into user-friendly groups
-    const mainLinks = mainRoutes
-      .filter(route => route.path !== "*" && route.path !== "/")
-      .map(route => ({
-        path: route.path,
-        label: route.path.split("/").pop()?.split("-").map(word => 
-          word.charAt(0).toUpperCase() + word.slice(1)
-        ).join(" ") || route.path,
-      }));
+    // Hardcoded routes for now to avoid import issues
+    const mainLinks = [
+      '/about',
+      '/contact',
+      '/services',
+      '/reviews',
+      '/faq',
+      '/book-online',
+      '/service-areas',
+      '/privacy-policy',
+      '/terms-conditions',
+    ].map(path => ({
+      path,
+      label: path.split("/").pop()?.split("-").map(word => 
+        word.charAt(0).toUpperCase() + word.slice(1)
+      ).join(" ") || path,
+    }));
     
-    const serviceAreaLinks = serviceAreaRoutes
-      .filter(route => !route.path.includes(":") && route.path !== "/service-areas")
-      .map(route => ({
-        path: route.path,
-        label: route.path.split("/").pop()?.split("-").map(word => 
-          word.charAt(0).toUpperCase() + word.slice(1)
-        ).join(" ") || route.path,
-      }));
+    const serviceAreaLinks = [
+      '/service-areas/north-bergen',
+      '/service-areas/union-city',
+      '/service-areas/west-new-york',
+      '/service-areas/guttenberg',
+      '/service-areas/weehawken',
+      '/service-areas/jersey-city',
+      '/service-areas/hoboken',
+      '/service-areas/secaucus',
+    ].map(path => ({
+      path,
+      label: path.split("/").pop()?.split("-").map(word => 
+        word.charAt(0).toUpperCase() + word.slice(1)
+      ).join(" ") || path,
+    }));
     
-    // Group service routes by category
-    const serviceCategories: Record<string, { path: string; label: string }[]> = {};
-    
-    serviceRoutes
-      .filter(route => !route.path.includes(":"))
-      .forEach(route => {
-        const parts = route.path.split("/").filter(Boolean);
-        
-        if (parts.length === 1) return; // Skip the main services page
-        
-        const category = parts[1];
-        const serviceLink = {
-          path: route.path,
-          label: parts[parts.length - 1]?.split("-").map(word => 
-            word.charAt(0).toUpperCase() + word.slice(1)
-          ).join(" ") || route.path,
-        };
-        
-        if (!serviceCategories[category]) {
-          serviceCategories[category] = [];
-        }
-        
-        serviceCategories[category].push(serviceLink);
-      });
+    // Service categories and their services
+    const serviceCategories = {
+      'emergency-locksmith': [
+        '/services/emergency-locksmith/car-lockout',
+        '/services/emergency-locksmith/house-lockout',
+        '/services/emergency-locksmith/business-lockout',
+        '/services/emergency-locksmith/storage-unit-lockout',
+      ],
+      'residential-locksmith': [
+        '/services/residential-locksmith/lock-replacement',
+        '/services/residential-locksmith/lock-rekey',
+        '/services/residential-locksmith/lock-repair',
+        '/services/residential-locksmith/gate-locks',
+      ],
+      'commercial-locksmith': [
+        '/services/commercial-locksmith/lock-replacement',
+        '/services/commercial-locksmith/lock-rekey',
+        '/services/commercial-locksmith/emergency-exit-device',
+        '/services/commercial-locksmith/master-key',
+        '/services/commercial-locksmith/access-control',
+      ],
+      'auto-locksmith': [
+        '/services/auto-locksmith/car-key-replacement',
+        '/services/auto-locksmith/key-fob-programming',
+        '/services/auto-locksmith/car-key-duplicate',
+        '/services/auto-locksmith/car-key-cutting',
+        '/services/auto-locksmith/ignition-lock-cylinder',
+      ],
+    };
     
     // Convert service categories to link groups
-    const serviceGroups = Object.entries(serviceCategories).map(([category, links]) => ({
+    const serviceGroups = Object.entries(serviceCategories).map(([category, paths]) => ({
       title: category.split("-").map(word => 
         word.charAt(0).toUpperCase() + word.slice(1)
       ).join(" ") + " Services",
-      links,
+      links: paths.map(path => ({
+        path,
+        label: path.split("/").pop()?.split("-").map(word => 
+          word.charAt(0).toUpperCase() + word.slice(1)
+        ).join(" ") || path,
+      })),
     }));
     
     // Set all link groups
@@ -77,8 +98,7 @@ const Sitemap = () => {
       ...serviceGroups,
     ]);
     
-    // Generate XML sitemap and log it
-    console.log("Dynamic sitemap generated");
+    console.log("Sitemap page rendered with static route data");
   }, []);
   
   return (
