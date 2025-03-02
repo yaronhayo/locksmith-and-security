@@ -66,10 +66,7 @@ const GoogleMap = ({
   };
   
   if (mapError) {
-    return <MapError 
-      error={mapError} 
-      resetErrorBoundary={handleRetry} 
-    />;
+    return <MapError error={mapError} resetErrorBoundary={handleRetry} />;
   }
 
   return (

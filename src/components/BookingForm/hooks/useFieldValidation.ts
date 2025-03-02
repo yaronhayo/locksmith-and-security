@@ -43,50 +43,40 @@ export const useFieldValidation = ({
     phone: false
   });
 
-  // Validate name when it changes and is dirty
+  // Validate field when it changes and is dirty
   useEffect(() => {
     if (isDirty.name) {
-      setInternalErrors(prev => ({ 
-        ...prev, 
-        name: getNameError(name) 
-      }));
+      setInternalErrors(prev => ({ ...prev, name: getNameError(name) }));
     }
   }, [name, isDirty.name]);
 
-  // Validate email when it changes and is dirty
   useEffect(() => {
     if (isDirty.email) {
-      setInternalErrors(prev => ({ 
-        ...prev, 
-        email: getEmailError(email) 
-      }));
+      setInternalErrors(prev => ({ ...prev, email: getEmailError(email) }));
     }
   }, [email, isDirty.email]);
 
-  // Validate phone when it changes and is dirty
   useEffect(() => {
     if (isDirty.phone) {
-      setInternalErrors(prev => ({ 
-        ...prev, 
-        phone: getPhoneError(phone) 
-      }));
+      setInternalErrors(prev => ({ ...prev, phone: getPhoneError(phone) }));
     }
   }, [phone, isDirty.phone]);
 
-  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setName(e.target.value);
-    if (!isDirty.name) setIsDirty(prev => ({ ...prev, name: true }));
+  const handleInputChange = (field: keyof ValidationState, e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    
+    if (field === 'name') setName(value);
+    else if (field === 'email') setEmail(value);
+    else if (field === 'phone') setPhone(value);
+    
+    if (!isDirty[field]) {
+      setIsDirty(prev => ({ ...prev, [field]: true }));
+    }
   };
 
-  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setEmail(e.target.value);
-    if (!isDirty.email) setIsDirty(prev => ({ ...prev, email: true }));
-  };
-
-  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setPhone(e.target.value);
-    if (!isDirty.phone) setIsDirty(prev => ({ ...prev, phone: true }));
-  };
+  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => handleInputChange('name', e);
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => handleInputChange('email', e);
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => handleInputChange('phone', e);
 
   const markFieldAsDirty = (field: keyof DirtyState) => {
     setIsDirty(prev => ({ ...prev, [field]: true }));

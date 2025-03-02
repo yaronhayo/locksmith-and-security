@@ -17,7 +17,7 @@ export interface PageLayoutProps {
   ogImage?: string;
   ogType?: "website" | "article" | "product" | "profile" | "book";
   children: React.ReactNode;
-  schema?: any | any[]; // Clarify that schema can be an array or single object
+  schema?: any | any[]; // Updated to match MetaTags
   className?: string;
   breadcrumbs?: BreadcrumbItem[];
   customBreadcrumbs?: BreadcrumbItem[];

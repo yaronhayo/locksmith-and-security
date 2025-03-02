@@ -12,7 +12,7 @@ export interface MetaTagsProps {
   noindex?: boolean;
   nofollow?: boolean;
   modifiedDate?: string;
-  schema?: any | any[]; // Add support for schema data
+  schema?: any | any[]; // Schema can be a single object or array
 }
 
 const MetaTags: React.FC<MetaTagsProps> = ({

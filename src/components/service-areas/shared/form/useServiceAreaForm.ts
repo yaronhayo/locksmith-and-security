@@ -54,6 +54,7 @@ export const useServiceAreaForm = () => {
   const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
   const [recaptchaError, setRecaptchaError] = useState<string | null>(null);
   
+  // Validate fields when they change and are dirty
   useEffect(() => {
     if (isDirty.name) {
       setErrors(prev => ({ ...prev, name: getNameError(formState.name) }));
@@ -73,10 +74,10 @@ export const useServiceAreaForm = () => {
   }, [formState.phone, isDirty.phone]);
   
   useEffect(() => {
-    if (isDirty.address && formState.address) {
+    if (isDirty.address && formState.address !== undefined) {
       setErrors(prev => ({ 
         ...prev, 
-        address: formState.address && formState.address.trim() === '' ? 'Address is required' : null 
+        address: formState.address.trim() === '' ? 'Address is required' : null 
       }));
     }
   }, [formState.address, isDirty.address]);
@@ -86,18 +87,12 @@ export const useServiceAreaForm = () => {
     
     setFormState(prev => ({ ...prev, [name]: value }));
     
-    if (name === 'name' && !isDirty.name) {
-      setIsDirty(prev => ({ ...prev, name: true }));
-    } else if (name === 'email' && !isDirty.email) {
-      setIsDirty(prev => ({ ...prev, email: true }));
-    } else if (name === 'phone' && !isDirty.phone) {
-      setIsDirty(prev => ({ ...prev, phone: true }));
-    } else if (name === 'address' && !isDirty.address) {
-      setIsDirty(prev => ({ ...prev, address: true }));
+    if (!isDirty[name as keyof IsDirty]) {
+      setIsDirty(prev => ({ ...prev, [name]: true }));
     }
   }, [isDirty]);
   
-  const handleBlur = useCallback((field: 'name' | 'email' | 'phone' | 'address') => {
+  const handleBlur = useCallback((field: keyof IsDirty) => {
     setIsDirty(prev => ({ ...prev, [field]: true }));
   }, []);
   
@@ -123,6 +118,7 @@ export const useServiceAreaForm = () => {
   const handleSubmit = useCallback((e: React.FormEvent) => {
     e.preventDefault();
     
+    // Mark all fields as dirty for validation
     setIsDirty({
       name: true,
       email: true,
@@ -130,6 +126,7 @@ export const useServiceAreaForm = () => {
       address: true
     });
     
+    // Validate all fields
     const newErrors = {
       name: getNameError(formState.name) || (formState.name.trim() === '' ? 'Name is required' : null),
       email: getEmailError(formState.email) || (formState.email.trim() === '' ? 'Email is required' : null),
@@ -150,10 +147,12 @@ export const useServiceAreaForm = () => {
     
     setIsSubmitting(true);
     
+    // Simulate form submission
     setTimeout(() => {
       setIsSubmitting(false);
       setIsSubmitted(true);
       
+      // Reset form state
       setFormState({
         name: "",
         email: "",
