@@ -7,6 +7,12 @@ import ErrorFallback from "@/components/ErrorFallback";
 import MetaTags from "./MetaTags";
 import PageHero from "./PageHero";
 import PageLoading from "./PageLoading";
+import { createBreadcrumbSchema } from "../meta/schema/BreadcrumbSchema";
+
+interface Schema {
+  type: string;
+  data: object;
+}
 
 interface PageLayoutProps {
   title: string;
@@ -16,12 +22,15 @@ interface PageLayoutProps {
   heroTitle?: string;
   heroDescription?: string;
   schema?: object;
+  schemas?: Schema[];
   canonicalUrl?: string;
   ogImage?: string;
   keywords?: string;
   isLoading?: boolean;
   noindex?: boolean;
   nofollow?: boolean;
+  breadcrumbs?: Array<{name: string, item: string}>;
+  ogType?: "website" | "article" | "product" | "profile" | "book";
 }
 
 const PageLayout = ({
@@ -32,15 +41,30 @@ const PageLayout = ({
   heroTitle,
   heroDescription,
   schema,
+  schemas = [],
   canonicalUrl,
   ogImage,
   keywords,
   isLoading = false,
   noindex = false,
   nofollow = false,
+  breadcrumbs,
+  ogType = "website",
 }: PageLayoutProps) => {
   if (isLoading) {
     return <PageLoading />;
+  }
+
+  // Add schema to schemas array if provided
+  const allSchemas = [...schemas];
+  if (schema) {
+    allSchemas.push({ type: 'schema', data: schema });
+  }
+  
+  // Add breadcrumb schema if breadcrumbs are provided
+  if (breadcrumbs && breadcrumbs.length > 0) {
+    const breadcrumbSchema = createBreadcrumbSchema({ breadcrumbs });
+    allSchemas.push(breadcrumbSchema);
   }
 
   return (
@@ -48,12 +72,13 @@ const PageLayout = ({
       <MetaTags
         title={title}
         description={description}
-        schema={schema}
+        schemas={allSchemas}
         canonicalUrl={canonicalUrl}
         ogImage={ogImage}
         keywords={keywords}
         noindex={noindex}
         nofollow={nofollow}
+        ogType={ogType}
       />
       
       {(heroTitle || heroDescription) && (

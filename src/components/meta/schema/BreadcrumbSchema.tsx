@@ -19,7 +19,7 @@ export const BreadcrumbSchema = ({ breadcrumbs, baseUrl = "https://247locksmitha
       "@type": "ListItem",
       "position": index + 1,
       "name": item.name,
-      "item": `${baseUrl}${item.item}`
+      "item": item.item.startsWith('http') ? item.item : `${baseUrl}${item.item}`
     }))
   };
 
@@ -41,7 +41,7 @@ export const createBreadcrumbSchema = ({ breadcrumbs, baseUrl = "https://247lock
       "@type": "ListItem",
       "position": index + 1,
       "name": item.name,
-      "item": `${baseUrl}${item.item}`
+      "item": item.item.startsWith('http') ? item.item : `${baseUrl}${item.item}`
     }))
   }
 });

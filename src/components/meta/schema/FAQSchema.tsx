@@ -1,9 +1,11 @@
 
+interface Question {
+  question: string;
+  answer: string;
+}
+
 interface FAQSchemaProps {
-  questions: Array<{
-    question: string;
-    answer: string;
-  }>;
+  questions: Question[];
 }
 
 export const createFAQSchema = ({ questions }: FAQSchemaProps) => ({
@@ -11,12 +13,12 @@ export const createFAQSchema = ({ questions }: FAQSchemaProps) => ({
   data: {
     "@context": "https://schema.org",
     "@type": "FAQPage",
-    "mainEntity": questions.map(q => ({
+    "mainEntity": questions.map(faq => ({
       "@type": "Question",
-      "name": q.question,
+      "name": faq.question,
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": q.answer
+        "text": faq.answer
       }
     }))
   }
