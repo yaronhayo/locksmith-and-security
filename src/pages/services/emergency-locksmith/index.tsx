@@ -1,4 +1,3 @@
-
 import React, { useState, useRef } from "react";
 import PageLayout from "@/components/layouts/PageLayout";
 import ServicesHero from "@/components/sections/services/ServicesHero";
@@ -85,7 +84,6 @@ const RealLifeStories = () => {
       setCurrent(api.selectedScrollSnap());
     });
 
-    // Start the autoplay function
     const startAutoplay = () => {
       intervalRef.current = setInterval(() => {
         if (!isPaused && api.canScrollNext()) {
@@ -93,10 +91,9 @@ const RealLifeStories = () => {
         } else if (!isPaused) {
           api.scrollTo(0);
         }
-      }, 3500); // Increased to 3.5 seconds
+      }, 3500);
     };
 
-    // Clear the interval
     const stopAutoplay = () => {
       if (intervalRef.current) {
         clearInterval(intervalRef.current);
@@ -104,28 +101,22 @@ const RealLifeStories = () => {
       }
     };
 
-    // Initialize autoplay
     startAutoplay();
 
-    // Clean up on unmount
     return () => {
       stopAutoplay();
     };
   }, [api, isPaused]);
 
-  // Function to truncate text and add ellipsis at the end of a word
   const truncateText = (text: string, maxLength: number) => {
     if (text.length <= maxLength) return text;
     
-    // Find the last space before maxLength
     const lastSpaceIndex = text.lastIndexOf(' ', maxLength);
     
     if (lastSpaceIndex === -1) {
-      // If no space found, just cut at maxLength
       return text.substring(0, maxLength) + '...';
     }
     
-    // Find the last word and truncate it in the middle
     const truncatedText = text.substring(0, lastSpaceIndex);
     const lastWord = text.substring(lastSpaceIndex + 1).split(' ')[0];
     const halfWordLength = Math.floor(lastWord.length / 2);
@@ -295,7 +286,7 @@ const EmergencyLocksmithPage = () => {
       <ServicesFeatures />
       <RealLifeStories />
       <FAQSection title="Emergency Locksmith FAQs" description="Common questions about our emergency locksmith services" faqs={emergencyFaqs} />
-      <ReviewsSection location="North Bergen" reviewData={carServiceReviews} category="emergency" />
+      <ReviewsSection location="North Bergen" category="emergency" reviewData={carServiceReviews} />
       <ServicesCTA />
     </PageLayout>;
 };

@@ -4,17 +4,18 @@ import { useReviews } from "@/components/reviews/useReviews";
 import ReviewsContainer from "@/components/reviews/ReviewsContainer";
 import { ErrorBoundary } from "react-error-boundary";
 import ErrorFallback from "@/components/ErrorFallback";
-import type { ServiceCategory } from "@/types/reviews";
+import type { Review, ServiceCategory } from "@/types/reviews";
 import LoadingSpinner from "@/components/LoadingSpinner";
 import ReviewsLoadingSkeleton from "@/components/reviews/ReviewsLoadingSkeleton";
 
-interface ReviewsSectionProps {
+export interface ReviewsSectionProps {
   location?: string;
   category?: ServiceCategory;
+  reviewData?: Review[];
 }
 
-const ReviewsContent = memo(({ location, category }: ReviewsSectionProps) => {
-  const { displayedReviews, isLoading, loadingRef, totalReviews } = useReviews(location, category);
+const ReviewsContent = memo(({ location, category, reviewData }: ReviewsSectionProps) => {
+  const { displayedReviews, isLoading, loadingRef, totalReviews } = useReviews(location, category, reviewData);
 
   return (
     <>
@@ -32,7 +33,7 @@ const ReviewsContent = memo(({ location, category }: ReviewsSectionProps) => {
 
 ReviewsContent.displayName = 'ReviewsContent';
 
-const ReviewsSection = memo(({ location, category }: ReviewsSectionProps) => {
+const ReviewsSection = memo(({ location, category, reviewData }: ReviewsSectionProps) => {
   const errorHandler = useCallback((error: Error, info: { componentStack: string }) => {
     console.error("Error in ReviewsSection:", error, info);
     return <ErrorFallback error={error} resetErrorBoundary={() => window.location.reload()} />;
@@ -41,7 +42,7 @@ const ReviewsSection = memo(({ location, category }: ReviewsSectionProps) => {
   return (
     <ErrorBoundary FallbackComponent={ErrorFallback} onError={errorHandler}>
       <Suspense fallback={<ReviewsLoadingSkeleton />}>
-        <ReviewsContent location={location} category={category} />
+        <ReviewsContent location={location} category={category} reviewData={reviewData} />
       </Suspense>
     </ErrorBoundary>
   );

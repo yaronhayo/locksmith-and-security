@@ -1,5 +1,5 @@
 
-export type ServiceCategory = 'car' | 'residential' | 'commercial';
+export type ServiceCategory = 'car' | 'residential' | 'commercial' | 'emergency';
 
 export interface Review {
   name: string;
@@ -14,6 +14,7 @@ export interface ReviewsByCategory {
   car: Review[];
   residential: Review[];
   commercial: Review[];
+  emergency: Review[];
 }
 
 export type ServiceType = {
