@@ -1,6 +1,5 @@
-
 import React from 'react';
-import { Check, ShieldCheck, Key, Lock, Tool } from 'lucide-react';
+import { Check, ShieldCheck, Key, Lock, Wrench } from 'lucide-react';
 
 export const LockReplacementContent = () => {
   return (
@@ -83,7 +82,7 @@ export const LockReplacementContent = () => {
           <div className="bg-white p-5 rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
             <div className="flex items-center gap-3 mb-3">
               <div className="bg-primary/10 p-2 rounded-full">
-                <Tool className="text-primary h-5 w-5" />
+                <Wrench className="text-primary h-5 w-5" />
               </div>
               <h4 className="font-bold">Old or Worn Locks</h4>
             </div>
