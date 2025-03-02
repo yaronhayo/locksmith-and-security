@@ -1,57 +1,67 @@
 
 import { Link } from "react-router-dom";
 import { Key, Home, Building2, Car, ArrowRight } from "lucide-react";
-import {
-  NavigationMenuContent
-} from "@/components/ui/navigation-menu";
+import { NavigationMenuContent } from "@/components/ui/navigation-menu";
+
+// Service category definitions
+const serviceCategories = [
+  {
+    title: "Emergency",
+    icon: Key,
+    items: [
+      { path: "/services/emergency-locksmith/car-lockout", label: "Car Lockout" },
+      { path: "/services/emergency-locksmith/house-lockout", label: "House Lockout" },
+      { path: "/services/emergency-locksmith/business-lockout", label: "Business Lockout" },
+      { path: "/services/emergency-locksmith/storage-unit-lockout", label: "Storage Unit Lockout" }
+    ]
+  },
+  {
+    title: "Residential",
+    icon: Home,
+    items: [
+      { path: "/services/residential-locksmith/lock-replacement", label: "Lock Replacement" },
+      { path: "/services/residential-locksmith/lock-rekey", label: "Lock Rekey" },
+      { path: "/services/residential-locksmith/lock-repair", label: "Lock Repair" },
+      { path: "/services/residential-locksmith/gate-locks", label: "Gate Locks" }
+    ]
+  },
+  {
+    title: "Commercial",
+    icon: Building2,
+    items: [
+      { path: "/services/commercial-locksmith/lock-replacement", label: "Commercial Lock Replacement" },
+      { path: "/services/commercial-locksmith/lock-rekey", label: "Commercial Lock Rekey" },
+      { path: "/services/commercial-locksmith/emergency-exit-device", label: "Emergency Exit Device" },
+      { path: "/services/commercial-locksmith/master-key", label: "Master Key Systems" },
+      { path: "/services/commercial-locksmith/access-control", label: "Access Control" }
+    ]
+  },
+  {
+    title: "Automotive",
+    icon: Car,
+    items: [
+      { path: "/services/auto-locksmith/car-key-replacement", label: "Car Key Replacement" },
+      { path: "/services/auto-locksmith/key-fob-programming", label: "Key Fob Programming" },
+      { path: "/services/auto-locksmith/car-key-duplicate", label: "Car Key Duplicate" },
+      { path: "/services/auto-locksmith/car-key-cutting", label: "Car Key Cutting" },
+      { path: "/services/auto-locksmith/ignition-lock-cylinder", label: "Ignition Lock Cylinder" }
+    ]
+  }
+];
 
 const ServicesMegaMenu = () => {
   return (
     <NavigationMenuContent>
       <div className="w-[850px] p-6 bg-white">
         <div className="grid grid-cols-4 gap-6">
-          <ServiceCategory 
-            title="Emergency" 
-            icon={<Key className="h-4 w-4" />}
-            items={[
-              { path: "/services/emergency-locksmith/car-lockout", label: "Car Lockout" },
-              { path: "/services/emergency-locksmith/house-lockout", label: "House Lockout" },
-              { path: "/services/emergency-locksmith/business-lockout", label: "Business Lockout" },
-              { path: "/services/emergency-locksmith/storage-unit-lockout", label: "Storage Unit Lockout" }
-            ]}
-          />
-          <ServiceCategory 
-            title="Residential" 
-            icon={<Home className="h-4 w-4" />}
-            items={[
-              { path: "/services/residential-locksmith/lock-replacement", label: "Lock Replacement" },
-              { path: "/services/residential-locksmith/lock-rekey", label: "Lock Rekey" },
-              { path: "/services/residential-locksmith/lock-repair", label: "Lock Repair" },
-              { path: "/services/residential-locksmith/gate-locks", label: "Gate Locks" }
-            ]}
-          />
-          <ServiceCategory 
-            title="Commercial" 
-            icon={<Building2 className="h-4 w-4" />}
-            items={[
-              { path: "/services/commercial-locksmith/lock-replacement", label: "Commercial Lock Replacement" },
-              { path: "/services/commercial-locksmith/lock-rekey", label: "Commercial Lock Rekey" },
-              { path: "/services/commercial-locksmith/emergency-exit-device", label: "Emergency Exit Device" },
-              { path: "/services/commercial-locksmith/master-key", label: "Master Key Systems" },
-              { path: "/services/commercial-locksmith/access-control", label: "Access Control" }
-            ]}
-          />
-          <ServiceCategory 
-            title="Automotive" 
-            icon={<Car className="h-4 w-4" />}
-            items={[
-              { path: "/services/auto-locksmith/car-key-replacement", label: "Car Key Replacement" },
-              { path: "/services/auto-locksmith/key-fob-programming", label: "Key Fob Programming" },
-              { path: "/services/auto-locksmith/car-key-duplicate", label: "Car Key Duplicate" },
-              { path: "/services/auto-locksmith/car-key-cutting", label: "Car Key Cutting" },
-              { path: "/services/auto-locksmith/ignition-lock-cylinder", label: "Ignition Lock Cylinder" }
-            ]}
-          />
+          {serviceCategories.map((category, index) => (
+            <ServiceCategory 
+              key={index}
+              title={category.title} 
+              icon={<category.icon className="h-4 w-4" />}
+              items={category.items}
+            />
+          ))}
         </div>
       </div>
     </NavigationMenuContent>

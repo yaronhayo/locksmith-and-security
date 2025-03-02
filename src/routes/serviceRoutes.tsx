@@ -1,6 +1,7 @@
+
 import { lazy } from 'react';
-import PageLayout from "@/components/layouts/PageLayout";
-import { createBreadcrumbSchema } from "@/components/meta/schema/BreadcrumbSchema";
+import { createPageRoute } from './utils';
+import { RouteConfig } from './types';
 
 // Category Landing Pages
 const EmergencyLocksmith = lazy(() => import("@/pages/services/emergency-locksmith"));
@@ -34,170 +35,171 @@ const CarKeyDuplicate = lazy(() => import("@/pages/services/auto-locksmith/car-k
 const CarKeyCutting = lazy(() => import("@/pages/services/auto-locksmith/car-key-cutting"));
 const IgnitionLockCylinder = lazy(() => import("@/pages/services/auto-locksmith/ignition-lock-cylinder"));
 
-// Helper function to create breadcrumbs for service pages
-const createServiceBreadcrumbs = (category: string, service: string) => {
-  return createBreadcrumbSchema({
-    breadcrumbs: [
-      { name: "Home", item: "/" },
-      { name: "Services", item: "/services" },
-      { name: category, item: `/services/${category.toLowerCase().replace(' ', '-')}` },
-      { name: service, item: `/services/${category.toLowerCase().replace(' ', '-')}/${service.toLowerCase().replace(' ', '-')}` }
-    ]
-  });
-};
-
-export const serviceRoutes = [
-  // Category Landing Pages
-  {
-    path: "/services/emergency-locksmith",
-    element: <PageLayout 
-      title="Emergency Locksmith Services | 24/7 Urgent Locksmith Solutions" 
-      description="Immediate 24/7 emergency locksmith services for car lockouts, home lockouts, business lockouts and more. Fast response, competitive rates, and licensed professionals."
-      keywords="emergency locksmith, 24/7 locksmith, lockout service, car lockout, house lockout, business lockout, urgent locksmith"
-      canonicalUrl="/services/emergency-locksmith"
-      breadcrumbs={[
+// Category routes
+const categoryRoutes: RouteConfig[] = [
+  createPageRoute(
+    "/services/emergency-locksmith",
+    <EmergencyLocksmith />,
+    {
+      title: "Emergency Locksmith Services | 24/7 Urgent Locksmith Solutions",
+      description: "Immediate 24/7 emergency locksmith services for car lockouts, home lockouts, business lockouts and more. Fast response, competitive rates, and licensed professionals.",
+      keywords: "emergency locksmith, 24/7 locksmith, lockout service, car lockout, house lockout, business lockout, urgent locksmith",
+      canonicalUrl: "/services/emergency-locksmith",
+      breadcrumbs: [
         { name: "Home", item: "/" },
         { name: "Services", item: "/services" },
         { name: "Emergency Locksmith", item: "/services/emergency-locksmith" }
-      ]}
-      ogImage="/lovable-uploads/308ce2b0-551b-48b6-b078-c7e793fa2153.png"
-      ogType="article"
-    >
-      <EmergencyLocksmith />
-    </PageLayout>
-  },
-  {
-    path: "/services/residential-locksmith",
-    element: <PageLayout 
-      title="Residential Locksmith Services | Home Security Solutions" 
-      description="Professional residential locksmith solutions including lock installation, repair, rekey, and upgrade services. Enhance your home security with our expert locksmiths."
-      keywords="residential locksmith, home locksmith, house locks, door locks, lock installation, lock repair, lock rekey, deadbolt installation"
-      canonicalUrl="/services/residential-locksmith"
-      breadcrumbs={[
+      ],
+      ogImage: "/lovable-uploads/308ce2b0-551b-48b6-b078-c7e793fa2153.png",
+      ogType: "article"
+    }
+  ),
+  createPageRoute(
+    "/services/residential-locksmith",
+    <ResidentialLocksmith />,
+    {
+      title: "Residential Locksmith Services | Home Security Solutions",
+      description: "Professional residential locksmith solutions including lock installation, repair, rekey, and upgrade services. Enhance your home security with our expert locksmiths.",
+      keywords: "residential locksmith, home locksmith, house locks, door locks, lock installation, lock repair, lock rekey, deadbolt installation",
+      canonicalUrl: "/services/residential-locksmith",
+      breadcrumbs: [
         { name: "Home", item: "/" },
         { name: "Services", item: "/services" },
         { name: "Residential Locksmith", item: "/services/residential-locksmith" }
-      ]}
-      ogImage="/lovable-uploads/5769d20e-e251-4e5f-a743-870d5c267bd1.png"
-      ogType="article"
-    >
-      <ResidentialLocksmith />
-    </PageLayout>
-  },
-  {
-    path: "/services/commercial-locksmith",
-    element: <PageLayout 
-      title="Commercial Locksmith Services | Business Security Solutions" 
-      description="Expert commercial locksmith solutions including master key systems, access control, high-security locks, and emergency exit devices for businesses of all sizes."
-      keywords="commercial locksmith, business locksmith, commercial security, master key system, access control, high-security locks, emergency exit device"
-      canonicalUrl="/services/commercial-locksmith"
-      breadcrumbs={[
+      ],
+      ogImage: "/lovable-uploads/5769d20e-e251-4e5f-a743-870d5c267bd1.png",
+      ogType: "article"
+    }
+  ),
+  createPageRoute(
+    "/services/commercial-locksmith",
+    <CommercialLocksmith />,
+    {
+      title: "Commercial Locksmith Services | Business Security Solutions",
+      description: "Expert commercial locksmith solutions including master key systems, access control, high-security locks, and emergency exit devices for businesses of all sizes.",
+      keywords: "commercial locksmith, business locksmith, commercial security, master key system, access control, high-security locks, emergency exit device",
+      canonicalUrl: "/services/commercial-locksmith",
+      breadcrumbs: [
         { name: "Home", item: "/" },
         { name: "Services", item: "/services" },
         { name: "Commercial Locksmith", item: "/services/commercial-locksmith" }
-      ]}
-      ogImage="/lovable-uploads/1bbeb1e6-5581-4e09-9600-7d1859bb17c5.png"
-      ogType="article"
-    >
-      <CommercialLocksmith />
-    </PageLayout>
-  },
-  {
-    path: "/services/auto-locksmith",
-    element: <PageLayout 
-      title="Auto Locksmith Services | Car Key & Lock Solutions" 
-      description="Professional automotive locksmith services including car key replacement, key fob programming, ignition repair, and car lockouts. Service for all vehicle makes and models."
-      keywords="auto locksmith, car locksmith, car key replacement, key fob programming, car lockout, ignition repair, car key duplication"
-      canonicalUrl="/services/auto-locksmith"
-      breadcrumbs={[
+      ],
+      ogImage: "/lovable-uploads/1bbeb1e6-5581-4e09-9600-7d1859bb17c5.png",
+      ogType: "article"
+    }
+  ),
+  createPageRoute(
+    "/services/auto-locksmith",
+    <AutoLocksmith />,
+    {
+      title: "Auto Locksmith Services | Car Key & Lock Solutions",
+      description: "Professional automotive locksmith services including car key replacement, key fob programming, ignition repair, and car lockouts. Service for all vehicle makes and models.",
+      keywords: "auto locksmith, car locksmith, car key replacement, key fob programming, car lockout, ignition repair, car key duplication",
+      canonicalUrl: "/services/auto-locksmith",
+      breadcrumbs: [
         { name: "Home", item: "/" },
         { name: "Services", item: "/services" },
         { name: "Auto Locksmith", item: "/services/auto-locksmith" }
-      ]}
-      ogImage="/lovable-uploads/88d354ba-8149-4bb1-9347-d5d0ff65dfe5.png"
-      ogType="article"
-    >
-      <AutoLocksmith />
-    </PageLayout>
-  },
+      ],
+      ogImage: "/lovable-uploads/88d354ba-8149-4bb1-9347-d5d0ff65dfe5.png",
+      ogType: "article"
+    }
+  )
+];
 
-  // Emergency Locksmith Services
-  {
-    path: "/services/emergency-locksmith/car-lockout",
-    element: <PageLayout title="24/7 Car Lockout Service" description="Emergency car lockout assistance"><CarLockout /></PageLayout>
-  },
-  {
-    path: "/services/emergency-locksmith/house-lockout",
-    element: <PageLayout title="24/7 House Lockout Service" description="Emergency house lockout solutions"><HouseLockout /></PageLayout>
-  },
-  {
-    path: "/services/emergency-locksmith/business-lockout",
-    element: <PageLayout title="24/7 Business Lockout Service" description="Emergency business lockout assistance"><BusinessLockout /></PageLayout>
-  },
-  {
-    path: "/services/emergency-locksmith/storage-unit-lockout",
-    element: <PageLayout title="Storage Unit Lockout Service" description="Emergency storage unit lockout solutions"><StorageUnitLockout /></PageLayout>
-  },
+// Emergency Locksmith service routes
+const emergencyServiceRoutes: RouteConfig[] = [
+  createPageRoute("/services/emergency-locksmith/car-lockout", <CarLockout />, {
+    title: "24/7 Car Lockout Service",
+    description: "Emergency car lockout assistance"
+  }),
+  createPageRoute("/services/emergency-locksmith/house-lockout", <HouseLockout />, {
+    title: "24/7 House Lockout Service",
+    description: "Emergency house lockout solutions"
+  }),
+  createPageRoute("/services/emergency-locksmith/business-lockout", <BusinessLockout />, {
+    title: "24/7 Business Lockout Service",
+    description: "Emergency business lockout assistance"
+  }),
+  createPageRoute("/services/emergency-locksmith/storage-unit-lockout", <StorageUnitLockout />, {
+    title: "Storage Unit Lockout Service",
+    description: "Emergency storage unit lockout solutions"
+  })
+];
 
-  // Residential Locksmith Services
-  {
-    path: "/services/residential-locksmith/lock-replacement",
-    element: <PageLayout title="Residential Lock Replacement" description="Professional lock replacement services"><LockReplacement /></PageLayout>
-  },
-  {
-    path: "/services/residential-locksmith/lock-rekey",
-    element: <PageLayout title="Residential Lock Rekey" description="Expert lock rekeying solutions"><LockRekey /></PageLayout>
-  },
-  {
-    path: "/services/residential-locksmith/lock-repair",
-    element: <PageLayout title="Lock Repair Service" description="Professional lock repair solutions"><LockRepair /></PageLayout>
-  },
-  {
-    path: "/services/residential-locksmith/gate-locks",
-    element: <PageLayout title="Gate Lock Installation & Repair" description="Professional gate lock services"><GateLocks /></PageLayout>
-  },
+// Residential Locksmith service routes
+const residentialServiceRoutes: RouteConfig[] = [
+  createPageRoute("/services/residential-locksmith/lock-replacement", <LockReplacement />, {
+    title: "Residential Lock Replacement",
+    description: "Professional lock replacement services"
+  }),
+  createPageRoute("/services/residential-locksmith/lock-rekey", <LockRekey />, {
+    title: "Residential Lock Rekey",
+    description: "Expert lock rekeying solutions"
+  }),
+  createPageRoute("/services/residential-locksmith/lock-repair", <LockRepair />, {
+    title: "Lock Repair Service",
+    description: "Professional lock repair solutions"
+  }),
+  createPageRoute("/services/residential-locksmith/gate-locks", <GateLocks />, {
+    title: "Gate Lock Installation & Repair",
+    description: "Professional gate lock services"
+  })
+];
 
-  // Commercial Locksmith Services
-  {
-    path: "/services/commercial-locksmith/lock-replacement",
-    element: <PageLayout title="Commercial Lock Replacement" description="Professional commercial lock replacement"><CommercialLockReplacement /></PageLayout>
-  },
-  {
-    path: "/services/commercial-locksmith/lock-rekey",
-    element: <PageLayout title="Commercial Lock Rekey" description="Expert commercial lock rekeying"><CommercialLockRekey /></PageLayout>
-  },
-  {
-    path: "/services/commercial-locksmith/emergency-exit-device",
-    element: <PageLayout title="Emergency Exit Device Installation" description="Professional push-bar installation"><EmergencyExitDevice /></PageLayout>
-  },
-  {
-    path: "/services/commercial-locksmith/master-key",
-    element: <PageLayout title="Master Key System" description="Professional master key system solutions"><MasterKey /></PageLayout>
-  },
-  {
-    path: "/services/commercial-locksmith/access-control",
-    element: <PageLayout title="Access Control Systems" description="Professional access control solutions"><AccessControl /></PageLayout>
-  },
+// Commercial Locksmith service routes
+const commercialServiceRoutes: RouteConfig[] = [
+  createPageRoute("/services/commercial-locksmith/lock-replacement", <CommercialLockReplacement />, {
+    title: "Commercial Lock Replacement",
+    description: "Professional commercial lock replacement"
+  }),
+  createPageRoute("/services/commercial-locksmith/lock-rekey", <CommercialLockRekey />, {
+    title: "Commercial Lock Rekey",
+    description: "Expert commercial lock rekeying"
+  }),
+  createPageRoute("/services/commercial-locksmith/emergency-exit-device", <EmergencyExitDevice />, {
+    title: "Emergency Exit Device Installation",
+    description: "Professional push-bar installation"
+  }),
+  createPageRoute("/services/commercial-locksmith/master-key", <MasterKey />, {
+    title: "Master Key System",
+    description: "Professional master key system solutions"
+  }),
+  createPageRoute("/services/commercial-locksmith/access-control", <AccessControl />, {
+    title: "Access Control Systems",
+    description: "Professional access control solutions"
+  })
+];
 
-  // Auto Locksmith Services
-  {
-    path: "/services/auto-locksmith/car-key-replacement",
-    element: <PageLayout title="Car Key Replacement" description="Professional car key replacement service"><CarKeyReplacement /></PageLayout>
-  },
-  {
-    path: "/services/auto-locksmith/key-fob-programming",
-    element: <PageLayout title="Key Fob Programming" description="Professional key fob programming service"><KeyFobProgramming /></PageLayout>
-  },
-  {
-    path: "/services/auto-locksmith/car-key-duplicate",
-    element: <PageLayout title="Car Key Duplication" description="Professional car key duplication service"><CarKeyDuplicate /></PageLayout>
-  },
-  {
-    path: "/services/auto-locksmith/car-key-cutting",
-    element: <PageLayout title="Car Key Cutting" description="Professional car key cutting service"><CarKeyCutting /></PageLayout>
-  },
-  {
-    path: "/services/auto-locksmith/ignition-lock-cylinder",
-    element: <PageLayout title="Ignition Lock Cylinder Replacement" description="Professional ignition lock cylinder service"><IgnitionLockCylinder /></PageLayout>
-  }
+// Auto Locksmith service routes
+const autoServiceRoutes: RouteConfig[] = [
+  createPageRoute("/services/auto-locksmith/car-key-replacement", <CarKeyReplacement />, {
+    title: "Car Key Replacement",
+    description: "Professional car key replacement service"
+  }),
+  createPageRoute("/services/auto-locksmith/key-fob-programming", <KeyFobProgramming />, {
+    title: "Key Fob Programming",
+    description: "Professional key fob programming service"
+  }),
+  createPageRoute("/services/auto-locksmith/car-key-duplicate", <CarKeyDuplicate />, {
+    title: "Car Key Duplication",
+    description: "Professional car key duplication service"
+  }),
+  createPageRoute("/services/auto-locksmith/car-key-cutting", <CarKeyCutting />, {
+    title: "Car Key Cutting",
+    description: "Professional car key cutting service"
+  }),
+  createPageRoute("/services/auto-locksmith/ignition-lock-cylinder", <IgnitionLockCylinder />, {
+    title: "Ignition Lock Cylinder Replacement",
+    description: "Professional ignition lock cylinder service"
+  })
+];
+
+// Export combined service routes
+export const serviceRoutes: RouteConfig[] = [
+  ...categoryRoutes,
+  ...emergencyServiceRoutes,
+  ...residentialServiceRoutes,
+  ...commercialServiceRoutes,
+  ...autoServiceRoutes
 ];

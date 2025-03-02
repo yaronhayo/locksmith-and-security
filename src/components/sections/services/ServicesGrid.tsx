@@ -4,7 +4,17 @@ import { trackComponentRender } from "@/utils/performanceMonitoring";
 import ServicesSectionHeader from "./ServicesSectionHeader";
 import ServicesCardGrid from "./ServicesCardGrid";
 
-const ServicesGrid = memo(() => {
+interface ServicesGridProps {
+  title?: string;
+  description?: string;
+  className?: string;
+}
+
+const ServicesGrid = memo(({ 
+  title = "Professional Locksmith Services",
+  description = "Expert security solutions for all your residential, commercial, and automotive needs",
+  className = "py-24 bg-gradient-to-b from-white to-gray-50"
+}: ServicesGridProps) => {
   const finishRenderTracking = trackComponentRender('ServicesGrid');
   
   useEffect(() => {
@@ -12,11 +22,11 @@ const ServicesGrid = memo(() => {
   }, []);
 
   return (
-    <section className="py-24 bg-gradient-to-b from-white to-gray-50">
+    <section className={className}>
       <div className="container mx-auto px-4 flex flex-col items-center">
         <ServicesSectionHeader 
-          title="Professional Locksmith Services"
-          description="Expert security solutions for all your residential, commercial, and automotive needs"
+          title={title}
+          description={description}
         />
         
         <ServicesCardGrid />

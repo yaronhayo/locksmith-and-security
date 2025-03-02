@@ -8,6 +8,7 @@ import { serviceAreaRoutes } from "./routes/serviceAreaRoutes";
 import PageLoading from "./components/layouts/PageLoading";
 import ErrorFallback from "./components/ErrorFallback";
 import { RouteErrorBoundary } from "./components/layouts/RouteErrorBoundary";
+import { RouteConfig } from './routes/types';
 
 // Lazy load the 404 page
 const NotFound = lazy(() => import('./pages/404'));
@@ -30,8 +31,8 @@ RouteWrapper.displayName = 'RouteWrapper';
  * Renders all application routes with error boundaries and suspense
  */
 const Routes = () => {
-  // Map route data to Route components 
-  const renderRouteComponents = (routes: { path: string; element: ReactNode }[]) => {
+  // Map route data to Route components
+  const renderRouteComponents = (routes: RouteConfig[]) => {
     return routes.map(({ path, element }) => (
       <Route 
         key={path} 
