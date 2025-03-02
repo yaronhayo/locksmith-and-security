@@ -36,6 +36,7 @@ const GoogleMapsProvider = ({ children }: GoogleMapsProviderProps) => {
     setScriptError(null);
     scriptAttempted = true;
     scriptLoaded = true;
+    toast.success("Map loaded successfully");
   }, []);
 
   const handleError = useCallback((error: Error) => {
@@ -108,7 +109,7 @@ const GoogleMapsProvider = ({ children }: GoogleMapsProviderProps) => {
   if (!apiKey) {
     console.error("No API key available");
     return <MapError 
-      error="Google Maps API key not found" 
+      error="Google Maps API key not found. Please check your settings table in Supabase." 
       resetErrorBoundary={() => { clearMapConfigCache(); refetch(); }} 
     />;
   }

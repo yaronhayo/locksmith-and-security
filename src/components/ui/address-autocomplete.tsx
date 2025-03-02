@@ -6,6 +6,7 @@ import { InputHTMLAttributes } from "react";
 import { Loader2, RefreshCw } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 
 type AddressAutocompleteProps = Omit<InputHTMLAttributes<HTMLInputElement>, 'onChange'> & {
   value: string;
@@ -70,6 +71,7 @@ const AddressAutocomplete = ({
           if (place?.formatted_address) {
             onChange(place.formatted_address);
             console.log("Selected address:", place.formatted_address);
+            toast.success("Address selected");
           }
         }
       );
@@ -93,7 +95,12 @@ const AddressAutocomplete = ({
     if (apiKey && !isInitialized) {
       const timer = setTimeout(() => {
         if (isGoogleMapsLoaded()) {
-          initializeAutocomplete();
+          const success = initializeAutocomplete();
+          if (success) {
+            console.log("Address autocomplete initialized successfully");
+          } else {
+            console.log("Failed to initialize address autocomplete, will retry");
+          }
         } else {
           console.log("Google Maps Places API not available yet, waiting...");
           setError("Google Maps Places API not loaded yet. Please try again in a moment.");
@@ -110,8 +117,10 @@ const AddressAutocomplete = ({
       const checkGoogleMapsInterval = setInterval(() => {
         if (isGoogleMapsLoaded()) {
           console.log("Google Maps Places API detected, initializing autocomplete");
-          initializeAutocomplete();
-          clearInterval(checkGoogleMapsInterval);
+          const success = initializeAutocomplete();
+          if (success) {
+            clearInterval(checkGoogleMapsInterval);
+          }
         }
       }, 1000);
       
@@ -167,6 +176,7 @@ const AddressAutocomplete = ({
     refetch();
     setInitAttempts(prev => prev + 1);
     console.log("Retrying address search initialization...");
+    toast.info("Retrying address search initialization...");
   };
 
   const displayError = error || (apiKeyError?.message ?? null);

@@ -8,7 +8,7 @@ const MAP_CONFIG_CACHE_KEY = 'map_config';
 
 // Fallback Google Maps API key in case the DB one fails
 // This is just for development purposes - in production, the key from the database should be used
-const FALLBACK_API_KEY = '';
+const FALLBACK_API_KEY = 'AIzaSyDxRw7-lukZWyTTPd7hr1i1rvmaUEzl_Ns';
 
 // Function to clear map config cache
 export const clearMapConfigCache = () => {
@@ -22,11 +22,26 @@ export const useMapConfig = () => {
     queryKey: [MAP_CONFIG_CACHE_KEY],
     queryFn: async () => {
       try {
-        const { data, error } = await supabase
+        // Try to fetch using uppercase key first (GOOGLE_MAPS_API_KEY)
+        let { data, error } = await supabase
           .from('settings')
           .select('value')
-          .eq('key', 'google_maps_api_key')
+          .eq('key', 'GOOGLE_MAPS_API_KEY')
           .maybeSingle();
+        
+        if (error || !data) {
+          console.log('Trying alternative key format (lowercase)');
+          
+          // If that fails, try lowercase (google_maps_api_key)
+          const result = await supabase
+            .from('settings')
+            .select('value')
+            .eq('key', 'google_maps_api_key')
+            .maybeSingle();
+            
+          data = result.data;
+          error = result.error;
+        }
         
         if (error) {
           console.error('Error fetching Google Maps API key:', error);
