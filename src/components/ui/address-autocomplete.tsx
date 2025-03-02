@@ -32,12 +32,19 @@ export const AddressAutocomplete = forwardRef<HTMLInputElement, AddressAutocompl
     useEffect(() => {
       if (value !== undefined) {
         setInternalValue(value.toString());
+        
+        // Ensure the DOM input value is synchronized with the React state
+        if (inputRef.current && inputRef.current.value !== value.toString()) {
+          inputRef.current.value = value.toString();
+        }
       }
     }, [value]);
 
     // Handle internal onChange to update both internal state and propagate upward
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      setInternalValue(e.target.value);
+      const newValue = e.target.value;
+      console.log("AddressAutocomplete handleInputChange:", newValue);
+      setInternalValue(newValue);
       if (onChange) {
         onChange(e);
       }

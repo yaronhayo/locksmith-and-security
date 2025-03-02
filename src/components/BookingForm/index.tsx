@@ -44,6 +44,12 @@ const BookingForm = ({ preselectedService }: BookingFormProps) => {
     }
   }, [preselectedService, selectedService, handleServiceChange]);
 
+  // Handle address changes
+  const handleAddressChange = (newAddress: string) => {
+    console.log("BookingForm address changed to:", newAddress);
+    setAddress(newAddress);
+  };
+
   return (
     <FormContainer
       isSubmitting={isSubmitting}
@@ -62,7 +68,7 @@ const BookingForm = ({ preselectedService }: BookingFormProps) => {
       
       <AddressFields 
         address={address}
-        onChange={setAddress}
+        onChange={handleAddressChange}
         errors={errors}
         isSubmitting={isSubmitting}
       />
