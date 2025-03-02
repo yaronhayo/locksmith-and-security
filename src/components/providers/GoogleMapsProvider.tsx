@@ -1,13 +1,9 @@
-
-import { ReactNode, useEffect, useState, useCallback, useRef, lazy, Suspense } from "react";
+import { ReactNode, useEffect, useState, useCallback, useRef } from "react";
 import { LoadScript, LoadScriptProps } from "@react-google-maps/api";
 import { useMapConfig, clearMapConfigCache } from "@/hooks/useMap";
 import MapError from "../map/MapError";
 import MapLoader from "../map/MapLoader";
 import { toast } from "sonner";
-
-// Dynamically import required utilities
-const loadPerformanceMonitoring = () => import("@/utils/performanceMonitoring");
 
 const libraries: LoadScriptProps['libraries'] = ['places'];
 
@@ -39,11 +35,6 @@ const GoogleMapsProvider = ({ children }: GoogleMapsProviderProps) => {
     setScriptError(null);
     scriptAttempted = true;
     scriptLoaded = true;
-    
-    // Track script load performance
-    loadPerformanceMonitoring().then(({ mapPerformance }) => {
-      mapPerformance.trackScriptLoad(performance.now());
-    });
   }, []);
 
   const handleError = useCallback((error: Error) => {

@@ -47,11 +47,9 @@ export const useRecaptchaKey = () => {
     gcTime: Infinity,    // Don't garbage collect the query
     retry: 3,            // Try up to 3 times if the request fails
     retryDelay: attemptIndex => Math.min(1000 * 2 ** attemptIndex, 10000),
-    meta: {
-      onError: (error: Error) => {
-        console.error('reCAPTCHA key error:', error);
-        toast.error('Failed to load security verification. Some features may be limited.');
-      }
+    onError: (error) => {
+      console.error('reCAPTCHA key error:', error);
+      toast.error('Failed to load security verification. Some features may be limited.');
     }
   });
 };

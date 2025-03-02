@@ -1,21 +1,13 @@
 
-import { lazy, Suspense, memo, useState, useEffect, useCallback } from "react";
+import GoogleMapsProvider from "@/components/providers/GoogleMapsProvider";
+import GoogleMap from "@/components/map/GoogleMap";
 import { MapMarker } from "@/types/service-area";
 import { ErrorBoundary } from "react-error-boundary";
 import MapError from "@/components/map/MapError";
+import { memo, useState, useEffect, useCallback } from "react";
 import LoadingSpinner from "@/components/LoadingSpinner";
+import { trackComponentRender } from "@/utils/performanceMonitoring";
 import { toast } from "sonner";
-
-// Dynamically import components with code splitting
-const GoogleMapsProvider = lazy(() => 
-  import(/* webpackChunkName: "google-maps-provider" */ "@/components/providers/GoogleMapsProvider")
-);
-const GoogleMap = lazy(() => 
-  import(/* webpackChunkName: "google-map" */ "@/components/map/GoogleMap")
-);
-
-// Dynamically import tracking function when needed
-const loadPerformanceTracking = () => import("@/utils/performanceMonitoring").then(m => m.trackComponentRender);
 
 interface ServiceAreaMapProps {
   locationName: string;
@@ -25,29 +17,22 @@ interface ServiceAreaMapProps {
 }
 
 const ServiceAreaMap = ({ locationName, lat, lng, isLoading = false }: ServiceAreaMapProps) => {
+  const finishRenderTracking = trackComponentRender('ServiceAreaMap');
   const [mapReady, setMapReady] = useState(false);
   const [mapError, setMapError] = useState<string | null>(null);
   const [retryCount, setRetryCount] = useState(0);
   const mapInstanceKey = `map-instance-${retryCount}-${locationName.toLowerCase().replace(/\s+/g, '-')}`;
   
   useEffect(() => {
-    let finishTracking: (() => number) | undefined;
-    
-    // Only load the performance tracking code when needed
-    loadPerformanceTracking().then(trackComponentRender => {
-      finishTracking = trackComponentRender('ServiceAreaMap');
-    });
+    finishRenderTracking();
     
     // Simulate map loading for better UX
     const timer = setTimeout(() => {
       setMapReady(true);
     }, 800);
     
-    return () => {
-      clearTimeout(timer);
-      if (finishTracking) finishTracking();
-    };
-  }, []);
+    return () => clearTimeout(timer);
+  }, [finishRenderTracking]);
 
   const handleMapError = useCallback((error: Error) => {
     console.error("Service area map error:", error);
@@ -91,17 +76,15 @@ const ServiceAreaMap = ({ locationName, lat, lng, isLoading = false }: ServiceAr
             key={`map-error-boundary-${retryCount}`}
             onReset={handleRetry}
           >
-            <Suspense fallback={<LoadingSpinner size="lg" text="Loading map components..." />}>
-              <GoogleMapsProvider>
-                <GoogleMap
-                  markers={markers}
-                  showAllMarkers={true}
-                  zoom={14}
-                  center={{ lat, lng }}
-                  key={mapInstanceKey}
-                />
-              </GoogleMapsProvider>
-            </Suspense>
+            <GoogleMapsProvider>
+              <GoogleMap
+                markers={markers}
+                showAllMarkers={true}
+                zoom={14}
+                center={{ lat, lng }}
+                key={mapInstanceKey}
+              />
+            </GoogleMapsProvider>
           </ErrorBoundary>
         )}
         {mapError && (

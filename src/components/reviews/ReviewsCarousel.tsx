@@ -9,12 +9,8 @@ import {
 import { Review } from "@/types/reviews";
 import ReviewCard from "./ReviewCard";
 import { memo, useEffect } from "react";
+import { trackComponentRender } from "@/utils/performanceMonitoring";
 import { cn } from "@/lib/utils";
-
-// Dynamic import for performance monitoring to reduce initial bundle size
-import("@/utils/performanceMonitoring").then(({ trackComponentRender }) => {
-  // Only initialize when needed
-});
 
 interface ReviewsCarouselProps {
   reviews: Review[];
@@ -23,20 +19,10 @@ interface ReviewsCarouselProps {
 }
 
 const ReviewsCarousel = memo(({ reviews, setApi, className }: ReviewsCarouselProps) => {
+  const finishRenderTracking = trackComponentRender('ReviewsCarousel');
+  
   useEffect(() => {
-    // Dynamically import the performance tracking only when component mounts
-    let finishTracking: (() => number) | null = null;
-    
-    import("@/utils/performanceMonitoring").then(({ trackComponentRender }) => {
-      finishTracking = trackComponentRender('ReviewsCarousel');
-      return () => {
-        if (finishTracking) finishTracking();
-      };
-    });
-    
-    return () => {
-      if (finishTracking) finishTracking();
-    };
+    finishRenderTracking();
   }, []);
 
   if (!reviews.length) return null;

@@ -1,10 +1,8 @@
 
 import { useState, useRef, useCallback, useEffect } from "react";
+import { mapPerformance } from "@/utils/performanceMonitoring";
 import { MapMarker } from "@/types/service-area";
 import { toast } from "sonner";
-
-// Dynamic import of performance monitoring to reduce initial bundle size
-const loadMapPerformance = () => import("@/utils/performanceMonitoring").then(m => m.mapPerformance);
 
 export const useGoogleMap = (
   markers: MapMarker[] = [],
@@ -65,12 +63,7 @@ export const useGoogleMap = (
     try {
       const loadTime = performance.now() - loadStartTime.current;
       console.log(`Map loaded successfully in ${loadTime.toFixed(2)}ms`);
-      
-      // Dynamically load performance monitoring
-      loadMapPerformance().then(mapPerformance => {
-        mapPerformance.trackInstanceLoad(loadStartTime.current);
-        mapPerformance.setMarkersCount(markers.length);
-      });
+      mapPerformance.trackInstanceLoad(loadStartTime.current);
       
       mapRef.current = map;
       isMapInitialized.current = true;
@@ -86,7 +79,7 @@ export const useGoogleMap = (
       toast.error("Map initialization error");
       setIsLoading(false);
     }
-  }, [updateMapView, markers.length]);
+  }, [updateMapView]);
 
   const onUnmountCallback = useCallback(() => {
     console.log('Map unmounting');

@@ -30,24 +30,6 @@ const generateSitemap = () => {
   };
 };
 
-// Custom plugin to analyze bundle size
-const analyzeBundleSize = () => {
-  return {
-    name: 'analyze-bundle-size',
-    closeBundle: async () => {
-      if (process.env.ANALYZE) {
-        try {
-          console.log('Analyzing bundle size...');
-          // This would typically use a package like rollup-plugin-visualizer
-          // but for now we'll just log that analysis is requested
-        } catch (error) {
-          console.error('Failed to analyze bundle size:', error);
-        }
-      }
-    }
-  };
-};
-
 export default defineConfig(({ mode }) => ({
   server: {
     host: "::",
@@ -57,7 +39,6 @@ export default defineConfig(({ mode }) => ({
     react(),
     mode === 'development' && componentTagger(),
     mode === 'production' && generateSitemap(),
-    mode === 'production' && analyzeBundleSize(),
   ].filter(Boolean),
   resolve: {
     alias: {
@@ -89,12 +70,6 @@ export default defineConfig(({ mode }) => ({
             if (id.includes('react-router')) {
               return 'vendor-router';
             }
-            if (id.includes('react-google-maps') || id.includes('google-maps')) {
-              return 'vendor-maps';
-            }
-            if (id.includes('@supabase')) {
-              return 'vendor-supabase';
-            }
             // Group remaining node_modules
             return 'vendor';
           }
@@ -109,12 +84,6 @@ export default defineConfig(({ mode }) => ({
           if (id.includes('/components/services/')) {
             return 'service-components';
           }
-          if (id.includes('/utils/')) {
-            return 'utils';
-          }
-          if (id.includes('/hooks/')) {
-            return 'hooks';
-          }
         },
       },
     },
@@ -124,22 +93,6 @@ export default defineConfig(({ mode }) => ({
     sourcemap: mode !== 'production',
     // Add cache headers to output through headers file
     emptyOutDir: true,
-    // Enable minification in production
-    minify: mode === 'production' ? 'esbuild' : false,
-    // Ensures tree-shaking works optimally
-    target: 'es2020',
-    // Ensure dead code elimination
-    terserOptions: {
-      compress: {
-        drop_console: mode === 'production',
-        drop_debugger: mode === 'production'
-      }
-    }
-  },
-  // Enable deep tree-shaking
-  esbuild: {
-    pure: mode === 'production' ? ['console.log', 'console.debug', 'console.time', 'console.timeEnd'] : [],
-    treeShaking: true,
   },
   // Optimize for production
   optimizeDeps: {
