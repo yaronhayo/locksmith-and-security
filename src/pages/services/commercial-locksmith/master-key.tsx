@@ -18,13 +18,8 @@ const MasterKey = () => {
         title="Master Key System Design & Installation"
         description="Professional master key system design and implementation by certified technicians. Expert access control solutions for your business."
         image="/lovable-uploads/88d354ba-8149-4bb1-9347-d5d0ff65dfe5.png"
-        benefits={[
-          "Hierarchical access control for your entire facility",
-          "Restricted keyways prevent unauthorized duplication",
-          "Scalable systems that grow with your business",
-          "Professional implementation by certified technicians",
-          "Complete key control and management systems"
-        ]}
+        serviceName="Master Key System"
+        serviceLabel="Commercial Locksmith Service"
       />
       
       <MasterKeyContent />

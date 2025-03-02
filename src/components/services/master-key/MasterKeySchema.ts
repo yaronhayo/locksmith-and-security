@@ -1,7 +1,6 @@
 
-import type { Schema } from '@/types/schema';
-
-export const masterKeySchema: Schema = {
+// We need to fix the Schema import - it doesn't exist in the types/schema.ts file
+export const masterKeySchema = {
   "@context": "https://schema.org",
   "@type": "Service",
   "name": "Master Key System Design & Installation Services",
