@@ -2,16 +2,13 @@
 import { useSettings } from "@/hooks/useSettings";
 import PageLayout from "@/components/layouts/PageLayout";
 import { useLocations } from "@/hooks/useLocations";
-import Breadcrumbs from "@/components/Breadcrumbs";
 import { useReviews } from "@/components/reviews/useReviews";
 import { createServiceAreaSchemas } from "./ServiceAreaSchemas";
 import ServiceAreaContent from "./ServiceAreaContent";
 import { FAQSchema } from "@/types/schema";
-import { Helmet } from "react-helmet";
 import { Card, CardContent } from "@/components/ui/card";
 import { memo, useMemo } from "react";
 import PageLoading from "@/components/layouts/PageLoading";
-import { ServiceAreaLocation } from "@/types/service-area";
 
 interface ServiceAreaLayoutProps {
   areaSlug: string;
@@ -55,21 +52,12 @@ const ServiceAreaLayout = memo(({ areaSlug }: ServiceAreaLayoutProps) => {
     <PageLayout
       title={pageTitle}
       description={pageDescription}
-      schema={schemas}
+      schemas={schemas}
       heroTitle={`Locksmith Services in ${location.name}, NJ`}
       heroDescription={`Professional 24/7 locksmith services for residential, commercial, and automotive needs in ${location.name}`}
+      hideBreadcrumbs={false} // Let PageLayout handle breadcrumbs
     >
-      <Helmet>
-        <link rel="canonical" href={`https://247locksmithandsecurity.com/service-areas/${areaSlug}`} />
-        <meta name="geo.region" content="US-NJ" />
-        <meta name="geo.placename" content={location.name} />
-        <meta name="geo.position" content={`${location.lat};${location.lng}`} />
-        <meta name="ICBM" content={`${location.lat}, ${location.lng}`} />
-      </Helmet>
-
       <div className="container mx-auto px-3 sm:px-4 py-4 sm:py-6 md:py-8 overflow-visible">
-        <Breadcrumbs />
-        
         <Card className="mt-4 sm:mt-6 md:mt-8 border-secondary/20 shadow-md overflow-visible">
           <div className="bg-gradient-to-r from-secondary/10 to-secondary/5 p-3 sm:p-4 md:p-6 lg:p-8 overflow-visible">
             <CardContent className="p-0 max-w-full overflow-visible">

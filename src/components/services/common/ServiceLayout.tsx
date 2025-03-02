@@ -2,8 +2,6 @@
 import React from 'react';
 import EnhancedServicesHero from '@/components/sections/services/EnhancedServicesHero';
 import ServicePageContent from '@/components/sections/services/service-page';
-import { SchemaScripts } from '@/components/meta/SchemaScripts';
-import { Helmet } from 'react-helmet';
 import ServicesProof from '@/components/sections/services/ServicesProof';
 import PageLayout from '@/components/layouts/PageLayout';
 
@@ -49,6 +47,7 @@ const ServiceLayout: React.FC<ServiceLayoutProps> = ({
       customBreadcrumbs={customBreadcrumbs}
       heroTitle={title}
       heroDescription={description}
+      hideBreadcrumbs={false} // Let PageLayout handle breadcrumbs
     >
       <EnhancedServicesHero 
         title={title}
