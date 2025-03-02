@@ -1,74 +1,27 @@
 
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
-import { toast } from 'sonner';
+import { MapLocation } from '@/types/map';
 
-// Cache for the API key to prevent excessive database queries
-let cachedApiKey: string | null = null;
-
-export const useMapConfig = () => {
-  const queryClient = useQueryClient();
-  
+export const useMap = () => {
   return useQuery({
-    queryKey: ['GOOGLE_MAPS_API_KEY'],
+    queryKey: ['map_locations'],
     queryFn: async () => {
-      // Return cached key if available
-      if (cachedApiKey) {
-        console.log('Using cached Google Maps API key');
-        return cachedApiKey;
+      const { data, error } = await supabase
+        .from('service_areas')
+        .select('id, name, latitude, longitude')
+        .order('name');
+      
+      if (error) {
+        throw new Error(error.message);
       }
-
-      console.log('Fetching Google Maps API key from database...');
-      try {
-        const { data, error } = await supabase
-          .from('settings')
-          .select('value')
-          .eq('key', 'GOOGLE_MAPS_API_KEY')
-          .single();
-
-        if (error) {
-          console.error('Error fetching API key:', error);
-          throw error;
-        }
-        
-        if (!data?.value) {
-          console.error('No API key found in settings');
-          throw new Error('Google Maps API key not found in settings');
-        }
-
-        // Verify the API key format (basic check)
-        if (typeof data.value !== 'string' || data.value.trim().length < 10) {
-          console.error('Invalid API key format:', data.value);
-          throw new Error('Invalid Google Maps API key format');
-        }
-
-        // Cache the API key
-        cachedApiKey = data.value;
-        console.log('API key fetched and cached successfully');
-        return cachedApiKey;
-      } catch (error) {
-        console.error('Failed to fetch Google Maps API key:', error);
-        throw error;
-      }
+      
+      return (data || []) as MapLocation[];
     },
-    staleTime: Infinity, // Keep the API key indefinitely until manual invalidation
-    gcTime: Infinity,    // Don't garbage collect the query
-    retry: 3,            // Try up to 3 times if the request fails
-    retryDelay: attemptIndex => Math.min(1000 * 2 ** attemptIndex, 10000), // Exponential backoff
-    onError: (error) => {
-      console.error('Map config error:', error);
-      toast.error('Failed to load map settings. Some features may not work correctly.');
+    meta: {
+      onError: (error: Error) => {
+        console.error('Error fetching map locations:', error.message);
+      }
     }
   });
-};
-
-export const clearMapConfigCache = () => {
-  cachedApiKey = null;
-  console.log('Map config cache cleared');
-};
-
-// Add function to invalidate the cache via React Query
-export const invalidateMapConfig = (queryClient: ReturnType<typeof useQueryClient>) => {
-  cachedApiKey = null;
-  return queryClient.invalidateQueries({ queryKey: ['GOOGLE_MAPS_API_KEY'] });
 };

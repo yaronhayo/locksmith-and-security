@@ -1,94 +1,65 @@
 
-import React, { lazy, Suspense } from 'react'
-import ReactDOM from 'react-dom/client'
-import App from './App.tsx'
-import './index.css'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import LoadingSpinner from './components/LoadingSpinner.tsx'
-import { toast } from 'sonner'
-import { logToService } from './utils/performanceMonitoring.ts'
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import App from './App';
+import './index.css';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ToastMessage } from '@/types/toast';
+import { toast } from 'sonner';
 
-// Create Query Client with optimized settings
+// Create a client
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
+      retry: 1,
+      refetchOnWindowFocus: false,
       staleTime: 1000 * 60 * 5, // 5 minutes
-      retry: (failureCount, error) => {
-        // Don't retry on 404s or other client errors
-        if (error instanceof Error && 'status' in error && (error as any).status < 500) {
-          return false;
-        }
-        // Retry server errors and network failures up to 3 times
-        return failureCount < 3;
-      },
-      retryDelay: attemptIndex => Math.min(1000 * 2 ** attemptIndex, 30000), // Exponential backoff
-      refetchOnWindowFocus: false, // Reduce unnecessary refetches
-      refetchOnMount: true,
-      gcTime: 1000 * 60 * 30, // 30 minutes (previously cacheTime)
-      onError: (error) => {
-        // Global default error handler for queries
-        console.error('Query error:', error);
-        
-        // Log the error
-        logToService('error', 'Query Error', { 
-          error: error instanceof Error ? error.message : String(error),
-          stack: error instanceof Error ? error.stack : undefined
-        });
-        
-        // Only show one toast notification for errors
-        if (!toast.isActive('query-error')) {
-          toast.error('Failed to load data. Please try again later.', {
-            id: 'query-error',
-            duration: 4000
-          });
-        }
-      }
     },
     mutations: {
-      onError: (error) => {
-        // Global default error handler for mutations
-        console.error('Mutation error:', error);
-        
-        // Log the error
-        logToService('error', 'Mutation Error', { 
-          error: error instanceof Error ? error.message : String(error),
-          stack: error instanceof Error ? error.stack : undefined
-        });
-        
-        // Only show one toast notification for errors
-        if (!toast.isActive('mutation-error')) {
-          toast.error('Failed to update data. Please try again later.', {
-            id: 'mutation-error',
-            duration: 4000
+      retry: 1,
+      meta: {
+        onError: (error: Error) => {
+          // Display error message
+          const errorMessage = error.message || 'An unexpected error occurred';
+          
+          // Using sonner toast library which doesn't have isActive method
+          toast.error(errorMessage, {
+            id: errorMessage, // This prevents duplicate toasts with the same message
+            duration: 5000
           });
+        },
+        onSuccess: (data: any) => {
+          // Check if the response contains a toast message
+          if (data && (data as ToastMessage).message) {
+            const { message, type = 'success' } = data as ToastMessage;
+            
+            if (type === 'success') {
+              toast.success(message, {
+                id: message,
+                duration: 3000
+              });
+            } else if (type === 'error') {
+              toast.error(message, {
+                id: message,
+                duration: 5000
+              });
+            } else {
+              toast(message, {
+                id: message,
+                duration: 3000
+              });
+            }
+          }
         }
       }
     }
-  },
-})
-
-// Detect if browser supports intersection observer for better lazy loading
-const supportsIntersectionObserver = 'IntersectionObserver' in window;
-
-// Add performance monitoring
-if (process.env.NODE_ENV === 'production') {
-  // Report web vitals on mount
-  window.addEventListener('load', () => {
-    setTimeout(() => {
-      const { CLS, FID, LCP } = performance.getEntriesByType('navigation')[0] as any;
-      if (CLS) console.log('CLS:', CLS);
-      if (FID) console.log('FID:', FID);
-      if (LCP) console.log('LCP:', LCP);
-    }, 2000);
-  });
-}
+  }
+});
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
-      <Suspense fallback={<LoadingSpinner size="lg" />}>
-        <App />
-      </Suspense>
+      <App />
     </QueryClientProvider>
-  </React.StrictMode>,
-)
+  </React.StrictMode>
+);

@@ -1,4 +1,5 @@
 
+import React, { useMemo } from 'react';
 import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { AlertCircle } from "lucide-react";
@@ -20,26 +21,30 @@ interface ServiceSelectionProps {
 }
 
 const ServiceSelection = ({ error, isSubmitting, onServiceChange }: ServiceSelectionProps) => {
-  // Group services by category
-  const emergencyServices = services.filter(service => 
-    ["Car Lockout", "House Lockout", "Business Lockout", "Storage Unit Lockout"].includes(service)
-  );
-  
-  const residentialServices = services.filter(service => 
-    ["Lock Replacement", "Lock Rekey", "Lock Repair", "Gate Locks"].includes(service)
-  );
-  
-  const commercialServices = services.filter(service => 
-    ["Commercial Lock Replacement", "Commercial Lock Rekey", "Master Key System", "Access Control", "Emergency Exit Device"].includes(service)
-  );
-  
-  const automotiveServices = services.filter(service => 
-    ["Car Key Replacement", "Key Fob Programming", "Car Key Duplicate", "Car Key Cutting", "Ignition Lock Cylinder Repair"].includes(service)
-  );
-  
-  const otherServices = services.filter(service => 
-    service === "Other"
-  );
+  // Group services by category - memoized to prevent re-computation on every render
+  const groupedServices = useMemo(() => {
+    return {
+      emergency: services.filter(service => 
+        ["Car Lockout", "House Lockout", "Business Lockout", "Storage Unit Lockout"].includes(service)
+      ),
+      
+      residential: services.filter(service => 
+        ["Lock Replacement", "Lock Rekey", "Lock Repair", "Gate Locks"].includes(service)
+      ),
+      
+      commercial: services.filter(service => 
+        ["Commercial Lock Replacement", "Commercial Lock Rekey", "Master Key System", "Access Control", "Emergency Exit Device"].includes(service)
+      ),
+      
+      automotive: services.filter(service => 
+        ["Car Key Replacement", "Key Fob Programming", "Car Key Duplicate", "Car Key Cutting", "Ignition Lock Cylinder Repair"].includes(service)
+      ),
+      
+      other: services.filter(service => 
+        service === "Other"
+      )
+    };
+  }, []);
 
   return (
     <div className="space-y-2">
@@ -55,7 +60,7 @@ const ServiceSelection = ({ error, isSubmitting, onServiceChange }: ServiceSelec
         <SelectContent>
           <SelectGroup>
             <SelectLabel>Emergency Services</SelectLabel>
-            {emergencyServices.map((service) => (
+            {groupedServices.emergency.map((service) => (
               <SelectItem key={service} value={service}>
                 {service}
               </SelectItem>
@@ -64,7 +69,7 @@ const ServiceSelection = ({ error, isSubmitting, onServiceChange }: ServiceSelec
           
           <SelectGroup>
             <SelectLabel>Residential Services</SelectLabel>
-            {residentialServices.map((service) => (
+            {groupedServices.residential.map((service) => (
               <SelectItem key={service} value={service}>
                 {service}
               </SelectItem>
@@ -73,7 +78,7 @@ const ServiceSelection = ({ error, isSubmitting, onServiceChange }: ServiceSelec
           
           <SelectGroup>
             <SelectLabel>Commercial Services</SelectLabel>
-            {commercialServices.map((service) => (
+            {groupedServices.commercial.map((service) => (
               <SelectItem key={service} value={service}>
                 {service}
               </SelectItem>
@@ -82,14 +87,14 @@ const ServiceSelection = ({ error, isSubmitting, onServiceChange }: ServiceSelec
           
           <SelectGroup>
             <SelectLabel>Automotive Services</SelectLabel>
-            {automotiveServices.map((service) => (
+            {groupedServices.automotive.map((service) => (
               <SelectItem key={service} value={service}>
                 {service}
               </SelectItem>
             ))}
           </SelectGroup>
           
-          {otherServices.map((service) => (
+          {groupedServices.other.map((service) => (
             <SelectItem key={service} value={service}>
               {service}
             </SelectItem>

@@ -4,6 +4,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { validateForm } from "./validation";
 import { submitBookingForm } from "./utils/submitForm";
 import SubmitButton from "./SubmitButton";
+import { handleApiError } from "@/lib/utils";
 
 interface FormContainerProps {
   children: React.ReactNode;
@@ -42,6 +43,7 @@ const FormContainer = ({
 
     if (!recaptchaToken) {
       // Silent error handling, no toast shown
+      console.log('Missing reCAPTCHA token');
       return;
     }
 
@@ -79,8 +81,7 @@ const FormContainer = ({
 
       navigate('/thank-you');
     } catch (error: any) {
-      console.error('Booking form submission error:', error);
-      // Silent error handling, no toast shown
+      handleApiError(error, false, 'Booking form submission error:');
     } finally {
       setIsSubmitting(false);
     }

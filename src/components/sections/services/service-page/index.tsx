@@ -1,4 +1,2 @@
 
-import ServicePageContent from './ServicePageContent';
-
-export default ServicePageContent;
+export { default } from './ServicePageContent';
