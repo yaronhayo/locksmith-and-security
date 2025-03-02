@@ -75,11 +75,10 @@ function getSitemapUrlConfig(path: string): SitemapUrl {
 }
 
 /**
- * Generate the sitemap XML content - uses the existing static sitemap routes when building 
- * since we cannot import the routes directly in the build process
+ * Generate the sitemap XML content
  */
 export function generateSitemapXml(baseUrl: string = 'https://247locksmithandsecurity.com'): string {
-  // For build process, use existing static routes from predefined list
+  // Define static routes manually to avoid import issues
   const staticRoutes = [
     '/',
     '/about',
