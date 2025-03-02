@@ -1,6 +1,6 @@
-
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import PageLayout from "@/components/layouts/PageLayout";
+import PageHero from "@/components/layouts/PageHero";
 import { TabsContent, Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Accordion,
@@ -11,7 +11,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
-import { Phone, Search, Home, Settings, Car, Building, AlertCircle } from "lucide-react";
+import { Phone, Search, Home, Settings, Car, Building, AlertCircle, HelpCircle } from "lucide-react";
 import { generalFaqs, residentialFaqs, automotiveFaqs, commercialFaqs, emergencyFaqs } from "@/data/faqData";
 import { motion } from "framer-motion";
 
@@ -23,7 +23,7 @@ const FAQPage = () => {
   const [page, setPage] = useState(1);
   const loaderRef = useRef<HTMLDivElement>(null);
   const pageSize = 10;
-
+  
   const getFaqsByCategory = useCallback(() => {
     switch (activeTab) {
       case "residential":
@@ -141,47 +141,6 @@ const FAQPage = () => {
   const totalFaqs = filteredFaqs().length;
   const hasMore = displayedFaqs.length < totalFaqs;
 
-  // Function to render individual FAQ cards
-  const renderFaqCard = (faq: any, index: number) => {
-    // Create a truly unique ID for each accordion
-    const faqUniqueId = `page-faq-${activeTab}-${index}-${Math.random().toString(36).substring(2, 9)}`;
-    
-    return (
-      <motion.div
-        key={`page-faq-${index}`}
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.3, delay: index * 0.05 }}
-      >
-        <Card className="h-full overflow-hidden hover:shadow-md transition-shadow duration-300 hover:border-[#FEC6A1]">
-          <CardContent className="p-0">
-            <Accordion type="single" collapsible>
-              <AccordionItem 
-                value={faqUniqueId}
-                className="border-none"
-              >
-                <AccordionTrigger className="px-6 py-4 bg-gray-50 hover:bg-gray-100 transition-colors hover:no-underline text-left">
-                  <div className="flex items-start text-left gap-3">
-                    <span className="font-bold text-[#F97316] text-lg">Q:</span>
-                    <span className="text-lg font-semibold">{faq.question}</span>
-                  </div>
-                </AccordionTrigger>
-                <AccordionContent className="px-6 py-4 bg-white">
-                  <div className="flex gap-3">
-                    <span className="font-bold text-[#F97316] text-lg">A:</span>
-                    <p className="text-gray-700 leading-relaxed">
-                      {faq.answer}
-                    </p>
-                  </div>
-                </AccordionContent>
-              </AccordionItem>
-            </Accordion>
-          </CardContent>
-        </Card>
-      </motion.div>
-    );
-  };
-
   return (
     <PageLayout
       title="Frequently Asked Questions - Expert Locksmith Answers"
@@ -250,7 +209,37 @@ const FAQPage = () => {
                       animate={{ opacity: 1 }}
                       transition={{ staggerChildren: 0.05 }}
                     >
-                      {displayedFaqs.map((faq, index) => renderFaqCard(faq, index))}
+                      {displayedFaqs.map((faq, index) => (
+                        <motion.div
+                          key={index}
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 0.3, delay: index * 0.05 }}
+                        >
+                          <Card className="h-full overflow-hidden hover:shadow-md transition-shadow duration-300 hover:border-[#FEC6A1]">
+                            <CardContent className="p-0">
+                              <Accordion type="single" collapsible>
+                                <AccordionItem value={`item-${index}`} className="border-none">
+                                  <AccordionTrigger className="px-6 py-4 bg-gray-50 hover:bg-gray-100 transition-colors hover:no-underline text-left">
+                                    <div className="flex items-start text-left gap-3">
+                                      <span className="font-bold text-[#F97316] text-lg">Q:</span>
+                                      <span className="text-lg font-semibold">{faq.question}</span>
+                                    </div>
+                                  </AccordionTrigger>
+                                  <AccordionContent className="px-6 py-4 bg-white">
+                                    <div className="flex gap-3">
+                                      <span className="font-bold text-[#F97316] text-lg">A:</span>
+                                      <p className="text-gray-700 leading-relaxed">
+                                        {faq.answer}
+                                      </p>
+                                    </div>
+                                  </AccordionContent>
+                                </AccordionItem>
+                              </Accordion>
+                            </CardContent>
+                          </Card>
+                        </motion.div>
+                      ))}
                     </motion.div>
                     
                     <div ref={loaderRef} className="py-8 flex justify-center">

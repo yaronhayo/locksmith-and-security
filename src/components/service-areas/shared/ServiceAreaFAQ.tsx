@@ -1,5 +1,4 @@
 
-import React from "react";
 import { FAQSchema } from "@/types/schema";
 import { HelpCircle } from "lucide-react";
 import {
@@ -31,36 +30,26 @@ const ServiceAreaFAQ = ({ locationName, faqSchema }: ServiceAreaFAQProps) => {
 
         <div className="max-w-6xl mx-auto">
           <div className="grid md:grid-cols-2 gap-6">
-            {faqSchema.data.mainEntity.map((faq: any, index: number) => {
-              // Create a unique ID for each FAQ item using random string to ensure uniqueness
-              const uniqueId = `area-faq-${index}-${Math.random().toString(36).substring(2, 9)}`;
-              
-              return (
-                <Accordion
-                  key={`service-area-faq-${index}`}
-                  type="single"
-                  collapsible
-                  className="bg-white rounded-lg shadow-sm"
-                >
-                  <AccordionItem value={uniqueId} className="border-none">
-                    <AccordionTrigger className="px-6 py-4 hover:no-underline">
-                      <div className="flex items-start text-left gap-3">
-                        <span className="font-bold text-primary text-lg">Q:</span>
-                        <span className="text-lg font-semibold">{faq.name}</span>
-                      </div>
-                    </AccordionTrigger>
-                    <AccordionContent className="px-6 pb-4">
-                      <div className="flex gap-3">
-                        <span className="font-bold text-secondary text-lg">A:</span>
-                        <p className="text-gray-600 leading-relaxed">
-                          {faq.acceptedAnswer.text}
-                        </p>
-                      </div>
-                    </AccordionContent>
-                  </AccordionItem>
-                </Accordion>
-              );
-            })}
+            {faqSchema.data.mainEntity.map((faq: any, index: number) => (
+              <Accordion key={index} type="single" collapsible className="bg-white rounded-lg shadow-sm">
+                <AccordionItem value={`item-${index}`} className="border-none">
+                  <AccordionTrigger className="px-6 py-4 hover:no-underline">
+                    <div className="flex items-start text-left gap-3">
+                      <span className="font-bold text-primary text-lg">Q:</span>
+                      <span className="text-lg font-semibold">{faq.name}</span>
+                    </div>
+                  </AccordionTrigger>
+                  <AccordionContent className="px-6 pb-4">
+                    <div className="flex gap-3">
+                      <span className="font-bold text-secondary text-lg">A:</span>
+                      <p className="text-gray-600 leading-relaxed">
+                        {faq.acceptedAnswer.text}
+                      </p>
+                    </div>
+                  </AccordionContent>
+                </AccordionItem>
+              </Accordion>
+            ))}
           </div>
         </div>
       </div>

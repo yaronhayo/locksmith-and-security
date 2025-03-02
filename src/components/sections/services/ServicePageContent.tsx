@@ -1,7 +1,8 @@
+
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Phone, ArrowRight, Calendar, ArrowUpRight, MessageSquare, ShieldCheck, Star } from "lucide-react";
-import { FAQsAccordion } from "@/components/sections/FAQAccordion";
+import FAQAccordion from "@/components/sections/FAQAccordion";
 import { Link } from "react-router-dom";
 
 interface FAQItem {
@@ -64,7 +65,7 @@ const ServicePageContent: React.FC<ServicePageContentProps> = ({
                   <h2 className="text-2xl lg:text-3xl font-bold text-primary mb-6 border-l-4 border-secondary pl-4">
                     Frequently Asked Questions
                   </h2>
-                  <FAQsAccordion faqs={faqs} />
+                  <FAQAccordion faqs={faqs} />
                 </div>
               )}
             </div>
@@ -145,6 +146,7 @@ const ServicePageContent: React.FC<ServicePageContentProps> = ({
         </div>
       </div>
 
+      {/* Replace the problematic <style jsx> tag with <style> */}
       <style>
         {`
         .service-content h3 {
