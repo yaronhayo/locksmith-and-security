@@ -8,7 +8,6 @@ import CookieConsent from "./components/CookieConsent";
 import { NavigationProvider } from "./contexts/NavigationContext";
 import ScrollToTopButton from "@/components/ScrollToTopButton";
 import LoadingSpinner from "@/components/LoadingSpinner";
-import Footer from "@/components/Footer";
 
 function App() {
   // Log when the app is mounted for debugging purposes
