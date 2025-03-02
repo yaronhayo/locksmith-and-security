@@ -16,13 +16,15 @@ interface CategoryHeroProps {
     title: string;
     description: string;
   }[];
+  preselectedService?: string;
 }
 
 const CategoryHero: React.FC<CategoryHeroProps> = ({ 
   title, 
   description, 
   category,
-  features
+  features,
+  preselectedService
 }) => {
   const finishRenderTracking = trackComponentRender('CategoryHero');
   
@@ -143,7 +145,7 @@ const CategoryHero: React.FC<CategoryHeroProps> = ({
             </div>
             
             <div className="bg-white rounded-lg p-4">
-              <BookingForm />
+              <BookingForm preselectedService={preselectedService} />
             </div>
           </motion.div>
         </div>

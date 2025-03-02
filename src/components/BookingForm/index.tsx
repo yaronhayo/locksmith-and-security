@@ -1,5 +1,5 @@
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useBookingFormState } from "./hooks/useBookingFormState";
 import PersonalInfoFields from "./FormFields/PersonalInfoFields";
 import ServiceSelection from "./FormFields/ServiceSelection";
@@ -13,13 +13,18 @@ import FormContainer from "./FormContainer";
 import AddressFields from "./AddressFields";
 import RecaptchaField from "./RecaptchaField";
 
-const BookingForm = () => {
+interface BookingFormProps {
+  preselectedService?: string;
+}
+
+const BookingForm = ({ preselectedService }: BookingFormProps) => {
   const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
   const [address, setAddress] = useState("");
   const {
     isSubmitting,
     setIsSubmitting,
     selectedService,
+    setSelectedService,
     allKeysLost,
     hasUnusedKey,
     showVehicleInfo,
@@ -31,6 +36,13 @@ const BookingForm = () => {
     handleAllKeysLostChange,
     handleUnusedKeyChange,
   } = useBookingFormState();
+
+  // Set preselected service if provided
+  useEffect(() => {
+    if (preselectedService && !selectedService) {
+      handleServiceChange(preselectedService);
+    }
+  }, [preselectedService, selectedService, handleServiceChange]);
 
   return (
     <FormContainer
@@ -59,6 +71,7 @@ const BookingForm = () => {
         error={errors.service}
         isSubmitting={isSubmitting}
         onServiceChange={handleServiceChange}
+        selectedService={selectedService}
       />
 
       {showAllKeysLostField && (

@@ -18,9 +18,10 @@ interface ServiceSelectionProps {
   error?: string;
   isSubmitting: boolean;
   onServiceChange: (value: string) => void;
+  selectedService?: string;
 }
 
-const ServiceSelection = ({ error, isSubmitting, onServiceChange }: ServiceSelectionProps) => {
+const ServiceSelection = ({ error, isSubmitting, onServiceChange, selectedService }: ServiceSelectionProps) => {
   // Group services by category - memoized to prevent re-computation on every render
   const groupedServices = useMemo(() => {
     return {
@@ -49,7 +50,13 @@ const ServiceSelection = ({ error, isSubmitting, onServiceChange }: ServiceSelec
   return (
     <div className="space-y-2">
       <Label htmlFor="service" className="text-gray-800">Service Needed</Label>
-      <Select onValueChange={onServiceChange} name="service" disabled={isSubmitting}>
+      <Select 
+        onValueChange={onServiceChange} 
+        name="service" 
+        disabled={isSubmitting}
+        value={selectedService}
+        defaultValue={selectedService}
+      >
         <SelectTrigger 
           id="service"
           className={`h-10 text-base text-gray-900 placeholder:text-gray-500 ${error ? 'border-red-500' : ''}`}

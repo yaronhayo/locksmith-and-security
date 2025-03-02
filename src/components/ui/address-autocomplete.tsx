@@ -1,11 +1,11 @@
+
 import React, { useRef, useEffect, useState, forwardRef } from "react";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 
-export type AddressChangeHandler = 
-  | ((address: string, placeId?: string) => void)
-  | React.ChangeEventHandler<HTMLInputElement>;
+// Define a type union that can handle both function signatures
+export type AddressChangeHandler = ((address: string, placeId?: string) => void) | ((event: React.ChangeEvent<HTMLInputElement>) => void);
 
 export interface AddressAutocompleteProps
   extends React.InputHTMLAttributes<HTMLInputElement> {

@@ -8,9 +8,10 @@ import MessageField from "./form/MessageField";
 
 interface ServiceAreaFormProps {
   locationName?: string;
+  preselectedService?: string;
 }
 
-const ServiceAreaForm = ({ locationName }: ServiceAreaFormProps) => {
+const ServiceAreaForm = ({ locationName, preselectedService }: ServiceAreaFormProps) => {
   const {
     formState,
     errors,
@@ -23,7 +24,7 @@ const ServiceAreaForm = ({ locationName }: ServiceAreaFormProps) => {
     handleRecaptchaChange,
     isFormValid,
     handleSubmit
-  } = useServiceAreaForm();
+  } = useServiceAreaForm(preselectedService);
   
   return (
     <FormContainer
@@ -56,6 +57,7 @@ const ServiceAreaForm = ({ locationName }: ServiceAreaFormProps) => {
         service={formState.service}
         isSubmitting={isSubmitting}
         handleChange={handleChange}
+        error={errors.service}
       />
       
       <MessageField 

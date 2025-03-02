@@ -18,6 +18,7 @@ interface ServiceLayoutProps {
   schemas?: { type: string; data: any }[];
   canonicalUrl?: string;
   customBreadcrumbs?: Array<{name: string, path: string}>;
+  preselectedService?: string;
 }
 
 /**
@@ -35,7 +36,8 @@ const ServiceLayout: React.FC<ServiceLayoutProps> = ({
   reviewsData = [],
   schemas = [],
   canonicalUrl,
-  customBreadcrumbs
+  customBreadcrumbs,
+  preselectedService
 }) => {
   return (
     <PageLayout
@@ -54,6 +56,7 @@ const ServiceLayout: React.FC<ServiceLayoutProps> = ({
         description={description}
         serviceName={serviceName}
         serviceLabel={serviceCategory}
+        preselectedService={preselectedService}
       />
       
       <ServicePageContent

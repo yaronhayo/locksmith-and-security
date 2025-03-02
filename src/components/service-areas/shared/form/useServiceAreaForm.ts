@@ -1,169 +1,160 @@
 
-import { useState, useEffect, useCallback, useMemo } from "react";
-import { getEmailError, getNameError, getPhoneError } from "@/utils/inputValidation";
+import { useState, useEffect, useCallback } from 'react';
+import { validateEmail } from '@/utils/inputValidation';
+import { toast } from 'sonner';
+import { submitContactForm } from '@/lib/utils';
 
-export interface FormState {
-  name: string;
-  email: string;
+interface FormState {
+  firstName: string;
+  lastName: string;
   phone: string;
-  message: string;
+  email: string;
   service: string;
-  address?: string;
+  message: string;
+  address: string;
 }
 
-export interface FormErrors {
-  name: string | null;
-  email: string | null;
-  phone: string | null;
-  address?: string | null;
-}
+const initialFormState: FormState = {
+  firstName: '',
+  lastName: '',
+  phone: '',
+  email: '',
+  service: '',
+  message: '',
+  address: '',
+};
 
-interface IsDirty {
-  name: boolean;
-  email: boolean;
-  phone: boolean;
-  address?: boolean;
-}
-
-export const useServiceAreaForm = () => {
+export const useServiceAreaForm = (preselectedService?: string) => {
   const [formState, setFormState] = useState<FormState>({
-    name: "",
-    email: "",
-    phone: "",
-    message: "",
-    service: "",
-    address: ""
+    ...initialFormState,
+    service: preselectedService || ''
   });
-  
-  const [errors, setErrors] = useState<FormErrors>({
-    name: null,
-    email: null,
-    phone: null,
-    address: null
-  });
-  
-  const [isDirty, setIsDirty] = useState<IsDirty>({
-    name: false,
-    email: false,
-    phone: false,
-    address: false
-  });
-  
+  const [errors, setErrors] = useState<Partial<Record<keyof FormState, string>>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
   const [recaptchaError, setRecaptchaError] = useState<string | null>(null);
   
-  // Validate fields when they change and are dirty
+  // Update service if preselectedService changes
   useEffect(() => {
-    if (isDirty.name) {
-      setErrors(prev => ({ ...prev, name: getNameError(formState.name) }));
-    }
-  }, [formState.name, isDirty.name]);
-  
-  useEffect(() => {
-    if (isDirty.email) {
-      setErrors(prev => ({ ...prev, email: getEmailError(formState.email) }));
-    }
-  }, [formState.email, isDirty.email]);
-  
-  useEffect(() => {
-    if (isDirty.phone) {
-      setErrors(prev => ({ ...prev, phone: getPhoneError(formState.phone) }));
-    }
-  }, [formState.phone, isDirty.phone]);
-  
-  useEffect(() => {
-    if (isDirty.address && formState.address !== undefined) {
-      setErrors(prev => ({ 
-        ...prev, 
-        address: formState.address.trim() === '' ? 'Address is required' : null 
+    if (preselectedService && !formState.service) {
+      setFormState(prev => ({
+        ...prev,
+        service: preselectedService
       }));
     }
-  }, [formState.address, isDirty.address]);
-  
-  const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  }, [preselectedService, formState.service]);
+
+  const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    
     setFormState(prev => ({ ...prev, [name]: value }));
     
-    if (!isDirty[name as keyof IsDirty]) {
-      setIsDirty(prev => ({ ...prev, [name]: true }));
+    // Clear error when field is edited
+    if (errors[name as keyof FormState]) {
+      setErrors(prev => {
+        const newErrors = { ...prev };
+        delete newErrors[name as keyof FormState];
+        return newErrors;
+      });
     }
-  }, [isDirty]);
+  }, [errors]);
   
-  const handleBlur = useCallback((field: keyof IsDirty) => {
-    setIsDirty(prev => ({ ...prev, [field]: true }));
-  }, []);
+  const handleBlur = useCallback((field: keyof FormState) => {
+    let fieldError = '';
+    
+    if (field === 'email' && formState.email) {
+      if (!validateEmail(formState.email)) {
+        fieldError = 'Please enter a valid email address';
+      }
+    }
+    
+    if (fieldError) {
+      setErrors(prev => ({
+        ...prev,
+        [field]: fieldError
+      }));
+    }
+  }, [formState]);
   
   const handleRecaptchaChange = useCallback((token: string | null) => {
     setRecaptchaToken(token);
-    setRecaptchaError(token ? null : "Please complete the reCAPTCHA verification");
+    setRecaptchaError(token ? null : 'Please complete the reCAPTCHA');
   }, []);
   
-  const isFormValid = useMemo(() => {
-    return (
-      !errors.name && 
-      !errors.email && 
-      !errors.phone && 
-      !errors.address &&
-      formState.name.trim() !== '' && 
-      formState.email.trim() !== '' && 
-      formState.phone.trim() !== '' && 
-      formState.service !== '' && 
-      !!recaptchaToken
-    );
-  }, [errors, formState, recaptchaToken]);
-  
-  const handleSubmit = useCallback((e: React.FormEvent) => {
-    e.preventDefault();
+  const validateForm = useCallback(() => {
+    const newErrors: Partial<Record<keyof FormState, string>> = {};
+    let isValid = true;
     
-    // Mark all fields as dirty for validation
-    setIsDirty({
-      name: true,
-      email: true,
-      phone: true,
-      address: true
-    });
-    
-    // Validate all fields
-    const newErrors = {
-      name: getNameError(formState.name) || (formState.name.trim() === '' ? 'Name is required' : null),
-      email: getEmailError(formState.email) || (formState.email.trim() === '' ? 'Email is required' : null),
-      phone: getPhoneError(formState.phone) || (formState.phone.trim() === '' ? 'Phone number is required' : null),
-      address: formState.address && formState.address.trim() === '' ? 'Address is required' : null
-    };
-    
-    setErrors(newErrors);
-    
-    if (!recaptchaToken) {
-      setRecaptchaError("Please complete the reCAPTCHA verification");
-      return;
+    // Required fields
+    if (!formState.firstName.trim()) {
+      newErrors.firstName = 'First name is required';
+      isValid = false;
     }
     
-    if (newErrors.name || newErrors.email || newErrors.phone || newErrors.address || formState.service === '') {
+    if (!formState.lastName.trim()) {
+      newErrors.lastName = 'Last name is required';
+      isValid = false;
+    }
+    
+    if (!formState.email.trim()) {
+      newErrors.email = 'Email is required';
+      isValid = false;
+    } else if (!validateEmail(formState.email)) {
+      newErrors.email = 'Please enter a valid email address';
+      isValid = false;
+    }
+    
+    if (!formState.service) {
+      newErrors.service = 'Please select a service';
+      isValid = false;
+    }
+    
+    setErrors(newErrors);
+    return isValid;
+  }, [formState]);
+  
+  const handleSubmit = useCallback(async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!validateForm()) return;
+    
+    if (!recaptchaToken) {
+      setRecaptchaError('Please complete the reCAPTCHA');
       return;
     }
     
     setIsSubmitting(true);
     
-    // Simulate form submission
-    setTimeout(() => {
-      setIsSubmitting(false);
-      setIsSubmitted(true);
-      
-      // Reset form state
-      setFormState({
-        name: "",
-        email: "",
-        phone: "",
-        message: "",
-        service: "",
-        address: ""
+    try {
+      await submitContactForm({
+        firstName: formState.firstName,
+        lastName: formState.lastName,
+        email: formState.email,
+        phone: formState.phone,
+        service: formState.service,
+        message: formState.message,
+        address: formState.address,
+        recaptchaToken
       });
-    }, 1500);
-  }, [formState, recaptchaToken]);
-
+      
+      setIsSubmitted(true);
+      setFormState(initialFormState);
+      toast.success('Your message has been sent. We will contact you shortly!');
+    } catch (error) {
+      toast.error('There was an error sending your message. Please try again.');
+      console.error('Form submission error:', error);
+    } finally {
+      setIsSubmitting(false);
+    }
+  }, [formState, recaptchaToken, validateForm]);
+  
+  const isFormValid = Object.keys(errors).length === 0 && 
+    formState.firstName.trim() !== '' && 
+    formState.lastName.trim() !== '' && 
+    formState.email.trim() !== '' && 
+    validateEmail(formState.email) && 
+    formState.service !== '';
+  
   return {
     formState,
     errors,
@@ -175,6 +166,7 @@ export const useServiceAreaForm = () => {
     handleBlur,
     handleRecaptchaChange,
     isFormValid,
-    handleSubmit
+    handleSubmit,
+    setFormState
   };
 };

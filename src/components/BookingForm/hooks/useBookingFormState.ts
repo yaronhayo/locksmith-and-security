@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { carKeyServices, allKeysLostServices, unusedKeyServices } from "../constants";
 
 export const useBookingFormState = () => {
@@ -9,13 +9,13 @@ export const useBookingFormState = () => {
   const [hasUnusedKey, setHasUnusedKey] = useState("no");
   const [errors, setErrors] = useState<Record<string, string>>({});
 
-  const handleServiceChange = (value: string) => {
+  const handleServiceChange = useCallback((value: string) => {
     setSelectedService(value);
     
     // Clear vehicle info errors when changing service
     const { vehicle_year, vehicle_make, vehicle_model, ...remainingErrors } = errors;
     setErrors(remainingErrors);
-  };
+  }, [errors]);
 
   const handleAllKeysLostChange = (value: string) => {
     setAllKeysLost(value);
@@ -33,6 +33,7 @@ export const useBookingFormState = () => {
     isSubmitting,
     setIsSubmitting,
     selectedService,
+    setSelectedService,
     allKeysLost,
     hasUnusedKey,
     showVehicleInfo,

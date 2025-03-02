@@ -1,59 +1,63 @@
 
-import React, { useEffect } from 'react';
+import React, { PropsWithChildren } from 'react';
+import { Helmet } from 'react-helmet';
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
 import MetaTags from './MetaTags';
-import ScrollToTop from '../ScrollToTop';
 import Breadcrumbs from '../Breadcrumbs';
-import ScrollToTopButton from '../ScrollToTopButton';
-import { AnimatePresence, motion } from 'framer-motion';
+import LoadingState from './LoadingState';
 import PageHero from './PageHero';
-import { cn } from '@/lib/utils';
+import ScrollToTop from '../ScrollToTop';
+import { SchemaScripts } from '../meta/SchemaScripts';
 import { BreadcrumbItem } from '@/routes/types';
 
-export interface PageLayoutProps {
-  title?: string;
-  description?: string;
+interface PageLayoutProps {
+  title: string;
+  description: string;
   keywords?: string;
   canonicalUrl?: string;
-  ogImage?: string;
-  ogType?: "website" | "article" | "product" | "profile" | "book";
-  children: React.ReactNode;
-  schema?: any | any[]; // Updated to match MetaTags
-  className?: string;
   breadcrumbs?: BreadcrumbItem[];
-  customBreadcrumbs?: BreadcrumbItem[];
+  heroTitle?: string;
+  heroDescription?: string;
+  customBreadcrumbs?: Array<{name: string, path: string}>;
+  ogImage?: string;
+  ogType?: string;
   noindex?: boolean;
   nofollow?: boolean;
   modifiedDate?: string;
   hideBreadcrumbs?: boolean;
-  heroTitle?: string;
-  heroDescription?: string;
+  isLoading?: boolean;
+  schema?: { type: string; data: any }[];
+  preselectedService?: string;
 }
 
-const PageLayout: React.FC<PageLayoutProps> = ({
+/**
+ * Primary layout component for all pages
+ * Includes header, footer, and meta tags
+ */
+const PageLayout: React.FC<PropsWithChildren<PageLayoutProps>> = ({
   title,
   description,
-  keywords,
+  keywords = '',
   canonicalUrl,
-  ogImage,
-  ogType,
-  children,
-  schema,
-  className,
-  breadcrumbs,
-  customBreadcrumbs,
-  noindex,
-  nofollow,
-  modifiedDate,
-  hideBreadcrumbs = false,
   heroTitle,
   heroDescription,
+  customBreadcrumbs,
+  children,
+  ogImage,
+  ogType = 'website',
+  noindex = false,
+  nofollow = false,
+  modifiedDate,
+  hideBreadcrumbs = false,
+  isLoading = false,
+  schema = [],
+  breadcrumbs = [],
+  preselectedService
 }) => {
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [title]);
-
-  // Determine which breadcrumbs to use (custom or standard)
-  const activeBreadcrumbs = customBreadcrumbs || breadcrumbs;
+  if (isLoading) {
+    return <LoadingState />;
+  }
 
   return (
     <>
@@ -67,37 +71,35 @@ const PageLayout: React.FC<PageLayoutProps> = ({
         noindex={noindex}
         nofollow={nofollow}
         modifiedDate={modifiedDate}
-        schema={schema}
       />
+      
+      <SchemaScripts schema={schema} />
       
       <ScrollToTop />
       
-      <AnimatePresence mode="wait">
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.3 }}
-          className={cn("min-h-screen flex flex-col", className)}
-        >
-          {!hideBreadcrumbs && activeBreadcrumbs && activeBreadcrumbs.length > 0 && (
-            <div className="container mx-auto px-4 py-4">
-              <Breadcrumbs breadcrumbs={activeBreadcrumbs} />
-            </div>
-          )}
-          
+      <div className="flex flex-col min-h-screen">
+        <Header />
+        
+        <main className="flex-grow">
           {heroTitle && (
             <PageHero 
               title={heroTitle} 
-              description={heroDescription} 
+              description={heroDescription || description}
+              preselectedService={preselectedService}
             />
           )}
           
+          {!hideBreadcrumbs && (customBreadcrumbs || breadcrumbs.length > 0) && (
+            <div className="container mx-auto px-4 py-4">
+              <Breadcrumbs items={customBreadcrumbs || breadcrumbs.map(b => ({ name: b.name, path: b.path }))} />
+            </div>
+          )}
+          
           {children}
-        </motion.div>
-      </AnimatePresence>
-      
-      <ScrollToTopButton />
+        </main>
+        
+        <Footer />
+      </div>
     </>
   );
 };
