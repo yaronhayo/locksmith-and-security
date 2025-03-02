@@ -1,4 +1,3 @@
-
 import { memo } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
@@ -123,6 +122,7 @@ const NavigationLink = memo(({
                           <Link 
                             to="/services/residential-locksmith/lock-replacement"
                             className="text-sm text-gray-600 hover:text-secondary flex items-center gap-2 group"
+                            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
                           >
                             <span>Lock Replacement</span>
                             <ArrowRight className="h-4 w-4 opacity-0 -translate-x-2 transition-all group-hover:opacity-100 group-hover:translate-x-0" />
@@ -132,6 +132,7 @@ const NavigationLink = memo(({
                           <Link 
                             to="/services/residential-locksmith/lock-rekey"
                             className="text-sm text-gray-600 hover:text-secondary flex items-center gap-2 group"
+                            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
                           >
                             <span>Lock Rekey</span>
                             <ArrowRight className="h-4 w-4 opacity-0 -translate-x-2 transition-all group-hover:opacity-100 group-hover:translate-x-0" />
@@ -141,6 +142,7 @@ const NavigationLink = memo(({
                           <Link 
                             to="/services/residential-locksmith/lock-repair"
                             className="text-sm text-gray-600 hover:text-secondary flex items-center gap-2 group"
+                            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
                           >
                             <span>Lock Repair</span>
                             <ArrowRight className="h-4 w-4 opacity-0 -translate-x-2 transition-all group-hover:opacity-100 group-hover:translate-x-0" />
@@ -150,6 +152,7 @@ const NavigationLink = memo(({
                           <Link 
                             to="/services/residential-locksmith/gate-locks"
                             className="text-sm text-gray-600 hover:text-secondary flex items-center gap-2 group"
+                            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
                           >
                             <span>Gate Locks</span>
                             <ArrowRight className="h-4 w-4 opacity-0 -translate-x-2 transition-all group-hover:opacity-100 group-hover:translate-x-0" />
@@ -167,6 +170,7 @@ const NavigationLink = memo(({
                           <Link 
                             to="/services/commercial-locksmith/lock-replacement"
                             className="text-sm text-gray-600 hover:text-secondary flex items-center gap-2 group"
+                            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
                           >
                             <span>Lock Replacement</span>
                             <ArrowRight className="h-4 w-4 opacity-0 -translate-x-2 transition-all group-hover:opacity-100 group-hover:translate-x-0" />
@@ -176,6 +180,7 @@ const NavigationLink = memo(({
                           <Link 
                             to="/services/commercial-locksmith/lock-rekey"
                             className="text-sm text-gray-600 hover:text-secondary flex items-center gap-2 group"
+                            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
                           >
                             <span>Lock Rekey</span>
                             <ArrowRight className="h-4 w-4 opacity-0 -translate-x-2 transition-all group-hover:opacity-100 group-hover:translate-x-0" />
@@ -185,6 +190,7 @@ const NavigationLink = memo(({
                           <Link 
                             to="/services/commercial-locksmith/emergency-exit-device"
                             className="text-sm text-gray-600 hover:text-secondary flex items-center gap-2 group"
+                            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
                           >
                             <span>Emergency Exit Device</span>
                             <ArrowRight className="h-4 w-4 opacity-0 -translate-x-2 transition-all group-hover:opacity-100 group-hover:translate-x-0" />
@@ -194,6 +200,7 @@ const NavigationLink = memo(({
                           <Link 
                             to="/services/commercial-locksmith/master-key"
                             className="text-sm text-gray-600 hover:text-secondary flex items-center gap-2 group"
+                            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
                           >
                             <span>Master Key Systems</span>
                             <ArrowRight className="h-4 w-4 opacity-0 -translate-x-2 transition-all group-hover:opacity-100 group-hover:translate-x-0" />
@@ -203,6 +210,7 @@ const NavigationLink = memo(({
                           <Link 
                             to="/services/commercial-locksmith/access-control"
                             className="text-sm text-gray-600 hover:text-secondary flex items-center gap-2 group"
+                            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
                           >
                             <span>Access Control</span>
                             <ArrowRight className="h-4 w-4 opacity-0 -translate-x-2 transition-all group-hover:opacity-100 group-hover:translate-x-0" />
@@ -220,6 +228,7 @@ const NavigationLink = memo(({
                           <Link 
                             to="/services/auto-locksmith/car-key-replacement"
                             className="text-sm text-gray-600 hover:text-secondary flex items-center gap-2 group"
+                            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
                           >
                             <span>Car Key Replacement</span>
                             <ArrowRight className="h-4 w-4 opacity-0 -translate-x-2 transition-all group-hover:opacity-100 group-hover:translate-x-0" />
@@ -229,6 +238,7 @@ const NavigationLink = memo(({
                           <Link 
                             to="/services/auto-locksmith/key-fob-programming"
                             className="text-sm text-gray-600 hover:text-secondary flex items-center gap-2 group"
+                            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
                           >
                             <span>Key Fob Programming</span>
                             <ArrowRight className="h-4 w-4 opacity-0 -translate-x-2 transition-all group-hover:opacity-100 group-hover:translate-x-0" />
@@ -238,6 +248,7 @@ const NavigationLink = memo(({
                           <Link 
                             to="/services/auto-locksmith/car-key-duplicate"
                             className="text-sm text-gray-600 hover:text-secondary flex items-center gap-2 group"
+                            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
                           >
                             <span>Car Key Duplicate</span>
                             <ArrowRight className="h-4 w-4 opacity-0 -translate-x-2 transition-all group-hover:opacity-100 group-hover:translate-x-0" />
@@ -247,6 +258,7 @@ const NavigationLink = memo(({
                           <Link 
                             to="/services/auto-locksmith/car-key-cutting"
                             className="text-sm text-gray-600 hover:text-secondary flex items-center gap-2 group"
+                            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
                           >
                             <span>Car Key Cutting</span>
                             <ArrowRight className="h-4 w-4 opacity-0 -translate-x-2 transition-all group-hover:opacity-100 group-hover:translate-x-0" />
@@ -256,6 +268,7 @@ const NavigationLink = memo(({
                           <Link 
                             to="/services/auto-locksmith/ignition-lock-cylinder"
                             className="text-sm text-gray-600 hover:text-secondary flex items-center gap-2 group"
+                            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
                           >
                             <span>Ignition Lock Cylinder</span>
                             <ArrowRight className="h-4 w-4 opacity-0 -translate-x-2 transition-all group-hover:opacity-100 group-hover:translate-x-0" />
