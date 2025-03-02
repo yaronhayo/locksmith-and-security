@@ -20,12 +20,28 @@ const defaultPlacesOptions = {
  * AddressAutocomplete component that enhances an input with Google Places Autocomplete
  */
 export const AddressAutocomplete = forwardRef<HTMLInputElement, AddressAutocompleteProps>(
-  ({ className, onAddressSelect, error, ...props }, ref) => {
+  ({ className, onAddressSelect, error, value, onChange, onBlur, ...props }, ref) => {
     const [autocomplete, setAutocomplete] = useState<google.maps.places.Autocomplete | null>(null);
     const [initializationAttempts, setInitializationAttempts] = useState(0);
     const inputRef = useRef<HTMLInputElement>(null);
     const combinedRef = useCombinedRefs(ref, inputRef);
+    const [internalValue, setInternalValue] = useState(value || '');
     const placesOptions = { ...defaultPlacesOptions };
+
+    // Update internal value when the external value changes
+    useEffect(() => {
+      if (value !== undefined) {
+        setInternalValue(value.toString());
+      }
+    }, [value]);
+
+    // Handle internal onChange to update both internal state and propagate upward
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      setInternalValue(e.target.value);
+      if (onChange) {
+        onChange(e);
+      }
+    };
 
     // Initialize Google Maps Places Autocomplete
     useEffect(() => {
@@ -71,6 +87,9 @@ export const AddressAutocomplete = forwardRef<HTMLInputElement, AddressAutocompl
             if (place && place.formatted_address) {
               console.log("Place selected:", place.formatted_address);
               
+              // Update internal state
+              setInternalValue(place.formatted_address);
+              
               // Directly update the input value to show the full address
               if (inputRef.current) {
                 // Use the native setter to ensure the value is properly registered
@@ -100,18 +119,22 @@ export const AddressAutocomplete = forwardRef<HTMLInputElement, AddressAutocompl
               }
               
               // Also trigger the onChange handler for form state updates
-              if (props.onChange) {
+              if (onChange) {
                 // Create a synthetic event if onChange expects an event
-                if (typeof props.onChange === 'function') {
-                   const syntheticEvent = {
-                     target: {
-                       name: props.name || 'address',
-                       value: place.formatted_address,
-                     },
-                   } as React.ChangeEvent<HTMLInputElement>;
-                   
-                   props.onChange(syntheticEvent);
-                }
+                const syntheticEvent = {
+                  target: {
+                    name: props.name || 'address',
+                    value: place.formatted_address,
+                  },
+                } as React.ChangeEvent<HTMLInputElement>;
+                
+                onChange(syntheticEvent);
+              }
+              
+              // Trigger blur event to validate the field if needed
+              if (onBlur) {
+                const blurEvent = new FocusEvent('blur', { bubbles: true });
+                inputRef.current.dispatchEvent(blurEvent);
               }
             } else {
               console.warn("Invalid place selected or missing formatted_address");
@@ -132,7 +155,7 @@ export const AddressAutocomplete = forwardRef<HTMLInputElement, AddressAutocompl
         }
         console.info("Address autocomplete cleaned up");
       };
-    }, [onAddressSelect, placesOptions, initializationAttempts, props.name, props.onChange, autocomplete]);
+    }, [onAddressSelect, placesOptions, initializationAttempts, props.name, onChange, onBlur, autocomplete]);
 
     // Prevent form submission on Enter key press when autocomplete is active
     useEffect(() => {
@@ -148,17 +171,12 @@ export const AddressAutocomplete = forwardRef<HTMLInputElement, AddressAutocompl
       };
     }, []);
 
-    // Ensure the value is properly set when the component is first rendered or when the value prop changes
-    useEffect(() => {
-      if (inputRef.current && props.value !== undefined) {
-        inputRef.current.value = props.value.toString();
-      }
-    }, [props.value]);
-
     return (
       <Input
         {...props}
         ref={combinedRef}
+        value={internalValue}
+        onChange={handleInputChange}
         className={cn(
           error ? "border-red-500 focus-visible:ring-red-500" : "",
           className

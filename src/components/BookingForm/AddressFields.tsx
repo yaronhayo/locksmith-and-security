@@ -18,9 +18,11 @@ const AddressFields = ({ address, onChange, errors, isSubmitting }: AddressField
   // Create a handler that extracts the value from either a string or an event
   const handleAddressChange = (addressOrEvent: string | React.ChangeEvent<HTMLInputElement>) => {
     if (typeof addressOrEvent === 'string') {
+      console.log("String address received in BookingForm:", addressOrEvent);
       onChange(addressOrEvent);
     } else {
       // It's an event
+      console.log("Event address received in BookingForm:", addressOrEvent.target.value);
       onChange(addressOrEvent.target.value);
     }
   };

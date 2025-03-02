@@ -32,6 +32,9 @@ const ContactFields = ({
   };
 
   const handleAddressChange = (addressOrEvent: string | React.ChangeEvent<HTMLInputElement>) => {
+    console.log("HandleAddressChange called in ContactFields with:", 
+      typeof addressOrEvent === 'string' ? addressOrEvent : addressOrEvent.target.value);
+    
     const event = {
       target: {
         name: 'address',
