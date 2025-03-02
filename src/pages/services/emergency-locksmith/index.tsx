@@ -1,32 +1,31 @@
 
 import React from 'react';
-import PageLayout from '@/components/layouts/PageLayout';
+import ServiceCategoryLayout from '@/components/services/common/ServiceCategoryLayout';
 import { EmergencyServiceContent } from '@/components/services/emergency-locksmith/EmergencyServiceContent';
 import { Clock, AlertTriangle, Map, Shield } from 'lucide-react';
-import ServicePageContent from '@/components/sections/services/service-page/ServicePageContent';
-import ReviewsSection from '@/components/sections/ReviewsSection';
+import { emergencyCaseStudies } from '@/components/services/emergency-locksmith/EmergencyCaseStudies';
 
 const EmergencyLocksmithPage = () => {
   const categoryFeatures = [
     {
       title: "24/7 Emergency Response",
       description: "Professional locksmith services available day and night, including holidays and weekends.",
-      icon: <Clock className="h-6 w-6" />
+      icon: <Clock className="h-8 w-8" />
     },
     {
       title: "All Lockout Situations",
       description: "Expert solutions for home, business, vehicle, and storage lockouts with damage-free entry methods.",
-      icon: <AlertTriangle className="h-6 w-6" />
+      icon: <AlertTriangle className="h-8 w-8" />
     },
     {
       title: "Mobile Service Units",
       description: "Fast response to your location throughout North Bergen and surrounding areas in New Jersey.",
-      icon: <Map className="h-6 w-6" />
+      icon: <Map className="h-8 w-8" />
     },
     {
       title: "Licensed & Insured",
       description: "Professional service by certified technicians you can trust in emergency situations.",
-      icon: <Shield className="h-6 w-6" />
+      icon: <Shield className="h-8 w-8" />
     }
   ];
 
@@ -50,32 +49,59 @@ const EmergencyLocksmithPage = () => {
     {
       question: "Can you handle high-security or electronic locks?",
       answer: "Yes, our technicians are trained to work with high-security locks, smart locks, electronic access systems, and vehicle transponder keys. We have the specialized equipment necessary for most advanced locking systems."
+    },
+    {
+      question: "What should I do while waiting for an emergency locksmith?",
+      answer: "Stay in a safe, well-lit area while waiting. If you're locked out of your vehicle, move away from traffic. For home lockouts, wait with a neighbor if possible. Keep your phone charged and on to communicate with our technician. We'll provide an estimated arrival time and keep you updated."
+    },
+    {
+      question: "Can you make new keys on-site during an emergency call?",
+      answer: "Yes, our mobile service vehicles are equipped with key-cutting machines and programming equipment. We can create most standard keys, transponder keys, and fobs on-site during the same visit. For specialized keys, we may need to order specific blanks."
+    },
+    {
+      question: "Is emergency locksmith service available on holidays?",
+      answer: "Yes, we provide 24/7 emergency locksmith services 365 days a year, including all holidays. We understand that lockouts don't follow a schedule, so our emergency response team is always available."
+    },
+    {
+      question: "Can you help if my key broke off in the lock?",
+      answer: "Yes, we can extract broken keys from locks using specialized tools that prevent further damage to the lock. After removing the broken piece, we can create a new key and verify the lock functions properly."
+    },
+    {
+      question: "Do you service all types of vehicles for car lockouts?",
+      answer: "Yes, our technicians are trained to handle lockouts for virtually all vehicle makes and models, including cars, trucks, SUVs, motorcycles, and even some specialty vehicles. We have the tools and expertise to safely gain access without damage."
+    },
+    {
+      question: "What areas do you serve for emergency locksmith calls?",
+      answer: "We provide emergency locksmith services throughout North Bergen, Jersey City, Hoboken, Secaucus, Union City, Weehawken, West New York, and surrounding areas in New Jersey. Our mobile service units are strategically positioned to provide quick response times."
+    },
+    {
+      question: "Can you rekey my locks after a break-in or attempted break-in?",
+      answer: "Yes, we highly recommend rekeying or replacing locks after a break-in or attempted break-in. Our emergency locksmiths can rekey or replace your locks on the spot to ensure your property is secure again as quickly as possible."
     }
   ];
 
-  const pageTitle = "Emergency Locksmith Services | 24/7 Lockout Assistance";
-  const pageDescription = "Professional 24/7 emergency locksmith services for home, business, and vehicle lockouts. Fast response, damage-free entry, and affordable rates throughout North Bergen, NJ.";
+  const keyPoints = [
+    "24/7 emergency lockout assistance for homes, businesses, and vehicles",
+    "Average response time of 15-30 minutes in North Bergen",
+    "Non-destructive entry methods by certified technicians",
+    "Complete lock repair and replacement services on the spot"
+  ];
 
   return (
-    <PageLayout 
-      title={pageTitle}
-      description={pageDescription}
+    <ServiceCategoryLayout
+      title="Emergency Locksmith Services"
+      description="Fast, professional assistance when you're locked out of your car, home, or business, available 24/7 including holidays and weekends."
+      heroSubtitle="Professional 24/7 lockout solutions with rapid response times throughout North Bergen and surrounding areas."
+      categoryName="Emergency"
+      keyPoints={keyPoints}
+      features={categoryFeatures}
+      faqs={faqs}
+      reviewCategory="car"
+      caseStudies={emergencyCaseStudies}
       keywords="emergency locksmith, 24/7 locksmith, lockout service, car lockout, house lockout, business lockout, emergency key replacement, locked out of car, locked out of house"
-      hideBreadcrumbs={false}
     >
-      <ServicePageContent
-        title="Emergency Locksmith Services"
-        description="Fast, professional assistance when you're locked out of your car, home, or business."
-        serviceName="Emergency Locksmith"
-        serviceCategory="Emergency"
-        mainContent={<EmergencyServiceContent />}
-        faqs={faqs}
-        categoryDescription={<EmergencyServiceContent />}
-        categoryFeatures={categoryFeatures}
-      />
-      
-      <ReviewsSection category="car" />
-    </PageLayout>
+      <EmergencyServiceContent />
+    </ServiceCategoryLayout>
   );
 };
 
