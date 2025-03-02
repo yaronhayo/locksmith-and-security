@@ -11,7 +11,6 @@ const ThankYouMessage = () => {
     >
       <h3 className="text-lg sm:text-xl font-semibold mb-2">Thank You!</h3>
       <p>Your message has been sent successfully. A member of our team will contact you shortly.</p>
-      <p className="text-sm mt-3">We typically respond within 30 minutes during business hours.</p>
     </motion.div>
   );
 };
