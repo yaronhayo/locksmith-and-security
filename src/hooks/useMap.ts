@@ -17,23 +17,17 @@ export const useMapConfig = () => {
   return useQuery({
     queryKey: [MAP_CONFIG_CACHE_KEY],
     queryFn: async () => {
-      // The original query was failing because it was expecting a single row
-      // but likely found multiple rows or no rows at all
       const { data, error } = await supabase
         .from('settings')
         .select('value')
         .eq('key', 'google_maps_api_key')
-        .maybeSingle(); // Changed from .single() to .maybeSingle() to handle case where no row exists
+        .single();
       
       if (error) {
         throw new Error(error.message);
       }
       
-      // Provide a fallback value if no API key is found
-      const apiKey = data?.value || 'AIzaSyBfRCY8KVG9BcNJwffoGJRbQx7WFEUAiLM';
-      console.log("Google Maps API key loaded successfully");
-      
-      return apiKey;
+      return data?.value as string;
     },
     meta: {
       onError: (error: Error) => {

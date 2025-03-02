@@ -56,9 +56,6 @@ const ServiceAreaMap = ({ locationName, lat, lng, isLoading = false }: ServiceAr
     }
   ];
 
-  // Log props for debugging
-  console.log("ServiceAreaMap rendering with:", { locationName, lat, lng, isLoading, mapReady });
-
   return (
     <div className="bg-white rounded-xl shadow-sm overflow-hidden">
       <div className="p-4 bg-gray-50 border-b border-gray-200">

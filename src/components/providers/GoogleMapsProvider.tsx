@@ -1,4 +1,3 @@
-
 import { ReactNode, useEffect, useState, useCallback, useRef } from "react";
 import { LoadScript, LoadScriptProps } from "@react-google-maps/api";
 import { useMapConfig, clearMapConfigCache } from "@/hooks/useMap";
@@ -91,10 +90,8 @@ const GoogleMapsProvider = ({ children }: GoogleMapsProviderProps) => {
   }, [apiKey, scriptError]);
 
   if (isLoading) return <MapLoader text="Loading map configuration..." />;
-  
-  // Ensure we have some API key to work with
-  const mapsApiKey = apiKey || 'AIzaSyBfRCY8KVG9BcNJwffoGJRbQx7WFEUAiLM';
-  
+  if (apiKeyError || isError) return <MapError error={apiKeyError?.message || "Failed to load Google Maps API key"} resetErrorBoundary={() => { clearMapConfigCache(); refetch(); }} />;
+  if (!apiKey) return <MapError error="Google Maps API key not found" resetErrorBoundary={() => { clearMapConfigCache(); refetch(); }} />;
   if (scriptError) return <MapError error={scriptError} resetErrorBoundary={() => { setScriptError(null); clearMapConfigCache(); refetch(); }} />;
 
   // If Google Maps is already loaded globally, just render children
@@ -109,7 +106,7 @@ const GoogleMapsProvider = ({ children }: GoogleMapsProviderProps) => {
 
   return (
     <LoadScript 
-      googleMapsApiKey={mapsApiKey}
+      googleMapsApiKey={apiKey}
       libraries={libraries}
       onLoad={handleLoad}
       onError={handleError}
