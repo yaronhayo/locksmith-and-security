@@ -1,9 +1,5 @@
 
 import React from 'react';
-import { motion } from 'framer-motion';
-import { Lock, ShieldCheck, Wrench, Clock, Award, CheckCircle2 } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
 import PageLayout from '@/components/layouts/PageLayout';
 import ServicePageContent from '@/components/sections/services/service-page';
 import { GateLocksContent } from '@/components/services/gate-locks/GateLocksContent';
