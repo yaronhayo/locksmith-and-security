@@ -9,12 +9,15 @@ const FooterCopyright = () => {
     <div className="flex flex-col items-center text-sm text-gray-400">
       <div className="flex flex-col items-center gap-2 mb-4">
         <p>© {currentYear} Locksmith & Security LLC. All rights reserved.</p>
-        <div className="flex gap-4">
+        <div className="flex flex-wrap justify-center gap-4">
           <Link to="/privacy-policy" className="hover:text-white transition-colors">
             Privacy Policy
           </Link>
           <Link to="/terms-conditions" className="hover:text-white transition-colors">
             Terms & Conditions
+          </Link>
+          <Link to="/accessibility" className="hover:text-white transition-colors">
+            Accessibility
           </Link>
         </div>
       </div>
