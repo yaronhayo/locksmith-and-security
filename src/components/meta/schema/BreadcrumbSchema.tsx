@@ -9,9 +9,10 @@ type BreadcrumbItemType = {
 
 interface BreadcrumbSchemaProps {
   breadcrumbs?: BreadcrumbItemType[];
+  baseUrl?: string; // Add baseUrl as an optional property
 }
 
-export const BreadcrumbSchema: React.FC<BreadcrumbSchemaProps> = ({ breadcrumbs = [] }) => {
+export const BreadcrumbSchema: React.FC<BreadcrumbSchemaProps> = ({ breadcrumbs = [], baseUrl = '' }) => {
   if (!breadcrumbs || breadcrumbs.length === 0) return null;
 
   // Create schema for breadcrumbs
@@ -23,7 +24,7 @@ export const BreadcrumbSchema: React.FC<BreadcrumbSchemaProps> = ({ breadcrumbs 
       "@type": "ListItem",
       "position": index + 1,
       "name": breadcrumb.name,
-      "item": url.startsWith('http') ? url : `https://247locksmithandsecurity.com${url}`
+      "item": url.startsWith('http') ? url : `${baseUrl || 'https://247locksmithandsecurity.com'}${url}`
     };
   });
 
@@ -36,7 +37,7 @@ export const BreadcrumbSchema: React.FC<BreadcrumbSchemaProps> = ({ breadcrumbs 
   return <script type="application/ld+json">{JSON.stringify(breadcrumbSchema)}</script>;
 };
 
-// Add back the create function for compatibility
+// Add back the create function for compatibility with existing code
 export const createBreadcrumbSchema = (props: BreadcrumbSchemaProps) => {
   if (!props.breadcrumbs || props.breadcrumbs.length === 0) return null;
 
@@ -47,7 +48,7 @@ export const createBreadcrumbSchema = (props: BreadcrumbSchemaProps) => {
       "@type": "ListItem",
       "position": index + 1,
       "name": breadcrumb.name,
-      "item": url.startsWith('http') ? url : `https://247locksmithandsecurity.com${url}`
+      "item": url.startsWith('http') ? url : `${props.baseUrl || 'https://247locksmithandsecurity.com'}${url}`
     };
   });
 
