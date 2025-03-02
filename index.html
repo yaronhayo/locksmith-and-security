@@ -1,8 +1,10 @@
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <!-- Debug script for troubleshooting white screen issues -->
+    <script src="/debug.js"></script>
+    
     <!-- Google Tag Manager -->
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
     new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -143,5 +145,25 @@
     
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+    
+    <!-- Fallback for white screen -->
+    <script>
+      // Check if the app rendered after 5 seconds
+      setTimeout(() => {
+        const rootElement = document.getElementById('root');
+        if (rootElement && rootElement.children.length === 0) {
+          console.error('App did not render within 5 seconds');
+          rootElement.innerHTML = `
+            <div style="text-align: center; padding: 30px; font-family: sans-serif;">
+              <h1>Loading Error</h1>
+              <p>The application failed to load. Please try refreshing the page.</p>
+              <button onclick="window.location.reload()" style="padding: 10px 20px; background: #1E3A8A; color: white; border: none; border-radius: 4px; cursor: pointer;">
+                Reload Page
+              </button>
+            </div>
+          `;
+        }
+      }, 5000);
+    </script>
   </body>
 </html>

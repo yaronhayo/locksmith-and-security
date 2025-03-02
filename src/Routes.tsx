@@ -1,6 +1,6 @@
 
 import { Routes as RouterRoutes, Route } from 'react-router-dom';
-import { Suspense, lazy, ReactNode, memo } from "react";
+import { Suspense, lazy, ReactNode, memo, useEffect } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { mainRoutes } from "./routes/mainRoutes";
 import { serviceRoutes } from "./routes/serviceRoutes";
@@ -16,13 +16,19 @@ const NotFound = lazy(() => import('./pages/404'));
 /**
  * Wraps a route element in error boundary and suspense
  */
-const RouteWrapper = memo(({ element }: { element: ReactNode }) => (
-  <ErrorBoundary FallbackComponent={ErrorFallback}>
-    <Suspense fallback={<PageLoading type="skeleton" />}>
-      {element}
-    </Suspense>
-  </ErrorBoundary>
-));
+const RouteWrapper = memo(({ element }: { element: ReactNode }) => {
+  useEffect(() => {
+    console.log('Route element mounted');
+  }, []);
+  
+  return (
+    <ErrorBoundary FallbackComponent={ErrorFallback}>
+      <Suspense fallback={<PageLoading type="skeleton" />}>
+        {element}
+      </Suspense>
+    </ErrorBoundary>
+  );
+});
 
 RouteWrapper.displayName = 'RouteWrapper';
 
@@ -31,6 +37,13 @@ RouteWrapper.displayName = 'RouteWrapper';
  * Renders all application routes with error boundaries and suspense
  */
 const Routes = () => {
+  useEffect(() => {
+    console.log('Routes component mounted');
+    console.log('Available routes:', 
+      [...mainRoutes, ...serviceRoutes, ...serviceAreaRoutes].map(r => r.path)
+    );
+  }, []);
+
   // Map route data to Route components
   const renderRouteComponents = (routes: RouteConfig[]) => {
     return routes.map(({ path, element }) => (

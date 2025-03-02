@@ -32,9 +32,13 @@ function App() {
       <RouteErrorBoundary>
         <ScrollToTop />
         <NavigationProvider>
-          <Header />
-          <Routes />
-          <Footer />
+          <div className="flex min-h-screen flex-col">
+            <Header />
+            <main className="flex-grow">
+              <Routes />
+            </main>
+            <Footer />
+          </div>
         </NavigationProvider>
         <Toaster />
         <CookieConsent />

@@ -56,6 +56,9 @@ const queryClient = new QueryClient({
   }
 });
 
+// Add console logging to debug rendering issues
+console.log('Initializing app render');
+
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
@@ -63,3 +66,5 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
     </QueryClientProvider>
   </React.StrictMode>
 );
+
+console.log('App rendered');
