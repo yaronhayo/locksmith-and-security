@@ -42,6 +42,12 @@ const NotFoundPage = () => {
     hover: { rotate: 90, transition: { duration: 0.5 } }
   };
 
+  // Define breadcrumbs for the 404 page
+  const notFoundBreadcrumbs = [
+    { name: "Home", path: "/" },
+    { name: "Page Not Found", path: "/404" }
+  ];
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-blue-50 flex flex-col">
       <Helmet>
@@ -52,7 +58,7 @@ const NotFoundPage = () => {
       </Helmet>
       
       <div className="container mx-auto px-4 py-3">
-        <Breadcrumbs />
+        <Breadcrumbs breadcrumbs={notFoundBreadcrumbs} />
       </div>
       
       <div className="flex-grow flex items-center justify-center px-4 py-12">

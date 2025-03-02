@@ -15,6 +15,7 @@ export interface RouteConfig {
 export interface BreadcrumbItem {
   name: string;
   path: string;
+  item?: string; // Add the 'item' property used in schema generation
 }
 
 export interface PageMetaProps {

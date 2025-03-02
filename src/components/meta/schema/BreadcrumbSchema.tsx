@@ -15,13 +15,17 @@ export const BreadcrumbSchema: React.FC<BreadcrumbSchemaProps> = ({
 
   // Create schema for breadcrumbs
   const itemListElement = breadcrumbs.map((breadcrumb, index) => {
+    // Use either the item property if available or construct from path
+    const itemUrl = breadcrumb.item || 
+      (breadcrumb.path.startsWith('http') 
+        ? breadcrumb.path 
+        : `${baseUrl}${breadcrumb.path}`);
+        
     return {
       "@type": "ListItem",
       "position": index + 1,
       "name": breadcrumb.name,
-      "item": breadcrumb.path.startsWith('http') 
-        ? breadcrumb.path 
-        : `${baseUrl}${breadcrumb.path}`
+      "item": itemUrl
     };
   });
 
@@ -39,13 +43,17 @@ export const createBreadcrumbSchema = ({ breadcrumbs, baseUrl = 'https://247lock
   if (!breadcrumbs || breadcrumbs.length === 0) return null;
 
   const itemListElement = breadcrumbs.map((breadcrumb, index) => {
+    // Use either the item property if available or construct from path
+    const itemUrl = breadcrumb.item || 
+      (breadcrumb.path.startsWith('http') 
+        ? breadcrumb.path 
+        : `${baseUrl}${breadcrumb.path}`);
+        
     return {
       "@type": "ListItem",
       "position": index + 1,
       "name": breadcrumb.name,
-      "item": breadcrumb.path.startsWith('http') 
-        ? breadcrumb.path 
-        : `${baseUrl}${breadcrumb.path}`
+      "item": itemUrl
     };
   });
 
