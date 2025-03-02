@@ -6,6 +6,7 @@ import MapError from "../map/MapError";
 import MapLoader from "../map/MapLoader";
 import { toast } from "sonner";
 
+// Define libraries once to prevent reloading warnings
 const libraries: LoadScriptProps['libraries'] = ['places'];
 
 // Use a global flag to prevent multiple script loads

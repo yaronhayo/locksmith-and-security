@@ -22,6 +22,8 @@ export const useMapConfig = () => {
     queryKey: [MAP_CONFIG_CACHE_KEY],
     queryFn: async () => {
       try {
+        console.log('Fetching Google Maps API key from Supabase settings...');
+        
         // Try to fetch using uppercase key first (GOOGLE_MAPS_API_KEY)
         let { data, error } = await supabase
           .from('settings')
@@ -53,12 +55,14 @@ export const useMapConfig = () => {
           
           // If no key in the database and fallback is available, use that
           if (FALLBACK_API_KEY) {
+            console.log('Using fallback API key');
             return FALLBACK_API_KEY;
           }
           
           throw new Error('Google Maps API key not found in settings');
         }
         
+        console.log('Successfully retrieved Google Maps API key');
         return data.value;
       } catch (err) {
         console.error('Failed to retrieve Google Maps API key:', err);
