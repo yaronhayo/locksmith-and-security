@@ -1,6 +1,5 @@
 
 import React from 'react';
-import EnhancedServicesHero from '@/components/sections/services/EnhancedServicesHero';
 import ServicePageContent from '@/components/sections/services/service-page';
 import ServicesProof from '@/components/sections/services/ServicesProof';
 import PageLayout from '@/components/layouts/PageLayout';
@@ -52,16 +51,6 @@ const ServiceLayout: React.FC<ServiceLayoutProps> = ({
       hideBreadcrumbs={false}
       preselectedService={preselectedService}
     >
-      <div className="-mt-8"> {/* Added negative margin to bring content higher */}
-        <EnhancedServicesHero 
-          title={title}
-          description={description}
-          serviceName={serviceName}
-          serviceLabel={serviceCategory}
-          preselectedService={preselectedService}
-        />
-      </div>
-      
       <ServicePageContent
         title={title}
         description={description}
