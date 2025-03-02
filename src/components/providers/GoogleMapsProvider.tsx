@@ -1,7 +1,6 @@
-
 import { ReactNode, useEffect, useState, useCallback, useRef } from "react";
 import { LoadScript, LoadScriptProps } from "@react-google-maps/api";
-import { useMapConfig } from "@/hooks/useMap";
+import { useMapConfig, clearMapConfigCache } from "@/hooks/useMap";
 import MapError from "../map/MapError";
 import MapLoader from "../map/MapLoader";
 import { toast } from "sonner";
@@ -10,16 +9,18 @@ const libraries: LoadScriptProps['libraries'] = ['places'];
 
 // Use a global flag to prevent multiple script loads
 let scriptAttempted = false;
+let scriptLoaded = false;
 
 interface GoogleMapsProviderProps {
   children: ReactNode;
 }
 
 const GoogleMapsProvider = ({ children }: GoogleMapsProviderProps) => {
-  const { data: apiKey, error: apiKeyError, isLoading, isError } = useMapConfig();
+  const { data: apiKey, error: apiKeyError, isLoading, isError, refetch } = useMapConfig();
   const [scriptError, setScriptError] = useState<string | null>(null);
-  const [scriptLoaded, setScriptLoaded] = useState(false);
+  const [isScriptLoaded, setIsScriptLoaded] = useState(false);
   const providerIdRef = useRef(`google-maps-provider-${Math.random().toString(36).substring(2, 9)}`);
+  const retryCount = useRef(0);
 
   // Check if Google Maps is already available globally
   const isGoogleMapsLoaded = useCallback(() => {
@@ -30,9 +31,10 @@ const GoogleMapsProvider = ({ children }: GoogleMapsProviderProps) => {
 
   const handleLoad = useCallback(() => {
     console.log("Google Maps script loaded successfully");
-    setScriptLoaded(true);
+    setIsScriptLoaded(true);
     setScriptError(null);
     scriptAttempted = true;
+    scriptLoaded = true;
   }, []);
 
   const handleError = useCallback((error: Error) => {
@@ -40,14 +42,25 @@ const GoogleMapsProvider = ({ children }: GoogleMapsProviderProps) => {
     setScriptError(error.message || "Failed to load Google Maps");
     toast.error("Failed to load map: Script error");
     scriptAttempted = true;
-  }, []);
+    
+    // If we've reached max retries, report the error
+    if (retryCount.current >= 3) {
+      toast.error("Failed to load Google Maps after multiple attempts. Please refresh the page.");
+    } else {
+      // Otherwise increment retry count and attempt to refetch the API key
+      retryCount.current += 1;
+      clearMapConfigCache();
+      refetch();
+    }
+  }, [refetch]);
 
   // If Google Maps is already loaded, we don't need LoadScript
   useEffect(() => {
     if (isGoogleMapsLoaded()) {
       console.log("Google Maps already loaded in window, skipping LoadScript");
-      setScriptLoaded(true);
+      setIsScriptLoaded(true);
       setScriptError(null);
+      scriptLoaded = true;
     }
   }, [isGoogleMapsLoaded]);
 
@@ -57,33 +70,38 @@ const GoogleMapsProvider = ({ children }: GoogleMapsProviderProps) => {
       apiKey: apiKey ? "Available" : "Not available", 
       isLoading, 
       hasError: !!apiKeyError || isError,
-      scriptLoaded,
+      isScriptLoaded,
       scriptError,
       googleMapsGloballyAvailable: isGoogleMapsLoaded(),
-      scriptAttempted
+      scriptAttempted,
+      scriptLoaded
     });
     
     return () => {
       console.log(`GoogleMapsProvider(${providerIdRef.current}) unmounted`);
     };
-  }, [apiKey, isLoading, apiKeyError, isError, scriptLoaded, scriptError, isGoogleMapsLoaded]);
+  }, [apiKey, isLoading, apiKeyError, isError, isScriptLoaded, scriptError, isGoogleMapsLoaded]);
 
-  // Handle cleanup on unmount
+  // Reset error state if we've refetched the API key
   useEffect(() => {
-    return () => {
-      // Don't do anything special on unmount for now
-      // The script should remain loaded for other components
-    };
-  }, []);
+    if (apiKey && scriptError) {
+      setScriptError(null);
+    }
+  }, [apiKey, scriptError]);
 
   if (isLoading) return <MapLoader text="Loading map configuration..." />;
-  if (apiKeyError || isError) return <MapError error={apiKeyError?.message || "Failed to load Google Maps API key"} />;
-  if (!apiKey) return <MapError error="Google Maps API key not found" />;
-  if (scriptError) return <MapError error={scriptError} />;
+  if (apiKeyError || isError) return <MapError error={apiKeyError?.message || "Failed to load Google Maps API key"} resetErrorBoundary={() => { clearMapConfigCache(); refetch(); }} />;
+  if (!apiKey) return <MapError error="Google Maps API key not found" resetErrorBoundary={() => { clearMapConfigCache(); refetch(); }} />;
+  if (scriptError) return <MapError error={scriptError} resetErrorBoundary={() => { setScriptError(null); clearMapConfigCache(); refetch(); }} />;
 
   // If Google Maps is already loaded globally, just render children
   if (isGoogleMapsLoaded()) {
     return <>{children}</>;
+  }
+
+  // If a script load has been attempted and failed, show error
+  if (scriptAttempted && !scriptLoaded) {
+    return <MapError error="Failed to load Google Maps script" resetErrorBoundary={() => { scriptAttempted = false; clearMapConfigCache(); refetch(); }} />;
   }
 
   return (

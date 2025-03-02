@@ -1,6 +1,6 @@
 
 import { AlertCircle, RefreshCw } from "lucide-react";
-import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 
 interface MapErrorProps {
@@ -15,6 +15,7 @@ const MapError = ({ error, resetErrorBoundary }: MapErrorProps) => {
     <div className="p-4 w-full">
       <Alert variant="destructive" className="mb-4">
         <AlertCircle className="h-4 w-4" />
+        <AlertTitle>Map loading error</AlertTitle>
         <AlertDescription>
           {error}
         </AlertDescription>
@@ -32,6 +33,15 @@ const MapError = ({ error, resetErrorBoundary }: MapErrorProps) => {
           </Button>
         </div>
       )}
+
+      <div className="mt-4 text-xs text-gray-500">
+        <p>If this problem persists, please check:</p>
+        <ul className="list-disc pl-5 mt-1">
+          <li>Your internet connection is working</li>
+          <li>No content blockers are preventing Google Maps from loading</li>
+          <li>The API key has proper permissions configured</li>
+        </ul>
+      </div>
     </div>
   );
 };

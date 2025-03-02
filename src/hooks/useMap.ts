@@ -3,11 +3,20 @@ import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 
+// Cache for the API key to prevent excessive database queries
+let cachedApiKey: string | null = null;
+
 export const useMapConfig = () => {
   return useQuery({
     queryKey: ['GOOGLE_MAPS_API_KEY'],
     queryFn: async () => {
-      console.log('Fetching Google Maps API key...');
+      // Return cached key if available
+      if (cachedApiKey) {
+        console.log('Using cached Google Maps API key');
+        return cachedApiKey;
+      }
+
+      console.log('Fetching Google Maps API key from database...');
       try {
         const { data, error } = await supabase
           .from('settings')
@@ -34,8 +43,10 @@ export const useMapConfig = () => {
           throw new Error('Invalid Google Maps API key format');
         }
 
-        console.log('API key fetched successfully');
-        return data.value;
+        // Cache the API key
+        cachedApiKey = data.value;
+        console.log('API key fetched and cached successfully');
+        return cachedApiKey;
       } catch (error) {
         console.error('Failed to fetch Google Maps API key:', error);
         toast.error('Failed to load map service');
@@ -47,4 +58,9 @@ export const useMapConfig = () => {
     retry: 3,            // Try up to 3 times if the request fails
     retryDelay: 1000,    // Wait 1 second between retries
   });
+};
+
+export const clearMapConfigCache = () => {
+  cachedApiKey = null;
+  console.log('Map config cache cleared');
 };

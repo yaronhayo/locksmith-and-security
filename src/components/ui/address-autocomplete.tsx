@@ -6,6 +6,7 @@ import { InputHTMLAttributes } from "react";
 import { Loader2, RefreshCw } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 
 type AddressAutocompleteProps = Omit<InputHTMLAttributes<HTMLInputElement>, 'onChange'> & {
   value: string;
@@ -27,11 +28,23 @@ const AddressAutocomplete = ({
   const [isInitialized, setIsInitialized] = useState(false);
   const [initAttempts, setInitAttempts] = useState(0);
 
+  // Check if Google Maps API is loaded
+  const isGoogleMapsLoaded = () => {
+    return typeof window !== 'undefined' && 
+           typeof window.google !== 'undefined' && 
+           typeof window.google.maps !== 'undefined' &&
+           typeof window.google.maps.places !== 'undefined';
+  };
+
   const initializeAutocomplete = () => {
-    if (!inputRef.current || !window.google?.maps?.places || !apiKey) {
+    // Clear any previous errors
+    setError(null);
+    
+    // Don't proceed if dependencies aren't ready
+    if (!inputRef.current || !isGoogleMapsLoaded() || !apiKey) {
       console.log("Not initializing autocomplete - dependencies not ready", {
         inputRef: !!inputRef.current,
-        googleMapsPlaces: !!window.google?.maps?.places,
+        googleMapsPlaces: isGoogleMapsLoaded(),
         apiKey: !!apiKey
       });
       return false;
@@ -55,7 +68,7 @@ const AddressAutocomplete = ({
         }
       );
 
-      const listener = autocompleteRef.current.addListener(
+      autocompleteRef.current.addListener(
         "place_changed",
         () => {
           const place = autocompleteRef.current?.getPlace();
@@ -68,34 +81,72 @@ const AddressAutocomplete = ({
 
       setIsInitialized(true);
       setError(null);
+      toast.success("Address search initialized");
       return true;
     } catch (err) {
       console.error('Error initializing address autocomplete:', err);
-      setError(err instanceof Error ? err.message : 'Failed to initialize address autocomplete');
+      const errMsg = err instanceof Error ? err.message : 'Failed to initialize address autocomplete';
+      setError(errMsg);
+      toast.error(`Address search error: ${errMsg}`);
       setIsInitialized(false);
       return false;
     }
   };
 
+  // Initialize when API key and Google Maps are available
   useEffect(() => {
-    // Only initialize if Google Maps API is loaded
-    const success = initializeAutocomplete();
-    
-    if (!success && window.google?.maps?.event && autocompleteRef.current) {
-      google.maps.event.clearInstanceListeners(autocompleteRef.current);
-      autocompleteRef.current = null;
+    if (apiKey && !isInitialized) {
+      // Short delay to ensure Google Maps is fully loaded
+      const timer = setTimeout(() => {
+        if (isGoogleMapsLoaded()) {
+          initializeAutocomplete();
+        } else {
+          console.log("Google Maps Places API not available yet, waiting...");
+          setError("Google Maps Places API not loaded yet. Please try again in a moment.");
+        }
+      }, 1000);
+      
+      return () => clearTimeout(timer);
     }
-    
+  }, [apiKey, isInitialized, initAttempts]);
+
+  // Add check for Google Maps loading after component mounts
+  useEffect(() => {
+    if (!isInitialized && apiKey) {
+      const checkGoogleMapsInterval = setInterval(() => {
+        if (isGoogleMapsLoaded()) {
+          console.log("Google Maps Places API detected, initializing autocomplete");
+          initializeAutocomplete();
+          clearInterval(checkGoogleMapsInterval);
+        }
+      }, 1000);
+      
+      // Clear interval after 10 seconds if Google Maps isn't loaded
+      setTimeout(() => {
+        if (!isInitialized) {
+          clearInterval(checkGoogleMapsInterval);
+          if (!isGoogleMapsLoaded()) {
+            setError("Google Maps Places API failed to load. Please refresh the page.");
+          }
+        }
+      }, 10000);
+      
+      return () => clearInterval(checkGoogleMapsInterval);
+    }
+  }, [apiKey, isInitialized]);
+
+  // Cleanup on unmount
+  useEffect(() => {
     return () => {
-      // Only attempt cleanup if Google Maps is still available
       if (window.google?.maps?.event && autocompleteRef.current) {
         console.log("Clearing address autocomplete instance listeners");
         google.maps.event.clearInstanceListeners(autocompleteRef.current);
         autocompleteRef.current = null;
       }
     };
-  }, [apiKey, initAttempts]);
+  }, []);
 
+  // Prevent form submission on Enter when using autocomplete
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Enter' && autocompleteRef.current) {
@@ -121,10 +172,11 @@ const AddressAutocomplete = ({
     setError(null);
     refetch();
     setInitAttempts(prev => prev + 1);
+    toast.info("Retrying address search initialization...");
   };
 
   const displayError = error || (apiKeyError?.message ?? null);
-  const isAddressAutocompleteLoading = isLoading || (!window.google?.maps?.places && !displayError);
+  const isAddressAutocompleteLoading = isLoading || (!isGoogleMapsLoaded() && !displayError);
 
   return (
     <div className="relative w-full space-y-2">
