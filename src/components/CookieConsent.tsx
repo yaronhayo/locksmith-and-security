@@ -1,7 +1,8 @@
+
 import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Settings, Info } from 'lucide-react';
+import { X, Settings, Info, AlertTriangle } from 'lucide-react';
 import { 
   Dialog,
   DialogContent,
@@ -14,6 +15,7 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 type CookieSettings = {
   necessary: boolean;
@@ -114,12 +116,14 @@ const CookieConsent = () => {
                   We use cookies to enhance your experience. Some cookies are necessary, while others help us improve 
                   functionality and analyze traffic.
                 </p>
-                <p className="text-xs">
-                  <Info className="h-3 w-3 inline-block mr-1" />
-                  Third-party cookies are used for services like Google Analytics and reCAPTCHA.
-                  <a href="/privacy-policy" className="text-primary hover:text-primary-hover underline ml-1">
-                    Learn more
-                  </a>
+                <p className="text-xs flex items-center">
+                  <AlertTriangle className="h-3 w-3 inline-block mr-1 text-amber-500" />
+                  <span>
+                    Some features like reCAPTCHA require third-party cookies which may be blocked by modern browsers.
+                    <a href="/privacy-policy" className="text-primary hover:text-primary-hover underline ml-1">
+                      Learn more
+                    </a>
+                  </span>
                 </p>
               </div>
               <div className="flex flex-wrap items-center gap-2">
@@ -210,7 +214,7 @@ const CookieConsent = () => {
                 />
               </div>
               
-              <div className="flex items-center justify-between pb-2">
+              <div className="flex items-center justify-between pb-2 border-b">
                 <div>
                   <Label htmlFor="third-party-cookies" className="font-medium">Third-Party Cookies</Label>
                   <p className="text-xs text-gray-500">Set by services like Google reCAPTCHA and analytics tools.</p>
@@ -221,6 +225,16 @@ const CookieConsent = () => {
                   onCheckedChange={() => toggleSetting('thirdParty')}
                 />
               </div>
+              
+              <Alert variant="warning" className="mt-4">
+                <AlertTriangle className="h-4 w-4" />
+                <AlertTitle>Browser Privacy Changes</AlertTitle>
+                <AlertDescription className="text-xs">
+                  Chrome and other browsers are phasing out third-party cookies. 
+                  Some features (like reCAPTCHA) rely on these cookies and may be affected. 
+                  Enabling third-party cookies in your browser settings might be required for full functionality.
+                </AlertDescription>
+              </Alert>
             </TabsContent>
             
             <TabsContent value="cookies" className="pt-4">
@@ -239,9 +253,24 @@ const CookieConsent = () => {
                 </p>
                 <p>
                   <strong>Third-Party Cookies:</strong> These cookies are set by services like Google reCAPTCHA, 
-                  Google Analytics, and other external services. <b>Chrome is phasing out third-party cookies</b>, 
-                  but our website will continue to function if you disable them.
+                  Google Analytics, and other external services.
                 </p>
+                
+                <div className="bg-amber-50 p-3 rounded-md border border-amber-200 mt-4">
+                  <h4 className="font-medium text-amber-800 flex items-center mb-1">
+                    <AlertTriangle className="h-4 w-4 mr-1" />
+                    Third-Party Cookie Changes
+                  </h4>
+                  <p className="text-xs text-amber-700">
+                    Chrome and other browsers are phasing out third-party cookies for enhanced privacy. 
+                    Features like reCAPTCHA require these cookies to function properly. You may need to:
+                  </p>
+                  <ul className="list-disc pl-5 text-xs text-amber-700 mt-1">
+                    <li>Allow third-party cookies in your browser settings</li>
+                    <li>Check that you can complete the reCAPTCHA verification</li>
+                    <li>Try a different browser if you experience issues</li>
+                  </ul>
+                </div>
               </div>
             </TabsContent>
           </Tabs>
