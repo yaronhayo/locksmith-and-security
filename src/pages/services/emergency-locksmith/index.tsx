@@ -1,4 +1,3 @@
-
 import React from 'react';
 import PageLayout from '@/components/layouts/PageLayout';
 import ServicesProof from '@/components/sections/services/ServicesProof';
@@ -23,8 +22,8 @@ const EmergencyLocksmithPage = () => {
       title: "Late Night Car Lockout in North Bergen",
       description: "A customer stranded at midnight with keys locked in their vehicle.",
       challenge: "A customer called us at 1 AM after accidentally locking their keys inside their car at a shopping center parking lot. They had no spare key and needed to get home urgently.",
-      solution: "Our emergency technician arrived promptly after the call. Using specialized non-destructive entry tools, we safely unlocked the car door without causing any damage to the vehicle.",
-      result: "The customer was able to get back on the road quickly, avoiding an expensive tow and potentially unsafe situation late at night.",
+      solution: "Our emergency technician arrived after the call. Using specialized non-destructive entry tools, we safely unlocked the car door without causing any damage to the vehicle.",
+      result: "The customer was able to get back on the road, avoiding an expensive tow and potentially unsafe situation late at night.",
       customerName: "Michael R.",
       customerLocation: "North Bergen, NJ",
       date: "Last month"
@@ -46,11 +45,11 @@ const EmergencyLocksmithPage = () => {
       title="24/7 Emergency Locksmith Services | Fast Response"
       description="Emergency locksmith services available 24/7. Fast response for lockouts, broken keys, and other urgent situations."
       heroTitle="24/7 Emergency Locksmith Services"
-      heroDescription="Immediate assistance when you need it most. Our emergency locksmith team is available around the clock for fast, professional service."
+      heroDescription="Immediate assistance when you need it most. Our emergency locksmith team is available around the clock for professional service."
     >
       <CategoryHero 
         title="24/7 Emergency Locksmith Services"
-        description="Locked out of your car or home? Key broken in the lock? Don't panic - our emergency locksmith team is available 24 hours a day, 7 days a week to get you back in quickly and safely."
+        description="Locked out of your car or home? Key broken in the lock? Don't panic - our emergency locksmith team is available 24 hours a day, 7 days a week to get you back in safely."
         category="emergency"
         features={[
           { title: "24/7 Availability", description: "We're always available" },
@@ -79,7 +78,7 @@ const EmergencyLocksmithPage = () => {
                   <Car className="h-6 w-6 text-primary" />
                   <h3 className="font-semibold">Car Lockouts</h3>
                 </div>
-                <p className="text-gray-600 text-sm">Locked keys in your vehicle? We'll get you back on the road quickly.</p>
+                <p className="text-gray-600 text-sm">Locked keys in your vehicle? We'll get you back on the road.</p>
               </div>
               
               <div className="border border-gray-100 rounded-lg p-5 bg-gray-50">
@@ -95,7 +94,7 @@ const EmergencyLocksmithPage = () => {
                   <Building className="h-6 w-6 text-primary" />
                   <h3 className="font-semibold">Business Lockouts</h3>
                 </div>
-                <p className="text-gray-600 text-sm">Can't access your business? We provide rapid commercial assistance.</p>
+                <p className="text-gray-600 text-sm">Can't access your business? We provide commercial assistance.</p>
               </div>
               
               <div className="border border-gray-100 rounded-lg p-5 bg-gray-50">
@@ -136,13 +135,13 @@ const EmergencyLocksmithPage = () => {
           },
           {
             title: "Emergency Car Lockout",
-            description: "Quick, damage-free car unlocking service for all vehicle makes and models, including high-security systems.",
+            description: "Damage-free car unlocking service for all vehicle makes and models, including high-security systems.",
             icon: <Car className="h-6 w-6" />,
             link: "/services/emergency-locksmith/car-lockout"
           },
           {
             title: "Emergency House Lockout",
-            description: "Fast, professional house unlocking service using techniques that protect your door and lock from damage.",
+            description: "Professional house unlocking service using techniques that protect your door and lock from damage.",
             icon: <Home className="h-6 w-6" />,
             link: "/services/emergency-locksmith/house-lockout"
           },
@@ -160,7 +159,7 @@ const EmergencyLocksmithPage = () => {
           },
           {
             title: "Lock Repair & Replacement",
-            description: "Emergency repair or replacement for damaged locks, including fast service for security compromised situations.",
+            description: "Emergency repair or replacement for damaged locks, including service for security compromised situations.",
             icon: <Shield className="h-6 w-6" />,
             link: "/services/emergency-locksmith/lock-repair-replacement"
           }
@@ -172,7 +171,7 @@ const EmergencyLocksmithPage = () => {
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold mb-4">Why Choose Our Emergency Locksmith Service?</h2>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              We prioritize your security and peace of mind with fast, reliable service.
+              We prioritize your security and peace of mind with reliable service.
             </p>
           </div>
           
