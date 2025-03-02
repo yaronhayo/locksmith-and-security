@@ -4,7 +4,7 @@ import { ReactNode } from 'react';
 export interface NavigationItem {
   path: string;
   label: string;
-  children?: Omit<NavigationItem, 'children'>[];
+  children?: NavigationItem[]; // Changed from Omit<NavigationItem, 'children'>[] to allow nested children
   showMobileOnly?: boolean;
   className?: string;
 }
@@ -20,7 +20,7 @@ export interface NavigationLinkProps {
   label: string;
   isActive?: boolean;
   isMenuOpen?: boolean;
-  children?: { path: string; label: string }[];
+  children?: NavigationItem[]; // Updated here too
   icon?: ReactNode;
   className?: string;
 }
