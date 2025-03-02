@@ -4,7 +4,7 @@ import ReCAPTCHA from 'react-google-recaptcha';
 import { useRecaptchaKey } from '@/hooks/useRecaptchaKey';
 import { Skeleton } from './skeleton';
 import { Alert, AlertDescription } from './alert';
-import { InfoCircle } from 'lucide-react';
+import { Info } from 'lucide-react';
 import { Button } from './button';
 
 interface RecaptchaProps {
@@ -43,7 +43,7 @@ const Recaptcha: React.FC<RecaptchaProps> = ({ onChange }) => {
           onClick={() => setShowInfo(!showInfo)}
           aria-label={showInfo ? "Hide reCAPTCHA info" : "Show reCAPTCHA info"}
         >
-          <InfoCircle className="h-4 w-4" />
+          <Info className="h-4 w-4" />
         </Button>
         <span>
           This site is protected by reCAPTCHA and the Google

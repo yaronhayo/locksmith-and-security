@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Settings, Info, AlertTriangle } from 'lucide-react';
+import { X, Settings, AlertTriangle } from 'lucide-react';
 import { 
   Dialog,
   DialogContent,
