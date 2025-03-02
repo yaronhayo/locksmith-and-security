@@ -57,11 +57,6 @@ export const BasicMetaTags = ({
       <meta name="last-modified" content={formattedModifiedDate} />
       <meta property="article:modified_time" content={formattedModifiedDate} />
       
-      {/* Favicon */}
-      <link rel="icon" href="https://mtbgayqzjrxjjmsjikcg.supabase.co/storage/v1/object/public/uploads//Favicon.png" />
-      <link rel="apple-touch-icon" href="https://mtbgayqzjrxjjmsjikcg.supabase.co/storage/v1/object/public/uploads//Favicon.png" />
-      <link rel="shortcut icon" href="https://mtbgayqzjrxjjmsjikcg.supabase.co/storage/v1/object/public/uploads//Favicon.png" />
-      
       {/* Accessibility Metadata */}
       <meta name="accessibility-control" content="fullKeyboardControl" />
       <meta name="accessibility-control" content="fullMouseControl" />
