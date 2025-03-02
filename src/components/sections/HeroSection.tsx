@@ -11,6 +11,7 @@ const words = ["Expert", "Quick", "Reliable"] as const;
 
 const HeroSection = () => {
   const [currentWord, setCurrentWord] = useState(0);
+  const [isVideoLoaded, setIsVideoLoaded] = useState(false);
 
   const rotateWords = useCallback(() => {
     setCurrentWord((prev) => (prev + 1) % words.length);
@@ -21,16 +22,46 @@ const HeroSection = () => {
     return () => clearInterval(interval);
   }, [rotateWords]);
 
+  const handleVideoLoad = () => {
+    setIsVideoLoaded(true);
+  };
+
   return (
     <section 
-      className="relative min-h-screen bg-gradient-to-br from-primary to-primary-hover overflow-visible pt-16 pb-8 md:pt-20 md:pb-12 lg:pb-20"
+      className="relative min-h-screen overflow-visible pt-16 pb-8 md:pt-20 md:pb-12 lg:pb-20"
       role="banner"
       aria-label="Hero section"
     >
-      <div 
-        className="absolute inset-0 bg-black/30 backdrop-blur-[2px]" 
-        aria-hidden="true"
-      />
+      {/* Background video */}
+      <div className="absolute inset-0 w-full h-full overflow-hidden">
+        <video 
+          autoPlay 
+          muted 
+          loop 
+          playsInline
+          onLoadedData={handleVideoLoad}
+          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${isVideoLoaded ? 'opacity-100' : 'opacity-0'}`}
+          aria-hidden="true"
+        >
+          <source 
+            src="https://mtbgayqzjrxjjmsjikcg.supabase.co/storage/v1/object/public/uploads//Background%20Video-%20Keys%20Getting%20into%20Ignition.mp4" 
+            type="video/mp4" 
+          />
+          Your browser does not support the video tag.
+        </video>
+        
+        {/* Fallback gradient background while video loads */}
+        <div 
+          className={`absolute inset-0 bg-gradient-to-br from-primary to-primary-hover transition-opacity duration-700 ${isVideoLoaded ? 'opacity-0' : 'opacity-100'}`} 
+          aria-hidden="true"
+        />
+        
+        {/* Overlay to darken video and improve text contrast */}
+        <div 
+          className="absolute inset-0 bg-black/50 backdrop-blur-[1px]" 
+          aria-hidden="true"
+        />
+      </div>
       
       <motion.div 
         className="container mx-auto px-4 relative z-10 h-full flex items-start lg:items-center"
