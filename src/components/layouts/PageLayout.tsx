@@ -36,6 +36,7 @@ interface PageLayoutProps {
   breadcrumbs?: Array<{name: string, item: string}>;
   ogType?: "website" | "article" | "product" | "profile" | "book";
   hideBreadcrumbs?: boolean;
+  modifiedDate?: string; // Added prop for last modified date
 }
 
 const PageLayout = ({
@@ -56,6 +57,7 @@ const PageLayout = ({
   breadcrumbs,
   ogType = "website",
   hideBreadcrumbs = false,
+  modifiedDate = new Date().toISOString().split('T')[0], // Default to today in YYYY-MM-DD format
 }: PageLayoutProps) => {
   if (isLoading) {
     return <PageLoading />;
@@ -93,6 +95,7 @@ const PageLayout = ({
         noindex={noindex}
         nofollow={nofollow}
         ogType={ogType}
+        modifiedDate={modifiedDate}
       />
       
       {(heroTitle || heroDescription) && (

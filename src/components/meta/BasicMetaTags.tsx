@@ -34,6 +34,11 @@ export const BasicMetaTags = ({
   // Create robots content based on props
   const robotsContent = `${noindex ? 'noindex' : 'index'},${nofollow ? 'nofollow' : 'follow'}${!noindex ? ',max-image-preview:large,max-snippet:-1,max-video-preview:-1' : ''}`;
 
+  // Format date for last-modified if it's not already in ISO format
+  const formattedModifiedDate = modifiedDate.includes('T') 
+    ? modifiedDate 
+    : new Date(modifiedDate).toISOString();
+
   return (
     <Helmet>
       <html lang={language} />
@@ -49,7 +54,8 @@ export const BasicMetaTags = ({
       <meta name="format-detection" content="telephone=yes" />
       <meta name="author" content="Locksmith & Security LLC" />
       <meta name="copyright" content={`© ${new Date().getFullYear()} Locksmith & Security LLC. All rights reserved.`} />
-      <meta name="last-modified" content={modifiedDate} />
+      <meta name="last-modified" content={formattedModifiedDate} />
+      <meta property="article:modified_time" content={formattedModifiedDate} />
     </Helmet>
   );
 };
