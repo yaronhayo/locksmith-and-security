@@ -1,26 +1,28 @@
-
 import { useState, useEffect, useCallback, useMemo } from "react";
 import { toast } from "sonner";
 import { getEmailError, getNameError, getPhoneError } from "@/utils/inputValidation";
 
-interface FormState {
+export interface FormState {
   name: string;
   email: string;
   phone: string;
   message: string;
   service: string;
+  address?: string;
 }
 
-interface FormErrors {
+export interface FormErrors {
   name: string | null;
   email: string | null;
   phone: string | null;
+  address?: string | null;
 }
 
 interface IsDirty {
   name: boolean;
   email: boolean;
   phone: boolean;
+  address?: boolean;
 }
 
 export const useServiceAreaForm = () => {
@@ -29,19 +31,22 @@ export const useServiceAreaForm = () => {
     email: "",
     phone: "",
     message: "",
-    service: ""
+    service: "",
+    address: ""
   });
   
   const [errors, setErrors] = useState<FormErrors>({
     name: null,
     email: null,
-    phone: null
+    phone: null,
+    address: null
   });
   
   const [isDirty, setIsDirty] = useState<IsDirty>({
     name: false,
     email: false,
-    phone: false
+    phone: false,
+    address: false
   });
   
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -49,7 +54,6 @@ export const useServiceAreaForm = () => {
   const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
   const [recaptchaError, setRecaptchaError] = useState<string | null>(null);
   
-  // Validation effects
   useEffect(() => {
     if (isDirty.name) {
       setErrors(prev => ({ ...prev, name: getNameError(formState.name) }));
@@ -68,22 +72,32 @@ export const useServiceAreaForm = () => {
     }
   }, [formState.phone, isDirty.phone]);
   
+  useEffect(() => {
+    if (isDirty.address && formState.address) {
+      setErrors(prev => ({ 
+        ...prev, 
+        address: formState.address && formState.address.trim() === '' ? 'Address is required' : null 
+      }));
+    }
+  }, [formState.address, isDirty.address]);
+  
   const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     
     setFormState(prev => ({ ...prev, [name]: value }));
     
-    // Set the corresponding field as dirty
     if (name === 'name' && !isDirty.name) {
       setIsDirty(prev => ({ ...prev, name: true }));
     } else if (name === 'email' && !isDirty.email) {
       setIsDirty(prev => ({ ...prev, email: true }));
     } else if (name === 'phone' && !isDirty.phone) {
       setIsDirty(prev => ({ ...prev, phone: true }));
+    } else if (name === 'address' && !isDirty.address) {
+      setIsDirty(prev => ({ ...prev, address: true }));
     }
   }, [isDirty]);
   
-  const handleBlur = useCallback((field: 'name' | 'email' | 'phone') => {
+  const handleBlur = useCallback((field: 'name' | 'email' | 'phone' | 'address') => {
     setIsDirty(prev => ({ ...prev, [field]: true }));
   }, []);
   
@@ -97,6 +111,7 @@ export const useServiceAreaForm = () => {
       !errors.name && 
       !errors.email && 
       !errors.phone && 
+      !errors.address &&
       formState.name.trim() !== '' && 
       formState.email.trim() !== '' && 
       formState.phone.trim() !== '' && 
@@ -108,18 +123,18 @@ export const useServiceAreaForm = () => {
   const handleSubmit = useCallback((e: React.FormEvent) => {
     e.preventDefault();
     
-    // Mark all fields as dirty to show validation errors
     setIsDirty({
       name: true,
       email: true,
-      phone: true
+      phone: true,
+      address: true
     });
     
-    // Update all errors
     const newErrors = {
       name: getNameError(formState.name) || (formState.name.trim() === '' ? 'Name is required' : null),
       email: getEmailError(formState.email) || (formState.email.trim() === '' ? 'Email is required' : null),
-      phone: getPhoneError(formState.phone) || (formState.phone.trim() === '' ? 'Phone number is required' : null)
+      phone: getPhoneError(formState.phone) || (formState.phone.trim() === '' ? 'Phone number is required' : null),
+      address: formState.address && formState.address.trim() === '' ? 'Address is required' : null
     };
     
     setErrors(newErrors);
@@ -129,13 +144,12 @@ export const useServiceAreaForm = () => {
       return;
     }
     
-    if (newErrors.name || newErrors.email || newErrors.phone || formState.service === '') {
+    if (newErrors.name || newErrors.email || newErrors.phone || newErrors.address || formState.service === '') {
       return;
     }
     
     setIsSubmitting(true);
     
-    // Simulate form submission
     setTimeout(() => {
       setIsSubmitting(false);
       setIsSubmitted(true);
@@ -147,7 +161,8 @@ export const useServiceAreaForm = () => {
         email: "",
         phone: "",
         message: "",
-        service: ""
+        service: "",
+        address: ""
       });
     }, 1500);
   }, [formState, recaptchaToken]);
