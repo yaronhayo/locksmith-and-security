@@ -11,6 +11,7 @@ import { createBreadcrumbSchema } from "../meta/schema/BreadcrumbSchema";
 import { createLocalBusinessSchema } from "../meta/schema/LocalBusinessSchema";
 import { createWebSiteSchema } from "../meta/schema/WebSiteSchema";
 import Breadcrumbs from "@/components/Breadcrumbs";
+import ScrollToTopButton from "@/components/ScrollToTopButton";
 
 interface Schema {
   type: string;
@@ -117,6 +118,9 @@ const PageLayout = ({
       >
         <div className={cn(className)}>{children}</div>
       </motion.div>
+      
+      {/* Scroll to top button */}
+      <ScrollToTopButton />
     </ErrorBoundary>
   );
 };
