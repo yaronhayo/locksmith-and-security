@@ -35,8 +35,8 @@ const ScrollToTopButton = () => {
           style={{
             right: "20px", 
             bottom: "20vh", // Position between center and bottom
-            backgroundColor: "#FF3600",
-            borderColor: "#FF3600",
+            backgroundColor: "#fa7315",
+            borderColor: "#fa7315",
           }}
           onClick={scrollToTop}
           initial={{ opacity: 0, scale: 0.8 }}
@@ -45,8 +45,8 @@ const ScrollToTopButton = () => {
           transition={{ duration: 0.2 }}
           aria-label="Scroll to top"
           title="Scroll to top"
-          onMouseOver={(e) => e.currentTarget.style.backgroundColor = "#e03000"}
-          onMouseOut={(e) => e.currentTarget.style.backgroundColor = "#FF3600"}
+          onMouseOver={(e) => e.currentTarget.style.backgroundColor = "#e06615"}
+          onMouseOut={(e) => e.currentTarget.style.backgroundColor = "#fa7315"}
         >
           <ArrowUp className="h-6 w-6" strokeWidth={2.5} />
         </motion.button>
