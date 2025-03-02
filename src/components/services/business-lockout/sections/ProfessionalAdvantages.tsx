@@ -1,7 +1,7 @@
 
 import React from 'react';
 import ProfessionalAdvantage from '../../shared/ProfessionalAdvantage';
-import { Clock, CheckCircle, ShieldCheck, Tool } from 'lucide-react';
+import { Clock, CheckCircle, ShieldCheck, Wrench } from 'lucide-react';
 
 const advantages = [
   {
@@ -20,7 +20,7 @@ const advantages = [
     description: "We use non-destructive entry techniques whenever possible to avoid causing damage to your business doors and locks."
   },
   {
-    icon: <Tool className="h-5 w-5" />,
+    icon: <Wrench className="h-5 w-5" />,
     title: "Specialized Commercial Equipment",
     description: "Our mobile units are equipped with specialized tools and technology for all types of commercial locks and security systems."
   }
