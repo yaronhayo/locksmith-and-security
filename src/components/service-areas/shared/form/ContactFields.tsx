@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { FormState, FormErrors } from './useServiceAreaForm';
 import { Label } from "@/components/ui/label";
@@ -7,7 +6,7 @@ import { AlertCircle } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { formatPhoneNumber } from "@/utils/inputValidation";
 import GoogleMapsProvider from "@/components/providers/GoogleMapsProvider";
-import { AddressAutocomplete } from "@/components/ui/address-autocomplete";
+import { AddressAutocomplete, AddressChangeHandler } from "@/components/ui/address-autocomplete";
 
 interface ContactFieldsProps {
   formState: FormState;
@@ -31,11 +30,13 @@ const ContactFields = ({
     handleChange(e);
   };
 
-  const handleAddressChange = (value: string) => {
+  const handleAddressChange: AddressChangeHandler = (addressOrEvent) => {
     const event = {
       target: {
         name: 'address',
-        value
+        value: typeof addressOrEvent === 'string' 
+          ? addressOrEvent 
+          : addressOrEvent.target.value
       }
     } as React.ChangeEvent<HTMLInputElement>;
     

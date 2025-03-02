@@ -10,10 +10,8 @@ import {
   ChangeEvent,
 } from "react";
 
-// Define a union type that accepts both a string and a ChangeEvent
-type AddressChangeHandler = 
-  | ((address: string) => void)
-  | ((event: ChangeEvent<HTMLInputElement>) => void);
+// Define a union type for the address change handler
+export type AddressChangeHandler = (addressOrEvent: string | ChangeEvent<HTMLInputElement>) => void;
 
 interface AddressAutocompleteProps {
   onChange: AddressChangeHandler;
@@ -43,14 +41,8 @@ export const AddressAutocomplete = forwardRef<HTMLInputElement, InputProps & Add
             return;
           }
           
-          // Handle both function signatures
-          if (typeof onChange === 'function') {
-            // Check if the onChange handler expects a string or an event
-            if (onChange.length === 1) {
-              // If it expects one parameter, we pass the address as string
-              (onChange as (address: string) => void)(place.formatted_address);
-            }
-          }
+          // Pass the formatted address string to the onChange handler
+          onChange(place.formatted_address);
         });
       }
     }, [onChange]);
@@ -61,7 +53,7 @@ export const AddressAutocomplete = forwardRef<HTMLInputElement, InputProps & Add
       );
 
       if (!googleMapScript) {
-        // Get the API key from the MapConfig hook
+        // Get the API key from environment variables
         const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY || '';
         
         googleMapScript = document.createElement("script");
@@ -88,16 +80,8 @@ export const AddressAutocomplete = forwardRef<HTMLInputElement, InputProps & Add
     }, [initAutocomplete]);
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      // Handle both function signatures
-      if (typeof onChange === 'function') {
-        if (onChange.length === 1) {
-          // For components expecting just the string value
-          (onChange as (address: string) => void)(e.target.value);
-        } else {
-          // For components expecting the full event
-          (onChange as (event: ChangeEvent<HTMLInputElement>) => void)(e);
-        }
-      }
+      // Just pass the event to the onChange handler
+      onChange(e);
     };
     
     return (
