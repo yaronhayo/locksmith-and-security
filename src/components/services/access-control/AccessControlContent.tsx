@@ -33,7 +33,7 @@ export const relatedServices = [
 ];
 
 // Convert FAQ schema to the format expected by ServicePageContent
-const faqs = accessControlFAQSchema.mainEntity.map(item => ({
+const faqs = accessControlFAQSchema.data.mainEntity.map(item => ({
   question: item.name,
   answer: item.acceptedAnswer.text
 }));
