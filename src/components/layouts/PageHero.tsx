@@ -31,11 +31,7 @@ const PageHero = ({
       
       {/* Content */}
       <div className="relative container mx-auto px-4 py-16 md:py-24">
-        {showBreadcrumbs && (
-          <div className="mb-6">
-            <Breadcrumbs items={customBreadcrumbs} showSchema={true} />
-          </div>
-        )}
+        {/* Removed breadcrumbs rendering from here to prevent duplication */}
         
         <div className={cn("max-w-4xl mx-auto text-center", className)}>
           <motion.h1 

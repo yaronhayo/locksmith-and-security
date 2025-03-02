@@ -1,3 +1,4 @@
+
 import { useLocation, Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { ChevronRight, Home } from "lucide-react";
@@ -111,6 +112,7 @@ const Breadcrumbs = ({ className, baseUrl = "https://247locksmithandsecurity.com
 
   return (
     <>
+      {/* Only render schema if showSchema is true */}
       {showSchema && (
         <script 
           type="application/ld+json"
