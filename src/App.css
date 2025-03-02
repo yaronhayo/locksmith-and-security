@@ -3,8 +3,10 @@
   width: 100%;
   margin: 0 auto;
   text-align: center;
+  overflow-x: hidden; /* Prevent horizontal overflow */
 }
 
+/* Responsive container padding */
 @media (min-width: 640px) {
   #root {
     padding: 0.5rem;
@@ -23,9 +25,10 @@
   }
 }
 
+/* Logo sizing and effects */
 .logo {
-  height: clamp(4em, 6vw, 6em);
-  padding: clamp(1em, 2vw, 1.5em);
+  height: clamp(3em, 5vw, 5em);
+  padding: clamp(0.75em, 1.5vw, 1.25em);
   will-change: filter;
   transition: filter 300ms;
 }
@@ -38,6 +41,7 @@
   filter: drop-shadow(0 0 2em #61dafbaa);
 }
 
+/* Animation with reduced motion preference */
 @keyframes logo-spin {
   from {
     transform: rotate(0deg);
@@ -53,10 +57,12 @@
   }
 }
 
+/* Card container */
 .card {
-  padding: clamp(1em, 2vw, 2em);
+  padding: clamp(0.75em, 1.5vw, 1.5em);
 }
 
+/* Documentation text */
 .read-the-docs {
   color: #555; /* Improved from #888 for better contrast */
 }
@@ -68,7 +74,13 @@
   a {
     min-height: 44px;
     min-width: 44px;
-    padding: 0.5rem;
+  }
+  
+  /* Fix container overflow on mobile */
+  .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+    max-width: 100%;
   }
 }
 
@@ -96,4 +108,41 @@
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+}
+
+/* Add styling for the skip to content link */
+#main-content:focus {
+  outline: none;
+}
+
+/* Animations */
+.fade-in {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Shimmer effect for skeleton loaders */
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+.shimmer {
+  animation: shimmer 2s infinite linear;
+  background: linear-gradient(to right, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.2) 50%, rgba(255, 255, 255, 0.1) 100%);
+  background-size: 1000px 100%;
 }

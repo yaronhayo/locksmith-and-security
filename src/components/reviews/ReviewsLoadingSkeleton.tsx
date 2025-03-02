@@ -1,8 +1,8 @@
 
-import { Skeleton } from "@/components/ui/skeleton";
 import { memo, useEffect } from "react";
 import { trackComponentRender } from "@/utils/performanceMonitoring";
 import { motion } from "framer-motion";
+import { ContentLoader } from "@/components/ui/content-loader";
 
 interface ReviewsLoadingSkeletonProps {
   count?: number;
@@ -32,13 +32,14 @@ const ReviewsLoadingSkeleton = ({ count = 6 }: ReviewsLoadingSkeletonProps) => {
 
   return (
     <div className="w-full max-w-7xl mx-auto px-4">
-      <div className="space-y-4">
-        <div className="flex flex-col space-y-3">
-          <Skeleton className="h-8 w-2/3 mx-auto mb-2" />
-          <Skeleton className="h-4 w-3/4 mx-auto" />
+      <div className="space-y-6">
+        <div className="flex flex-col space-y-3 text-center">
+          <ContentLoader variant="text" size="lg" className="w-2/3 mx-auto mb-2" />
+          <ContentLoader variant="text" className="w-3/4 mx-auto" />
         </div>
+        
         <motion.div 
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-6"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8"
           variants={containerAnimation}
           initial="hidden"
           animate="show"
@@ -46,19 +47,19 @@ const ReviewsLoadingSkeleton = ({ count = 6 }: ReviewsLoadingSkeletonProps) => {
           {Array(count).fill(0).map((_, i) => (
             <motion.div 
               key={i} 
-              className="flex flex-col space-y-3 p-4 border rounded-lg"
+              className="flex flex-col p-4 border rounded-lg shadow-sm"
               variants={itemAnimation}
             >
-              <div className="flex items-center space-x-2">
-                <Skeleton className="h-12 w-12 rounded-full" />
+              <div className="flex items-center space-x-3 mb-4">
+                <ContentLoader variant="avatar" size="sm" />
                 <div className="space-y-2 flex-1">
-                  <Skeleton className="h-4 w-3/4" />
-                  <Skeleton className="h-3 w-1/2" />
+                  <ContentLoader variant="text" size="sm" className="w-3/4" />
+                  <ContentLoader variant="text" size="xs" className="w-1/2" />
                 </div>
               </div>
-              <Skeleton className="h-24" />
+              <ContentLoader variant="text" count={3} className="mb-3" />
               <div className="flex items-center pt-2">
-                <Skeleton className="h-3 w-24" />
+                <ContentLoader variant="text" size="xs" className="w-24" />
               </div>
             </motion.div>
           ))}
