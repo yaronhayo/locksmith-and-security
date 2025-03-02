@@ -1,15 +1,16 @@
+
 import { lazy } from 'react';
 import { createPageRoute } from './utils.tsx';
 
 // Lazy load service pages
-const EmergencyLockout = lazy(() => import("@/pages/services/emergency-lockout"));
-const CarKeyReplacement = lazy(() => import("@/pages/services/car-key-replacement"));
-const LockRepair = lazy(() => import("@/pages/services/lock-repair"));
-const KeyDuplication = lazy(() => import("@/pages/services/key-duplication"));
-const MasterKeySystems = lazy(() => import("@/pages/services/master-key-systems"));
-const AccessControlSystems = lazy(() => import("@/pages/services/access-control-systems"));
-const SecuritySystemInstallation = lazy(() => import("@/pages/services/security-system-installation"));
-const SafeInstallation = lazy(() => import("@/pages/services/safe-installation"));
+const EmergencyLockout = lazy(() => import("@/pages/services/emergency-locksmith/index"));
+const CarKeyReplacement = lazy(() => import("@/pages/services/auto-locksmith/car-key-replacement"));
+const LockRepair = lazy(() => import("@/pages/services/residential-locksmith/lock-repair"));
+const KeyDuplication = lazy(() => import("@/pages/services/auto-locksmith/car-key-duplicate"));
+const MasterKeySystems = lazy(() => import("@/pages/services/commercial-locksmith/master-key"));
+const AccessControlSystems = lazy(() => import("@/pages/services/commercial-locksmith/access-control"));
+const SecuritySystemInstallation = lazy(() => import("@/pages/services/index"));
+const SafeInstallation = lazy(() => import("@/pages/services/index"));
 
 export const serviceRoutes = [
   createPageRoute("/services/emergency-lockout", <EmergencyLockout />, {
