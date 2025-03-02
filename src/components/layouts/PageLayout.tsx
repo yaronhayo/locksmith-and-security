@@ -108,7 +108,7 @@ const PageLayout = ({
         <div className="container mx-auto px-4 py-3 md:py-4">
           <Breadcrumbs 
             items={customBreadcrumbs} 
-            showSchema={false} // Never show schema here since it's handled in MetaTags
+            showSchema={false} // Schema is handled in MetaTags
           />
         </div>
       )}

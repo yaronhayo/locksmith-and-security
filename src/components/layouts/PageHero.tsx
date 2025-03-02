@@ -1,7 +1,6 @@
 
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
-import Breadcrumbs from "@/components/Breadcrumbs";
 
 interface PageHeroProps {
   title: string;
@@ -17,7 +16,7 @@ const PageHero = ({
   description,
   className,
   children,
-  showBreadcrumbs = false,
+  showBreadcrumbs = false, // Default to false to prevent duplication
   customBreadcrumbs,
 }: PageHeroProps) => {
   return (
@@ -31,7 +30,7 @@ const PageHero = ({
       
       {/* Content */}
       <div className="relative container mx-auto px-4 py-16 md:py-24">
-        {/* Removed breadcrumbs rendering from here to prevent duplication */}
+        {/* No breadcrumbs rendering here to prevent duplication */}
         
         <div className={cn("max-w-4xl mx-auto text-center", className)}>
           <motion.h1 
