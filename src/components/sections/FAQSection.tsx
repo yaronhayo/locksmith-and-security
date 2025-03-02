@@ -37,7 +37,7 @@ const FAQSection = ({ title = "Frequently Asked Questions", description = "Find 
           <div className="grid md:grid-cols-2 gap-6">
             {displayedFaqs.map((faq, index) => (
               <Accordion key={index} type="single" collapsible className="bg-white rounded-lg shadow-sm">
-                <AccordionItem value={`item-${index}`} className="border-none">
+                <AccordionItem value={`section-item-${index}-${faq.question.substring(0, 10)}`} className="border-none">
                   <AccordionTrigger className="px-6 py-4 hover:no-underline">
                     <div className="flex items-start text-left gap-3">
                       <span className="font-bold text-primary text-lg">Q:</span>
