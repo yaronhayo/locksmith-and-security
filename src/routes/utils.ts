@@ -1,5 +1,5 @@
 
-import React, { ReactNode } from 'react';
+import { ReactNode } from 'react';
 import PageLayout from "@/components/layouts/PageLayout";
 import { RouteConfig, PageMetaProps } from './types';
 

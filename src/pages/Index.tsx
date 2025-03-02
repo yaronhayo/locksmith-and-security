@@ -1,9 +1,9 @@
 
-import React, { useEffect } from 'react';
 import HeroSection from "@/components/sections/HeroSection";
 import HomeLayout from "@/components/layouts/HomeLayout";
 import HomeContent from "@/components/sections/home/HomeContent";
 import { Helmet } from "react-helmet";
+import { useEffect } from "react";
 import { SchemaScripts } from "@/components/meta/SchemaScripts";
 import { BasicMetaTags } from "@/components/meta/BasicMetaTags";
 import { OpenGraphTags } from "@/components/meta/OpenGraphTags";
@@ -14,9 +14,9 @@ import { trackComponentRender } from "@/utils/performanceMonitoring";
 const Index = () => {
   const finishRenderTracking = trackComponentRender('HomePage');
   
-  // Page view tracking for analytics and debugging
+  // Page view tracking for analytics
   useEffect(() => {
-    console.log("Home page component rendered");
+    console.log("Home page viewed");
     finishRenderTracking();
     // Future implementation: track page view in analytics
   }, []);

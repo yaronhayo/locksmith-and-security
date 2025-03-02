@@ -9,6 +9,7 @@ import ScrollToTop from "./components/ScrollToTop";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import { NavigationProvider } from "./contexts/NavigationContext";
+import ScrollToTopButton from "@/components/ScrollToTopButton";
 
 function App() {
   // Log when the app is mounted for debugging purposes
@@ -32,13 +33,10 @@ function App() {
       <RouteErrorBoundary>
         <ScrollToTop />
         <NavigationProvider>
-          <div className="flex min-h-screen flex-col">
-            <Header />
-            <main className="flex-grow">
-              <Routes />
-            </main>
-            <Footer />
-          </div>
+          <Header />
+          <Routes />
+          <Footer />
+          <ScrollToTopButton />
         </NavigationProvider>
         <Toaster />
         <CookieConsent />

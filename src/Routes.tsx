@@ -1,6 +1,6 @@
 
 import { Routes as RouterRoutes, Route } from 'react-router-dom';
-import { Suspense, lazy, ReactNode, memo, useEffect } from "react";
+import { Suspense, lazy, ReactNode, memo } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { mainRoutes } from "./routes/mainRoutes";
 import { serviceRoutes } from "./routes/serviceRoutes";
@@ -16,19 +16,13 @@ const NotFound = lazy(() => import('./pages/404'));
 /**
  * Wraps a route element in error boundary and suspense
  */
-const RouteWrapper = memo(({ element }: { element: ReactNode }) => {
-  useEffect(() => {
-    console.log('Route element mounted');
-  }, []);
-  
-  return (
-    <ErrorBoundary FallbackComponent={ErrorFallback}>
-      <Suspense fallback={<PageLoading type="skeleton" />}>
-        {element}
-      </Suspense>
-    </ErrorBoundary>
-  );
-});
+const RouteWrapper = memo(({ element }: { element: ReactNode }) => (
+  <ErrorBoundary FallbackComponent={ErrorFallback}>
+    <Suspense fallback={<PageLoading type="skeleton" />}>
+      {element}
+    </Suspense>
+  </ErrorBoundary>
+));
 
 RouteWrapper.displayName = 'RouteWrapper';
 
@@ -37,31 +31,15 @@ RouteWrapper.displayName = 'RouteWrapper';
  * Renders all application routes with error boundaries and suspense
  */
 const Routes = () => {
-  useEffect(() => {
-    console.log('Routes component mounted');
-    try {
-      console.log('Available routes:', 
-        [...mainRoutes, ...serviceRoutes, ...serviceAreaRoutes].map(r => r.path)
-      );
-    } catch (error) {
-      console.error('Error logging routes:', error);
-    }
-  }, []);
-
-  // Map route data to Route components with better error handling
+  // Map route data to Route components
   const renderRouteComponents = (routes: RouteConfig[]) => {
-    try {
-      return routes.map(({ path, element }) => (
-        <Route 
-          key={path} 
-          path={path} 
-          element={<RouteWrapper element={element} />} 
-        />
-      ));
-    } catch (error) {
-      console.error('Error rendering route components:', error);
-      return null;
-    }
+    return routes.map(({ path, element }) => (
+      <Route 
+        key={path} 
+        path={path} 
+        element={<RouteWrapper element={element} />} 
+      />
+    ));
   };
 
   return (
@@ -78,11 +56,7 @@ const Routes = () => {
           {renderRouteComponents(serviceAreaRoutes)}
           
           {/* 404 page */}
-          <Route path="*" element={
-            <Suspense fallback={<PageLoading type="spinner" />}>
-              <NotFound />
-            </Suspense>
-          } />
+          <Route path="*" element={<NotFound />} />
         </RouterRoutes>
       </Suspense>
     </RouteErrorBoundary>
