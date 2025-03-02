@@ -74,9 +74,22 @@ const AddressAutocomplete = forwardRef<HTMLInputElement, AddressAutocompleteProp
             if (place && place.formatted_address) {
               console.log("Place selected:", place.formatted_address);
               
-              // Update the input value directly to ensure it shows the full address
+              // Directly update the input value to show the full address
               if (inputRef.current) {
-                inputRef.current.value = place.formatted_address;
+                // Use the native setter to ensure the value is properly registered
+                const nativeInputValueSetter = Object.getOwnPropertyDescriptor(
+                  window.HTMLInputElement.prototype,
+                  "value"
+                )?.set;
+                
+                if (nativeInputValueSetter) {
+                  nativeInputValueSetter.call(inputRef.current, place.formatted_address);
+                  const event = new Event('input', { bubbles: true });
+                  inputRef.current.dispatchEvent(event);
+                } else {
+                  // Fallback if native setter isn't available
+                  inputRef.current.value = place.formatted_address;
+                }
               }
               
               // Call the onAddressSelect callback if provided
@@ -86,19 +99,8 @@ const AddressAutocomplete = forwardRef<HTMLInputElement, AddressAutocompleteProp
               
               // Also trigger the onChange handler for form state updates
               if (onChange) {
-                // Create a synthetic event if needed
+                // Create a synthetic event if onChange expects an event
                 if (typeof onChange === 'function') {
-                  const nativeInputValueSetter = Object.getOwnPropertyDescriptor(
-                    window.HTMLInputElement.prototype,
-                    "value"
-                  )?.set;
-                  
-                  if (nativeInputValueSetter && inputRef.current) {
-                    nativeInputValueSetter.call(inputRef.current, place.formatted_address);
-                    const event = new Event('input', { bubbles: true });
-                    inputRef.current.dispatchEvent(event);
-                  }
-                  
                   const syntheticEvent = {
                     target: {
                       name: props.name || 'address',
@@ -113,7 +115,7 @@ const AddressAutocomplete = forwardRef<HTMLInputElement, AddressAutocompleteProp
                 }
               }
             } else {
-              console.warn("Invalid place selected");
+              console.warn("Invalid place selected or missing formatted_address");
             }
           });
 
@@ -134,6 +136,7 @@ const AddressAutocomplete = forwardRef<HTMLInputElement, AddressAutocompleteProp
       };
     }, [onAddressSelect, placesOptions, initializationAttempts, props.name, onChange]);
 
+    // Prevent form submission on Enter key press when autocomplete is active
     useEffect(() => {
       const handleKeyDown = (e: KeyboardEvent) => {
         if (e.key === "Enter" && document.activeElement === inputRef.current) {

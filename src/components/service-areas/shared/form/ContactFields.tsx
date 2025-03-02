@@ -45,6 +45,7 @@ const ContactFields = ({
   };
 
   const handleAddressSelect = (selectedAddress: string) => {
+    console.log("Address selected in ServiceAreaForm:", selectedAddress);
     const event = {
       target: {
         name: 'address',

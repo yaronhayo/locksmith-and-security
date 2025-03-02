@@ -42,6 +42,7 @@ const AddressField = ({ value, onChange, isSubmitting, error }: AddressFieldProp
 
   // Dedicated handler for address selection from autocomplete
   const handleAddressSelect = (selectedAddress: string) => {
+    console.log("Address selected in AddressField:", selectedAddress);
     onChange(selectedAddress);
     if (!isDirty) setIsDirty(true);
   };

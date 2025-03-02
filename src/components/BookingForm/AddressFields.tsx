@@ -27,6 +27,7 @@ const AddressFields = ({ address, onChange, errors, isSubmitting }: AddressField
 
   // Dedicated handler for address selection from autocomplete
   const handleAddressSelect = (selectedAddress: string) => {
+    console.log("Address selected in BookingForm:", selectedAddress);
     onChange(selectedAddress);
   };
 
