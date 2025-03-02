@@ -7,6 +7,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import React from "react";
 
 interface ServiceAreaFAQProps {
   locationName: string;
@@ -14,6 +15,9 @@ interface ServiceAreaFAQProps {
 }
 
 const ServiceAreaFAQ = ({ locationName, faqSchema }: ServiceAreaFAQProps) => {
+  // Create a unique ID for this accordion group
+  const accordionId = React.useId();
+  
   return (
     <section className="py-16 bg-gradient-to-b from-gray-50 to-white rounded-xl" id="faq">
       <div className="container mx-auto px-4">
@@ -30,34 +34,39 @@ const ServiceAreaFAQ = ({ locationName, faqSchema }: ServiceAreaFAQProps) => {
 
         <div className="max-w-6xl mx-auto">
           <div className="grid md:grid-cols-2 gap-6">
-            {faqSchema.data.mainEntity.map((faq: any, index: number) => (
-              <Accordion 
-                key={`service-area-faq-${index}`} 
-                type="single" 
-                collapsible 
-                className="bg-white rounded-lg shadow-sm"
-              >
-                <AccordionItem 
-                  value={`service-area-${locationName.replace(/\s+/g, '-').toLowerCase()}-${index}-${faq.name.substring(0, 10).replace(/\s+/g, '-')}`} 
-                  className="border-none"
+            {faqSchema.data.mainEntity.map((faq: any, index: number) => {
+              // Generate a unique value for each accordion item
+              const uniqueValue = `${accordionId}-area-${locationName.replace(/\s+/g, '-').toLowerCase()}-${index}-${faq.name.substring(0, 10).replace(/\s+/g, '-')}`;
+              
+              return (
+                <Accordion 
+                  key={`service-area-faq-${index}`} 
+                  type="single" 
+                  collapsible 
+                  className="bg-white rounded-lg shadow-sm"
                 >
-                  <AccordionTrigger className="px-6 py-4 hover:no-underline">
-                    <div className="flex items-start text-left gap-3">
-                      <span className="font-bold text-primary text-lg">Q:</span>
-                      <span className="text-lg font-semibold">{faq.name}</span>
-                    </div>
-                  </AccordionTrigger>
-                  <AccordionContent className="px-6 pb-4">
-                    <div className="flex gap-3">
-                      <span className="font-bold text-secondary text-lg">A:</span>
-                      <p className="text-gray-600 leading-relaxed">
-                        {faq.acceptedAnswer.text}
-                      </p>
-                    </div>
-                  </AccordionContent>
-                </AccordionItem>
-              </Accordion>
-            ))}
+                  <AccordionItem 
+                    value={uniqueValue}
+                    className="border-none"
+                  >
+                    <AccordionTrigger className="px-6 py-4 hover:no-underline">
+                      <div className="flex items-start text-left gap-3">
+                        <span className="font-bold text-primary text-lg">Q:</span>
+                        <span className="text-lg font-semibold">{faq.name}</span>
+                      </div>
+                    </AccordionTrigger>
+                    <AccordionContent className="px-6 pb-4">
+                      <div className="flex gap-3">
+                        <span className="font-bold text-secondary text-lg">A:</span>
+                        <p className="text-gray-600 leading-relaxed">
+                          {faq.acceptedAnswer.text}
+                        </p>
+                      </div>
+                    </AccordionContent>
+                  </AccordionItem>
+                </Accordion>
+              );
+            })}
           </div>
         </div>
       </div>

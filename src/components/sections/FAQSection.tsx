@@ -18,6 +18,9 @@ const FAQSection = ({ title = "Frequently Asked Questions", description = "Find 
   // Only take the first 12 FAQs from the provided FAQs or initialFAQs
   const displayedFaqs = faqs.slice(0, 12);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
+  
+  // Create a unique ID for this accordion group
+  const accordionId = React.useId();
 
   return (
     <section className="py-20 bg-gradient-to-b from-gray-50 to-white rounded-xl">
@@ -35,34 +38,39 @@ const FAQSection = ({ title = "Frequently Asked Questions", description = "Find 
           ref={scrollAreaRef}
         >
           <div className="grid md:grid-cols-2 gap-6">
-            {displayedFaqs.map((faq, index) => (
-              <Accordion 
-                key={`home-faq-${index}`} 
-                type="single" 
-                collapsible 
-                className="bg-white rounded-lg shadow-sm"
-              >
-                <AccordionItem 
-                  value={`home-faq-${index}-${faq.question.substring(0, 10).replace(/\s+/g, '-')}`} 
-                  className="border-none"
+            {displayedFaqs.map((faq, index) => {
+              // Generate a unique value for each accordion item
+              const uniqueValue = `${accordionId}-home-faq-${index}-${faq.question.substring(0, 10).replace(/\s+/g, '-')}`;
+              
+              return (
+                <Accordion 
+                  key={`home-faq-${index}`} 
+                  type="single" 
+                  collapsible 
+                  className="bg-white rounded-lg shadow-sm"
                 >
-                  <AccordionTrigger className="px-6 py-4 hover:no-underline">
-                    <div className="flex items-start text-left gap-3">
-                      <span className="font-bold text-primary text-lg">Q:</span>
-                      <span className="text-lg font-semibold">{faq.question}</span>
-                    </div>
-                  </AccordionTrigger>
-                  <AccordionContent className="px-6 pb-4">
-                    <div className="flex gap-3">
-                      <span className="font-bold text-secondary text-lg">A:</span>
-                      <p className="text-gray-600 leading-relaxed">
-                        {faq.answer}
-                      </p>
-                    </div>
-                  </AccordionContent>
-                </AccordionItem>
-              </Accordion>
-            ))}
+                  <AccordionItem 
+                    value={uniqueValue}
+                    className="border-none"
+                  >
+                    <AccordionTrigger className="px-6 py-4 hover:no-underline">
+                      <div className="flex items-start text-left gap-3">
+                        <span className="font-bold text-primary text-lg">Q:</span>
+                        <span className="text-lg font-semibold">{faq.question}</span>
+                      </div>
+                    </AccordionTrigger>
+                    <AccordionContent className="px-6 pb-4">
+                      <div className="flex gap-3">
+                        <span className="font-bold text-secondary text-lg">A:</span>
+                        <p className="text-gray-600 leading-relaxed">
+                          {faq.answer}
+                        </p>
+                      </div>
+                    </AccordionContent>
+                  </AccordionItem>
+                </Accordion>
+              );
+            })}
           </div>
         </ScrollArea>
         
