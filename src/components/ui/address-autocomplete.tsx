@@ -1,5 +1,5 @@
 
-import React, { forwardRef } from "react";
+import React, { forwardRef, useEffect } from "react";
 import { Input } from "./input";
 import { cn } from "@/lib/utils";
 import { useAddressAutocomplete } from "@/hooks/useAddressAutocomplete";
@@ -23,6 +23,10 @@ const AddressAutocomplete = forwardRef<HTMLInputElement, AddressAutocompleteProp
       onAddressSelect,
       onChange
     });
+    
+    useEffect(() => {
+      console.log("AddressAutocomplete rendered");
+    }, []);
     
     // Ensure proper ref handling
     const handleRef = (node: HTMLInputElement | null) => {

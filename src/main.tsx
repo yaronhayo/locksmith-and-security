@@ -18,6 +18,9 @@ const queryClient = new QueryClient({
   },
 })
 
+// Declare hasRendered at the top level so it's accessible everywhere
+let hasRendered = false;
+
 // Add global error handler to log any unhandled errors
 if (typeof window !== 'undefined') {
   window.addEventListener('error', (event) => {
@@ -29,7 +32,6 @@ if (typeof window !== 'undefined') {
   });
   
   // Try to detect if we're in a white screen situation
-  let hasRendered = false;
   setTimeout(() => {
     if (!hasRendered) {
       console.error('Potential white screen detected - application did not render within 5 seconds');
