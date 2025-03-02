@@ -15,3 +15,9 @@ export const isResidentialService = (service: string): boolean => {
 export const isCommercialService = (service: string): boolean => {
   return SERVICE_TYPES[service]?.category === 'commercial';
 };
+
+export const isEmergencyService = (service: string): boolean => {
+  return SERVICE_TYPES[service]?.category === 'emergency' || 
+         service.toLowerCase().includes('emergency') || 
+         service.includes('Lockout');
+};

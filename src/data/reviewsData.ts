@@ -10,7 +10,8 @@ export const reviews: readonly Review[] = [
 const reviewsCache: Record<ServiceCategory, Review[]> = {
   'car': [],
   'residential': [],
-  'commercial': []
+  'commercial': [],
+  'emergency': []
 };
 
 export const getReviewsByCategory = (category: ServiceCategory): Review[] => {
@@ -28,6 +29,12 @@ export const getReviewsByCategory = (category: ServiceCategory): Review[] => {
     case 'commercial':
       reviewsCache.commercial = reviews.filter(review => isCommercialService(review.service));
       return reviewsCache.commercial;
+    case 'emergency':
+      reviewsCache.emergency = reviews.filter(review => 
+        review.service.toLowerCase().includes('emergency') || 
+        review.service.includes('Lockout')
+      );
+      return reviewsCache.emergency;
   }
 };
 
@@ -35,6 +42,7 @@ export const reviewsByCategory: ReviewsByCategory = {
   car: getReviewsByCategory('car'),
   residential: getReviewsByCategory('residential'),
   commercial: getReviewsByCategory('commercial'),
+  emergency: getReviewsByCategory('emergency')
 };
 
 const locationCache: Record<string, Review[]> = {};
