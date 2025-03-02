@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { FormState, FormErrors } from './useServiceAreaForm';
 import { Label } from "@/components/ui/label";
@@ -92,18 +93,20 @@ const ContactFields = ({
       
       <div>
         <Label htmlFor="address">Address</Label>
-        <GoogleMapsProvider>
-          <AddressAutocomplete
-            id="address"
-            name="address"
-            value={formState.address}
-            onChange={handleAddressChange}
-            onBlur={() => handleBlur('address')}
-            disabled={isSubmitting}
-            placeholder="Enter your address"
-            className={errors.address ? "border-red-500" : ""}
-          />
-        </GoogleMapsProvider>
+        <div className="relative">
+          <GoogleMapsProvider>
+            <AddressAutocomplete
+              id="address"
+              name="address"
+              value={formState.address || ''}
+              onChange={handleAddressChange}
+              onBlur={() => handleBlur('address')}
+              disabled={isSubmitting}
+              placeholder="Enter your address"
+              className={errors.address ? "border-red-500" : ""}
+            />
+          </GoogleMapsProvider>
+        </div>
         {errors.address && (
           <Alert variant="destructive" className="mt-1 py-2">
             <AlertCircle className="h-4 w-4" />

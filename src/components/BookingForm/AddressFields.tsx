@@ -31,18 +31,20 @@ const AddressFields = ({ address, onChange, errors, isSubmitting }: AddressField
         <Label htmlFor="address" className="block text-sm font-medium text-gray-800 mb-1">
           Service Address
         </Label>
-        <GoogleMapsProvider>
-          <AddressAutocomplete
-            value={address}
-            onChange={handleAddressChange}
-            placeholder="Enter your service address"
-            disabled={isSubmitting}
-            required
-            id="address"
-            name="address"
-            className="text-gray-900 placeholder:text-gray-500"
-          />
-        </GoogleMapsProvider>
+        <div className="relative">
+          <GoogleMapsProvider>
+            <AddressAutocomplete
+              value={address}
+              onChange={handleAddressChange}
+              placeholder="Enter your service address"
+              disabled={isSubmitting}
+              required
+              id="address"
+              name="address"
+              className="text-gray-900 placeholder:text-gray-500"
+            />
+          </GoogleMapsProvider>
+        </div>
         {errors.address && (
           <Alert variant="destructive" className="mt-1 py-2">
             <AlertCircle className="h-4 w-4" />

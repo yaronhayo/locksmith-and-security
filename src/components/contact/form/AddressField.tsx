@@ -47,16 +47,18 @@ const AddressField = ({ value, onChange, isSubmitting, error }: AddressFieldProp
       <Label htmlFor="address" className="block text-sm font-medium mb-2">
         Address
       </Label>
-      <AddressAutocomplete
-        value={value}
-        onChange={handleAddressChange}
-        id="address"
-        disabled={isSubmitting}
-        placeholder="Enter your address"
-        aria-invalid={!!displayError}
-        aria-describedby={displayError ? "address-error" : undefined}
-        onBlur={handleBlur}
-      />
+      <div className="relative">
+        <AddressAutocomplete
+          value={value}
+          onChange={handleAddressChange}
+          id="address"
+          disabled={isSubmitting}
+          placeholder="Enter your address"
+          aria-invalid={!!displayError}
+          aria-describedby={displayError ? "address-error" : undefined}
+          onBlur={handleBlur}
+        />
+      </div>
       {displayError && (
         <Alert variant="destructive" className="mt-1 py-2">
           <AlertCircle className="h-4 w-4" />
