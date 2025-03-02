@@ -1,4 +1,3 @@
-
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
 
 @tailwind base;
@@ -34,23 +33,34 @@
   
   html {
     @apply antialiased scroll-smooth;
-    overflow-x: hidden; /* Prevent horizontal overflow */
   }
   
   body {
-    @apply bg-background text-foreground min-h-screen overflow-x-hidden; /* Ensure no horizontal overflow */
+    @apply bg-background text-foreground min-h-screen overflow-x-hidden;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    max-width: 100vw; /* Constrain width to prevent overflow */
   }
 
   #root {
     @apply flex min-h-screen flex-col;
-    max-width: 100%; /* Ensure root container doesn't overflow */
   }
   
-  /* ... keep existing code (heading styles) */
+  h1 {
+    @apply text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-primary;
+  }
+  
+  h2 {
+    @apply text-2xl sm:text-3xl md:text-4xl font-bold text-secondary;
+  }
+  
+  h3 {
+    @apply text-xl sm:text-2xl md:text-3xl font-semibold text-primary;
+  }
+  
+  h4 {
+    @apply text-lg sm:text-xl md:text-2xl font-semibold text-secondary;
+  }
   
   .subtitle {
     @apply text-base sm:text-lg md:text-xl text-heading-neutral;
@@ -60,75 +70,95 @@
     @apply max-w-full h-auto;
   }
 
-  /* ... keep existing code (interactive elements, navigation, footer and card hover effects) */
-
-  /* Improve responsive typography */
-  h1 {
-    @apply text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-primary;
-    line-height: 1.2;
+  a {
+    @apply transition-all duration-300 hover:text-secondary relative group-hover:text-secondary;
+  }
+  a:not(.no-underline)::after {
+    @apply content-[''] absolute left-0 bottom-0 w-0 h-0.5 bg-secondary transition-all duration-300 group-hover:w-full;
+  }
+  a:not(.no-underline):hover::after {
+    @apply w-full;
   }
   
-  h2 {
-    @apply text-xl sm:text-2xl md:text-3xl font-bold text-secondary;
-    line-height: 1.3;
+  /* Interactive elements hover states */
+  button:not([disabled]),
+  [role="button"]:not([disabled]) {
+    @apply hover:opacity-90 transition-opacity duration-300;
   }
   
-  h3 {
-    @apply text-lg sm:text-xl md:text-2xl font-semibold text-primary;
-    line-height: 1.4;
+  /* Navigation specific hover effects */
+  .nav-link {
+    @apply relative hover:text-secondary transition-colors duration-300;
   }
   
-  h4 {
-    @apply text-base sm:text-lg md:text-xl font-semibold text-secondary;
-    line-height: 1.5;
+  .nav-link::after {
+    @apply content-[''] absolute left-0 bottom-0 w-0 h-0.5 bg-secondary transition-all duration-300;
   }
   
-  p, li, span, a {
-    @apply text-sm sm:text-base;
-    line-height: 1.6;
+  .nav-link:hover::after {
+    @apply w-full;
+  }
+  
+  /* Footer specific hover effects */
+  .footer-link {
+    @apply hover:text-secondary transition-colors duration-300;
+  }
+  
+  /* Card hover effects */
+  .hover-card {
+    @apply transition-transform duration-300 hover:scale-105;
+  }
+  
+  /* Button hover effects */
+  .btn-hover {
+    @apply transition-all duration-300 hover:shadow-lg hover:translate-y-[-2px];
   }
 
-  /* Ensure proper display on different browsers */
-  @supports (-webkit-touch-callout: none) {
-    .min-h-screen {
-      min-height: -webkit-fill-available;
-    }
+  /* Secondary button hover text color */
+  .bg-secondary:hover,
+  [class*="bg-secondary"]:hover {
+    @apply text-black;
   }
 
-  /* Improve scrolling on iOS */
-  @supports (-webkit-overflow-scrolling: touch) {
-    body {
-      -webkit-overflow-scrolling: touch;
-    }
-  }
-
-  /* Better form elements on mobile */
-  @media (max-width: 640px) {
-    input, select, textarea {
-      @apply text-base;
-      font-size: 16px !important; /* Prevent zoom on iOS */
-    }
-    
-    /* Improve tap targets */
-    button, 
-    [role="button"],
-    a {
-      @apply min-h-[44px] min-w-[44px];
-      padding: 0.5rem;
-    }
-    
-    /* Fix container padding on mobile */
-    .container {
-      @apply px-4;
-    }
-  }
-
-  /* Print styles */
-  @media print {
-    body {
-      @apply text-black bg-white;
-    }
+  /* Secondary button icon hover color */
+  .bg-secondary:hover svg,
+  [class*="bg-secondary"]:hover svg {
+    @apply text-black;
   }
 }
 
-/* ... keep existing code (hero gradient and other utilities) */
+.hero-gradient {
+  background: linear-gradient(135deg, #0F4C81 0%, #072442 100%);
+}
+
+.main-heading {
+  @apply text-heading-primary;
+}
+
+/* Ensure proper display on different browsers */
+@supports (-webkit-touch-callout: none) {
+  .min-h-screen {
+    min-height: -webkit-fill-available;
+  }
+}
+
+/* Improve scrolling on iOS */
+@supports (-webkit-overflow-scrolling: touch) {
+  body {
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+/* Better form elements on mobile */
+@media (max-width: 640px) {
+  input, select, textarea {
+    @apply text-base;
+  }
+}
+
+/* Print styles */
+@media print {
+  body {
+    @apply text-black bg-white;
+  }
+}

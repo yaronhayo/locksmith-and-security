@@ -3,9 +3,8 @@ import { cn } from "@/lib/utils";
 import { Loader2 } from "lucide-react";
 import { memo, useEffect } from "react";
 import { trackComponentRender } from "@/utils/performanceMonitoring";
-import { motion } from "framer-motion";
 
-type SpinnerSize = "xs" | "sm" | "md" | "lg" | "xl";
+type SpinnerSize = "sm" | "md" | "lg" | "xl";
 
 interface LoadingSpinnerProps {
   size?: SpinnerSize;
@@ -14,12 +13,9 @@ interface LoadingSpinnerProps {
   textClassName?: string;
   containerClassName?: string;
   centered?: boolean;
-  delay?: number;
-  showShimmer?: boolean;
 }
 
 const sizeMap: Record<SpinnerSize, string> = {
-  xs: "h-3 w-3",
   sm: "h-4 w-4",
   md: "h-6 w-6",
   lg: "h-8 w-8",
@@ -32,9 +28,7 @@ const LoadingSpinner = ({
   text, 
   textClassName = "mt-2 text-sm text-gray-500",
   containerClassName,
-  centered = true,
-  delay = 0,
-  showShimmer = false
+  centered = true
 }: LoadingSpinnerProps) => {
   const finishRenderTracking = trackComponentRender('LoadingSpinner');
   
@@ -43,36 +37,23 @@ const LoadingSpinner = ({
   }, []);
 
   return (
-    <motion.div 
-      className={cn(
-        centered ? "flex flex-col justify-center items-center" : "inline-flex items-center",
-        containerClassName
-      )}
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.3, delay: delay / 1000 }}
-      role="status"
-      aria-live="polite"
-    >
-      {showShimmer && (
-        <div className="absolute inset-0 overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_1.5s_infinite] before:bg-gradient-to-r before:from-transparent before:via-white/10 before:to-transparent" />
-      )}
-      
+    <div className={cn(
+      centered ? "flex flex-col justify-center items-center" : "inline-flex items-center",
+      containerClassName
+    )}>
       <Loader2 
         className={cn(
           "animate-spin text-primary", 
           sizeMap[size], 
           className
         )} 
-        aria-hidden="true"
       />
-      
       {!text ? (
         <span className="sr-only">Loading...</span>
       ) : (
         <span className={cn(textClassName)}>{text}</span>
       )}
-    </motion.div>
+    </div>
   );
 };
 
