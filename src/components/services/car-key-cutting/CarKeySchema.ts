@@ -44,7 +44,16 @@ export const carKeyServiceSchema = {
   "name": "Car Key Cutting Service",
   "provider": {
     "@type": "LocalBusiness",
-    "name": "247 Locksmith & Security"
+    "name": "247 Locksmith & Security",
+    "telephone": "(201) 748-2070",
+    "url": "https://247locksmithandsecurity.com/services/auto-locksmith/car-key-cutting",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "North Bergen",
+      "addressRegion": "NJ",
+      "postalCode": "07047",
+      "addressCountry": "US"
+    }
   },
   "serviceType": "Car Key Cutting",
   "areaServed": {
@@ -53,14 +62,48 @@ export const carKeyServiceSchema = {
   },
   "description": "Professional car key cutting service for all vehicle makes and models. Our expert locksmiths use advanced equipment to create precise, reliable car keys.",
   "offers": {
-    "@type": "Offer",
-    "price": "50.00",
+    "@type": "AggregateOffer",
+    "lowPrice": "50.00",
+    "highPrice": "150.00",
     "priceCurrency": "USD",
-    "priceSpecification": {
-      "@type": "UnitPriceSpecification",
-      "priceType": "https://schema.org/MinimumPrice",
-      "price": "50.00",
-      "priceCurrency": "USD"
-    }
+    "offerCount": "3",
+    "offers": [
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Basic Car Key Cutting"
+        },
+        "price": "50.00",
+        "priceCurrency": "USD",
+        "availability": "https://schema.org/InStock"
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Laser-Cut Car Key Cutting"
+        },
+        "price": "85.00",
+        "priceCurrency": "USD",
+        "availability": "https://schema.org/InStock"
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "High-Security Car Key Cutting"
+        },
+        "price": "120.00",
+        "priceCurrency": "USD",
+        "availability": "https://schema.org/InStock"
+      }
+    ]
+  },
+  "availableChannel": {
+    "@type": "ServiceChannel",
+    "serviceUrl": "https://247locksmithandsecurity.com/book-online",
+    "servicePhone": "(201) 748-2070",
+    "serviceSmsNumber": "(201) 748-2070"
   }
 };

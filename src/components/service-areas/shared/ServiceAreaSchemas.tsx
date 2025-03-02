@@ -51,6 +51,45 @@ export const createServiceAreaSchemas = (
         "@type": "ServiceChannel",
         "serviceUrl": `https://247locksmithandsecurity.com/service-areas/${areaSlug}`,
         "servicePhone": settings?.company_phone || "(201) 748-2070"
+      },
+      "offers": {
+        "@type": "AggregateOffer",
+        "priceCurrency": "USD",
+        "lowPrice": "75",
+        "highPrice": "250",
+        "offerCount": "10",
+        "offers": [
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Residential Lockout Service"
+            },
+            "price": "95.00",
+            "priceCurrency": "USD",
+            "availability": "https://schema.org/InStock"
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Commercial Locksmith Service"
+            },
+            "price": "125.00",
+            "priceCurrency": "USD",
+            "availability": "https://schema.org/InStock"
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Automotive Locksmith Service"
+            },
+            "price": "95.00",
+            "priceCurrency": "USD",
+            "availability": "https://schema.org/InStock"
+          }
+        ]
       }
     }
   };
@@ -144,6 +183,42 @@ export const createServiceAreaSchemas = (
           "longitude": location.lng
         },
         "geoRadius": "10000"
+      },
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": `Locksmith Services in ${location.name}`,
+        "itemListElement": [
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Residential Locksmith"
+            },
+            "price": "75.00",
+            "priceCurrency": "USD",
+            "availability": "https://schema.org/InStock"
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Commercial Locksmith"
+            },
+            "price": "95.00",
+            "priceCurrency": "USD",
+            "availability": "https://schema.org/InStock"
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service", 
+              "name": "Automotive Locksmith"
+            },
+            "price": "85.00",
+            "priceCurrency": "USD",
+            "availability": "https://schema.org/InStock"
+          }
+        ]
       }
     }
   };

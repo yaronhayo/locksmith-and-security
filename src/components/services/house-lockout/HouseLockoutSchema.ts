@@ -43,7 +43,8 @@ export const houseServiceSchema = {
       "@type": "PostalAddress",
       "addressLocality": "North Bergen",
       "addressRegion": "NJ"
-    }
+    },
+    "url": "https://247locksmithandsecurity.com/services/emergency-locksmith/house-lockout"
   },
   "areaServed": [
     "North Bergen, NJ",
@@ -55,6 +56,20 @@ export const houseServiceSchema = {
     "Secaucus, NJ",
     "Guttenberg, NJ"
   ],
+  "offers": {
+    "@type": "Offer",
+    "price": "95.00",
+    "priceCurrency": "USD",
+    "priceSpecification": {
+      "@type": "UnitPriceSpecification",
+      "priceType": "https://schema.org/MinimumPrice",
+      "price": "95.00",
+      "priceCurrency": "USD"
+    },
+    "availability": "https://schema.org/InStock",
+    "availabilityStarts": "2023-01-01T00:00:00-05:00",
+    "availabilityEnds": "2025-12-31T23:59:59-05:00"
+  },
   "hasOfferCatalog": {
     "@type": "OfferCatalog",
     "name": "Residential Lockout Services",
@@ -63,22 +78,31 @@ export const houseServiceSchema = {
         "@type": "Offer",
         "itemOffered": {
           "@type": "Service",
+          "name": "Standard House Lockout"
+        },
+        "price": "95.00",
+        "priceCurrency": "USD",
+        "availability": "https://schema.org/InStock"
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
           "name": "Emergency House Lockout"
-        }
+        },
+        "price": "145.00",
+        "priceCurrency": "USD",
+        "availability": "https://schema.org/InStock"
       },
       {
         "@type": "Offer",
         "itemOffered": {
           "@type": "Service",
           "name": "Broken Key Extraction"
-        }
-      },
-      {
-        "@type": "Offer",
-        "itemOffered": {
-          "@type": "Service",
-          "name": "Lock Repair and Replacement"
-        }
+        },
+        "price": "85.00",
+        "priceCurrency": "USD",
+        "availability": "https://schema.org/InStock"
       }
     ]
   },
@@ -94,7 +118,17 @@ export const houseServiceSchema = {
       "name": review.name
     },
     "reviewBody": review.text
-  }))
+  })),
+  "serviceOutput": {
+    "@type": "Thing",
+    "name": "Property Access Restoration"
+  },
+  "hoursAvailable": {
+    "@type": "OpeningHoursSpecification",
+    "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+    "opens": "00:00",
+    "closes": "23:59"
+  }
 };
 
 export const houseLockoutFaqSchema = {
