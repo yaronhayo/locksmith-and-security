@@ -102,11 +102,12 @@ const PageLayout = ({
         <PageHero 
           title={heroTitle || title}
           description={heroDescription || description}
-          showBreadcrumbs={!hideBreadcrumbs} // Pass the hideBreadcrumbs value inverted
+          showBreadcrumbs={!hideBreadcrumbs}
         />
       )}
       
-      {!hideBreadcrumbs && !heroTitle && !heroDescription && (
+      {/* Only show standalone breadcrumbs if there's no hero AND breadcrumbs are not hidden */}
+      {!hideBreadcrumbs && !(heroTitle || heroDescription) && (
         <nav aria-label="Breadcrumb" className="container mx-auto px-4 py-3 md:py-4">
           <Breadcrumbs />
         </nav>
@@ -124,7 +125,6 @@ const PageLayout = ({
         <div className={cn(className)}>{children}</div>
       </motion.main>
       
-      {/* Scroll to top button - now as a separate component */}
       <ScrollToTopButton />
     </ErrorBoundary>
   );
