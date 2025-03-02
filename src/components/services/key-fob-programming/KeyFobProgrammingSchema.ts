@@ -1,131 +1,49 @@
 
-import { carServiceReviews } from "@/data/reviews";
-
-// Define the FAQItem interface to match what's expected by ServicePageContent
-export interface FAQItem {
-  question: string;
-  answer: string;
-}
-
-export interface RelatedService {
-  title: string;
-  path: string;
-  description: string;
-}
-
-export const keyFobProgrammingFaqs: FAQItem[] = [
-  {
-    question: "What is key fob programming?",
-    answer: "Key fob programming is the process of syncing a key fob to a vehicle's onboard computer system, allowing it to communicate with the car for functions like remote locking/unlocking, alarm activation, and push-button start."
-  },
-  {
-    question: "When do I need key fob programming?",
-    answer: "You'll need key fob programming when you purchase a new key fob, replace a lost one, or if your current key fob stops working properly. It's also necessary when replacing a vehicle's battery or after certain electrical system repairs."
-  },
-  {
-    question: "Can I program a key fob myself?",
-    answer: "While some basic key fobs for older vehicles can be self-programmed, most modern key fobs require specialized equipment and technical knowledge. Incorrect programming attempts can sometimes lock out the system, requiring professional intervention."
-  },
-  {
-    question: "How long does key fob programming take?",
-    answer: "Most key fob programming services take between 15-30 minutes per key. However, timing can vary depending on the vehicle make, model, year, and complexity of the key system."
-  },
-  {
-    question: "Do you program key fobs for all vehicle makes and models?",
-    answer: "Yes, we can program key fobs for virtually all vehicle makes and models, including domestic, foreign, and luxury brands. Our technicians have the necessary equipment and expertise to handle most automotive key systems on the market."
-  }
-];
-
-export const keyFobProgrammingRelatedServices: RelatedService[] = [
-  {
-    title: "Car Key Replacement",
-    path: "/services/auto-locksmith/car-key-replacement",
-    description: "Complete replacement service for lost or damaged car keys."
-  },
-  {
-    title: "Car Key Duplicate",
-    path: "/services/auto-locksmith/car-key-duplicate",
-    description: "Create backup copies of your existing car keys for emergencies."
-  },
-  {
-    title: "Car Lockout Service",
-    path: "/services/emergency-locksmith/car-lockout",
-    description: "Emergency assistance when locked out of your vehicle."
-  },
-  {
-    title: "Ignition Lock Cylinder Replacement",
-    path: "/services/auto-locksmith/ignition-lock-cylinder",
-    description: "Repair or replace damaged ignition systems."
-  }
-];
-
+// Key Fob Programming Service Schema
 export const keyFobProgrammingServiceSchema = {
   "@context": "https://schema.org",
   "@type": "Service",
-  "name": "Key Fob Programming Service",
-  "description": "Professional key fob programming service for all vehicle makes and models by certified automotive locksmiths.",
+  "serviceType": "Key Fob Programming",
   "provider": {
     "@type": "LocalBusiness",
     "name": "Locksmith & Security LLC",
-    "telephone": "(201) 748-2070",
     "address": {
       "@type": "PostalAddress",
+      "streetAddress": "7611 Bergenline Ave",
       "addressLocality": "North Bergen",
-      "addressRegion": "NJ"
-    }
+      "addressRegion": "NJ",
+      "postalCode": "07047",
+      "addressCountry": "US"
+    },
+    "telephone": "(201) 748-2070",
+    "priceRange": "$$"
   },
   "areaServed": [
-    "North Bergen, NJ",
-    "Jersey City, NJ",
-    "Hoboken, NJ",
-    "Weehawken, NJ",
-    "Union City, NJ",
-    "West New York, NJ",
-    "Secaucus, NJ",
-    "Guttenberg, NJ"
+    {
+      "@type": "City",
+      "name": "North Bergen",
+      "sameAs": "https://en.wikipedia.org/wiki/North_Bergen,_New_Jersey"
+    },
+    {
+      "@type": "City",
+      "name": "Jersey City",
+      "sameAs": "https://en.wikipedia.org/wiki/Jersey_City,_New_Jersey"
+    },
+    {
+      "@type": "City",
+      "name": "Hoboken",
+      "sameAs": "https://en.wikipedia.org/wiki/Hoboken,_New_Jersey"
+    }
   ],
-  "hasOfferCatalog": {
-    "@type": "OfferCatalog",
-    "name": "Key Fob Programming Services",
-    "itemListElement": [
-      {
-        "@type": "Offer",
-        "itemOffered": {
-          "@type": "Service",
-          "name": "New Key Fob Programming"
-        }
-      },
-      {
-        "@type": "Offer",
-        "itemOffered": {
-          "@type": "Service",
-          "name": "Key Fob Reprogramming"
-        }
-      },
-      {
-        "@type": "Offer",
-        "itemOffered": {
-          "@type": "Service",
-          "name": "Push-Button Start Programming"
-        }
-      }
-    ]
-  },
-  "review": carServiceReviews.slice(0, 5).map(review => ({
-    "@type": "Review",
-    "reviewRating": {
-      "@type": "Rating",
-      "ratingValue": review.rating,
-      "bestRating": "5"
-    },
-    "author": {
-      "@type": "Person",
-      "name": review.name
-    },
-    "reviewBody": review.text
-  }))
+  "description": "Professional key fob programming service for all vehicle makes and models. Our certified automotive locksmiths provide efficient, reliable programming at competitive rates.",
+  "offers": {
+    "@type": "Offer",
+    "price": "99.00",
+    "priceCurrency": "USD"
+  }
 };
 
+// Key Fob Programming FAQ Schema
 export const keyFobProgrammingFaqSchema = {
   "@context": "https://schema.org",
   "@type": "FAQPage",
@@ -138,3 +56,55 @@ export const keyFobProgrammingFaqSchema = {
     }
   }))
 };
+
+// Key Fob Programming FAQs
+export const keyFobProgrammingFaqs = [
+  {
+    question: "How long does key fob programming take?",
+    answer: "Most key fob programming services can be completed in 15-30 minutes, depending on your vehicle make and model. Our certified technicians work efficiently to minimize your wait time."
+  },
+  {
+    question: "Can you program a key fob I purchased online?",
+    answer: "Yes, we can program key fobs that you've purchased separately. However, we recommend consulting with us before buying to ensure compatibility with your vehicle. Not all aftermarket key fobs are programmable for all vehicles."
+  },
+  {
+    question: "Is key fob programming cheaper than going to the dealership?",
+    answer: "Yes, our key fob programming service typically costs 30-50% less than dealership prices. We provide the same professional service at more competitive rates without compromising quality."
+  },
+  {
+    question: "Do I need to bring my vehicle for key fob programming?",
+    answer: "Yes, your vehicle must be present for key fob programming as we need to connect to your vehicle's onboard computer system. However, as a mobile service, we come to your location."
+  },
+  {
+    question: "Will programming a new key fob delete my old ones?",
+    answer: "In most cases, programming a new key fob won't affect existing fobs. However, for security reasons, if a key fob was lost or stolen, we recommend reprogramming all fobs to ensure the missing one can't be used."
+  },
+  {
+    question: "What types of key fobs can you program?",
+    answer: "We can program virtually all types of automotive key fobs, including standard remote entry fobs, push-to-start smart keys, proximity keys, flip keys, and integrated key fobs for most vehicle makes and models."
+  }
+];
+
+// Related automotive services
+export const keyFobProgrammingRelatedServices = [
+  {
+    title: "Car Key Replacement",
+    path: "/services/auto-locksmith/car-key-replacement",
+    description: "Complete replacement solutions for lost or damaged car keys"
+  },
+  {
+    title: "Car Key Duplicate",
+    path: "/services/auto-locksmith/car-key-duplicate",
+    description: "Create spare keys for your vehicle for convenience and emergencies"
+  },
+  {
+    title: "Car Key Cutting",
+    path: "/services/auto-locksmith/car-key-cutting",
+    description: "Precision cutting for all types of automotive keys"
+  },
+  {
+    title: "Car Lockout Service",
+    path: "/services/emergency-locksmith/car-lockout",
+    description: "Emergency assistance when locked out of your vehicle"
+  }
+];
