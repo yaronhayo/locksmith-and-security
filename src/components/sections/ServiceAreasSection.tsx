@@ -1,5 +1,5 @@
 
-import { useState, useEffect, useMemo, lazy, Suspense, memo } from 'react';
+import { useState, useEffect, useMemo, Suspense, memo } from 'react';
 import GoogleMap from '../map/GoogleMap';
 import AreasList from './service-areas/AreasList';
 import EmergencyCallout from './service-areas/EmergencyCallout';
@@ -9,6 +9,7 @@ import GoogleMapsProvider from '../providers/GoogleMapsProvider';
 import MapError from '../map/MapError';
 import { ErrorBoundary } from 'react-error-boundary';
 import { Skeleton } from '@/components/ui/skeleton';
+import { toast } from 'sonner';
 
 // Create a map loading component
 const MapLoadingPlaceholder = () => (
@@ -37,6 +38,7 @@ const ServiceAreasSection = () => {
   const [isMapVisible, setIsMapVisible] = useState(false);
   const [mapError, setMapError] = useState<string | null>(null);
   const { data: locations, isLoading, error } = useLocations();
+  const [retryCount, setRetryCount] = useState(0);
 
   // Set up intersection observer to lazy load the map when it comes into view
   useEffect(() => {
@@ -83,6 +85,7 @@ const ServiceAreasSection = () => {
     if (error) {
       console.error("Error loading locations:", error);
       setMapError(error.message || "Error loading service areas");
+      toast.error("Could not load service areas");
     }
   }, [locations, error]);
 
@@ -101,6 +104,15 @@ const ServiceAreasSection = () => {
   const handleMapError = (error: Error) => {
     console.error("Map error caught by error boundary:", error);
     setMapError(error.message || "Error displaying map");
+    toast.error("Map error: " + (error.message || "Failed to load"));
+  };
+
+  const handleRetry = () => {
+    console.log("Retrying map load...");
+    setMapError(null);
+    setRetryCount(prev => prev + 1);
+    setMapKey(prev => prev + 1);
+    toast.info("Retrying map load...");
   };
 
   if (isLoading) {
@@ -124,7 +136,10 @@ const ServiceAreasSection = () => {
     return (
       <div className="py-20 bg-gray-50" id="service-areas-section">
         <div className="container mx-auto px-4 flex justify-center items-center min-h-[400px]">
-          <MapError error={error?.message || 'Error loading service areas'} />
+          <MapError 
+            error={error?.message || 'Error loading service areas'} 
+            resetErrorBoundary={handleRetry}
+          />
         </div>
       </div>
     );
@@ -149,13 +164,16 @@ const ServiceAreasSection = () => {
           <div className="bg-white rounded-xl shadow-lg overflow-hidden" style={{ height: '600px' }}>
             {isMapVisible ? (
               <ErrorBoundary 
-                FallbackComponent={MapError} 
-                key={`map-error-boundary-${mapKey}`}
+                FallbackComponent={({ error, resetErrorBoundary }) => (
+                  <MapError error={error.message} resetErrorBoundary={resetErrorBoundary} />
+                )}
+                key={`map-error-boundary-${mapKey}-${retryCount}`}
                 onError={handleMapError}
+                onReset={handleRetry}
               >
                 <GoogleMapsProvider>
                   <GoogleMap 
-                    key={`google-map-${mapKey}`}
+                    key={`google-map-${mapKey}-${retryCount}`}
                     markers={mapMarkers}
                     highlightedMarker={hoveredArea}
                     showAllMarkers={true}
@@ -170,7 +188,10 @@ const ServiceAreasSection = () => {
             
             {mapError && (
               <div className="absolute inset-0 flex items-center justify-center bg-white/90 z-10">
-                <MapError error={mapError} />
+                <MapError 
+                  error={mapError} 
+                  resetErrorBoundary={handleRetry} 
+                />
               </div>
             )}
           </div>

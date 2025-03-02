@@ -2,6 +2,7 @@
 import { useState, useRef, useCallback, useEffect } from "react";
 import { mapPerformance } from "@/utils/performanceMonitoring";
 import { MapMarker } from "@/types/service-area";
+import { toast } from "sonner";
 
 export const useGoogleMap = (
   markers: MapMarker[] = [],
@@ -14,6 +15,7 @@ export const useGoogleMap = (
   const [isLoading, setIsLoading] = useState(true);
   const [mapError, setMapError] = useState<string | null>(null);
   const loadStartTime = useRef(performance.now());
+  const isMapInitialized = useRef(false);
   
   const visibleMarkers = useCallback(() => 
     showAllMarkers ? markers : markers.filter(m => m.slug === highlightedMarker),
@@ -37,6 +39,12 @@ export const useGoogleMap = (
           bounds.extend({ lat: marker.lat, lng: marker.lng });
         });
         map.fitBounds(bounds);
+        
+        // Set minimum zoom level so we don't zoom in too far when only a few markers
+        const listener = google.maps.event.addListener(map, 'idle', () => {
+          if (map.getZoom() > 15) map.setZoom(15);
+          google.maps.event.removeListener(listener);
+        });
       } else if (visibleMarkersList.length === 1) {
         map.setCenter({ lat: visibleMarkersList[0].lat, lng: visibleMarkersList[0].lng });
         map.setZoom(initialZoom);
@@ -47,6 +55,7 @@ export const useGoogleMap = (
     } catch (error) {
       console.error("Error updating map view:", error);
       setMapError("Failed to update map view");
+      toast.error("Map error: Failed to update view");
     }
   }, [visibleMarkers, initialZoom, initialCenter]);
 
@@ -57,7 +66,9 @@ export const useGoogleMap = (
       mapPerformance.trackInstanceLoad(loadStartTime.current);
       
       mapRef.current = map;
+      isMapInitialized.current = true;
       
+      // Slight delay to make sure everything is ready
       setTimeout(() => {
         setIsLoading(false);
         updateMapView();
@@ -65,22 +76,32 @@ export const useGoogleMap = (
     } catch (error) {
       console.error("Error in map load callback:", error);
       setMapError("Failed to initialize map properly");
+      toast.error("Map initialization error");
       setIsLoading(false);
     }
   }, [updateMapView]);
 
   const onUnmountCallback = useCallback(() => {
     console.log('Map unmounting');
-    mapRef.current = null;
+    
+    // Clean up any listeners if needed
+    if (mapRef.current) {
+      // No listeners to clean in this implementation, but if we add any, they should be cleaned here
+      mapRef.current = null;
+      isMapInitialized.current = false;
+    }
   }, []);
 
+  // Debug logging for component lifecycle
   useEffect(() => {
-    console.log("GoogleMap component mounted");
+    console.log("GoogleMap hook initialized with markers:", markers.length);
+    
     return () => {
-      console.log("GoogleMap component unmounted");
+      console.log("GoogleMap hook unmounted");
     };
-  }, []);
+  }, [markers.length]);
 
+  // Update markers when they change
   useEffect(() => {
     console.log("Markers updated:", { 
       total: markers.length, 
@@ -88,12 +109,13 @@ export const useGoogleMap = (
       highlighted: highlightedMarker
     });
     
-    if (mapRef.current && !isLoading && visibleMarkers().length > 0) {
+    if (mapRef.current && isMapInitialized.current && !isLoading) {
       try {
         updateMapView();
       } catch (error) {
         console.error("Error updating map view:", error);
         setMapError("Failed to update map view");
+        toast.error("Failed to update map");
       }
     }
   }, [markers, highlightedMarker, showAllMarkers, updateMapView, visibleMarkers, isLoading]);

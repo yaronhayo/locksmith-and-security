@@ -1,5 +1,5 @@
 
-import React, { CSSProperties } from "react";
+import React, { CSSProperties, useEffect } from "react";
 import { GoogleMap as GoogleMapComponent } from "@react-google-maps/api";
 import MapLoader from "./MapLoader";
 import MapMarkers from "./MapMarkers";
@@ -7,6 +7,7 @@ import MapError from "./MapError";
 import { MapMarker } from "@/types/service-area";
 import MapControls from "./MapControls";
 import { useGoogleMap } from "./useGoogleMap";
+import { toast } from "sonner";
 
 const mapOptions: google.maps.MapOptions = {
   zoomControl: false, // We'll use our custom controls
@@ -58,6 +59,23 @@ const GoogleMap = ({
     centerMap
   } = useGoogleMap(markers, highlightedMarker, showAllMarkers, zoom, center);
 
+  // Debug logging
+  useEffect(() => {
+    console.log("GoogleMap component rendered with", markers.length, "markers");
+    
+    return () => {
+      console.log("GoogleMap component unmounted");
+    };
+  }, [markers.length]);
+
+  // Handle errors
+  useEffect(() => {
+    if (mapError) {
+      console.error("Map error in GoogleMap component:", mapError);
+      toast.error("Map display error");
+    }
+  }, [mapError]);
+
   if (mapError) {
     return <MapError error={mapError} />;
   }
@@ -66,7 +84,7 @@ const GoogleMap = ({
     <div className="relative w-full h-full">
       {isLoading && (
         <div className="absolute inset-0 z-10">
-          <MapLoader />
+          <MapLoader text="Initializing map..." />
         </div>
       )}
       <div className={`w-full h-full ${isLoading ? 'opacity-0' : 'opacity-100'} transition-opacity duration-300`}>
