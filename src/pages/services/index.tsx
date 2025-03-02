@@ -1,4 +1,3 @@
-
 import React, { useState, useRef } from "react";
 import PageLayout from "@/components/layouts/PageLayout";
 import ServicesHero from "@/components/sections/services/ServicesHero";
@@ -79,7 +78,6 @@ const RealLifeStories = () => {
       setCurrent(api.selectedScrollSnap());
     });
 
-    // Start the autoplay function
     const startAutoplay = () => {
       intervalRef.current = setInterval(() => {
         if (!isPaused && api.canScrollNext()) {
@@ -87,10 +85,9 @@ const RealLifeStories = () => {
         } else if (!isPaused) {
           api.scrollTo(0);
         }
-      }, 3500); // Increased to 3.5 seconds
+      }, 3500);
     };
 
-    // Clear the interval
     const stopAutoplay = () => {
       if (intervalRef.current) {
         clearInterval(intervalRef.current);
@@ -98,28 +95,22 @@ const RealLifeStories = () => {
       }
     };
 
-    // Initialize autoplay
     startAutoplay();
 
-    // Clean up on unmount
     return () => {
       stopAutoplay();
     };
   }, [api, isPaused]);
 
-  // Function to truncate text and add ellipsis at the end of a word
   const truncateText = (text: string, maxLength: number) => {
     if (text.length <= maxLength) return text;
     
-    // Find the last space before maxLength
     const lastSpaceIndex = text.lastIndexOf(' ', maxLength);
     
     if (lastSpaceIndex === -1) {
-      // If no space found, just cut at maxLength
       return text.substring(0, maxLength) + '...';
     }
     
-    // Find the last word and truncate it in the middle
     const truncatedText = text.substring(0, lastSpaceIndex);
     const lastWord = text.substring(lastSpaceIndex + 1).split(' ')[0];
     const halfWordLength = Math.floor(lastWord.length / 2);
@@ -223,64 +214,74 @@ const RealLifeStories = () => {
 };
 
 const ServicesPage = () => {
-  return <PageLayout title="Professional Locksmith Services in North Bergen, NJ | Expert Security Solutions" description="Comprehensive locksmith services including residential, commercial, and automotive solutions. Licensed, bonded, and insured experts available 24/7 for all your security needs." keywords="locksmith services, emergency locksmith, residential locksmith, commercial locksmith, auto locksmith, North Bergen locksmith" schema={{
-    "@context": "https://schema.org",
-    "@type": "Service",
-    "name": "Professional Locksmith Services",
-    "provider": {
-      "@type": "LocalBusiness",
-      "name": "Locksmith & Security LLC",
-      "image": "/website-uploads/950b5c4c-f0b8-4d22-beb0-66a7d7554476.png",
-      "address": {
-        "@type": "PostalAddress",
-        "streetAddress": "123 Main Street",
-        "addressLocality": "North Bergen",
-        "addressRegion": "NJ",
-        "postalCode": "07047",
-        "addressCountry": "US"
+  const schema = [{
+    type: "Service",
+    data: {
+      "@context": "https://schema.org",
+      "@type": "Service",
+      "name": "Professional Locksmith Services",
+      "provider": {
+        "@type": "LocalBusiness",
+        "name": "Locksmith & Security LLC",
+        "image": "/website-uploads/950b5c4c-f0b8-4d22-beb0-66a7d7554476.png",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "123 Main Street",
+          "addressLocality": "North Bergen",
+          "addressRegion": "NJ",
+          "postalCode": "07047",
+          "addressCountry": "US"
+        },
+        "telephone": "+12017482070",
+        "priceRange": "$$"
       },
-      "telephone": "+12017482070",
-      "priceRange": "$$"
-    },
-    "areaServed": {
-      "@type": "City",
-      "name": "North Bergen",
-      "sameAs": "https://en.wikipedia.org/wiki/North_Bergen,_New_Jersey"
-    },
-    "hasOfferCatalog": {
-      "@type": "OfferCatalog",
-      "name": "Locksmith Services",
-      "itemListElement": [{
-        "@type": "Offer",
-        "itemOffered": {
-          "@type": "Service",
-          "name": "Emergency Locksmith Services",
-          "description": "24/7 emergency locksmith services for residential, commercial, and automotive needs"
-        }
-      }, {
-        "@type": "Offer",
-        "itemOffered": {
-          "@type": "Service",
-          "name": "Residential Locksmith",
-          "description": "Complete residential locksmith services including lock installation, repair, and rekeying"
-        }
-      }, {
-        "@type": "Offer",
-        "itemOffered": {
-          "@type": "Service",
-          "name": "Commercial Security",
-          "description": "Professional commercial security solutions including access control and master key systems"
-        }
-      }, {
-        "@type": "Offer",
-        "itemOffered": {
-          "@type": "Service",
-          "name": "Automotive Locksmith",
-          "description": "Complete auto locksmith services including car key programming and replacement"
-        }
-      }]
+      "areaServed": {
+        "@type": "City",
+        "name": "North Bergen",
+        "sameAs": "https://en.wikipedia.org/wiki/North_Bergen,_New_Jersey"
+      },
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Locksmith Services",
+        "itemListElement": [{
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Emergency Locksmith Services",
+            "description": "24/7 emergency locksmith services for residential, commercial, and automotive needs"
+          }
+        }, {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Residential Locksmith",
+            "description": "Complete residential locksmith services including lock installation, repair, and rekeying"
+          }
+        }, {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Commercial Security",
+            "description": "Professional commercial security solutions including access control and master key systems"
+          }
+        }, {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Automotive Locksmith",
+            "description": "Complete auto locksmith services including car key programming and replacement"
+          }
+        }]
+      }
     }
-  }}>
+  }];
+
+  return <PageLayout
+      title="Professional Locksmith Services in North Bergen, NJ | Expert Security Solutions" 
+      description="Comprehensive locksmith services including residential, commercial, and automotive solutions. Licensed, bonded, and insured experts available 24/7 for all your security needs." 
+      keywords="locksmith services, emergency locksmith, residential locksmith, commercial locksmith, auto locksmith, North Bergen locksmith" 
+      schema={schema}
+    >
       <ServicesHero title="Complete Locksmith & Security Solutions" description="Trusted by homeowners and businesses across New Jersey for professional locksmith services, emergency assistance, and modern security installations. Available 24/7 with certified technicians." />
       <ServicesGrid />
       <ServicesFeatures />

@@ -1,4 +1,3 @@
-
 export type ServiceCategory = 'car' | 'residential' | 'commercial' | 'emergency';
 
 export interface Review {

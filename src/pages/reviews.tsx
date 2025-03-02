@@ -1,4 +1,3 @@
-
 import React from "react";
 import PageLayout from "@/components/layouts/PageLayout";
 import ReviewCard from "@/components/reviews/ReviewCard";
@@ -18,7 +17,8 @@ const ReviewsPage = () => {
   } = useReviews();
 
   // Generate schema for reviews
-  const reviewsSchema = createReviewsSchema(displayedReviews);
+  const reviewsSchemaData = createReviewsSchema(displayedReviews);
+  const reviewsSchema = [{ type: "ReviewPage", data: reviewsSchemaData }];
 
   // Animation variants for reviews
   const containerVariants = {

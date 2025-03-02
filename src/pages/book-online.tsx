@@ -5,16 +5,21 @@ import { Clock, Shield, Star, ArrowRight } from "lucide-react";
 import BookingForm from "@/components/BookingForm";
 
 const BookOnlinePage = () => {
+  const schema = [{
+    type: "WebPage",
+    data: {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "name": "Book Online - Professional Locksmith Services",
+      "description": "Book your locksmith service online. Available 24/7 for residential, commercial, and automotive locksmith needs in North Bergen and surrounding areas.",
+    }
+  }];
+
   return (
     <PageLayout
       title="Book Online | Professional Locksmith Services"
       description="Book your locksmith service online. Available 24/7 for residential, commercial, and automotive locksmith needs in North Bergen and surrounding areas."
-      schema={{
-        "@context": "https://schema.org",
-        "@type": "WebPage",
-        "name": "Book Online - Professional Locksmith Services",
-        "description": "Book your locksmith service online. Available 24/7 for residential, commercial, and automotive locksmith needs in North Bergen and surrounding areas.",
-      }}
+      schema={schema}
       hideBreadcrumbs={false} // Let PageLayout handle breadcrumbs
     >
       <div className="container mx-auto px-4 py-12">

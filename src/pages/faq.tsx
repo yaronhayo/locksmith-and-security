@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import PageLayout from "@/components/layouts/PageLayout";
 import { Tabs, TabsContent } from "@/components/ui/tabs";
@@ -37,7 +36,7 @@ const FAQPage = () => {
   });
 
   // Create FAQ Schema for SEO
-  const faqSchema = {
+  const faqSchemaData = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
     "mainEntity": [
@@ -55,6 +54,11 @@ const FAQPage = () => {
       }
     }))
   };
+  
+  const schemas = [
+    { type: "FAQPage", data: faqSchemaData },
+    breadcrumbSchema
+  ];
 
   // Setup intersection observer for infinite scrolling
   useEffect(() => {
@@ -85,7 +89,7 @@ const FAQPage = () => {
     <PageLayout
       title="Frequently Asked Questions - Expert Locksmith Answers"
       description="Find comprehensive answers to common questions about our residential, commercial, automotive, and emergency locksmith services."
-      schema={[faqSchema, breadcrumbSchema]}
+      schema={schemas}
       canonicalUrl="https://www.locksmiths.com/faq"
       keywords="locksmith FAQ, locksmith questions, locksmith services, residential locksmith, commercial locksmith, automotive locksmith, emergency locksmith"
       heroTitle="Frequently Asked Questions"

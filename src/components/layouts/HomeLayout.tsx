@@ -1,4 +1,3 @@
-
 import { Suspense } from 'react';
 import PageLayout from "@/components/layouts/PageLayout";
 import LoadingSpinner from "@/components/LoadingSpinner";
@@ -9,43 +8,41 @@ interface HomeLayoutProps {
 }
 
 const HomeLayout = ({ children }: HomeLayoutProps) => {
-  const enhancedSchema = [
-    {
-      type: 'WebPage',
-      data: {
-        "@context": "https://schema.org",
-        "@type": ["WebPage", "LocalBusiness"],
+  const enhancedSchema = [{
+    type: 'WebPage',
+    data: {
+      "@context": "https://schema.org",
+      "@type": ["WebPage", "LocalBusiness"],
+      "name": "Locksmith & Security LLC",
+      "description": "Professional locksmith services in North Bergen. Available 24/7 for residential, commercial, and automotive locksmith needs.",
+      "mainEntity": {
+        "@type": "LocalBusiness",
         "name": "Locksmith & Security LLC",
-        "description": "Professional locksmith services in North Bergen. Available 24/7 for residential, commercial, and automotive locksmith needs.",
-        "mainEntity": {
-          "@type": "LocalBusiness",
-          "name": "Locksmith & Security LLC",
-          "image": "/lovable-uploads/950b5c4c-f0b8-4d22-beb0-66a7d7554476.png",
-          "priceRange": "$$",
-          "telephone": "+12017482070",
-          "email": "info@247locksmithandsecurity.com",
-          "areaServed": [
-            {
-              "@type": "City",
-              "name": "North Bergen",
-              "sameAs": "https://en.wikipedia.org/wiki/North_Bergen,_New_Jersey"
-            }
-          ],
-          "aggregateRating": {
-            "@type": "AggregateRating",
-            "ratingValue": "4.9",
-            "reviewCount": "150"
-          },
-          "openingHoursSpecification": {
-            "@type": "OpeningHoursSpecification",
-            "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
-            "opens": "00:00",
-            "closes": "23:59"
+        "image": "/lovable-uploads/950b5c4c-f0b8-4d22-beb0-66a7d7554476.png",
+        "priceRange": "$$",
+        "telephone": "+12017482070",
+        "email": "info@247locksmithandsecurity.com",
+        "areaServed": [
+          {
+            "@type": "City",
+            "name": "North Bergen",
+            "sameAs": "https://en.wikipedia.org/wiki/North_Bergen,_New_Jersey"
           }
+        ],
+        "aggregateRating": {
+          "@type": "AggregateRating",
+          "ratingValue": "4.9",
+          "reviewCount": "150"
+        },
+        "openingHoursSpecification": {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+          "opens": "00:00",
+          "closes": "23:59"
         }
       }
     }
-  ];
+  }];
 
   return (
     <PageLayout
