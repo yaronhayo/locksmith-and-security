@@ -83,7 +83,7 @@ const ServiceCategoryLayout: React.FC<ServiceCategoryProps> = ({
               </div>
               
               <div className="flex flex-col sm:flex-row gap-4 mb-6">
-                <Button asChild size="lg" className="bg-secondary hover:bg-secondary/90">
+                <Button asChild size="lg" className="bg-secondary hover:bg-secondary/90 text-primary">
                   <a href="tel:2017482070" className="flex items-center gap-2">
                     <Phone className="h-4 w-4" />
                     Call (201) 748-2070
