@@ -13,9 +13,9 @@ export const createServiceAreaSchemas = (
 
   const breadcrumbSchema = createBreadcrumbSchema({
     breadcrumbs: [
-      { name: "Home", item: "/" },
-      { name: "Service Areas", item: "/service-areas" },
-      { name: location.name, item: `/service-areas/${areaSlug}` }
+      { name: "Home", path: "/", item: "/" },
+      { name: "Service Areas", path: "/service-areas", item: "/service-areas" },
+      { name: location.name, path: `/service-areas/${areaSlug}`, item: `/service-areas/${areaSlug}` }
     ],
     baseUrl: "https://247locksmithandsecurity.com"
   });

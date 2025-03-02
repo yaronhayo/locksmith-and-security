@@ -26,10 +26,10 @@ const CarLockout = () => {
   // Create breadcrumb schema
   const breadcrumbSchema = createBreadcrumbSchema({
     breadcrumbs: [
-      { name: "Home", item: "/" },
-      { name: "Services", item: "/services" },
-      { name: "Emergency Locksmith", item: "/services/emergency-locksmith" },
-      { name: "Car Lockout", item: "/services/emergency-locksmith/car-lockout" }
+      { name: "Home", path: "/", item: "/" },
+      { name: "Services", path: "/services", item: "/services" },
+      { name: "Emergency Locksmith", path: "/services/emergency-locksmith", item: "/services/emergency-locksmith" },
+      { name: "Car Lockout", path: "/services/emergency-locksmith/car-lockout", item: "/services/emergency-locksmith/car-lockout" }
     ],
     baseUrl
   });
