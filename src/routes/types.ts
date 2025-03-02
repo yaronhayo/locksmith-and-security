@@ -32,4 +32,5 @@ export interface PageMetaProps {
   hideBreadcrumbs?: boolean;
   heroTitle?: string;
   heroDescription?: string;
+  schema?: any; // Add schema property to match PageLayout props
 }

@@ -35,3 +35,28 @@ export const BreadcrumbSchema: React.FC<BreadcrumbSchemaProps> = ({ breadcrumbs 
 
   return <script type="application/ld+json">{JSON.stringify(breadcrumbSchema)}</script>;
 };
+
+// Add back the create function for compatibility
+export const createBreadcrumbSchema = (props: BreadcrumbSchemaProps) => {
+  if (!props.breadcrumbs || props.breadcrumbs.length === 0) return null;
+
+  const itemListElement = props.breadcrumbs.map((breadcrumb, index) => {
+    const url = breadcrumb.path || breadcrumb.item || '';
+    
+    return {
+      "@type": "ListItem",
+      "position": index + 1,
+      "name": breadcrumb.name,
+      "item": url.startsWith('http') ? url : `https://247locksmithandsecurity.com${url}`
+    };
+  });
+
+  return {
+    type: 'BreadcrumbList',
+    data: {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": itemListElement
+    }
+  };
+};

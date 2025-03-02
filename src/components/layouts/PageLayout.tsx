@@ -62,7 +62,14 @@ const PageLayout: React.FC<PageLayoutProps> = ({
 
   // Combine all schemas for the page
   const schemas = [];
-  if (schema) schemas.push({ type: 'WebPage', data: schema });
+  if (schema) {
+    // Handle both array and single schema object
+    if (Array.isArray(schema)) {
+      schemas.push(...schema);
+    } else {
+      schemas.push({ type: 'WebPage', data: schema });
+    }
+  }
   if (breadcrumbSchema) schemas.push({ type: 'BreadcrumbList', data: breadcrumbSchema });
 
   return (

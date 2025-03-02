@@ -1,27 +1,55 @@
 
 import React from 'react';
 import PageLayout from './PageLayout';
-import { type ServiceAreaProps } from '@/types/routes';
+import { PageMetaProps } from '@/routes/types';
 
-interface ServiceAreaLayoutProps extends ServiceAreaProps {
+interface ServiceAreaLayoutProps {
+  title: string;
+  description: string;
+  keywords?: string;
+  canonicalUrl?: string;
+  ogImage?: string;
+  ogType?: "website" | "article" | "product" | "profile" | "book";
   children: React.ReactNode;
+  schema?: any;
+  breadcrumbs?: Array<{name: string, path: string}>;
+  customBreadcrumbs?: Array<{name: string, path: string}>;
+  noindex?: boolean;
+  nofollow?: boolean;
+  modifiedDate?: string;
+  heroTitle?: string;
+  heroDescription?: string;
 }
 
 const ServiceAreaLayout: React.FC<ServiceAreaLayoutProps> = ({
   title,
   description,
-  breadcrumbs,
+  keywords,
+  canonicalUrl,
+  ogImage,
+  ogType,
   children,
+  schema,
+  breadcrumbs,
+  customBreadcrumbs,
+  noindex,
+  nofollow,
   modifiedDate,
   heroTitle,
   heroDescription,
-  schema,
 }) => {
   return (
     <PageLayout
       title={title}
       description={description}
+      keywords={keywords}
+      canonicalUrl={canonicalUrl}
+      ogImage={ogImage}
+      ogType={ogType}
       breadcrumbs={breadcrumbs}
+      customBreadcrumbs={customBreadcrumbs}
+      noindex={noindex}
+      nofollow={nofollow}
       modifiedDate={modifiedDate}
       heroTitle={heroTitle}
       heroDescription={heroDescription}

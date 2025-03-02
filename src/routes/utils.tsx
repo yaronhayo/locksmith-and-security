@@ -1,7 +1,7 @@
 
 import { ReactNode } from 'react';
 import PageLayout from "@/components/layouts/PageLayout";
-import { RouteConfig, PageMetaProps } from './types';
+import { RouteConfig, PageMetaProps, BreadcrumbItem } from './types';
 
 /**
  * Creates a route with PageLayout
@@ -28,6 +28,7 @@ export const createPageRoute = (
       hideBreadcrumbs={meta.hideBreadcrumbs ?? false} // Explicitly set default to false
       heroTitle={meta.heroTitle}
       heroDescription={meta.heroDescription}
+      schema={meta.schema}
     >
       {component}
     </PageLayout>
