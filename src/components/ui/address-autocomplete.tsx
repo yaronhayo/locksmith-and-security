@@ -1,8 +1,11 @@
-
 import React, { useRef, useEffect, useState, forwardRef } from "react";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
+
+export type AddressChangeHandler = 
+  | ((address: string, placeId?: string) => void)
+  | React.ChangeEventHandler<HTMLInputElement>;
 
 export interface AddressAutocompleteProps
   extends React.InputHTMLAttributes<HTMLInputElement> {
@@ -35,10 +38,8 @@ const AddressAutocomplete = forwardRef<HTMLInputElement, AddressAutocompleteProp
     const [initializationAttempts, setInitializationAttempts] = useState(0);
     const maxAttempts = 5;
 
-    // Set up the autocomplete when Google Maps is loaded
     useEffect(() => {
       if (!window.google || !window.google.maps || !window.google.maps.places) {
-        // If Google Maps is not yet available, try again after a delay
         if (initializationAttempts < maxAttempts) {
           console.log(`Waiting for Google Maps Places API... (attempt ${initializationAttempts + 1}/${maxAttempts})`);
           const timer = setTimeout(() => {
@@ -53,7 +54,6 @@ const AddressAutocomplete = forwardRef<HTMLInputElement, AddressAutocompleteProp
 
       if (inputRef.current && !autocompleteRef.current) {
         try {
-          // Configure autocomplete with default US-biased options
           const options: google.maps.places.AutocompleteOptions = {
             types: ["address"],
             componentRestrictions: { country: "us" },
@@ -66,7 +66,6 @@ const AddressAutocomplete = forwardRef<HTMLInputElement, AddressAutocompleteProp
             options
           );
 
-          // When a place is selected
           autocomplete.addListener("place_changed", () => {
             const place = autocomplete.getPlace();
             
@@ -80,7 +79,6 @@ const AddressAutocomplete = forwardRef<HTMLInputElement, AddressAutocompleteProp
             }
           });
 
-          // Store the autocomplete instance for cleanup
           autocompleteRef.current = autocomplete;
           setIsInitialized(true);
           console.log("Address autocomplete initialized successfully");
@@ -91,7 +89,6 @@ const AddressAutocomplete = forwardRef<HTMLInputElement, AddressAutocompleteProp
       }
 
       return () => {
-        // Cleanup: remove the event listener
         if (autocompleteRef.current && window.google && window.google.maps) {
           google.maps.event.clearInstanceListeners(autocompleteRef.current);
           autocompleteRef.current = null;
@@ -100,7 +97,6 @@ const AddressAutocomplete = forwardRef<HTMLInputElement, AddressAutocompleteProp
       };
     }, [onAddressSelect, placesOptions, initializationAttempts]);
 
-    // Prevent form submission on Enter key
     useEffect(() => {
       const handleKeyDown = (e: KeyboardEvent) => {
         if (e.key === "Enter" && document.activeElement === inputRef.current) {
@@ -119,7 +115,6 @@ const AddressAutocomplete = forwardRef<HTMLInputElement, AddressAutocompleteProp
       };
     }, []);
 
-    // Handle ref merging
     const setRefs = (element: HTMLInputElement) => {
       inputRef.current = element;
       if (typeof ref === 'function') {
