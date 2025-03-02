@@ -1,5 +1,5 @@
 
-import React, { useEffect } from "react";
+import React, { useEffect, Suspense } from "react";
 import { BrowserRouter as Router } from "react-router-dom";
 import Routes from "./Routes";
 import { RouteErrorBoundary } from "./components/layouts/RouteErrorBoundary";
@@ -9,6 +9,7 @@ import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import { NavigationProvider } from "./contexts/NavigationContext";
 import ScrollToTopButton from "@/components/ScrollToTopButton";
+import LoadingSpinner from "@/components/LoadingSpinner";
 
 function App() {
   // Log when the app is mounted for debugging purposes
@@ -32,7 +33,9 @@ function App() {
       <RouteErrorBoundary>
         <NavigationProvider>
           <Header />
-          <Routes />
+          <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><LoadingSpinner size="lg" text="Loading content..." /></div>}>
+            <Routes />
+          </Suspense>
           <Footer />
           <ScrollToTopButton />
         </NavigationProvider>
