@@ -3,7 +3,7 @@ import React from "react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import GoogleMapsProvider from "@/components/providers/GoogleMapsProvider";
-import AddressAutocomplete from "@/components/ui/address-autocomplete";
+import { AddressAutocomplete } from "@/components/ui/address-autocomplete";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { AlertCircle } from "lucide-react";
 

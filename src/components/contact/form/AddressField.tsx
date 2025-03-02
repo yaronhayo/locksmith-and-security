@@ -1,7 +1,7 @@
 
 import { useState, useEffect } from "react";
 import { Label } from "@/components/ui/label";
-import AddressAutocomplete from "@/components/ui/address-autocomplete";
+import { AddressAutocomplete } from "@/components/ui/address-autocomplete";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { AlertCircle } from "lucide-react";
 

@@ -1,161 +1,140 @@
-
-import { useState } from "react";
-import { useToast } from "@/hooks/use-toast";
+import { useRef, useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import Recaptcha from "./ui/recaptcha";
-import AddressAutocomplete from "@/components/ui/address-autocomplete";
 import { supabase } from "@/integrations/supabase/client";
-import { useNavigate, useLocation } from "react-router-dom";
+import Recaptcha from "@/components/ui/recaptcha";
+import PersonalInfoFields from "./form/PersonalInfoFields";
+import EmailField from "./form/EmailField";
+import AddressField from "./form/AddressField";
+import MessageField from "./form/MessageField";
+import { getEmailError, getNameError, getPhoneError } from "@/utils/inputValidation";
 
 const ContactForm = () => {
-  const { toast } = useToast();
+  const form = useRef<HTMLFormElement>(null);
   const navigate = useNavigate();
-  const location = useLocation();
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
   const [address, setAddress] = useState("");
+  const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
-  const getVisitorInfo = () => {
-    return {
-      userAgent: navigator.userAgent,
-      language: navigator.language,
-      platform: navigator.platform,
-      screenResolution: `${window.screen.width}x${window.screen.height}`,
-      windowSize: `${window.innerWidth}x${window.innerHeight}`,
-      timestamp: new Date().toISOString(),
-    };
+  // Check form validity before submission
+  const validateForm = () => {
+    if (!form.current) return false;
+
+    const formData = new FormData(form.current);
+    const name = String(formData.get('user_name'));
+    const email = String(formData.get('user_email'));
+    const phone = String(formData.get('user_phone'));
+    const message = String(formData.get('message'));
+
+    const newErrors: Record<string, string> = {};
+    
+    const nameError = getNameError(name);
+    if (nameError) newErrors.name = nameError;
+    
+    const emailError = getEmailError(email);
+    if (emailError) newErrors.email = emailError;
+    
+    const phoneError = getPhoneError(phone);
+    if (phoneError) newErrors.phone = phoneError;
+    
+    if (!address.trim()) {
+      newErrors.address = "Please enter your address";
+    }
+    
+    if (!message.trim()) {
+      newErrors.message = "Please enter a message";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     if (!recaptchaToken) {
-      toast({
-        title: "Validation Error",
-        description: "Please complete the reCAPTCHA verification",
-        variant: "destructive",
-      });
+      // Silent error handling, no toast shown
       return;
     }
 
+    if (!validateForm()) {
+      // Silent error handling, no toast shown
+      return;
+    }
+
+    if (!form.current) return;
     setIsSubmitting(true);
 
+    const formData = new FormData(form.current);
+    const submissionData = {
+      type: 'contact',
+      name: String(formData.get('user_name')),
+      email: String(formData.get('user_email')),
+      phone: String(formData.get('user_phone')),
+      address: address,
+      message: String(formData.get('message')),
+      status: 'pending',
+      recaptcha_token: recaptchaToken,
+      visitor_info: {
+        userAgent: navigator.userAgent,
+        language: navigator.language,
+        platform: navigator.platform,
+        screenResolution: `${window.screen.width}x${window.screen.height}`,
+        windowSize: `${window.innerWidth}x${window.innerHeight}`,
+        timestamp: new Date().toISOString(),
+      },
+      source_url: window.location.pathname
+    };
+
     try {
-      const formData = new FormData(e.currentTarget);
-      const submissionData = {
-        type: 'contact',
-        name: String(formData.get('name')),
-        email: String(formData.get('email')),
-        phone: String(formData.get('phone')),
-        address: address,
-        message: String(formData.get('message')),
-        status: 'pending',
-        visitor_info: getVisitorInfo(),
-        source_url: location.pathname,
-      };
-
-      console.log("Submitting contact form:", submissionData);
-
-      // First store in database
       const { error: dbError } = await supabase
         .from('submissions')
         .insert(submissionData);
 
       if (dbError) throw dbError;
 
-      // Then send email notification with enhanced data
-      const { data, error } = await supabase.functions.invoke('send-form-email', {
-        body: {
-          ...submissionData,
-          recaptchaToken,
-        }
+      const { error } = await supabase.functions.invoke('send-form-email', {
+        body: submissionData
       });
 
       if (error) throw error;
 
-      console.log("Contact form submission response:", data);
-
-      // Set flag for thank you page
       sessionStorage.setItem('fromFormSubmission', 'true');
-      
-      // Navigate to thank you page
       navigate('/thank-you');
 
     } catch (error: any) {
       console.error('Contact form submission error:', error);
-      toast({
-        title: "Submission Failed",
-        description: "Please try again or contact us directly.",
-        variant: "destructive",
-      });
+      // Silent error handling, no toast shown
     } finally {
       setIsSubmitting(false);
     }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
-      <div className="space-y-4">
-        <div>
-          <Input
-            type="text"
-            name="name"
-            placeholder="Your Name"
-            required
-            disabled={isSubmitting}
-          />
-        </div>
-        <div>
-          <Input
-            type="email"
-            name="email"
-            placeholder="Your Email"
-            required
-            disabled={isSubmitting}
-          />
-        </div>
-        <div>
-          <Input
-            type="tel"
-            name="phone"
-            placeholder="Your Phone"
-            required
-            disabled={isSubmitting}
-          />
-        </div>
-        <div>
-          <AddressAutocomplete
-            name="address"
-            value={address}
-            onChange={setAddress}
-            placeholder="Service Address"
-            required
-            disabled={isSubmitting}
-          />
-        </div>
-        <div>
-          <Textarea
-            name="message"
-            placeholder="Your Message"
-            required
-            disabled={isSubmitting}
-            className="min-h-[150px]"
-          />
-        </div>
-      </div>
+    <div className="bg-white p-8 rounded-xl shadow-lg">
+      <h2 className="text-2xl font-bold mb-6">Send Us a Message</h2>
+      <form ref={form} onSubmit={handleSubmit} className="space-y-6">
+        <PersonalInfoFields isSubmitting={isSubmitting} />
+        <EmailField isSubmitting={isSubmitting} />
+        <AddressField 
+          value={address}
+          onChange={setAddress}
+          isSubmitting={isSubmitting}
+          error={errors.address}
+        />
+        <MessageField isSubmitting={isSubmitting} error={errors.message} />
+        <Recaptcha onChange={setRecaptchaToken} />
 
-      <Recaptcha onChange={setRecaptchaToken} />
-
-      <Button 
-        type="submit" 
-        className="w-full" 
-        disabled={isSubmitting}
-      >
-        {isSubmitting ? "Sending..." : "Send Message"}
-      </Button>
-    </form>
+        <Button 
+          type="submit" 
+          className="w-full bg-primary hover:bg-primary-hover"
+          disabled={isSubmitting}
+        >
+          {isSubmitting ? "Sending..." : "Send Message"}
+        </Button>
+      </form>
+    </div>
   );
 };
 
