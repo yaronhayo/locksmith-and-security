@@ -12,7 +12,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { ServiceAreaLocation } from '@/types/service-area';
 
 const MapLoadingPlaceholder = () => (
-  <div className="h-[600px] bg-white rounded-xl shadow-lg overflow-hidden flex items-center justify-center">
+  <div className="h-full bg-white rounded-xl shadow-lg overflow-hidden flex items-center justify-center">
     <div className="text-center">
       <LoadingSpinner size="lg" text="Loading map..." />
     </div>
@@ -143,14 +143,16 @@ const ServiceAreasSection = () => {
           Fast response times and reliable service, available 24/7.
         </p>
 
-        <div className="grid lg:grid-cols-2 gap-8 items-start">
-          <AreasList 
-            areas={locations as ServiceAreaLocation[]} 
-            hoveredArea={hoveredArea} 
-            setHoveredArea={setHoveredArea} 
-          />
+        <div className="grid lg:grid-cols-2 gap-8 items-stretch">
+          <div className="h-full flex">
+            <AreasList 
+              areas={locations as ServiceAreaLocation[]} 
+              hoveredArea={hoveredArea} 
+              setHoveredArea={setHoveredArea} 
+            />
+          </div>
           
-          <div className="bg-white rounded-xl shadow-lg overflow-hidden" style={{ height: '600px' }}>
+          <div className="bg-white rounded-xl shadow-lg overflow-hidden h-full" style={{ minHeight: '500px' }}>
             {isMapVisible ? (
               <ErrorBoundary 
                 FallbackComponent={({ error, resetErrorBoundary }) => (
@@ -161,14 +163,16 @@ const ServiceAreasSection = () => {
                 onReset={handleRetry}
               >
                 <GoogleMapsProvider>
-                  <GoogleMap 
-                    key={`google-map-${mapKey}-${retryCount}`}
-                    markers={mapMarkers}
-                    highlightedMarker={hoveredArea}
-                    showAllMarkers={true}
-                    zoom={11}
-                    center={{ lat: 40.7795, lng: -74.0324 }}
-                  />
+                  <div className="h-full">
+                    <GoogleMap 
+                      key={`google-map-${mapKey}-${retryCount}`}
+                      markers={mapMarkers}
+                      highlightedMarker={hoveredArea}
+                      showAllMarkers={true}
+                      zoom={11}
+                      center={{ lat: 40.7795, lng: -74.0324 }}
+                    />
+                  </div>
                 </GoogleMapsProvider>
               </ErrorBoundary>
             ) : (
