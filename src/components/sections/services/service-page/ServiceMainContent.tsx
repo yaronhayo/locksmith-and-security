@@ -27,7 +27,7 @@ const ServiceMainContent: React.FC<ServiceMainContentProps> = ({
         <ul className="space-y-2">
           <li className="flex items-start">
             <Check className="h-5 w-5 text-secondary mr-2 mt-0.5" />
-            <span>Quick response time to your location</span>
+            <span>24/7 emergency availability</span>
           </li>
           <li className="flex items-start">
             <Check className="h-5 w-5 text-secondary mr-2 mt-0.5" />

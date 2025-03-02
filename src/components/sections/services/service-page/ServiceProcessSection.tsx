@@ -19,13 +19,13 @@ const ServiceProcessSection: React.FC<ServiceProcessSectionProps> = ({ serviceNa
         </div>
         <div className="relative pl-8 border-l-2 border-secondary/30">
           <div className="absolute top-0 left-[-9px] w-4 h-4 rounded-full bg-secondary" />
-          <h4 className="text-lg font-semibold text-primary mb-2">2. Quick Response</h4>
-          <p className="text-gray-600">Our technician arrives promptly with all necessary equipment to handle your {serviceName.toLowerCase()}.</p>
+          <h4 className="text-lg font-semibold text-primary mb-2">2. Professional Dispatch</h4>
+          <p className="text-gray-600">Our technician will be dispatched with all necessary equipment to handle your {serviceName.toLowerCase()}.</p>
         </div>
         <div className="relative pl-8 border-l-2 border-secondary/30">
           <div className="absolute top-0 left-[-9px] w-4 h-4 rounded-full bg-secondary" />
           <h4 className="text-lg font-semibold text-primary mb-2">3. Professional Solution</h4>
-          <p className="text-gray-600">We resolve your issue quickly and efficiently, with upfront pricing and professional workmanship.</p>
+          <p className="text-gray-600">We resolve your issue efficiently, with upfront pricing and professional workmanship.</p>
         </div>
       </div>
     </div>

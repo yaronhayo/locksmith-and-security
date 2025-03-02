@@ -23,8 +23,8 @@ const EmergencyLocksmithPage = () => {
       title: "Late Night Car Lockout in North Bergen",
       description: "A customer stranded at midnight with keys locked in their vehicle.",
       challenge: "A customer called us at 1 AM after accidentally locking their keys inside their car at a shopping center parking lot. They had no spare key and needed to get home urgently.",
-      solution: "Our emergency technician arrived within 20 minutes of the call. Using specialized non-destructive entry tools, we safely unlocked the car door without causing any damage to the vehicle.",
-      result: "The customer was back on the road by 1:30 AM, avoiding an expensive tow and potentially unsafe situation late at night.",
+      solution: "Our emergency technician arrived promptly after the call. Using specialized non-destructive entry tools, we safely unlocked the car door without causing any damage to the vehicle.",
+      result: "The customer was able to get back on the road quickly, avoiding an expensive tow and potentially unsafe situation late at night.",
       customerName: "Michael R.",
       customerLocation: "North Bergen, NJ",
       date: "Last month"
@@ -53,8 +53,8 @@ const EmergencyLocksmithPage = () => {
         description="Locked out of your car or home? Key broken in the lock? Don't panic - our emergency locksmith team is available 24 hours a day, 7 days a week to get you back in quickly and safely."
         category="emergency"
         features={[
-          { title: "30-Minute Response", description: "We aim to be there within 30 minutes" },
-          { title: "Available 24/7", description: "Day or night, we're available" },
+          { title: "24/7 Availability", description: "We're always available" },
+          { title: "Professional Service", description: "Expert technicians" },
           { title: "No Damage Entry", description: "We use specialized tools for safe entry" },
           { title: "All Makes & Models", description: "Cars, homes, and businesses" }
         ]}
@@ -181,10 +181,10 @@ const EmergencyLocksmithPage = () => {
               <div className="rounded-full w-12 h-12 bg-green-100 flex items-center justify-center mb-4">
                 <Clock className="h-6 w-6 text-green-600" />
               </div>
-              <h3 className="text-xl font-semibold mb-3">Fast Response Time</h3>
+              <h3 className="text-xl font-semibold mb-3">24/7 Availability</h3>
               <p className="text-gray-600">
-                Our typical response time is 15-30 minutes in most service areas. We understand 
-                that emergencies can't wait.
+                Our service is available 24 hours a day, 7 days a week, including
+                holidays, weekends, and nights.
               </p>
             </div>
             
@@ -229,7 +229,7 @@ const EmergencyLocksmithPage = () => {
             <div className="space-y-6 mt-8">
               <div>
                 <h3 className="text-lg font-semibold text-primary mb-2">How quickly can you respond to an emergency?</h3>
-                <p className="text-gray-600">Our average response time is 15-30 minutes in most service areas. We prioritize emergency calls and dispatch the nearest available technician immediately.</p>
+                <p className="text-gray-600">We prioritize emergency calls and dispatch the nearest available technician. Our service is available 24/7 for all urgent locksmith needs.</p>
               </div>
               
               <div>
