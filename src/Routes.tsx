@@ -7,6 +7,7 @@ import { serviceRoutes } from "./routes/serviceRoutes";
 import { serviceAreaRoutes } from "./routes/serviceAreaRoutes";
 import PageLoading from "./components/layouts/PageLoading";
 import ErrorFallback from "./components/ErrorFallback";
+import { RouteErrorBoundary } from "./components/layouts/RouteErrorBoundary";
 
 // Lazy load the 404 page
 const NotFound = lazy(() => import('./pages/404'));
@@ -29,37 +30,35 @@ RouteWrapper.displayName = 'RouteWrapper';
  * Renders all application routes with error boundaries and suspense
  */
 const Routes = () => {
-  // Memoize the route rendering function
-  const renderRoutes = memo((routes: { path: string; element: ReactNode }[]) => (
-    routes.map(({ path, element }) => (
+  // Map route data to Route components 
+  const renderRouteComponents = (routes: { path: string; element: ReactNode }[]) => {
+    return routes.map(({ path, element }) => (
       <Route 
         key={path} 
         path={path} 
         element={<RouteWrapper element={element} />} 
       />
-    ))
-  ));
-  
-  renderRoutes.displayName = 'renderRoutes';
+    ));
+  };
 
   return (
-    <ErrorBoundary FallbackComponent={ErrorFallback}>
+    <RouteErrorBoundary>
       <Suspense fallback={<PageLoading type="skeleton" />}>
         <RouterRoutes>
           {/* Render main routes */}
-          {renderRoutes(mainRoutes)}
+          {renderRouteComponents(mainRoutes)}
           
           {/* Render service routes */}
-          {renderRoutes(serviceRoutes)}
+          {renderRouteComponents(serviceRoutes)}
           
           {/* Render service area routes */}
-          {renderRoutes(serviceAreaRoutes)}
+          {renderRouteComponents(serviceAreaRoutes)}
           
           {/* 404 page */}
           <Route path="*" element={<NotFound />} />
         </RouterRoutes>
       </Suspense>
-    </ErrorBoundary>
+    </RouteErrorBoundary>
   );
 };
 
