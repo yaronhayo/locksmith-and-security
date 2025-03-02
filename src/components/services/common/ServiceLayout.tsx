@@ -49,7 +49,8 @@ const ServiceLayout: React.FC<ServiceLayoutProps> = ({
       customBreadcrumbs={customBreadcrumbs}
       heroTitle={title}
       heroDescription={description}
-      hideBreadcrumbs={false} // Ensure breadcrumbs are shown
+      hideBreadcrumbs={false}
+      preselectedService={preselectedService}
     >
       <EnhancedServicesHero 
         title={title}

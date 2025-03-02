@@ -1,3 +1,4 @@
+
 import React, { useState, useRef } from "react";
 import PageLayout from "@/components/layouts/PageLayout";
 import ServicesHero from "@/components/sections/services/ServicesHero";
@@ -276,7 +277,8 @@ const ServicesPage = () => {
     }
   }];
 
-  return <PageLayout
+  return (
+    <PageLayout
       title="Professional Locksmith Services in North Bergen, NJ | Expert Security Solutions" 
       description="Comprehensive locksmith services including residential, commercial, and automotive solutions. Licensed, bonded, and insured experts available 24/7 for all your security needs." 
       keywords="locksmith services, emergency locksmith, residential locksmith, commercial locksmith, auto locksmith, North Bergen locksmith" 
@@ -289,7 +291,8 @@ const ServicesPage = () => {
       <FAQSection title="Frequently Asked Questions" description="Find answers to common questions about our locksmith services" faqs={generalFaqs} />
       <ReviewsSection location="North Bergen" />
       <ServicesCTA />
-    </PageLayout>;
+    </PageLayout>
+  );
 };
 
 export default ServicesPage;

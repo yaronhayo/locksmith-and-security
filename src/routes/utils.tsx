@@ -18,28 +18,9 @@ export const createPageRoute = (
   
   return {
     path,
-    element: (
-      <PageLayout 
-        title={meta.title}
-        description={meta.description}
-        keywords={meta.keywords}
-        canonicalUrl={meta.canonicalUrl}
-        ogImage={meta.ogImage}
-        ogType={meta.ogType}
-        breadcrumbs={meta.breadcrumbs}
-        customBreadcrumbs={meta.customBreadcrumbs}
-        noindex={meta.noindex}
-        nofollow={meta.nofollow}
-        modifiedDate={meta.modifiedDate}
-        hideBreadcrumbs={meta.hideBreadcrumbs}
-        heroTitle={meta.heroTitle}
-        heroDescription={meta.heroDescription}
-        schema={meta.schema}
-        preselectedService={preselectedService}
-      >
-        {component}
-      </PageLayout>
-    ),
+    // We provide the component directly without additional PageLayout since specialized
+    // components like ServiceLayout, ServiceAreaLayout, etc. already use PageLayout internally
+    element: component,
     meta: {
       title: meta.title,
       description: meta.description

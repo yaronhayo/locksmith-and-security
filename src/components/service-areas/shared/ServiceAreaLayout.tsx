@@ -55,7 +55,7 @@ const ServiceAreaLayout = memo(({ areaSlug }: ServiceAreaLayoutProps) => {
       schema={schemas}
       heroTitle={`Locksmith Services in ${location.name}, NJ`}
       heroDescription={`Professional 24/7 locksmith services for residential, commercial, and automotive needs in ${location.name}`}
-      hideBreadcrumbs={false} // Let PageLayout handle breadcrumbs
+      hideBreadcrumbs={false}
     >
       <div className="container mx-auto px-3 sm:px-4 py-4 sm:py-6 md:py-8 overflow-visible">
         <Card className="mt-4 sm:mt-6 md:mt-8 border-secondary/20 shadow-md overflow-visible">
