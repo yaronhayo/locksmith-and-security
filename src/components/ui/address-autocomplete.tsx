@@ -6,10 +6,12 @@ import { cn } from "@/lib/utils";
 export interface AddressAutocompleteProps
   extends React.InputHTMLAttributes<HTMLInputElement> {
   onPlaceSelected?: (place: google.maps.places.PlaceResult) => void;
+  onAddressSelect?: (address: string) => void;
+  error?: boolean;
 }
 
 const AddressAutocomplete = forwardRef<HTMLInputElement, AddressAutocompleteProps>(
-  ({ className, onPlaceSelected, onChange, value, ...props }, ref) => {
+  ({ className, onPlaceSelected, onAddressSelect, onChange, value, error, ...props }, ref) => {
     const inputRef = useRef<HTMLInputElement>(null);
     const autocompleteRef = useRef<google.maps.places.Autocomplete | null>(null);
     const [internalValue, setInternalValue] = useState<string>("");
@@ -35,6 +37,11 @@ const AddressAutocomplete = forwardRef<HTMLInputElement, AddressAutocompleteProp
               if (place && place.formatted_address) {
                 setInternalValue(place.formatted_address);
                 
+                // Call the onAddressSelect callback if provided
+                if (onAddressSelect) {
+                  onAddressSelect(place.formatted_address);
+                }
+                
                 // Create a synthetic event to propagate the change
                 if (onChange && inputRef.current) {
                   const syntheticEvent = {
@@ -59,7 +66,7 @@ const AddressAutocomplete = forwardRef<HTMLInputElement, AddressAutocompleteProp
           console.error("Error initializing Google Maps Places Autocomplete:", error);
         }
       }
-    }, [onPlaceSelected, onChange]);
+    }, [onPlaceSelected, onChange, onAddressSelect]);
 
     // Sync external value with internal state
     useEffect(() => {
@@ -96,7 +103,11 @@ const AddressAutocomplete = forwardRef<HTMLInputElement, AddressAutocompleteProp
         }}
         value={internalValue}
         onChange={handleInputChange}
-        className={cn("address-autocomplete", className)}
+        className={cn(
+          "address-autocomplete", 
+          error ? "border-red-500" : "", 
+          className
+        )}
         aria-label="Address autocomplete"
         {...props}
       />
