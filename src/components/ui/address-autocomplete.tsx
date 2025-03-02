@@ -6,7 +6,6 @@ import { InputHTMLAttributes } from "react";
 import { Loader2, RefreshCw } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
-import { toast } from "sonner";
 
 type AddressAutocompleteProps = Omit<InputHTMLAttributes<HTMLInputElement>, 'onChange'> & {
   value: string;
@@ -81,13 +80,13 @@ const AddressAutocomplete = ({
 
       setIsInitialized(true);
       setError(null);
-      toast.success("Address search initialized");
+      console.log("Address search initialized");
       return true;
     } catch (err) {
       console.error('Error initializing address autocomplete:', err);
       const errMsg = err instanceof Error ? err.message : 'Failed to initialize address autocomplete';
       setError(errMsg);
-      toast.error(`Address search error: ${errMsg}`);
+      console.error(`Address search error: ${errMsg}`);
       setIsInitialized(false);
       return false;
     }
@@ -172,7 +171,7 @@ const AddressAutocomplete = ({
     setError(null);
     refetch();
     setInitAttempts(prev => prev + 1);
-    toast.info("Retrying address search initialization...");
+    console.log("Retrying address search initialization...");
   };
 
   const displayError = error || (apiKeyError?.message ?? null);

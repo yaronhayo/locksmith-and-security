@@ -4,7 +4,6 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { validateForm } from "./validation";
 import { submitBookingForm } from "./utils/submitForm";
 import SubmitButton from "./SubmitButton";
-import { useToast } from "@/hooks/use-toast";
 
 interface FormContainerProps {
   children: React.ReactNode;
@@ -37,17 +36,12 @@ const FormContainer = ({
 }: FormContainerProps) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { toast } = useToast();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (!recaptchaToken) {
-      toast({
-        title: "Verification Required",
-        description: "Please complete the reCAPTCHA verification",
-        variant: "destructive",
-      });
+      // Silent error handling, no toast shown
       return;
     }
 
@@ -75,12 +69,6 @@ const FormContainer = ({
       await submitBookingForm(formData, showVehicleInfo, location.pathname, recaptchaToken, address);
       window.sessionStorage.setItem('fromFormSubmission', 'true');
       
-      toast({
-        title: "Booking Received!",
-        description: "We'll contact you shortly to confirm your appointment.",
-        variant: "default",
-      });
-
       if (typeof window.gtag === 'function') {
         window.gtag('event', 'conversion', {
           'event_category': 'form',
@@ -92,11 +80,7 @@ const FormContainer = ({
       navigate('/thank-you');
     } catch (error: any) {
       console.error('Booking form submission error:', error);
-      toast({
-        title: "Submission Failed",
-        description: error.message || "Please try again or contact us directly.",
-        variant: "destructive",
-      });
+      // Silent error handling, no toast shown
     } finally {
       setIsSubmitting(false);
     }

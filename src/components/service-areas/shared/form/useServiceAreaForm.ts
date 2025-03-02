@@ -1,5 +1,5 @@
+
 import { useState, useEffect, useCallback, useMemo } from "react";
-import { toast } from "sonner";
 import { getEmailError, getNameError, getPhoneError } from "@/utils/inputValidation";
 
 export interface FormState {
@@ -153,9 +153,7 @@ export const useServiceAreaForm = () => {
     setTimeout(() => {
       setIsSubmitting(false);
       setIsSubmitted(true);
-      toast.success("Message sent successfully!", {
-        description: "We'll get back to you shortly."
-      });
+      
       setFormState({
         name: "",
         email: "",
