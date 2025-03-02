@@ -6,7 +6,7 @@ import { residentialReviews } from '@/data/reviews';
 import ServicesProof from '@/components/sections/services/ServicesProof';
 import { SchemaScripts } from '@/components/meta/SchemaScripts';
 import { Helmet } from 'react-helmet';
-import { StorageUnitLockoutContent } from '@/components/services/storage-unit-lockout/StorageUnitLockoutContent';
+import StorageUnitLockoutContent from '@/components/services/storage-unit-lockout/StorageUnitLockoutContent';
 import { storageUnitLockoutFaqs, storageUnitServiceSchema, storageUnitLockoutFaqSchema } from '@/components/services/storage-unit-lockout/StorageUnitLockoutSchema';
 import { relatedEmergencyServices } from '@/components/services/storage-unit-lockout/relatedServices';
 

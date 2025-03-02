@@ -6,7 +6,7 @@ import { commercialReviews } from '@/data/reviews';
 import ServicesProof from '@/components/sections/services/ServicesProof';
 import { SchemaScripts } from '@/components/meta/SchemaScripts';
 import { Helmet } from 'react-helmet';
-import { BusinessLockoutContent } from '@/components/services/business-lockout/BusinessLockoutContent';
+import BusinessLockoutContent from '@/components/services/business-lockout/BusinessLockoutContent';
 import { businessLockoutFaqs, businessServiceSchema, businessLockoutFaqSchema } from '@/components/services/business-lockout/BusinessLockoutSchema';
 import { relatedEmergencyServices } from '@/components/services/business-lockout/relatedServices';
 
