@@ -1,5 +1,25 @@
 
 import React from 'react';
+import LockoutScenario from '../../shared/LockoutScenario';
+
+const scenarios = [
+  {
+    title: "Lost or Stolen Keys",
+    description: "If your business keys have been lost or stolen, we'll quickly unlock your door and provide key replacement services if needed."
+  },
+  {
+    title: "Broken Key in Lock",
+    description: "If your key has broken off in the door lock, we can extract it without damaging the lock mechanism."
+  },
+  {
+    title: "Malfunctioning Locks",
+    description: "If your commercial lock is malfunctioning and preventing you from entering your business, we can diagnose and repair the issue."
+  },
+  {
+    title: "Electronic Access Control Issues",
+    description: "If you're experiencing issues with your electronic access control system, we can bypass the system to regain entry and troubleshoot the problem."
+  }
+];
 
 const LockoutScenarios = () => {
   return (
@@ -10,33 +30,13 @@ const LockoutScenarios = () => {
       </p>
       
       <div className="grid md:grid-cols-2 gap-6 my-6">
-        <div className="bg-gray-50 p-5 rounded-lg">
-          <h4 className="font-bold mb-2">Lost or Stolen Keys</h4>
-          <p className="text-gray-700">
-            If your business keys have been lost or stolen, we'll quickly unlock your door and provide key replacement services if needed.
-          </p>
-        </div>
-        
-        <div className="bg-gray-50 p-5 rounded-lg">
-          <h4 className="font-bold mb-2">Broken Key in Lock</h4>
-          <p className="text-gray-700">
-            If your key has broken off in the door lock, we can extract it without damaging the lock mechanism.
-          </p>
-        </div>
-        
-        <div className="bg-gray-50 p-5 rounded-lg">
-          <h4 className="font-bold mb-2">Malfunctioning Locks</h4>
-          <p className="text-gray-700">
-            If your commercial lock is malfunctioning and preventing you from entering your business, we can diagnose and repair the issue.
-          </p>
-        </div>
-        
-        <div className="bg-gray-50 p-5 rounded-lg">
-          <h4 className="font-bold mb-2">Electronic Access Control Issues</h4>
-          <p className="text-gray-700">
-            If you're experiencing issues with your electronic access control system, we can bypass the system to regain entry and troubleshoot the problem.
-          </p>
-        </div>
+        {scenarios.map((scenario, index) => (
+          <LockoutScenario 
+            key={index}
+            title={scenario.title}
+            description={scenario.description}
+          />
+        ))}
       </div>
     </>
   );

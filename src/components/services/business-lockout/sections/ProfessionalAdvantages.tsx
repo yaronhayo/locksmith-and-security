@@ -1,21 +1,46 @@
 
 import React from 'react';
+import ProfessionalAdvantage from '../../shared/ProfessionalAdvantage';
+import { Clock, CheckCircle, ShieldCheck, Tool } from 'lucide-react';
+
+const advantages = [
+  {
+    icon: <Clock className="h-5 w-5" />,
+    title: "24/7 Emergency Response",
+    description: "We understand that business lockouts can happen at any time. Our locksmiths are available 24/7 to provide immediate assistance."
+  },
+  {
+    icon: <CheckCircle className="h-5 w-5" />,
+    title: "Licensed and Insured Professionals",
+    description: "All our locksmiths are fully licensed, insured, and certified to work on commercial properties."
+  },
+  {
+    icon: <ShieldCheck className="h-5 w-5" />,
+    title: "Damage-Free Entry Methods",
+    description: "We use non-destructive entry techniques whenever possible to avoid causing damage to your business doors and locks."
+  },
+  {
+    icon: <Tool className="h-5 w-5" />,
+    title: "Specialized Commercial Equipment",
+    description: "Our mobile units are equipped with specialized tools and technology for all types of commercial locks and security systems."
+  }
+];
 
 const ProfessionalAdvantages = () => {
   return (
     <>
-      <h3 className="text-2xl font-bold mb-4 mt-8">Why You Should Call a Professional</h3>
-      <p className="mb-4">
-        While it might be tempting to try unlocking your business yourself, DIY methods can potentially cause expensive damage to your commercial door, lock, or security system. Our professional locksmiths:
-      </p>
+      <h3 className="text-2xl font-bold mb-4 mt-8">Why Choose Our Professional Business Lockout Service</h3>
       
-      <ul className="list-disc pl-5 space-y-2 mb-6">
-        <li>Use specialized tools designed specifically for commercial entry</li>
-        <li>Apply techniques that protect your business from damage</li>
-        <li>Have experience with virtually all commercial lock systems</li>
-        <li>Provide fast service to minimize your downtime</li>
-        <li>Offer additional services such as key replacement if needed</li>
-      </ul>
+      <div className="my-6">
+        {advantages.map((advantage, index) => (
+          <ProfessionalAdvantage 
+            key={index}
+            icon={advantage.icon}
+            title={advantage.title}
+            description={advantage.description}
+          />
+        ))}
+      </div>
     </>
   );
 };
