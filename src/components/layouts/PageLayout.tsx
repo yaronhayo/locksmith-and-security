@@ -107,18 +107,19 @@ const PageLayout = ({
         <PageHero 
           title={heroTitle || title}
           description={heroDescription || description}
-          showBreadcrumbs={false}
+          showBreadcrumbs={!hideBreadcrumbs}
+          customBreadcrumbs={customBreadcrumbs}
         />
-      ) : null}
-      
-      {/* Show breadcrumbs if not hidden and not in hero */}
-      {!hideBreadcrumbs && (
-        <div className="container mx-auto px-4 py-3 md:py-4">
-          <Breadcrumbs 
-            items={customBreadcrumbs} 
-            showSchema={true}
-          />
-        </div>
+      ) : (
+        // Only show breadcrumbs here if there's no hero and they're not hidden
+        !hideBreadcrumbs && (
+          <div className="container mx-auto px-4 py-3 md:py-4">
+            <Breadcrumbs 
+              items={customBreadcrumbs} 
+              showSchema={true}
+            />
+          </div>
+        )
       )}
       
       <motion.main

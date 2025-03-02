@@ -33,7 +33,7 @@ const PageHero = ({
       <div className="relative container mx-auto px-4 py-16 md:py-24">
         {showBreadcrumbs && (
           <div className="mb-6">
-            <Breadcrumbs items={customBreadcrumbs} />
+            <Breadcrumbs items={customBreadcrumbs} showSchema={true} />
           </div>
         )}
         
