@@ -1,4 +1,5 @@
-import { carServiceReviews, residentialReviews, commercialReviews, isCarService, isResidentialService, isCommercialService } from './reviews';
+
+import { carServiceReviews, residentialReviews, commercialReviews, isCarService, isResidentialService, isCommercialService, isEmergencyService } from './reviews';
 import type { Review, ReviewsByCategory, ServiceCategory } from '@/types/reviews';
 
 export const reviews: readonly Review[] = [
@@ -30,10 +31,7 @@ export const getReviewsByCategory = (category: ServiceCategory): Review[] => {
       reviewsCache.commercial = reviews.filter(review => isCommercialService(review.service));
       return reviewsCache.commercial;
     case 'emergency':
-      reviewsCache.emergency = reviews.filter(review => 
-        review.service.toLowerCase().includes('emergency') || 
-        review.service.includes('Lockout')
-      );
+      reviewsCache.emergency = reviews.filter(review => isEmergencyService(review.service));
       return reviewsCache.emergency;
   }
 };

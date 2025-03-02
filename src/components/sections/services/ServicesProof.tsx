@@ -9,7 +9,7 @@ import { memo } from 'react';
 
 interface ServicesProofProps {
   reviewsData?: Review[];
-  category?: 'car' | 'residential' | 'commercial';
+  category?: 'car' | 'residential' | 'commercial' | 'emergency';
 }
 
 const ServicesProof: React.FC<ServicesProofProps> = memo(({ reviewsData, category }) => {
