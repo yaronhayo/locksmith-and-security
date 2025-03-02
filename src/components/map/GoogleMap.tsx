@@ -7,10 +7,10 @@ import MapError from "./MapError";
 import { MapMarker } from "@/types/service-area";
 import MapControls from "./MapControls";
 import { useGoogleMap } from "./useGoogleMap";
-import { useMapConfig, clearMapConfigCache } from '@/hooks/useMap';
+import { clearMapConfigCache } from '@/hooks/useMap';
 
 const mapOptions: google.maps.MapOptions = {
-  zoomControl: false, // We'll use our custom controls
+  zoomControl: false,
   streetViewControl: false,
   mapTypeControl: false,
   fullscreenControl: false,
@@ -51,7 +51,7 @@ const GoogleMap = ({
   
   const {
     mapRef,
-    isLoading: isMapLoading,
+    isLoading,
     mapError,
     visibleMarkers,
     onLoadCallback,
@@ -60,35 +60,10 @@ const GoogleMap = ({
     zoomOut,
     centerMap
   } = useGoogleMap(markers, highlightedMarker, showAllMarkers, zoom, center);
-
-  const isLoading = isMapLoading;
-  const error = mapError;
-
-  // Debug logging
-  useEffect(() => {
-    console.log("GoogleMap component rendered with", { 
-      markers: markers.length,
-      isMapLoading,
-      error: error ? 'Error present' : 'No errors',
-      retryCount
-    });
-    
-    return () => {
-      console.log("GoogleMap component unmounted");
-    };
-  }, [markers.length, isMapLoading, error, retryCount]);
-
-  // Handle errors
-  useEffect(() => {
-    if (error) {
-      console.error("Map error in GoogleMap component:", error);
-    }
-  }, [error]);
   
   const handleRetry = () => {
     setRetryCount(prev => prev + 1);
     clearMapConfigCache();
-    console.info("Retrying map initialization...");
   };
   
   if (mapError) {
@@ -100,12 +75,12 @@ const GoogleMap = ({
 
   return (
     <div className="relative w-full h-full">
-      {isMapLoading && (
+      {isLoading && (
         <div className="absolute inset-0 z-10">
           <MapLoader text="Initializing map..." />
         </div>
       )}
-      <div className={`w-full h-full ${isMapLoading ? 'opacity-0' : 'opacity-100'} transition-opacity duration-300`}>
+      <div className={`w-full h-full ${isLoading ? 'opacity-0' : 'opacity-100'} transition-opacity duration-300`}>
         <GoogleMapComponent
           mapContainerStyle={containerStyle}
           center={center}
@@ -115,7 +90,7 @@ const GoogleMap = ({
           onLoad={onLoadCallback}
           onUnmount={onUnmountCallback}
         >
-          {!isMapLoading && visibleMarkers.length > 0 && (
+          {!isLoading && visibleMarkers.length > 0 && (
             <MapMarkers
               markers={visibleMarkers}
               hoveredMarker={highlightedMarker}

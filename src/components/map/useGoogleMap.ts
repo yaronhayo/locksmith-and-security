@@ -24,14 +24,12 @@ export const useGoogleMap = (
 
   const updateMapView = useCallback(() => {
     if (!mapRef.current) {
-      console.log("Cannot update map view - map not initialized");
       return;
     }
     
     try {
       const map = mapRef.current;
       const visibleMarkersList = visibleMarkers();
-      console.log("Updating map view with markers:", visibleMarkersList.length);
       
       if (visibleMarkersList.length > 1) {
         const bounds = new google.maps.LatLngBounds();
@@ -62,7 +60,6 @@ export const useGoogleMap = (
   const onLoadCallback = useCallback((map: google.maps.Map) => {
     try {
       const loadTime = performance.now() - loadStartTime.current;
-      console.log(`Map loaded successfully in ${loadTime.toFixed(2)}ms`);
       mapPerformance.trackInstanceLoad(loadStartTime.current);
       
       mapRef.current = map;
@@ -82,33 +79,12 @@ export const useGoogleMap = (
   }, [updateMapView]);
 
   const onUnmountCallback = useCallback(() => {
-    console.log('Map unmounting');
-    
-    // Clean up any listeners if needed
-    if (mapRef.current) {
-      // No listeners to clean in this implementation, but if we add any, they should be cleaned here
-      mapRef.current = null;
-      isMapInitialized.current = false;
-    }
+    mapRef.current = null;
+    isMapInitialized.current = false;
   }, []);
-
-  // Debug logging for component lifecycle
-  useEffect(() => {
-    console.log("GoogleMap hook initialized with markers:", markers.length);
-    
-    return () => {
-      console.log("GoogleMap hook unmounted");
-    };
-  }, [markers.length]);
 
   // Update markers when they change
   useEffect(() => {
-    console.log("Markers updated:", { 
-      total: markers.length, 
-      visible: visibleMarkers().length,
-      highlighted: highlightedMarker
-    });
-    
     if (mapRef.current && isMapInitialized.current && !isLoading) {
       try {
         updateMapView();

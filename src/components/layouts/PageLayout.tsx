@@ -6,7 +6,6 @@ import { SchemaScripts } from '../meta/SchemaScripts';
 import ScrollToTop from '../ScrollToTop';
 import Breadcrumbs from '../Breadcrumbs';
 import ScrollToTopButton from '../ScrollToTopButton';
-import { LoadingState } from './LoadingState';
 import { AnimatePresence, motion } from 'framer-motion';
 import PageHero from './PageHero';
 import { cn } from '@/lib/utils';
@@ -52,9 +51,8 @@ const PageLayout: React.FC<PageLayoutProps> = ({
   heroDescription,
 }) => {
   useEffect(() => {
-    // Auto-scroll to top when component mounts
     window.scrollTo(0, 0);
-  }, [title]); // Re-trigger on title change (new page)
+  }, [title]);
 
   // Determine which breadcrumbs to use (custom or standard)
   const activeBreadcrumbs = customBreadcrumbs || breadcrumbs;
@@ -109,14 +107,12 @@ const PageLayout: React.FC<PageLayoutProps> = ({
           transition={{ duration: 0.3 }}
           className={cn("min-h-screen flex flex-col", className)}
         >
-          {/* Only render breadcrumbs if not hidden and we have breadcrumbs to show */}
           {!hideBreadcrumbs && activeBreadcrumbs && activeBreadcrumbs.length > 0 && (
             <div className="container mx-auto px-4 py-4">
               <Breadcrumbs breadcrumbs={activeBreadcrumbs} />
             </div>
           )}
           
-          {/* Hero section */}
           {heroTitle && (
             <PageHero 
               title={heroTitle} 

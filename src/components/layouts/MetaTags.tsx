@@ -1,110 +1,57 @@
 
-import { BasicMetaTags } from "@/components/meta/BasicMetaTags";
-import { OpenGraphTags } from "@/components/meta/OpenGraphTags";
-import { TwitterTags } from "@/components/meta/TwitterTags";
-import { SchemaScripts } from "@/components/meta/SchemaScripts";
-import { HreflangTags } from "@/components/meta/HreflangTags";
-import React from "react";
-import { Helmet } from "react-helmet";
+import React from 'react';
+import { Helmet } from 'react-helmet';
 
-interface Schema {
-  type: string;
-  data: object;
-}
-
-interface MetaTagsProps {
-  title: string;
-  description: string;
-  schemas?: Schema[];
+export interface MetaTagsProps {
+  title?: string;
+  description?: string;
+  keywords?: string;
   canonicalUrl?: string;
   ogImage?: string;
-  keywords?: string;
+  ogType?: "website" | "article" | "product" | "profile" | "book";
   noindex?: boolean;
   nofollow?: boolean;
-  baseUrl?: string;
   modifiedDate?: string;
-  ogType?: "website" | "article" | "product" | "profile" | "book";
-  twitterCardType?: "summary" | "summary_large_image" | "app" | "player";
-  alternateLanguages?: {
-    lang: string;
-    href: string;
-  }[];
-  defaultLang?: string;
 }
 
-const MetaTags = ({
+const MetaTags: React.FC<MetaTagsProps> = ({
   title,
   description,
-  schemas = [],
+  keywords,
   canonicalUrl,
-  ogImage = "/lovable-uploads/1bbeb1e6-5581-4e09-9600-7d1859bb17c5.png",
-  keywords = "",
-  noindex = false,
-  nofollow = false,
-  baseUrl = "https://247locksmithandsecurity.com",
-  modifiedDate = new Date().toISOString().split('T')[0], // Default to today's date in YYYY-MM-DD format
+  ogImage,
   ogType = "website",
-  twitterCardType = "summary_large_image",
-  alternateLanguages = [],
-  defaultLang = "en-US"
-}: MetaTagsProps) => {
-  // Ensure canonical URL has the proper base and remove trailing slashes for consistency
-  const normalizeUrl = (url: string) => url.replace(/\/+$/, '');
-  
-  const fullCanonicalUrl = canonicalUrl ? 
-    (canonicalUrl.startsWith('http') ? normalizeUrl(canonicalUrl) : `${normalizeUrl(baseUrl)}${canonicalUrl}`) 
-    : normalizeUrl(baseUrl);
-    
+  noindex,
+  nofollow,
+  modifiedDate
+}) => {
   return (
-    <>
-      <Helmet>
-        <link rel="icon" type="image/png" href="https://mtbgayqzjrxjjmsjikcg.supabase.co/storage/v1/object/public/uploads//Favicon.png" />
-        <link rel="apple-touch-icon" sizes="180x180" href="https://mtbgayqzjrxjjmsjikcg.supabase.co/storage/v1/object/public/uploads//Favicon.png" />
-        <link rel="icon" type="image/png" sizes="32x32" href="https://mtbgayqzjrxjjmsjikcg.supabase.co/storage/v1/object/public/uploads//Favicon.png" />
-        <link rel="icon" type="image/png" sizes="16x16" href="https://mtbgayqzjrxjjmsjikcg.supabase.co/storage/v1/object/public/uploads//Favicon.png" />
-      </Helmet>
-    
-      <BasicMetaTags 
-        title={title}
-        description={description}
-        keywords={keywords}
-        noindex={noindex}
-        nofollow={nofollow}
-        canonicalUrl={fullCanonicalUrl}
-        modifiedDate={modifiedDate}
-      />
+    <Helmet>
+      {title && <title>{title}</title>}
+      {description && <meta name="description" content={description} />}
+      {keywords && <meta name="keywords" content={keywords} />}
       
-      <OpenGraphTags 
-        title={title}
-        description={description}
-        image={ogImage}
-        url={fullCanonicalUrl}
-        modifiedDate={modifiedDate}
-        baseUrl={baseUrl}
-        type={ogType}
-      />
+      {/* Canonical URL */}
+      {canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
       
-      <TwitterTags 
-        title={title}
-        description={description}
-        image={ogImage}
-        baseUrl={baseUrl}
-        cardType={twitterCardType}
-      />
+      {/* Open Graph tags */}
+      {title && <meta property="og:title" content={title} />}
+      {description && <meta property="og:description" content={description} />}
+      {ogType && <meta property="og:type" content={ogType} />}
+      {canonicalUrl && <meta property="og:url" content={canonicalUrl} />}
+      {ogImage && <meta property="og:image" content={ogImage} />}
       
-      {/* Add hreflang tags if alternateLanguages are provided */}
-      {alternateLanguages.length > 0 && (
-        <HreflangTags
-          alternateLanguages={alternateLanguages}
-          defaultHref={fullCanonicalUrl}
-          defaultLang={defaultLang}
+      {/* Robots meta tags for SEO control */}
+      {(noindex || nofollow) && (
+        <meta 
+          name="robots" 
+          content={`${noindex ? 'noindex' : 'index'}, ${nofollow ? 'nofollow' : 'follow'}`} 
         />
       )}
       
-      {schemas && schemas.length > 0 && (
-        <SchemaScripts schemas={schemas} />
-      )}
-    </>
+      {/* Modified date for SEO */}
+      {modifiedDate && <meta name="last-modified" content={modifiedDate} />}
+    </Helmet>
   );
 };
 
