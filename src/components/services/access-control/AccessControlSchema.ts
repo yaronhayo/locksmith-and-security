@@ -1,5 +1,5 @@
 
-import { FAQPageSchema } from "@/types/schema";
+import { FAQSchema } from "@/types/schema";
 
 export const accessControlSchema = {
   "@context": "https://schema.org",
@@ -14,8 +14,7 @@ export const accessControlSchema = {
       "streetAddress": "104 Harrison St",
       "addressLocality": "Hoboken",
       "addressRegion": "NJ",
-      "postalCode": "07030",
-      "streetAddress": "104 Harrison St"
+      "postalCode": "07030"
     },
     "telephone": "2017482070"
   },
@@ -31,7 +30,7 @@ export const accessControlSchema = {
   }
 };
 
-export const accessControlFAQSchema: FAQPageSchema = {
+export const accessControlFAQSchema: FAQSchema = {
   "@context": "https://schema.org",
   "@type": "FAQPage",
   "mainEntity": [
