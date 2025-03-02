@@ -165,17 +165,6 @@ export const EmergencyExitDeviceContent = () => {
             </div>
           </li>
         </ul>
-        <div className="bg-green-50 p-5 rounded-lg border border-green-200">
-          <h3 className="text-lg font-semibold text-green-800 mb-2 flex items-center">
-            <Check className="h-5 w-5 mr-2" /> Maintenance Plans Available
-          </h3>
-          <p className="text-gray-700 mb-3">
-            We offer routine maintenance plans to ensure your emergency exit devices remain in perfect working condition and compliant with all regulations.
-          </p>
-          <Button asChild variant="outline" className="border-green-500 text-green-700 hover:bg-green-50">
-            <Link to="/contact">Request Maintenance Plan</Link>
-          </Button>
-        </div>
       </section>
     </div>
   );
