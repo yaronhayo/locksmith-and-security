@@ -2,6 +2,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { ServiceAreaLocation } from '@/types/service-area';
+import { toast } from 'sonner';
 
 export const useLocations = () => {
   return useQuery({
@@ -34,9 +35,16 @@ export const useLocations = () => {
         title: location.title || `${location.name} Locksmith Services`
       })) as ServiceAreaLocation[];
     },
-    staleTime: 5 * 60 * 1000, // Cache for 5 minutes
+    staleTime: 10 * 60 * 1000, // Cache for 10 minutes instead of 5
+    gcTime: 60 * 60 * 1000,    // Keep in cache for 1 hour
+    retry: 3,                  // Retry failed requests 3 times
+    retryDelay: attemptIndex => Math.min(1000 * 2 ** attemptIndex, 30000), // Exponential backoff
     meta: {
       errorMessage: 'Failed to load service area locations'
+    },
+    onError: (error) => {
+      console.error('Location fetch error:', error);
+      toast.error('Could not load service locations. Please try again later.');
     }
   });
 };

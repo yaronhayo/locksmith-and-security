@@ -1,4 +1,3 @@
-
 // Consolidated performance monitoring utilities
 type LogLevel = 'info' | 'warn' | 'error';
 
@@ -161,6 +160,87 @@ export const trackImageLoad = (imageUrl: string, element?: HTMLImageElement) => 
   }
   
   return { onLoad, onError };
+};
+
+// New: API call performance monitoring
+export interface ApiCallMetrics {
+  url: string;
+  method: string;
+  duration: number;
+  status?: number;
+  cacheHit?: boolean;
+  retryCount?: number;
+  success: boolean;
+}
+
+export const trackApiCall = (metrics: ApiCallMetrics) => {
+  logToService('info', 'API Call Performance', metrics);
+  
+  // Report slow API calls
+  if (metrics.duration > 2000) {
+    logToService('warn', 'Slow API Call', {
+      ...metrics,
+      threshold: 2000
+    });
+  }
+  
+  return metrics;
+};
+
+// New: React Query performance hooks
+export const queryLoadingMiddleware = <T>(
+  queryFn: () => Promise<T>,
+  name: string
+): (() => Promise<T>) => {
+  return async () => {
+    const startTime = performance.now();
+    try {
+      const result = await queryFn();
+      const duration = performance.now() - startTime;
+      
+      trackApiCall({
+        url: name,
+        method: 'GET', // Most queries are GET
+        duration,
+        success: true
+      });
+      
+      return result;
+    } catch (error) {
+      const duration = performance.now() - startTime;
+      
+      trackApiCall({
+        url: name,
+        method: 'GET',
+        duration,
+        success: false
+      });
+      
+      throw error;
+    }
+  };
+};
+
+// Cache control utilities
+export const createCacheKey = (prefix: string, params?: Record<string, any>): string => {
+  if (!params) return prefix;
+  
+  const sortedKeys = Object.keys(params).sort();
+  const paramsString = sortedKeys
+    .map(key => `${key}:${JSON.stringify(params[key])}`)
+    .join('|');
+    
+  return `${prefix}|${paramsString}`;
+};
+
+// Optimistic update tracking
+export const trackOptimisticUpdate = (operation: string, startTime: number, success: boolean) => {
+  const duration = performance.now() - startTime;
+  logToService(success ? 'info' : 'error', 'Optimistic Update', {
+    operation,
+    duration,
+    success
+  });
 };
 
 // Initialize Core Web Vitals tracking

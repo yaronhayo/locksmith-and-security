@@ -1,11 +1,14 @@
 
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
+import { toast } from 'sonner';
 
 // Cache for the API key to prevent excessive database queries
 let cachedApiKey: string | null = null;
 
 export const useMapConfig = () => {
+  const queryClient = useQueryClient();
+  
   return useQuery({
     queryKey: ['GOOGLE_MAPS_API_KEY'],
     queryFn: async () => {
@@ -51,11 +54,21 @@ export const useMapConfig = () => {
     staleTime: Infinity, // Keep the API key indefinitely until manual invalidation
     gcTime: Infinity,    // Don't garbage collect the query
     retry: 3,            // Try up to 3 times if the request fails
-    retryDelay: 1000,    // Wait 1 second between retries
+    retryDelay: attemptIndex => Math.min(1000 * 2 ** attemptIndex, 10000), // Exponential backoff
+    onError: (error) => {
+      console.error('Map config error:', error);
+      toast.error('Failed to load map settings. Some features may not work correctly.');
+    }
   });
 };
 
 export const clearMapConfigCache = () => {
   cachedApiKey = null;
   console.log('Map config cache cleared');
+};
+
+// Add function to invalidate the cache via React Query
+export const invalidateMapConfig = (queryClient: ReturnType<typeof useQueryClient>) => {
+  cachedApiKey = null;
+  return queryClient.invalidateQueries({ queryKey: ['GOOGLE_MAPS_API_KEY'] });
 };
