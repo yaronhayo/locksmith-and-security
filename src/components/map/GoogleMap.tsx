@@ -1,5 +1,5 @@
 
-import React, { CSSProperties, useState, useEffect } from "react";
+import React, { CSSProperties, useState, useEffect, useRef } from "react";
 import { GoogleMap as GoogleMapComponent } from "@react-google-maps/api";
 import MapLoader from "./MapLoader";
 import MapMarkers from "./MapMarkers";
@@ -50,6 +50,7 @@ const GoogleMap = ({
 }: GoogleMapProps) => {
   const [retryCount, setRetryCount] = useState(0);
   const [mapInitFailed, setMapInitFailed] = useState(false);
+  const componentId = useRef(`map-${Math.random().toString(36).substring(2, 9)}`);
   
   const {
     isLoading,
@@ -63,24 +64,38 @@ const GoogleMap = ({
   } = useGoogleMap(markers, highlightedMarker, showAllMarkers, zoom, center);
   
   useEffect(() => {
+    console.log(`GoogleMap(${componentId.current}) mounting with ${markers.length} markers`);
+    
     // If Google Maps fails to initialize completely, show a toast and set error state
     const checkMapStatus = setTimeout(() => {
       if (window.google && (!window.google.maps || !window.google.maps.Map)) {
         console.error("Google Maps failed to initialize properly");
-        toast.error("Map failed to load properly. Please refresh the page or try again later.");
+        
+        // Only show error in development
+        if (import.meta.env.DEV) {
+          toast.error("Map failed to load properly. Retrying...");
+        }
+        
         setMapInitFailed(true);
       }
     }, 5000);
     
-    return () => clearTimeout(checkMapStatus);
-  }, [retryCount]);
+    return () => {
+      clearTimeout(checkMapStatus);
+      console.log(`GoogleMap(${componentId.current}) unmounting`);
+    };
+  }, [retryCount, markers.length]);
   
   const handleRetry = () => {
     console.log("Retrying map load...");
     setRetryCount(prev => prev + 1);
     setMapInitFailed(false);
     clearMapConfigCache();
-    toast.info("Retrying map load...");
+    
+    // Only show info toast in development
+    if (import.meta.env.DEV) {
+      toast.info("Retrying map load...");
+    }
   };
   
   if (mapError || mapInitFailed) {
