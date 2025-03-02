@@ -1,4 +1,5 @@
 
+import React from "react";
 import { FAQSchema } from "@/types/schema";
 import { HelpCircle } from "lucide-react";
 import {
@@ -7,7 +8,6 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import React from "react";
 
 interface ServiceAreaFAQProps {
   locationName: string;
@@ -15,9 +15,6 @@ interface ServiceAreaFAQProps {
 }
 
 const ServiceAreaFAQ = ({ locationName, faqSchema }: ServiceAreaFAQProps) => {
-  // Create a unique ID for this accordion group
-  const accordionId = React.useId();
-  
   return (
     <section className="py-16 bg-gradient-to-b from-gray-50 to-white rounded-xl" id="faq">
       <div className="container mx-auto px-4">
@@ -35,20 +32,17 @@ const ServiceAreaFAQ = ({ locationName, faqSchema }: ServiceAreaFAQProps) => {
         <div className="max-w-6xl mx-auto">
           <div className="grid md:grid-cols-2 gap-6">
             {faqSchema.data.mainEntity.map((faq: any, index: number) => {
-              // Generate a unique value for each accordion item
-              const uniqueValue = `${accordionId}-area-${locationName.replace(/\s+/g, '-').toLowerCase()}-${index}-${faq.name.substring(0, 10).replace(/\s+/g, '-')}`;
+              // Create a unique ID for each FAQ item
+              const uniqueId = `area-faq-${locationName.replace(/\s+/g, "-")}-${index}-${Math.random().toString(36).substring(2, 9)}`;
               
               return (
-                <Accordion 
-                  key={`service-area-faq-${index}`} 
-                  type="single" 
-                  collapsible 
+                <Accordion
+                  key={`service-area-faq-${index}`}
+                  type="single"
+                  collapsible
                   className="bg-white rounded-lg shadow-sm"
                 >
-                  <AccordionItem 
-                    value={uniqueValue}
-                    className="border-none"
-                  >
+                  <AccordionItem value={uniqueId} className="border-none">
                     <AccordionTrigger className="px-6 py-4 hover:no-underline">
                       <div className="flex items-start text-left gap-3">
                         <span className="font-bold text-primary text-lg">Q:</span>
