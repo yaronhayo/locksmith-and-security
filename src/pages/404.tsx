@@ -13,10 +13,6 @@ const NotFound = () => {
         description="The page you are looking for might have been removed, had its name changed, or is temporarily unavailable."
         noindex={true}
         nofollow={true}
-        breadcrumbs={[
-          { name: "Home", path: "/" },
-          { name: "Page Not Found", path: "/404" }
-        ]}
       />
       
       <div className="space-y-6 max-w-md">

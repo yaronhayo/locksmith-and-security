@@ -85,13 +85,12 @@ const FAQPage = () => {
     <PageLayout
       title="Frequently Asked Questions - Expert Locksmith Answers"
       description="Find comprehensive answers to common questions about our residential, commercial, automotive, and emergency locksmith services."
-      schema={faqSchema}
+      schema={[faqSchema, breadcrumbSchema]}
       canonicalUrl="https://www.locksmiths.com/faq"
       keywords="locksmith FAQ, locksmith questions, locksmith services, residential locksmith, commercial locksmith, automotive locksmith, emergency locksmith"
       heroTitle="Frequently Asked Questions"
       heroDescription="Browse our comprehensive collection of FAQs to find answers to your locksmith and security questions."
-      hideBreadcrumbs={false} 
-      schemas={[faqSchema, breadcrumbSchema]}
+      hideBreadcrumbs={false}
     >
       <FaqSearch searchQuery={searchQuery} handleSearch={handleSearch} />
 
