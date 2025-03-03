@@ -7,6 +7,8 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ErrorBoundary } from 'react-error-boundary'
 import ErrorFallback from './components/ErrorFallback'
 import LoadingSpinner from './components/LoadingSpinner'
+import { toast } from 'sonner'
+import { Toaster } from './components/ui/sonner'
 
 // Create a client
 const queryClient = new QueryClient({
@@ -54,10 +56,16 @@ if (typeof window !== 'undefined') {
 if (typeof window !== 'undefined') {
   window.addEventListener('error', (event) => {
     logError(event.error, 'Global error caught');
+    
+    // Show toast notification for errors
+    toast.error('An error occurred. Please try refreshing the page.');
   });
 
   window.addEventListener('unhandledrejection', (event) => {
     logError(event.reason, 'Unhandled promise rejection');
+    
+    // Show toast notification for promise rejections
+    toast.error('An error occurred with a background task. Please try refreshing the page.');
   });
   
   // Try to detect if we're in a white screen situation
@@ -105,6 +113,7 @@ const renderApp = () => {
           <React.Suspense fallback={<div className="min-h-screen flex items-center justify-center"><LoadingSpinner size="lg" text="Loading application..." /></div>}>
             <QueryClientProvider client={queryClient}>
               <App />
+              <Toaster />
             </QueryClientProvider>
           </React.Suspense>
         </ErrorBoundary>

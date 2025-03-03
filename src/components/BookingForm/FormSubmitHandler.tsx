@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { toast } from 'sonner';
+import ThankYouMessage from "../service-areas/shared/form/ThankYouMessage";
 
 interface FormErrors {
   [key: string]: string;
@@ -35,6 +36,8 @@ const FormSubmitHandler: React.FC<FormSubmitHandlerProps> = ({
   showAllKeysLostField,
   showUnusedKeyField
 }) => {
+  const [isSubmitted, setIsSubmitted] = React.useState(false);
+  
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     
@@ -61,20 +64,20 @@ const FormSubmitHandler: React.FC<FormSubmitHandlerProps> = ({
     }
     
     if (showVehicleInfo) {
-      const make = formData.get('make') as string;
-      const model = formData.get('model') as string;
-      const year = formData.get('year') as string;
+      const vehicleYear = formData.get('vehicleYear') as string;
+      const vehicleMake = formData.get('vehicleMake') as string;
+      const vehicleModel = formData.get('vehicleModel') as string;
       
-      if (!make) {
-        newErrors.make = 'Please enter vehicle make';
+      if (!vehicleYear) {
+        newErrors.vehicleYear = 'Please enter vehicle year';
       }
       
-      if (!model) {
-        newErrors.model = 'Please enter vehicle model';
+      if (!vehicleMake) {
+        newErrors.vehicleMake = 'Please enter vehicle make';
       }
       
-      if (!year) {
-        newErrors.year = 'Please enter vehicle year';
+      if (!vehicleModel) {
+        newErrors.vehicleModel = 'Please enter vehicle model';
       }
     }
     
@@ -110,8 +113,8 @@ const FormSubmitHandler: React.FC<FormSubmitHandlerProps> = ({
       
       toast.success('Your booking request has been submitted! We will contact you shortly.');
       
-      // Reset form
-      e.currentTarget.reset();
+      // Show thank you message
+      setIsSubmitted(true);
       
     } catch (error) {
       console.error('Error submitting form:', error);
@@ -120,6 +123,10 @@ const FormSubmitHandler: React.FC<FormSubmitHandlerProps> = ({
       setIsSubmitting(false);
     }
   };
+  
+  if (isSubmitted) {
+    return <ThankYouMessage />;
+  }
   
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
