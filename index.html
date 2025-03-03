@@ -70,7 +70,7 @@
 
     <!-- reCAPTCHA Script with explicit cookie consent check -->
     <script>
-      // Only load reCAPTCHA if third-party cookies are likely enabled
+      // Only load reCAPTCHA if third-party cookies are likely enabled or using Partitioned cookies
       if (localStorage.getItem('cookieConsent')) {
         try {
           const cookieSettings = JSON.parse(localStorage.getItem('cookieConsent'));
@@ -83,7 +83,14 @@
             document.head.appendChild(recaptchaScript);
             console.log('reCAPTCHA script added with third-party cookie consent');
           } else {
-            console.log('Third-party cookies not consented, reCAPTCHA may not work properly');
+            console.log('Third-party cookies not consented, using partitioned cookies for reCAPTCHA');
+            // Try to use Partitioned cookies
+            document.cookie = "recaptcha_pref=1; SameSite=None; Secure; Partitioned;";
+            const recaptchaScript = document.createElement('script');
+            recaptchaScript.src = "https://www.google.com/recaptcha/api.js";
+            recaptchaScript.async = true;
+            recaptchaScript.defer = true;
+            document.head.appendChild(recaptchaScript);
           }
         } catch(e) {
           console.error('Error parsing cookie settings');

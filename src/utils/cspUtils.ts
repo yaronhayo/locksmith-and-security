@@ -53,7 +53,9 @@ export const checkThirdPartyCookies = () => {
   // Create a hidden iframe to test third-party cookies
   const iframe = document.createElement('iframe');
   iframe.style.display = 'none';
-  iframe.src = 'https://www.google.com/recaptcha/api2/anchor?ar=1&k=test&co=aHR0cHM6Ly93d3cuZ29vZ2xlLmNvbTo0NDM.&hl=en&v=test&size=invisible';
+  
+  // Add a proper DOCTYPE to the iframe to prevent Quirks Mode
+  iframe.srcdoc = `<!DOCTYPE html><html><head><title>Cookie Test</title></head><body><script>document.cookie = "testCookieInIframe=1; path=/; SameSite=None; Secure;";</script></body></html>`;
   
   iframe.onload = () => {
     console.log('Checking third-party cookie support via test iframe...');
@@ -90,13 +92,18 @@ const detectCookieRestrictions = () => {
   // Test cookie that might be blocked in browsers restricting 3rd party cookies
   document.cookie = "testThirdPartyCookie=1; path=/; SameSite=None; Secure; max-age=60";
   
+  // Test partitioned cookie
+  document.cookie = "testPartitionedCookie=1; path=/; SameSite=None; Secure; Partitioned; max-age=60";
+  
   setTimeout(() => {
     const hasCookie = document.cookie.indexOf("testCookie=") !== -1;
     const hasThirdPartyCookie = document.cookie.indexOf("testThirdPartyCookie=") !== -1;
+    const hasPartitionedCookie = document.cookie.indexOf("testPartitionedCookie=") !== -1;
     
     console.log('Cookie test results:', {
       standardCookies: hasCookie ? 'working' : 'blocked',
-      thirdPartyCookies: hasThirdPartyCookie ? 'working' : 'may be restricted'
+      thirdPartyCookies: hasThirdPartyCookie ? 'working' : 'may be restricted',
+      partitionedCookies: hasPartitionedCookie ? 'working' : 'may not be supported'
     });
     
     if (hasCookie && !hasThirdPartyCookie) {
@@ -135,11 +142,51 @@ export const setupPartitionedCookies = () => {
       // Fallback for browsers without cookieStore
       try {
         document.cookie = "testPartitioned=1; Partitioned; Secure; SameSite=None; path=/; max-age=60";
+        // Add a test for recaptcha-specific cookies
+        document.cookie = "recaptcha_pref=1; Partitioned; Secure; SameSite=None; path=/; max-age=86400";
       } catch (error) {
         console.log('Partitioned cookie attribute not supported');
       }
     }
+    
+    // Adding specific CORS headers for third-party iframe resources
+    window.addEventListener('message', function(event) {
+      // Only handle messages from trusted origins
+      if (event.origin === 'https://www.google.com' || 
+          event.origin.includes('recaptcha') ||
+          event.origin.includes('googleapis.com')) {
+        console.log('Received message from:', event.origin);
+      }
+    }, false);
   } catch (error) {
     console.error('Error setting up partitioned cookies:', error);
   }
+};
+
+// Check and fix Quirks Mode issues in iframes
+export const fixQuirksModeInIframes = () => {
+  setTimeout(() => {
+    const iframes = document.querySelectorAll('iframe');
+    iframes.forEach((iframe) => {
+      try {
+        if (iframe.contentDocument && iframe.contentDocument.compatMode === 'BackCompat') {
+          console.warn('Fixing Quirks Mode in iframe:', iframe);
+          
+          // Try to correct the doctype if possible
+          const htmlContent = iframe.contentDocument.documentElement.outerHTML;
+          const correctedContent = `<!DOCTYPE html>\n${htmlContent}`;
+          
+          // Only attempt to write if we can access the iframe
+          if (iframe.contentDocument.open) {
+            iframe.contentDocument.open();
+            iframe.contentDocument.write(correctedContent);
+            iframe.contentDocument.close();
+          }
+        }
+      } catch (e) {
+        // This is expected for cross-origin iframes
+        console.log('Could not check/fix quirks mode in iframe (likely cross-origin)');
+      }
+    });
+  }, 3000);
 };

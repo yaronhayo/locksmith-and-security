@@ -35,11 +35,19 @@ const GoogleMapsApiLoader: React.FC<GoogleMapsApiLoaderProps> = ({
     console.log("Loading Google Maps API on domain:", window.location.hostname);
     console.log("Google Maps API key starts with:", apiKey.substring(0, 5) + "...");
 
+    // Setup for CORS-friendly loading
+    // First, create a meta tag to ensure proper CORS handling
+    const corsMetaTag = document.createElement('meta');
+    corsMetaTag.httpEquiv = 'Access-Control-Allow-Origin';
+    corsMetaTag.content = '*';
+    document.head.appendChild(corsMetaTag);
+
     // Load Google Maps API
     const script = document.createElement("script");
-    script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places&callback=initGoogleMaps`;
+    script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places&callback=initGoogleMaps&loading=async`;
     script.async = true;
     script.defer = true;
+    script.crossOrigin = "anonymous"; // Add crossOrigin attribute
     
     // Define callback function that Google will call when API is loaded
     window.initGoogleMaps = () => {
@@ -63,6 +71,9 @@ const GoogleMapsApiLoader: React.FC<GoogleMapsApiLoaderProps> = ({
 
     return () => {
       // Cleanup
+      if (document.head.contains(corsMetaTag)) {
+        document.head.removeChild(corsMetaTag);
+      }
       if (window.initGoogleMaps) {
         // @ts-ignore - Clean up the global callback
         window.initGoogleMaps = undefined;

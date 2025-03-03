@@ -2,7 +2,7 @@
 import React from 'react'
 import './index.css'
 import { setupGlobalErrorHandlers, setupWhiteScreenDetection, detectQuirksMode } from './utils/errorHandlers';
-import { checkForCSPIssues, setupPartitionedCookies } from './utils/cspUtils';
+import { checkForCSPIssues, setupPartitionedCookies, fixQuirksModeInIframes } from './utils/cspUtils';
 import { initializeApp } from './utils/appInitialization';
 
 // Setup error handling
@@ -20,6 +20,9 @@ checkForCSPIssues();
 
 // Setup partitioned cookies (for browsers that support it)
 setupPartitionedCookies();
+
+// Fix Quirks Mode in iframes
+fixQuirksModeInIframes();
 
 // Initialize the application
 initializeApp();
