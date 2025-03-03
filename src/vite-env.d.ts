@@ -13,6 +13,7 @@ interface Window {
     execute: (widgetId?: number) => void;
     ready: (callback: () => void) => void;
   };
+  onRecaptchaLoaded?: () => void;
 }
 
 interface LayoutShiftEntry extends PerformanceEntry {
