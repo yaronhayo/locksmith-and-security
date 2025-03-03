@@ -16,7 +16,7 @@ const Recaptcha: React.FC<RecaptchaProps> = ({
 }) => {
   const recaptchaRef = useRef<HTMLDivElement>(null);
   const recaptchaWidgetId = useRef<number | null>(null);
-  const { recaptchaKey } = useRecaptchaKey();
+  const { data: recaptchaKey } = useRecaptchaKey();
   
   // Use the provided sitekey or the one from the hook
   const actualSitekey = sitekey || recaptchaKey;

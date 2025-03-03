@@ -40,9 +40,11 @@ const ServicePageContent: React.FC<ServicePageContentProps> = ({
         
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-8">
           <div className="col-span-1 lg:col-span-2">
-            <ServiceMainContent>
-              {mainContent}
-            </ServiceMainContent>
+            <ServiceMainContent
+              serviceName={serviceName}
+              serviceCategory={serviceCategory}
+              mainContent={mainContent}
+            />
             
             <ServiceProcessSection serviceName={serviceName} />
             
@@ -58,6 +60,7 @@ const ServicePageContent: React.FC<ServicePageContentProps> = ({
           
           <div className="col-span-1">
             <ServiceSidebar 
+              serviceName={serviceName}
               serviceCategory={serviceCategory}
               relatedServices={relatedServices}
             />
