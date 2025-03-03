@@ -1,4 +1,3 @@
-
 import React from 'react'
 import * as ReactDOMClient from 'react-dom/client'
 import * as ReactDOM from 'react-dom'
@@ -13,15 +12,19 @@ const queryClient = new QueryClient({
     queries: {
       refetchOnWindowFocus: false,
       retry: 1,
-      onError: (error) => {
-        console.error('Query error:', error);
-        // This prevents global error handler from catching query errors
+      meta: {
+        onError: (error: Error) => {
+          console.error('Query error:', error);
+          // This prevents global error handler from catching query errors
+        }
       }
     },
     mutations: {
-      onError: (error) => {
-        console.error('Mutation error:', error);
-        // This prevents global error handler from catching mutation errors
+      meta: {
+        onError: (error: Error) => {
+          console.error('Mutation error:', error);
+          // This prevents global error handler from catching mutation errors
+        }
       }
     }
   },
