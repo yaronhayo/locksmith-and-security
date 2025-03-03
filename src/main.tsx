@@ -38,8 +38,12 @@ const logError = (error: any, info: string) => {
     location: window.location.toString(),
     host: window.location.host,
     protocol: window.location.protocol,
+    pathname: window.location.pathname,
+    search: window.location.search,
+    href: window.location.href,
+    origin: window.location.origin
   });
-};
+}
 
 // Initialize hasRendered property
 if (typeof window !== 'undefined') {
@@ -70,6 +74,7 @@ if (typeof window !== 'undefined') {
             <p style="margin-bottom: 1rem;">We're having trouble loading the application. Please try refreshing the page.</p>
             <p style="margin-bottom: 1rem; font-size: 0.875rem; color: #6B7280;">If the problem persists, please try clearing your browser cache.</p>
             <button style="background: #2563EB; color: white; padding: 0.5rem 1rem; border: none; border-radius: 0.25rem; cursor: pointer;" onclick="location.reload()">Reload Page</button>
+            <p style="margin-top: 1rem; font-size: 0.75rem; color: #6B7280;">Technical info: ${window.location.toString()}</p>
           </div>
         `;
       }
@@ -120,6 +125,7 @@ const renderApp = () => {
         <p style="margin-bottom: 1rem;">We're sorry, but something went wrong.</p>
         <p style="margin-bottom: 1rem; font-size: 0.875rem; color: #6B7280;">Technical details: ${error instanceof Error ? error.message : 'Unknown error'}</p>
         <button style="background: #2563EB; color: white; padding: 0.5rem 1rem; border: none; border-radius: 0.25rem; cursor: pointer;" onclick="location.reload()">Reload Page</button>
+        <p style="margin-top: 1rem; font-size: 0.75rem; color: #6B7280;">URL: ${window.location.toString()}</p>
       </div>
     `;
   }

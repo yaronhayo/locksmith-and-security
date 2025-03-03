@@ -59,10 +59,10 @@ const BookingForm = ({ preselectedService }: BookingFormProps) => {
       showVehicleInfo={showVehicleInfo}
       recaptchaToken={recaptchaToken}
       address={address}
-      allKeysLost={allKeysLost}
-      hasUnusedKey={hasUnusedKey}
-      showAllKeysLostField={showAllKeysLostField}
-      showUnusedKeyField={showUnusedKeyField}
+      allKeysLost={allKeysLost === true}
+      hasUnusedKey={hasUnusedKey === true}
+      showAllKeysLostField={showAllKeysLostField === true}
+      showUnusedKeyField={showUnusedKeyField === true}
     >
       <PersonalInfoFields errors={errors} isSubmitting={isSubmitting} />
       
