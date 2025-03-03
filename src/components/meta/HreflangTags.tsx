@@ -21,14 +21,14 @@ export const HreflangTags = ({
   return (
     <Helmet>
       {/* Default language version */}
-      <link rel="alternate" hreflang="x-default" href={cleanBaseUrl} />
+      <link rel="alternate" hrefLang="x-default" href={cleanBaseUrl} />
       
       {/* Language-specific versions */}
       {languages.map(({ lang, path = "" }) => (
         <link 
           key={lang} 
           rel="alternate" 
-          hreflang={lang} 
+          hrefLang={lang} 
           href={`${cleanBaseUrl}${path ? `/${path}` : ''}`} 
         />
       ))}

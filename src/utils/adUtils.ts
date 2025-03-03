@@ -8,7 +8,7 @@
  * Handles the dailyUpdateUrl -> updateUrl deprecation
  */
 export const safeJoinAdInterestGroup = (
-  group: object,
+  group: InterestGroup,
   lifespan: number
 ): Promise<void> => {
   // Make a copy of the group object to avoid modifying the original
@@ -38,13 +38,15 @@ export const safeJoinAdInterestGroup = (
 /**
  * Leave an ad interest group safely
  */
-export const safeLeaveAdInterestGroup = (group: object): Promise<void> => {
+export const safeLeaveAdInterestGroup = (
+  options: { owner: string; name: string }
+): Promise<void> => {
   if (
     navigator && 
     'leaveAdInterestGroup' in navigator &&
     typeof navigator.leaveAdInterestGroup === 'function'
   ) {
-    return navigator.leaveAdInterestGroup(group);
+    return navigator.leaveAdInterestGroup(options);
   }
   
   return Promise.resolve();

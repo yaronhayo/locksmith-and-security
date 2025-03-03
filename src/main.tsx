@@ -4,7 +4,7 @@ import * as ReactDOMClient from 'react-dom/client'
 import * as ReactDOM from 'react-dom'
 import App from './App.tsx'
 import './index.css'
-import { setupIframeDocTypeFixer } from './utils/iframeUtils'
+import { setupIframeObserver } from './utils/iframeUtils'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
 // Create a new QueryClient instance
@@ -65,7 +65,7 @@ window.addEventListener('unhandledrejection', (event) => {
 });
 
 // Initialize iframe DOCTYPE fixer
-const cleanup = setupIframeDocTypeFixer();
+const cleanup = setupIframeObserver();
 
 // Add an event listener to clean up when the window is closed
 window.addEventListener('beforeunload', () => {
