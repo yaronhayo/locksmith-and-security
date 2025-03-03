@@ -1,17 +1,18 @@
 
-import React from "react";
-import { motion } from "framer-motion";
+import React from 'react';
+import { CheckCircle } from 'lucide-react';
 
 const ThankYouMessage = () => {
   return (
-    <motion.div 
-      initial={{ opacity: 0, scale: 0.9 }}
-      animate={{ opacity: 1, scale: 1 }}
-      className="bg-green-50 border border-green-200 text-green-700 p-4 sm:p-6 rounded-lg text-center shadow-sm"
-    >
-      <h3 className="text-lg sm:text-xl font-semibold mb-2">Thank You!</h3>
-      <p>Your message has been sent successfully. A member of our team will contact you shortly.</p>
-    </motion.div>
+    <div className="text-center py-8">
+      <div className="mx-auto w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4">
+        <CheckCircle className="w-8 h-8 text-green-600" />
+      </div>
+      <h3 className="text-xl font-semibold text-gray-800 mb-2">Request Received!</h3>
+      <p className="text-gray-600 max-w-sm mx-auto">
+        Thank you for contacting us. A member of our team will get back to you shortly.
+      </p>
+    </div>
   );
 };
 

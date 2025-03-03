@@ -1,12 +1,11 @@
 
 import { useState, useEffect, useCallback, memo } from 'react';
-import { X } from 'lucide-react';
-import { Button } from "@/components/ui/button";
 import { useLocation } from 'react-router-dom';
 import TopBar from './header/TopBar';
 import Navigation from './header/Navigation';
 import ActionButtons from './header/ActionButtons';
 import Logo from './header/Logo';
+import MobileMenu from './header/MobileMenu';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -65,23 +64,7 @@ const Header = () => {
 
             <Navigation isMenuOpen={isMenuOpen} isScrolled={isScrolled} />
 
-            <div 
-              className={`lg:hidden fixed top-0 left-0 right-0 z-50 flex items-center justify-between p-4 border-b border-white/10 bg-primary/95 ${
-                isMenuOpen ? 'block' : 'hidden'
-              }`}
-              aria-hidden={!isMenuOpen}
-            >
-              <span className="text-white text-lg font-semibold">Menu</span>
-              <Button 
-                variant="ghost" 
-                size="icon"
-                className="text-white hover:bg-white/10"
-                onClick={() => setIsMenuOpen(false)}
-                aria-label="Close menu"
-              >
-                <X className="h-6 w-6 text-white" strokeWidth={2.5} aria-hidden="true" />
-              </Button>
-            </div>
+            <MobileMenu isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />
 
             <div className="flex items-center">
               <ActionButtons isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />

@@ -1,104 +1,82 @@
 
-import React from "react";
-import { useNavigate, useLocation } from "react-router-dom";
-import { validateForm } from "./validation";
-import { submitBookingForm } from "./utils/submitForm";
-import SubmitButton from "./SubmitButton";
-import { handleApiError } from "@/lib/utils";
+import React, { useState } from 'react';
+import { Button } from '@/components/ui/button';
+import { Loader2 } from 'lucide-react';
+import FormSubmitHandler from './FormSubmitHandler';
 
 interface FormContainerProps {
   children: React.ReactNode;
   isSubmitting: boolean;
-  setIsSubmitting: (isSubmitting: boolean) => void;
-  errors: Record<string, string>;
-  setErrors: (errors: Record<string, string>) => void;
-  showVehicleInfo: boolean;
+  setIsSubmitting: React.Dispatch<React.SetStateAction<boolean>>;
+  errors: { [key: string]: string };
+  setErrors: React.Dispatch<React.SetStateAction<{ [key: string]: string }>>;
   recaptchaToken: string | null;
   address: string;
-  allKeysLost: string;
-  hasUnusedKey: string;
+  showVehicleInfo: boolean;
+  allKeysLost: boolean;
+  hasUnusedKey: boolean;
   showAllKeysLostField: boolean;
   showUnusedKeyField: boolean;
 }
 
-const FormContainer = ({
+const FormContainer: React.FC<FormContainerProps> = ({
   children,
   isSubmitting,
   setIsSubmitting,
   errors,
   setErrors,
-  showVehicleInfo,
   recaptchaToken,
   address,
+  showVehicleInfo,
   allKeysLost,
   hasUnusedKey,
   showAllKeysLostField,
   showUnusedKeyField
-}: FormContainerProps) => {
-  const navigate = useNavigate();
-  const location = useLocation();
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    if (!recaptchaToken) {
-      // Silent error handling, no toast shown
-      console.log('Missing reCAPTCHA token');
-      return;
-    }
-
-    const formData = new FormData(e.currentTarget);
-    formData.set('address', address);
-    
-    if (showAllKeysLostField) {
-      formData.set('all_keys_lost', allKeysLost);
-    }
-    
-    if (showUnusedKeyField) {
-      formData.set('has_unused_key', hasUnusedKey);
-    }
-    
-    const validationResult = validateForm(formData, showVehicleInfo);
-    if (!validationResult.isValid) {
-      setErrors(validationResult.errors);
-      return;
-    }
-
-    setErrors({});
-    setIsSubmitting(true);
-
-    try {
-      await submitBookingForm(formData, showVehicleInfo, location.pathname, recaptchaToken, address);
-      window.sessionStorage.setItem('fromFormSubmission', 'true');
-      
-      if (typeof window.gtag === 'function') {
-        window.gtag('event', 'conversion', {
-          'event_category': 'form',
-          'event_label': 'booking_submission',
-          'value': 1
-        });
-      }
-
-      navigate('/thank-you');
-    } catch (error: any) {
-      handleApiError(error, false, 'Booking form submission error:');
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
-  return (
-    <form 
-      onSubmit={handleSubmit} 
-      className="space-y-2.5 max-w-full overflow-visible" 
-      role="form" 
-      aria-label="Service booking form"
-    >
-      <div className="space-y-2.5">
-        {children}
+}) => {
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  
+  if (isSubmitted) {
+    return (
+      <div className="text-center py-4">
+        <h3 className="text-xl font-semibold text-green-600 mb-2">Thank You!</h3>
+        <p className="text-gray-600">Your request has been submitted. We'll contact you shortly.</p>
       </div>
-      <SubmitButton isSubmitting={isSubmitting} />
-    </form>
+    );
+  }
+  
+  return (
+    <FormSubmitHandler
+      isSubmitting={isSubmitting}
+      setIsSubmitting={setIsSubmitting}
+      errors={errors}
+      setErrors={setErrors}
+      recaptchaToken={recaptchaToken}
+      address={address}
+      showVehicleInfo={showVehicleInfo}
+      allKeysLost={allKeysLost}
+      hasUnusedKey={hasUnusedKey}
+      showAllKeysLostField={showAllKeysLostField}
+      showUnusedKeyField={showUnusedKeyField}
+    >
+      {children}
+      
+      <div className="pt-2">
+        <Button 
+          type="submit" 
+          className="w-full bg-primary hover:bg-primary-dark text-white"
+          disabled={isSubmitting || Object.keys(errors).length > 0}
+        >
+          {isSubmitting ? (
+            <>
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              Submitting...
+            </>
+          ) : (
+            'Book Now'
+          )}
+        </Button>
+      </div>
+    </FormSubmitHandler>
   );
 };
 

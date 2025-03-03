@@ -1,32 +1,26 @@
 
-import React from "react";
-import { Phone, Mail, MessageSquare } from "lucide-react";
+import React from 'react';
+import { Mail, Phone } from 'lucide-react';
 
 const ContactOptions = () => {
   return (
-    <div className="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-6">
-      <div className="flex flex-col items-center text-center">
-        <div className="w-12 h-12 rounded-full bg-secondary/10 flex items-center justify-center mb-3">
-          <Phone className="h-5 w-5 text-secondary" />
-        </div>
-        <h3 className="text-lg font-medium mb-1">Call Us</h3>
-        <a href="tel:2017482070" className="text-secondary hover:underline">(201) 748-2070</a>
-      </div>
-      
-      <div className="flex flex-col items-center text-center">
-        <div className="w-12 h-12 rounded-full bg-secondary/10 flex items-center justify-center mb-3">
-          <Mail className="h-5 w-5 text-secondary" />
-        </div>
-        <h3 className="text-lg font-medium mb-1">Email Us</h3>
-        <a href="mailto:info@247locksmithandsecurity.com" className="text-secondary hover:underline text-sm sm:text-base">info@247locksmithandsecurity.com</a>
-      </div>
-      
-      <div className="flex flex-col items-center text-center">
-        <div className="w-12 h-12 rounded-full bg-secondary/10 flex items-center justify-center mb-3">
-          <MessageSquare className="h-5 w-5 text-secondary" />
-        </div>
-        <h3 className="text-lg font-medium mb-1">Emergency Service</h3>
-        <p className="text-gray-700">Available 24/7 for urgent assistance</p>
+    <div className="mt-8 border-t border-gray-200 pt-6">
+      <h3 className="text-lg font-semibold mb-4 text-gray-800">Other ways to reach us:</h3>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <a 
+          href="tel:2017482070" 
+          className="flex items-center p-3 bg-primary/5 rounded-lg hover:bg-primary/10 transition-colors"
+        >
+          <Phone className="h-5 w-5 text-primary mr-3" />
+          <span className="text-gray-700">(201) 748-2070</span>
+        </a>
+        <a 
+          href="mailto:info@locksmithandsecurity.com" 
+          className="flex items-center p-3 bg-secondary/5 rounded-lg hover:bg-secondary/10 transition-colors"
+        >
+          <Mail className="h-5 w-5 text-secondary mr-3" />
+          <span className="text-gray-700">info@locksmithandsecurity.com</span>
+        </a>
       </div>
     </div>
   );
