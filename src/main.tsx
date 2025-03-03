@@ -69,12 +69,12 @@ if (!React || typeof React.createElement !== 'function') {
   // Try to load React from CDN as fallback
   const reactScript = document.createElement('script');
   reactScript.src = 'https://unpkg.com/react@18/umd/react.production.min.js';
-  reactScript.crossOrigin = '';
+  reactScript.crossOrigin = 'anonymous';
   document.head.appendChild(reactScript);
   
   const reactDOMScript = document.createElement('script');
   reactDOMScript.src = 'https://unpkg.com/react-dom@18/umd/react-dom.production.min.js';
-  reactDOMScript.crossOrigin = '';
+  reactDOMScript.crossOrigin = 'anonymous';
   document.head.appendChild(reactDOMScript);
   
   // Attempt to mount after a delay
