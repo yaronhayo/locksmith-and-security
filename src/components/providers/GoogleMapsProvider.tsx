@@ -1,6 +1,6 @@
 
 import React, { useEffect, useState, ReactNode, useRef } from "react";
-import { LoadingState } from "@/components/layouts/LoadingState";
+import LoadingState from "@/components/layouts/LoadingState";
 import { useMapConfig } from "@/hooks/useMap";
 import { toast } from "sonner";
 

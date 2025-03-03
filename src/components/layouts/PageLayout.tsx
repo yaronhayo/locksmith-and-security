@@ -5,7 +5,7 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import MetaTags from './MetaTags';
 import Breadcrumbs from '../Breadcrumbs';
-import { LoadingState } from './LoadingState';
+import LoadingState from './LoadingState';
 import PageHero from './PageHero';
 import ScrollToTop from '../ScrollToTop';
 import { SchemaScripts } from '../meta/SchemaScripts';

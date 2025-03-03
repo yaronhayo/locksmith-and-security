@@ -43,4 +43,6 @@ const LoadingState: React.FC<LoadingStateProps> = ({
   );
 };
 
+// Adding named export alongside default export
+export { LoadingState };
 export default LoadingState;
