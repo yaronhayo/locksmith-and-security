@@ -63,6 +63,7 @@ const PageLayout: React.FC<PropsWithChildren<PageLayoutProps>> = ({
 }) => {
   const cleanupRef = useRef<(() => void) | null>(null);
   const isMounted = useRef(true);
+  const didSetupObserver = useRef(false);
   
   useEffect(() => {
     // Set mounted flag
@@ -72,8 +73,12 @@ const PageLayout: React.FC<PropsWithChildren<PageLayoutProps>> = ({
       console.log('PageLayout mounted');
     }
     
+    // Prevent duplicate observer setup
+    if (didSetupObserver.current) return;
+    
     // Set up iframe doctype fixer with proper cleanup handling
     try {
+      didSetupObserver.current = true;
       const cleanupIframeObserver = setupIframeObserver();
       if (cleanupIframeObserver) {
         cleanupRef.current = cleanupIframeObserver;

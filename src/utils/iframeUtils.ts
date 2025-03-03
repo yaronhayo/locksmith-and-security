@@ -1,179 +1,211 @@
-
 /**
  * Fixes doctypes in iframes to prevent Quirks Mode
  * This is especially important for third-party iframes like DoubleClick
  */
-export const fixIframeDoctype = () => {
+export const fixIframeDoctype = (iframe: HTMLIFrameElement): void => {
   try {
-    // Use more defensive querySelector to avoid null issues
-    const iframes = document.querySelectorAll('iframe') || [];
+    if (!iframe || !iframe.contentDocument) return;
     
-    if (!iframes.length) {
-      return; // No iframes found, nothing to do
-    }
+    // Only fix if we have a valid contentDocument
+    const doc = iframe.contentDocument;
     
-    iframes.forEach(iframe => {
-      try {
-        // Guard against accessing properties that might not exist
-        if (!iframe || !iframe.contentDocument) {
-          return; // Skip this iframe
-        }
-        
-        // Check if document is in quirks mode
-        const isQuirksMode = iframe.contentDocument.compatMode === 'BackCompat';
-        
-        // If in quirks mode or missing doctype, add the proper DOCTYPE
-        if (isQuirksMode || !iframe.contentDocument.doctype) {
-          // Create a new doctype
-          const doctype = document.implementation.createDocumentType('html', '', '');
-          
-          // Only insert if the iframe document has nodes and doesn't have a doctype already
-          if (iframe.contentDocument.childNodes.length > 0 && !iframe.contentDocument.doctype) {
-            try {
-              // Check if first child exists before insertion
-              if (iframe.contentDocument.childNodes[0]) {
-                iframe.contentDocument.insertBefore(doctype, iframe.contentDocument.childNodes[0]);
-              } else {
-                iframe.contentDocument.appendChild(doctype);
-              }
-            } catch (insertError) {
-              // Silently fail - log only in development
-              if (import.meta.env.DEV) {
-                console.debug('Could not insert doctype into iframe', insertError);
-              }
-            }
-          }
-        }
-      } catch (e) {
-        // Skip CORS-restricted iframes - only log in development
-        if (import.meta.env.DEV) {
-          console.debug('Could not access iframe content due to CORS policy');
-        }
+    // If doctype is missing, inject it
+    if (!doc.doctype) {
+      const doctype = '<!DOCTYPE html>';
+      const html = doc.documentElement.outerHTML;
+      
+      // Only proceed if we have valid HTML content
+      if (html && html.trim()) {
+        // Write the new doctype + existing HTML
+        doc.open();
+        doc.write(doctype + html);
+        doc.close();
       }
-    });
-  } catch (error) {
-    console.error('Error fixing iframe doctypes:', error);
+    }
+  } catch (e) {
+    // Silent fail - don't break the app over iframe fixes
+    console.warn('Error fixing iframe doctype:', e);
   }
 };
 
 /**
- * Sets up a MutationObserver to fix doctypes in dynamically added iframes
- * Returns a cleanup function that safely handles observer disconnection
+ * Gets a safe reference to document.body with fallback
+ * @returns A safe document.body reference or null
  */
-export const setupIframeObserver = () => {
-  // Create a reference to the observer to allow proper cleanup
-  let observer = null;
-  let intervalId = null;
+const getSafeDocumentBody = (): HTMLElement | null => {
+  try {
+    if (document && document.body) {
+      return document.body;
+    }
+  } catch (e) {
+    console.warn('Error accessing document.body:', e);
+  }
+  return null;
+};
+
+/**
+ * Safely checks if an element exists in the DOM
+ * @param element The element to check
+ * @returns boolean indicating if element is in DOM
+ */
+const isElementInDOM = (element: Element | null): boolean => {
+  if (!element) return false;
   
   try {
-    // Set up observer for dynamically added iframes
-    observer = new MutationObserver((mutations) => {
-      let shouldFix = false;
-      
-      // Check if any iframe was added
-      mutations.forEach((mutation) => {
-        if (mutation.type === 'childList' && mutation.addedNodes.length) {
-          mutation.addedNodes.forEach(node => {
-            if (node.nodeName === 'IFRAME' || 
-                (node.nodeType === Node.ELEMENT_NODE && 
-                 node instanceof HTMLElement && 
-                 node.querySelector('iframe'))) {
-              shouldFix = true;
-            }
-          });
-        }
-      });
-      
-      // Only run fix if necessary
-      if (shouldFix) {
-        fixIframeDoctype();
-      }
-    });
-    
-    // Start observing the document with a more targeted approach
-    if (document.body) {
-      observer.observe(document.body, { 
-        childList: true, 
-        subtree: true,
-        attributes: false,
-        characterData: false
-      });
-      
-      // Run immediately
-      fixIframeDoctype();
-      
-      // For development only
-      if (import.meta.env.DEV) {
-        console.log("Iframe observer started");
-      }
-    } else {
-      // If body is not yet available, wait for it
-      const bodyCheckInterval = setInterval(() => {
-        if (document.body) {
-          clearInterval(bodyCheckInterval);
-          
-          observer.observe(document.body, { 
-            childList: true, 
-            subtree: true,
-            attributes: false,
-            characterData: false
-          });
-          
-          // Run immediately
-          fixIframeDoctype();
-          
-          if (import.meta.env.DEV) {
-            console.log("Iframe observer started (delayed)");
-          }
-        }
-      }, 100);
-      
-      // Clean up interval after max 5 seconds if body never becomes available
-      setTimeout(() => {
-        clearInterval(bodyCheckInterval);
-      }, 5000);
+    return document.contains(element);
+  } catch (e) {
+    console.warn('Error checking if element is in DOM:', e);
+    return false;
+  }
+};
+
+/**
+ * Safe mutation observer wrapper that handles errors
+ * @param callback The callback to execute
+ * @returns A safe callback function
+ */
+const createSafeObserverCallback = (
+  callback: (mutations: MutationRecord[]) => void
+) => {
+  return (mutations: MutationRecord[]): void => {
+    try {
+      callback(mutations);
+    } catch (e) {
+      console.warn('Error in mutation observer callback:', e);
+    }
+  };
+};
+
+/**
+ * Sets up an observer to fix iframes as they are added to the DOM
+ * @returns Cleanup function to disconnect the observer
+ */
+export const setupIframeObserver = (): (() => void) => {
+  let observer: MutationObserver | null = null;
+  let observerStartTimeout: number | null = null;
+  
+  const startObserver = () => {
+    // If body isn't available yet, retry later
+    const body = getSafeDocumentBody();
+    if (!body) {
+      // Retry soon but don't keep trying forever
+      observerStartTimeout = window.setTimeout(startObserver, 500);
+      return;
     }
     
-    // Use a less frequent interval for periodic checks
-    intervalId = setInterval(() => {
-      try {
-        fixIframeDoctype();
-      } catch (e) {
-        console.error("Error in iframe check interval:", e);
-        if (intervalId) {
-          clearInterval(intervalId);
-          intervalId = null;
-        }
-      }
-    }, 10000); // Check every 10 seconds instead of 5
-  } catch (error) {
-    console.error("Error setting up iframe observer:", error);
-  }
-  
-  // Return a cleanup function that safely handles observer disconnection
-  return () => {
+    // Create a safe mutation observer
     try {
-      if (observer) {
+      observer = new MutationObserver(
+        createSafeObserverCallback((mutations) => {
+          // Process only node additions
+          mutations.forEach((mutation) => {
+            if (mutation.type === 'childList') {
+              // Check added nodes for iframes
+              mutation.addedNodes.forEach((node) => {
+                // Handle direct iframe additions
+                if (node.nodeName === 'IFRAME') {
+                  fixIframeDoctype(node as HTMLIFrameElement);
+                }
+                
+                // Handle iframes nested inside added elements
+                if (node.nodeType === Node.ELEMENT_NODE) {
+                  try {
+                    const element = node as Element;
+                    const iframes = element.querySelectorAll('iframe');
+                    iframes.forEach((iframe) => {
+                      fixIframeDoctype(iframe);
+                    });
+                  } catch (e) {
+                    console.warn('Error processing nested iframes:', e);
+                  }
+                }
+              });
+            }
+          });
+        })
+      );
+      
+      // Start observing with a safer configuration
+      observer.observe(body, {
+        childList: true,
+        subtree: true,
+      });
+      
+      // Process any existing iframes
+      try {
+        const existingIframes = document.querySelectorAll('iframe');
+        existingIframes.forEach((iframe) => {
+          fixIframeDoctype(iframe);
+        });
+      } catch (e) {
+        console.warn('Error processing existing iframes:', e);
+      }
+      
+      if (import.meta.env.DEV) {
+        console.log('Iframe observer started successfully');
+      }
+    } catch (e) {
+      console.error('Failed to create iframe observer:', e);
+    }
+  };
+  
+  // Start the observer immediately
+  startObserver();
+  
+  // Return a cleanup function
+  return () => {
+    // Clear any pending timeout
+    if (observerStartTimeout !== null) {
+      clearTimeout(observerStartTimeout);
+      observerStartTimeout = null;
+    }
+    
+    // Disconnect the observer if it exists
+    if (observer) {
+      try {
         observer.disconnect();
         observer = null;
         
-        // For development only
         if (import.meta.env.DEV) {
-          console.log("Iframe observer disconnected");
+          console.log('Iframe observer cleaned up');
         }
+      } catch (e) {
+        console.warn('Error disconnecting iframe observer:', e);
       }
-      
-      if (intervalId) {
-        clearInterval(intervalId);
-        intervalId = null;
-        
-        // For development only
-        if (import.meta.env.DEV) {
-          console.log("Iframe check interval cleared");
-        }
-      }
-    } catch (error) {
-      console.error("Error cleaning up iframe observer:", error);
     }
   };
+};
+
+// Export additional iframe utilities for reuse
+export const safelyRemoveIframe = (iframe: HTMLIFrameElement | null): void => {
+  if (!iframe) return;
+  
+  try {
+    // First check if iframe is actually in the DOM
+    if (isElementInDOM(iframe)) {
+      // Clear the source to stop any active content
+      iframe.src = 'about:blank';
+      
+      // Only remove from DOM if it has a parent
+      if (iframe.parentNode) {
+        iframe.parentNode.removeChild(iframe);
+      }
+    }
+  } catch (e) {
+    console.warn('Error safely removing iframe:', e);
+  }
+};
+
+export const getIframeDocument = (
+  iframe: HTMLIFrameElement | null
+): Document | null => {
+  if (!iframe) return null;
+  
+  try {
+    return iframe.contentDocument || 
+      (iframe.contentWindow ? iframe.contentWindow.document : null);
+  } catch (e) {
+    console.warn('Error accessing iframe document:', e);
+    return null;
+  }
 };

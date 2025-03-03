@@ -2,7 +2,7 @@
 import { AlertCircle, RefreshCw } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useCallback } from "react";
 
 interface MapErrorProps {
   error: string;
@@ -12,6 +12,15 @@ interface MapErrorProps {
 const MapError = ({ error, resetErrorBoundary }: MapErrorProps) => {
   const hasLogged = useRef(false);
   const isMounted = useRef(true);
+  const retryTimeoutRef = useRef<number | null>(null);
+  
+  // Cleanup function for timeouts
+  const cleanupTimeouts = useCallback(() => {
+    if (retryTimeoutRef.current) {
+      clearTimeout(retryTimeoutRef.current);
+      retryTimeoutRef.current = null;
+    }
+  }, []);
   
   // Log error only once and handle component lifecycle
   useEffect(() => {
@@ -26,21 +35,31 @@ const MapError = ({ error, resetErrorBoundary }: MapErrorProps) => {
     return () => {
       isMounted.current = false;
       hasLogged.current = false;
+      cleanupTimeouts();
     };
-  }, [error]);
+  }, [error, cleanupTimeouts]);
 
-  // Safely handle retry
-  const handleRetry = () => {
+  // Safely handle retry with debounce protection
+  const handleRetry = useCallback(() => {
     if (!isMounted.current) return;
+    
+    // Clear any existing retry timeout
+    cleanupTimeouts();
     
     try {
       if (resetErrorBoundary) {
-        resetErrorBoundary();
+        // Debounce retry attempts to prevent rapid clicking issues
+        retryTimeoutRef.current = window.setTimeout(() => {
+          if (isMounted.current) {
+            resetErrorBoundary();
+          }
+          retryTimeoutRef.current = null;
+        }, 200);
       }
     } catch (e) {
       console.error("Error during map reset:", e);
     }
-  };
+  }, [resetErrorBoundary, cleanupTimeouts]);
 
   return (
     <div className="p-4 w-full">

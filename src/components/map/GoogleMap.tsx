@@ -53,6 +53,7 @@ const GoogleMap = ({
   const componentId = useRef(`map-${Math.random().toString(36).substring(2, 9)}`);
   const isMounted = useRef(true);
   const mapCheckTimeout = useRef<number | null>(null);
+  const retryTimeoutRef = useRef<number | null>(null);
   
   const {
     isLoading,
@@ -64,6 +65,19 @@ const GoogleMap = ({
     zoomOut,
     centerMap
   } = useGoogleMap(markers, highlightedMarker, showAllMarkers, zoom, center);
+  
+  // Cleanup function to prevent memory leaks
+  const cleanupTimeouts = () => {
+    if (mapCheckTimeout.current !== null) {
+      clearTimeout(mapCheckTimeout.current);
+      mapCheckTimeout.current = null;
+    }
+    
+    if (retryTimeoutRef.current !== null) {
+      clearTimeout(retryTimeoutRef.current);
+      retryTimeoutRef.current = null;
+    }
+  };
   
   useEffect(() => {
     // Set mounted flag
@@ -92,11 +106,8 @@ const GoogleMap = ({
     return () => {
       isMounted.current = false;
       
-      // Clear timeout to prevent memory leaks and post-unmount state updates
-      if (mapCheckTimeout.current !== null) {
-        clearTimeout(mapCheckTimeout.current);
-        mapCheckTimeout.current = null;
-      }
+      // Clear timeouts to prevent memory leaks and post-unmount state updates
+      cleanupTimeouts();
       
       if (import.meta.env.DEV) {
         console.log(`GoogleMap(${componentId.current}) unmounting`);
@@ -107,18 +118,31 @@ const GoogleMap = ({
   const handleRetry = () => {
     if (!isMounted.current) return;
     
+    // Clean up any existing timeouts
+    cleanupTimeouts();
+    
+    // Prevent multiple rapid retries
+    if (retryTimeoutRef.current) return;
+    
     if (import.meta.env.DEV) {
       console.log("Retrying map load...");
     }
     
-    setRetryCount(prev => prev + 1);
-    setMapInitFailed(false);
-    clearMapConfigCache();
-    
-    // Only show info toast in development
-    if (import.meta.env.DEV) {
-      toast.info("Retrying map load...");
-    }
+    // Use timeout to debounce retry attempts
+    retryTimeoutRef.current = window.setTimeout(() => {
+      if (isMounted.current) {
+        setRetryCount(prev => prev + 1);
+        setMapInitFailed(false);
+        clearMapConfigCache();
+        
+        // Only show info toast in development
+        if (import.meta.env.DEV) {
+          toast.info("Retrying map load...");
+        }
+      }
+      
+      retryTimeoutRef.current = null;
+    }, 300);
   };
   
   if (mapError || mapInitFailed) {

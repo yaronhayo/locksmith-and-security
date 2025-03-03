@@ -4,7 +4,7 @@ import GoogleMap from "@/components/map/GoogleMap";
 import { MapMarker } from "@/types/service-area";
 import { ErrorBoundary } from "react-error-boundary";
 import MapError from "@/components/map/MapError";
-import { memo, useState, useEffect, useCallback } from "react";
+import { memo, useState, useEffect, useCallback, useRef } from "react";
 import LoadingSpinner from "@/components/LoadingSpinner";
 import { trackComponentRender } from "@/utils/performanceMonitoring";
 
@@ -20,28 +20,63 @@ const ServiceAreaMap = ({ locationName, lat, lng, isLoading = false }: ServiceAr
   const [mapReady, setMapReady] = useState(false);
   const [mapError, setMapError] = useState<string | null>(null);
   const [retryCount, setRetryCount] = useState(0);
+  const isMounted = useRef(true);
   const mapInstanceKey = `map-instance-${retryCount}-${locationName.toLowerCase().replace(/\s+/g, '-')}`;
+  const readyTimeoutRef = useRef<number | null>(null);
+  const retryTimeoutRef = useRef<number | null>(null);
+  
+  // Cleanup function for timeouts
+  const cleanupTimeouts = useCallback(() => {
+    if (readyTimeoutRef.current !== null) {
+      clearTimeout(readyTimeoutRef.current);
+      readyTimeoutRef.current = null;
+    }
+    
+    if (retryTimeoutRef.current !== null) {
+      clearTimeout(retryTimeoutRef.current);
+      retryTimeoutRef.current = null;
+    }
+  }, []);
   
   useEffect(() => {
+    isMounted.current = true;
     finishRenderTracking();
     
     // Simulate map loading for better UX
-    const timer = setTimeout(() => {
-      setMapReady(true);
-    }, 800);
+    readyTimeoutRef.current = setTimeout(() => {
+      if (isMounted.current) {
+        setMapReady(true);
+      }
+    }, 600);
     
-    return () => clearTimeout(timer);
-  }, [finishRenderTracking]);
+    return () => {
+      isMounted.current = false;
+      cleanupTimeouts();
+    };
+  }, [finishRenderTracking, cleanupTimeouts]);
 
   const handleMapError = useCallback((error: Error) => {
+    if (!isMounted.current) return;
+    
     console.error("Service area map error:", error);
     setMapError(error.message || "Failed to load location map");
   }, []);
 
   const handleRetry = useCallback(() => {
+    if (!isMounted.current) return;
+    
+    // Prevent duplicate retries
+    if (retryTimeoutRef.current) return;
+    
     console.log("Retrying map load...");
-    setMapError(null);
-    setRetryCount(prev => prev + 1);
+    
+    retryTimeoutRef.current = window.setTimeout(() => {
+      if (isMounted.current) {
+        setMapError(null);
+        setRetryCount(prev => prev + 1);
+      }
+      retryTimeoutRef.current = null;
+    }, 300);
   }, []);
   
   const markers: MapMarker[] = [

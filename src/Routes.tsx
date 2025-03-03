@@ -1,6 +1,6 @@
 
 import { Routes as RouterRoutes, Route } from 'react-router-dom';
-import { Suspense, lazy, ReactNode, memo, useEffect } from "react";
+import { Suspense, lazy, ReactNode, memo, useEffect, useRef } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { mainRoutes } from "./routes/mainRoutes";
 import { serviceRoutes } from "./routes/serviceRoutes";
@@ -16,13 +16,39 @@ const NotFound = lazy(() => import('./pages/404'));
 /**
  * Wraps a route element in error boundary and suspense
  */
-const RouteWrapper = memo(({ element }: { element: ReactNode }) => (
-  <ErrorBoundary FallbackComponent={ErrorFallback}>
-    <Suspense fallback={<PageLoading type="skeleton" />}>
-      {element}
-    </Suspense>
-  </ErrorBoundary>
-));
+const RouteWrapper = memo(({ element }: { element: ReactNode }) => {
+  const isMounted = useRef(true);
+  
+  useEffect(() => {
+    isMounted.current = true;
+    return () => {
+      isMounted.current = false;
+    };
+  }, []);
+  
+  return (
+    <ErrorBoundary 
+      FallbackComponent={ErrorFallback}
+      onReset={() => {
+        // Only execute if still mounted
+        if (isMounted.current) {
+          // Clear loading state
+          document.body.classList.remove('loading');
+          
+          // Clear any Google Maps callback
+          if (window.initGoogleMaps) {
+            // @ts-ignore - Clean up callback
+            window.initGoogleMaps = undefined;
+          }
+        }
+      }}
+    >
+      <Suspense fallback={<PageLoading type="skeleton" />}>
+        {element}
+      </Suspense>
+    </ErrorBoundary>
+  );
+});
 
 RouteWrapper.displayName = 'RouteWrapper';
 
@@ -31,12 +57,25 @@ RouteWrapper.displayName = 'RouteWrapper';
  * Renders all application routes with error boundaries and suspense
  */
 const Routes = () => {
-  console.log('Routes component rendered');
+  const routeMountedRef = useRef(false);
   
   useEffect(() => {
     console.log('Routes mounted - checking for duplicate headers');
     const headers = document.querySelectorAll('header');
     console.log(`Found ${headers.length} header elements in the DOM`);
+    
+    // Set mounted flag and track initial mount
+    if (!routeMountedRef.current) {
+      routeMountedRef.current = true;
+      
+      // Remove loading class on mount
+      document.body.classList.remove('loading');
+    }
+    
+    return () => {
+      // This shouldn't happen normally, but just in case
+      console.log('Routes unmounting');
+    };
   }, []);
   
   // Map route data to Route components
