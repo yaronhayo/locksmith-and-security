@@ -41,8 +41,9 @@ export default defineConfig({
     include: ['react', 'react-dom', 'react-router-dom'],
     force: true,
   },
-  // Add better error handling
+  // Add better error handling and set port to 8080
   server: {
+    port: 8080,
     hmr: {
       overlay: true,
     },
