@@ -1,7 +1,6 @@
 
-import { createFAQSchema } from "@/components/meta/schema/FAQSchema";
-import { createLocationSchema } from "@/components/meta/schema/LocationSchema";
-import { createBreadcrumbSchema } from "@/components/meta/schema/BreadcrumbSchema";
+import { createBreadcrumbSchema } from "@/utils/schemaHelpers";
+import { createFAQSchema } from "@/utils/schemaHelpers";
 import { Location, Settings } from "@/types/service-area";
 
 export const createServiceAreaSchemas = (
@@ -11,23 +10,24 @@ export const createServiceAreaSchemas = (
 ) => {
   if (!location) return [];
 
-  const breadcrumbSchema = createBreadcrumbSchema({
-    breadcrumbs: [
-      { name: "Home", path: "/", item: "/" },
-      { name: "Service Areas", path: "/service-areas", item: "/service-areas" },
-      { name: location.name, path: `/service-areas/${areaSlug}`, item: `/service-areas/${areaSlug}` }
-    ],
-    baseUrl: "https://247locksmithandsecurity.com"
-  });
+  const breadcrumbSchema = createBreadcrumbSchema([
+    { name: "Home", url: "/" },
+    { name: "Service Areas", url: "/service-areas" },
+    { name: location.name, url: `/service-areas/${areaSlug}` }
+  ], "https://247locksmithandsecurity.com");
 
+  // Enhanced service schema with more structured data
   const serviceSchema = {
     type: 'Service',
     data: {
       "@context": "https://schema.org",
       "@type": "Service",
+      "@id": `https://247locksmithandsecurity.com/service-areas/${areaSlug}#service`,
       "name": `Locksmith Services in ${location.name}`,
+      "description": `Professional locksmith services in ${location.name}, NJ providing residential, commercial, and automotive solutions.`,
       "provider": {
         "@type": "LocalBusiness",
+        "@id": `https://247locksmithandsecurity.com/service-areas/${areaSlug}#localbusiness`,
         "name": settings?.company_name,
         "image": "/lovable-uploads/1bbeb1e6-5581-4e09-9600-7d1859bb17c5.png",
         "description": `Professional locksmith services in ${location.name}, NJ`,
@@ -51,59 +51,86 @@ export const createServiceAreaSchemas = (
         "@type": "ServiceChannel",
         "serviceUrl": `https://247locksmithandsecurity.com/service-areas/${areaSlug}`,
         "servicePhone": settings?.company_phone || "(201) 748-2070"
+      },
+      "offers": {
+        "@type": "Offer",
+        "availability": "https://schema.org/InStock",
+        "priceSpecification": {
+          "@type": "PriceSpecification",
+          "priceCurrency": "USD",
+          "price": "75.00",
+          "minPrice": "75.00"
+        }
       }
     }
   };
 
-  const locationSchema = createLocationSchema({
-    name: location.name,
-    description: location.description,
-    latitude: location.lat,
-    longitude: location.lng,
-    areaServed: location.name,
-    companyName: settings?.company_name || "Locksmith & Security LLC",
-    address: settings?.company_address || "",
-    phone: settings?.company_phone || ""
-  });
+  // Enhanced location schema
+  const locationSchema = {
+    type: 'Place',
+    data: {
+      "@context": "https://schema.org",
+      "@type": "Place",
+      "@id": `https://247locksmithandsecurity.com/service-areas/${areaSlug}#place`,
+      "name": `${location.name}, NJ`,
+      "description": location.description,
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": location.lat,
+        "longitude": location.lng
+      },
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": location.name,
+        "addressRegion": "NJ",
+        "addressCountry": "US"
+      },
+      "hasMap": `https://maps.google.com/?q=${location.lat},${location.lng}`
+    }
+  };
 
-  const faqSchema = createFAQSchema({
-    questions: [
-      {
-        question: `What locksmith services do you offer in ${location.name}?`,
-        answer: `We provide comprehensive locksmith services throughout ${location.name}, including residential locksmith services (lock installation, rekeying, repair), commercial locksmith services (master key systems, access control), and automotive locksmith services (car key replacement, programming, ignition repair).`
-      },
-      {
-        question: `How quickly can a locksmith arrive at my location in ${location.name}?`,
-        answer: `As a local locksmith service with technicians based in and around ${location.name}, we can typically arrive within 15-30 minutes to assist you. We prioritize emergency situations and aim to provide the fastest possible response.`
-      },
-      {
-        question: "Are your locksmith technicians licensed and insured?",
-        answer: "Yes, all our technicians are fully licensed, bonded, and insured professionals. We maintain all necessary certifications and stay up-to-date with the latest security technologies and techniques."
-      },
-      {
-        question: `What types of locks do you service in ${location.name}?`,
-        answer: `We service all types of locks in ${location.name}, including traditional deadbolts, smart locks, high-security locks, keyless entry systems, mortise locks, and padlocks. Our technicians are experienced with all major brands and lock types.`
-      },
-      {
-        question: `Do you offer emergency lockout services in ${location.name}?`,
-        answer: `Yes, we provide 24/7 emergency lockout services throughout ${location.name}. Whether you're locked out of your home, business, or vehicle, our emergency technicians can help you regain access quickly and safely.`
-      },
-      {
-        question: "Can you cut and program transponder keys and key fobs?",
-        answer: "Yes, we have the advanced equipment necessary to cut and program all types of transponder keys and key fobs for virtually all vehicle makes and models. Our automotive locksmith specialists are extensively trained in modern vehicle key technology."
-      },
-      {
-        question: `What areas of ${location.name} do you serve?`,
-        answer: `We provide locksmith services to all neighborhoods and districts throughout ${location.name}, NJ. Our local technicians are familiar with the area and can reach any location in ${location.name} efficiently.`
-      },
-      {
-        question: "What payment methods do you accept?",
-        answer: "We accept all major credit cards, cash, and contactless payment options. We can provide itemized receipts for all services performed."
-      }
-    ]
-  });
+  // Standard FAQ questions for all service areas
+  const faqQuestions = [
+    {
+      question: `What locksmith services do you offer in ${location.name}?`,
+      answer: `We provide comprehensive locksmith services throughout ${location.name}, including residential locksmith services (lock installation, rekeying, repair), commercial locksmith services (master key systems, access control), and automotive locksmith services (car key replacement, programming, ignition repair).`
+    },
+    {
+      question: `How quickly can a locksmith arrive at my location in ${location.name}?`,
+      answer: `As a local locksmith service with technicians based in and around ${location.name}, we can typically arrive within 15-30 minutes to assist you. We prioritize emergency situations and aim to provide the fastest possible response.`
+    },
+    {
+      question: "Are your locksmith technicians licensed and insured?",
+      answer: "Yes, all our technicians are fully licensed, bonded, and insured professionals. We maintain all necessary certifications and stay up-to-date with the latest security technologies and techniques."
+    },
+    {
+      question: `What types of locks do you service in ${location.name}?`,
+      answer: `We service all types of locks in ${location.name}, including traditional deadbolts, smart locks, high-security locks, keyless entry systems, mortise locks, and padlocks. Our technicians are experienced with all major brands and lock types.`
+    },
+    {
+      question: `Do you offer emergency lockout services in ${location.name}?`,
+      answer: `Yes, we provide 24/7 emergency lockout services throughout ${location.name}. Whether you're locked out of your home, business, or vehicle, our emergency technicians can help you regain access quickly and safely.`
+    },
+    {
+      question: "Can you cut and program transponder keys and key fobs?",
+      answer: "Yes, we have the advanced equipment necessary to cut and program all types of transponder keys and key fobs for virtually all vehicle makes and models. Our automotive locksmith specialists are extensively trained in modern vehicle key technology."
+    },
+    {
+      question: `What areas of ${location.name} do you serve?`,
+      answer: `We provide locksmith services to all neighborhoods and districts throughout ${location.name}, NJ. Our local technicians are familiar with the area and can reach any location in ${location.name} efficiently.`
+    },
+    {
+      question: "What payment methods do you accept?",
+      answer: "We accept all major credit cards, cash, and contactless payment options. We can provide itemized receipts for all services performed."
+    }
+  ];
 
-  // Add local business schema 
+  const faqSchema = {
+    type: 'FAQPage',
+    data: createFAQSchema(faqQuestions)
+  };
+
+  // Enhanced local business schema with more structured data
   const localBusinessSchema = {
     type: 'LocalBusiness',
     data: {
@@ -115,7 +142,10 @@ export const createServiceAreaSchemas = (
       "url": `https://247locksmithandsecurity.com/service-areas/${areaSlug}`,
       "telephone": settings?.company_phone || "(201) 748-2070",
       "priceRange": "$$",
-      "image": "/lovable-uploads/1bbeb1e6-5581-4e09-9600-7d1859bb17c5.png",
+      "image": [
+        "/lovable-uploads/1bbeb1e6-5581-4e09-9600-7d1859bb17c5.png"
+      ],
+      "logo": "/lovable-uploads/1bbeb1e6-5581-4e09-9600-7d1859bb17c5.png",
       "address": {
         "@type": "PostalAddress",
         "streetAddress": settings?.company_address || "",
@@ -144,7 +174,12 @@ export const createServiceAreaSchemas = (
           "longitude": location.lng
         },
         "geoRadius": "10000"
-      }
+      },
+      "sameAs": [
+        "https://www.facebook.com/247locksmithandsecurity/",
+        "https://twitter.com/247locksmiths",
+        "https://www.instagram.com/247locksmithandsecurity/"
+      ]
     }
   };
 

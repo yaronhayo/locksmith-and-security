@@ -7,7 +7,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { SchemaScripts } from '@/components/meta/SchemaScripts';
-import { createFAQSchema } from '@/components/meta/schema/FAQSchema';
+import { createFAQSchema } from '@/utils/schemaHelpers';
 
 export interface FAQItem {
   question: string;
@@ -26,12 +26,12 @@ const FAQAccordion = memo(({
   structuredData
 }: FAQAccordionProps) => {
   // Create FAQ schema if not provided via structuredData
-  const faqSchema = structuredData || createFAQSchema({ questions: faqs });
+  const faqSchema = structuredData || createFAQSchema(faqs);
   
   return (
     <>
       {includeSchema && faqSchema && (
-        <SchemaScripts schemas={[{ type: 'FAQPage', data: faqSchema.data || faqSchema }]} />
+        <SchemaScripts schemas={[{ type: 'FAQPage', data: faqSchema }]} />
       )}
       <div className="space-y-4">
         {faqs.map((faq, index) => (

@@ -4,9 +4,10 @@ import ReviewCard from "@/components/reviews/ReviewCard";
 import { useReviews } from "@/components/reviews/useReviews";
 import { motion, AnimatePresence } from "framer-motion";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { createReviewsSchema } from "@/schemas/reviewsSchema";
 import LoadingSpinner from "@/components/LoadingSpinner";
 import { allReviews } from "@/data/reviewsData";
+import { createReviewsSchema } from "@/utils/schemaHelpers";
+
 const ReviewsPage = () => {
   // We're using allReviews from our data file to ensure we have all 150 reviews
   const {
@@ -17,12 +18,46 @@ const ReviewsPage = () => {
     hasMore
   } = useReviews();
 
-  // Generate schema for reviews
-  const reviewsSchemaData = createReviewsSchema(displayedReviews);
-  const reviewsSchema = [{
-    type: "ReviewPage",
-    data: reviewsSchemaData
-  }];
+  // Generate optimized schema for reviews
+  const reviewsSchemaData = createReviewsSchema(displayedReviews, {
+    name: "Locksmith & Security LLC",
+    image: "/website-uploads/950b5c4c-f0b8-4d22-beb0-66a7d7554476.png",
+    priceRange: "$$",
+    address: {
+      city: "North Bergen",
+      region: "NJ",
+      country: "US"
+    }
+  });
+
+  // Schema data array for page
+  const schemaData = [
+    {
+      type: "ReviewPage",
+      data: reviewsSchemaData
+    },
+    {
+      type: "BreadcrumbList",
+      data: {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://247locksmithandsecurity.com/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Reviews",
+            "item": "https://247locksmithandsecurity.com/reviews"
+          }
+        ]
+      }
+    }
+  ];
 
   // Animation variants for reviews
   const containerVariants = {
@@ -50,7 +85,14 @@ const ReviewsPage = () => {
       }
     }
   };
-  return <PageLayout title="150+ Customer Reviews | Locksmith & Security LLC" description="Browse our extensive collection of 150+ authentic reviews from customers across all service areas about our wide range of locksmith services." heroTitle="Customer Testimonials" heroDescription="See what our clients have to say about our locksmith services across all areas and service types" schema={reviewsSchema} hideBreadcrumbs={false}>
+  return <PageLayout 
+    title="150+ Customer Reviews | Locksmith & Security LLC" 
+    description="Browse our extensive collection of 150+ authentic reviews from customers across all service areas about our wide range of locksmith services." 
+    heroTitle="Customer Testimonials" 
+    heroDescription="See what our clients have to say about our locksmith services across all areas and service types" 
+    schema={schemaData} 
+    hideBreadcrumbs={false}
+  >
       <div className="container mx-auto px-4 py-12">
         <div className="mb-10 text-center">
           <h2 className="text-3xl font-bold mb-4">Over 150 Five-Star Reviews</h2>
@@ -100,4 +142,5 @@ const ReviewsPage = () => {
       </div>
     </PageLayout>;
 };
+
 export default ReviewsPage;
