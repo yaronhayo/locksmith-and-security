@@ -11,9 +11,12 @@ interface MapErrorProps {
 
 const MapError = ({ error, resetErrorBoundary }: MapErrorProps) => {
   const hasLogged = useRef(false);
+  const isMounted = useRef(true);
   
-  // Log error only once
+  // Log error only once and handle component lifecycle
   useEffect(() => {
+    isMounted.current = true;
+    
     if (!hasLogged.current) {
       console.error('Map Error:', error);
       hasLogged.current = true;
@@ -21,12 +24,15 @@ const MapError = ({ error, resetErrorBoundary }: MapErrorProps) => {
     
     // Cleanup function - helps with safer component unmounting
     return () => {
+      isMounted.current = false;
       hasLogged.current = false;
     };
   }, [error]);
 
   // Safely handle retry
   const handleRetry = () => {
+    if (!isMounted.current) return;
+    
     try {
       if (resetErrorBoundary) {
         resetErrorBoundary();

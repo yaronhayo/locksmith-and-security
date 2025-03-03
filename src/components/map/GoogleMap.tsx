@@ -52,6 +52,7 @@ const GoogleMap = ({
   const [mapInitFailed, setMapInitFailed] = useState(false);
   const componentId = useRef(`map-${Math.random().toString(36).substring(2, 9)}`);
   const isMounted = useRef(true);
+  const mapCheckTimeout = useRef<number | null>(null);
   
   const {
     isLoading,
@@ -73,7 +74,8 @@ const GoogleMap = ({
     }
     
     // If Google Maps fails to initialize completely, show a toast and set error state
-    const checkMapStatus = setTimeout(() => {
+    // Use ref for timeout to properly clean up
+    mapCheckTimeout.current = window.setTimeout(() => {
       if (!isMounted.current) return;
       
       if (window.google && (!window.google.maps || !window.google.maps.Map)) {
@@ -89,7 +91,12 @@ const GoogleMap = ({
     
     return () => {
       isMounted.current = false;
-      clearTimeout(checkMapStatus);
+      
+      // Clear timeout to prevent memory leaks and post-unmount state updates
+      if (mapCheckTimeout.current !== null) {
+        clearTimeout(mapCheckTimeout.current);
+        mapCheckTimeout.current = null;
+      }
       
       if (import.meta.env.DEV) {
         console.log(`GoogleMap(${componentId.current}) unmounting`);
@@ -129,22 +136,24 @@ const GoogleMap = ({
         </div>
       )}
       <div className={`w-full h-full ${isLoading ? 'opacity-0' : 'opacity-100'} transition-opacity duration-300`}>
-        <GoogleMapComponent
-          mapContainerStyle={containerStyle}
-          center={center}
-          zoom={zoom}
-          options={mapOptions}
-          onClick={onClick}
-          onLoad={onLoadCallback}
-          onUnmount={onUnmountCallback}
-        >
-          {!isLoading && visibleMarkers.length > 0 && (
-            <MapMarkers
-              markers={visibleMarkers}
-              hoveredMarker={highlightedMarker}
-            />
-          )}
-        </GoogleMapComponent>
+        {!isLoading && (
+          <GoogleMapComponent
+            mapContainerStyle={containerStyle}
+            center={center}
+            zoom={zoom}
+            options={mapOptions}
+            onClick={onClick}
+            onLoad={onLoadCallback}
+            onUnmount={onUnmountCallback}
+          >
+            {!isLoading && visibleMarkers.length > 0 && (
+              <MapMarkers
+                markers={visibleMarkers}
+                hoveredMarker={highlightedMarker}
+              />
+            )}
+          </GoogleMapComponent>
+        )}
         
         <MapControls 
           onZoomIn={zoomIn}

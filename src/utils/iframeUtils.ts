@@ -30,7 +30,12 @@ export const fixIframeDoctype = () => {
           // Only insert if the iframe document has nodes and doesn't have a doctype already
           if (iframe.contentDocument.childNodes.length > 0 && !iframe.contentDocument.doctype) {
             try {
-              iframe.contentDocument.insertBefore(doctype, iframe.contentDocument.childNodes[0]);
+              // Check if first child exists before insertion
+              if (iframe.contentDocument.childNodes[0]) {
+                iframe.contentDocument.insertBefore(doctype, iframe.contentDocument.childNodes[0]);
+              } else {
+                iframe.contentDocument.appendChild(doctype);
+              }
             } catch (insertError) {
               // Silently fail - log only in development
               if (import.meta.env.DEV) {
@@ -101,6 +106,32 @@ export const setupIframeObserver = () => {
       if (import.meta.env.DEV) {
         console.log("Iframe observer started");
       }
+    } else {
+      // If body is not yet available, wait for it
+      const bodyCheckInterval = setInterval(() => {
+        if (document.body) {
+          clearInterval(bodyCheckInterval);
+          
+          observer.observe(document.body, { 
+            childList: true, 
+            subtree: true,
+            attributes: false,
+            characterData: false
+          });
+          
+          // Run immediately
+          fixIframeDoctype();
+          
+          if (import.meta.env.DEV) {
+            console.log("Iframe observer started (delayed)");
+          }
+        }
+      }, 100);
+      
+      // Clean up interval after max 5 seconds if body never becomes available
+      setTimeout(() => {
+        clearInterval(bodyCheckInterval);
+      }, 5000);
     }
     
     // Use a less frequent interval for periodic checks

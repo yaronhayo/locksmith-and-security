@@ -75,7 +75,9 @@ const PageLayout: React.FC<PropsWithChildren<PageLayoutProps>> = ({
     // Set up iframe doctype fixer with proper cleanup handling
     try {
       const cleanupIframeObserver = setupIframeObserver();
-      cleanupRef.current = cleanupIframeObserver;
+      if (cleanupIframeObserver) {
+        cleanupRef.current = cleanupIframeObserver;
+      }
     } catch (error) {
       console.error("Error setting up iframe observer:", error);
     }

@@ -12,17 +12,23 @@ const ErrorFallback = ({ error, resetErrorBoundary }: ErrorFallbackProps) => {
   // Log the error to console for debugging
   console.error("Caught error:", error);
   
-  // Ref to track cleanup state
+  // Refs to track component state
   const hasCleanedUp = useRef(false);
+  const isMounted = useRef(true);
   
   // Clean up any hanging resources when an error occurs
   useEffect(() => {
+    // Set mounted flag
+    isMounted.current = true;
+    
     // Prevent multiple cleanups
     if (hasCleanedUp.current) return;
     hasCleanedUp.current = true;
     
     // Clean up any DOM resources that might be causing issues
     const cleanupDom = () => {
+      if (!isMounted.current) return;
+      
       try {
         // Target specific elements that might cause issues
         
@@ -59,15 +65,20 @@ const ErrorFallback = ({ error, resetErrorBoundary }: ErrorFallbackProps) => {
           window.initGoogleMaps = undefined;
         }
         
-        // 4. Remove any dangling event listeners on body
+        // 4. Remove any dangling event listeners on body - SAFER approach
         try {
-          const newBody = document.body.cloneNode(true);
           const oldBody = document.body;
-          if (oldBody.parentNode) {
-            oldBody.parentNode.replaceChild(newBody, oldBody);
+          if (oldBody) {
+            // Create a safe clone without event listeners
+            const newBody = oldBody.cloneNode(true) as HTMLBodyElement;
+            
+            // Only replace if parent exists and we're still mounted
+            if (oldBody.parentNode && isMounted.current) {
+              oldBody.parentNode.replaceChild(newBody, oldBody);
+            }
           }
         } catch (e) {
-          console.debug("Error replacing body:", e);
+          console.debug("Error safely replacing body:", e);
         }
       } catch (e) {
         console.error("Error during DOM cleanup:", e);
@@ -78,6 +89,9 @@ const ErrorFallback = ({ error, resetErrorBoundary }: ErrorFallbackProps) => {
     cleanupDom();
     
     return () => {
+      // Mark component as unmounted
+      isMounted.current = false;
+      
       // Additional cleanup when error boundary unmounts
       try {
         if (window.initGoogleMaps) {
@@ -102,6 +116,8 @@ const ErrorFallback = ({ error, resetErrorBoundary }: ErrorFallbackProps) => {
       {resetErrorBoundary && (
         <Button 
           onClick={() => {
+            if (!isMounted.current) return;
+            
             // Do some cleanup before resetting
             try {
               // Clear any class on body that might be causing issues
