@@ -37,6 +37,10 @@ const GoogleMapsProvider: React.FC<GoogleMapsProviderProps> = ({
       window.initGoogleMaps = undefined;
     }
 
+    // Log domain information for API key debugging
+    console.log("Loading Google Maps API on domain:", window.location.hostname);
+    console.log("Google Maps API key starts with:", effectiveApiKey.substring(0, 5) + "...");
+
     // Load Google Maps API
     const script = document.createElement("script");
     script.src = `https://maps.googleapis.com/maps/api/js?key=${effectiveApiKey}&libraries=places&callback=initGoogleMaps`;
@@ -50,10 +54,14 @@ const GoogleMapsProvider: React.FC<GoogleMapsProviderProps> = ({
     };
     
     // Handle error
-    script.onerror = () => {
-      console.error("Error loading Google Maps API");
+    script.onerror = (e) => {
+      console.error("Error loading Google Maps API:", e);
       setHasError(true);
       toast.error("Failed to load Google Maps API");
+      
+      // Additional error logging for domain-specific issues
+      console.error("Google Maps API failed to load. Check if the API key is restricted to specific domains in Google Cloud Console.");
+      console.error("Current domain:", window.location.hostname);
     };
 
     document.head.appendChild(script);
@@ -76,6 +84,7 @@ const GoogleMapsProvider: React.FC<GoogleMapsProviderProps> = ({
       <div className="p-4 bg-red-50 text-red-700 rounded">
         <p>There was an error loading the Google Maps API.</p>
         <p>Please check your internet connection and try refreshing the page.</p>
+        <p className="text-sm mt-2">If you're accessing this site on a custom domain, please ensure the Google Maps API key is configured for this domain.</p>
       </div>
     );
   }
