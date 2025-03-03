@@ -19,6 +19,9 @@ const isValidApiKey = (key: string) => {
   return typeof key === 'string' && key.length > 20;
 };
 
+// Hard-coded fallback API key as absolute last resort
+const FALLBACK_API_KEY = "AIzaSyD_lT8RmSAMEHUlTEgNIxHhLGGUMdLtFiE";
+
 // Hook to get Google Maps API key
 export const useMapConfig = () => {
   return useQuery({
@@ -89,14 +92,17 @@ export const useMapConfig = () => {
         
         // Fall back to hardcoded key as absolute last resort (for development only)
         console.warn("No valid Google Maps API key found in settings, using fallback");
-        return "AIzaSyD_lT8RmSAMEHUlTEgNIxHhLGGUMdLtFiE"; // Fallback key
+        return FALLBACK_API_KEY;
       } catch (err) {
         console.error("Error in API key fetch:", err);
         // Fall back to hardcoded key only in case of error
-        return "AIzaSyD_lT8RmSAMEHUlTEgNIxHhLGGUMdLtFiE"; // Fallback key
+        return FALLBACK_API_KEY;
       }
     },
     staleTime: 3600000, // 1 hour cache
+    gcTime: 7200000, // 2 hours in garbage collection
+    retry: 2, // Retry twice before failing
+    retryDelay: 1000, // 1 second between retries
     meta: {
       onError: (error: Error) => {
         console.error('Error fetching Google Maps API key:', error.message);
@@ -142,6 +148,10 @@ export const useMap = () => {
         return []; // Return empty array instead of throwing
       }
     },
+    staleTime: 300000, // 5 minutes cache
+    gcTime: 3600000, // 1 hour in garbage collection
+    retry: 2, // Retry twice before failing
+    retryDelay: 1000, // 1 second between retries
     meta: {
       onError: (error: Error) => {
         console.error('Error fetching map locations:', error.message);

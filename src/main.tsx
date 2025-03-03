@@ -7,12 +7,16 @@ import './index.css'
 import { setupIframeObserver } from './utils/iframeUtils'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
-// Create a new QueryClient instance with more robust error handling
+// Create a new QueryClient instance with more robust error handling and timeouts
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       refetchOnWindowFocus: false,
       retry: 1,
+      staleTime: 1000 * 60 * 5, // 5 minutes
+      gcTime: 1000 * 60 * 10, // 10 minutes
+      // Set reasonable timeouts to prevent hanging requests
+      retryDelay: attempt => Math.min(1000 * 2 ** attempt, 30000),
       meta: {
         onError: (error: Error) => {
           console.error('Query error:', error);
@@ -125,6 +129,12 @@ window.addEventListener('beforeunload', () => {
   }
 });
 
+// Add global timeout handler for the entire application
+let globalAppTimeout = setTimeout(() => {
+  console.error('Application initialization timeout - 15 seconds elapsed without completing initialization');
+  renderErrorUI("Timeout exceeded. The application took too long to initialize.");
+}, 15000);
+
 // Enhanced function to load React from CDN as a fallback
 const loadReactFromCDN = () => {
   console.warn('Loading React from CDN as fallback');
@@ -233,6 +243,9 @@ async function mountApp() {
       );
       
       console.info('App rendered successfully');
+      
+      // Clear the global timeout as we've successfully rendered
+      clearTimeout(globalAppTimeout);
     } catch (renderError) {
       console.error('Error rendering React app:', renderError);
       renderErrorUI(renderError instanceof Error ? renderError.message : "Failed to render application");
@@ -248,10 +261,13 @@ console.log('Initializing application...');
 mountApp().catch(error => {
   console.error('Unhandled error in mountApp:', error);
   renderErrorUI(error instanceof Error ? error.message : "Failed during application initialization");
+}).finally(() => {
+  // Clear the global timeout as the promise has settled
+  clearTimeout(globalAppTimeout);
 });
 
 // Add a failsafe timeout to detect if the app doesn't render at all
-setTimeout(() => {
+let renderTimeout = setTimeout(() => {
   const rootElement = document.getElementById('root');
   if (rootElement && 
       (rootElement.innerHTML.trim() === '' || 
@@ -261,7 +277,23 @@ setTimeout(() => {
   }
 }, 10000); // 10 second timeout
 
+// Clear the render timeout when the window loads
+window.addEventListener('load', () => {
+  clearTimeout(renderTimeout);
+});
+
 // Expose React to window for debugging
 if (typeof window !== 'undefined') {
   window.React = React;
 }
+
+// Add visual loading indicator that gets removed when page is ready
+document.body.classList.add('loading');
+window.addEventListener('load', () => {
+  document.body.classList.remove('loading');
+});
+
+// Add a final fallback timeout to remove loading state no matter what
+setTimeout(() => {
+  document.body.classList.remove('loading');
+}, 20000);
