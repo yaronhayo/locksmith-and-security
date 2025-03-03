@@ -9,7 +9,12 @@
  */
 export const addDocTypeToIframe = (iframe: HTMLIFrameElement): void => {
   try {
-    if (iframe.contentDocument && !iframe.contentDocument.doctype) {
+    if (!iframe.contentDocument) {
+      // If contentDocument is null or undefined (due to CORS), just return
+      return;
+    }
+    
+    if (!iframe.contentDocument.doctype) {
       const doctype = document.implementation.createDocumentType('html', '', '');
       if (iframe.contentDocument.childNodes.length > 0) {
         iframe.contentDocument.insertBefore(doctype, iframe.contentDocument.childNodes[0]);
@@ -33,7 +38,14 @@ export const setupIframeDocTypeFixer = (): () => void => {
     try {
       const iframes = document.querySelectorAll('iframe');
       iframes.forEach((iframe) => {
-        addDocTypeToIframe(iframe);
+        if (iframe instanceof HTMLIFrameElement) {
+          addDocTypeToIframe(iframe);
+          
+          // Also try to set sandbox attributes to ensure iframes work properly
+          if (!iframe.hasAttribute('sandbox') && !iframe.src.includes('recaptcha')) {
+            iframe.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-forms allow-popups');
+          }
+        }
       });
     } catch (error) {
       console.error('Error fixing iframes:', error);
@@ -70,16 +82,21 @@ export const setupIframeDocTypeFixer = (): () => void => {
       childList: true,
       subtree: true,
     });
+    
+    // Also run a periodic check just to be safe
+    const interval = setInterval(fixIframes, 5000);
+    
+    // Return enhanced cleanup function
+    return () => {
+      if (observer) {
+        observer.disconnect();
+      }
+      clearInterval(interval);
+    };
   } catch (error) {
     console.error('Error setting up iframe observer:', error);
+    return () => {}; // Return a no-op function if setup fails
   }
-
-  // Return cleanup function
-  return () => {
-    if (observer) {
-      observer.disconnect();
-    }
-  };
 };
 
 /**

@@ -62,6 +62,25 @@
     <style>
       /* Fallback for Google reCAPTCHA stylesheets in case they fail to load */
       .grecaptcha-badge { visibility: hidden; }
+      
+      /* Ensure minimal visible content even if CSS fails to load */
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+      }
+      #root {
+        min-height: 100vh;
+      }
+      /* Fallback loading state if app fails to mount */
+      .loading-fallback {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        text-align: center;
+        padding: 20px;
+      }
     </style>
 
     <!-- Schema.org markup -->
@@ -145,13 +164,73 @@
     <link rel="preconnect" href="https://www.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://maps.googleapis.com" crossorigin>
     <link rel="preconnect" href="https://mtbgayqzjrxjjmsjikcg.supabase.co" crossorigin>
+    
+    <!-- Inline script to detect and handle render failures -->
+    <script>
+      // Set a timeout to show a fallback UI if the application doesn't render in time
+      window.renderTimeoutId = setTimeout(function() {
+        var root = document.getElementById('root');
+        if (root && (!root.childNodes.length || root.innerHTML.trim() === '')) {
+          console.error('Application failed to render within timeout period');
+          root.innerHTML = `
+            <div style="padding: 20px; font-family: system-ui, -apple-system, sans-serif; text-align: center;">
+              <h1 style="color: #e63946;">Loading Application</h1>
+              <p>The application is taking longer than expected to load.</p>
+              <p>If it doesn't appear in a few seconds, please try refreshing the page.</p>
+              <button onclick="window.location.reload()" style="padding: 8px 16px; background: #457b9d; color: white; border: none; border-radius: 4px; cursor: pointer; margin-top: 16px;">
+                Refresh Page
+              </button>
+            </div>
+          `;
+        }
+      }, 8000);
+
+      // Function to handle critical errors
+      window.handleCriticalError = function(error) {
+        console.error('Critical error caught:', error);
+        var root = document.getElementById('root');
+        if (root) {
+          root.innerHTML = `
+            <div style="padding: 20px; font-family: system-ui, -apple-system, sans-serif; text-align: center;">
+              <h1 style="color: #e63946;">Something went wrong</h1>
+              <p>${error?.message || 'An unexpected error occurred.'}</p>
+              <p>We're having trouble loading the application. Please try refreshing the page.</p>
+              <button onclick="window.location.reload()" style="padding: 8px 16px; background: #457b9d; color: white; border: none; border-radius: 4px; cursor: pointer; margin-top: 16px;">
+                Refresh Page
+              </button>
+            </div>
+          `;
+        }
+      };
+
+      // Global error handlers
+      window.addEventListener('error', function(event) {
+        window.handleCriticalError(event.error);
+        event.preventDefault();
+      });
+
+      window.addEventListener('unhandledrejection', function(event) {
+        window.handleCriticalError(event.reason);
+        event.preventDefault();
+      });
+    </script>
   </head>
   <body>
     <!-- Google Tag Manager (noscript) -->
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MNWHJSS6"
     height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     
-    <div id="root"></div>
+    <!-- Root element where React will mount -->
+    <div id="root">
+      <!-- Initial loading state that will be replaced by React -->
+      <div class="loading-fallback">
+        <div>
+          <h2>Loading Locksmith & Security Services...</h2>
+          <p>Please wait while we prepare our services for you.</p>
+        </div>
+      </div>
+    </div>
+    
     <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
     <script type="module" src="/src/main.tsx"></script>
     
@@ -159,6 +238,11 @@
     <script>
       // Ensure all iframes from doubleclick and other third-party services have proper DOCTYPE
       document.addEventListener('DOMContentLoaded', function() {
+        // Clear the render timeout once the DOM is fully loaded
+        if (window.renderTimeoutId) {
+          clearTimeout(window.renderTimeoutId);
+        }
+        
         // Function to inject proper DOCTYPE into iframes
         const fixIframeDoctype = () => {
           const iframes = document.querySelectorAll('iframe');

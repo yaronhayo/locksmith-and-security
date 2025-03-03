@@ -8,25 +8,36 @@
   from = "/*"
   to = "/index.html"
   status = 200
+  force = true
 
 # Enable HTTP/2 Server Push
 [[headers]]
   for = "/*"
     [headers.values]
     Link = "</assets/index-*.js>; rel=preload; as=script, </assets/index-*.css>; rel=preload; as=style"
+    Access-Control-Allow-Origin = "*"
+    Access-Control-Allow-Methods = "GET, POST, OPTIONS"
+    Access-Control-Allow-Headers = "*"
 
 # Security headers
 [[headers]]
   for = "/*"
     [headers.values]
-    X-Frame-Options = "DENY"
+    X-Frame-Options = "SAMEORIGIN"
     X-XSS-Protection = "1; mode=block"
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
-    Content-Security-Policy = "upgrade-insecure-requests"
+    Content-Security-Policy = "upgrade-insecure-requests; frame-ancestors 'self'"
     
 # Cache control for assets
 [[headers]]
   for = "/assets/*"
     [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
+
+[build.environment]
+  NODE_VERSION = "18"
+
+# Ensures SPA routing works properly
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
