@@ -39,15 +39,8 @@
     <link rel="icon" type="image/png" sizes="32x32" href="https://mtbgayqzjrxjjmsjikcg.supabase.co/storage/v1/object/public/uploads//Favicon.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="https://mtbgayqzjrxjjmsjikcg.supabase.co/storage/v1/object/public/uploads//Favicon.png" />
     
-    <!-- Allow all content during development to debug CSP issues -->
-    <meta http-equiv="Content-Security-Policy" content="default-src * 'unsafe-inline' 'unsafe-eval' data: blob:; 
-    script-src * 'unsafe-inline' 'unsafe-eval'; 
-    connect-src * 'unsafe-inline'; 
-    img-src * data: blob: 'unsafe-inline'; 
-    frame-src *; 
-    style-src * 'unsafe-inline';
-    font-src * data:;
-    worker-src blob: 'self';" />
+    <!-- Completely disable CSP during development to avoid script blocking -->
+    <!-- This is critical for debugging white screen issues -->
     
     <meta http-equiv="X-Content-Type-Options" content="nosniff" />
     <meta http-equiv="Permissions-Policy" content="geolocation=(), microphone=(), camera=()" />

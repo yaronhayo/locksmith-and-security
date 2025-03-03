@@ -69,7 +69,7 @@ const checkForCSPIssues = () => {
     document.head.appendChild(testScript);
     
     // Check if our script executed (would fail with CSP restrictions)
-    if (window._cspTest !== true) {
+    if ((window as any)._cspTest !== true) {
       console.warn('CSP might be blocking inline scripts');
     }
     
@@ -102,11 +102,11 @@ const checkForCSPIssues = () => {
 
 // Initialize hasRendered property
 if (typeof window !== 'undefined') {
-  window.hasRendered = false;
+  (window as any).hasRendered = false;
   
   // Add CSP error detection to window object
-  window.cspErrors = [];
-  window._cspTest = false;
+  (window as any).cspErrors = [];
+  (window as any)._cspTest = false;
 }
 
 // Add global error handler to log any unhandled errors
@@ -114,8 +114,8 @@ if (typeof window !== 'undefined') {
   window.addEventListener('error', (event) => {
     // Check if this is a CSP error
     if (event.message && event.message.includes('Content Security Policy')) {
-      window.cspErrors = window.cspErrors || [];
-      window.cspErrors.push({
+      (window as any).cspErrors = (window as any).cspErrors || [];
+      (window as any).cspErrors.push({
         message: event.message,
         source: event.filename,
         timestamp: new Date().toISOString()
@@ -138,8 +138,8 @@ if (typeof window !== 'undefined') {
       sample: event.sample
     });
     
-    window.cspErrors = window.cspErrors || [];
-    window.cspErrors.push({
+    (window as any).cspErrors = (window as any).cspErrors || [];
+    (window as any).cspErrors.push({
       directive: event.violatedDirective,
       blockedURI: event.blockedURI,
       timestamp: new Date().toISOString()
@@ -157,12 +157,12 @@ if (typeof window !== 'undefined') {
   
   // Try to detect if we're in a white screen situation
   setTimeout(() => {
-    if (window.hasRendered === false) {
+    if ((window as any).hasRendered === false) {
       console.error('Potential white screen detected - application did not render within 5 seconds');
       
       // Check if we have CSP errors
-      if (window.cspErrors && window.cspErrors.length > 0) {
-        console.error('CSP errors detected:', window.cspErrors);
+      if ((window as any).cspErrors && (window as any).cspErrors.length > 0) {
+        console.error('CSP errors detected:', (window as any).cspErrors);
       }
       
       // Try to render a basic message if possible
@@ -176,7 +176,7 @@ if (typeof window !== 'undefined') {
             <button style="background: #2563EB; color: white; padding: 0.5rem 1rem; border: none; border-radius: 0.25rem; cursor: pointer;" onclick="location.reload()">Reload Page</button>
             <p style="margin-top: 1rem; font-size: 0.75rem; color: #6B7280;">Technical info: ${window.location.toString()}</p>
             <p style="margin-top: 0.5rem; font-size: 0.75rem; color: #6B7280;">CSP issues may prevent scripts from loading. Check console for details.</p>
-            ${window.cspErrors && window.cspErrors.length ? `<p style="color: red; font-size: 0.8rem;">CSP blocked: ${window.cspErrors.map(e => e.blockedURI || e.message).join(', ')}</p>` : ''}
+            ${(window as any).cspErrors && (window as any).cspErrors.length ? `<p style="color: red; font-size: 0.8rem;">CSP blocked: ${(window as any).cspErrors.map((e: any) => e.blockedURI || e.message).join(', ')}</p>` : ''}
           </div>
         `;
       }
@@ -220,21 +220,23 @@ const renderApp = () => {
     
     console.log('Application rendered successfully');
     if (typeof window !== 'undefined') {
-      window.hasRendered = true;
+      (window as any).hasRendered = true;
     }
   } catch (error) {
     logError(error, 'Failed to render application');
     
     // Attempt to render a minimal error message if regular rendering fails
-    rootElement.innerHTML = `
-      <div style="display: flex; flex-direction: column; align-items: center; justify-center; height: 100vh; font-family: system-ui, sans-serif;">
-        <h1 style="color: #E11D48; margin-bottom: 1rem;">Application Error</h1>
-        <p style="margin-bottom: 1rem;">We're sorry, but something went wrong.</p>
-        <p style="margin-bottom: 1rem; font-size: 0.875rem; color: #6B7280;">Technical details: ${error instanceof Error ? error.message : 'Unknown error'}</p>
-        <button style="background: #2563EB; color: white; padding: 0.5rem 1rem; border: none; border-radius: 0.25rem; cursor: pointer;" onclick="location.reload()">Reload Page</button>
-        <p style="margin-top: 1rem; font-size: 0.75rem; color: #6B7280;">URL: ${window.location.toString()}</p>
-      </div>
-    `;
+    if (rootElement) {
+      rootElement.innerHTML = `
+        <div style="display: flex; flex-direction: column; align-items: center; justify-center; height: 100vh; font-family: system-ui, sans-serif;">
+          <h1 style="color: #E11D48; margin-bottom: 1rem;">Application Error</h1>
+          <p style="margin-bottom: 1rem;">We're sorry, but something went wrong.</p>
+          <p style="margin-bottom: 1rem; font-size: 0.875rem; color: #6B7280;">Technical details: ${error instanceof Error ? error.message : 'Unknown error'}</p>
+          <button style="background: #2563EB; color: white; padding: 0.5rem 1rem; border: none; border-radius: 0.25rem; cursor: pointer;" onclick="location.reload()">Reload Page</button>
+          <p style="margin-top: 1rem; font-size: 0.75rem; color: #6B7280;">URL: ${window.location.toString()}</p>
+        </div>
+      `;
+    }
   }
 };
 
@@ -250,16 +252,16 @@ if (document.readyState === 'loading') {
 // Fix TypeScript errors by adding these declarations to the window object
 declare global {
   interface Window {
-    hasRendered: boolean;
-    _cspTest: boolean;
-    cspErrors: Array<{
+    hasRendered?: boolean;
+    _cspTest?: boolean;
+    cspErrors?: Array<{
       message?: string;
       directive?: string;
       blockedURI?: string;
       source?: string;
       timestamp: string;
     }>;
-    dataLayer: any[];
-    clarity: any;
+    dataLayer?: any[];
+    clarity?: any;
   }
 }
