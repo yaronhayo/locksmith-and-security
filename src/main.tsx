@@ -63,38 +63,37 @@ const logError = (error: any, info: string) => {
 // Check for common CSP issues
 const checkForCSPIssues = () => {
   try {
-    // Create a test script element to see if inline scripts are allowed
-    const testScript = document.createElement('script');
-    testScript.textContent = 'window._cspTest = true;';
-    document.head.appendChild(testScript);
-    
-    // Check if our script executed (would fail with CSP restrictions)
-    if ((window as any)._cspTest !== true) {
-      console.warn('CSP might be blocking inline scripts');
-    }
-    
-    // Test external script loading
-    const externalScriptUrls = [
-      'https://www.googletagmanager.com/gtm.js',
-      'https://www.clarity.ms/tag',
-      'https://cdn.gpteng.co/gptengineer.js'
-    ];
-    
-    externalScriptUrls.forEach(url => {
-      const scriptTest = document.createElement('script');
-      scriptTest.src = url;
-      scriptTest.async = true;
+    // Attempt to load known external scripts that might be blocked by CSP
+    const testScriptGoogle = document.createElement('script');
+    testScriptGoogle.src = 'https://www.googletagmanager.com/gtm.js';
+    testScriptGoogle.async = true;
+    testScriptGoogle.onerror = (e) => {
+      console.error('Failed to load Google Tag Manager. CSP might be blocking it.', e);
+      toast.error('Failed to load Google Tag Manager. Check browser console for details.');
       
-      scriptTest.onerror = () => {
-        console.error(`CSP might be blocking external script: ${url}`);
-        toast.error(`Failed to load script from ${new URL(url).hostname}. Check CSP.`);
-      };
-      
-      document.head.appendChild(scriptTest);
-      // Remove test script after checking
-      setTimeout(() => document.head.removeChild(scriptTest), 1000);
-    });
+      // Record this error
+      (window as any).cspErrors = (window as any).cspErrors || [];
+      (window as any).cspErrors.push({
+        source: 'www.googletagmanager.com',
+        message: 'Failed to load script',
+        timestamp: new Date().toISOString()
+      });
+    };
     
+    testScriptGoogle.onload = () => {
+      console.log('Google Tag Manager script loaded successfully');
+    };
+    
+    document.head.appendChild(testScriptGoogle);
+    
+    // Check if dataLayer exists and is functioning
+    setTimeout(() => {
+      if (!(window as any).dataLayer) {
+        console.warn('dataLayer not found after 1 second - GTM might not be loading properly');
+      } else {
+        console.log('dataLayer is present:', (window as any).dataLayer);
+      }
+    }, 1000);
   } catch (error) {
     console.error('Error while checking for CSP issues:', error);
   }
@@ -121,12 +120,14 @@ if (typeof window !== 'undefined') {
         timestamp: new Date().toISOString()
       });
       console.error('[CSP Error]', event);
+      
+      // Show toast notification for specific script loading failures
+      if (event.filename && event.filename.includes('googletagmanager')) {
+        toast.error('Failed to load Google Tag Manager due to CSP restrictions');
+      }
     }
     
     logError(event.error, 'Global error caught');
-    
-    // Show toast notification for errors
-    toast.error('An error occurred. Please try refreshing the page.');
   });
 
   window.addEventListener('securitypolicyviolation', (event) => {
@@ -145,14 +146,16 @@ if (typeof window !== 'undefined') {
       timestamp: new Date().toISOString()
     });
     
-    toast.error(`Content Security Policy blocked: ${event.blockedURI}`);
+    // Show toast notification for GTM specifically
+    if (event.blockedURI && event.blockedURI.includes('googletagmanager.com')) {
+      toast.error('Google Tag Manager is blocked by Content Security Policy');
+    } else {
+      toast.error(`Content Security Policy blocked: ${event.blockedURI}`);
+    }
   });
 
   window.addEventListener('unhandledrejection', (event) => {
     logError(event.reason, 'Unhandled promise rejection');
-    
-    // Show toast notification for promise rejections
-    toast.error('An error occurred with a background task. Please try refreshing the page.');
   });
   
   // Try to detect if we're in a white screen situation

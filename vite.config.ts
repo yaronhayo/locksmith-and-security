@@ -36,8 +36,10 @@ export default defineConfig(({ mode }) => ({
     port: 8080,
     cors: true, // Enable CORS for all origins
     headers: {
-      // Completely disable CSP during development to avoid script blocking
-      'Content-Security-Policy': ''
+      // Disable CSP during development to avoid script blocking
+      'Content-Security-Policy': '',
+      'X-Content-Type-Options': 'nosniff',
+      'Referrer-Policy': 'strict-origin-when-cross-origin'
     }
   },
   plugins: [
