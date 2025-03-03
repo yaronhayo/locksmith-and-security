@@ -62,9 +62,15 @@ const PageLayout: React.FC<PropsWithChildren<PageLayoutProps>> = ({
   defaultLang = 'en-US'
 }) => {
   const cleanupRef = useRef<(() => void) | null>(null);
+  const isMounted = useRef(true);
   
   useEffect(() => {
-    console.log('PageLayout mounted');
+    // Set mounted flag
+    isMounted.current = true;
+    
+    if (import.meta.env.DEV) {
+      console.log('PageLayout mounted');
+    }
     
     // Set up iframe doctype fixer with proper cleanup handling
     try {
@@ -75,6 +81,9 @@ const PageLayout: React.FC<PropsWithChildren<PageLayoutProps>> = ({
     }
     
     return () => {
+      // Mark component as unmounted
+      isMounted.current = false;
+      
       // Clean up the observer when component unmounts
       if (cleanupRef.current) {
         try {
@@ -88,7 +97,7 @@ const PageLayout: React.FC<PropsWithChildren<PageLayoutProps>> = ({
   }, []);
 
   if (isLoading) {
-    return <LoadingState />;
+    return <LoadingState timeoutMs={3000} />;
   }
 
   const baseUrl = 'https://247locksmithandsecurity.com';

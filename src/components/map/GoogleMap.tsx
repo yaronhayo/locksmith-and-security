@@ -51,6 +51,7 @@ const GoogleMap = ({
   const [retryCount, setRetryCount] = useState(0);
   const [mapInitFailed, setMapInitFailed] = useState(false);
   const componentId = useRef(`map-${Math.random().toString(36).substring(2, 9)}`);
+  const isMounted = useRef(true);
   
   const {
     isLoading,
@@ -64,10 +65,17 @@ const GoogleMap = ({
   } = useGoogleMap(markers, highlightedMarker, showAllMarkers, zoom, center);
   
   useEffect(() => {
-    console.log(`GoogleMap(${componentId.current}) mounting with ${markers.length} markers`);
+    // Set mounted flag
+    isMounted.current = true;
+    
+    if (import.meta.env.DEV) {
+      console.log(`GoogleMap(${componentId.current}) mounting with ${markers.length} markers`);
+    }
     
     // If Google Maps fails to initialize completely, show a toast and set error state
     const checkMapStatus = setTimeout(() => {
+      if (!isMounted.current) return;
+      
       if (window.google && (!window.google.maps || !window.google.maps.Map)) {
         console.error("Google Maps failed to initialize properly");
         setMapInitFailed(true);
@@ -80,13 +88,22 @@ const GoogleMap = ({
     }, 5000);
     
     return () => {
+      isMounted.current = false;
       clearTimeout(checkMapStatus);
-      console.log(`GoogleMap(${componentId.current}) unmounting`);
+      
+      if (import.meta.env.DEV) {
+        console.log(`GoogleMap(${componentId.current}) unmounting`);
+      }
     };
   }, [retryCount, markers.length]);
   
   const handleRetry = () => {
-    console.log("Retrying map load...");
+    if (!isMounted.current) return;
+    
+    if (import.meta.env.DEV) {
+      console.log("Retrying map load...");
+    }
+    
     setRetryCount(prev => prev + 1);
     setMapInitFailed(false);
     clearMapConfigCache();

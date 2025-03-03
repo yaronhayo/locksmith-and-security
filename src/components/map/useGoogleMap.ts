@@ -16,8 +16,9 @@ export const useGoogleMap = (
   const loadStartTime = useRef(performance.now());
   const isMapInitialized = useRef(false);
   const markersProcessed = useRef(false);
+  const isMounted = useRef(true);
   
-  // Memoize visible markers so we don't recalculate them unnecessarily
+  // Memoize visible markers
   const visibleMarkers = useCallback(() => {
     try {
       if (!markers || markers.length === 0) return [];
@@ -30,8 +31,7 @@ export const useGoogleMap = (
 
   // Update map view safely
   const updateMapView = useCallback(() => {
-    if (!mapRef.current || !isMapInitialized.current) {
-      console.log("Map not initialized yet, skipping view update");
+    if (!mapRef.current || !isMapInitialized.current || !isMounted.current) {
       return;
     }
     
@@ -75,7 +75,12 @@ export const useGoogleMap = (
           map.fitBounds(bounds);
           
           // Set minimum zoom level
-          const listener = google.maps.event.addListener(map, 'idle', () => {
+          const listener = google.maps.event.addListener(map, 'idle', function() {
+            if (!isMounted.current || !map) {
+              google.maps.event.removeListener(listener);
+              return;
+            }
+            
             if (map.getZoom() && map.getZoom() > 15) map.setZoom(15);
             google.maps.event.removeListener(listener);
           });
@@ -97,16 +102,23 @@ export const useGoogleMap = (
       }
     } catch (error) {
       console.error("Error updating map view:", error);
-      setMapError("Failed to update map view");
+      if (isMounted.current) {
+        setMapError("Failed to update map view");
+      }
     }
   }, [visibleMarkers, initialZoom, initialCenter]);
 
   const onLoadCallback = useCallback((map: google.maps.Map) => {
+    if (!isMounted.current) return;
+    
     try {
       const loadTime = performance.now() - loadStartTime.current;
       mapPerformance.trackInstanceLoad(loadStartTime.current);
       
-      console.log("Google Map loaded successfully after", loadTime.toFixed(2), "ms");
+      if (import.meta.env.DEV) {
+        console.log("Google Map loaded successfully after", loadTime.toFixed(2), "ms");
+      }
+      
       mapRef.current = map;
       
       // Reset error state if previously set
@@ -116,6 +128,8 @@ export const useGoogleMap = (
       
       // Slight delay to ensure everything is loaded
       setTimeout(() => {
+        if (!isMounted.current) return;
+        
         isMapInitialized.current = true;
         markersProcessed.current = false;
         setIsLoading(false);
@@ -123,44 +137,71 @@ export const useGoogleMap = (
       }, 300);
     } catch (error) {
       console.error("Error in map load callback:", error);
-      setMapError("Failed to initialize map properly");
-      setIsLoading(false);
+      if (isMounted.current) {
+        setMapError("Failed to initialize map properly");
+        setIsLoading(false);
+      }
     }
   }, [updateMapView, mapError]);
 
   const onUnmountCallback = useCallback(() => {
-    console.log("Map unmounted");
-    mapRef.current = null;
+    if (import.meta.env.DEV) {
+      console.log("Map unmounted");
+    }
+    
+    // Clear all Google Maps event listeners
+    if (mapRef.current) {
+      // Remove all event listeners (as much as possible)
+      google.maps.event.clearInstanceListeners(mapRef.current);
+      
+      // Explicitly null the reference
+      mapRef.current = null;
+    }
+    
     isMapInitialized.current = false;
     markersProcessed.current = false;
   }, []);
 
+  // Set up the component mounting state
+  useEffect(() => {
+    isMounted.current = true;
+    
+    return () => {
+      isMounted.current = false;
+    };
+  }, []);
+
   // Update markers when they change
   useEffect(() => {
-    if (!isLoading && isMapInitialized.current && mapRef.current) {
-      console.log("Markers or highlighted marker changed, updating map");
+    if (!isLoading && isMapInitialized.current && mapRef.current && isMounted.current) {
+      if (import.meta.env.DEV) {
+        console.log("Markers or highlighted marker changed, updating map");
+      }
+      
       markersProcessed.current = false;
       updateMapView();
     }
   }, [markers, highlightedMarker, showAllMarkers, updateMapView, isLoading]);
   
   const zoomIn = useCallback(() => {
-    if (mapRef.current) {
+    if (mapRef.current && isMounted.current) {
       const currentZoom = mapRef.current.getZoom() || initialZoom;
       mapRef.current.setZoom(currentZoom + 1);
     }
   }, [initialZoom]);
   
   const zoomOut = useCallback(() => {
-    if (mapRef.current) {
+    if (mapRef.current && isMounted.current) {
       const currentZoom = mapRef.current.getZoom() || initialZoom;
       mapRef.current.setZoom(currentZoom - 1);
     }
   }, [initialZoom]);
   
   const centerMap = useCallback(() => {
-    markersProcessed.current = false;
-    updateMapView();
+    if (isMounted.current) {
+      markersProcessed.current = false;
+      updateMapView();
+    }
   }, [updateMapView]);
 
   return {

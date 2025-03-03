@@ -2,6 +2,7 @@
 import { AlertCircle, RefreshCw } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
+import { useEffect, useRef } from "react";
 
 interface MapErrorProps {
   error: string;
@@ -9,7 +10,31 @@ interface MapErrorProps {
 }
 
 const MapError = ({ error, resetErrorBoundary }: MapErrorProps) => {
-  console.error('Map Error:', error); // Add logging for debugging
+  const hasLogged = useRef(false);
+  
+  // Log error only once
+  useEffect(() => {
+    if (!hasLogged.current) {
+      console.error('Map Error:', error);
+      hasLogged.current = true;
+    }
+    
+    // Cleanup function - helps with safer component unmounting
+    return () => {
+      hasLogged.current = false;
+    };
+  }, [error]);
+
+  // Safely handle retry
+  const handleRetry = () => {
+    try {
+      if (resetErrorBoundary) {
+        resetErrorBoundary();
+      }
+    } catch (e) {
+      console.error("Error during map reset:", e);
+    }
+  };
 
   return (
     <div className="p-4 w-full">
@@ -24,7 +49,7 @@ const MapError = ({ error, resetErrorBoundary }: MapErrorProps) => {
       {resetErrorBoundary && (
         <div className="flex justify-center mt-2">
           <Button 
-            onClick={resetErrorBoundary}
+            onClick={handleRetry}
             variant="outline" 
             size="sm"
             className="flex items-center gap-2"
@@ -39,7 +64,7 @@ const MapError = ({ error, resetErrorBoundary }: MapErrorProps) => {
         <ul className="list-disc pl-5 mt-1">
           <li>Your internet connection is working</li>
           <li>No content blockers are preventing Google Maps from loading</li>
-          <li>The API key has proper permissions configured</li>
+          <li>Try refreshing the page</li>
         </ul>
       </div>
     </div>

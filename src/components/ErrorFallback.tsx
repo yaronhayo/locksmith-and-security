@@ -1,7 +1,7 @@
 
 import { Button } from "@/components/ui/button";
 import { AlertTriangle, RefreshCw } from "lucide-react";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 interface ErrorFallbackProps {
   error: Error;
@@ -12,24 +12,63 @@ const ErrorFallback = ({ error, resetErrorBoundary }: ErrorFallbackProps) => {
   // Log the error to console for debugging
   console.error("Caught error:", error);
   
+  // Ref to track cleanup state
+  const hasCleanedUp = useRef(false);
+  
   // Clean up any hanging resources when an error occurs
   useEffect(() => {
-    // Try to prevent iframe-related memory leaks and DOM reference errors
+    // Prevent multiple cleanups
+    if (hasCleanedUp.current) return;
+    hasCleanedUp.current = true;
+    
+    // Clean up any DOM resources that might be causing issues
     const cleanupDom = () => {
       try {
-        // Clean up any iframes that might be causing issues
+        // Target specific elements that might cause issues
+        
+        // 1. Clean up iframes safely
         const problematicIframes = document.querySelectorAll('iframe');
         problematicIframes.forEach(iframe => {
           try {
-            // Remove event listeners and src to prevent further loading issues
-            iframe.src = 'about:blank';
-            
-            // We do not remove the iframe as that could cause the 'removeChild' error
-            // Just clean it up in place
+            // Just clear the src instead of removing
+            if (iframe && iframe.src && iframe.src !== 'about:blank') {
+              iframe.src = 'about:blank';
+            }
           } catch (e) {
             console.debug("Error cleaning up iframe:", e);
           }
         });
+        
+        // 2. Clean up Google Maps scripts
+        if (window.google && window.google.maps) {
+          // Try to clean up any Google Maps instances
+          try {
+            // @ts-ignore - Remove the API
+            if (window.google._maps_) {
+              // @ts-ignore
+              delete window.google._maps_;
+            }
+          } catch (e) {
+            console.debug("Error cleaning up Google Maps:", e);
+          }
+        }
+        
+        // 3. Clean up global callbacks
+        if (window.initGoogleMaps) {
+          // @ts-ignore
+          window.initGoogleMaps = undefined;
+        }
+        
+        // 4. Remove any dangling event listeners on body
+        try {
+          const newBody = document.body.cloneNode(true);
+          const oldBody = document.body;
+          if (oldBody.parentNode) {
+            oldBody.parentNode.replaceChild(newBody, oldBody);
+          }
+        } catch (e) {
+          console.debug("Error replacing body:", e);
+        }
       } catch (e) {
         console.error("Error during DOM cleanup:", e);
       }
@@ -40,7 +79,14 @@ const ErrorFallback = ({ error, resetErrorBoundary }: ErrorFallbackProps) => {
     
     return () => {
       // Additional cleanup when error boundary unmounts
-      cleanupDom();
+      try {
+        if (window.initGoogleMaps) {
+          // @ts-ignore
+          window.initGoogleMaps = undefined;
+        }
+      } catch (e) {
+        console.debug("Error during unmount cleanup:", e);
+      }
     };
   }, []);
 
@@ -60,6 +106,9 @@ const ErrorFallback = ({ error, resetErrorBoundary }: ErrorFallbackProps) => {
             try {
               // Clear any class on body that might be causing issues
               document.body.classList.remove('loading');
+              
+              // Reset error state
+              hasCleanedUp.current = false;
               
               // Then reset the error boundary
               resetErrorBoundary();

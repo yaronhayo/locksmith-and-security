@@ -5,32 +5,45 @@
  */
 export const fixIframeDoctype = () => {
   try {
-    const iframes = document.querySelectorAll('iframe');
+    // Use more defensive querySelector to avoid null issues
+    const iframes = document.querySelectorAll('iframe') || [];
+    
+    if (!iframes.length) {
+      return; // No iframes found, nothing to do
+    }
+    
     iframes.forEach(iframe => {
       try {
-        // Only proceed if we can access the contentDocument (same-origin policy)
-        if (iframe && iframe.contentDocument) {
-          // Check if document is in quirks mode
-          const isQuirksMode = iframe.contentDocument.compatMode === 'BackCompat';
+        // Guard against accessing properties that might not exist
+        if (!iframe || !iframe.contentDocument) {
+          return; // Skip this iframe
+        }
+        
+        // Check if document is in quirks mode
+        const isQuirksMode = iframe.contentDocument.compatMode === 'BackCompat';
+        
+        // If in quirks mode or missing doctype, add the proper DOCTYPE
+        if (isQuirksMode || !iframe.contentDocument.doctype) {
+          // Create a new doctype
+          const doctype = document.implementation.createDocumentType('html', '', '');
           
-          // If in quirks mode or missing doctype, add the proper DOCTYPE
-          if (isQuirksMode || !iframe.contentDocument.doctype) {
-            // Create a new doctype
-            const doctype = document.implementation.createDocumentType('html', '', '');
-            
-            // Only insert if the iframe document has nodes and doesn't have a doctype already
-            if (iframe.contentDocument.childNodes.length > 0 && !iframe.contentDocument.doctype) {
-              try {
-                iframe.contentDocument.insertBefore(doctype, iframe.contentDocument.childNodes[0]);
-              } catch (insertError) {
+          // Only insert if the iframe document has nodes and doesn't have a doctype already
+          if (iframe.contentDocument.childNodes.length > 0 && !iframe.contentDocument.doctype) {
+            try {
+              iframe.contentDocument.insertBefore(doctype, iframe.contentDocument.childNodes[0]);
+            } catch (insertError) {
+              // Silently fail - log only in development
+              if (import.meta.env.DEV) {
                 console.debug('Could not insert doctype into iframe', insertError);
               }
             }
           }
         }
       } catch (e) {
-        // Skip CORS-restricted iframes
-        console.debug('Could not access iframe content due to CORS policy');
+        // Skip CORS-restricted iframes - only log in development
+        if (import.meta.env.DEV) {
+          console.debug('Could not access iframe content due to CORS policy');
+        }
       }
     });
   } catch (error) {
@@ -40,7 +53,7 @@ export const fixIframeDoctype = () => {
 
 /**
  * Sets up a MutationObserver to fix doctypes in dynamically added iframes
- * Returns a cleanup function
+ * Returns a cleanup function that safely handles observer disconnection
  */
 export const setupIframeObserver = () => {
   // Create a reference to the observer to allow proper cleanup
@@ -48,9 +61,6 @@ export const setupIframeObserver = () => {
   let intervalId = null;
   
   try {
-    // Run immediately
-    fixIframeDoctype();
-    
     // Set up observer for dynamically added iframes
     observer = new MutationObserver((mutations) => {
       let shouldFix = false;
@@ -83,9 +93,14 @@ export const setupIframeObserver = () => {
         attributes: false,
         characterData: false
       });
-      console.log("Iframe observer started");
-    } else {
-      console.warn("Document body not available for iframe observation");
+      
+      // Run immediately
+      fixIframeDoctype();
+      
+      // For development only
+      if (import.meta.env.DEV) {
+        console.log("Iframe observer started");
+      }
     }
     
     // Use a less frequent interval for periodic checks
@@ -94,27 +109,37 @@ export const setupIframeObserver = () => {
         fixIframeDoctype();
       } catch (e) {
         console.error("Error in iframe check interval:", e);
-        clearInterval(intervalId);
-        intervalId = null;
+        if (intervalId) {
+          clearInterval(intervalId);
+          intervalId = null;
+        }
       }
-    }, 5000); // Check every 5 seconds instead of 2
+    }, 10000); // Check every 10 seconds instead of 5
   } catch (error) {
     console.error("Error setting up iframe observer:", error);
   }
   
-  // Return a cleanup function
+  // Return a cleanup function that safely handles observer disconnection
   return () => {
     try {
       if (observer) {
         observer.disconnect();
         observer = null;
-        console.log("Iframe observer disconnected");
+        
+        // For development only
+        if (import.meta.env.DEV) {
+          console.log("Iframe observer disconnected");
+        }
       }
       
       if (intervalId) {
         clearInterval(intervalId);
         intervalId = null;
-        console.log("Iframe check interval cleared");
+        
+        // For development only
+        if (import.meta.env.DEV) {
+          console.log("Iframe check interval cleared");
+        }
       }
     } catch (error) {
       console.error("Error cleaning up iframe observer:", error);
