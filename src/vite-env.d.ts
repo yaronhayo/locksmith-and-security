@@ -12,6 +12,12 @@ interface Window {
     reset: (widgetId?: number) => void;
     execute: (widgetId?: number) => void;
     ready: (callback: () => void) => void;
+    enterprise?: {
+      render: (container: HTMLElement | string, parameters: object) => number;
+      reset: (widgetId?: number) => void;
+      execute: (widgetId?: number) => void;
+      ready: (callback: () => void) => void;
+    };
   };
   onRecaptchaLoaded?: () => void;
 }

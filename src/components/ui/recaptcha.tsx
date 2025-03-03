@@ -1,4 +1,3 @@
-
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { useRecaptchaKey } from '@/hooks/useRecaptchaKey';
 import { addDocTypeToIframe } from '@/utils/corsUtils';
@@ -17,70 +16,74 @@ const Recaptcha: React.FC<RecaptchaProps> = ({
   const recaptchaRef = useRef<HTMLDivElement>(null);
   const recaptchaWidgetId = useRef<number | null>(null);
   const [loadError, setLoadError] = useState<boolean>(false);
-  const [isInitialized, setIsInitialized] = useState<boolean>(false);
   const [scriptLoaded, setScriptLoaded] = useState<boolean>(false);
+  const [scriptLoading, setScriptLoading] = useState<boolean>(false);
   const { data: recaptchaKey, isLoading, isError } = useRecaptchaKey();
   
-  // Use the provided sitekey or the one from the hook
   const actualSitekey = sitekey || recaptchaKey || '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI'; // Fallback to Google's test key
 
-  // Check if grecaptcha is available
   const isRecaptchaAvailable = useCallback(() => {
     return typeof window !== 'undefined' && 
            typeof window.grecaptcha !== 'undefined' && 
            typeof window.grecaptcha.render === 'function';
   }, []);
   
-  // Load the reCAPTCHA script
+  const resetState = useCallback(() => {
+    console.log('Resetting reCAPTCHA state');
+    setLoadError(false);
+    
+    if (recaptchaWidgetId.current !== null && isRecaptchaAvailable()) {
+      try {
+        window.grecaptcha.reset(recaptchaWidgetId.current);
+        console.log('Reset existing reCAPTCHA widget');
+      } catch (error) {
+        console.error('Error resetting reCAPTCHA widget:', error);
+        recaptchaWidgetId.current = null;
+      }
+    }
+  }, [isRecaptchaAvailable]);
+  
   const loadRecaptchaScript = useCallback(() => {
-    // Don't load script if it's already loaded or loading
     if (document.querySelector('script[src*="recaptcha/api.js"]')) {
       console.log('reCAPTCHA script is already loading or loaded');
       return;
     }
     
+    if (scriptLoading) {
+      console.log('reCAPTCHA script is already in the process of loading');
+      return;
+    }
+    
     console.log('Loading reCAPTCHA script dynamically');
+    setScriptLoading(true);
+    
     const script = document.createElement('script');
     script.src = 'https://www.google.com/recaptcha/api.js?render=explicit';
     script.async = true;
     script.defer = true;
     script.id = 'recaptcha-script';
-    script.crossOrigin = 'anonymous';
     
     script.onload = () => {
       console.log('reCAPTCHA script loaded successfully');
       setScriptLoaded(true);
+      setScriptLoading(false);
       
-      // Set a global callback for when reCAPTCHA is ready
-      window.onRecaptchaLoaded = () => {
-        console.log('reCAPTCHA API is fully loaded and ready');
-        
-        // Initialize reCAPTCHA after it's loaded
-        if (recaptchaRef.current && isRecaptchaAvailable()) {
+      setTimeout(() => {
+        if (isRecaptchaAvailable() && recaptchaRef.current) {
           renderRecaptcha();
         }
-      };
-      
-      // Check if grecaptcha is already available
-      if (isRecaptchaAvailable() && window.grecaptcha.ready) {
-        window.grecaptcha.ready(() => {
-          console.log('reCAPTCHA is ready from script onload event');
-          if (window.onRecaptchaLoaded) {
-            window.onRecaptchaLoaded();
-          }
-        });
-      }
+      }, 500);
     };
     
     script.onerror = (error) => {
       console.error('Error loading reCAPTCHA script:', error);
       setLoadError(true);
+      setScriptLoading(false);
     };
     
     document.head.appendChild(script);
-  }, [isRecaptchaAvailable]);
+  }, [isRecaptchaAvailable, scriptLoading]);
   
-  // Render the reCAPTCHA widget
   const renderRecaptcha = useCallback(() => {
     if (!recaptchaRef.current || !isRecaptchaAvailable()) {
       console.warn('Cannot render reCAPTCHA: DOM element or API not available');
@@ -88,9 +91,8 @@ const Recaptcha: React.FC<RecaptchaProps> = ({
     }
     
     try {
-      console.log('Rendering reCAPTCHA widget with sitekey:', actualSitekey);
+      console.log('Rendering reCAPTCHA widget with sitekey:', actualSitekey.substring(0, 4) + '***');
       
-      // Reset if we already have a widget ID
       if (recaptchaWidgetId.current !== null) {
         try {
           window.grecaptcha.reset(recaptchaWidgetId.current);
@@ -102,7 +104,21 @@ const Recaptcha: React.FC<RecaptchaProps> = ({
         }
       }
       
-      // Render a new widget
+      if (recaptchaRef.current) {
+        recaptchaRef.current.innerHTML = '';
+        
+        const dataAttributes = {};
+        Array.from(recaptchaRef.current.attributes).forEach(attr => {
+          if (attr.name.startsWith('data-')) {
+            dataAttributes[attr.name] = attr.value;
+          }
+        });
+        
+        Object.entries(dataAttributes).forEach(([key, value]) => {
+          recaptchaRef.current!.setAttribute(key, value as string);
+        });
+      }
+      
       recaptchaWidgetId.current = window.grecaptcha.render(recaptchaRef.current, {
         sitekey: actualSitekey,
         callback: (token: string) => {
@@ -113,12 +129,15 @@ const Recaptcha: React.FC<RecaptchaProps> = ({
           console.log('reCAPTCHA token expired');
           onChange(null);
         },
+        'error-callback': () => {
+          console.log('reCAPTCHA encountered an error');
+          onChange(null);
+        },
         size: size
       });
       
       console.log('reCAPTCHA widget rendered with ID:', recaptchaWidgetId.current);
       
-      // Fix DOCTYPE in iframes to resolve Quirks Mode issues
       setTimeout(() => {
         const iframes = document.querySelectorAll('iframe[src*="recaptcha"]');
         iframes.forEach(iframe => {
@@ -127,72 +146,43 @@ const Recaptcha: React.FC<RecaptchaProps> = ({
         console.log('Added DOCTYPE to reCAPTCHA iframes');
       }, 1000);
       
-      setIsInitialized(true);
     } catch (error) {
       console.error('Error rendering reCAPTCHA widget:', error);
       setLoadError(true);
     }
   }, [actualSitekey, onChange, size]);
   
-  // Initialize reCAPTCHA
   useEffect(() => {
-    // Don't try to initialize if it's already initialized
-    if (isInitialized) {
-      console.log('reCAPTCHA already initialized, skipping initialization');
+    console.log('reCAPTCHA initialization attempt with sitekey available:', !!actualSitekey);
+    
+    if (isRecaptchaAvailable()) {
+      console.log('reCAPTCHA API is already available, rendering widget');
+      renderRecaptcha();
       return;
     }
     
-    // Try to initialize immediately if grecaptcha is already available
-    if (isRecaptchaAvailable()) {
-      console.log('reCAPTCHA API is already available, initializing immediately');
-      
-      if (window.grecaptcha.ready) {
-        window.grecaptcha.ready(() => {
-          console.log('reCAPTCHA is ready from initial check');
-          renderRecaptcha();
-        });
-      } else {
-        console.log('reCAPTCHA is available but .ready() is not, rendering directly');
+    loadRecaptchaScript();
+    
+    const checkInterval = setInterval(() => {
+      if (isRecaptchaAvailable() && recaptchaRef.current) {
+        console.log('reCAPTCHA API detected during interval check');
+        clearInterval(checkInterval);
         renderRecaptcha();
       }
-    } else {
-      console.log('reCAPTCHA API not available, loading script');
-      loadRecaptchaScript();
-      
-      // Check periodically if reCAPTCHA has loaded
-      const checkInterval = setInterval(() => {
-        if (isRecaptchaAvailable()) {
-          console.log('reCAPTCHA API detected during interval check');
-          clearInterval(checkInterval);
-          
-          if (window.grecaptcha.ready) {
-            window.grecaptcha.ready(() => {
-              console.log('reCAPTCHA is ready from interval check');
-              renderRecaptcha();
-            });
-          } else {
-            renderRecaptcha();
-          }
-        }
-      }, 500);
-      
-      // Set a timeout to prevent infinite waiting
-      const timeout = setTimeout(() => {
-        clearInterval(checkInterval);
-        if (!isInitialized) {
-          console.error('reCAPTCHA initialization timeout');
-          setLoadError(true);
-        }
-      }, 15000); // 15 seconds timeout
-      
-      return () => {
-        clearInterval(checkInterval);
-        clearTimeout(timeout);
-      };
-    }
+    }, 500);
     
-    // Cleanup function
+    const timeout = setTimeout(() => {
+      clearInterval(checkInterval);
+      if (!isRecaptchaAvailable()) {
+        console.error('reCAPTCHA initialization timeout after 20 seconds');
+        setLoadError(true);
+      }
+    }, 20000);
+    
     return () => {
+      clearInterval(checkInterval);
+      clearTimeout(timeout);
+      
       if (recaptchaWidgetId.current !== null && isRecaptchaAvailable()) {
         try {
           window.grecaptcha.reset(recaptchaWidgetId.current);
@@ -202,29 +192,52 @@ const Recaptcha: React.FC<RecaptchaProps> = ({
         }
       }
     };
-  }, [isInitialized, isRecaptchaAvailable, loadRecaptchaScript, renderRecaptcha]);
+  }, [actualSitekey, isRecaptchaAvailable, loadRecaptchaScript, renderRecaptcha]);
   
-  // Effect to re-render reCAPTCHA when the sitekey changes
   useEffect(() => {
-    if (isInitialized && isRecaptchaAvailable()) {
-      console.log('Sitekey changed, re-rendering reCAPTCHA');
+    if (scriptLoaded && recaptchaRef.current && isRecaptchaAvailable()) {
+      console.log('Script loaded, rendering reCAPTCHA');
       renderRecaptcha();
     }
-  }, [actualSitekey, isInitialized, isRecaptchaAvailable, renderRecaptcha]);
+  }, [scriptLoaded, isRecaptchaAvailable, renderRecaptcha]);
+
+  const handleRetry = () => {
+    console.log('Manual retry of reCAPTCHA requested');
+    resetState();
+    
+    const existingScript = document.getElementById('recaptcha-script');
+    if (existingScript) {
+      existingScript.remove();
+      console.log('Removed existing reCAPTCHA script');
+    }
+    
+    const existingIframes = document.querySelectorAll('iframe[src*="recaptcha"]');
+    existingIframes.forEach(iframe => iframe.remove());
+    console.log('Removed existing reCAPTCHA iframes');
+    
+    if (window.grecaptcha) {
+      try {
+        delete window.grecaptcha;
+        console.log('Reset global grecaptcha object');
+      } catch (e) {
+        console.warn('Could not reset global grecaptcha object:', e);
+      }
+    }
+    
+    setTimeout(() => {
+      loadRecaptchaScript();
+    }, 500);
+  };
 
   if (loadError || isError) {
-    // Fallback UI for when reCAPTCHA fails to load
     return (
-      <div className="border border-gray-300 rounded p-4 text-center">
-        <p className="text-sm text-gray-600">Unable to load CAPTCHA verification.</p>
-        <p className="text-xs text-gray-500 mt-1">Please ensure cookies are enabled and try again later.</p>
+      <div className="border border-gray-300 rounded p-4 text-center bg-gray-50">
+        <p className="text-sm text-gray-700 font-medium">Unable to load CAPTCHA verification.</p>
+        <p className="text-xs text-gray-600 mt-1">Please ensure cookies are enabled and try again.</p>
         <button 
-          onClick={() => {
-            setLoadError(false);
-            setIsInitialized(false);
-            loadRecaptchaScript();
-          }}
-          className="mt-2 text-xs bg-primary text-white px-2 py-1 rounded hover:bg-primary/80"
+          onClick={handleRetry}
+          className="mt-3 text-xs bg-primary text-white px-3 py-1.5 rounded-md hover:bg-primary/90 transition-colors"
+          type="button"
         >
           Retry CAPTCHA
         </button>
@@ -232,7 +245,7 @@ const Recaptcha: React.FC<RecaptchaProps> = ({
     );
   }
 
-  if (isLoading) {
+  if (isLoading || scriptLoading) {
     return (
       <div className="g-recaptcha-loading">
         <div className="border border-gray-300 rounded p-4 bg-gray-50 flex items-center justify-center min-h-[78px]">
@@ -240,6 +253,7 @@ const Recaptcha: React.FC<RecaptchaProps> = ({
             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
           </svg>
+          <span className="ml-2 text-sm text-gray-600">Loading CAPTCHA...</span>
         </div>
       </div>
     );

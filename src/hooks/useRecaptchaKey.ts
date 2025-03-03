@@ -29,7 +29,7 @@ export const useRecaptchaKey = () => {
           return FALLBACK_RECAPTCHA_KEY;
         }
         
-        console.log('Successfully retrieved reCAPTCHA key from Supabase');
+        console.log('Successfully retrieved reCAPTCHA key from Supabase:', siteKey.substring(0, 4) + '***');
         return siteKey;
       } catch (error) {
         console.error('Exception fetching reCAPTCHA key:', error);
@@ -39,6 +39,7 @@ export const useRecaptchaKey = () => {
     retry: 2,
     staleTime: 1000 * 60 * 5, // Cache for 5 minutes
     refetchOnWindowFocus: false,
+    // Make sure the query doesn't fail permanently and always returns a usable key
     meta: {
       onError: (error: Error) => {
         console.error('Error in reCAPTCHA key query:', error.message);
