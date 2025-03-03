@@ -61,8 +61,31 @@ window.addEventListener('beforeunload', () => {
   cleanup();
 });
 
+// Check if React is available
+if (!React || typeof React.createElement !== 'function') {
+  console.error('React is not properly loaded');
+  renderErrorUI("React initialization failed. Please try refreshing the page.");
+  
+  // Try to load React from CDN as fallback
+  const reactScript = document.createElement('script');
+  reactScript.src = 'https://unpkg.com/react@18/umd/react.production.min.js';
+  reactScript.crossOrigin = '';
+  document.head.appendChild(reactScript);
+  
+  const reactDOMScript = document.createElement('script');
+  reactDOMScript.src = 'https://unpkg.com/react-dom@18/umd/react-dom.production.min.js';
+  reactDOMScript.crossOrigin = '';
+  document.head.appendChild(reactDOMScript);
+  
+  // Attempt to mount after a delay
+  setTimeout(mountApp, 1000);
+} else {
+  // Function to safely mount the React app
+  mountApp();
+}
+
 // Function to safely mount the React app
-const mountApp = () => {
+function mountApp() {
   try {
     const rootElement = document.getElementById('root');
     if (!rootElement) {
@@ -117,14 +140,6 @@ setTimeout(() => {
     renderErrorUI("Application failed to render in time");
   }
 }, 10000); // 10 second timeout
-
-// Mount the app when the DOM is fully loaded
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', mountApp);
-} else {
-  // Add a slight delay to ensure all scripts have been processed
-  setTimeout(mountApp, 100);
-}
 
 // Expose React to window for debugging
 if (typeof window !== 'undefined') {
