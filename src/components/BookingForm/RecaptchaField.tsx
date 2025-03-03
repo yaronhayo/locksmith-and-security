@@ -21,6 +21,14 @@ const RecaptchaField = ({ onChange, error, className = "" }: RecaptchaFieldProps
           <AlertDescription>{error}</AlertDescription>
         </Alert>
       )}
+      
+      {/* Hidden field to provide proper autocomplete attribute */}
+      <input 
+        type="hidden" 
+        name="recaptcha-response"
+        id="recaptcha-response"
+        autoComplete="off"
+      />
     </div>
   );
 };

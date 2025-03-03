@@ -1,72 +1,102 @@
 
-import React, { useState } from 'react';
-import ReCAPTCHA from 'react-google-recaptcha';
+import React, { useEffect, useRef } from 'react';
 import { useRecaptchaKey } from '@/hooks/useRecaptchaKey';
-import { Skeleton } from './skeleton';
-import { Alert, AlertDescription } from './alert';
-import { Info } from 'lucide-react';
-import { Button } from './button';
+import { fetchWithCors, addDocTypeToIframe } from '@/utils/corsUtils';
 
 interface RecaptchaProps {
   onChange: (token: string | null) => void;
+  sitekey?: string;
+  size?: 'normal' | 'compact' | 'invisible';
 }
 
-const Recaptcha: React.FC<RecaptchaProps> = ({ onChange }) => {
-  const { data: siteKey, isLoading, error } = useRecaptchaKey();
-  const [showInfo, setShowInfo] = useState(false);
+const Recaptcha: React.FC<RecaptchaProps> = ({
+  onChange,
+  sitekey,
+  size = 'normal'
+}) => {
+  const recaptchaRef = useRef<HTMLDivElement>(null);
+  const recaptchaWidgetId = useRef<number | null>(null);
+  const { recaptchaKey } = useRecaptchaKey();
+  
+  // Use the provided sitekey or the one from the hook
+  const actualSitekey = sitekey || recaptchaKey;
 
-  if (isLoading) {
-    return <Skeleton className="h-[78px] w-full max-w-[304px] mx-auto" />;
-  }
+  useEffect(() => {
+    // Check if grecaptcha is loaded
+    if (typeof window.grecaptcha === 'undefined' || typeof window.grecaptcha.render !== 'function') {
+      // Create script element dynamically
+      const script = document.createElement('script');
+      script.src = 'https://www.google.com/recaptcha/api.js?render=explicit';
+      script.async = true;
+      script.defer = true;
+      script.crossOrigin = 'anonymous';
+      
+      script.onload = () => {
+        initializeRecaptcha();
+      };
+      
+      document.head.appendChild(script);
+    } else {
+      initializeRecaptcha();
+    }
+    
+    return () => {
+      if (recaptchaWidgetId.current !== null && window.grecaptcha) {
+        try {
+          window.grecaptcha.reset(recaptchaWidgetId.current);
+        } catch (error) {
+          console.error('Error resetting reCAPTCHA:', error);
+        }
+      }
+    };
+  }, [actualSitekey, size]);
 
-  if (error || !siteKey) {
-    console.error('Failed to load reCAPTCHA key:', error);
-    return null;
-  }
+  const initializeRecaptcha = () => {
+    // Make sure the recaptcha ref is defined and grecaptcha is loaded
+    if (!recaptchaRef.current || !window.grecaptcha || !window.grecaptcha.render) {
+      setTimeout(initializeRecaptcha, 100);
+      return;
+    }
+    
+    // Check if we already have a widget ID
+    if (recaptchaWidgetId.current !== null) {
+      try {
+        window.grecaptcha.reset(recaptchaWidgetId.current);
+      } catch (error) {
+        console.error('Error resetting reCAPTCHA:', error);
+        recaptchaWidgetId.current = null;
+      }
+    }
+    
+    // If we don't have a widget ID, render the recaptcha
+    if (recaptchaWidgetId.current === null) {
+      try {
+        recaptchaWidgetId.current = window.grecaptcha.render(recaptchaRef.current, {
+          sitekey: actualSitekey,
+          callback: (token: string) => {
+            onChange(token);
+          },
+          'expired-callback': () => {
+            onChange(null);
+          },
+          size: size
+        });
+        
+        // Add DOCTYPE to reCAPTCHA iframes to resolve Quirks Mode issues
+        setTimeout(() => {
+          const iframes = document.querySelectorAll('iframe[src*="recaptcha"]');
+          iframes.forEach(iframe => {
+            addDocTypeToIframe(iframe as HTMLIFrameElement);
+          });
+        }, 1000);
+      } catch (error) {
+        console.error('Error rendering reCAPTCHA:', error);
+      }
+    }
+  };
 
   return (
-    <div className="w-full">
-      <div className="flex justify-center my-4 w-full overflow-x-auto">
-        <div className="max-w-full">
-          <ReCAPTCHA
-            sitekey={siteKey}
-            onChange={onChange}
-          />
-        </div>
-      </div>
-      
-      <div className="text-xs text-gray-500 mt-2 flex items-start gap-1">
-        <Button 
-          variant="ghost" 
-          size="icon" 
-          className="h-4 w-4 p-0 mt-0.5" 
-          onClick={() => setShowInfo(!showInfo)}
-          aria-label={showInfo ? "Hide reCAPTCHA info" : "Show reCAPTCHA info"}
-        >
-          <Info className="h-4 w-4" />
-        </Button>
-        <span>
-          This site is protected by reCAPTCHA and the Google
-          <a href="https://policies.google.com/privacy" className="text-secondary hover:underline mx-1" target="_blank" rel="noopener noreferrer">
-            Privacy Policy
-          </a>
-          and
-          <a href="https://policies.google.com/terms" className="text-secondary hover:underline mx-1" target="_blank" rel="noopener noreferrer">
-            Terms of Service
-          </a>
-          apply.
-        </span>
-      </div>
-      
-      {showInfo && (
-        <Alert variant="info" className="mt-2 text-xs">
-          <AlertDescription>
-            <p className="mb-1"><strong>Cookie Notice:</strong> reCAPTCHA uses third-party cookies from Google to function properly.</p>
-            <p>As browsers phase out third-party cookies, some reCAPTCHA features might be affected. Your data remains secure, and we're working to ensure compatibility with new browser privacy features.</p>
-          </AlertDescription>
-        </Alert>
-      )}
-    </div>
+    <div ref={recaptchaRef} className="g-recaptcha" data-sitekey={actualSitekey} data-size={size} />
   );
 };
 

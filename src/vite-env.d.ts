@@ -7,6 +7,12 @@ interface Window {
   clarity?: (...args: any[]) => void;
   google?: any;
   hasRendered?: boolean;
+  grecaptcha?: {
+    render: (container: HTMLElement | string, parameters: object) => number;
+    reset: (widgetId?: number) => void;
+    execute: (widgetId?: number) => void;
+    ready: (callback: () => void) => void;
+  };
 }
 
 interface LayoutShiftEntry extends PerformanceEntry {

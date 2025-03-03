@@ -44,7 +44,7 @@
     script-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.google.com https://*.gstatic.com https://*.googleapis.com https://*.googletagmanager.com https://*.clarity.ms https://*.c.clarity.ms https://*.google-analytics.com https://cdn.gpteng.co https://*.doubleclick.net https://*.googleadservices.com https://*.bing.com https://*.clickcease.com https://www.clickcease.com www.clickcease.com https://www.google.com/recaptcha/ https://www.gstatic.com/recaptcha/ https://*.googleadservices.com https://www.google.com/pagead/ https://googleads.g.doubleclick.net https://*.googletagmanager.com https://*.facebook.com https://connect.facebook.net;
     script-src-elem 'self' 'unsafe-inline' 'unsafe-eval' https://*.google.com https://*.gstatic.com https://*.googleapis.com https://*.googletagmanager.com https://*.clarity.ms https://*.c.clarity.ms https://*.google-analytics.com https://cdn.gpteng.co https://*.doubleclick.net https://*.googleadservices.com https://*.bing.com https://*.clickcease.com https://www.clickcease.com www.clickcease.com https://www.google.com/recaptcha/ https://www.gstatic.com/recaptcha/ https://*.googleadservices.com https://www.google.com/pagead/ https://googleads.g.doubleclick.net https://*.googletagmanager.com https://*.facebook.com https://connect.facebook.net https://www.clickcease.com/monitor/stat.js;
     frame-src 'self' https://*.google.com https://*.doubleclick.net https://*.googleadservices.com https://td.doubleclick.net https://www.google.com/recaptcha/ https://recaptcha.google.com/recaptcha/ https://googleads.g.doubleclick.net https://www.googleadservices.com https://www.googletagmanager.com https://*.googletagmanager.com https://*.facebook.com; 
-    style-src 'self' 'unsafe-inline' https://*.googleapis.com https://*.gstatic.com https://fonts.googleapis.com; 
+    style-src 'self' 'unsafe-inline' https://*.googleapis.com https://*.gstatic.com https://www.google.com/recaptcha/ https://www.gstatic.com/recaptcha/ https://fonts.googleapis.com; 
     font-src 'self' https://fonts.gstatic.com data:; 
     worker-src blob: 'self'; 
     img-src 'self' data: blob: https://*.google-analytics.com https://*.googletagmanager.com https://*.clarity.ms https://*.c.clarity.ms https://*.bing.com https://*.doubleclick.net https://*.google.com https://*.googleapis.com https://*.gstatic.com https://*.supabase.co https://*.googleadservices.com maps.gstatic.com maps.googleapis.com https://mtbgayqzjrxjjmsjikcg.supabase.co https://www.google.com https://www.gstatic.com https://*.google-analytics.com https://*.googleadservices.com https://maps.googleapis.com/maps/api/js/StaticMapService.GetMapImage https://maps.gstatic.com/mapfiles/openhand_8_8.cur https://maps.gstatic.com/mapfiles/api-3/images/ https://maps.gstatic.com/mapfiles/api-3/images/powered-by-google-on-white3_hdpi.png https://maps.gstatic.com/mapfiles/api-3/images/autocomplete-icons_hdpi.png https://*.googletagmanager.com https://*.facebook.com; 
@@ -55,8 +55,14 @@
     <meta http-equiv="Strict-Transport-Security" content="max-age=31536000; includeSubDomains" />
     <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin" />
 
-    <!-- reCAPTCHA Script -->
-    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <!-- reCAPTCHA Script with crossorigin attribute -->
+    <script src="https://www.google.com/recaptcha/api.js" async defer crossorigin="anonymous"></script>
+    
+    <!-- Fix for Google reCAPTCHA stylesheets -->
+    <style>
+      /* Fallback for Google reCAPTCHA stylesheets in case they fail to load */
+      .grecaptcha-badge { visibility: hidden; }
+    </style>
 
     <!-- Schema.org markup -->
     <script type="application/ld+json">
@@ -133,6 +139,12 @@
         }
       }
     </script>
+    
+    <!-- Preconnect to critical domains -->
+    <link rel="preconnect" href="https://www.google.com" crossorigin>
+    <link rel="preconnect" href="https://www.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://maps.googleapis.com" crossorigin>
+    <link rel="preconnect" href="https://mtbgayqzjrxjjmsjikcg.supabase.co" crossorigin>
   </head>
   <body>
     <!-- Google Tag Manager (noscript) -->
@@ -142,5 +154,41 @@
     <div id="root"></div>
     <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
     <script type="module" src="/src/main.tsx"></script>
+    
+    <!-- Script to handle third-party iframes and ensure they have proper DOCTYPE -->
+    <script>
+      // Ensure all iframes from doubleclick and other third-party services have proper DOCTYPE
+      document.addEventListener('DOMContentLoaded', function() {
+        // Function to inject proper DOCTYPE into iframes
+        const fixIframeDoctype = () => {
+          const iframes = document.querySelectorAll('iframe');
+          iframes.forEach(iframe => {
+            try {
+              if (iframe.contentDocument && !iframe.contentDocument.doctype) {
+                const doctype = document.implementation.createDocumentType('html', '', '');
+                if (iframe.contentDocument.childNodes.length > 0) {
+                  iframe.contentDocument.insertBefore(doctype, iframe.contentDocument.childNodes[0]);
+                }
+              }
+            } catch (e) {
+              // Skip CORS-restricted iframes
+              console.debug('Could not access iframe content due to CORS policy');
+            }
+          });
+        };
+        
+        // Run initially and set up a mutation observer to handle dynamically added iframes
+        fixIframeDoctype();
+        const observer = new MutationObserver((mutations) => {
+          mutations.forEach((mutation) => {
+            if (mutation.type === 'childList' && mutation.addedNodes.length) {
+              fixIframeDoctype();
+            }
+          });
+        });
+        
+        observer.observe(document.body, { childList: true, subtree: true });
+      });
+    </script>
   </body>
 </html>
