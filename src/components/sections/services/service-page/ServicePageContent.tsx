@@ -44,9 +44,7 @@ const ServicePageContent: React.FC<ServicePageContentProps> = ({
               serviceName={serviceName}
               serviceCategory={serviceCategory}
               mainContent={mainContent}
-            >
-              {mainContent}
-            </ServiceMainContent>
+            />
             
             <ServiceProcessSection serviceName={serviceName} />
             

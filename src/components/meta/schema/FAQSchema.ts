@@ -10,15 +10,18 @@ interface FAQSchemaProps {
 
 export const createFAQSchema = ({ questions }: FAQSchemaProps) => {
   return {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "mainEntity": questions.map(item => ({
-      "@type": "Question",
-      "name": item.question,
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": item.answer
-      }
-    }))
+    type: 'FAQPage',
+    data: {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": questions.map(item => ({
+        "@type": "Question",
+        "name": item.question,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": item.answer
+        }
+      }))
+    }
   };
 };

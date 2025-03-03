@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { Star, Check, AlertTriangle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
@@ -7,13 +7,15 @@ import { Link } from "react-router-dom";
 interface ServiceMainContentProps {
   serviceName: string;
   serviceCategory: string;
-  mainContent: React.ReactNode;
+  mainContent: ReactNode;
+  children?: ReactNode;
 }
 
 const ServiceMainContent: React.FC<ServiceMainContentProps> = ({ 
   serviceName, 
   serviceCategory, 
-  mainContent 
+  mainContent,
+  children
 }) => {
   return (
     <>
@@ -66,7 +68,7 @@ const ServiceMainContent: React.FC<ServiceMainContentProps> = ({
       
       {/* Main content with enhanced styling */}
       <div className="service-content mb-10">
-        {mainContent}
+        {mainContent || children}
       </div>
     </>
   );

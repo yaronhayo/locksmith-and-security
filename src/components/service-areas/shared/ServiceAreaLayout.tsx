@@ -1,11 +1,10 @@
-
 import { useSettings } from "@/hooks/useSettings";
 import PageLayout from "@/components/layouts/PageLayout";
 import { useLocations } from "@/hooks/useLocations";
 import { useReviews } from "@/components/reviews/useReviews";
 import { createServiceAreaSchemas } from "./ServiceAreaSchemas";
 import ServiceAreaContent from "./ServiceAreaContent";
-import { FAQSchema } from "@/types/schema";
+import { FAQSchema, Schema } from "@/types/schema";
 import { Card, CardContent } from "@/components/ui/card";
 import { memo, useMemo } from "react";
 import PageLoading from "@/components/layouts/PageLoading";
@@ -28,11 +27,12 @@ const ServiceAreaLayout = memo(({ areaSlug }: ServiceAreaLayoutProps) => {
     return createServiceAreaSchemas(location as any, settings, areaSlug);
   }, [location, settings, areaSlug]);
   
-  const rawFaqSchema = useMemo(() => {
-    return schemas.find(schema => schema.type === 'FAQPage');
+  const faqSchema = useMemo(() => {
+    return schemas.find(schema => 
+      schema.type === 'FAQPage' || 
+      (schema.data && schema.data["@type"] === 'FAQPage')
+    ) as FAQSchema | undefined;
   }, [schemas]);
-  
-  const faqSchema = rawFaqSchema as FAQSchema | undefined;
   
   const isLoading = settingsLoading || locationsLoading;
 
@@ -48,11 +48,25 @@ const ServiceAreaLayout = memo(({ areaSlug }: ServiceAreaLayoutProps) => {
   const pageTitle = `Top-Rated Locksmith in ${location.name}, NJ | 24/7 Emergency Service`;
   const pageDescription = `Professional locksmith services in ${location.name}. Licensed & insured experts providing residential, commercial & auto solutions with fast 24/7 response.`;
 
+  // Ensure all schemas have the correct type structure
+  const typedSchemas: Schema[] = schemas.map(schema => {
+    // If schema already has type property, return as is
+    if ('type' in schema) {
+      return schema as Schema;
+    }
+    
+    // Otherwise, infer type from @type property
+    return {
+      type: schema.data?.["@type"] || 'Unknown',
+      data: schema.data
+    };
+  });
+
   return (
     <PageLayout
       title={pageTitle}
       description={pageDescription}
-      schema={schemas}
+      schema={typedSchemas}
       heroTitle={`Locksmith Services in ${location.name}, NJ`}
       heroDescription={`Professional 24/7 locksmith services for residential, commercial, and automotive needs in ${location.name}`}
       hideBreadcrumbs={false}
