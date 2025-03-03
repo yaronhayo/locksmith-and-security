@@ -1,19 +1,20 @@
-
 import { motion } from "framer-motion";
 import { Phone, Mail, MapPin, Calendar, Wrench } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-
 const ContactCTA = () => {
-  return (
-    <section className="my-24">
-      <motion.div 
-        className="rounded-3xl overflow-hidden shadow-2xl relative"
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        viewport={{ once: true }}
-      >
+  return <section className="my-24">
+      <motion.div className="rounded-3xl overflow-hidden shadow-2xl relative" initial={{
+      opacity: 0,
+      y: 20
+    }} whileInView={{
+      opacity: 1,
+      y: 0
+    }} transition={{
+      duration: 0.5
+    }} viewport={{
+      once: true
+    }}>
         <div className="absolute inset-0 bg-gradient-to-br from-primary via-primary/90 to-blue-800 opacity-90"></div>
         
         <div className="absolute top-0 left-0 w-64 h-64 rounded-full bg-primary-dark/20 -translate-x-1/2 -translate-y-1/2"></div>
@@ -32,50 +33,45 @@ const ContactCTA = () => {
               </p>
               
               <div className="grid gap-5 mb-10">
-                <motion.div 
-                  className="flex items-center text-white group"
-                  whileHover={{ x: 5 }}
-                >
+                <motion.div className="flex items-center text-white group" whileHover={{
+                x: 5
+              }}>
                   <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center mr-4 group-hover:bg-white/20 transition-colors">
                     <Phone className="h-5 w-5 text-white" />
                   </div>
                   <span className="text-lg">(201) 748-2070</span>
                 </motion.div>
                 
-                <motion.div 
-                  className="flex items-center text-white group"
-                  whileHover={{ x: 5 }}
-                >
+                <motion.div className="flex items-center text-white group" whileHover={{
+                x: 5
+              }}>
                   <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center mr-4 group-hover:bg-white/20 transition-colors">
                     <Mail className="h-5 w-5 text-white" />
                   </div>
-                  <span className="text-lg">info@northbergenlocksmith.com</span>
+                  <span className="text-lg">info@247locksmithandsecurity.com</span>
                 </motion.div>
                 
-                <motion.div 
-                  className="flex items-center text-white group"
-                  whileHover={{ x: 5 }}
-                >
+                <motion.div className="flex items-center text-white group" whileHover={{
+                x: 5
+              }}>
                   <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center mr-4 group-hover:bg-white/20 transition-colors">
                     <MapPin className="h-5 w-5 text-white" />
                   </div>
                   <span className="text-lg">North Bergen, NJ 07047</span>
                 </motion.div>
                 
-                <motion.div 
-                  className="flex items-center text-white group"
-                  whileHover={{ x: 5 }}
-                >
+                <motion.div className="flex items-center text-white group" whileHover={{
+                x: 5
+              }}>
                   <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center mr-4 group-hover:bg-white/20 transition-colors">
                     <Calendar className="h-5 w-5 text-white" />
                   </div>
                   <span className="text-lg">Available 24/7 for Emergencies</span>
                 </motion.div>
                 
-                <motion.div 
-                  className="flex items-center text-white group"
-                  whileHover={{ x: 5 }}
-                >
+                <motion.div className="flex items-center text-white group" whileHover={{
+                x: 5
+              }}>
                   <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center mr-4 group-hover:bg-white/20 transition-colors">
                     <Wrench className="h-5 w-5 text-white" />
                   </div>
@@ -100,8 +96,6 @@ const ContactCTA = () => {
           </div>
         </div>
       </motion.div>
-    </section>
-  );
+    </section>;
 };
-
 export default ContactCTA;
