@@ -24,6 +24,22 @@ export const addDocTypeToIframe = (iframe: HTMLIFrameElement): void => {
         const tempDiv = iframe.contentDocument.createElement('div');
         iframe.contentDocument.body?.appendChild(tempDiv);
         iframe.contentDocument.body?.removeChild(tempDiv);
+        
+        // If still in quirks mode, try more aggressive approach
+        if (iframe.contentDocument.compatMode === 'BackCompat') {
+          try {
+            // Try to rewrite the entire document with a DOCTYPE
+            const originalContent = iframe.contentDocument.documentElement.outerHTML;
+            const newContent = `<!DOCTYPE html>${originalContent}`;
+            
+            // Write the new content with DOCTYPE
+            iframe.contentDocument.open();
+            iframe.contentDocument.write(newContent);
+            iframe.contentDocument.close();
+          } catch (e) {
+            console.debug('Could not rewrite iframe content:', e);
+          }
+        }
       }
     }
   } catch (e) {
@@ -96,6 +112,11 @@ export const safeJoinAdInterestGroup = (group: any, lifetime: number): void => {
     // Call the joinAdInterestGroup function with the updated group
     if (typeof navigator.joinAdInterestGroup === 'function') {
       navigator.joinAdInterestGroup(updatedGroup, lifetime);
+    } else if ((navigator as any).joinAdInterestGroup) {
+      // Fallback for browsers with non-standard implementation
+      (navigator as any).joinAdInterestGroup(updatedGroup, lifetime);
+    } else {
+      console.debug('joinAdInterestGroup API not available in this browser');
     }
   } catch (e) {
     console.debug('Error joining ad interest group:', e);

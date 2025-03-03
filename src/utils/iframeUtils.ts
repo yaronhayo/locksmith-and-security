@@ -23,10 +23,9 @@ export function setupIframeDocTypeFixer() {
             if (isQuirksMode || !iframe.contentDocument.doctype) {
               console.log(`Fixing DOCTYPE for iframe #${index} - was in ${isQuirksMode ? 'Quirks Mode' : 'No DOCTYPE'}`);
               
-              // Create a new doctype
+              // First attempt: Create and insert a new doctype
               const doctype = document.implementation.createDocumentType('html', '', '');
               
-              // Insert it at the beginning of the document
               if (iframe.contentDocument.childNodes.length > 0) {
                 iframe.contentDocument.insertBefore(doctype, iframe.contentDocument.childNodes[0]);
               }
@@ -43,14 +42,26 @@ export function setupIframeDocTypeFixer() {
               // If still in Quirks Mode, try more aggressive approach
               if (newMode === 'BackCompat') {
                 console.log(`Attempting more aggressive DOCTYPE fix for iframe #${index}`);
-                // Try to rewrite the entire document with a DOCTYPE
-                const originalContent = iframe.contentDocument.documentElement.outerHTML;
-                const newContent = `<!DOCTYPE html>${originalContent}`;
                 
-                // Write the new content with DOCTYPE
-                iframe.contentDocument.open();
-                iframe.contentDocument.write(newContent);
-                iframe.contentDocument.close();
+                try {
+                  // Try to rewrite the entire document with a DOCTYPE
+                  const originalContent = iframe.contentDocument.documentElement.outerHTML;
+                  const newContent = `<!DOCTYPE html>${originalContent}`;
+                  
+                  // Write the new content with DOCTYPE
+                  iframe.contentDocument.open();
+                  iframe.contentDocument.write(newContent);
+                  iframe.contentDocument.close();
+                  
+                  // Force a second reflow to ensure changes take effect
+                  const secondTempDiv = iframe.contentDocument.createElement('div');
+                  iframe.contentDocument.body?.appendChild(secondTempDiv);
+                  iframe.contentDocument.body?.removeChild(secondTempDiv);
+                  
+                  console.log(`Iframe #${index} mode after aggressive fix: ${iframe.contentDocument.compatMode}`);
+                } catch (rewriteError) {
+                  console.debug(`Could not rewrite iframe #${index} content:`, rewriteError);
+                }
               }
             }
           }
@@ -61,6 +72,18 @@ export function setupIframeDocTypeFixer() {
       });
     } catch (error) {
       console.error('Error fixing iframe doctypes:', error);
+    }
+  };
+  
+  // Handle third-party iframes dynamically loaded with postMessage communication
+  const handlePostMessageForIframes = (event: MessageEvent) => {
+    try {
+      // Only process messages from trusted origins (you may need to adjust this)
+      if (event.data === 'CHECK_DOCTYPE') {
+        setTimeout(fixIframeDoctype, 100); // Small delay to ensure iframe is loaded
+      }
+    } catch (error) {
+      console.debug('Error handling postMessage:', error);
     }
   };
   
@@ -89,7 +112,7 @@ export function setupIframeDocTypeFixer() {
       
       if (shouldFix) {
         console.log('New iframes detected, fixing DOCTYPEs');
-        fixIframeDoctype();
+        setTimeout(fixIframeDoctype, 10); // Small delay to ensure iframe is loaded
       }
     });
     
@@ -100,6 +123,9 @@ export function setupIframeDocTypeFixer() {
       attributes: false,
       characterData: false
     });
+    
+    // Add postMessage listener for third-party communication
+    window.addEventListener('message', handlePostMessageForIframes, false);
     
     // Run the fixer initially
     fixIframeDoctype();
@@ -119,6 +145,7 @@ export function setupIframeDocTypeFixer() {
       if (intervalId) {
         clearInterval(intervalId);
       }
+      window.removeEventListener('message', handlePostMessageForIframes);
     };
   } catch (error) {
     console.error('Error setting up iframe doctype fixer:', error);
@@ -126,6 +153,7 @@ export function setupIframeDocTypeFixer() {
       if (intervalId) {
         clearInterval(intervalId);
       }
+      window.removeEventListener('message', handlePostMessageForIframes);
     }; // Return empty cleanup function
   }
 }

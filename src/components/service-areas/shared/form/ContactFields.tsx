@@ -65,6 +65,7 @@ const ContactFields = ({
           aria-describedby={errors.name ? "name-error" : undefined}
           placeholder="Your full name"
           className={errors.name ? "border-red-500" : ""}
+          autoComplete="name"
         />
         {errors.name && (
           <Alert variant="destructive" className="mt-1 py-2">
@@ -88,6 +89,7 @@ const ContactFields = ({
           aria-describedby={errors.phone ? "phone-error" : undefined}
           placeholder="(555) 555-5555"
           className={errors.phone ? "border-red-500" : ""}
+          autoComplete="tel"
         />
         {errors.phone && (
           <Alert variant="destructive" className="mt-1 py-2">
@@ -112,6 +114,7 @@ const ContactFields = ({
               placeholder="Enter your address"
               className={errors.address ? "border-red-500" : ""}
               error={!!errors.address}
+              autoComplete="street-address"
             />
           </GoogleMapsProvider>
         </div>
