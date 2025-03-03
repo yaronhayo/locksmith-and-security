@@ -16,8 +16,8 @@ interface FormSubmitHandlerProps {
   recaptchaToken: string | null;
   address: string;
   showVehicleInfo: boolean;
-  allKeysLost: boolean;
-  hasUnusedKey: boolean;
+  allKeysLost: boolean; // Changed from string to boolean
+  hasUnusedKey: boolean; // Changed from string to boolean
   showAllKeysLostField: boolean;
   showUnusedKeyField: boolean;
 }
