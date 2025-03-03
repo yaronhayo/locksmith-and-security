@@ -1,4 +1,5 @@
 
+import { useCallback } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
@@ -13,10 +14,20 @@ interface NavigationMenuTriggerItemProps {
 }
 
 const NavigationMenuTriggerItem = ({ path, label, isActive }: NavigationMenuTriggerItemProps) => {
+  const handleClick = useCallback((e: React.MouseEvent) => {
+    // Only scroll if not prevented
+    try {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } catch (err) {
+      // Fallback for older browsers
+      window.scrollTo(0, 0);
+    }
+  }, []);
+
   return (
     <Link 
       to={path}
-      onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+      onClick={handleClick}
       className="outline-none"
       aria-current={isActive ? "page" : undefined}
     >

@@ -64,8 +64,12 @@ const Routes = () => {
     // Only run this once to prevent repeated logging and class manipulation
     if (!routeMountedRef.current) {
       console.log('Routes mounted - checking for duplicate headers');
-      const headers = document.querySelectorAll('header');
-      console.log(`Found ${headers.length} header elements in the DOM`);
+      
+      // Only log header count in development
+      if (process.env.NODE_ENV === 'development') {
+        const headers = document.querySelectorAll('header');
+        console.log(`Found ${headers.length} header elements in the DOM`);
+      }
       
       // Set mounted flag
       routeMountedRef.current = true;

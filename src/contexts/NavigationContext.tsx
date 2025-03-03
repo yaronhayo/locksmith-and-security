@@ -1,5 +1,5 @@
 
-import { createContext, useContext, ReactNode, useCallback, useRef } from 'react';
+import { createContext, useContext, ReactNode, useCallback, useRef, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 interface NavigationContextType {

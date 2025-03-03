@@ -48,11 +48,12 @@ const fetchMapConfig = async (): Promise<{ apiKey: string }> => {
     // In development, fetch from Supabase
     if (isDevelopment()) {
       console.log("Fetching map config from Supabase (dev mode)");
+      
+      // Switch from using the object format to array format to fix the 406 error
       const { data, error } = await supabase
         .from("settings")
         .select("value")
-        .eq("key", "google_maps_api_key")
-        .single();
+        .eq("key", "google_maps_api_key");
 
       if (error) {
         console.error("Error fetching map config:", error);
@@ -64,7 +65,8 @@ const fetchMapConfig = async (): Promise<{ apiKey: string }> => {
         return mapConfigCache;
       }
 
-      if (!data?.value) {
+      // Check if data is an array and has elements
+      if (!data || !Array.isArray(data) || data.length === 0) {
         console.error("No Google Maps API key found in settings");
         
         // Use a fallback key if no key found
@@ -75,7 +77,7 @@ const fetchMapConfig = async (): Promise<{ apiKey: string }> => {
       }
 
       // Cache the result
-      mapConfigCache = { apiKey: data.value };
+      mapConfigCache = { apiKey: data[0].value };
       return mapConfigCache;
     } else {
       // In production, we can use a more optimized approach
@@ -86,10 +88,9 @@ const fetchMapConfig = async (): Promise<{ apiKey: string }> => {
       const { data, error } = await supabase
         .from("settings")
         .select("value")
-        .eq("key", "google_maps_api_key")
-        .single();
+        .eq("key", "google_maps_api_key");
 
-      if (error || !data?.value) {
+      if (error || !data || data.length === 0) {
         console.warn("Using fallback API key mechanism");
         
         // Use a fallback mechanism (could be an Edge Function or directly from env)
@@ -98,7 +99,7 @@ const fetchMapConfig = async (): Promise<{ apiKey: string }> => {
         return mapConfigCache;
       }
 
-      mapConfigCache = { apiKey: data.value };
+      mapConfigCache = { apiKey: data[0].value };
       return mapConfigCache;
     }
   } catch (error) {

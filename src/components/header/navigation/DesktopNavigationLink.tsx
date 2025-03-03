@@ -1,4 +1,5 @@
 
+import { useCallback } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
@@ -7,19 +8,29 @@ interface DesktopNavigationLinkProps {
   path: string;
   label: string;
   isActive: boolean;
-  className?: string; // Add the missing className prop
+  className?: string;
 }
 
 const DesktopNavigationLink = ({ path, label, isActive, className }: DesktopNavigationLinkProps) => {
+  const handleClick = useCallback((e: React.MouseEvent) => {
+    // Only scroll if not prevented
+    try {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } catch (err) {
+      // Fallback for older browsers
+      window.scrollTo(0, 0);
+    }
+  }, []);
+
   return (
     <Link
       to={path}
       className={cn(
         "text-base font-medium transition-colors duration-300 relative no-underline outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 rounded-md px-2 py-1",
         isActive ? "text-secondary" : "text-gray-700 hover:text-secondary",
-        className // Include the className in the cn function
+        className
       )}
-      onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+      onClick={handleClick}
       aria-current={isActive ? "page" : undefined}
     >
       <div className="relative">
