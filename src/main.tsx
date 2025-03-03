@@ -1,6 +1,5 @@
-
 import React from 'react'
-import * as ReactDOM from 'react-dom'
+import * as ReactDOM from 'react-dom/client'
 import App from './App.tsx'
 import './index.css'
 import { setupIframeDocTypeFixer } from './utils/iframeUtils'
@@ -161,30 +160,12 @@ async function mountApp() {
       return;
     }
     
-    // Check if ReactDOM is available
-    if (typeof ReactDOM === 'undefined') {
-      console.error('ReactDOM is not available');
-      renderErrorUI("React DOM initialization failed. Please try refreshing the page.");
-      return;
-    }
-    
-    // Remove loading fallback content
-    while (rootElement.firstChild) {
-      rootElement.removeChild(rootElement.firstChild);
-    }
-    
     // Try creating the root
     try {
       console.log('Creating React root...');
       
-      // Handle different React 18 vs older versions for createRoot
-      const root = ReactDOM.createRoot ? 
-        ReactDOM.createRoot(rootElement) : 
-        { 
-          render: (element) => {
-            ReactDOM.render(element, rootElement);
-          }
-        };
+      // Create React 18 root
+      const root = ReactDOM.createRoot(rootElement);
       
       // Try rendering the app
       console.log('Rendering app...');
