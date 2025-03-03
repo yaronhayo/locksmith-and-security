@@ -17,22 +17,84 @@ const Recaptcha: React.FC<RecaptchaProps> = ({
   const recaptchaRef = useRef<HTMLDivElement>(null);
   const recaptchaWidgetId = useRef<number | null>(null);
   const [loadError, setLoadError] = useState<boolean>(false);
+  const [isInitialized, setIsInitialized] = useState<boolean>(false);
   const { data: recaptchaKey, isLoading, isError } = useRecaptchaKey();
   
   // Use the provided sitekey or the one from the hook
   const actualSitekey = sitekey || recaptchaKey || '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI'; // Fallback to Google's test key
 
+  // This function will safely try to use grecaptcha if available
+  const safelyUseRecaptcha = (callback: () => void) => {
+    try {
+      if (window.grecaptcha && window.grecaptcha.render) {
+        callback();
+        return true;
+      }
+    } catch (error) {
+      console.error('Error using reCAPTCHA:', error);
+    }
+    return false;
+  };
+
   useEffect(() => {
-    // Check if grecaptcha is loaded
-    if (typeof window.grecaptcha === 'undefined' || typeof window.grecaptcha.render !== 'function') {
-      // Set a timeout to detect if reCAPTCHA fails to load
-      const timeoutId = setTimeout(() => {
-        if (typeof window.grecaptcha === 'undefined' || typeof window.grecaptcha.render !== 'function') {
-          console.error('reCAPTCHA failed to load');
-          setLoadError(true);
+    // Only proceed if we haven't already initialized
+    if (isInitialized) return;
+    
+    // Define a function to initialize reCAPTCHA
+    const initializeRecaptcha = () => {
+      const success = safelyUseRecaptcha(() => {
+        if (!recaptchaRef.current) return;
+        
+        // Check if we already have a widget ID
+        if (recaptchaWidgetId.current !== null) {
+          try {
+            window.grecaptcha.reset(recaptchaWidgetId.current);
+          } catch (error) {
+            console.error('Error resetting reCAPTCHA:', error);
+            recaptchaWidgetId.current = null;
+          }
         }
-      }, 5000); // 5 seconds timeout
+        
+        // If we don't have a widget ID, render the recaptcha
+        if (recaptchaWidgetId.current === null) {
+          try {
+            recaptchaWidgetId.current = window.grecaptcha.render(recaptchaRef.current, {
+              sitekey: actualSitekey,
+              callback: (token: string) => {
+                onChange(token);
+              },
+              'expired-callback': () => {
+                onChange(null);
+              },
+              size: size
+            });
+            
+            // Add DOCTYPE to reCAPTCHA iframes to resolve Quirks Mode issues
+            setTimeout(() => {
+              const iframes = document.querySelectorAll('iframe[src*="recaptcha"]');
+              iframes.forEach(iframe => {
+                addDocTypeToIframe(iframe as HTMLIFrameElement);
+              });
+            }, 1000);
+            
+            setIsInitialized(true);
+          } catch (error) {
+            console.error('Error rendering reCAPTCHA:', error);
+            setLoadError(true);
+          }
+        }
+      });
       
+      if (!success) {
+        // Schedule another attempt if not successful
+        setTimeout(initializeRecaptcha, 500);
+      }
+    };
+    
+    // Check if grecaptcha is already loaded
+    if (window.grecaptcha && window.grecaptcha.ready) {
+      window.grecaptcha.ready(initializeRecaptcha);
+    } else {
       // Create script element dynamically if it doesn't exist
       const existingScript = document.querySelector('script[src*="recaptcha/api.js"]');
       if (!existingScript) {
@@ -43,35 +105,35 @@ const Recaptcha: React.FC<RecaptchaProps> = ({
         script.crossOrigin = 'anonymous';
         
         script.onload = () => {
-          clearTimeout(timeoutId);
-          initializeRecaptcha();
+          if (window.grecaptcha && window.grecaptcha.ready) {
+            window.grecaptcha.ready(initializeRecaptcha);
+          } else {
+            initializeRecaptcha();
+          }
         };
         
         script.onerror = () => {
-          clearTimeout(timeoutId);
           console.error('Error loading reCAPTCHA script');
           setLoadError(true);
         };
         
         document.head.appendChild(script);
       } else {
-        // Script already exists, check if it's loaded with intervals
-        const checkInterval = setInterval(() => {
-          if (typeof window.grecaptcha !== 'undefined' && typeof window.grecaptcha.render === 'function') {
-            clearTimeout(timeoutId);
-            clearInterval(checkInterval);
-            initializeRecaptcha();
-          }
-        }, 100);
+        // Script already exists, try initialization
+        initializeRecaptcha();
         
-        // Clear the interval after 5 seconds to prevent memory leaks
-        setTimeout(() => clearInterval(checkInterval), 5000);
+        // Set a timeout for initialization failure
+        setTimeout(() => {
+          if (!isInitialized) {
+            console.error('reCAPTCHA initialization timeout');
+            setLoadError(true);
+          }
+        }, 10000);
       }
-    } else {
-      initializeRecaptcha();
     }
     
     return () => {
+      // Cleanup
       if (recaptchaWidgetId.current !== null && window.grecaptcha) {
         try {
           window.grecaptcha.reset(recaptchaWidgetId.current);
@@ -80,52 +142,7 @@ const Recaptcha: React.FC<RecaptchaProps> = ({
         }
       }
     };
-  }, [actualSitekey, size]);
-
-  const initializeRecaptcha = () => {
-    // Make sure the recaptcha ref is defined and grecaptcha is loaded
-    if (!recaptchaRef.current || !window.grecaptcha || !window.grecaptcha.render) {
-      setTimeout(initializeRecaptcha, 100);
-      return;
-    }
-    
-    // Check if we already have a widget ID
-    if (recaptchaWidgetId.current !== null) {
-      try {
-        window.grecaptcha.reset(recaptchaWidgetId.current);
-      } catch (error) {
-        console.error('Error resetting reCAPTCHA:', error);
-        recaptchaWidgetId.current = null;
-      }
-    }
-    
-    // If we don't have a widget ID, render the recaptcha
-    if (recaptchaWidgetId.current === null) {
-      try {
-        recaptchaWidgetId.current = window.grecaptcha.render(recaptchaRef.current, {
-          sitekey: actualSitekey,
-          callback: (token: string) => {
-            onChange(token);
-          },
-          'expired-callback': () => {
-            onChange(null);
-          },
-          size: size
-        });
-        
-        // Add DOCTYPE to reCAPTCHA iframes to resolve Quirks Mode issues
-        setTimeout(() => {
-          const iframes = document.querySelectorAll('iframe[src*="recaptcha"]');
-          iframes.forEach(iframe => {
-            addDocTypeToIframe(iframe as HTMLIFrameElement);
-          });
-        }, 1000);
-      } catch (error) {
-        console.error('Error rendering reCAPTCHA:', error);
-        setLoadError(true);
-      }
-    }
-  };
+  }, [actualSitekey, size, onChange, isInitialized]);
 
   if (loadError || isError) {
     // Fallback UI for when reCAPTCHA fails to load

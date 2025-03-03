@@ -1,6 +1,6 @@
 
 /**
- * Utilities for handling iframe-related operations
+ * Utilities for dealing with iframe issues and ensuring proper DOCTYPE
  */
 
 /**
@@ -22,46 +22,87 @@ export const addDocTypeToIframe = (iframe: HTMLIFrameElement): void => {
 };
 
 /**
- * Sets up a MutationObserver to fix DOCTYPE in all iframes
- * including dynamically added ones
+ * Sets up a mutation observer to monitor the DOM for iframe elements
+ * and add DOCTYPE when they are created
+ * @returns A function to call when cleaning up the observer
  */
-export const setupIframeDocTypeFixer = (): (() => void) => {
-  // Function to fix all iframes in the document
-  const fixAllIframes = () => {
-    const iframes = document.querySelectorAll('iframe');
-    iframes.forEach(iframe => addDocTypeToIframe(iframe as HTMLIFrameElement));
+export const setupIframeDocTypeFixer = (): () => void => {
+  let observer: MutationObserver | null = null;
+
+  const fixIframes = () => {
+    try {
+      const iframes = document.querySelectorAll('iframe');
+      iframes.forEach((iframe) => {
+        addDocTypeToIframe(iframe);
+      });
+    } catch (error) {
+      console.error('Error fixing iframes:', error);
+    }
   };
-  
-  // Run once on setup
-  fixAllIframes();
-  
-  // Set up mutation observer to watch for new iframes
-  const observer = new MutationObserver((mutations) => {
-    let shouldFix = false;
-    
-    mutations.forEach(mutation => {
-      if (mutation.type === 'childList' && mutation.addedNodes.length) {
-        mutation.addedNodes.forEach(node => {
-          // If the added node is an iframe or contains iframes
-          if (node instanceof HTMLIFrameElement || 
-              (node instanceof Element && node.querySelectorAll('iframe').length > 0)) {
-            shouldFix = true;
+
+  try {
+    // Run initially
+    fixIframes();
+
+    // Set up observer for new iframes
+    observer = new MutationObserver((mutations) => {
+      let shouldFixIframes = false;
+      
+      mutations.forEach((mutation) => {
+        if (mutation.type === 'childList' && mutation.addedNodes.length) {
+          // Check if any iframe was added or an element that might contain an iframe
+          for (let i = 0; i < mutation.addedNodes.length; i++) {
+            const node = mutation.addedNodes[i];
+            if (node.nodeName === 'IFRAME' || (node.nodeType === 1 && (node as Element).querySelector('iframe'))) {
+              shouldFixIframes = true;
+              break;
+            }
           }
-        });
+        }
+      });
+      
+      if (shouldFixIframes) {
+        fixIframes();
       }
     });
-    
-    if (shouldFix) {
-      fixAllIframes();
+
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true,
+    });
+  } catch (error) {
+    console.error('Error setting up iframe observer:', error);
+  }
+
+  // Return cleanup function
+  return () => {
+    if (observer) {
+      observer.disconnect();
     }
-  });
+  };
+};
+
+/**
+ * Checks if the current environment is a production build
+ */
+export const isProduction = (): boolean => {
+  return process.env.NODE_ENV === 'production' || 
+         window.location.hostname !== 'localhost';
+};
+
+/**
+ * Fixes base paths for client-side routing in deployed environments
+ * to handle trailing slashes and subpaths properly
+ */
+export const getBasePath = (): string => {
+  // For Netlify or other hosting platforms that might use subdirectories
+  const pathname = window.location.pathname;
+  const pathParts = pathname.split('/');
   
-  // Start observing the document
-  observer.observe(document.body, { 
-    childList: true, 
-    subtree: true 
-  });
+  // Check if we're in a subdirectory deployment
+  if (pathParts.length > 2 && pathParts[1] !== '') {
+    return '/' + pathParts[1];
+  }
   
-  // Return a cleanup function
-  return () => observer.disconnect();
+  return '';
 };

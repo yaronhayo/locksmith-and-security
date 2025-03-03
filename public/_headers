@@ -47,14 +47,14 @@
   X-Content-Type-Options: nosniff
   X-Frame-Options: DENY
   Referrer-Policy: strict-origin-when-cross-origin
-  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://maps.googleapis.com https://mtbgayqzjrxjjmsjikcg.supabase.co https://www.google.com https://www.gstatic.com; connect-src 'self' https://mtbgayqzjrxjjmsjikcg.supabase.co https://maps.googleapis.com https://www.google.com https://*.netlify.app; img-src 'self' data: https://maps.googleapis.com https://maps.gstatic.com https://mtbgayqzjrxjjmsjikcg.supabase.co; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; frame-src https://www.google.com;
-  Permissions-Policy: geolocation=self
   Access-Control-Allow-Origin: *
   Access-Control-Allow-Methods: GET, POST, OPTIONS
   Access-Control-Allow-Headers: Content-Type, Authorization
 
-# Handle dev-server CORS
-/dev-server
-  Access-Control-Allow-Origin: *
-  Access-Control-Allow-Methods: GET, POST, OPTIONS
-  Access-Control-Allow-Headers: Content-Type, Authorization
+# Specific SPA routing fixes for Netlify
+/*
+  Link: </index.html>; rel=preload; as=document
+  
+# Add the following to ensure SPA routing works
+/*
+  Cache-Control: public, max-age=0, must-revalidate
