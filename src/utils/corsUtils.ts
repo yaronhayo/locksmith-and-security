@@ -19,6 +19,11 @@ export const addDocTypeToIframe = (iframe: HTMLIFrameElement): void => {
         if (iframe.contentDocument.childNodes.length > 0) {
           iframe.contentDocument.insertBefore(doctype, iframe.contentDocument.childNodes[0]);
         }
+        
+        // Force a reflow to ensure the DOCTYPE is applied
+        const tempDiv = iframe.contentDocument.createElement('div');
+        iframe.contentDocument.body?.appendChild(tempDiv);
+        iframe.contentDocument.body?.removeChild(tempDiv);
       }
     }
   } catch (e) {
@@ -81,8 +86,9 @@ export const safeJoinAdInterestGroup = (group: any, lifetime: number): void => {
     // Clone the group to modify it without affecting the original
     const updatedGroup = { ...group };
     
-    // Handle the deprecated dailyUpdateUrl field
+    // Handle the deprecated dailyUpdateUrl field - update to the new name 'updateUrl'
     if (updatedGroup.dailyUpdateUrl && !updatedGroup.updateUrl) {
+      console.debug('Converting deprecated dailyUpdateUrl field to updateUrl');
       updatedGroup.updateUrl = updatedGroup.dailyUpdateUrl;
       delete updatedGroup.dailyUpdateUrl;
     }

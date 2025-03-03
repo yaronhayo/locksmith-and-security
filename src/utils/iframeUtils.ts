@@ -35,6 +35,23 @@ export function setupIframeDocTypeFixer() {
               const tempDiv = iframe.contentDocument.createElement('div');
               iframe.contentDocument.body?.appendChild(tempDiv);
               iframe.contentDocument.body?.removeChild(tempDiv);
+              
+              // Check if we were successful in fixing the mode
+              const newMode = iframe.contentDocument.compatMode;
+              console.log(`Iframe #${index} mode after fix: ${newMode === 'CSS1Compat' ? 'Standards Mode' : 'Still in Quirks Mode'}`);
+              
+              // If still in Quirks Mode, try more aggressive approach
+              if (newMode === 'BackCompat') {
+                console.log(`Attempting more aggressive DOCTYPE fix for iframe #${index}`);
+                // Try to rewrite the entire document with a DOCTYPE
+                const originalContent = iframe.contentDocument.documentElement.outerHTML;
+                const newContent = `<!DOCTYPE html>${originalContent}`;
+                
+                // Write the new content with DOCTYPE
+                iframe.contentDocument.open();
+                iframe.contentDocument.write(newContent);
+                iframe.contentDocument.close();
+              }
             }
           }
         } catch (e) {
@@ -91,7 +108,7 @@ export function setupIframeDocTypeFixer() {
     intervalId = setInterval(() => {
       console.log('Running periodic iframe DOCTYPE check');
       fixIframeDoctype();
-    }, 5000);
+    }, 3000); // Reduced from 5000ms to 3000ms for more frequent checks
     
     // Return a cleanup function
     return () => {

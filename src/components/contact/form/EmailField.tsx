@@ -50,6 +50,7 @@ const EmailField = ({ isSubmitting }: EmailFieldProps) => {
           onBlur={() => setIsDirty(true)}
           aria-invalid={!!error}
           aria-describedby={error ? `${emailId}-error` : undefined}
+          autoComplete="email"
         />
       </div>
       {error && (

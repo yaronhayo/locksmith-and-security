@@ -46,6 +46,7 @@ const AddressFields = ({ address, onChange, errors, isSubmitting }: AddressField
               name="address"
               className="text-gray-900 placeholder:text-gray-500"
               error={!!errors.address}
+              autoComplete="street-address"
             />
           </GoogleMapsProvider>
         </div>
@@ -70,6 +71,7 @@ const AddressFields = ({ address, onChange, errors, isSubmitting }: AddressField
               className="h-9 text-sm text-gray-900 placeholder:text-gray-500"
               disabled={isSubmitting}
               placeholder="Apartment, suite, unit number"
+              autoComplete="address-line2"
             />
           </div>
 
@@ -84,6 +86,7 @@ const AddressFields = ({ address, onChange, errors, isSubmitting }: AddressField
               className="h-9 text-sm text-gray-900 placeholder:text-gray-500"
               disabled={isSubmitting}
               placeholder="Enter gate code if applicable"
+              autoComplete="off"
             />
           </div>
         </>

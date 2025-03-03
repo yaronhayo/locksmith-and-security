@@ -64,6 +64,7 @@ const AddressField = ({ value, onChange, isSubmitting, error }: AddressFieldProp
             onBlur={handleBlur}
             error={!!displayError}
             name="address"
+            autoComplete="street-address"
           />
         </GoogleMapsProvider>
       </div>
