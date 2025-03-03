@@ -1,13 +1,23 @@
 
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, QueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 
 // Fallback API key to use if the database request fails
 const FALLBACK_MAP_KEY = "";
 
+// Query key for map config cache
+const MAP_CONFIG_QUERY_KEY = 'map_config';
+
+// Function to clear the map config cache
+export const clearMapConfigCache = () => {
+  const queryClient = new QueryClient();
+  queryClient.invalidateQueries({queryKey: [MAP_CONFIG_QUERY_KEY]});
+  console.log('Map config cache cleared');
+};
+
 export const useMapConfig = () => {
   return useQuery({
-    queryKey: ['map_config'],
+    queryKey: [MAP_CONFIG_QUERY_KEY],
     queryFn: async () => {
       try {
         // First try the "select value" approach
