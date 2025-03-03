@@ -22,8 +22,8 @@ const ServiceAreaMap = ({ locationName, lat, lng, isLoading = false }: ServiceAr
   const [retryCount, setRetryCount] = useState(0);
   const isMounted = useRef(true);
   const mapInstanceKey = `map-instance-${retryCount}-${locationName.toLowerCase().replace(/\s+/g, '-')}`;
-  const readyTimeoutRef = useRef<number | null>(null);
-  const retryTimeoutRef = useRef<number | null>(null);
+  const readyTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const retryTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   
   // Cleanup function for timeouts
   const cleanupTimeouts = useCallback(() => {
@@ -70,7 +70,7 @@ const ServiceAreaMap = ({ locationName, lat, lng, isLoading = false }: ServiceAr
     
     console.log("Retrying map load...");
     
-    retryTimeoutRef.current = window.setTimeout(() => {
+    retryTimeoutRef.current = setTimeout(() => {
       if (isMounted.current) {
         setMapError(null);
         setRetryCount(prev => prev + 1);
@@ -123,7 +123,7 @@ const ServiceAreaMap = ({ locationName, lat, lng, isLoading = false }: ServiceAr
           <div className="absolute inset-0 bg-white/90 flex items-center justify-center">
             <MapError 
               error={mapError} 
-              resetErrorBoundary={handleRetry}
+              resetErrorBoundary={handleRetry} 
             />
           </div>
         )}
