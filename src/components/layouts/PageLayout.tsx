@@ -1,5 +1,5 @@
 
-import React, { PropsWithChildren, useEffect } from 'react';
+import React, { PropsWithChildren, useEffect, useRef } from 'react';
 import { Helmet } from 'react-helmet';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -61,15 +61,29 @@ const PageLayout: React.FC<PropsWithChildren<PageLayoutProps>> = ({
   languages,
   defaultLang = 'en-US'
 }) => {
+  const cleanupRef = useRef<(() => void) | null>(null);
+  
   useEffect(() => {
     console.log('PageLayout mounted');
     
-    // Set up iframe doctype fixer
-    const cleanupIframeObserver = setupIframeObserver();
+    // Set up iframe doctype fixer with proper cleanup handling
+    try {
+      const cleanupIframeObserver = setupIframeObserver();
+      cleanupRef.current = cleanupIframeObserver;
+    } catch (error) {
+      console.error("Error setting up iframe observer:", error);
+    }
     
     return () => {
       // Clean up the observer when component unmounts
-      cleanupIframeObserver();
+      if (cleanupRef.current) {
+        try {
+          cleanupRef.current();
+          cleanupRef.current = null;
+        } catch (error) {
+          console.error("Error cleaning up iframe observer:", error);
+        }
+      }
     };
   }, []);
 

@@ -1,4 +1,3 @@
-
 import React from 'react'
 import * as ReactDOMClient from 'react-dom/client'
 import * as ReactDOM from 'react-dom'
@@ -34,6 +33,30 @@ const queryClient = new QueryClient({
     }
   },
 })
+
+// Patch React DOM operations to prevent "removeChild" errors
+const patchReactDOMRemoveChild = () => {
+  try {
+    // This is a last-resort patch to prevent the common "removeChild" error
+    const originalRemoveChild = Node.prototype.removeChild;
+    
+    Node.prototype.removeChild = function(child) {
+      if (child && this.contains(child)) {
+        return originalRemoveChild.call(this, child);
+      } else {
+        console.warn('Prevented removeChild error - node is not a child of parent');
+        return child;
+      }
+    };
+    
+    console.log('React DOM removeChild patched for error prevention');
+  } catch (e) {
+    console.error('Failed to patch removeChild:', e);
+  }
+};
+
+// Apply the patch before mounting the app
+patchReactDOMRemoveChild();
 
 // Ensure console.error is working properly
 const originalConsoleError = console.error;

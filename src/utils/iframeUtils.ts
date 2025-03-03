@@ -8,16 +8,23 @@ export const fixIframeDoctype = () => {
     const iframes = document.querySelectorAll('iframe');
     iframes.forEach(iframe => {
       try {
-        if (iframe.contentDocument) {
-          // Only try to access cross-origin iframes that we can access
+        // Only proceed if we can access the contentDocument (same-origin policy)
+        if (iframe && iframe.contentDocument) {
           // Check if document is in quirks mode
           const isQuirksMode = iframe.contentDocument.compatMode === 'BackCompat';
           
           // If in quirks mode or missing doctype, add the proper DOCTYPE
           if (isQuirksMode || !iframe.contentDocument.doctype) {
+            // Create a new doctype
             const doctype = document.implementation.createDocumentType('html', '', '');
-            if (iframe.contentDocument.childNodes.length > 0) {
-              iframe.contentDocument.insertBefore(doctype, iframe.contentDocument.childNodes[0]);
+            
+            // Only insert if the iframe document has nodes and doesn't have a doctype already
+            if (iframe.contentDocument.childNodes.length > 0 && !iframe.contentDocument.doctype) {
+              try {
+                iframe.contentDocument.insertBefore(doctype, iframe.contentDocument.childNodes[0]);
+              } catch (insertError) {
+                console.debug('Could not insert doctype into iframe', insertError);
+              }
             }
           }
         }
@@ -33,29 +40,84 @@ export const fixIframeDoctype = () => {
 
 /**
  * Sets up a MutationObserver to fix doctypes in dynamically added iframes
+ * Returns a cleanup function
  */
 export const setupIframeObserver = () => {
-  // Run immediately
-  fixIframeDoctype();
+  // Create a reference to the observer to allow proper cleanup
+  let observer = null;
+  let intervalId = null;
   
-  // Set up observer for dynamically added iframes
-  const observer = new MutationObserver((mutations) => {
-    mutations.forEach((mutation) => {
-      if (mutation.type === 'childList' && mutation.addedNodes.length) {
+  try {
+    // Run immediately
+    fixIframeDoctype();
+    
+    // Set up observer for dynamically added iframes
+    observer = new MutationObserver((mutations) => {
+      let shouldFix = false;
+      
+      // Check if any iframe was added
+      mutations.forEach((mutation) => {
+        if (mutation.type === 'childList' && mutation.addedNodes.length) {
+          mutation.addedNodes.forEach(node => {
+            if (node.nodeName === 'IFRAME' || 
+                (node.nodeType === Node.ELEMENT_NODE && 
+                 node instanceof HTMLElement && 
+                 node.querySelector('iframe'))) {
+              shouldFix = true;
+            }
+          });
+        }
+      });
+      
+      // Only run fix if necessary
+      if (shouldFix) {
         fixIframeDoctype();
       }
     });
-  });
+    
+    // Start observing the document with a more targeted approach
+    if (document.body) {
+      observer.observe(document.body, { 
+        childList: true, 
+        subtree: true,
+        attributes: false,
+        characterData: false
+      });
+      console.log("Iframe observer started");
+    } else {
+      console.warn("Document body not available for iframe observation");
+    }
+    
+    // Use a less frequent interval for periodic checks
+    intervalId = setInterval(() => {
+      try {
+        fixIframeDoctype();
+      } catch (e) {
+        console.error("Error in iframe check interval:", e);
+        clearInterval(intervalId);
+        intervalId = null;
+      }
+    }, 5000); // Check every 5 seconds instead of 2
+  } catch (error) {
+    console.error("Error setting up iframe observer:", error);
+  }
   
-  // Start observing the document
-  observer.observe(document.body, { childList: true, subtree: true });
-  
-  // Also set a periodic check every 2 seconds
-  const intervalId = setInterval(fixIframeDoctype, 2000);
-  
-  // Return a cleanup function to remove the observer and interval if needed
+  // Return a cleanup function
   return () => {
-    observer.disconnect();
-    clearInterval(intervalId);
+    try {
+      if (observer) {
+        observer.disconnect();
+        observer = null;
+        console.log("Iframe observer disconnected");
+      }
+      
+      if (intervalId) {
+        clearInterval(intervalId);
+        intervalId = null;
+        console.log("Iframe check interval cleared");
+      }
+    } catch (error) {
+      console.error("Error cleaning up iframe observer:", error);
+    }
   };
 };
