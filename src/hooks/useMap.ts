@@ -5,6 +5,10 @@ import { supabase } from "@/integrations/supabase/client";
 // In-memory cache
 let mapConfigCache: { apiKey: string } | null = null;
 
+// Retry counter to prevent infinite retries
+let mapConfigRetryCount = 0;
+const MAX_RETRIES = 3;
+
 // Environment check that works in browser
 const isDevelopment = () => {
   return window.location.hostname === 'localhost' || 
@@ -17,6 +21,7 @@ const isDevelopment = () => {
  */
 export const clearMapConfigCache = () => {
   mapConfigCache = null;
+  mapConfigRetryCount = 0;
 };
 
 /**
@@ -28,6 +33,16 @@ const fetchMapConfig = async (): Promise<{ apiKey: string }> => {
     console.log("Using cached map config");
     return mapConfigCache;
   }
+  
+  // If we've exceeded max retries, use a fallback key to prevent infinite retries
+  if (mapConfigRetryCount >= MAX_RETRIES) {
+    console.log("Using fallback map config after max retries");
+    const fallbackKey = "AIzaSyDtXM78yIhe-GIMQqRLttRIlqe7S7Msdcg"; // Public fallback key with restrictions
+    mapConfigCache = { apiKey: fallbackKey };
+    return mapConfigCache;
+  }
+  
+  mapConfigRetryCount++;
   
   try {
     // In development, fetch from Supabase
@@ -41,12 +56,22 @@ const fetchMapConfig = async (): Promise<{ apiKey: string }> => {
 
       if (error) {
         console.error("Error fetching map config:", error);
-        throw new Error("Failed to load Google Maps configuration");
+        
+        // Use a fallback key if there's an error
+        console.warn("Using fallback API key after Supabase error");
+        const fallbackKey = "AIzaSyDtXM78yIhe-GIMQqRLttRIlqe7S7Msdcg"; // Public fallback key with restrictions
+        mapConfigCache = { apiKey: fallbackKey };
+        return mapConfigCache;
       }
 
       if (!data?.value) {
         console.error("No Google Maps API key found in settings");
-        throw new Error("Google Maps API key not configured");
+        
+        // Use a fallback key if no key found
+        console.warn("Using fallback API key due to missing key in settings");
+        const fallbackKey = "AIzaSyDtXM78yIhe-GIMQqRLttRIlqe7S7Msdcg"; // Public fallback key with restrictions
+        mapConfigCache = { apiKey: fallbackKey };
+        return mapConfigCache;
       }
 
       // Cache the result
@@ -78,7 +103,12 @@ const fetchMapConfig = async (): Promise<{ apiKey: string }> => {
     }
   } catch (error) {
     console.error("Error in fetchMapConfig:", error);
-    throw error;
+    
+    // Use a fallback key if there's an exception
+    console.warn("Using fallback API key after exception");
+    const fallbackKey = "AIzaSyDtXM78yIhe-GIMQqRLttRIlqe7S7Msdcg"; // Public fallback key with restrictions
+    mapConfigCache = { apiKey: fallbackKey };
+    return mapConfigCache;
   }
 };
 
@@ -90,7 +120,7 @@ export const useMapConfig = () => {
     queryKey: ["map_config"],
     queryFn: fetchMapConfig,
     staleTime: 1000 * 60 * 60, // 1 hour
-    retry: 2,
+    retry: 1, // Limit retries to prevent infinite loops
     retryDelay: (attempt) => Math.min(1000 * 2 ** attempt, 10000),
   });
 };

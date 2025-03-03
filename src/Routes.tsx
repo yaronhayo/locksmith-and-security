@@ -1,6 +1,6 @@
 
 import { Routes as RouterRoutes, Route } from 'react-router-dom';
-import { Suspense, lazy, ReactNode, memo, useEffect, useRef } from "react";
+import { Suspense, lazy, ReactNode, memo, useEffect, useRef, useState } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { mainRoutes } from "./routes/mainRoutes";
 import { serviceRoutes } from "./routes/serviceRoutes";
@@ -58,23 +58,30 @@ RouteWrapper.displayName = 'RouteWrapper';
  */
 const Routes = () => {
   const routeMountedRef = useRef(false);
+  const [routesInitialized, setRoutesInitialized] = useState(false);
   
   useEffect(() => {
-    console.log('Routes mounted - checking for duplicate headers');
-    const headers = document.querySelectorAll('header');
-    console.log(`Found ${headers.length} header elements in the DOM`);
-    
-    // Set mounted flag and track initial mount
+    // Only run this once to prevent repeated logging and class manipulation
     if (!routeMountedRef.current) {
+      console.log('Routes mounted - checking for duplicate headers');
+      const headers = document.querySelectorAll('header');
+      console.log(`Found ${headers.length} header elements in the DOM`);
+      
+      // Set mounted flag
       routeMountedRef.current = true;
       
       // Remove loading class on mount
       document.body.classList.remove('loading');
+      
+      // Mark routes as initialized
+      setRoutesInitialized(true);
     }
     
     return () => {
-      // This shouldn't happen normally, but just in case
-      console.log('Routes unmounting');
+      // Only log if we've actually mounted properly before
+      if (routeMountedRef.current) {
+        console.log('Routes unmounting');
+      }
     };
   }, []);
   
