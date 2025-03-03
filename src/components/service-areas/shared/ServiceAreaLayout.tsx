@@ -24,14 +24,22 @@ const ServiceAreaLayout = memo(({ areaSlug }: ServiceAreaLayoutProps) => {
   const { displayedReviews, isLoading: reviewsLoading, totalReviews } = useReviews(location?.name);
 
   const schemas = useMemo(() => {
-    return createServiceAreaSchemas(location as any, settings, areaSlug);
+    return createServiceAreaSchemas(location, settings, areaSlug);
   }, [location, settings, areaSlug]);
   
   const faqSchema = useMemo(() => {
-    return schemas.find(schema => 
-      schema.type === 'FAQPage' || 
-      (schema.data && schema.data["@type"] === 'FAQPage')
-    ) as FAQSchema | undefined;
+    if (!schemas || schemas.length === 0) return undefined;
+    
+    const faqByType = schemas.find(schema => 'type' in schema && schema.type === 'FAQPage');
+    if (faqByType) return faqByType as FAQSchema;
+    
+    const faqByDataType = schemas.find(schema => 
+      'data' in schema && 
+      schema.data && 
+      schema.data["@type"] === 'FAQPage'
+    );
+    
+    return faqByDataType as FAQSchema | undefined;
   }, [schemas]);
   
   const isLoading = settingsLoading || locationsLoading;
@@ -44,21 +52,25 @@ const ServiceAreaLayout = memo(({ areaSlug }: ServiceAreaLayoutProps) => {
     return null;
   }
 
-  // Create optimized meta description (staying within 150-160 chars)
   const pageTitle = `Top-Rated Locksmith in ${location.name}, NJ | 24/7 Emergency Service`;
   const pageDescription = `Professional locksmith services in ${location.name}. Licensed & insured experts providing residential, commercial & auto solutions with fast 24/7 response.`;
 
-  // Ensure all schemas have the correct type structure
   const typedSchemas: Schema[] = schemas.map(schema => {
-    // If schema already has type property, return as is
-    if ('type' in schema) {
+    if ('type' in schema && 'data' in schema) {
       return schema as Schema;
     }
     
-    // Otherwise, infer type from @type property
+    if (schema && typeof schema === 'object') {
+      const schemaType = schema["@type"] || 'Unknown';
+      return {
+        type: schemaType,
+        data: schema
+      };
+    }
+    
     return {
-      type: schema.data?.["@type"] || 'Unknown',
-      data: schema.data
+      type: 'Unknown',
+      data: schema || {}
     };
   });
 
