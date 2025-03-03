@@ -47,5 +47,19 @@ http://247locksmithandsecurity.com/* https://247locksmithandsecurity.com/:splat 
 /privacy                          /privacy-policy 301
 /terms                            /terms-conditions 301
 
-# CRUCIAL: Make the SPA routing work properly
-/*    /index.html   200
+# Special routes to handle React router
+/services/*                       /index.html 200
+/service-areas/*                  /index.html 200
+/about                            /index.html 200
+/contact                          /index.html 200
+/faq                              /index.html 200
+/reviews                          /index.html 200
+/book-online                      /index.html 200
+/thank-you                        /index.html 200
+/privacy-policy                   /index.html 200
+/terms-conditions                 /index.html 200
+/sitemap                          /index.html 200
+/accessibility                    /index.html 200
+
+# Custom error page
+/* /index.html 200

@@ -35,7 +35,7 @@ const renderErrorUI = (errorMessage = "Application failed to load properly") => 
 };
 
 // Create a global error handler to catch initialization errors
-const handleGlobalError = (event: ErrorEvent) => {
+const handleGlobalError = (event) => {
   console.error('Global error caught:', event.error);
   // Prevent the error from causing a white screen if possible
   event.preventDefault();
@@ -52,11 +52,6 @@ window.addEventListener('unhandledrejection', (event) => {
   console.error('Unhandled promise rejection:', event.reason);
   renderErrorUI(event.reason?.message || "An unexpected promise rejection occurred");
 });
-
-// Create a callback function that will be triggered when reCAPTCHA is loaded
-window.onRecaptchaLoaded = () => {
-  console.log("reCAPTCHA API loaded successfully");
-};
 
 // Initialize iframe DOCTYPE fixer
 const cleanup = setupIframeDocTypeFixer();
@@ -76,15 +71,40 @@ const mountApp = () => {
       return;
     }
     
-    ReactDOM.createRoot(rootElement).render(
-      <React.StrictMode>
-        <QueryClientProvider client={queryClient}>
-          <App />
-        </QueryClientProvider>
-      </React.StrictMode>,
-    );
+    // Check if React is available
+    if (!React || typeof React.createElement !== 'function') {
+      console.error('React is not properly loaded');
+      renderErrorUI("React initialization failed. Please try refreshing the page.");
+      return;
+    }
+    
+    // Check if ReactDOM is available and has createRoot
+    if (!ReactDOM || typeof ReactDOM.createRoot !== 'function') {
+      console.error('ReactDOM.createRoot is not available');
+      renderErrorUI("React DOM initialization failed. Please try refreshing the page.");
+      return;
+    }
+    
+    // Try creating the root
+    try {
+      const root = ReactDOM.createRoot(rootElement);
+      
+      // Try rendering the app
+      root.render(
+        <React.StrictMode>
+          <QueryClientProvider client={queryClient}>
+            <App />
+          </QueryClientProvider>
+        </React.StrictMode>,
+      );
+      
+      console.info('App rendered successfully');
+    } catch (renderError) {
+      console.error('Error rendering React app:', renderError);
+      renderErrorUI(renderError instanceof Error ? renderError.message : "Failed to render application");
+    }
   } catch (error) {
-    console.error('Error mounting React app:', error);
+    console.error('Critical error mounting React app:', error);
     renderErrorUI(error instanceof Error ? error.message : "Failed to mount application");
   }
 };
@@ -102,5 +122,11 @@ setTimeout(() => {
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', mountApp);
 } else {
-  mountApp();
+  // Add a slight delay to ensure all scripts have been processed
+  setTimeout(mountApp, 100);
+}
+
+// Expose React to window for debugging
+if (typeof window !== 'undefined') {
+  window.React = React;
 }

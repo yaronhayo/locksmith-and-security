@@ -35,9 +35,36 @@
     [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
 
+# Special headers for React app entry point to ensure faster loading
+[[headers]]
+  for = "/index.html"
+    [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+    # Add special header to ensure React loads properly
+    Link = "</assets/react-vendor-*.js>; rel=preload; as=script; crossorigin=anonymous"
+
 [build.environment]
   NODE_VERSION = "18"
+  # Ensure React 18 compatibility
+  VITE_REACT_APP_VERSION = "18"
+  # Add diagnostic variables
+  NETLIFY_USE_YARN = "false"
+  CI = "true"
 
-# Ensures SPA routing works properly
-[[plugins]]
-  package = "@netlify/plugin-nextjs"
+# Ensures proper deployment
+[build.processing]
+  skip_processing = false
+
+[build.processing.js]
+  bundle = true
+  minify = true
+
+[build.processing.css]
+  bundle = true
+  minify = true
+
+[build.processing.html]
+  pretty_urls = true
+
+[build.processing.images]
+  compress = true
