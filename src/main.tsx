@@ -1,6 +1,6 @@
 
 import React from 'react'
-import ReactDOM from 'react-dom/client'
+import * as ReactDOM from 'react-dom/client'
 import App from './App.tsx'
 import './index.css'
 import { setupIframeDocTypeFixer } from './utils/iframeUtils'
@@ -161,9 +161,9 @@ async function mountApp() {
       return;
     }
     
-    // Check if ReactDOM is available and has createRoot
-    if (typeof ReactDOM === 'undefined' || typeof ReactDOM.createRoot !== 'function') {
-      console.error('ReactDOM.createRoot is not available');
+    // Check if ReactDOM is available
+    if (typeof ReactDOM === 'undefined') {
+      console.error('ReactDOM is not available');
       renderErrorUI("React DOM initialization failed. Please try refreshing the page.");
       return;
     }

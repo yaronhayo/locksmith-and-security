@@ -9,7 +9,6 @@ export default defineConfig({
     react({
       // This ensures React is included properly
       jsxRuntime: 'automatic',
-      fastRefresh: true,
       babel: {
         plugins: [
           // Add any babel plugins if needed

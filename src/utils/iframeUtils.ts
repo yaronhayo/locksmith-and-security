@@ -46,7 +46,8 @@ export function setupIframeDocTypeFixer() {
           // Check if any of the added nodes are iframes or could contain iframes
           for (let i = 0; i < mutation.addedNodes.length; i++) {
             const node = mutation.addedNodes[i];
-            if (node.nodeName === 'IFRAME' || (node.querySelectorAll && node.querySelectorAll('iframe').length > 0)) {
+            if (node.nodeName === 'IFRAME' || 
+                (node instanceof Element && node.querySelectorAll && node.querySelectorAll('iframe').length > 0)) {
               shouldFix = true;
               break;
             }
