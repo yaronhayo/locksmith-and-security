@@ -16,6 +16,13 @@ interface Window {
   onRecaptchaLoaded?: () => void;
 }
 
+// Extended Navigator interface for Privacy Sandbox APIs
+interface Navigator {
+  joinAdInterestGroup?: (group: any, lifetime: number) => Promise<void>;
+  leaveAdInterestGroup?: (group: any) => Promise<void>;
+  runAdAuction?: (config: any) => Promise<string>;
+}
+
 interface LayoutShiftEntry extends PerformanceEntry {
   value: number;
 }

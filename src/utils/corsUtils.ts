@@ -88,7 +88,7 @@ export const safeJoinAdInterestGroup = (group: any, lifetime: number): void => {
     }
     
     // Call the joinAdInterestGroup function with the updated group
-    if (navigator.joinAdInterestGroup) {
+    if (typeof navigator.joinAdInterestGroup === 'function') {
       navigator.joinAdInterestGroup(updatedGroup, lifetime);
     }
   } catch (e) {
