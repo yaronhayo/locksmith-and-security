@@ -1,31 +1,29 @@
 
 import React from 'react';
-import ServiceLayout from '@/components/services/common/ServiceLayout';
+import EnhancedServicesHero from '@/components/sections/services/EnhancedServicesHero';
 import MasterKeyContent from '@/components/services/master-key/MasterKeyContent';
-import { masterKeyServiceSchema, masterKeyFaqs, masterKeyRelatedServices } from '@/components/services/master-key/MasterKeySchema';
+import { Helmet } from 'react-helmet';
 
 const MasterKey = () => {
   return (
-    <ServiceLayout
-      title="Master Key System Design & Installation | Commercial Locksmith Services"
-      description="Professional master key system design and implementation by certified technicians. Expert access control solutions for your business."
-      keywords="master key system, commercial locksmith, access control, key hierarchy, restricted keyways, business security"
-      serviceName="Master Key System"
-      serviceCategory="Commercial Security"
-      mainContent={<MasterKeyContent />}
-      faqs={masterKeyFaqs}
-      relatedServices={masterKeyRelatedServices}
-      schemas={[
-        { type: 'service', data: masterKeyServiceSchema }
-      ]}
-      canonicalUrl="/services/commercial-locksmith/master-key"
-      customBreadcrumbs={[
-        { name: "Home", path: "/" },
-        { name: "Services", path: "/services" },
-        { name: "Commercial Locksmith", path: "/services/commercial-locksmith" },
-        { name: "Master Key Systems", path: "/services/commercial-locksmith/master-key" }
-      ]}
-    />
+    <main className="flex-grow">
+      <Helmet>
+        <title>Master Key System Design & Installation | Locksmith & Security LLC</title>
+        <meta name="description" content="Professional master key system design and implementation by certified technicians. Expert access control solutions for your business." />
+        <meta name="keywords" content="master key system, commercial locksmith, access control, key hierarchy, restricted keyways, business security" />
+        <link rel="canonical" href="https://247locksmithandsecurity.com/services/commercial-locksmith/master-key" />
+      </Helmet>
+      
+      <EnhancedServicesHero 
+        title="Master Key System Design & Installation"
+        description="Professional master key system design and implementation by certified technicians. Expert access control solutions for your business."
+        image="/lovable-uploads/88d354ba-8149-4bb1-9347-d5d0ff65dfe5.png"
+        serviceName="Master Key System"
+        serviceLabel="Commercial Locksmith Service"
+      />
+      
+      <MasterKeyContent />
+    </main>
   );
 };
 

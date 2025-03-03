@@ -15,7 +15,6 @@ Allow: /sitemap
 Allow: /book-online
 Allow: /privacy-policy
 Allow: /terms-conditions
-Allow: /accessibility
 
 # Set crawl rate to optimize server load
 Crawl-delay: 1

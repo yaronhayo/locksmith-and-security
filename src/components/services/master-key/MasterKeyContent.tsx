@@ -1,10 +1,11 @@
+
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Check, Key, Shield, Building, Users, ArrowRight, Lock } from "lucide-react";
 import { motion } from "framer-motion";
-import { masterKeyServiceSchema, masterKeyFAQSchema } from "./MasterKeySchema";
+import { masterKeySchema, masterKeyFAQSchema } from "./MasterKeySchema";
 import ServicePageContent from "@/components/sections/services/service-page";
 
 export const relatedServices = [
@@ -31,6 +32,7 @@ export const relatedServices = [
   }
 ];
 
+// Convert FAQ schema to the format expected by ServicePageContent
 const faqs = masterKeyFAQSchema.mainEntity.map(item => ({
   question: item.name,
   answer: item.acceptedAnswer.text

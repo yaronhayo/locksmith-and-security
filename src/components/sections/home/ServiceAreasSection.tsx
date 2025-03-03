@@ -5,7 +5,6 @@ import LoadingSpinner from '@/components/LoadingSpinner';
 import GoogleMapsProvider from '@/components/providers/GoogleMapsProvider';
 import GoogleMap from '@/components/map/GoogleMap';
 import AreasList from '@/components/sections/service-areas/AreasList';
-import { ServiceAreaLocation } from '@/types/service-area';
 
 const ServiceAreasSection = () => {
   const [hoveredArea, setHoveredArea] = useState<string | null>(null);
@@ -58,7 +57,7 @@ const ServiceAreasSection = () => {
           </div>
           
           <AreasList 
-            areas={locations as ServiceAreaLocation[]} 
+            areas={locations} 
             hoveredArea={hoveredArea} 
             setHoveredArea={setHoveredArea}
           />

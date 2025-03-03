@@ -1,56 +1,39 @@
 
-import React, { memo } from 'react';
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
-import { SchemaScripts } from '@/components/meta/SchemaScripts';
-import { createFAQSchema } from '@/utils/schemaHelpers';
+import React from 'react';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 
-export interface FAQItem {
+interface FAQItem {
   question: string;
   answer: string;
 }
 
 interface FAQAccordionProps {
   faqs: FAQItem[];
-  includeSchema?: boolean;
-  structuredData?: any;
 }
 
-const FAQAccordion = memo(({ 
-  faqs, 
-  includeSchema = true,
-  structuredData
-}: FAQAccordionProps) => {
-  // Create FAQ schema if not provided via structuredData
-  const faqSchema = structuredData || createFAQSchema(faqs);
-  
+const FAQAccordion: React.FC<FAQAccordionProps> = ({ faqs }) => {
   return (
-    <>
-      {includeSchema && faqSchema && (
-        <SchemaScripts schemas={[{ type: 'FAQPage', data: faqSchema }]} />
-      )}
-      <div className="space-y-4">
-        {faqs.map((faq, index) => (
-          <Accordion key={index} type="single" collapsible className="bg-white rounded-lg border border-gray-200">
-            <AccordionItem value={`faq-${index}`} className="border-none">
-              <AccordionTrigger className="px-6 py-4 hover:no-underline data-[state=open]:text-primary">
-                <span className="text-left font-medium">{faq.question}</span>
-              </AccordionTrigger>
-              <AccordionContent className="px-6 pb-6 text-gray-600">
-                {faq.answer}
-              </AccordionContent>
-            </AccordionItem>
-          </Accordion>
-        ))}
-      </div>
-    </>
+    <div className="space-y-4">
+      {faqs.map((faq, index) => (
+        <Accordion key={index} type="single" collapsible className="w-full">
+          <AccordionItem value={`item-${index}`} className="border rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+            <AccordionTrigger className="text-left font-medium text-gray-900 hover:text-secondary transition-colors p-4 bg-gray-50">
+              {faq.question}
+            </AccordionTrigger>
+            <AccordionContent className="text-gray-700 p-4 bg-white border-t border-gray-100">
+              <div dangerouslySetInnerHTML={{ __html: faq.answer.replace(
+                /\*\*(.*?)\*\*/g, 
+                '<strong class="text-primary">$1</strong>'
+              ).replace(
+                /\*(.*?)\*/g, 
+                '<em class="text-secondary font-medium">$1</em>'
+              ) }} />
+            </AccordionContent>
+          </AccordionItem>
+        </Accordion>
+      ))}
+    </div>
   );
-});
-
-FAQAccordion.displayName = 'FAQAccordion';
+};
 
 export default FAQAccordion;

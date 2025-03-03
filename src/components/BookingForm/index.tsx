@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useBookingFormState } from "./hooks/useBookingFormState";
 import PersonalInfoFields from "./FormFields/PersonalInfoFields";
 import ServiceSelection from "./FormFields/ServiceSelection";
@@ -13,18 +13,13 @@ import FormContainer from "./FormContainer";
 import AddressFields from "./AddressFields";
 import RecaptchaField from "./RecaptchaField";
 
-interface BookingFormProps {
-  preselectedService?: string;
-}
-
-const BookingForm = ({ preselectedService }: BookingFormProps) => {
+const BookingForm = () => {
   const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
   const [address, setAddress] = useState("");
   const {
     isSubmitting,
     setIsSubmitting,
     selectedService,
-    setSelectedService,
     allKeysLost,
     hasUnusedKey,
     showVehicleInfo,
@@ -36,19 +31,6 @@ const BookingForm = ({ preselectedService }: BookingFormProps) => {
     handleAllKeysLostChange,
     handleUnusedKeyChange,
   } = useBookingFormState();
-
-  // Set preselected service if provided
-  useEffect(() => {
-    if (preselectedService && !selectedService) {
-      handleServiceChange(preselectedService);
-    }
-  }, [preselectedService, selectedService, handleServiceChange]);
-
-  // Handle address changes
-  const handleAddressChange = (newAddress: string) => {
-    console.log("BookingForm address changed to:", newAddress);
-    setAddress(newAddress);
-  };
 
   return (
     <FormContainer
@@ -68,7 +50,7 @@ const BookingForm = ({ preselectedService }: BookingFormProps) => {
       
       <AddressFields 
         address={address}
-        onChange={handleAddressChange}
+        onChange={setAddress}
         errors={errors}
         isSubmitting={isSubmitting}
       />
@@ -77,7 +59,6 @@ const BookingForm = ({ preselectedService }: BookingFormProps) => {
         error={errors.service}
         isSubmitting={isSubmitting}
         onServiceChange={handleServiceChange}
-        selectedService={selectedService}
       />
 
       {showAllKeysLostField && (

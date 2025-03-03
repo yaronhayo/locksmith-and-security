@@ -29,11 +29,6 @@ export const isValidEmail = (email: string): boolean => {
 };
 
 /**
- * Alias for isValidEmail for backward compatibility
- */
-export const validateEmail = isValidEmail;
-
-/**
  * Returns error message for email validation
  * @param email The email string to validate
  * @returns Error message or null if valid

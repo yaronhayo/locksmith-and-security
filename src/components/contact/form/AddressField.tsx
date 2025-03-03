@@ -1,10 +1,9 @@
 
 import { useState, useEffect } from "react";
 import { Label } from "@/components/ui/label";
-import { AddressAutocomplete } from "@/components/ui/address-autocomplete";
+import AddressAutocomplete from "@/components/ui/address-autocomplete";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { AlertCircle } from "lucide-react";
-import GoogleMapsProvider from "@/components/providers/GoogleMapsProvider";
 
 interface AddressFieldProps {
   value: string;
@@ -25,21 +24,13 @@ const AddressField = ({ value, onChange, isSubmitting, error }: AddressFieldProp
     }
   }, [value, isDirty]);
 
+  const handleChange = (newValue: string) => {
+    onChange(newValue);
+    if (!isDirty) setIsDirty(true);
+  };
+
   const handleBlur = () => {
     setIsDirty(true);
-  };
-
-  // Handle input changes
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    onChange(e.target.value);
-    if (!isDirty) setIsDirty(true);
-  };
-
-  // Dedicated handler for address selection from autocomplete
-  const handleAddressSelect = (selectedAddress: string) => {
-    console.log("Address selected in AddressField:", selectedAddress);
-    onChange(selectedAddress);
-    if (!isDirty) setIsDirty(true);
   };
 
   // Show external error (from form submission) or internal error (from validation)
@@ -50,24 +41,16 @@ const AddressField = ({ value, onChange, isSubmitting, error }: AddressFieldProp
       <Label htmlFor="address" className="block text-sm font-medium mb-2">
         Address
       </Label>
-      <div className="relative">
-        <GoogleMapsProvider>
-          <AddressAutocomplete
-            value={value}
-            onChange={handleInputChange}
-            onAddressSelect={handleAddressSelect}
-            id="address"
-            disabled={isSubmitting}
-            placeholder="Enter your address"
-            aria-invalid={!!displayError}
-            aria-describedby={displayError ? "address-error" : undefined}
-            onBlur={handleBlur}
-            error={!!displayError}
-            name="address"
-            autoComplete="street-address"
-          />
-        </GoogleMapsProvider>
-      </div>
+      <AddressAutocomplete
+        value={value}
+        onChange={handleChange}
+        id="address"
+        disabled={isSubmitting}
+        placeholder="Enter your address"
+        aria-invalid={!!displayError}
+        aria-describedby={displayError ? "address-error" : undefined}
+        onBlur={handleBlur}
+      />
       {displayError && (
         <Alert variant="destructive" className="mt-1 py-2">
           <AlertCircle className="h-4 w-4" />

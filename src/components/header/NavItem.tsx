@@ -2,12 +2,8 @@
 import { NavItemProps } from './types/navigation';
 import NavigationLink from './NavigationLink';
 
-/**
- * Individual navigation item component
- * Responsible for rendering a single navigation item
- */
 const NavItem = ({ item, isActive, isMenuOpen, getIcon }: NavItemProps) => {
-  const { path, label, children, className } = item;
+  const { path, label, children } = item;
   
   return (
     <div className="w-full">
@@ -18,7 +14,6 @@ const NavItem = ({ item, isActive, isMenuOpen, getIcon }: NavItemProps) => {
         isMenuOpen={isMenuOpen}
         children={children}
         icon={getIcon(label)}
-        className={className}
       />
     </div>
   );

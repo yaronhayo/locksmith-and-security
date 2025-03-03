@@ -18,14 +18,6 @@ export interface LocalBusinessSchemaProps {
     latitude: number;
     longitude: number;
   };
-  url?: string;
-  email?: string;
-  founder?: string;
-  foundingDate?: string;
-  serviceArea?: {
-    type: string;
-    name: string;
-  }[];
 }
 
 const defaultProps: LocalBusinessSchemaProps = {
@@ -46,9 +38,7 @@ const defaultProps: LocalBusinessSchemaProps = {
   description: "Professional locksmith services for residential, commercial, and automotive needs. 24/7 emergency service available.",
   openingHours: [
     "Monday,Tuesday,Wednesday,Thursday,Friday,Saturday,Sunday 00:00-23:59"
-  ],
-  url: "https://247locksmithandsecurity.com",
-  email: "info@247locksmithandsecurity.com"
+  ]
 };
 
 export const createLocalBusinessSchema = (props: LocalBusinessSchemaProps = {}) => {
@@ -74,13 +64,6 @@ export const createLocalBusinessSchema = (props: LocalBusinessSchemaProps = {}) 
       ...(mergedProps.image && { "image": mergedProps.image }),
       ...(mergedProps.sameAs && { "sameAs": mergedProps.sameAs }),
       ...(mergedProps.description && { "description": mergedProps.description }),
-      ...(mergedProps.url && { "url": mergedProps.url }),
-      ...(mergedProps.email && { "email": mergedProps.email }),
-      ...(mergedProps.founder && { "founder": {
-        "@type": "Person",
-        "name": mergedProps.founder
-      }}),
-      ...(mergedProps.foundingDate && { "foundingDate": mergedProps.foundingDate }),
       ...(mergedProps.openingHours && { "openingHoursSpecification": mergedProps.openingHours.map(hours => {
         const [days, time] = hours.split(" ");
         const [opens, closes] = time.split("-");
@@ -97,12 +80,6 @@ export const createLocalBusinessSchema = (props: LocalBusinessSchemaProps = {}) 
           "latitude": mergedProps.geo.latitude,
           "longitude": mergedProps.geo.longitude
         }
-      }),
-      ...(mergedProps.serviceArea && {
-        "areaServed": mergedProps.serviceArea.map(area => ({
-          "@type": area.type,
-          "name": area.name
-        }))
       })
     }
   };

@@ -9,13 +9,13 @@
   "theme_color": "#1E3A8A",
   "icons": [
     {
-      "src": "https://mtbgayqzjrxjjmsjikcg.supabase.co/storage/v1/object/public/uploads//Favicon.png",
+      "src": "/website-uploads/1bbeb1e6-5581-4e09-9600-7d1859bb17c5.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "https://mtbgayqzjrxjjmsjikcg.supabase.co/storage/v1/object/public/uploads//Favicon.png",
+      "src": "/website-uploads/1bbeb1e6-5581-4e09-9600-7d1859bb17c5.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"

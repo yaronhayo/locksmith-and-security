@@ -2,6 +2,7 @@
 import { useRef, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import Recaptcha from "@/components/ui/recaptcha";
 import PersonalInfoFields from "./form/PersonalInfoFields";
@@ -13,6 +14,7 @@ import { getEmailError, getNameError, getPhoneError } from "@/utils/inputValidat
 const ContactForm = () => {
   const form = useRef<HTMLFormElement>(null);
   const navigate = useNavigate();
+  const { toast } = useToast();
   const [address, setAddress] = useState("");
   const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -55,12 +57,20 @@ const ContactForm = () => {
     e.preventDefault();
     
     if (!recaptchaToken) {
-      // Silent error handling, no toast shown
+      toast({
+        title: "Verification Required",
+        description: "Please complete the reCAPTCHA verification",
+        variant: "destructive",
+      });
       return;
     }
 
     if (!validateForm()) {
-      // Silent error handling, no toast shown
+      toast({
+        title: "Form Error",
+        description: "Please fix the errors in the form before submitting",
+        variant: "destructive",
+      });
       return;
     }
 
@@ -106,7 +116,11 @@ const ContactForm = () => {
 
     } catch (error: any) {
       console.error('Contact form submission error:', error);
-      // Silent error handling, no toast shown
+      toast({
+        title: "Submission Failed",
+        description: "Please try again or contact us directly.",
+        variant: "destructive",
+      });
     } finally {
       setIsSubmitting(false);
     }

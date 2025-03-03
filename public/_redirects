@@ -1,10 +1,6 @@
 
 # Redirect domain aliases to primary domain
 https://www.247locksmithandsecurity.com/* https://247locksmithandsecurity.com/:splat 301!
-http://www.247locksmithandsecurity.com/* https://247locksmithandsecurity.com/:splat 301!
-
-# Force HTTPS for all connections
-http://247locksmithandsecurity.com/* https://247locksmithandsecurity.com/:splat 301!
 
 # Old service URLs to new structure
 /services/car-lockout              /services/emergency-locksmith/car-lockout 301
@@ -27,25 +23,21 @@ http://247locksmithandsecurity.com/* https://247locksmithandsecurity.com/:splat 
 /services/car-key-duplicate       /services/auto-locksmith/car-key-duplicate 301
 /services/ignition-repair         /services/auto-locksmith/ignition-lock-cylinder 301
 
-# Common 404s and misspellings
-/home                             / 301
-/about-us                         /about 301
-/contactus                        /contact 301
-/locations                        /service-areas 301
-/locksmith-services               /services 301
-/emergency                        /services/emergency-locksmith 301
-/residential                      /services/residential-locksmith 301
-/commercial                       /services/commercial-locksmith 301
-/automotive                       /services/auto-locksmith 301
-/car-keys                         /services/auto-locksmith 301
-/service-area                     /service-areas 301
-/reviews-testimonials             /reviews 301
-/book                             /book-online 301
-/quote                            /book-online 301
-/estimate                         /book-online 301
-/faqs                             /faq 301
-/privacy                          /privacy-policy 301
-/terms                            /terms-conditions 301
+# Handle client-side routing
+/* /index.html 200
 
-# Special routes to handle React router - CRITICAL FOR REACT SPA
-/*                                /index.html 200
+# Specific routes
+/service-areas/* /index.html 200
+/services/* /index.html 200
+/about /index.html 200
+/contact /index.html 200
+/reviews /index.html 200
+/faq /index.html 200
+/privacy-policy /index.html 200
+/terms-conditions /index.html 200
+/thank-you /index.html 200
+/book-online /index.html 200
+/sitemap /index.html 200
+
+# Force HTTPS
+http://* https://:splat 301!

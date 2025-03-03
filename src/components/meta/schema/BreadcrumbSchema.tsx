@@ -1,68 +1,47 @@
 
-import React from 'react';
-import { BreadcrumbItem } from '@/routes/types';
+import { Helmet } from "react-helmet";
+
+interface BreadcrumbItem {
+  name: string;
+  item: string;
+}
 
 interface BreadcrumbSchemaProps {
   breadcrumbs: BreadcrumbItem[];
   baseUrl?: string;
 }
 
-export const BreadcrumbSchema: React.FC<BreadcrumbSchemaProps> = ({ 
-  breadcrumbs, 
-  baseUrl = 'https://247locksmithandsecurity.com' 
-}) => {
-  if (!breadcrumbs || breadcrumbs.length === 0) return null;
-
-  // Create schema for breadcrumbs
-  const itemListElement = breadcrumbs.map((breadcrumb, index) => {
-    // Use either the item property if available or construct from path
-    const itemUrl = breadcrumb.item || 
-      (breadcrumb.path.startsWith('http') 
-        ? breadcrumb.path 
-        : `${baseUrl}${breadcrumb.path}`);
-        
-    return {
-      "@type": "ListItem",
-      "position": index + 1,
-      "name": breadcrumb.name,
-      "item": itemUrl
-    };
-  });
-
+export const BreadcrumbSchema = ({ breadcrumbs, baseUrl = "https://247locksmithandsecurity.com" }: BreadcrumbSchemaProps) => {
   const breadcrumbSchema = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
-    "itemListElement": itemListElement
-  };
-
-  return <script type="application/ld+json">{JSON.stringify(breadcrumbSchema)}</script>;
-};
-
-// Helper function to create breadcrumb schema data for non-component usage
-export const createBreadcrumbSchema = ({ breadcrumbs, baseUrl = 'https://247locksmithandsecurity.com' }: BreadcrumbSchemaProps) => {
-  if (!breadcrumbs || breadcrumbs.length === 0) return null;
-
-  const itemListElement = breadcrumbs.map((breadcrumb, index) => {
-    // Use either the item property if available or construct from path
-    const itemUrl = breadcrumb.item || 
-      (breadcrumb.path.startsWith('http') 
-        ? breadcrumb.path 
-        : `${baseUrl}${breadcrumb.path}`);
-        
-    return {
+    "itemListElement": breadcrumbs.map((item, index) => ({
       "@type": "ListItem",
       "position": index + 1,
-      "name": breadcrumb.name,
-      "item": itemUrl
-    };
-  });
-
-  return {
-    type: 'BreadcrumbList',
-    data: {
-      "@context": "https://schema.org",
-      "@type": "BreadcrumbList",
-      "itemListElement": itemListElement
-    }
+      "name": item.name,
+      "item": item.item.startsWith('http') ? item.item : `${baseUrl}${item.item}`
+    }))
   };
+
+  return (
+    <Helmet>
+      <script type="application/ld+json">
+        {JSON.stringify(breadcrumbSchema)}
+      </script>
+    </Helmet>
+  );
 };
+
+export const createBreadcrumbSchema = ({ breadcrumbs, baseUrl = "https://247locksmithandsecurity.com" }: BreadcrumbSchemaProps) => ({
+  type: 'BreadcrumbList',
+  data: {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": breadcrumbs.map((item, index) => ({
+      "@type": "ListItem",
+      "position": index + 1,
+      "name": item.name,
+      "item": item.item.startsWith('http') ? item.item : `${baseUrl}${item.item}`
+    }))
+  }
+});

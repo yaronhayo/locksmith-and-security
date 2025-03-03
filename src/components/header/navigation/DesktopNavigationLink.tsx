@@ -1,5 +1,4 @@
 
-import { useCallback } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
@@ -8,34 +7,17 @@ interface DesktopNavigationLinkProps {
   path: string;
   label: string;
   isActive: boolean;
-  className?: string;
 }
 
-const DesktopNavigationLink = ({ path, label, isActive, className }: DesktopNavigationLinkProps) => {
-  const handleClick = useCallback((e: React.MouseEvent) => {
-    // Prevent navigation if already on the page
-    if (window.location.pathname === path) {
-      e.preventDefault();
-      e.stopPropagation(); // Stop event propagation
-      console.log(`DesktopNavigationLink: Already on ${path}, preventing navigation`);
-      return;
-    }
-    
-    // Let default navigation behavior continue
-    console.log(`DesktopNavigationLink: Navigating to ${path}`);
-    // The Router and ScrollToTop components will handle the rest
-  }, [path]);
-
+const DesktopNavigationLink = ({ path, label, isActive }: DesktopNavigationLinkProps) => {
   return (
     <Link
       to={path}
       className={cn(
-        "text-base font-medium transition-colors duration-300 relative no-underline outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 rounded-md px-2 py-1",
-        isActive ? "text-secondary" : "text-gray-700 hover:text-secondary",
-        className
+        "text-base font-medium transition-colors duration-300 relative no-underline",
+        isActive ? "text-secondary" : "text-gray-700 hover:text-secondary"
       )}
-      onClick={handleClick}
-      aria-current={isActive ? "page" : undefined}
+      onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
     >
       <div className="relative">
         {label}

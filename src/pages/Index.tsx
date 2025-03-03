@@ -8,16 +8,12 @@ import { SchemaScripts } from "@/components/meta/SchemaScripts";
 import { BasicMetaTags } from "@/components/meta/BasicMetaTags";
 import { OpenGraphTags } from "@/components/meta/OpenGraphTags";
 import { TwitterTags } from "@/components/meta/TwitterTags";
-import { createSiteNavigationSchema } from "@/components/meta/schema/SiteNavigationSchema";
-import { trackComponentRender } from "@/utils/performanceMonitoring";
 
 const Index = () => {
-  const finishRenderTracking = trackComponentRender('HomePage');
-  
   // Page view tracking for analytics
   useEffect(() => {
     console.log("Home page viewed");
-    finishRenderTracking();
+    // Future implementation: track page view in analytics
   }, []);
 
   const pageTitle = "24/7 Locksmith & Security LLC | Trusted Emergency Locksmith Services";
@@ -77,22 +73,6 @@ const Index = () => {
       "https://www.yelp.com/biz/locksmith-and-security-north-bergen"
     ]
   };
-  
-  // Navigation schema for main navigation
-  const navigationSchema = createSiteNavigationSchema({
-    items: [
-      { name: "Home", url: "/" },
-      { name: "Services", url: "/services" },
-      { name: "Residential Locksmith", url: "/services/residential-locksmith" },
-      { name: "Commercial Locksmith", url: "/services/commercial-locksmith" },
-      { name: "Auto Locksmith", url: "/services/auto-locksmith" },
-      { name: "Emergency Locksmith", url: "/services/emergency-locksmith" },
-      { name: "Service Areas", url: "/service-areas" },
-      { name: "About Us", url: "/about" },
-      { name: "Contact", url: "/contact" },
-      { name: "Book Online", url: "/book-online" }
-    ]
-  });
 
   return (
     <>
@@ -127,23 +107,9 @@ const Index = () => {
       <SchemaScripts 
         schemas={[
           { type: 'website', data: websiteSchema },
-          { type: 'organization', data: organizationSchema },
-          navigationSchema
+          { type: 'organization', data: organizationSchema }
         ]} 
       />
-      
-      {/* Extra canonical tag to ensure proper indexing */}
-      <Helmet>
-        <link rel="canonical" href={canonicalUrl} />
-        {/* Preconnect to important domains to improve performance */}
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link rel="dns-prefetch" href="https://www.google-analytics.com" />
-        
-        {/* Help browsers prioritize which resources to load first */}
-        <meta httpEquiv="Priority" content="High" />
-        <meta httpEquiv="Cache-Control" content="public, max-age=31536000, immutable" />
-      </Helmet>
       
       <HomeLayout>
         <HeroSection />

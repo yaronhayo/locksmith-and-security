@@ -28,13 +28,13 @@ const PersonalInfoFields = ({ errors: externalErrors, isSubmitting }: PersonalIn
   return (
     <>
       <div className="space-y-1.5">
-        <Label htmlFor="name" className="text-sm text-gray-800">Your Name</Label>
+        <Label htmlFor="name" className="text-sm">Your Name</Label>
         <Input
           id="name"
           name="name"
           type="text"
           aria-describedby="name-error"
-          className={`h-9 text-sm text-gray-900 placeholder:text-gray-500 ${errors.name ? 'border-red-500' : ''}`}
+          className={`h-9 text-sm ${errors.name ? 'border-red-500' : ''}`}
           disabled={isSubmitting}
           autoComplete="name"
           required
@@ -52,13 +52,13 @@ const PersonalInfoFields = ({ errors: externalErrors, isSubmitting }: PersonalIn
       </div>
 
       <div className="space-y-1.5">
-        <Label htmlFor="phone" className="text-sm text-gray-800">Phone Number</Label>
+        <Label htmlFor="phone" className="text-sm">Phone Number</Label>
         <Input
           id="phone"
           name="phone"
           type="tel"
           aria-describedby="phone-error"
-          className={`h-9 text-sm text-gray-900 placeholder:text-gray-500 ${errors.phone ? 'border-red-500' : ''}`}
+          className={`h-9 text-sm ${errors.phone ? 'border-red-500' : ''}`}
           disabled={isSubmitting}
           autoComplete="tel"
           required

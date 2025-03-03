@@ -3,21 +3,23 @@ import { motion } from "framer-motion";
 import { Clock, Shield, CreditCard, Calendar } from "lucide-react";
 
 const BookingPage = () => {
-  const schema = [{
-    type: "WebPage",
-    data: {
-      "@context": "https://schema.org",
-      "@type": "WebPage",
-      "name": "Book Your Service - Professional Locksmith Services",
-      "description": "Book your locksmith service online. Available 24/7 for residential, commercial, and automotive locksmith needs."
-    }
-  }];
-
   return (
     <PageLayout
-      title="Book Your Service | Professional Locksmith"
-      description="Schedule your locksmith service today. 24/7 availability for all your security needs in North Bergen and surrounding areas."
-      schema={schema}
+      title="Book Online | Locksmith & Security LLC"
+      description="Schedule your locksmith service online. Fast, reliable, and professional service available 24/7 in North Bergen and surrounding areas."
+      schema={{
+        "@type": "Service",
+        "serviceType": "Locksmith",
+        "provider": {
+          "@type": "LocalBusiness",
+          "name": "Locksmith & Security LLC",
+          "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "North Bergen",
+            "addressRegion": "NJ"
+          }
+        }
+      }}
     >
       <div className="container mx-auto px-4 py-12">
         <div className="grid lg:grid-cols-2 gap-12">

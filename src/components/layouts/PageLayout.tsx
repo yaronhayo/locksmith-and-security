@@ -1,179 +1,114 @@
 
-import React, { PropsWithChildren, useEffect, useRef } from 'react';
-import { Helmet } from 'react-helmet';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
-import MetaTags from './MetaTags';
-import Breadcrumbs from '../Breadcrumbs';
-import LoadingState from './LoadingState';
-import PageHero from './PageHero';
-import ScrollToTop from '../ScrollToTop';
-import { SchemaScripts } from '../meta/SchemaScripts';
-import { BreadcrumbItem } from '@/routes/types';
-import { HreflangTags } from '../meta/HreflangTags';
-import { setupIframeObserver } from '@/utils/iframeUtils';
+import React from "react";
+import { cn } from "@/lib/utils";
+import { motion } from "framer-motion";
+import { ErrorBoundary } from "react-error-boundary";
+import ErrorFallback from "@/components/ErrorFallback";
+import MetaTags from "./MetaTags";
+import PageHero from "./PageHero";
+import PageLoading from "./PageLoading";
+import { createBreadcrumbSchema } from "../meta/schema/BreadcrumbSchema";
+import { createLocalBusinessSchema } from "../meta/schema/LocalBusinessSchema";
+import { createWebSiteSchema } from "../meta/schema/WebSiteSchema";
+
+interface Schema {
+  type: string;
+  data: object;
+}
 
 interface PageLayoutProps {
   title: string;
   description: string;
-  keywords?: string;
-  canonicalUrl?: string;
-  breadcrumbs?: BreadcrumbItem[];
+  children: React.ReactNode;
+  className?: string;
   heroTitle?: string;
   heroDescription?: string;
-  customBreadcrumbs?: Array<{name: string, path: string}>;
+  schema?: object;
+  schemas?: Schema[];
+  canonicalUrl?: string;
   ogImage?: string;
-  ogType?: "website" | "article" | "product" | "profile" | "book";
+  keywords?: string;
+  isLoading?: boolean;
   noindex?: boolean;
   nofollow?: boolean;
-  modifiedDate?: string;
-  hideBreadcrumbs?: boolean;
-  isLoading?: boolean;
-  schema?: { type: string; data: any }[];
-  preselectedService?: string;
-  languages?: Array<{lang: string, path?: string}>;
-  defaultLang?: string;
+  breadcrumbs?: Array<{name: string, item: string}>;
+  ogType?: "website" | "article" | "product" | "profile" | "book";
 }
 
-/**
- * Primary layout component for all pages
- * Includes header, footer, and meta tags
- */
-const PageLayout: React.FC<PropsWithChildren<PageLayoutProps>> = ({
+const PageLayout = ({
   title,
   description,
-  keywords = '',
-  canonicalUrl,
+  children,
+  className,
   heroTitle,
   heroDescription,
-  customBreadcrumbs,
-  children,
+  schema,
+  schemas = [],
+  canonicalUrl,
   ogImage,
-  ogType = 'website',
+  keywords,
+  isLoading = false,
   noindex = false,
   nofollow = false,
-  modifiedDate,
-  hideBreadcrumbs = false,
-  isLoading = false,
-  schema = [],
-  breadcrumbs = [],
-  preselectedService,
-  languages,
-  defaultLang = 'en-US'
-}) => {
-  const cleanupRef = useRef<(() => void) | null>(null);
-  const isMounted = useRef(true);
-  const didSetupObserver = useRef(false);
-  const mountTimeRef = useRef(Date.now());
-  
-  useEffect(() => {
-    // Set mounted flag
-    isMounted.current = true;
-    
-    console.log(`PageLayout mounted for page: ${title}`);
-    
-    // For debugging - track how long the page takes to mount
-    const mountTime = Date.now() - mountTimeRef.current;
-    console.log(`PageLayout mounting time: ${mountTime}ms`);
-    
-    // Remove any error UI that might be showing
-    const errorUI = document.querySelector('.error-fallback');
-    if (errorUI && errorUI.parentNode) {
-      try {
-        errorUI.parentNode.removeChild(errorUI);
-      } catch (e) {
-        console.error("Error removing error UI:", e);
-      }
-    }
-    
-    // Prevent duplicate observer setup
-    if (didSetupObserver.current) return;
-    
-    // Set up iframe doctype fixer with proper cleanup handling
-    try {
-      didSetupObserver.current = true;
-      const cleanupIframeObserver = setupIframeObserver();
-      if (cleanupIframeObserver) {
-        cleanupRef.current = cleanupIframeObserver;
-      }
-    } catch (error) {
-      console.error("Error setting up iframe observer:", error);
-    }
-    
-    return () => {
-      // Mark component as unmounted
-      isMounted.current = false;
-      
-      // Clean up the observer when component unmounts
-      if (cleanupRef.current) {
-        try {
-          cleanupRef.current();
-          cleanupRef.current = null;
-        } catch (error) {
-          console.error("Error cleaning up iframe observer:", error);
-        }
-      }
-    };
-  }, [title]);
-
-  // Show a loading state if needed
+  breadcrumbs,
+  ogType = "website",
+}: PageLayoutProps) => {
   if (isLoading) {
-    return <LoadingState timeoutMs={5000} />;
+    return <PageLoading />;
   }
 
-  const baseUrl = 'https://247locksmithandsecurity.com';
+  // Add schema to schemas array if provided
+  const allSchemas = [...schemas];
+  if (schema) {
+    allSchemas.push({ type: 'schema', data: schema });
+  }
+  
+  // Add breadcrumb schema if breadcrumbs are provided
+  if (breadcrumbs && breadcrumbs.length > 0) {
+    const breadcrumbSchema = createBreadcrumbSchema({ breadcrumbs });
+    allSchemas.push(breadcrumbSchema);
+  }
+  
+  // Add default LocalBusiness schema
+  const localBusinessSchema = createLocalBusinessSchema();
+  allSchemas.push(localBusinessSchema);
+  
+  // Add default WebSite schema
+  const websiteSchema = createWebSiteSchema();
+  allSchemas.push(websiteSchema);
 
   return (
-    <>
+    <ErrorBoundary FallbackComponent={ErrorFallback}>
       <MetaTags
         title={title}
         description={description}
-        keywords={keywords}
+        schemas={allSchemas}
         canonicalUrl={canonicalUrl}
         ogImage={ogImage}
-        ogType={ogType}
+        keywords={keywords}
         noindex={noindex}
         nofollow={nofollow}
-        modifiedDate={modifiedDate}
+        ogType={ogType}
       />
       
-      {/* Add hreflang tags if multiple languages are supported */}
-      {languages && (
-        <HreflangTags 
-          baseUrl={baseUrl} 
-          languages={languages} 
-          defaultLang={defaultLang} 
+      {(heroTitle || heroDescription) && (
+        <PageHero 
+          title={heroTitle || title}
+          description={heroDescription || description}
         />
       )}
       
-      <SchemaScripts schemas={schema} />
-      
-      <ScrollToTop />
-      
-      <div className="flex flex-col min-h-screen">
-        <Header />
-        
-        <main className="flex-grow">
-          {heroTitle && (
-            <PageHero 
-              title={heroTitle} 
-              description={heroDescription || description}
-              preselectedService={preselectedService}
-            />
-          )}
-          
-          {!hideBreadcrumbs && (customBreadcrumbs || breadcrumbs.length > 0) && (
-            <div className="container mx-auto px-4 py-4">
-              <Breadcrumbs items={customBreadcrumbs || breadcrumbs.map(b => ({ name: b.name, path: b.path }))} />
-            </div>
-          )}
-          
-          {children}
-        </main>
-        
-        <Footer />
-      </div>
-    </>
+      <motion.div 
+        className={cn("flex-grow", !(heroTitle || heroDescription) && "pt-0")}
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: 20 }}
+        transition={{ duration: 0.3 }}
+        role="main"
+      >
+        <div className={cn(className)}>{children}</div>
+      </motion.div>
+    </ErrorBoundary>
   );
 };
 

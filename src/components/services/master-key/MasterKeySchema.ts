@@ -1,5 +1,6 @@
+
 // We need to fix the Schema import - it doesn't exist in the types/schema.ts file
-export const masterKeyServiceSchema = {
+export const masterKeySchema = {
   "@context": "https://schema.org",
   "@type": "Service",
   "name": "Master Key System Design & Installation Services",
@@ -106,54 +107,3 @@ export const masterKeyFAQSchema = {
     }
   ]
 };
-
-// Add the missing exports that are referenced in the master-key.tsx file
-export const masterKeyFaqs = [
-  {
-    question: "What is a master key system?",
-    answer: "A master key system is a hierarchical lock system that allows different levels of access control. It enables specific keys to open only certain doors while master keys can access multiple or all doors within the system. This is ideal for businesses with different departments and security clearance levels."
-  },
-  {
-    question: "How secure are master key systems for businesses?",
-    answer: "When properly designed and implemented by professionals, master key systems are highly secure. We use restricted keyways that prevent unauthorized duplication, implement proper key control protocols, and can integrate with electronic access systems for enhanced security. The key is proper planning and implementation by certified technicians."
-  },
-  {
-    question: "How long does it take to install a master key system?",
-    answer: "The timeframe varies depending on the size and complexity of your facility. A small business might be completed in a day, while larger facilities with many doors could take several days to a week. We work efficiently to minimize disruption to your operations during implementation."
-  },
-  {
-    question: "Can a master key system be expanded as my business grows?",
-    answer: "Yes, a properly designed master key system is scalable and can accommodate business growth. Our master key systems are designed with expansion in mind, allowing for the addition of new doors and access levels without compromising the existing structure."
-  },
-  {
-    question: "What happens if a master key is lost or stolen?",
-    answer: "If a master key is lost or stolen, it's important to act quickly. Depending on the system design, we may need to rekey specific sections or the entire system. This is why we implement proper key control protocols and can offer solutions like restricted keyways to mitigate risks associated with lost keys."
-  }
-];
-
-export const masterKeyRelatedServices = [
-  {
-    title: "Access Control Systems",
-    description: "Electronic access control systems with advanced security features.",
-    link: "/services/commercial-locksmith/access-control",
-    path: "/services/commercial-locksmith/access-control"
-  },
-  {
-    title: "Commercial Lock Replacement",
-    description: "Professional lock replacement for all types of commercial properties.",
-    link: "/services/commercial-locksmith/lock-replacement",
-    path: "/services/commercial-locksmith/lock-replacement"
-  },
-  {
-    title: "Commercial Lock Rekeying",
-    description: "Rekeying services to maintain security without replacing hardware.",
-    link: "/services/commercial-locksmith/lock-rekey",
-    path: "/services/commercial-locksmith/lock-rekey"
-  },
-  {
-    title: "Emergency Exit Devices",
-    description: "Installation and repair of panic bars and emergency exit hardware.",
-    link: "/services/commercial-locksmith/emergency-exit-device",
-    path: "/services/commercial-locksmith/emergency-exit-device"
-  }
-];

@@ -11,7 +11,7 @@ interface UnusedKeyFieldProps {
 const UnusedKeyField = ({ isSubmitting, onChange, value }: UnusedKeyFieldProps) => {
   return (
     <div className="space-y-2">
-      <Label htmlFor="unused_key" className="font-medium text-gray-800">Do you currently have an unused, uncut key that matches your vehicle?</Label>
+      <Label htmlFor="unused_key" className="font-medium">Do you currently have an unused, uncut key that matches your vehicle?</Label>
       <RadioGroup
         defaultValue={value}
         onValueChange={onChange}
@@ -21,11 +21,11 @@ const UnusedKeyField = ({ isSubmitting, onChange, value }: UnusedKeyFieldProps) 
       >
         <div className="flex items-center space-x-2">
           <RadioGroupItem value="yes" id="unused_key_yes" />
-          <Label htmlFor="unused_key_yes" className="cursor-pointer text-gray-700">Yes</Label>
+          <Label htmlFor="unused_key_yes" className="cursor-pointer">Yes</Label>
         </div>
         <div className="flex items-center space-x-2">
           <RadioGroupItem value="no" id="unused_key_no" />
-          <Label htmlFor="unused_key_no" className="cursor-pointer text-gray-700">No</Label>
+          <Label htmlFor="unused_key_no" className="cursor-pointer">No</Label>
         </div>
       </RadioGroup>
     </div>

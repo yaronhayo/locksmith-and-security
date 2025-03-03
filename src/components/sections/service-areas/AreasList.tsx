@@ -2,7 +2,7 @@
 import { MapPin } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ServiceAreaLocation } from '@/types/service-area';
+import { ServiceAreaLocation } from '../../service-areas/types';
 
 interface AreasListProps {
   areas: ServiceAreaLocation[];
@@ -16,7 +16,7 @@ const AreasList = ({ areas, hoveredArea, setHoveredArea }: AreasListProps) => {
       initial={{ opacity: 0, x: -20 }}
       whileInView={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.5 }}
-      className="bg-white rounded-xl shadow-lg p-8 w-full h-full"
+      className="bg-white rounded-xl shadow-lg p-8"
     >
       <h2 className="text-2xl font-semibold mb-6 text-primary">Areas We Serve</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">

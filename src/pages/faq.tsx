@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import PageLayout from "@/components/layouts/PageLayout";
 import { Tabs, TabsContent } from "@/components/ui/tabs";
@@ -9,7 +10,6 @@ import FaqList from "@/components/faq/FaqList";
 import FaqEmptyState from "@/components/faq/FaqEmptyState";
 import FaqCallToAction from "@/components/faq/FaqCallToAction";
 import { useFaqData } from "@/components/faq/hooks/useFaqData";
-import { createBreadcrumbSchema } from "@/components/meta/schema/BreadcrumbSchema";
 
 const FAQPage = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -26,17 +26,8 @@ const FAQPage = () => {
     hasMore 
   } = useFaqData(activeTab, searchQuery);
 
-  // Create breadcrumb schema
-  const breadcrumbSchema = createBreadcrumbSchema({
-    breadcrumbs: [
-      { name: "Home", path: "/", item: "/" },
-      { name: "FAQ", path: "/faq", item: "/faq" }
-    ],
-    baseUrl: "https://247locksmithandsecurity.com"
-  });
-
   // Create FAQ Schema for SEO
-  const faqSchemaData = {
+  const faqSchema = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
     "mainEntity": [
@@ -54,11 +45,6 @@ const FAQPage = () => {
       }
     }))
   };
-  
-  const schemas = [
-    { type: "FAQPage", data: faqSchemaData },
-    breadcrumbSchema
-  ];
 
   // Setup intersection observer for infinite scrolling
   useEffect(() => {
@@ -89,12 +75,11 @@ const FAQPage = () => {
     <PageLayout
       title="Frequently Asked Questions - Expert Locksmith Answers"
       description="Find comprehensive answers to common questions about our residential, commercial, automotive, and emergency locksmith services."
-      schema={schemas}
+      schema={faqSchema}
       canonicalUrl="https://www.locksmiths.com/faq"
       keywords="locksmith FAQ, locksmith questions, locksmith services, residential locksmith, commercial locksmith, automotive locksmith, emergency locksmith"
       heroTitle="Frequently Asked Questions"
       heroDescription="Browse our comprehensive collection of FAQs to find answers to your locksmith and security questions."
-      hideBreadcrumbs={false}
     >
       <FaqSearch searchQuery={searchQuery} handleSearch={handleSearch} />
 

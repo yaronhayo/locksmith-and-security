@@ -18,9 +18,8 @@ const ActionButtons = ({ isMenuOpen, setIsMenuOpen }: ActionButtonsProps) => {
         asChild
       >
         <a href="tel:2017482070">
-          <Phone className="h-4 w-4 animate-phone-ring group-hover:text-black transition-transform duration-300" aria-hidden="true" />
+          <Phone className="h-4 w-4 animate-phone-ring group-hover:text-black transition-transform duration-300" />
           <span className="hidden md:inline group-hover:text-black transition-colors duration-300">(201) 748-2070</span>
-          <span className="sr-only">Call us at (201) 748-2070</span>
         </a>
       </Button>
 
@@ -31,9 +30,8 @@ const ActionButtons = ({ isMenuOpen, setIsMenuOpen }: ActionButtonsProps) => {
         asChild
       >
         <Link to="/book-online">
-          <Calendar className="h-4 w-4 group-hover:text-secondary transition-colors duration-300" aria-hidden="true" />
+          <Calendar className="h-4 w-4 group-hover:text-secondary transition-colors duration-300" />
           <span className="hidden md:inline group-hover:text-secondary transition-colors duration-300">Book Service</span>
-          <span className="sr-only md:hidden">Book service online</span>
         </Link>
       </Button>
 
@@ -43,9 +41,8 @@ const ActionButtons = ({ isMenuOpen, setIsMenuOpen }: ActionButtonsProps) => {
         className="lg:hidden"
         onClick={() => setIsMenuOpen(!isMenuOpen)}
         aria-label={isMenuOpen ? "Close menu" : "Open menu"}
-        aria-expanded={isMenuOpen}
       >
-        <Menu className="h-6 w-6" aria-hidden="true" />
+        <Menu className="h-6 w-6" />
       </Button>
     </div>
   );

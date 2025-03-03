@@ -1,32 +1,40 @@
 
 import React from 'react';
 import { Button } from "@/components/ui/button";
+import { Phone, Calendar } from "lucide-react";
 import { Link } from "react-router-dom";
-import { PhoneCall } from "lucide-react";
 
 interface ServiceCtaSectionProps {
-  title?: string;
-  description?: string;
+  serviceName: string;
 }
 
-const ServiceCtaSection: React.FC<ServiceCtaSectionProps> = ({ 
-  title = "Ready for Professional Service?",
-  description = "Contact our team for fast, reliable service from licensed professionals."
-}) => {
+const ServiceCtaSection: React.FC<ServiceCtaSectionProps> = ({ serviceName }) => {
   return (
-    <div className="bg-primary/5 py-16 px-8 rounded-lg mt-16 text-center">
-      <h2 className="text-3xl font-bold text-primary mb-4">{title}</h2>
-      <p className="text-gray-700 mb-8 max-w-2xl mx-auto">{description}</p>
-      <div className="flex flex-col sm:flex-row gap-4 justify-center">
-        <Button size="lg" asChild>
-          <a href="tel:2017482070" className="flex items-center">
-            <PhoneCall className="mr-2 h-5 w-5" />
+    <div className="bg-gradient-to-r from-primary to-primary-hover rounded-lg overflow-hidden shadow-lg text-white p-8 mt-12">
+      <h3 className="text-2xl font-bold mb-4">Need {serviceName} Service Now?</h3>
+      <p className="mb-6 text-white/90">Our team is ready to help you with professional, reliable service. Contact us now for immediate assistance.</p>
+      <div className="flex flex-col sm:flex-row gap-4">
+        <Button 
+          variant="secondary" 
+          size="lg" 
+          className="w-full sm:w-auto justify-center text-primary font-semibold hover:bg-secondary-hover hover:text-primary-dark"
+          asChild
+        >
+          <a href="tel:2017482070" className="flex items-center justify-center">
+            <Phone className="mr-2 h-5 w-5" />
             (201) 748-2070
           </a>
         </Button>
-        
-        <Button variant="outline" size="lg" asChild>
-          <Link to="/book-online">Book Online</Link>
+        <Button 
+          variant="outline" 
+          size="lg" 
+          className="w-full sm:w-auto justify-center bg-white/10 text-white border border-white/20 hover:bg-white/20 hover:text-white hover:border-white/30"
+          asChild
+        >
+          <Link to="/book-online" className="flex items-center justify-center">
+            <Calendar className="mr-2 h-5 w-5" />
+            Book Online
+          </Link>
         </Button>
       </div>
     </div>

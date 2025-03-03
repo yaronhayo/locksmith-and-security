@@ -7,7 +7,6 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { SchemaScripts } from '@/components/meta/SchemaScripts';
 
 interface ServiceAreaFAQProps {
   locationName: string;
@@ -54,9 +53,6 @@ const ServiceAreaFAQ = ({ locationName, faqSchema }: ServiceAreaFAQProps) => {
           </div>
         </div>
       </div>
-      
-      {/* Add dedicated schema script for this FAQ */}
-      <SchemaScripts schemas={[faqSchema]} />
     </section>
   );
 };

@@ -1,12 +1,24 @@
 
 import React from 'react';
 import ServicePageHeader from './ServicePageHeader';
-import ServiceMainContent from './ServiceMainContent';
-import ServiceFAQSection from './ServiceFAQSection';
-import ServiceProcessSection from './ServiceProcessSection';
 import ServiceTrustBadges from './ServiceTrustBadges';
+import ServiceMainContent from './ServiceMainContent';
+import ServiceProcessSection from './ServiceProcessSection';
+import ServiceFAQSection from './ServiceFAQSection';
 import ServiceCtaSection from './ServiceCtaSection';
 import ServiceSidebar from './ServiceSidebar';
+import { ServicePageSharedStyles } from './ServicePageStyles';
+
+interface FAQItem {
+  question: string;
+  answer: string;
+}
+
+interface RelatedService {
+  title: string;
+  path: string;
+  description: string;
+}
 
 interface ServicePageContentProps {
   title: string;
@@ -14,13 +26,10 @@ interface ServicePageContentProps {
   serviceName: string;
   serviceCategory: string;
   mainContent: React.ReactNode;
-  faqs?: { question: string; answer: string }[];
-  relatedServices?: { title: string; path: string; description: string }[];
+  faqs?: FAQItem[];
+  relatedServices?: RelatedService[];
 }
 
-/**
- * Main content layout for service detail pages
- */
 const ServicePageContent: React.FC<ServicePageContentProps> = ({
   title,
   description,
@@ -31,47 +40,44 @@ const ServicePageContent: React.FC<ServicePageContentProps> = ({
   relatedServices = []
 }) => {
   return (
-    <div className="bg-white">
-      <div className="container mx-auto px-4 py-8">
-        <ServicePageHeader 
-          title={title} 
-          description={description} 
-        />
-        
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-8">
-          <div className="col-span-1 lg:col-span-2">
-            <ServiceMainContent
-              serviceName={serviceName}
-              serviceCategory={serviceCategory}
-              mainContent={mainContent}
-            />
-            
-            <ServiceProcessSection serviceName={serviceName} />
-            
-            <ServiceTrustBadges />
-            
-            {faqs.length > 0 && (
-              <ServiceFAQSection
-                title={`${serviceName} FAQs`}
-                faqs={faqs}
+    <div className="py-16 bg-white">
+      <div className="container mx-auto px-4">
+        <div className="grid lg:grid-cols-3 gap-10">
+          {/* Main content area - 2/3 width on desktop */}
+          <div className="lg:col-span-2">
+            <div className="prose prose-lg max-w-none">
+              <ServicePageHeader 
+                title={title} 
+                description={description} 
               />
-            )}
+              
+              <ServiceTrustBadges />
+              
+              <ServiceMainContent 
+                serviceName={serviceName}
+                serviceCategory={serviceCategory}
+                mainContent={mainContent}
+              />
+              
+              <ServiceProcessSection serviceName={serviceName} />
+              
+              {faqs.length > 0 && (
+                <ServiceFAQSection faqs={faqs} />
+              )}
+              
+              <ServiceCtaSection serviceName={serviceName} />
+            </div>
           </div>
           
-          <div className="col-span-1">
-            <ServiceSidebar 
-              serviceName={serviceName}
-              serviceCategory={serviceCategory}
-              relatedServices={relatedServices}
-            />
-          </div>
+          {/* Sidebar - 1/3 width on desktop */}
+          <ServiceSidebar 
+            serviceName={serviceName} 
+            relatedServices={relatedServices} 
+          />
         </div>
-        
-        <ServiceCtaSection 
-          title={`Ready for Professional ${serviceName} Service?`}
-          description="Contact our team for fast, reliable service from licensed professionals."
-        />
       </div>
+
+      <ServicePageSharedStyles />
     </div>
   );
 };

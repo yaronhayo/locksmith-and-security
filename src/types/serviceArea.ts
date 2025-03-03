@@ -1,12 +1,8 @@
-
 export interface ServiceArea {
   id: string;
   name: string;
   slug: string;
   description: string;
-  lat: number;
-  lng: number;
-  title?: string;
   services: Service[];
   features: Feature[];
   coverage: Coverage;

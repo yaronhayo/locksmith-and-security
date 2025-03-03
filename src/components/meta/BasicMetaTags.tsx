@@ -34,11 +34,6 @@ export const BasicMetaTags = ({
   // Create robots content based on props
   const robotsContent = `${noindex ? 'noindex' : 'index'},${nofollow ? 'nofollow' : 'follow'}${!noindex ? ',max-image-preview:large,max-snippet:-1,max-video-preview:-1' : ''}`;
 
-  // Format date for last-modified if it's not already in ISO format
-  const formattedModifiedDate = modifiedDate.includes('T') 
-    ? modifiedDate 
-    : new Date(modifiedDate).toISOString();
-
   return (
     <Helmet>
       <html lang={language} />
@@ -54,24 +49,7 @@ export const BasicMetaTags = ({
       <meta name="format-detection" content="telephone=yes" />
       <meta name="author" content="Locksmith & Security LLC" />
       <meta name="copyright" content={`© ${new Date().getFullYear()} Locksmith & Security LLC. All rights reserved.`} />
-      <meta name="last-modified" content={formattedModifiedDate} />
-      <meta property="article:modified_time" content={formattedModifiedDate} />
-      
-      {/* Favicon links */}
-      <link rel="icon" type="image/png" href="https://mtbgayqzjrxjjmsjikcg.supabase.co/storage/v1/object/public/uploads//Favicon.png" />
-      <link rel="apple-touch-icon" sizes="180x180" href="https://mtbgayqzjrxjjmsjikcg.supabase.co/storage/v1/object/public/uploads//Favicon.png" />
-      <link rel="icon" type="image/png" sizes="32x32" href="https://mtbgayqzjrxjjmsjikcg.supabase.co/storage/v1/object/public/uploads//Favicon.png" />
-      <link rel="icon" type="image/png" sizes="16x16" href="https://mtbgayqzjrxjjmsjikcg.supabase.co/storage/v1/object/public/uploads//Favicon.png" />
-      
-      {/* Accessibility Metadata */}
-      <meta name="accessibility-control" content="fullKeyboardControl" />
-      <meta name="accessibility-control" content="fullMouseControl" />
-      <meta name="accessibility-control" content="fullTouchControl" />
-      <meta name="accessibility-hazard" content="noFlashingHazard" />
-      <meta name="accessibility-hazard" content="noMotionSimulationHazard" />
-      <meta name="accessibility-hazard" content="noSoundHazard" />
-      <meta name="accessMode" content="textual" />
-      <meta name="accessMode" content="visual" />
+      <meta name="last-modified" content={modifiedDate} />
     </Helmet>
   );
 };

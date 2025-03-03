@@ -1,253 +1,315 @@
+
 import React from 'react';
-import PageLayout from '@/components/layouts/PageLayout';
+import { motion } from 'framer-motion';
+import ServicesHero from '@/components/sections/services/ServicesHero';
+import ServicesCTA from '@/components/sections/services/ServicesCTA';
+import ServicesFeatures from '@/components/sections/services/ServicesFeatures';
 import ServicesProof from '@/components/sections/services/ServicesProof';
-import CategoryHero from '@/components/sections/services/CategoryHero';
-import CategoryFeatures from '@/components/sections/services/CategoryFeatures';
-import CategorySuccessStories from '@/components/sections/services/CategorySuccessStories';
-import ReviewsSection from '@/components/sections/ReviewsSection';
-import ServicesGrid from '@/components/sections/services/ServicesGrid';
-import { Button } from '@/components/ui/button';
-import { Home, Key, Lock, Shield, Wrench, KeyRound, CheckCircle, ChevronRight, Phone } from 'lucide-react';
+import FAQSection from '@/components/sections/FAQSection';
+import { residentialFaqs } from '@/data/faqData';
 import { Link } from 'react-router-dom';
-import { getReviewsByCategory } from '@/data/reviewsData';
+import { Card, CardContent } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Key, Lock, ShieldCheck, Wrench, Home, ArrowRight } from 'lucide-react';
+import ServicesGrid from '@/components/sections/services/ServicesGrid';
 
-const ResidentialLocksmithPage = () => {
-  const residentialReviews = getReviewsByCategory('residential');
-  const residentialStories = [{
-    title: "Complete Home Rekeying After Move-In",
-    description: "New homeowners needing all locks rekeyed for security.",
-    challenge: "A family had just purchased a new home and was concerned about previous owners or contractors potentially having access to their property. They needed all locks rekeyed quickly before moving in their belongings.",
-    solution: "Our residential locksmith team performed a comprehensive rekeying of all external doors, including the front door, back door, side entrance, and garage access. We created a new master key system that allowed them to use a single key for all entries.",
-    result: "The family gained peace of mind knowing their new home was secure before moving in, with convenient access using a simplified key system.",
-    customerName: "Thomas K.",
-    customerLocation: "Hoboken, NJ",
-    date: "Last month"
-  }, {
-    title: "Smart Lock Installation for Busy Family",
-    description: "Multiple entry solution for family members with varying schedules.",
-    challenge: "A household with teenagers, working parents, and occasional visitors needed a more flexible solution than traditional keys, which were frequently forgotten or misplaced.",
-    solution: "We installed a smart lock system with keypad entry and smartphone control, allowing individual codes for family members and temporary access codes for visitors or service providers.",
-    result: "The family eliminated lockouts completely and gained the ability to monitor who enters their home and when, plus the convenience of remotely locking/unlocking doors when needed.",
-    customerName: "Jennifer M.",
-    customerLocation: "Jersey City, NJ",
-    date: "2 months ago"
-  }];
+const residentialServices = [
+  {
+    icon: Lock,
+    title: "Lock Replacement",
+    description: "Upgrade your home's security with modern, high-security lock installation services.",
+    path: "/services/residential-locksmith/lock-replacement"
+  },
+  {
+    icon: Key,
+    title: "Lock Rekey",
+    description: "Keep your existing hardware while changing who has access with our lock rekeying services.",
+    path: "/services/residential-locksmith/lock-rekey"
+  },
+  {
+    icon: Wrench,
+    title: "Lock Repair",
+    description: "Extend the life of your locks with our expert repair services for all types of residential locks.",
+    path: "/services/residential-locksmith/lock-repair"
+  },
+  {
+    icon: ShieldCheck,
+    title: "Gate Locks",
+    description: "Secure your property's perimeter with specialized gate lock installation and repair services.",
+    path: "/services/residential-locksmith/gate-locks"
+  }
+];
 
+const lockBrands = [
+  "Schlage", "Kwikset", "Baldwin", "Yale", "Medeco", "Mul-T-Lock", "ASSA Abloy", "Emtek"
+];
+
+const ResidentialLocksmith = () => {
   return (
-    <PageLayout 
-      title="Residential Locksmith Services | Home Security Solutions" 
-      description="Expert residential locksmith services for your home. Lock installation, repair, rekeying, and security upgrades for optimal protection." 
-      heroTitle="Residential Locksmith Services" 
-      heroDescription="Complete home security solutions from trusted local locksmiths. Protect what matters most with our professional services."
-    >
-      <CategoryHero 
-        title="Professional Residential Locksmith Services" 
-        description="Secure your home with our comprehensive residential locksmith services. From standard lock installation to advanced security upgrades, we ensure your family and property are well-protected." 
-        category="residential" 
-        features={[{
-          title: "Expert Technicians",
-          description: "Certified locksmiths"
-        }, {
-          title: "Quality Hardware",
-          description: "Premium security products"
-        }, {
-          title: "Warranty Protection",
-          description: "Guaranteed workmanship"
-        }, {
-          title: "Comprehensive Solutions",
-          description: "Complete home security"
-        }]} 
+    <main className="flex-grow">
+      <ServicesHero 
+        title="Residential Locksmith Services"
+        description="Secure your home with our comprehensive residential locksmith services. From lock repair to advanced security solutions, our certified technicians provide expert service."
       />
       
-      <div className="bg-blue-50 py-12">
+      <section className="py-20 bg-gradient-to-b from-white to-gray-50">
         <div className="container mx-auto px-4">
-          <div className="bg-white p-6 rounded-xl shadow-md border border-blue-100">
-            <div className="flex items-center gap-4 mb-6">
-              <div className="bg-blue-100 p-3 rounded-full">
-                <Home className="h-8 w-8 text-blue-600" />
-              </div>
-              <div>
-                <h2 className="text-2xl font-bold text-blue-700">Home Security Solutions</h2>
-                <p className="text-gray-600">Comprehensive locksmith services for your entire home</p>
-              </div>
-            </div>
-            
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-              <div className="border border-gray-100 rounded-lg p-5 bg-gray-50">
-                <div className="flex items-center gap-3 mb-3">
-                  <Lock className="h-6 w-6 text-primary" />
-                  <h3 className="font-semibold">Lock Installation</h3>
-                </div>
-                <p className="text-gray-600 text-sm">Professional installation of all types of residential locks for optimal security.</p>
-              </div>
-              
-              <div className="border border-gray-100 rounded-lg p-5 bg-gray-50">
-                <div className="flex items-center gap-3 mb-3">
-                  <Key className="h-6 w-6 text-primary" />
-                  <h3 className="font-semibold">Lock Rekeying</h3>
-                </div>
-                <p className="text-gray-600 text-sm">Change your lock's internal pins to work with new keys, rendering old ones useless.</p>
-                </div>
-              
-              <div className="border border-gray-100 rounded-lg p-5 bg-gray-50">
-                <div className="flex items-center gap-3 mb-3">
-                  <Wrench className="h-6 w-6 text-primary" />
-                  <h3 className="font-semibold">Lock Repair</h3>
-                </div>
-                <p className="text-gray-600 text-sm">Fix malfunctioning locks to restore security and proper function to your doors.</p>
-              </div>
-              
-              <div className="border border-gray-100 rounded-lg p-5 bg-gray-50">
-                <div className="flex items-center gap-3 mb-3">
-                  <Shield className="h-6 w-6 text-primary" />
-                  <h3 className="font-semibold">Security Upgrades</h3>
-                </div>
-                <p className="text-gray-600 text-sm">Enhance your home's protection with modern security hardware and systems.</p>
-              </div>
-            </div>
-            
-            <div className="mt-8 flex justify-center">
-              <Button size="lg" asChild className="bg-blue-600 hover:bg-blue-700 text-white">
-                <a href="tel:2017482070" className="flex items-center gap-2">
-                  <Phone className="h-5 w-5" />
-                  Call Now: (201) 748-2070
-                </a>
-              </Button>
-            </div>
-          </div>
-        </div>
-      </div>
-      
-      <CategoryFeatures 
-        category="Residential" 
-        description="Our residential locksmith services are designed to meet all your home security needs. 
-          We offer comprehensive solutions for all types of locks and security systems." 
-        services={[{
-          title: "Lock Installation",
-          description: "Professional installation of high-quality locks for all doors in your home, ensuring optimal security and proper function.",
-          icon: <Lock className="h-6 w-6" />,
-          link: "/services/residential-locksmith/lock-installation"
-        }, {
-          title: "Lock Replacement",
-          description: "Complete replacement of outdated or damaged locks with modern, more secure alternatives for enhanced protection.",
-          icon: <KeyRound className="h-6 w-6" />,
-          link: "/services/residential-locksmith/lock-replacement"
-        }, {
-          title: "Lock Rekeying",
-          description: "Change your lock's internal mechanism to work with new keys, invalidating old ones without replacing the entire lock.",
-          icon: <Key className="h-6 w-6" />,
-          link: "/services/residential-locksmith/lock-rekey"
-        }, {
-          title: "Lock Repair",
-          description: "Expert diagnosis and repair of malfunctioning locks, restoring security and function to your doors.",
-          icon: <Wrench className="h-6 w-6" />,
-          link: "/services/residential-locksmith/lock-repair"
-        }, {
-          title: "High-Security Locks",
-          description: "Installation of advanced security locks that offer superior protection against picking, bumping, and other intrusion methods.",
-          icon: <Shield className="h-6 w-6" />,
-          link: "/services/residential-locksmith/high-security-locks"
-        }, {
-          title: "Smart Lock Installation",
-          description: "Professional setup of electronic and smart locks that offer keyless entry, remote access, and enhanced security features.",
-          icon: <Home className="h-6 w-6" />,
-          link: "/services/residential-locksmith/smart-locks"
-        }]} 
-      />
-      
-      <div className="bg-gradient-to-br from-primary-50 to-primary-100 py-16">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">Why Choose Our Residential Locksmith Service?</h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              We prioritize your home's security with reliable, professional service.
+          <motion.div 
+            className="text-center mb-16"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            <span className="text-secondary font-semibold">Home Security Experts</span>
+            <h2 className="text-4xl font-bold text-primary mt-2 mb-6">
+              Complete Residential Locksmith Solutions
+            </h2>
+            <p className="text-gray-600 max-w-3xl mx-auto text-lg">
+              Our residential locksmith services are designed to keep your home secure and your family safe. From basic lock maintenance to advanced security systems, we do it all.
             </p>
-          </div>
+          </motion.div>
           
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <div className="bg-white p-6 rounded-xl shadow-sm">
-              <div className="rounded-full w-12 h-12 bg-blue-100 flex items-center justify-center mb-4">
-                <Shield className="h-6 w-6 text-blue-600" />
-              </div>
-              <h3 className="text-xl font-semibold mb-3">Superior Security</h3>
-              <p className="text-gray-600">
-                We offer only high-quality, durable security products from trusted manufacturers, ensuring your home is properly protected.
-              </p>
-            </div>
-            
-            <div className="bg-white p-6 rounded-xl shadow-sm">
-              <div className="rounded-full w-12 h-12 bg-green-100 flex items-center justify-center mb-4">
-                <CheckCircle className="h-6 w-6 text-green-600" />
-              </div>
-              <h3 className="text-xl font-semibold mb-3">Licensed & Insured</h3>
-              <p className="text-gray-600">
-                All our residential locksmiths are fully licensed, insured, and background-checked for your peace of mind.
-              </p>
-            </div>
-            
-            <div className="bg-white p-6 rounded-xl shadow-sm">
-              <div className="rounded-full w-12 h-12 bg-orange-100 flex items-center justify-center mb-4">
-                <Home className="h-6 w-6 text-orange-600" />
-              </div>
-              <h3 className="text-xl font-semibold mb-3">Home Security Expertise</h3>
-              <p className="text-gray-600">
-                Our specialists can assess your property and recommend the optimal security solutions tailored to your specific needs.
-              </p>
-            </div>
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {residentialServices.map((service, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+              >
+                <Card className="h-full border-0 shadow-md hover:shadow-xl transition-all duration-300">
+                  <CardContent className="p-6">
+                    <div className="mb-4 w-14 h-14 bg-primary/10 rounded-full flex items-center justify-center">
+                      <service.icon className="h-7 w-7 text-primary" />
+                    </div>
+                    <h3 className="text-xl font-bold mb-3">{service.title}</h3>
+                    <p className="text-gray-600 mb-6">{service.description}</p>
+                    <Button asChild variant="outline" className="group w-full">
+                      <Link to={service.path} className="flex items-center justify-center">
+                        Learn More
+                        <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                      </Link>
+                    </Button>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            ))}
           </div>
         </div>
-      </div>
+      </section>
       
-      <CategorySuccessStories category="Residential Locksmith" stories={residentialStories} />
-      
-      <ServicesProof reviewsData={residentialReviews.slice(0, 6)} category="residential" />
-      
-      <div className="py-16 bg-gray-50">
+      <section className="py-20 bg-gradient-to-b from-gray-50 to-white">
         <div className="container mx-auto px-4">
-          <div className="bg-white p-8 rounded-xl shadow-md border border-gray-200 max-w-4xl mx-auto">
-            <h2 className="text-2xl font-bold mb-4 text-center">Residential Locksmith FAQ</h2>
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.5 }}
+              viewport={{ once: true }}
+            >
+              <Home className="h-12 w-12 text-secondary mb-6" />
+              <h2 className="text-3xl font-bold mb-6">
+                Protecting What Matters Most
+              </h2>
+              <p className="text-gray-600 mb-8 leading-relaxed">
+                Your home is your sanctuary, and its security shouldn't be compromised. Our residential locksmith services provide peace of mind with solutions tailored to your specific needs and budget. From traditional deadbolts to smart lock systems, we offer comprehensive services to keep your home secure.
+              </p>
+              <div className="space-y-4">
+                <div className="flex items-start">
+                  <div className="mr-4 mt-1 bg-primary/10 p-1 rounded-full">
+                    <ShieldCheck className="h-5 w-5 text-primary" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold mb-1">Customized Security Solutions</h3>
+                    <p className="text-gray-600">We assess your home's unique security needs and provide tailored recommendations.</p>
+                  </div>
+                </div>
+                <div className="flex items-start">
+                  <div className="mr-4 mt-1 bg-primary/10 p-1 rounded-full">
+                    <ShieldCheck className="h-5 w-5 text-primary" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold mb-1">Experienced Technicians</h3>
+                    <p className="text-gray-600">Our locksmiths are highly trained and experienced with all types of residential locks.</p>
+                  </div>
+                </div>
+                <div className="flex items-start">
+                  <div className="mr-4 mt-1 bg-primary/10 p-1 rounded-full">
+                    <ShieldCheck className="h-5 w-5 text-primary" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold mb-1">Quality Guarantee</h3>
+                    <p className="text-gray-600">We stand behind our work with comprehensive warranties on parts and labor.</p>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
             
-            <div className="space-y-6 mt-8">
-              <div>
-                <h3 className="text-lg font-semibold text-primary mb-2">How often should I change or rekey my home locks?</h3>
-                <p className="text-gray-600">It's recommended to change or rekey your locks when moving into a new home, after a break-in attempt, if keys are lost or stolen, or if you've given keys to someone who no longer needs access. As a general practice, considering a security update every 5-7 years is advisable.</p>
-              </div>
+            <motion.div
+              className="bg-white p-8 rounded-xl shadow-xl border border-gray-100"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              viewport={{ once: true }}
+            >
+              <h3 className="text-2xl font-bold mb-6 text-center">Our Residential Services Include</h3>
+              <ul className="space-y-4">
+                <li className="flex items-center p-4 border-b border-gray-100">
+                  <div className="bg-secondary/10 p-2 rounded-full mr-4">
+                    <Home className="h-5 w-5 text-secondary" />
+                  </div>
+                  <div>
+                    <h4 className="font-semibold">Home Lockouts</h4>
+                    <p className="text-gray-600 text-sm">Fast, damage-free entry to your home</p>
+                  </div>
+                </li>
+                <li className="flex items-center p-4 border-b border-gray-100">
+                  <div className="bg-secondary/10 p-2 rounded-full mr-4">
+                    <Lock className="h-5 w-5 text-secondary" />
+                  </div>
+                  <div>
+                    <h4 className="font-semibold">Deadbolt Installation</h4>
+                    <p className="text-gray-600 text-sm">Enhance security with quality deadbolts</p>
+                  </div>
+                </li>
+                <li className="flex items-center p-4 border-b border-gray-100">
+                  <div className="bg-secondary/10 p-2 rounded-full mr-4">
+                    <Key className="h-5 w-5 text-secondary" />
+                  </div>
+                  <div>
+                    <h4 className="font-semibold">Master Key Systems</h4>
+                    <p className="text-gray-600 text-sm">Convenient access management for your home</p>
+                  </div>
+                </li>
+                <li className="flex items-center p-4 border-b border-gray-100">
+                  <div className="bg-secondary/10 p-2 rounded-full mr-4">
+                    <ShieldCheck className="h-5 w-5 text-secondary" />
+                  </div>
+                  <div>
+                    <h4 className="font-semibold">Smart Lock Installation</h4>
+                    <p className="text-gray-600 text-sm">Modern keyless entry solutions</p>
+                  </div>
+                </li>
+                <li className="flex items-center p-4">
+                  <div className="bg-secondary/10 p-2 rounded-full mr-4">
+                    <Wrench className="h-5 w-5 text-secondary" />
+                  </div>
+                  <div>
+                    <h4 className="font-semibold">Security Assessments</h4>
+                    <p className="text-gray-600 text-sm">Comprehensive evaluation of your home's security</p>
+                  </div>
+                </li>
+              </ul>
               
-              <div>
-                <h3 className="text-lg font-semibold text-primary mb-2">What's the difference between rekeying and replacing a lock?</h3>
-                <p className="text-gray-600">Rekeying changes the internal pins of your existing lock so it works with a new key, while replacing involves installing an entirely new lock. Rekeying is usually more cost-effective when the lock is in good condition, while replacement is better for upgrading security or when locks are damaged or outdated.</p>
-              </div>
-              
-              <div>
-                <h3 className="text-lg font-semibold text-primary mb-2">Are smart locks as secure as traditional locks?</h3>
-                <p className="text-gray-600">Quality smart locks can be as secure as traditional locks and offer additional security features like access logs and remote control. However, they should be properly installed by professionals and secured against digital vulnerabilities. We can help you select the right smart lock for your security needs.</p>
-              </div>
-              
-              <div>
-                <h3 className="text-lg font-semibold text-primary mb-2">What identification will I need to show for residential locksmith services?</h3>
-                <p className="text-gray-600">For security purposes, we require proof of residence or ownership when providing residential locksmith services. This can include a valid ID with your address, a utility bill, property deed, or lease agreement.</p>
-              </div>
-              
-              <div>
-                <h3 className="text-lg font-semibold text-primary mb-2">Can you match existing keys for additional doors?</h3>
-                <p className="text-gray-600">Yes, we can rekey multiple locks to work with a single key, saving you the inconvenience of carrying multiple keys. This service is popular for homeowners wanting to simplify their home access system.</p>
-              </div>
-            </div>
-            
-            <div className="mt-8 flex justify-center">
-              <Button asChild>
-                <Link to="/book-online" className="flex items-center gap-2">
-                  Book Residential Service <ChevronRight className="h-4 w-4" />
+              <Button className="w-full mt-8 py-6" size="lg">
+                <Link to="/contact" className="flex items-center justify-center">
+                  Schedule Service
+                  <ArrowRight className="ml-2 h-5 w-5" />
                 </Link>
               </Button>
-            </div>
+            </motion.div>
           </div>
         </div>
-      </div>
+      </section>
       
-      <ReviewsSection location="North Bergen" category="residential" reviewData={residentialReviews} />
-    </PageLayout>
+      <section className="py-20 bg-gradient-to-b from-white to-gray-50">
+        <div className="container mx-auto px-4">
+          <motion.div
+            className="text-center mb-16"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            viewport={{ once: true }}
+          >
+            <h2 className="text-3xl font-bold mb-6">
+              We Work With All Major Lock Brands
+            </h2>
+            <p className="text-gray-600 max-w-3xl mx-auto">
+              Our locksmiths are trained to work with all major residential lock brands, ensuring we can service, repair, or replace any lock in your home.
+            </p>
+          </motion.div>
+          
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
+            {lockBrands.map((brand, index) => (
+              <motion.div
+                key={index}
+                className="bg-white rounded-lg shadow-sm p-6 flex items-center justify-center border border-gray-100"
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.3, delay: index * 0.05 }}
+                viewport={{ once: true }}
+              >
+                <span className="text-lg font-semibold text-gray-700">{brand}</span>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+      
+      <section className="relative py-20 bg-primary text-white overflow-hidden">
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute right-0 bottom-0 w-96 h-96 bg-white rounded-full -mr-20 -mb-20"></div>
+          <div className="absolute left-0 top-0 w-96 h-96 bg-white rounded-full -ml-20 -mt-20"></div>
+        </div>
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="max-w-3xl mx-auto text-center">
+            <motion.h2 
+              className="text-3xl md:text-4xl font-bold mb-6"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              viewport={{ once: true }}
+            >
+              Home Security Tips
+            </motion.h2>
+            <motion.div
+              className="grid md:grid-cols-2 gap-8 mt-12 text-left"
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              viewport={{ once: true }}
+            >
+              <div className="bg-white/10 p-6 rounded-lg backdrop-blur-sm">
+                <h3 className="text-xl font-semibold mb-3 text-sky-100">Install Quality Deadbolts</h3>
+                <p className="text-white/80">
+                  All exterior doors should have quality deadbolts with a minimum 1-inch throw bolt for maximum security.
+                </p>
+              </div>
+              
+              <div className="bg-white/10 p-6 rounded-lg backdrop-blur-sm">
+                <h3 className="text-xl font-semibold mb-3 text-sky-100">Secure Sliding Doors</h3>
+                <p className="text-white/80">
+                  Use specialized locks or security bars to prevent sliding doors from being forced open.
+                </p>
+              </div>
+              
+              <div className="bg-white/10 p-6 rounded-lg backdrop-blur-sm">
+                <h3 className="text-xl font-semibold mb-3 text-sky-100">Rekey After Moving</h3>
+                <p className="text-white/80">
+                  Always rekey your locks when moving into a new home to ensure previous residents can't access your property.
+                </p>
+              </div>
+              
+              <div className="bg-white/10 p-6 rounded-lg backdrop-blur-sm">
+                <h3 className="text-xl font-semibold mb-3 text-sky-100">Consider Smart Locks</h3>
+                <p className="text-white/80">
+                  Smart locks offer convenience and enhanced security with features like activity logs and remote access.
+                </p>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+      
+      <FAQSection 
+        faqs={residentialFaqs.slice(0, 12)}
+        title="Residential Locksmith FAQ"
+        description="Common questions about our residential locksmith services"
+      />
+      
+      <ServicesCTA />
+    </main>
   );
 };
 
-export default ResidentialLocksmithPage;
+export default ResidentialLocksmith;

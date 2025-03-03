@@ -1,65 +1,37 @@
 
-import React, { createContext, useContext, useEffect, useState, useRef } from 'react';
-import { useLocation } from 'react-router-dom';
+import { createContext, useContext, ReactNode } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 
-type NavigationContextType = {
-  isMobileMenuOpen: boolean;
-  setIsMobileMenuOpen: (isOpen: boolean) => void;
-  selectedPath: string;
-  setSelectedPath: (path: string) => void;
-};
+interface NavigationContextType {
+  navigateTo: (path: string) => void;
+  currentPath: string;
+  isActive: (path: string) => boolean;
+}
 
 const NavigationContext = createContext<NavigationContextType | undefined>(undefined);
 
-export const NavigationProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [selectedPath, setSelectedPath] = useState('');
+export const NavigationProvider = ({ children }: { children: ReactNode }) => {
+  const navigate = useNavigate();
   const location = useLocation();
-  const navigationTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const prevPathRef = useRef(location.pathname);
   
-  // Clean up timeouts when the component unmounts
-  useEffect(() => {
-    return () => {
-      if (navigationTimeoutRef.current) {
-        clearTimeout(navigationTimeoutRef.current);
-        navigationTimeoutRef.current = null;
-      }
-    };
-  }, []);
+  const navigateTo = (path: string) => {
+    navigate(path);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
   
-  // Update the selected path when the location changes
-  useEffect(() => {
-    // Add debouncing to prevent rapid navigation changes
-    if (prevPathRef.current === location.pathname) {
-      return; // Skip if the path hasn't actually changed
+  const isActive = (path: string) => {
+    if (path === '/') {
+      return location.pathname === '/';
     }
-    
-    console.log(`NavigationContext: Path changed from ${prevPathRef.current} to ${location.pathname}`);
-    prevPathRef.current = location.pathname;
-    
-    // Clear any existing timeout
-    if (navigationTimeoutRef.current) {
-      clearTimeout(navigationTimeoutRef.current);
-    }
-    
-    // Set a timeout to update the selected path
-    navigationTimeoutRef.current = setTimeout(() => {
-      setSelectedPath(location.pathname);
-      setIsMobileMenuOpen(false); // Close mobile menu on navigation
-      navigationTimeoutRef.current = null;
-    }, 50);
-  }, [location.pathname]);
-
+    return location.pathname.startsWith(path);
+  };
+  
   return (
-    <NavigationContext.Provider
-      value={{
-        isMobileMenuOpen,
-        setIsMobileMenuOpen,
-        selectedPath,
-        setSelectedPath,
-      }}
-    >
+    <NavigationContext.Provider value={{ 
+      navigateTo, 
+      currentPath: location.pathname,
+      isActive
+    }}>
       {children}
     </NavigationContext.Provider>
   );

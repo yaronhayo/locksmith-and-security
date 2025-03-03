@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Phone, Calendar, ShieldCheck, Star, Clock, ArrowUpRight } from "lucide-react";
@@ -11,11 +12,10 @@ interface RelatedService {
 
 interface ServiceSidebarProps {
   serviceName: string;
-  serviceCategory?: string;
   relatedServices: RelatedService[];
 }
 
-const ServiceSidebar: React.FC<ServiceSidebarProps> = ({ serviceName, serviceCategory, relatedServices }) => {
+const ServiceSidebar: React.FC<ServiceSidebarProps> = ({ serviceName, relatedServices }) => {
   return (
     <div className="lg:col-span-1">
       <div className="sticky top-24 space-y-8">

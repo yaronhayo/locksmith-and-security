@@ -7,29 +7,36 @@ export const useLocations = () => {
   return useQuery({
     queryKey: ['locations'],
     queryFn: async () => {
+      console.log('Fetching locations from Supabase...');
       const { data, error } = await supabase
         .from('locations')
         .select('*')
         .order('name');
-      
+
       if (error) {
-        throw new Error(error.message);
+        console.error('Error fetching locations:', error);
+        throw new Error(`Failed to fetch locations: ${error.message}`);
       }
-      
-      // Map database fields to ServiceAreaLocation type
-      return (data || []).map(location => ({
+
+      if (!data) {
+        console.error('No locations data returned');
+        throw new Error('No locations data available');
+      }
+
+      console.log('Locations fetched successfully:', data);
+
+      return data.map(location => ({
         name: location.name,
         slug: location.slug,
         description: location.description || '',
-        lat: location.lat,
-        lng: location.lng,
-        title: location.title || location.name
+        lat: Number(location.lat),
+        lng: Number(location.lng),
+        title: location.title || `${location.name} Locksmith Services`
       })) as ServiceAreaLocation[];
     },
+    staleTime: 5 * 60 * 1000, // Cache for 5 minutes
     meta: {
-      onError: (error: Error) => {
-        console.error('Error fetching locations:', error.message);
-      }
+      errorMessage: 'Failed to load service area locations'
     }
   });
 };

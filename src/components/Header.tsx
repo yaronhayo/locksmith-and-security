@@ -26,30 +26,6 @@ const Header = () => {
     setIsMenuOpen(false);
   }, [location]);
 
-  // Close mobile menu with ESC key
-  useEffect(() => {
-    const handleEscKey = (event: KeyboardEvent) => {
-      if (event.key === 'Escape' && isMenuOpen) {
-        setIsMenuOpen(false);
-      }
-    };
-
-    document.addEventListener('keydown', handleEscKey);
-    return () => document.removeEventListener('keydown', handleEscKey);
-  }, [isMenuOpen]);
-
-  // Prevent scrolling when mobile menu is open
-  useEffect(() => {
-    if (isMenuOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
-    }
-    return () => {
-      document.body.style.overflow = '';
-    };
-  }, [isMenuOpen]);
-
   return (
     <>
       <TopBar />
@@ -79,7 +55,7 @@ const Header = () => {
                 onClick={() => setIsMenuOpen(false)}
                 aria-label="Close menu"
               >
-                <X className="h-6 w-6 text-white" strokeWidth={2.5} aria-hidden="true" />
+                <X className="h-6 w-6 text-white" strokeWidth={2.5} />
               </Button>
             </div>
 
@@ -89,9 +65,6 @@ const Header = () => {
           </div>
         </div>
       </header>
-      <div id="main-content" tabIndex={-1} className="sr-only focus:not-sr-only">
-        Main content starts here
-      </div>
     </>
   );
 };

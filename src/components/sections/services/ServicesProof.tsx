@@ -1,6 +1,6 @@
 
 import React, { useEffect } from 'react';
-import { Review, ServiceCategory } from '@/types/reviews';
+import { Review } from '@/types/reviews';
 import { StarIcon } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { reviews, reviewsByCategory } from '@/data/reviewsData';
@@ -9,42 +9,22 @@ import { memo } from 'react';
 
 interface ServicesProofProps {
   reviewsData?: Review[];
-  category?: ServiceCategory;
+  category?: 'car' | 'residential' | 'commercial';
 }
 
-const ServicesProof: React.FC<ServicesProofProps> = memo(({
-  reviewsData,
-  category
-}) => {
+const ServicesProof: React.FC<ServicesProofProps> = memo(({ reviewsData, category }) => {
   const finishRenderTracking = trackComponentRender('ServicesProof');
   
   useEffect(() => {
     finishRenderTracking();
-    console.log('ServicesProof rendered with category:', category);
-  }, [finishRenderTracking, category]);
-
+  }, []);
+  
   // Use provided reviews data if available, otherwise use reviews based on category or default to all reviews
-  const displaySourceReviews = reviewsData || (category ? reviewsByCategory[category] : reviews);
+  const displaySourceReviews = reviewsData || 
+    (category ? reviewsByCategory[category] : reviews);
   
-  // Make sure we have an array, even if data is missing
-  const safeReviews = Array.isArray(displaySourceReviews) ? displaySourceReviews : [];
-
   // Take only the first 3 reviews for display
-  const displayReviews = safeReviews.slice(0, 3);
-  
-  // If no reviews are available, render a fallback
-  if (displayReviews.length === 0) {
-    return (
-      <section className="bg-gray-50 py-16">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl font-bold mb-4">What Our Customers Say</h2>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-8">
-            We're currently collecting customer reviews. Check back soon to see what our customers are saying about our services!
-          </p>
-        </div>
-      </section>
-    );
-  }
+  const displayReviews = displaySourceReviews.slice(0, 3);
   
   return (
     <section className="bg-gray-50 py-16">
@@ -114,4 +94,5 @@ const ServicesProof: React.FC<ServicesProofProps> = memo(({
 });
 
 ServicesProof.displayName = 'ServicesProof';
+
 export default ServicesProof;

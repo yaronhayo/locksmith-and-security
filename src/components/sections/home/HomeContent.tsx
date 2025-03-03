@@ -4,15 +4,15 @@ import LoadingSpinner from '@/components/LoadingSpinner';
 import { Skeleton } from '@/components/ui/skeleton';
 import { motion } from 'framer-motion';
 
-// Lazy loaded components with prefetching hints
-const ServicesSectionComponent = lazy(() => import('../ServicesSection'));
-const EmergencyServicesSectionComponent = lazy(() => import('../EmergencyServicesSection'));
-const ProcessSectionComponent = lazy(() => import('../ProcessSection'));
-const WhyChooseUsComponent = lazy(() => import('../WhyChooseUs'));
-const HomeReviewsSectionComponent = lazy(() => import('./HomeReviewsSection'));
-const GoogleMapsProviderComponent = lazy(() => import('@/components/providers/GoogleMapsProvider'));
-const ServiceAreasSectionComponent = lazy(() => import('../ServiceAreasSection'));
-const FAQSectionComponent = lazy(() => import('../FAQSection'));
+// Lazy loaded components
+const ServiceAreasSection = lazy(() => import('../ServiceAreasSection'));
+const WhyChooseUs = lazy(() => import('../WhyChooseUs'));
+const EmergencyServicesSection = lazy(() => import('../EmergencyServicesSection'));
+const ProcessSection = lazy(() => import('../ProcessSection'));
+const ServicesSection = lazy(() => import('../ServicesSection'));
+const FAQSection = lazy(() => import('../FAQSection'));
+const HomeReviewsSection = lazy(() => import('./HomeReviewsSection'));
+const GoogleMapsProvider = lazy(() => import('@/components/providers/GoogleMapsProvider'));
 
 // Section loading component with animation
 const SectionLoading = () => (
@@ -35,49 +35,38 @@ const SectionLoading = () => (
   </div>
 );
 
-// Intersection Observer for better lazy loading
-const LazySection = ({ children, id }: { children: React.ReactNode, id: string }) => {
-  return (
-    <div id={id} data-section={id}>
-      <Suspense fallback={<SectionLoading />}>
-        {children}
-      </Suspense>
-    </div>
-  );
-};
-
 const HomeContent = () => {
   return (
     <>
-      <LazySection id="services">
-        <ServicesSectionComponent />
-      </LazySection>
+      <Suspense fallback={<SectionLoading />}>
+        <ServicesSection />
+      </Suspense>
       
-      <LazySection id="emergency">
-        <EmergencyServicesSectionComponent />
-      </LazySection>
+      <Suspense fallback={<SectionLoading />}>
+        <EmergencyServicesSection />
+      </Suspense>
       
-      <LazySection id="process">
-        <ProcessSectionComponent />
-      </LazySection>
+      <Suspense fallback={<SectionLoading />}>
+        <ProcessSection />
+      </Suspense>
       
-      <LazySection id="why-choose">
-        <WhyChooseUsComponent />
-      </LazySection>
+      <Suspense fallback={<SectionLoading />}>
+        <WhyChooseUs />
+      </Suspense>
       
-      <LazySection id="reviews">
-        <HomeReviewsSectionComponent />
-      </LazySection>
+      <Suspense fallback={<SectionLoading />}>
+        <HomeReviewsSection />
+      </Suspense>
       
-      <LazySection id="service-areas">
-        <GoogleMapsProviderComponent>
-          <ServiceAreasSectionComponent />
-        </GoogleMapsProviderComponent>
-      </LazySection>
+      <Suspense fallback={<SectionLoading />}>
+        <GoogleMapsProvider>
+          <ServiceAreasSection />
+        </GoogleMapsProvider>
+      </Suspense>
       
-      <LazySection id="faq">
-        <FAQSectionComponent />
-      </LazySection>
+      <Suspense fallback={<SectionLoading />}>
+        <FAQSection />
+      </Suspense>
     </>
   );
 };

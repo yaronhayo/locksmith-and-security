@@ -1,5 +1,4 @@
 
-import { useCallback } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
@@ -14,27 +13,14 @@ interface NavigationMenuTriggerItemProps {
 }
 
 const NavigationMenuTriggerItem = ({ path, label, isActive }: NavigationMenuTriggerItemProps) => {
-  const handleClick = useCallback((e: React.MouseEvent) => {
-    // Avoid scrolling if we're already on the same page
-    if (window.location.pathname === path) {
-      e.preventDefault();
-      return;
-    }
-    
-    // Let the ScrollToTop component handle the scrolling
-    console.log(`NavigationMenuTriggerItem: Navigating to ${path}`);
-  }, [path]);
-
   return (
     <Link 
       to={path}
-      onClick={handleClick}
-      className="outline-none"
-      aria-current={isActive ? "page" : undefined}
+      onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
     >
       <NavigationMenuTrigger
         className={cn(
-          "text-base font-medium transition-colors duration-300 relative px-0 bg-transparent hover:bg-transparent focus:bg-transparent focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 rounded-md",
+          "text-base font-medium transition-colors duration-300 relative px-0 bg-transparent hover:bg-transparent focus:bg-transparent",
           isActive ? "text-secondary" : "text-gray-700 hover:text-secondary"
         )}
       >

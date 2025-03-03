@@ -1,77 +1,83 @@
 
-import React from 'react';
-import { Helmet } from 'react-helmet';
+import { BasicMetaTags } from "@/components/meta/BasicMetaTags";
+import { OpenGraphTags } from "@/components/meta/OpenGraphTags";
+import { TwitterTags } from "@/components/meta/TwitterTags";
+import { SchemaScripts } from "@/components/meta/SchemaScripts";
+import React from "react";
 
-export interface MetaTagsProps {
-  title?: string;
-  description?: string;
-  keywords?: string;
-  canonicalUrl?: string;
-  ogImage?: string;
-  ogType?: "website" | "article" | "product" | "profile" | "book";
-  noindex?: boolean;
-  nofollow?: boolean;
-  modifiedDate?: string;
-  schema?: any | any[]; // Schema can be a single object or array
+interface Schema {
+  type: string;
+  data: object;
 }
 
-const MetaTags: React.FC<MetaTagsProps> = ({
+interface MetaTagsProps {
+  title: string;
+  description: string;
+  schemas?: Schema[];
+  canonicalUrl?: string;
+  ogImage?: string;
+  keywords?: string;
+  noindex?: boolean;
+  nofollow?: boolean;
+  baseUrl?: string;
+  modifiedDate?: string;
+  ogType?: "website" | "article" | "product" | "profile" | "book";
+  twitterCardType?: "summary" | "summary_large_image" | "app" | "player";
+}
+
+const MetaTags = ({
   title,
   description,
-  keywords,
+  schemas = [],
   canonicalUrl,
-  ogImage,
+  ogImage = "/lovable-uploads/1bbeb1e6-5581-4e09-9600-7d1859bb17c5.png",
+  keywords = "",
+  noindex = false,
+  nofollow = false,
+  baseUrl = "https://247locksmithandsecurity.com",
+  modifiedDate = new Date().toISOString(),
   ogType = "website",
-  noindex,
-  nofollow,
-  modifiedDate,
-  schema
-}) => {
-  // Convert schema to array if it's a single object
-  const schemas = schema ? (Array.isArray(schema) ? schema : [schema]) : [];
-
+  twitterCardType = "summary_large_image"
+}: MetaTagsProps) => {
+  // Ensure canonical URL has the proper base
+  const fullCanonicalUrl = canonicalUrl ? 
+    (canonicalUrl.startsWith('http') ? canonicalUrl : `${baseUrl}${canonicalUrl}`) 
+    : baseUrl;
+    
   return (
-    <Helmet>
-      {title && <title>{title}</title>}
-      {description && <meta name="description" content={description} />}
-      {keywords && <meta name="keywords" content={keywords} />}
+    <>
+      <BasicMetaTags 
+        title={title}
+        description={description}
+        keywords={keywords}
+        noindex={noindex}
+        nofollow={nofollow}
+        canonicalUrl={fullCanonicalUrl}
+        modifiedDate={modifiedDate}
+      />
       
-      {/* Canonical URL */}
-      {canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
+      <OpenGraphTags 
+        title={title}
+        description={description}
+        image={ogImage}
+        url={fullCanonicalUrl}
+        modifiedDate={modifiedDate}
+        baseUrl={baseUrl}
+        type={ogType}
+      />
       
-      {/* Open Graph tags */}
-      {title && <meta property="og:title" content={title} />}
-      {description && <meta property="og:description" content={description} />}
-      {ogType && <meta property="og:type" content={ogType} />}
-      {canonicalUrl && <meta property="og:url" content={canonicalUrl} />}
-      {ogImage && <meta property="og:image" content={ogImage} />}
-      {!ogImage && <meta property="og:image" content="/website-uploads/950b5c4c-f0b8-4d22-beb0-66a7d7554476.png" />}
+      <TwitterTags 
+        title={title}
+        description={description}
+        image={ogImage}
+        baseUrl={baseUrl}
+        cardType={twitterCardType}
+      />
       
-      {/* Twitter Card tags */}
-      <meta name="twitter:card" content="summary_large_image" />
-      {title && <meta name="twitter:title" content={title} />}
-      {description && <meta name="twitter:description" content={description} />}
-      {ogImage && <meta name="twitter:image" content={ogImage} />}
-      {!ogImage && <meta name="twitter:image" content="/website-uploads/950b5c4c-f0b8-4d22-beb0-66a7d7554476.png" />}
-      
-      {/* Robots meta tags for SEO control */}
-      {(noindex || nofollow) && (
-        <meta 
-          name="robots" 
-          content={`${noindex ? 'noindex' : 'index'}, ${nofollow ? 'nofollow' : 'follow'}`} 
-        />
+      {schemas && schemas.length > 0 && (
+        <SchemaScripts schemas={schemas} />
       )}
-      
-      {/* Modified date for SEO */}
-      {modifiedDate && <meta name="last-modified" content={modifiedDate} />}
-      
-      {/* Schema markup */}
-      {schemas.map((schemaItem, index) => (
-        <script key={`schema-${index}`} type="application/ld+json">
-          {JSON.stringify(schemaItem)}
-        </script>
-      ))}
-    </Helmet>
+    </>
   );
 };
 

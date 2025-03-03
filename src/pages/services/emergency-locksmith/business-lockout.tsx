@@ -1,35 +1,51 @@
 
 import React from 'react';
-import ServiceLayout from '@/components/services/common/ServiceLayout';
+import EnhancedServicesHero from '@/components/sections/services/EnhancedServicesHero';
+import ServicePageContent from '@/components/sections/services/service-page';
+import { commercialReviews } from '@/data/reviews';
+import ServicesProof from '@/components/sections/services/ServicesProof';
+import { SchemaScripts } from '@/components/meta/SchemaScripts';
+import { Helmet } from 'react-helmet';
 import BusinessLockoutContent from '@/components/services/business-lockout/BusinessLockoutContent';
 import { businessLockoutFaqs, businessServiceSchema, businessLockoutFaqSchema } from '@/components/services/business-lockout/BusinessLockoutSchema';
 import { relatedEmergencyServices } from '@/components/services/business-lockout/relatedServices';
-import { commercialReviews } from '@/data/reviews';
 
 const BusinessLockout = () => {
   return (
-    <ServiceLayout
-      title="Professional Business Lockout Service | 24/7 Emergency Commercial Locksmith"
-      description="Expert business lockout service by certified commercial locksmiths. Fast, damage-free entry 24/7. Serving North Bergen, Jersey City, Hoboken & all NJ areas."
-      keywords="business lockout, locked out of business, commercial locksmith, emergency business lockout, commercial lockout service, business door unlock, business key locked in business, commercial locksmith"
-      serviceName="Business Lockout"
-      serviceCategory="Emergency Commercial Locksmith"
-      mainContent={<BusinessLockoutContent />}
-      faqs={businessLockoutFaqs}
-      relatedServices={relatedEmergencyServices}
-      reviewsData={commercialReviews.slice(0, 8)}
-      schemas={[
-        { type: 'service', data: businessServiceSchema },
-        { type: 'faq', data: businessLockoutFaqSchema }
-      ]}
-      canonicalUrl="/services/emergency-locksmith/business-lockout"
-      customBreadcrumbs={[
-        { name: "Home", path: "/" },
-        { name: "Services", path: "/services" },
-        { name: "Emergency Locksmith", path: "/services/emergency-locksmith" },
-        { name: "Business Lockout", path: "/services/emergency-locksmith/business-lockout" }
-      ]}
-    />
+    <main className="flex-grow">
+      <Helmet>
+        <title>Professional Business Lockout Service | 24/7 Emergency Commercial Locksmith</title>
+        <meta name="description" content="Expert business lockout service by certified commercial locksmiths. Fast, damage-free entry 24/7. Serving North Bergen, Jersey City, Hoboken & all NJ areas." />
+        <meta name="keywords" content="business lockout, locked out of business, commercial locksmith, emergency business lockout, commercial lockout service, business door unlock, business key locked in business, commercial locksmith" />
+        <link rel="canonical" href="https://247locksmithandsecurity.com/services/emergency-locksmith/business-lockout" />
+      </Helmet>
+      
+      <SchemaScripts 
+        schemas={[
+          { type: 'service', data: businessServiceSchema },
+          { type: 'faq', data: businessLockoutFaqSchema }
+        ]} 
+      />
+      
+      <EnhancedServicesHero 
+        title="Business Lockout Service"
+        description="Professional commercial locksmith services for when you're locked out of your business. Our certified technicians provide fast, reliable, and damage-free entry methods."
+        serviceName="Business Lockout"
+        serviceLabel="Emergency Commercial Locksmith"
+      />
+      
+      <ServicePageContent
+        title="Professional Business Lockout Assistance"
+        description="Expert business lockout services by certified commercial locksmiths"
+        serviceName="Business Lockout"
+        serviceCategory="Emergency Locksmith"
+        mainContent={<BusinessLockoutContent />}
+        relatedServices={relatedEmergencyServices}
+        faqs={businessLockoutFaqs}
+      />
+      
+      <ServicesProof reviewsData={commercialReviews.slice(0, 8)} />
+    </main>
   );
 };
 

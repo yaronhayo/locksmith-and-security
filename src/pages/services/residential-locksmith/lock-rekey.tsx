@@ -1,35 +1,51 @@
 
 import React from 'react';
-import ServiceLayout from '@/components/services/common/ServiceLayout';
+import EnhancedServicesHero from '@/components/sections/services/EnhancedServicesHero';
+import ServicePageContent from '@/components/sections/services/service-page';
 import { residentialReviews } from '@/data/reviews';
+import ServicesProof from '@/components/sections/services/ServicesProof';
+import { SchemaScripts } from '@/components/meta/SchemaScripts';
+import { Helmet } from 'react-helmet';
 import { LockRekeyContent } from '@/components/services/lock-rekey/LockRekeyContent';
 import { lockRekeyFaqs, lockRekeyServiceSchema, lockRekeyFaqSchema } from '@/components/services/lock-rekey/LockRekeySchema';
 import { relatedResidentialServices } from '@/components/services/lock-rekey/relatedServices';
 
 const LockRekey = () => {
   return (
-    <ServiceLayout
-      title="Professional Lock Rekey Service | Expert Residential Locksmiths"
-      description="Expert lock rekeying service by certified locksmiths. Change your keys without replacing locks. Serving North Bergen, Jersey City, Hoboken & all NJ areas."
-      keywords="lock rekey, rekey locks, change lock pins, new keys, same lock, key alike, master key, residential locksmith, home security"
-      serviceName="Lock Rekey"
-      serviceCategory="Residential Locksmith"
-      mainContent={<LockRekeyContent />}
-      faqs={lockRekeyFaqs}
-      relatedServices={relatedResidentialServices}
-      reviewsData={residentialReviews.slice(0, 8)}
-      schemas={[
-        { type: 'service', data: lockRekeyServiceSchema },
-        { type: 'faq', data: lockRekeyFaqSchema }
-      ]}
-      canonicalUrl="/services/residential-locksmith/lock-rekey"
-      customBreadcrumbs={[
-        { name: "Home", path: "/" },
-        { name: "Services", path: "/services" },
-        { name: "Residential Locksmith", path: "/services/residential-locksmith" },
-        { name: "Lock Rekey", path: "/services/residential-locksmith/lock-rekey" }
-      ]}
-    />
+    <main className="flex-grow">
+      <Helmet>
+        <title>Professional Lock Rekey Service | Expert Residential Locksmiths</title>
+        <meta name="description" content="Expert lock rekeying service by certified locksmiths. Change your keys without replacing locks. Serving North Bergen, Jersey City, Hoboken & all NJ areas." />
+        <meta name="keywords" content="lock rekey, rekey locks, change lock pins, new keys, same lock, key alike, master key, residential locksmith, home security" />
+        <link rel="canonical" href="https://247locksmithandsecurity.com/services/residential-locksmith/lock-rekey" />
+      </Helmet>
+      
+      <SchemaScripts 
+        schemas={[
+          { type: 'service', data: lockRekeyServiceSchema },
+          { type: 'faq', data: lockRekeyFaqSchema }
+        ]} 
+      />
+      
+      <EnhancedServicesHero 
+        title="Professional Lock Rekey Service"
+        description="Change your locks' internal pins to work with new keys while keeping your existing hardware. A cost-effective security solution when moving into a new home or after losing keys."
+        serviceName="Lock Rekey"
+        serviceLabel="Residential Locksmith"
+      />
+      
+      <ServicePageContent
+        title="Expert Lock Rekey Service"
+        description="Change who has access to your home without replacing your locks"
+        serviceName="Lock Rekey"
+        serviceCategory="Residential Locksmith"
+        mainContent={<LockRekeyContent />}
+        relatedServices={relatedResidentialServices}
+        faqs={lockRekeyFaqs}
+      />
+      
+      <ServicesProof reviewsData={residentialReviews.slice(0, 8)} />
+    </main>
   );
 };
 

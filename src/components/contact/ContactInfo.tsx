@@ -1,6 +1,5 @@
 
 import { MapPin, Phone, Mail, Clock } from 'lucide-react';
-import ResponsiveImage from '@/components/ui/responsive-image';
 
 const ContactInfo = () => {
   const contactItems = [
@@ -13,8 +12,8 @@ const ContactInfo = () => {
     {
       icon: Mail,
       title: "Email",
-      content: "info@247locksmithandsecurity.com",
-      link: "mailto:info@247locksmithandsecurity.com"
+      content: "support@247locksmithandsecurity.com",
+      link: "mailto:support@247locksmithandsecurity.com"
     },
     {
       icon: MapPin,
@@ -61,8 +60,8 @@ const ContactInfo = () => {
 
       <div className="h-[300px] w-full">
         <img
-          src="https://mtbgayqzjrxjjmsjikcg.supabase.co/storage/v1/object/public/uploads//Tech%20Rekeying%20a%20lock.jpg"
-          alt="Professional locksmith technician rekeying a lock"
+          src="/website-uploads/5769d20e-e251-4e5f-a743-870d5c267bd1.png"
+          alt="Professional mobile locksmith workspace with key programming equipment and tools"
           className="rounded-lg shadow-lg w-full h-full object-cover"
         />
       </div>

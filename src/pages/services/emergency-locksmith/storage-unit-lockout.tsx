@@ -1,35 +1,51 @@
 
 import React from 'react';
-import ServiceLayout from '@/components/services/common/ServiceLayout';
+import EnhancedServicesHero from '@/components/sections/services/EnhancedServicesHero';
+import ServicePageContent from '@/components/sections/services/service-page';
+import { residentialReviews } from '@/data/reviews';
+import ServicesProof from '@/components/sections/services/ServicesProof';
+import { SchemaScripts } from '@/components/meta/SchemaScripts';
+import { Helmet } from 'react-helmet';
 import StorageUnitLockoutContent from '@/components/services/storage-unit-lockout/StorageUnitLockoutContent';
 import { storageUnitLockoutFaqs, storageUnitServiceSchema, storageUnitLockoutFaqSchema } from '@/components/services/storage-unit-lockout/StorageUnitLockoutSchema';
 import { relatedEmergencyServices } from '@/components/services/storage-unit-lockout/relatedServices';
-import { residentialReviews } from '@/data/reviews';
 
 const StorageUnitLockout = () => {
   return (
-    <ServiceLayout
-      title="Professional Storage Unit Lockout Service | 24/7 Emergency Locksmith"
-      description="Expert storage unit lockout service by certified locksmiths. Fast, reliable, and damage-free entry 24/7. Serving North Bergen, Jersey City, Hoboken & all NJ areas."
-      keywords="storage unit lockout, locked out of storage unit, storage unit lock opening, emergency locksmith, storage unit lock replacement, storage unit key"
-      serviceName="Storage Unit Lockout"
-      serviceCategory="Emergency Locksmith"
-      mainContent={<StorageUnitLockoutContent />}
-      faqs={storageUnitLockoutFaqs}
-      relatedServices={relatedEmergencyServices}
-      reviewsData={residentialReviews.slice(0, 8)}
-      schemas={[
-        { type: 'service', data: storageUnitServiceSchema },
-        { type: 'faq', data: storageUnitLockoutFaqSchema }
-      ]}
-      canonicalUrl="/services/emergency-locksmith/storage-unit-lockout"
-      customBreadcrumbs={[
-        { name: "Home", path: "/" },
-        { name: "Services", path: "/services" },
-        { name: "Emergency Locksmith", path: "/services/emergency-locksmith" },
-        { name: "Storage Unit Lockout", path: "/services/emergency-locksmith/storage-unit-lockout" }
-      ]}
-    />
+    <main className="flex-grow">
+      <Helmet>
+        <title>Professional Storage Unit Lockout Service | 24/7 Emergency Locksmith</title>
+        <meta name="description" content="Expert storage unit lockout service by certified locksmiths. Fast, reliable, and damage-free entry 24/7. Serving North Bergen, Jersey City, Hoboken & all NJ areas." />
+        <meta name="keywords" content="storage unit lockout, locked out of storage unit, storage unit lock opening, emergency locksmith, storage unit lock replacement, storage unit key" />
+        <link rel="canonical" href="https://247locksmithandsecurity.com/services/emergency-locksmith/storage-unit-lockout" />
+      </Helmet>
+      
+      <SchemaScripts 
+        schemas={[
+          { type: 'service', data: storageUnitServiceSchema },
+          { type: 'faq', data: storageUnitLockoutFaqSchema }
+        ]} 
+      />
+      
+      <EnhancedServicesHero 
+        title="Storage Unit Lockout Service"
+        description="Professional locksmith services for when you're locked out of your storage unit. Our certified technicians provide fast, reliable, and damage-free entry methods."
+        serviceName="Storage Unit Lockout"
+        serviceLabel="Emergency Locksmith"
+      />
+      
+      <ServicePageContent
+        title="Professional Storage Unit Lockout Assistance"
+        description="Expert storage unit lockout services by certified locksmiths"
+        serviceName="Storage Unit Lockout"
+        serviceCategory="Emergency Locksmith"
+        mainContent={<StorageUnitLockoutContent />}
+        relatedServices={relatedEmergencyServices}
+        faqs={storageUnitLockoutFaqs}
+      />
+      
+      <ServicesProof reviewsData={residentialReviews.slice(0, 8)} />
+    </main>
   );
 };
 

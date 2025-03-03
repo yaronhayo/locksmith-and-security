@@ -33,9 +33,8 @@ const LoadingSpinner = ({
   const finishRenderTracking = trackComponentRender('LoadingSpinner');
   
   useEffect(() => {
-    console.log('LoadingSpinner rendered');
     finishRenderTracking();
-  }, [finishRenderTracking]);
+  }, []);
 
   return (
     <div className={cn(

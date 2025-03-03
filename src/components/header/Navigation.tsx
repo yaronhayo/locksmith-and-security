@@ -1,20 +1,16 @@
 
 import { cn } from "@/lib/utils";
 import { useLocation } from "react-router-dom";
-import { memo, useEffect, useState, useMemo } from "react";
+import { memo, useEffect, useState } from "react";
 import { navItems } from "./constants/navItems";
 import { NavigationProps } from "./types/navigation";
-import { useIconByLabel } from "./hooks/useIconByLabel";
+import { Home, Settings, MapPin, Info, Star, MessageSquare, HelpCircle, ChevronRight } from 'lucide-react';
 import NavItem from "./NavItem";
 import MobileMenuActions from "./MobileMenuActions";
 
-/**
- * Main navigation component that handles both mobile and desktop navigation
- */
 const Navigation = ({ className, isMenuOpen = false, isScrolled = false }: NavigationProps) => {
   const location = useLocation();
   const [isOpen, setIsOpen] = useState(isMenuOpen);
-  const getIcon = useIconByLabel();
   
   useEffect(() => {
     setIsOpen(isMenuOpen);
@@ -32,12 +28,30 @@ const Navigation = ({ className, isMenuOpen = false, isScrolled = false }: Navig
     return matchingNavItem?.path === path;
   };
 
-  const displayItems = useMemo(() => 
-    isOpen 
-      ? navItems 
-      : navItems.filter(item => !item.showMobileOnly),
-    [isOpen]
-  );
+  const getIcon = (label: string) => {
+    switch (label) {
+      case "Home":
+        return <Home className="w-5 h-5" />;
+      case "Services":
+        return <Settings className="w-5 h-5" />;
+      case "Service Areas":
+        return <MapPin className="w-5 h-5" />;
+      case "About":
+        return <Info className="w-5 h-5" />;
+      case "Reviews":
+        return <Star className="w-5 h-5" />;
+      case "Contact":
+        return <MessageSquare className="w-5 h-5" />;
+      case "FAQ":
+        return <HelpCircle className="w-5 h-5" />;
+      default:
+        return <ChevronRight className="w-5 h-5" />;
+    }
+  };
+
+  const displayItems = isOpen 
+    ? navItems 
+    : navItems.filter(item => !item.showMobileOnly);
 
   return (
     <nav 
