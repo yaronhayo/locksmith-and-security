@@ -13,8 +13,8 @@ const ContactInfo = () => {
     {
       icon: Mail,
       title: "Email",
-      content: "support@247locksmithandsecurity.com",
-      link: "mailto:support@247locksmithandsecurity.com"
+      content: "info@247locksmithandsecurity.com",
+      link: "mailto:info@247locksmithandsecurity.com"
     },
     {
       icon: MapPin,
