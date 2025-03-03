@@ -5,7 +5,7 @@ import { useLocations } from "@/hooks/useLocations";
 import { useReviews } from "@/components/reviews/useReviews";
 import { createServiceAreaSchemas } from "./ServiceAreaSchemas";
 import ServiceAreaContent from "./ServiceAreaContent";
-import { FAQSchema, Schema } from "@/types/schema";
+import { FAQSchema } from "@/types/schema";
 import { Card, CardContent } from "@/components/ui/card";
 import { memo, useMemo } from "react";
 import PageLoading from "@/components/layouts/PageLoading";
@@ -25,41 +25,14 @@ const ServiceAreaLayout = memo(({ areaSlug }: ServiceAreaLayoutProps) => {
   const { displayedReviews, isLoading: reviewsLoading, totalReviews } = useReviews(location?.name);
 
   const schemas = useMemo(() => {
-    return createServiceAreaSchemas(location, settings, areaSlug);
+    return createServiceAreaSchemas(location as any, settings, areaSlug);
   }, [location, settings, areaSlug]);
   
-  const faqSchema = useMemo(() => {
-    if (!schemas || schemas.length === 0) return undefined;
-    
-    const faqByType = schemas.find(schema => {
-      // Check if it has a type property
-      if ('type' in schema && schema.type === 'FAQPage') {
-        return true;
-      }
-      
-      // Check for direct @type property (schema without wrapper)
-      if (schema && typeof schema === 'object' && "@type" in schema && schema["@type"] === 'FAQPage') {
-        return true;
-      }
-      
-      return false;
-    });
-    
-    if (faqByType) {
-      // If schema has type/data structure, return as FAQSchema
-      if ('type' in faqByType && 'data' in faqByType) {
-        return faqByType as FAQSchema;
-      }
-      
-      // If it's a direct schema object, wrap it properly
-      return {
-        type: 'FAQPage',
-        data: faqByType
-      } as FAQSchema;
-    }
-    
-    return undefined;
+  const rawFaqSchema = useMemo(() => {
+    return schemas.find(schema => schema.type === 'FAQPage');
   }, [schemas]);
+  
+  const faqSchema = rawFaqSchema as FAQSchema | undefined;
   
   const isLoading = settingsLoading || locationsLoading;
 
@@ -71,28 +44,15 @@ const ServiceAreaLayout = memo(({ areaSlug }: ServiceAreaLayoutProps) => {
     return null;
   }
 
+  // Create optimized meta description (staying within 150-160 chars)
   const pageTitle = `Top-Rated Locksmith in ${location.name}, NJ | 24/7 Emergency Service`;
   const pageDescription = `Professional locksmith services in ${location.name}. Licensed & insured experts providing residential, commercial & auto solutions with fast 24/7 response.`;
-
-  const typedSchemas: Schema[] = schemas.map(schema => {
-    // If already in correct format
-    if ('type' in schema && 'data' in schema) {
-      return schema as Schema;
-    }
-    
-    // Convert direct schema objects to proper format
-    const schemaType = schema["@type"] || 'Unknown';
-    return {
-      type: schemaType,
-      data: schema
-    };
-  });
 
   return (
     <PageLayout
       title={pageTitle}
       description={pageDescription}
-      schema={typedSchemas}
+      schema={schemas}
       heroTitle={`Locksmith Services in ${location.name}, NJ`}
       heroDescription={`Professional 24/7 locksmith services for residential, commercial, and automotive needs in ${location.name}`}
       hideBreadcrumbs={false}

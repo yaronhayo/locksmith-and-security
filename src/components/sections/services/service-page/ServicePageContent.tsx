@@ -40,11 +40,9 @@ const ServicePageContent: React.FC<ServicePageContentProps> = ({
         
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-8">
           <div className="col-span-1 lg:col-span-2">
-            <ServiceMainContent 
-              serviceName={serviceName}
-              serviceCategory={serviceCategory}
-              mainContent={mainContent}
-            />
+            <ServiceMainContent>
+              {mainContent}
+            </ServiceMainContent>
             
             <ServiceProcessSection serviceName={serviceName} />
             
@@ -52,7 +50,7 @@ const ServicePageContent: React.FC<ServicePageContentProps> = ({
             
             {faqs.length > 0 && (
               <ServiceFAQSection
-                serviceName={serviceName}
+                title={`${serviceName} FAQs`}
                 faqs={faqs}
               />
             )}
@@ -60,7 +58,6 @@ const ServicePageContent: React.FC<ServicePageContentProps> = ({
           
           <div className="col-span-1">
             <ServiceSidebar 
-              serviceName={serviceName}
               serviceCategory={serviceCategory}
               relatedServices={relatedServices}
             />
@@ -68,7 +65,6 @@ const ServicePageContent: React.FC<ServicePageContentProps> = ({
         </div>
         
         <ServiceCtaSection 
-          serviceName={serviceName}
           title={`Ready for Professional ${serviceName} Service?`}
           description="Contact our team for fast, reliable service from licensed professionals."
         />

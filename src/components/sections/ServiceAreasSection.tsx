@@ -125,13 +125,13 @@ const ServiceAreasSection = () => {
 
   if (isLoading) {
     return (
-      <section className="py-12 sm:py-20 bg-gray-50" id="service-areas-section">
+      <section className="py-20 bg-gray-50" id="service-areas-section">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-8 sm:mb-12">
+          <div className="text-center mb-12">
             <Skeleton className="h-10 w-2/3 mx-auto mb-4" />
             <Skeleton className="h-6 w-3/4 mx-auto" />
           </div>
-          <div className="grid lg:grid-cols-2 gap-6 sm:gap-8 items-start">
+          <div className="grid lg:grid-cols-2 gap-8 items-start">
             <LocationsLoadingPlaceholder />
             <MapLoadingPlaceholder />
           </div>
@@ -142,8 +142,8 @@ const ServiceAreasSection = () => {
 
   if (error || !locations) {
     return (
-      <div className="py-12 sm:py-20 bg-gray-50" id="service-areas-section">
-        <div className="container mx-auto px-4 flex justify-center items-center min-h-[300px] sm:min-h-[400px]">
+      <div className="py-20 bg-gray-50" id="service-areas-section">
+        <div className="container mx-auto px-4 flex justify-center items-center min-h-[400px]">
           <MapError 
             error={error?.message || 'Error loading service areas'} 
             resetErrorBoundary={handleRetry} 
@@ -154,15 +154,15 @@ const ServiceAreasSection = () => {
   }
 
   return (
-    <section className="py-12 sm:py-20 bg-gray-50" id="service-areas-section">
+    <section className="py-20 bg-gray-50" id="service-areas-section">
       <div className="container mx-auto px-4">
-        <h2 className="text-3xl sm:text-4xl font-bold text-center mb-4 sm:mb-6">Our Service Areas</h2>
-        <p className="text-base sm:text-lg text-gray-600 text-center mb-8 sm:mb-12 max-w-2xl mx-auto">
+        <h2 className="text-4xl font-bold text-center mb-6">Our Service Areas</h2>
+        <p className="text-lg text-gray-600 text-center mb-12 max-w-2xl mx-auto">
           Professional locksmith services available throughout North Bergen and surrounding areas. 
           Fast response times and reliable service, available 24/7.
         </p>
 
-        <div className="grid lg:grid-cols-2 gap-6 sm:gap-8 items-stretch">
+        <div className="grid lg:grid-cols-2 gap-8 items-stretch">
           <div className="h-full flex">
             <AreasList 
               areas={locations as ServiceAreaLocation[]} 
@@ -171,7 +171,7 @@ const ServiceAreasSection = () => {
             />
           </div>
           
-          <div className="bg-white rounded-xl shadow-lg overflow-hidden h-[400px] sm:h-[500px]">
+          <div className="bg-white rounded-xl shadow-lg overflow-hidden h-full" style={{ minHeight: '500px' }}>
             {isMapVisible ? (
               <ErrorBoundary 
                 FallbackComponent={({ error, resetErrorBoundary }) => (
@@ -210,7 +210,7 @@ const ServiceAreasSection = () => {
         </div>
       </div>
       
-      <div className="container mx-auto px-4 mt-10 sm:mt-16">
+      <div className="container mx-auto px-4 mt-16">
         <EmergencyCallout />
       </div>
     </section>

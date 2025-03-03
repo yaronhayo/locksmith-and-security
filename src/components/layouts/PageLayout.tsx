@@ -1,8 +1,9 @@
 
 import React, { PropsWithChildren, useEffect } from 'react';
+import { Helmet } from 'react-helmet';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import MetaTagsComponent from './MetaTagsComponent';
+import MetaTags from './MetaTags';
 import Breadcrumbs from '../Breadcrumbs';
 import { LoadingState } from './LoadingState';
 import PageHero from './PageHero';
@@ -64,7 +65,7 @@ const PageLayout: React.FC<PropsWithChildren<PageLayoutProps>> = ({
 
   return (
     <>
-      <MetaTagsComponent
+      <MetaTags
         title={title}
         description={description}
         keywords={keywords}

@@ -47,27 +47,6 @@ export const lockRepairServiceSchema = {
       "addressRegion": "NJ"
     }
   },
-  "offers": {
-    "@type": "Offer",
-    "price": "75.00",
-    "priceCurrency": "USD",
-    "priceSpecification": {
-      "@type": "UnitPriceSpecification",
-      "priceType": "https://schema.org/MinimumPrice",
-      "price": "75.00",
-      "priceCurrency": "USD"
-    },
-    "itemOffered": {
-      "@type": "Service",
-      "name": "Standard Lock Repair"
-    },
-    "availability": "https://schema.org/InStock",
-    "validFrom": "2023-01-01",
-    "eligibleRegion": {
-      "@type": "State",
-      "name": "New Jersey"
-    }
-  },
   "hasOfferCatalog": {
     "@type": "OfferCatalog",
     "name": "Lock Repair Services",
@@ -77,30 +56,21 @@ export const lockRepairServiceSchema = {
         "itemOffered": {
           "@type": "Service",
           "name": "Residential Lock Repair"
-        },
-        "price": "75.00",
-        "priceCurrency": "USD",
-        "availability": "https://schema.org/InStock"
+        }
       },
       {
         "@type": "Offer",
         "itemOffered": {
           "@type": "Service",
           "name": "Commercial Lock Repair"
-        },
-        "price": "95.00",
-        "priceCurrency": "USD",
-        "availability": "https://schema.org/InStock"
+        }
       },
       {
         "@type": "Offer",
         "itemOffered": {
           "@type": "Service",
           "name": "Emergency Lock Repair"
-        },
-        "price": "125.00",
-        "priceCurrency": "USD",
-        "availability": "https://schema.org/InStock"
+        }
       }
     ]
   }

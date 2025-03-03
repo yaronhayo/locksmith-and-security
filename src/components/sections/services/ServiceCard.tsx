@@ -5,7 +5,6 @@ import { Card, CardContent } from "@/components/ui/card";
 import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import ResponsiveImage from "@/components/ui/responsive-image";
-import ServiceSubservicesList from "./ServiceSubservicesList";
 
 interface SubService {
   name: string;
@@ -65,10 +64,22 @@ const ServiceCard = memo(({ service, index }: ServiceCardProps) => {
           </div>
 
           <div className="bg-gray-50 p-6 pt-4 flex flex-col items-center">
-            <ServiceSubservicesList 
-              subServices={subServices} 
-              subIcons={subIcons} 
-            />
+            <div className="space-y-2 mb-6 w-full">
+              {subServices.map((subService, subIndex) => {
+                const SubIcon = subIcons[subService.name as keyof typeof subIcons];
+                return (
+                  <div key={subIndex} className="flex items-center justify-center">
+                    <Link to={subService.link} className="flex items-center text-sm text-gray-600 py-1.5 hover:text-primary relative">
+                      {SubIcon && <SubIcon className="w-4 h-4 mr-2 text-primary/70" />}
+                      <span className="relative inline-block">
+                        {subService.name}
+                        <span className="absolute bottom-0 left-0 right-0 w-0 h-[1px] bg-primary transition-all duration-300 hover:w-full"></span>
+                      </span>
+                    </Link>
+                  </div>
+                );
+              })}
+            </div>
 
             <div className="inline-block">
               <Link to={link} className="inline-flex items-center px-4 py-2 bg-[#F97316] hover:bg-[#F97316]/90 text-white hover:text-black rounded-md font-medium transition-colors">

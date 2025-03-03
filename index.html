@@ -16,16 +16,7 @@
           t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i+"?ref=bwt";
           y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
       })(window, document, "clarity", "script", "pk2zfzjlwa");
-      if (localStorage.getItem('cookieConsent')) {
-        try {
-          const cookieSettings = JSON.parse(localStorage.getItem('cookieConsent'));
-          if (cookieSettings && cookieSettings.thirdParty) {
-            clarity("set", "cookieConsent", true);
-          }
-        } catch(e) {
-          console.error('Error parsing cookie settings');
-        }
-      }
+      clarity("set", "cookieConsent", true);
     </script>
 
     <!-- Google tag (gtag.js) -->
@@ -35,20 +26,6 @@
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
       gtag('config', 'G-ZE9WV5PLTD');
-      
-      // Set cookie consent state for analytics if needed
-      if (localStorage.getItem('cookieConsent')) {
-        try {
-          const cookieSettings = JSON.parse(localStorage.getItem('cookieConsent'));
-          if (cookieSettings && !cookieSettings.analytics) {
-            gtag('consent', 'default', {
-              'analytics_storage': 'denied'
-            });
-          }
-        } catch(e) {
-          console.error('Error parsing cookie settings');
-        }
-      }
     </script>
 
     <meta charset="UTF-8" />
@@ -63,53 +40,23 @@
     <link rel="icon" type="image/png" sizes="16x16" href="https://mtbgayqzjrxjjmsjikcg.supabase.co/storage/v1/object/public/uploads//Favicon.png" />
     
     <!-- Security Headers -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' blob: data: https://*.cloudflare.com https://*.google.com https://*.gstatic.com https://*.googleapis.com https://*.supabase.co https://*.clarity.ms https://*.doubleclick.net https://*.google-analytics.com https://*.clickcease.com https://w.clarity.ms https://o.clarity.ms https://*.c.clarity.ms https://c.clarity.ms https://maps.googleapis.com https://maps.gstatic.com https://*.googleadservices.com https://*.googletagmanager.com www.clickcease.com https://*.facebook.com; 
+    script-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.google.com https://*.gstatic.com https://*.googleapis.com https://*.googletagmanager.com https://*.clarity.ms https://*.c.clarity.ms https://*.google-analytics.com https://cdn.gpteng.co https://*.doubleclick.net https://*.googleadservices.com https://*.bing.com https://*.clickcease.com https://www.clickcease.com www.clickcease.com https://www.google.com/recaptcha/ https://www.gstatic.com/recaptcha/ https://*.googleadservices.com https://www.google.com/pagead/ https://googleads.g.doubleclick.net https://*.googletagmanager.com https://*.facebook.com https://connect.facebook.net;
+    script-src-elem 'self' 'unsafe-inline' 'unsafe-eval' https://*.google.com https://*.gstatic.com https://*.googleapis.com https://*.googletagmanager.com https://*.clarity.ms https://*.c.clarity.ms https://*.google-analytics.com https://cdn.gpteng.co https://*.doubleclick.net https://*.googleadservices.com https://*.bing.com https://*.clickcease.com https://www.clickcease.com www.clickcease.com https://www.google.com/recaptcha/ https://www.gstatic.com/recaptcha/ https://*.googleadservices.com https://www.google.com/pagead/ https://googleads.g.doubleclick.net https://*.googletagmanager.com https://*.facebook.com https://connect.facebook.net https://www.clickcease.com/monitor/stat.js;
+    frame-src 'self' https://*.google.com https://*.doubleclick.net https://*.googleadservices.com https://td.doubleclick.net https://www.google.com/recaptcha/ https://recaptcha.google.com/recaptcha/ https://googleads.g.doubleclick.net https://www.googleadservices.com https://www.googletagmanager.com https://*.googletagmanager.com https://*.facebook.com; 
+    style-src 'self' 'unsafe-inline' https://*.googleapis.com https://*.gstatic.com https://fonts.googleapis.com; 
+    font-src 'self' https://fonts.gstatic.com data:; 
+    worker-src blob: 'self'; 
+    img-src 'self' data: blob: https://*.google-analytics.com https://*.googletagmanager.com https://*.clarity.ms https://*.c.clarity.ms https://*.bing.com https://*.doubleclick.net https://*.google.com https://*.googleapis.com https://*.gstatic.com https://*.supabase.co https://*.googleadservices.com maps.gstatic.com maps.googleapis.com https://mtbgayqzjrxjjmsjikcg.supabase.co https://www.google.com https://www.gstatic.com https://*.google-analytics.com https://*.googleadservices.com https://maps.googleapis.com/maps/api/js/StaticMapService.GetMapImage https://maps.gstatic.com/mapfiles/openhand_8_8.cur https://maps.gstatic.com/mapfiles/api-3/images/ https://maps.gstatic.com/mapfiles/api-3/images/powered-by-google-on-white3_hdpi.png https://maps.gstatic.com/mapfiles/api-3/images/autocomplete-icons_hdpi.png https://*.googletagmanager.com https://*.facebook.com; 
+    connect-src 'self' https://*.google-analytics.com https://*.googletagmanager.com https://*.clarity.ms https://*.c.clarity.ms https://c.clarity.ms https://*.supabase.co https://*.vercel-scripts.com https://*.doubleclick.net https://*.google.com https://*.googleapis.com https://*.gstatic.com https://*.clickcease.com https://o.clarity.ms https://w.clarity.ms https://www.google.com/ccm/collect https://maps.googleapis.com https://googleads.g.doubleclick.net https://mtbgayqzjrxjjmsjikcg.supabase.co https://www.google.com https://www.gstatic.com https://*.google-analytics.com https://*.googleadservices.com https://maps.googleapis.com/$rpc/ https://maps.googleapis.com/maps/api/ https://maps.googleapis.com/maps/api/mapsjs/ https://*.googletagmanager.com https://www.clickcease.com https://*.facebook.com https://connect.facebook.net;" />
+    
     <meta http-equiv="X-Content-Type-Options" content="nosniff" />
     <meta http-equiv="Permissions-Policy" content="geolocation=(), microphone=(), camera=()" />
     <meta http-equiv="Strict-Transport-Security" content="max-age=31536000; includeSubDomains" />
     <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin" />
 
-    <!-- reCAPTCHA Script with explicit cookie consent check -->
-    <script>
-      // Only load reCAPTCHA if third-party cookies are likely enabled or using Partitioned cookies
-      if (localStorage.getItem('cookieConsent')) {
-        try {
-          const cookieSettings = JSON.parse(localStorage.getItem('cookieConsent'));
-          if (cookieSettings && cookieSettings.thirdParty) {
-            // Load reCAPTCHA with explicit consent
-            const recaptchaScript = document.createElement('script');
-            recaptchaScript.src = "https://www.google.com/recaptcha/api.js";
-            recaptchaScript.async = true;
-            recaptchaScript.defer = true;
-            document.head.appendChild(recaptchaScript);
-            console.log('reCAPTCHA script added with third-party cookie consent');
-          } else {
-            console.log('Third-party cookies not consented, using partitioned cookies for reCAPTCHA');
-            // Try to use Partitioned cookies
-            document.cookie = "recaptcha_pref=1; SameSite=None; Secure; Partitioned;";
-            const recaptchaScript = document.createElement('script');
-            recaptchaScript.src = "https://www.google.com/recaptcha/api.js";
-            recaptchaScript.async = true;
-            recaptchaScript.defer = true;
-            document.head.appendChild(recaptchaScript);
-          }
-        } catch(e) {
-          console.error('Error parsing cookie settings');
-          // Fallback: load reCAPTCHA anyway
-          const recaptchaScript = document.createElement('script');
-          recaptchaScript.src = "https://www.google.com/recaptcha/api.js";
-          recaptchaScript.async = true;
-          recaptchaScript.defer = true;
-          document.head.appendChild(recaptchaScript);
-        }
-      } else {
-        // No cookie consent yet, load reCAPTCHA by default
-        const recaptchaScript = document.createElement('script');
-        recaptchaScript.src = "https://www.google.com/recaptcha/api.js";
-        recaptchaScript.async = true;
-        recaptchaScript.defer = true;
-        document.head.appendChild(recaptchaScript);
-      }
-    </script>
+    <!-- reCAPTCHA Script -->
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 
     <!-- Schema.org markup -->
     <script type="application/ld+json">

@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Settings, AlertTriangle, Info } from 'lucide-react';
+import { X, Settings, AlertTriangle } from 'lucide-react';
 import { 
   Dialog,
   DialogContent,
@@ -16,7 +16,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { toast } from 'sonner';
 
 type CookieSettings = {
   necessary: boolean;
@@ -35,37 +34,24 @@ const CookieConsent = () => {
     thirdParty: false
   });
 
-  // Force enable third-party cookies for compatibility
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const savedConsent = localStorage.getItem('cookieConsent');
+    // Check if consent has been given
+    const consent = localStorage.getItem('cookieConsent');
+    if (!consent) {
+      setIsVisible(true);
+    } else {
+      // Load saved preferences
       try {
-        // Check if we have stored settings
-        if (savedConsent) {
-          const savedSettings = JSON.parse(savedConsent);
+        const savedSettings = JSON.parse(consent);
+        if (typeof savedSettings === 'object') {
           setCookieSettings(prevSettings => ({ 
             ...prevSettings, 
             ...savedSettings 
           }));
-          
-          // Special handling for third-party cookies
-          if (savedSettings.thirdParty) {
-            // Attempt to enable Google features that need third-party cookies
-            if (window.google && window.google.recaptcha) {
-              console.log('Reinitializing reCAPTCHA with cookie consent');
-            }
-            
-            if (window.clarity) {
-              window.clarity("consent");
-              console.log('Clarity consent provided');
-            }
-          }
-        } else {
-          setIsVisible(true);
         }
       } catch (e) {
-        console.error('Failed to parse cookie settings:', e);
-        setIsVisible(true);
+        // If parsing fails, keep default settings
+        console.log('Failed to parse saved cookie settings');
       }
     }
   }, []);
@@ -81,38 +67,12 @@ const CookieConsent = () => {
     localStorage.setItem('cookieConsent', JSON.stringify(allAccepted));
     setCookieSettings(allAccepted);
     setIsVisible(false);
-    
-    // Enable third-party cookie dependent features
-    if (window.clarity) {
-      window.clarity("consent");
-    }
-    
-    // Show toast notification about third-party cookies
-    toast.success("All cookies accepted, including third-party cookies for full functionality", {
-      duration: 5000,
-    });
   };
 
   const handleAcceptSelected = () => {
     localStorage.setItem('cookieConsent', JSON.stringify(cookieSettings));
     setIsVisible(false);
     setSettingsOpen(false);
-    
-    // If third-party cookies are accepted, try to enable relevant features
-    if (cookieSettings.thirdParty) {
-      if (window.clarity) {
-        window.clarity("consent");
-      }
-      
-      toast.success("Selected cookies accepted, including third-party cookies", {
-        duration: 5000,
-      });
-    } else {
-      // Warn about possible limitations
-      toast.warning("Some features like reCAPTCHA may not work without third-party cookies", {
-        duration: 5000,
-      });
-    }
   };
 
   const handleAcceptNecessary = () => {
@@ -126,11 +86,6 @@ const CookieConsent = () => {
     localStorage.setItem('cookieConsent', JSON.stringify(necessaryOnly));
     setCookieSettings(necessaryOnly);
     setIsVisible(false);
-    
-    // Warn about possible limitations
-    toast.warning("Only necessary cookies accepted. Some features like reCAPTCHA may not work correctly.", {
-      duration: 5000,
-    });
   };
 
   const toggleSetting = (key: keyof CookieSettings) => {
@@ -143,27 +98,6 @@ const CookieConsent = () => {
 
   const handleOpenSettings = () => {
     setSettingsOpen(true);
-  };
-
-  // Function to manually trigger third-party cookie detection/consent
-  const checkThirdPartyCookieSupport = () => {
-    // Update cookie settings to explicitly enable third-party cookies
-    const updatedSettings = {
-      ...cookieSettings,
-      thirdParty: true
-    };
-    
-    localStorage.setItem('cookieConsent', JSON.stringify(updatedSettings));
-    setCookieSettings(updatedSettings);
-    
-    // Try to enable clarity with explicit consent
-    if (window.clarity) {
-      window.clarity("consent");
-    }
-    
-    toast.success("Third-party cookies enabled for enhanced functionality", {
-      duration: 5000,
-    });
   };
 
   return (
@@ -185,7 +119,7 @@ const CookieConsent = () => {
                 <p className="text-xs flex items-center">
                   <AlertTriangle className="h-3 w-3 inline-block mr-1 text-amber-500" />
                   <span>
-                    Third-party cookies are required for certain features like reCAPTCHA and Google Tag Manager.
+                    Some features like reCAPTCHA require third-party cookies which may be blocked by modern browsers.
                     <a href="/privacy-policy" className="text-primary hover:text-primary-hover underline ml-1">
                       Learn more
                     </a>
@@ -301,16 +235,6 @@ const CookieConsent = () => {
                   Enabling third-party cookies in your browser settings might be required for full functionality.
                 </AlertDescription>
               </Alert>
-              
-              <Button 
-                variant="secondary" 
-                size="sm" 
-                className="w-full mt-2"
-                onClick={checkThirdPartyCookieSupport}
-              >
-                <Info className="h-4 w-4 mr-2" />
-                Enable Third-Party Cookies Support
-              </Button>
             </TabsContent>
             
             <TabsContent value="cookies" className="pt-4">

@@ -12,11 +12,10 @@ interface RelatedService {
 
 interface ServiceSidebarProps {
   serviceName: string;
-  serviceCategory: string;
   relatedServices: RelatedService[];
 }
 
-const ServiceSidebar: React.FC<ServiceSidebarProps> = ({ serviceName, serviceCategory, relatedServices }) => {
+const ServiceSidebar: React.FC<ServiceSidebarProps> = ({ serviceName, relatedServices }) => {
   return (
     <div className="lg:col-span-1">
       <div className="sticky top-24 space-y-8">
@@ -147,7 +146,7 @@ const ServiceSidebar: React.FC<ServiceSidebarProps> = ({ serviceName, serviceCat
               </div>
             </div>
             <div className="mt-4 pt-4 border-t border-gray-100">
-              <p className="text-sm text-gray-600">Our emergency {serviceCategory.toLowerCase()} service is available 24/7, 365 days a year including all holidays.</p>
+              <p className="text-sm text-gray-600">Our emergency {serviceName.toLowerCase()} service is available 24/7, 365 days a year including all holidays.</p>
             </div>
           </div>
         </div>
