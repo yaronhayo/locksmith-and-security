@@ -1,3 +1,4 @@
+
 // Consolidated performance monitoring utilities
 type LogLevel = 'info' | 'warn' | 'error';
 

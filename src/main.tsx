@@ -106,7 +106,7 @@ const renderApp = () => {
     
     // Attempt to render a minimal error message if regular rendering fails
     rootElement.innerHTML = `
-      <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; font-family: system-ui, sans-serif;">
+      <div style="display: flex; flex-direction: column; align-items: center; justify-center; height: 100vh; font-family: system-ui, sans-serif;">
         <h1 style="color: #E11D48; margin-bottom: 1rem;">Application Error</h1>
         <p style="margin-bottom: 1rem;">We're sorry, but something went wrong.</p>
         <p style="margin-bottom: 1rem; font-size: 0.875rem; color: #6B7280;">Technical details: ${error instanceof Error ? error.message : 'Unknown error'}</p>

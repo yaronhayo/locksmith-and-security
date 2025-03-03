@@ -1,4 +1,5 @@
 
+
 export interface FAQQuestion {
   "@type": string;
   name: string;
@@ -21,3 +22,4 @@ export interface Schema {
   type: string;
   data: any;
 }
+
