@@ -133,6 +133,49 @@
         }
       }
     </script>
+    
+    <!-- Iframe DOCTYPE injection script -->
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        // Function to inject proper DOCTYPE into iframes
+        const fixIframeDoctype = () => {
+          try {
+            const iframes = document.querySelectorAll('iframe');
+            iframes.forEach(iframe => {
+              try {
+                if (iframe.contentDocument && !iframe.contentDocument.doctype) {
+                  const doctype = document.implementation.createDocumentType('html', '', '');
+                  if (iframe.contentDocument.childNodes.length > 0) {
+                    iframe.contentDocument.insertBefore(doctype, iframe.contentDocument.childNodes[0]);
+                  }
+                }
+              } catch (e) {
+                // Skip CORS-restricted iframes
+                console.debug('Could not access iframe content due to CORS policy');
+              }
+            });
+          } catch (error) {
+            console.error('Error fixing iframe doctypes:', error);
+          }
+        };
+        
+        // Run initially and set up a mutation observer to handle dynamically added iframes
+        fixIframeDoctype();
+        
+        const observer = new MutationObserver((mutations) => {
+          mutations.forEach((mutation) => {
+            if (mutation.type === 'childList' && mutation.addedNodes.length) {
+              fixIframeDoctype();
+            }
+          });
+        });
+        
+        observer.observe(document.body, { childList: true, subtree: true });
+        
+        // Periodically check for iframes (handles cases where iframes are added via AJAX or other non-standard methods)
+        setInterval(fixIframeDoctype, 2000);
+      });
+    </script>
   </head>
   <body>
     <!-- Google Tag Manager (noscript) -->
