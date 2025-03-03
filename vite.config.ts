@@ -2,9 +2,10 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import path from 'path'
+import { componentTagger } from "lovable-tagger"
 
 // https://vitejs.dev/config/
-export default defineConfig({
+export default defineConfig(({ mode }) => ({
   plugins: [
     react({
       // This ensures React is included properly
@@ -15,7 +16,8 @@ export default defineConfig({
         ],
       },
     }),
-  ],
+    mode === 'development' && componentTagger(),
+  ].filter(Boolean),
   build: {
     outDir: 'dist',
     // Ensure external React is handled properly
@@ -48,6 +50,7 @@ export default defineConfig({
   // Add better error handling and set port to 8080
   server: {
     port: 8080,
+    host: "::",
     hmr: {
       overlay: true,
     },
@@ -58,4 +61,4 @@ export default defineConfig({
   // Ensure we get verbose error messages
   logLevel: 'info',
   clearScreen: false,
-})
+}))
