@@ -83,11 +83,31 @@ if (typeof window !== 'undefined') {
             <p style="margin-bottom: 1rem; font-size: 0.875rem; color: #6B7280;">If the problem persists, please try clearing your browser cache.</p>
             <button style="background: #2563EB; color: white; padding: 0.5rem 1rem; border: none; border-radius: 0.25rem; cursor: pointer;" onclick="location.reload()">Reload Page</button>
             <p style="margin-top: 1rem; font-size: 0.75rem; color: #6B7280;">Technical info: ${window.location.toString()}</p>
+            <p style="margin-top: 0.5rem; font-size: 0.75rem; color: #6B7280;">CSP issues may prevent scripts from loading. Check console for details.</p>
           </div>
         `;
       }
     }
   }, 5000);
+}
+
+// Check for CSP issues that might prevent scripts from loading
+console.log('Checking for potential CSP issues at startup...');
+try {
+  // Try to detect if there are elements or resources that might be blocked by CSP
+  if (document.querySelector('script[src*="googletagmanager.com"]') ||
+      document.querySelector('script[src*="clarity.ms"]') ||
+      document.querySelector('script[src*="gpteng.co"]')) {
+    console.log('External scripts are present in the document, checking if they loaded...');
+    
+    // Create a test function to see if external scripts are accessible
+    if (typeof window.dataLayer === 'undefined' || 
+        typeof window.clarity === 'undefined') {
+      console.warn('External analytics scripts appear to be blocked. This may indicate CSP issues.');
+    }
+  }
+} catch (error) {
+  console.error('Error while checking for CSP issues:', error);
 }
 
 // Render the application with error boundaries
@@ -129,7 +149,7 @@ const renderApp = () => {
     
     // Attempt to render a minimal error message if regular rendering fails
     rootElement.innerHTML = `
-      <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; font-family: system-ui, sans-serif;">
+      <div style="display: flex; flex-direction: column; align-items: center; justify-center; height: 100vh; font-family: system-ui, sans-serif;">
         <h1 style="color: #E11D48; margin-bottom: 1rem;">Application Error</h1>
         <p style="margin-bottom: 1rem;">We're sorry, but something went wrong.</p>
         <p style="margin-bottom: 1rem; font-size: 0.875rem; color: #6B7280;">Technical details: ${error instanceof Error ? error.message : 'Unknown error'}</p>

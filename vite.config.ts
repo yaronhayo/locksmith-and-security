@@ -35,6 +35,10 @@ export default defineConfig(({ mode }) => ({
     host: "::",
     port: 8080,
     cors: true, // Enable CORS for all origins
+    headers: {
+      // Add permissive CSP during development to avoid blocking resources
+      'Content-Security-Policy': "default-src * 'unsafe-inline' 'unsafe-eval'; script-src * 'unsafe-inline' 'unsafe-eval'; connect-src * 'unsafe-inline'; img-src * data: blob: 'unsafe-inline'; frame-src *; style-src * 'unsafe-inline';"
+    }
   },
   plugins: [
     react(),
