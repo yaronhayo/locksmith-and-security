@@ -19,7 +19,7 @@
     Access-Control-Allow-Methods = "GET, POST, OPTIONS"
     Access-Control-Allow-Headers = "*"
 
-# Security headers
+# Security headers - Updated to allow unpkg.com
 [[headers]]
   for = "/*"
     [headers.values]
@@ -27,7 +27,7 @@
     X-XSS-Protection = "1; mode=block"
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
-    Content-Security-Policy = "upgrade-insecure-requests; default-src 'self' blob: data: https://*.cloudflare.com https://*.google.com https://*.gstatic.com https://*.googleapis.com https://*.supabase.co https://*.clarity.ms https://*.doubleclick.net https://*.google-analytics.com https://*.clickcease.com https://w.clarity.ms https://o.clarity.ms https://*.c.clarity.ms https://c.clarity.ms https://maps.googleapis.com https://maps.gstatic.com https://*.googleadservices.com https://*.googletagmanager.com www.clickcease.com https://*.facebook.com https://unpkg.com; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.google.com https://*.gstatic.com https://*.googleapis.com https://*.googletagmanager.com https://*.clarity.ms https://*.c.clarity.ms https://*.google-analytics.com https://cdn.gpteng.co https://*.doubleclick.net https://*.googleadservices.com https://*.bing.com https://*.clickcease.com https://www.clickcease.com www.clickcease.com https://*.googleadservices.com https://www.google.com/pagead/ https://googleads.g.doubleclick.net https://*.googletagmanager.com https://*.facebook.com https://connect.facebook.net https://unpkg.com; script-src-elem 'self' 'unsafe-inline' 'unsafe-eval' https://*.google.com https://*.gstatic.com https://*.googleapis.com https://*.googletagmanager.com https://*.clarity.ms https://*.c.clarity.ms https://*.google-analytics.com https://cdn.gpteng.co https://*.doubleclick.net https://*.googleadservices.com https://*.bing.com https://*.clickcease.com https://www.clickcease.com www.clickcease.com https://*.googleadservices.com https://www.google.com/pagead/ https://googleads.g.doubleclick.net https://*.googletagmanager.com https://*.facebook.com https://connect.facebook.net https://unpkg.com;"
+    Content-Security-Policy = "upgrade-insecure-requests; default-src 'self' blob: data: https://*.cloudflare.com https://*.google.com https://*.gstatic.com https://*.googleapis.com https://*.supabase.co https://*.clarity.ms https://*.doubleclick.net https://*.google-analytics.com https://*.clickcease.com https://w.clarity.ms https://o.clarity.ms https://*.c.clarity.ms https://c.clarity.ms https://maps.googleapis.com https://maps.gstatic.com https://*.googleadservices.com https://*.googletagmanager.com www.clickcease.com https://*.facebook.com https://unpkg.com; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.google.com https://*.gstatic.com https://*.googleapis.com https://*.googletagmanager.com https://*.clarity.ms https://*.c.clarity.ms https://*.google-analytics.com https://cdn.gpteng.co https://*.doubleclick.net https://*.googleadservices.com https://*.bing.com https://*.clickcease.com https://www.clickcease.com www.clickcease.com https://*.googleadservices.com https://www.google.com/pagead/ https://googleads.g.doubleclick.net https://*.googletagmanager.com https://*.facebook.com https://connect.facebook.net https://unpkg.com; script-src-elem 'self' 'unsafe-inline' 'unsafe-eval' https://*.google.com https://*.gstatic.com https://*.googleapis.com https://*.googletagmanager.com https://*.clarity.ms https://*.c.clarity.ms https://*.google-analytics.com https://cdn.gpteng.co https://*.doubleclick.net https://*.googleadservices.com https://*.bing.com https://*.clickcease.com https://www.clickcease.com www.clickcease.com https://*.googleadservices.com https://www.google.com/pagead/ https://googleads.g.doubleclick.net https://*.googletagmanager.com https://*.facebook.com https://connect.facebook.net https://unpkg.com; connect-src 'self' https://*.google-analytics.com https://*.googletagmanager.com https://*.clarity.ms https://*.c.clarity.ms https://c.clarity.ms https://*.supabase.co https://*.vercel-scripts.com https://*.doubleclick.net https://*.google.com https://*.googleapis.com https://*.gstatic.com https://*.clickcease.com https://o.clarity.ms https://w.clarity.ms https://www.google.com/ccm/collect https://maps.googleapis.com https://googleads.g.doubleclick.net https://mtbgayqzjrxjjmsjikcg.supabase.co https://www.google.com https://www.gstatic.com https://*.google-analytics.com https://*.googleadservices.com https://maps.googleapis.com/$rpc/ https://maps.googleapis.com/maps/api/ https://maps.googleapis.com/maps/api/mapsjs/ https://*.googletagmanager.com https://www.clickcease.com https://*.facebook.com https://connect.facebook.net https://unpkg.com;"
     
 # Cache control for assets
 [[headers]]
@@ -41,7 +41,7 @@
     [headers.values]
     Cache-Control = "public, max-age=0, must-revalidate"
     # Add special header to ensure React loads properly
-    Link = "</assets/react-vendor-*.js>; rel=preload; as=script; crossorigin=anonymous"
+    Link = "</assets/react-vendor-*.js>; rel=preload; as=script; crossorigin=anonymous, https://unpkg.com/react@18/umd/react.production.min.js; rel=preload; as=script; crossorigin=anonymous, https://unpkg.com/react-dom@18/umd/react-dom.production.min.js; rel=preload; as=script; crossorigin=anonymous"
 
 [build.environment]
   NODE_VERSION = "18"

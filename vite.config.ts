@@ -9,6 +9,7 @@ export default defineConfig({
     react({
       // This ensures React is included properly
       jsxRuntime: 'automatic',
+      fastRefresh: true,
       babel: {
         plugins: [
           // Add any babel plugins if needed
@@ -30,6 +31,10 @@ export default defineConfig({
     },
     // Improve sourcemaps for debugging
     sourcemap: true,
+    // Report any build errors
+    reportCompressedSize: true,
+    chunkSizeWarningLimit: 1000,
+    assetsInlineLimit: 4096,
   },
   resolve: {
     alias: {
@@ -47,5 +52,11 @@ export default defineConfig({
     hmr: {
       overlay: true,
     },
+    watch: {
+      usePolling: true, // Can help with some file system issues
+    },
   },
+  // Ensure we get verbose error messages
+  logLevel: 'info',
+  clearScreen: false,
 })

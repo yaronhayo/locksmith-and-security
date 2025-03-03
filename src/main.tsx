@@ -16,6 +16,16 @@ const queryClient = new QueryClient({
   },
 })
 
+// Ensure console.error is working properly
+const originalConsoleError = console.error;
+console.error = (...args) => {
+  originalConsoleError(...args);
+  // If running in development, log additional info
+  if (import.meta.env.DEV) {
+    originalConsoleError('Error details for debugging:', args);
+  }
+};
+
 // Function to render the error UI directly into the DOM when React fails to mount
 const renderErrorUI = (errorMessage = "Application failed to load properly") => {
   console.error('Rendering fallback error UI:', errorMessage);
@@ -61,12 +71,16 @@ window.addEventListener('beforeunload', () => {
   cleanup();
 });
 
-// Function to try loading React from CDN as a fallback
+// Enhanced function to load React from CDN as a fallback
 const loadReactFromCDN = () => {
   console.warn('Loading React from CDN as fallback');
   return new Promise((resolve) => {
-    // Check if React is already available
-    if (typeof React !== 'undefined' && typeof ReactDOM !== 'undefined') {
+    // Check if React is already available (could have been loaded in index.html)
+    if (typeof window.React !== 'undefined' && typeof window.ReactDOM !== 'undefined') {
+      console.log('React and ReactDOM already available from window');
+      // Assign them to the module scope
+      window.React = window.React;
+      window.ReactDOM = window.ReactDOM;
       resolve(true);
       return;
     }
@@ -84,16 +98,21 @@ const loadReactFromCDN = () => {
       reactDOMScript.crossOrigin = 'anonymous';
       reactDOMScript.onload = () => {
         console.log('ReactDOM loaded from CDN');
+        
+        // Make sure they're accessible on window
+        if (typeof React !== 'undefined') window.React = React;
+        if (typeof ReactDOM !== 'undefined') window.ReactDOM = ReactDOM;
+        
         resolve(true);
       };
-      reactDOMScript.onerror = () => {
-        console.error('Failed to load ReactDOM from CDN');
+      reactDOMScript.onerror = (e) => {
+        console.error('Failed to load ReactDOM from CDN', e);
         resolve(false);
       };
       document.head.appendChild(reactDOMScript);
     };
-    reactScript.onerror = () => {
-      console.error('Failed to load React from CDN');
+    reactScript.onerror = (e) => {
+      console.error('Failed to load React from CDN', e);
       resolve(false);
     };
     document.head.appendChild(reactScript);
@@ -103,11 +122,26 @@ const loadReactFromCDN = () => {
 // Function to safely mount the React app
 async function mountApp() {
   try {
+    console.log('Starting to mount app...');
+    
     const rootElement = document.getElementById('root');
     if (!rootElement) {
       console.error('Root element not found');
       renderErrorUI("Root element not found");
       return;
+    }
+    
+    // Set React on window for debugging and to make it accessible to the app
+    // This is important to prevent "React is not defined" errors
+    if (typeof window !== 'undefined') {
+      if (typeof React !== 'undefined') {
+        window.React = React;
+        console.log('React set on window from import');
+      }
+      if (typeof ReactDOM !== 'undefined') {
+        window.ReactDOM = ReactDOM;
+        console.log('ReactDOM set on window from import');
+      }
     }
     
     // Check if React is available
@@ -118,6 +152,13 @@ async function mountApp() {
         renderErrorUI("React initialization failed. Please try refreshing the page.");
         return;
       }
+    }
+    
+    // Double-check React availability after potential CDN loading
+    if (typeof React === 'undefined' || typeof React.createElement !== 'function') {
+      console.error('React is still not available after CDN loading attempt');
+      renderErrorUI("React could not be loaded. Please check your internet connection and try again.");
+      return;
     }
     
     // Check if ReactDOM is available and has createRoot
@@ -134,9 +175,11 @@ async function mountApp() {
     
     // Try creating the root
     try {
+      console.log('Creating React root...');
       const root = ReactDOM.createRoot(rootElement);
       
       // Try rendering the app
+      console.log('Rendering app...');
       root.render(
         <React.StrictMode>
           <QueryClientProvider client={queryClient}>
@@ -157,6 +200,7 @@ async function mountApp() {
 }
 
 // Start the mounting process
+console.log('Initializing application...');
 mountApp();
 
 // Add a failsafe timeout to detect if the app doesn't render at all
