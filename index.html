@@ -16,7 +16,16 @@
           t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i+"?ref=bwt";
           y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
       })(window, document, "clarity", "script", "pk2zfzjlwa");
-      clarity("set", "cookieConsent", true);
+      if (localStorage.getItem('cookieConsent')) {
+        try {
+          const cookieSettings = JSON.parse(localStorage.getItem('cookieConsent'));
+          if (cookieSettings && cookieSettings.thirdParty) {
+            clarity("set", "cookieConsent", true);
+          }
+        } catch(e) {
+          console.error('Error parsing cookie settings');
+        }
+      }
     </script>
 
     <!-- Google tag (gtag.js) -->
@@ -26,6 +35,20 @@
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
       gtag('config', 'G-ZE9WV5PLTD');
+      
+      // Set cookie consent state for analytics if needed
+      if (localStorage.getItem('cookieConsent')) {
+        try {
+          const cookieSettings = JSON.parse(localStorage.getItem('cookieConsent'));
+          if (cookieSettings && !cookieSettings.analytics) {
+            gtag('consent', 'default', {
+              'analytics_storage': 'denied'
+            });
+          }
+        } catch(e) {
+          console.error('Error parsing cookie settings');
+        }
+      }
     </script>
 
     <meta charset="UTF-8" />
@@ -45,8 +68,41 @@
     <meta http-equiv="Strict-Transport-Security" content="max-age=31536000; includeSubDomains" />
     <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin" />
 
-    <!-- reCAPTCHA Script -->
-    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <!-- reCAPTCHA Script with explicit cookie consent check -->
+    <script>
+      // Only load reCAPTCHA if third-party cookies are likely enabled
+      if (localStorage.getItem('cookieConsent')) {
+        try {
+          const cookieSettings = JSON.parse(localStorage.getItem('cookieConsent'));
+          if (cookieSettings && cookieSettings.thirdParty) {
+            // Load reCAPTCHA with explicit consent
+            const recaptchaScript = document.createElement('script');
+            recaptchaScript.src = "https://www.google.com/recaptcha/api.js";
+            recaptchaScript.async = true;
+            recaptchaScript.defer = true;
+            document.head.appendChild(recaptchaScript);
+            console.log('reCAPTCHA script added with third-party cookie consent');
+          } else {
+            console.log('Third-party cookies not consented, reCAPTCHA may not work properly');
+          }
+        } catch(e) {
+          console.error('Error parsing cookie settings');
+          // Fallback: load reCAPTCHA anyway
+          const recaptchaScript = document.createElement('script');
+          recaptchaScript.src = "https://www.google.com/recaptcha/api.js";
+          recaptchaScript.async = true;
+          recaptchaScript.defer = true;
+          document.head.appendChild(recaptchaScript);
+        }
+      } else {
+        // No cookie consent yet, load reCAPTCHA by default
+        const recaptchaScript = document.createElement('script');
+        recaptchaScript.src = "https://www.google.com/recaptcha/api.js";
+        recaptchaScript.async = true;
+        recaptchaScript.defer = true;
+        document.head.appendChild(recaptchaScript);
+      }
+    </script>
 
     <!-- Schema.org markup -->
     <script type="application/ld+json">

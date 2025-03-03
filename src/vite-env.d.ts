@@ -15,6 +15,15 @@ interface Window {
     source?: string;
     timestamp: string;
   }>;
+  cookieErrors?: Array<{
+    message?: string;
+    source?: string;
+    timestamp: string;
+  }>;
+  thirdPartyCookiesBlocked?: boolean;
+  _cookieTestComplete?: boolean;
+  _thirdPartyCookieTestComplete?: boolean;
+  cookieStore?: any;
 }
 
 interface LayoutShiftEntry extends PerformanceEntry {

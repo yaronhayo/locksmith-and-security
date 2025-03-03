@@ -40,7 +40,106 @@ export const checkForCSPIssues = () => {
         console.log('dataLayer is present:', (window as any).dataLayer);
       }
     }, 1000);
+    
+    // Check third-party cookies
+    checkThirdPartyCookies();
   } catch (error) {
     console.error('Error while checking for CSP issues:', error);
+  }
+};
+
+// Check if third-party cookies are working
+export const checkThirdPartyCookies = () => {
+  // Create a hidden iframe to test third-party cookies
+  const iframe = document.createElement('iframe');
+  iframe.style.display = 'none';
+  iframe.src = 'https://www.google.com/recaptcha/api2/anchor?ar=1&k=test&co=aHR0cHM6Ly93d3cuZ29vZ2xlLmNvbTo0NDM.&hl=en&v=test&size=invisible';
+  
+  iframe.onload = () => {
+    console.log('Checking third-party cookie support via test iframe...');
+    setTimeout(() => {
+      // After the iframe loads, check if we can access cookies
+      try {
+        // Check if the iframe has content and is from the same origin (if not, we can't access it due to CORS)
+        if (iframe.contentDocument) {
+          console.log('Third-party iframe loaded successfully within same origin');
+        } else {
+          console.log('Third-party iframe loaded but cannot be accessed due to cross-origin restrictions (expected)');
+          (window as any)._thirdPartyCookieTestComplete = true;
+        }
+      } catch (error) {
+        console.log('Error accessing iframe content (expected for cross-origin):', error);
+      }
+      
+      // Remove the test iframe
+      document.body.removeChild(iframe);
+    }, 2000);
+  };
+  
+  document.body.appendChild(iframe);
+  
+  // Using the SameSite attribute test to detect cookie restrictions
+  detectCookieRestrictions();
+};
+
+// Detect if cookie restrictions are in place
+const detectCookieRestrictions = () => {
+  // Test cookie that should work in all browsers
+  document.cookie = "testCookie=1; path=/; SameSite=Lax; max-age=60";
+  
+  // Test cookie that might be blocked in browsers restricting 3rd party cookies
+  document.cookie = "testThirdPartyCookie=1; path=/; SameSite=None; Secure; max-age=60";
+  
+  setTimeout(() => {
+    const hasCookie = document.cookie.indexOf("testCookie=") !== -1;
+    const hasThirdPartyCookie = document.cookie.indexOf("testThirdPartyCookie=") !== -1;
+    
+    console.log('Cookie test results:', {
+      standardCookies: hasCookie ? 'working' : 'blocked',
+      thirdPartyCookies: hasThirdPartyCookie ? 'working' : 'may be restricted'
+    });
+    
+    if (hasCookie && !hasThirdPartyCookie) {
+      console.warn('Third-party cookies may be blocked by browser settings');
+      // Add to window for potential notification to user
+      (window as any).thirdPartyCookiesBlocked = true;
+    }
+    
+    // Mark the test as complete
+    (window as any)._cookieTestComplete = true;
+  }, 500);
+};
+
+// Function to handle partitioned cookies
+export const setupPartitionedCookies = () => {
+  try {
+    // Check if the Partitioned attribute is supported
+    const cookieStore = (window as any).cookieStore;
+    if (cookieStore) {
+      console.log('CookieStore API available, checking Partitioned support');
+      
+      // Try to set a partitioned cookie if the browser supports it
+      cookieStore.set({
+        name: 'testPartitioned',
+        value: '1',
+        partitioned: true,
+        secure: true,
+        sameSite: 'none',
+        maxAge: 60
+      }).then(() => {
+        console.log('Successfully set partitioned cookie');
+      }).catch((error: any) => {
+        console.log('Failed to set partitioned cookie, may not be supported:', error);
+      });
+    } else {
+      // Fallback for browsers without cookieStore
+      try {
+        document.cookie = "testPartitioned=1; Partitioned; Secure; SameSite=None; path=/; max-age=60";
+      } catch (error) {
+        console.log('Partitioned cookie attribute not supported');
+      }
+    }
+  } catch (error) {
+    console.error('Error setting up partitioned cookies:', error);
   }
 };
