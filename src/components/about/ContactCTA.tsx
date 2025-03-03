@@ -1,4 +1,3 @@
-
 import { motion } from "framer-motion";
 import { Phone, Mail, MapPin, Calendar, Wrench } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -14,10 +13,8 @@ const ContactCTA = () => {
         transition={{ duration: 0.5 }}
         viewport={{ once: true }}
       >
-        {/* Background gradient effect */}
         <div className="absolute inset-0 bg-gradient-to-br from-primary via-primary/90 to-blue-800 opacity-90"></div>
         
-        {/* Decorative elements */}
         <div className="absolute top-0 left-0 w-64 h-64 rounded-full bg-primary-dark/20 -translate-x-1/2 -translate-y-1/2"></div>
         <div className="absolute bottom-0 right-0 w-96 h-96 rounded-full bg-blue-600/20 translate-x-1/3 translate-y-1/3"></div>
         
@@ -89,7 +86,7 @@ const ContactCTA = () => {
                 <Button asChild size="lg" className="bg-white text-primary hover:bg-gray-100 font-semibold text-base">
                   <Link to="/contact">Contact Us</Link>
                 </Button>
-                <Button asChild variant="outline" size="lg" className="border-white text-white hover:bg-white/10 hover:border-blue-300 hover:text-blue-300 font-semibold text-base">
+                <Button asChild variant="outline" size="lg" className="border-white text-black hover:bg-white/10 hover:border-blue-300 hover:text-blue-300 font-semibold text-base">
                   <Link to="/book-online">Book Online</Link>
                 </Button>
               </div>
