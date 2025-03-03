@@ -1,3 +1,4 @@
+
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { useRecaptchaKey } from '@/hooks/useRecaptchaKey';
 import { addDocTypeToIframe } from '@/utils/corsUtils';
@@ -15,6 +16,7 @@ const Recaptcha: React.FC<RecaptchaProps> = ({
 }) => {
   const recaptchaRef = useRef<HTMLDivElement>(null);
   const recaptchaWidgetId = useRef<number | null>(null);
+  const scriptLoadAttemptRef = useRef(0);
   const [loadError, setLoadError] = useState<boolean>(false);
   const [scriptLoaded, setScriptLoaded] = useState<boolean>(false);
   const [scriptLoading, setScriptLoading] = useState<boolean>(false);
@@ -44,6 +46,13 @@ const Recaptcha: React.FC<RecaptchaProps> = ({
   }, [isRecaptchaAvailable]);
   
   const loadRecaptchaScript = useCallback(() => {
+    if (scriptLoadAttemptRef.current > 3) {
+      console.error('Maximum reCAPTCHA script load attempts reached');
+      setLoadError(true);
+      setScriptLoading(false);
+      return;
+    }
+    
     if (document.querySelector('script[src*="recaptcha/api.js"]')) {
       console.log('reCAPTCHA script is already loading or loaded');
       return;
@@ -54,7 +63,8 @@ const Recaptcha: React.FC<RecaptchaProps> = ({
       return;
     }
     
-    console.log('Loading reCAPTCHA script dynamically');
+    scriptLoadAttemptRef.current += 1;
+    console.log(`Loading reCAPTCHA script dynamically (attempt ${scriptLoadAttemptRef.current})`);
     setScriptLoading(true);
     
     const script = document.createElement('script');
@@ -63,26 +73,46 @@ const Recaptcha: React.FC<RecaptchaProps> = ({
     script.defer = true;
     script.id = 'recaptcha-script';
     
-    script.onload = () => {
-      console.log('reCAPTCHA script loaded successfully');
-      setScriptLoaded(true);
-      setScriptLoading(false);
+    // Create a promise that resolves when the script loads or fails
+    const scriptPromise = new Promise<void>((resolve, reject) => {
+      script.onload = () => {
+        console.log('reCAPTCHA script loaded successfully');
+        setScriptLoaded(true);
+        setScriptLoading(false);
+        resolve();
+      };
       
-      setTimeout(() => {
-        if (isRecaptchaAvailable() && recaptchaRef.current) {
-          renderRecaptcha();
-        }
-      }, 500);
-    };
-    
-    script.onerror = (error) => {
-      console.error('Error loading reCAPTCHA script:', error);
-      setLoadError(true);
-      setScriptLoading(false);
-    };
+      script.onerror = (error) => {
+        console.error('Error loading reCAPTCHA script:', error);
+        setScriptLoading(false);
+        reject(new Error('Failed to load reCAPTCHA script'));
+      };
+    });
     
     document.head.appendChild(script);
-  }, [isRecaptchaAvailable, scriptLoading]);
+    
+    // Set a timeout in case the script hangs
+    const timeoutPromise = new Promise<void>((_, reject) => {
+      setTimeout(() => {
+        reject(new Error('reCAPTCHA script loading timed out'));
+      }, 15000); // 15 second timeout
+    });
+    
+    // Race the script load against the timeout
+    Promise.race([scriptPromise, timeoutPromise])
+      .then(() => {
+        setTimeout(() => {
+          if (isRecaptchaAvailable() && recaptchaRef.current) {
+            renderRecaptcha();
+          }
+        }, 500);
+      })
+      .catch((error) => {
+        console.error('reCAPTCHA script loading failed:', error);
+        setLoadError(true);
+        setScriptLoading(false);
+      });
+  }, [isRecaptchaAvailable]);
   
   const renderRecaptcha = useCallback(() => {
     if (!recaptchaRef.current || !isRecaptchaAvailable()) {
@@ -138,12 +168,17 @@ const Recaptcha: React.FC<RecaptchaProps> = ({
       
       console.log('reCAPTCHA widget rendered with ID:', recaptchaWidgetId.current);
       
+      // Add timeout for iframe manipulation to ensure DOM is ready
       setTimeout(() => {
-        const iframes = document.querySelectorAll('iframe[src*="recaptcha"]');
-        iframes.forEach(iframe => {
-          addDocTypeToIframe(iframe as HTMLIFrameElement);
-        });
-        console.log('Added DOCTYPE to reCAPTCHA iframes');
+        try {
+          const iframes = document.querySelectorAll('iframe[src*="recaptcha"]');
+          iframes.forEach(iframe => {
+            addDocTypeToIframe(iframe as HTMLIFrameElement);
+          });
+          console.log('Added DOCTYPE to reCAPTCHA iframes');
+        } catch (error) {
+          console.error('Error adding DOCTYPE to reCAPTCHA iframes:', error);
+        }
       }, 1000);
       
     } catch (error) {
@@ -180,6 +215,7 @@ const Recaptcha: React.FC<RecaptchaProps> = ({
     }, 20000);
     
     return () => {
+      console.log('Cleaning up reCAPTCHA resources');
       clearInterval(checkInterval);
       clearTimeout(timeout);
       
@@ -205,25 +241,33 @@ const Recaptcha: React.FC<RecaptchaProps> = ({
     console.log('Manual retry of reCAPTCHA requested');
     resetState();
     
+    // Clean up the existing script and reCAPTCHA state
     const existingScript = document.getElementById('recaptcha-script');
     if (existingScript) {
       existingScript.remove();
       console.log('Removed existing reCAPTCHA script');
     }
     
+    // Clean up any existing reCAPTCHA iframes
     const existingIframes = document.querySelectorAll('iframe[src*="recaptcha"]');
     existingIframes.forEach(iframe => iframe.remove());
     console.log('Removed existing reCAPTCHA iframes');
     
+    // Reset script load attempt counter
+    scriptLoadAttemptRef.current = 0;
+    
+    // Reset the grecaptcha object to force a clean reload
     if (window.grecaptcha) {
       try {
-        delete window.grecaptcha;
+        // @ts-ignore - We're intentionally deleting this to force a reload
+        window.grecaptcha = undefined;
         console.log('Reset global grecaptcha object');
       } catch (e) {
         console.warn('Could not reset global grecaptcha object:', e);
       }
     }
     
+    // Wait a bit before trying again
     setTimeout(() => {
       loadRecaptchaScript();
     }, 500);
