@@ -7,6 +7,7 @@ import { setupIframeDocTypeFixer } from './utils/iframeUtils'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
 // Define window.grecaptcha as a global type
+// We need to use 'declare global' instead to avoid conflicts with other declarations
 declare global {
   interface Window {
     grecaptcha: {
