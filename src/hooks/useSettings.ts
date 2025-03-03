@@ -21,20 +21,33 @@ export const useSettings = () => {
   return useQuery({
     queryKey: ['settings'],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from('settings')
-        .select('key, value');
+      try {
+        const { data, error } = await supabase
+          .from('settings')
+          .select('key, value');
 
-      if (error) throw error;
+        if (error) {
+          console.error('Error fetching settings:', error.message);
+          return {} as SiteSettings; // Return empty object as fallback
+        }
 
-      const settings = data.reduce((acc, { key, value }) => {
-        acc[key as keyof SiteSettings] = value;
-        return acc;
-      }, {} as SiteSettings);
+        const settings = data.reduce((acc, { key, value }) => {
+          acc[key as keyof SiteSettings] = value;
+          return acc;
+        }, {} as SiteSettings);
 
-      return settings;
+        return settings;
+      } catch (error: any) {
+        console.error('Error in settings query:', error.message);
+        return {} as SiteSettings; // Return empty object on error
+      }
     },
     staleTime: 1000 * 60 * 5, // Cache for 5 minutes
     gcTime: 1000 * 60 * 60, // Keep in garbage collection for 1 hour
+    meta: {
+      onError: (error: Error) => {
+        console.error('Error fetching settings:', error.message);
+      }
+    }
   });
 };
