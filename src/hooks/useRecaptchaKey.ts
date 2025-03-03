@@ -10,6 +10,7 @@ export const useRecaptchaKey = () => {
     queryKey: ['recaptcha_key'],
     queryFn: async () => {
       try {
+        console.log('Fetching reCAPTCHA key from Supabase');
         const { data, error } = await supabase
           .from('settings')
           .select('value')
@@ -21,14 +22,23 @@ export const useRecaptchaKey = () => {
           return FALLBACK_RECAPTCHA_KEY;
         }
         
-        return data?.value as string || FALLBACK_RECAPTCHA_KEY;
+        const siteKey = data?.value as string;
+        
+        if (!siteKey) {
+          console.warn('No reCAPTCHA key found in database, using fallback key');
+          return FALLBACK_RECAPTCHA_KEY;
+        }
+        
+        console.log('Successfully retrieved reCAPTCHA key from Supabase');
+        return siteKey;
       } catch (error) {
         console.error('Exception fetching reCAPTCHA key:', error);
         return FALLBACK_RECAPTCHA_KEY;
       }
     },
-    retry: 1,
+    retry: 2,
     staleTime: 1000 * 60 * 5, // Cache for 5 minutes
+    refetchOnWindowFocus: false,
     meta: {
       onError: (error: Error) => {
         console.error('Error in reCAPTCHA key query:', error.message);
