@@ -15,7 +15,7 @@ export const useRecaptchaKey = () => {
           .from('settings')
           .select('value')
           .eq('key', 'recaptcha_site_key')
-          .single();
+          .maybeSingle();
         
         if (error) {
           console.error('Error fetching reCAPTCHA key:', error.message);

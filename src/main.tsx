@@ -1,3 +1,4 @@
+
 import React from 'react'
 import * as ReactDOMClient from 'react-dom/client'
 import * as ReactDOM from 'react-dom'
@@ -58,6 +59,38 @@ const renderErrorUI = (errorMessage = "Application failed to load properly") => 
   }
 };
 
+// Improved global error handler for promise rejections
+const handleUnhandledRejection = (event) => {
+  console.error('Unhandled promise rejection caught:', event.reason);
+  
+  // Prevent the error from causing a white screen if possible
+  event.preventDefault();
+  
+  // If query client is available, attempt to invalidate potentially problematic queries
+  if (queryClient) {
+    try {
+      // Try invalidating commonly problematic queries
+      queryClient.invalidateQueries({ queryKey: ['recaptcha_key'] });
+      queryClient.invalidateQueries({ queryKey: ['map_config'] });
+      queryClient.invalidateQueries({ queryKey: ['locations'] });
+    } catch (e) {
+      console.error('Error invalidating queries:', e);
+    }
+  }
+  
+  // Get error details to show to the user
+  let errorMessage = "An unexpected promise rejection occurred";
+  if (event.reason instanceof Error) {
+    errorMessage = event.reason.message || errorMessage;
+  } else if (typeof event.reason === 'string') {
+    errorMessage = event.reason;
+  } else if (event.reason && typeof event.reason.message === 'string') {
+    errorMessage = event.reason.message;
+  }
+  
+  renderErrorUI(errorMessage);
+};
+
 // Create a global error handler to catch initialization errors
 const handleGlobalError = (event) => {
   console.error('Global error caught:', event.error);
@@ -72,13 +105,7 @@ const handleGlobalError = (event) => {
 window.addEventListener('error', handleGlobalError);
 
 // Add unhandled promise rejection handler
-window.addEventListener('unhandledrejection', (event) => {
-  console.error('Unhandled promise rejection:', event.reason);
-  // Prevent the error from causing a white screen if possible
-  event.preventDefault();
-  
-  renderErrorUI(event.reason?.message || "An unexpected promise rejection occurred");
-});
+window.addEventListener('unhandledrejection', handleUnhandledRejection);
 
 // Initialize iframe DOCTYPE fixer
 const cleanup = setupIframeObserver();

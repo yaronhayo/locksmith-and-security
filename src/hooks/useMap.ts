@@ -54,7 +54,7 @@ export const useMapConfig = () => {
           
         if (result.error) {
           console.error("Error fetching lowercase API key:", result.error.message);
-          throw result.error;
+          // Don't throw, continue to fallback options
         }
         
         if (result.data?.value && isValidApiKey(result.data.value)) {
@@ -66,7 +66,11 @@ export const useMapConfig = () => {
         const settingsResult = await supabase
           .from('settings')
           .select('key, value')
-          .or('key.like.%google%,key.like.%maps%,key.like.%map%');
+          .or('key.like.%google%,key.like.%maps%,key.like.%map%')
+          .catch(err => {
+            console.error("Error fetching potential map keys:", err);
+            return { data: null, error: err };
+          });
           
         if (!settingsResult.error && settingsResult.data) {
           console.log("Available settings:", settingsResult.data);
@@ -113,16 +117,17 @@ export const useMap = () => {
         if (error) {
           console.error('Error loading map locations:', error.message);
           toast.error('Error loading map locations');
-          throw new Error(error.message);
+          return []; // Return empty array instead of throwing
         }
         
         if (!data || data.length === 0) {
           console.warn('No locations found in database');
+          return []; // Return empty array
         } else {
           console.log(`Found ${data.length} locations in database`);
         }
         
-        return (data || []).map(location => ({
+        return data.map(location => ({
           id: location.id,
           name: location.name,
           latitude: location.lat,
@@ -131,7 +136,7 @@ export const useMap = () => {
         })) as MapLocation[];
       } catch (error: any) {
         console.error('Error in useMap query:', error.message);
-        throw error;
+        return []; // Return empty array instead of throwing
       }
     },
     meta: {

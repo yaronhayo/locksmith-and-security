@@ -30,10 +30,15 @@ const RecaptchaField = ({ onChange, error, className = "" }: RecaptchaFieldProps
   };
   
   const handleRecaptchaChange = (token: string | null) => {
-    if (token) {
-      setInternalError(null);
+    try {
+      if (token) {
+        setInternalError(null);
+      }
+      onChange(token);
+    } catch (err) {
+      console.error('Error in reCAPTCHA change handler:', err);
+      setInternalError('An error occurred processing the reCAPTCHA response');
     }
-    onChange(token);
   };
   
   return (
