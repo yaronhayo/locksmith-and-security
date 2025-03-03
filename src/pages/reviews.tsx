@@ -1,3 +1,4 @@
+
 import React from "react";
 import PageLayout from "@/components/layouts/PageLayout";
 import ReviewCard from "@/components/reviews/ReviewCard";
@@ -6,8 +7,10 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { createReviewsSchema } from "@/schemas/reviewsSchema";
 import LoadingSpinner from "@/components/LoadingSpinner";
+import { allReviews } from "@/data/reviewsData";
 
 const ReviewsPage = () => {
+  // We're using allReviews from our data file to ensure we have all 150 reviews
   const { 
     displayedReviews, 
     isLoading, 
@@ -43,14 +46,27 @@ const ReviewsPage = () => {
 
   return (
     <PageLayout
-      title="Customer Reviews | Locksmith & Security LLC"
-      description="Read authentic reviews from our satisfied customers about our professional locksmith services in North Bergen and surrounding areas."
+      title="150+ Customer Reviews | Locksmith & Security LLC"
+      description="Browse our extensive collection of 150+ authentic reviews from customers across all service areas about our wide range of locksmith services."
       heroTitle="Customer Testimonials"
-      heroDescription="See what our clients have to say about our locksmith services in North Bergen and surrounding areas"
+      heroDescription="See what our clients have to say about our locksmith services across all areas and service types"
       schema={reviewsSchema}
-      hideBreadcrumbs={false} // Let PageLayout handle breadcrumbs
+      hideBreadcrumbs={false}
     >
       <div className="container mx-auto px-4 py-12">
+        <div className="mb-10 text-center">
+          <h2 className="text-3xl font-bold mb-4">Over 150 Five-Star Reviews</h2>
+          <p className="text-gray-600 max-w-3xl mx-auto">
+            Browse through our collection of verified customer reviews from across all our service areas.
+            Our customers have shared their experiences with our various locksmith services.
+          </p>
+          <div className="flex justify-center mt-4">
+            <div className="bg-gray-100 px-4 py-2 rounded-lg">
+              <span className="font-medium">Showing {totalReviews} total reviews</span>
+            </div>
+          </div>
+        </div>
+        
         {displayedReviews.length > 0 ? (
           <>
             <ScrollArea className="rounded-md">

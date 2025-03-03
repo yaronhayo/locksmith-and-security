@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { type CarouselApi } from "@/components/ui/carousel";
 import ReviewsCarousel from "./ReviewsCarousel";
 import { Review, ServiceCategory } from "@/types/reviews";
-import { reviewsByCategory, getReviewsByLocation } from "@/data/reviewsData";
+import { reviewsByCategory, getReviewsByLocation, allReviews } from "@/data/reviewsData";
 import CarouselDots from "./CarouselDots";
 
 interface ReviewsContainerProps {
@@ -30,17 +30,7 @@ const ReviewsContainer = memo(({
   // Otherwise, gather diverse reviews from different categories and locations
   const diverseReviews = displayedReviews.length > 0 
     ? displayedReviews 
-    : [
-        // Mix of reviews from different categories
-        ...reviewsByCategory.car.slice(0, 2),
-        ...reviewsByCategory.residential.slice(0, 2),
-        ...reviewsByCategory.commercial.slice(0, 2),
-        ...reviewsByCategory.emergency.slice(0, 2),
-        // Mix in some location-specific reviews
-        ...getReviewsByLocation('North Bergen').slice(0, 2),
-        ...getReviewsByLocation('Jersey City').slice(0, 2),
-        ...getReviewsByLocation('Hoboken').slice(0, 2)
-      ].slice(0, 9); // Limit to 9 reviews to avoid too many
+    : allReviews.slice(0, 12); // Show a subset of our diverse reviews
 
   // Set up API event listeners
   React.useEffect(() => {
