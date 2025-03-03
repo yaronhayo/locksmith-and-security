@@ -25,12 +25,12 @@ const ContactCTA = () => {
           <div className="grid md:grid-cols-2">
             <div className="p-8 md:p-12 lg:p-16">
               <h2 className="text-3xl md:text-4xl font-bold text-white mb-6 leading-tight">
-                Ready to Enhance <br className="hidden md:block" />Your Security?
+                Ready to Secure <br className="hidden md:block" />Your Property?
               </h2>
               
               <p className="text-primary-50 mb-8 text-lg max-w-lg">
-                Our team of expert locksmiths is ready to help with all your security needs. 
-                Contact us today for a consultation or emergency service.
+                Our team of certified locksmiths is available 24/7 to help with all your security needs. 
+                Contact us today for a consultation or emergency locksmith service.
               </p>
               
               <div className="grid gap-5 mb-10">
@@ -41,7 +41,7 @@ const ContactCTA = () => {
                   <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center mr-4 group-hover:bg-white/20 transition-colors">
                     <Phone className="h-5 w-5 text-white" />
                   </div>
-                  <span className="text-lg">(551) 303-7874</span>
+                  <span className="text-lg">(201) 748-2070</span>
                 </motion.div>
                 
                 <motion.div 
@@ -89,7 +89,7 @@ const ContactCTA = () => {
                 <Button asChild size="lg" className="bg-white text-primary hover:bg-gray-100 font-semibold text-base">
                   <Link to="/contact">Contact Us</Link>
                 </Button>
-                <Button asChild variant="outline" size="lg" className="border-white text-white hover:bg-white/10 font-semibold text-base">
+                <Button asChild variant="outline" size="lg" className="border-white text-white hover:bg-white/10 hover:border-blue-300 hover:text-blue-300 font-semibold text-base">
                   <Link to="/book-online">Book Online</Link>
                 </Button>
               </div>
