@@ -13,7 +13,9 @@ interface RecaptchaFieldProps {
 const RecaptchaField = ({ onChange, error, className = "" }: RecaptchaFieldProps) => {
   return (
     <div className={`w-full overflow-x-auto ${className}`}>
-      <Recaptcha onChange={onChange} />
+      <Recaptcha 
+        onChange={onChange} 
+      />
       
       {error && (
         <Alert variant="destructive" className="mt-2 py-2">
@@ -21,6 +23,13 @@ const RecaptchaField = ({ onChange, error, className = "" }: RecaptchaFieldProps
           <AlertDescription>{error}</AlertDescription>
         </Alert>
       )}
+      
+      <p className="text-xs text-gray-500 mt-2">
+        This site is protected by reCAPTCHA. By continuing, you accept Google's 
+        <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer" className="underline hover:text-primary"> Privacy Policy </a> 
+        and 
+        <a href="https://policies.google.com/terms" target="_blank" rel="noopener noreferrer" className="underline hover:text-primary"> Terms of Service</a>.
+      </p>
       
       {/* Hidden field to provide proper autocomplete attribute */}
       <input 

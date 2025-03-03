@@ -1,7 +1,7 @@
 
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useRecaptchaKey } from '@/hooks/useRecaptchaKey';
-import { fetchWithCors, addDocTypeToIframe } from '@/utils/corsUtils';
+import { addDocTypeToIframe } from '@/utils/corsUtils';
 
 interface RecaptchaProps {
   onChange: (token: string | null) => void;
@@ -16,26 +16,57 @@ const Recaptcha: React.FC<RecaptchaProps> = ({
 }) => {
   const recaptchaRef = useRef<HTMLDivElement>(null);
   const recaptchaWidgetId = useRef<number | null>(null);
-  const { data: recaptchaKey } = useRecaptchaKey();
+  const [loadError, setLoadError] = useState<boolean>(false);
+  const { data: recaptchaKey, isLoading, isError } = useRecaptchaKey();
   
   // Use the provided sitekey or the one from the hook
-  const actualSitekey = sitekey || recaptchaKey;
+  const actualSitekey = sitekey || recaptchaKey || '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI'; // Fallback to Google's test key
 
   useEffect(() => {
     // Check if grecaptcha is loaded
     if (typeof window.grecaptcha === 'undefined' || typeof window.grecaptcha.render !== 'function') {
-      // Create script element dynamically
-      const script = document.createElement('script');
-      script.src = 'https://www.google.com/recaptcha/api.js?render=explicit';
-      script.async = true;
-      script.defer = true;
-      script.crossOrigin = 'anonymous';
+      // Set a timeout to detect if reCAPTCHA fails to load
+      const timeoutId = setTimeout(() => {
+        if (typeof window.grecaptcha === 'undefined' || typeof window.grecaptcha.render !== 'function') {
+          console.error('reCAPTCHA failed to load');
+          setLoadError(true);
+        }
+      }, 5000); // 5 seconds timeout
       
-      script.onload = () => {
-        initializeRecaptcha();
-      };
-      
-      document.head.appendChild(script);
+      // Create script element dynamically if it doesn't exist
+      const existingScript = document.querySelector('script[src*="recaptcha/api.js"]');
+      if (!existingScript) {
+        const script = document.createElement('script');
+        script.src = 'https://www.google.com/recaptcha/api.js?render=explicit';
+        script.async = true;
+        script.defer = true;
+        script.crossOrigin = 'anonymous';
+        
+        script.onload = () => {
+          clearTimeout(timeoutId);
+          initializeRecaptcha();
+        };
+        
+        script.onerror = () => {
+          clearTimeout(timeoutId);
+          console.error('Error loading reCAPTCHA script');
+          setLoadError(true);
+        };
+        
+        document.head.appendChild(script);
+      } else {
+        // Script already exists, check if it's loaded with intervals
+        const checkInterval = setInterval(() => {
+          if (typeof window.grecaptcha !== 'undefined' && typeof window.grecaptcha.render === 'function') {
+            clearTimeout(timeoutId);
+            clearInterval(checkInterval);
+            initializeRecaptcha();
+          }
+        }, 100);
+        
+        // Clear the interval after 5 seconds to prevent memory leaks
+        setTimeout(() => clearInterval(checkInterval), 5000);
+      }
     } else {
       initializeRecaptcha();
     }
@@ -91,9 +122,33 @@ const Recaptcha: React.FC<RecaptchaProps> = ({
         }, 1000);
       } catch (error) {
         console.error('Error rendering reCAPTCHA:', error);
+        setLoadError(true);
       }
     }
   };
+
+  if (loadError || isError) {
+    // Fallback UI for when reCAPTCHA fails to load
+    return (
+      <div className="border border-gray-300 rounded p-4 text-center">
+        <p className="text-sm text-gray-600">Unable to load CAPTCHA verification.</p>
+        <p className="text-xs text-gray-500 mt-1">Please ensure cookies are enabled and try again later.</p>
+      </div>
+    );
+  }
+
+  if (isLoading) {
+    return (
+      <div className="g-recaptcha-loading">
+        <div className="border border-gray-300 rounded p-4 bg-gray-50 flex items-center justify-center min-h-[78px]">
+          <svg className="animate-spin h-5 w-5 text-primary" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          </svg>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div ref={recaptchaRef} className="g-recaptcha" data-sitekey={actualSitekey} data-size={size} />
