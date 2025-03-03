@@ -1,5 +1,7 @@
+
 import React from 'react'
-import * as ReactDOM from 'react-dom/client'
+import * as ReactDOMClient from 'react-dom/client'
+import * as ReactDOM from 'react-dom'
 import App from './App.tsx'
 import './index.css'
 import { setupIframeDocTypeFixer } from './utils/iframeUtils'
@@ -164,8 +166,8 @@ async function mountApp() {
     try {
       console.log('Creating React root...');
       
-      // Create React 18 root
-      const root = ReactDOM.createRoot(rootElement);
+      // Create React 18 root using ReactDOMClient
+      const root = ReactDOMClient.createRoot(rootElement);
       
       // Try rendering the app
       console.log('Rendering app...');
