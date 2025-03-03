@@ -7,13 +7,23 @@ import './index.css'
 import { setupIframeObserver } from './utils/iframeUtils'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
-// Create a new QueryClient instance
+// Create a new QueryClient instance with more robust error handling
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       refetchOnWindowFocus: false,
       retry: 1,
+      onError: (error) => {
+        console.error('Query error:', error);
+        // This prevents global error handler from catching query errors
+      }
     },
+    mutations: {
+      onError: (error) => {
+        console.error('Mutation error:', error);
+        // This prevents global error handler from catching mutation errors
+      }
+    }
   },
 })
 
@@ -33,11 +43,11 @@ const renderErrorUI = (errorMessage = "Application failed to load properly") => 
   const rootElement = document.getElementById('root');
   if (rootElement) {
     rootElement.innerHTML = `
-      <div class="error-fallback">
-        <h1 style="color: #e63946;">Something went wrong</h1>
-        <p>${errorMessage}</p>
-        <p>We're having trouble loading the application. Please try refreshing the page.</p>
-        <button onclick="window.location.reload()" style="padding: 8px 16px; background: #457b9d; color: white; border: none; border-radius: 4px; cursor: pointer; margin-top: 16px;">
+      <div class="error-fallback" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif; padding: 20px; max-width: 500px; margin: 100px auto; text-align: center; border: 1px solid #e1e1e1; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
+        <h1 style="color: #e63946; margin-bottom: 16px;">Something went wrong</h1>
+        <p style="margin-bottom: 12px; color: #333;">${errorMessage}</p>
+        <p style="margin-bottom: 24px; color: #666;">We're having trouble loading the application. Please try refreshing the page.</p>
+        <button onclick="window.location.reload()" style="padding: 8px 16px; background: #457b9d; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 16px;">
           Refresh Page
         </button>
       </div>
@@ -61,6 +71,9 @@ window.addEventListener('error', handleGlobalError);
 // Add unhandled promise rejection handler
 window.addEventListener('unhandledrejection', (event) => {
   console.error('Unhandled promise rejection:', event.reason);
+  // Prevent the error from causing a white screen if possible
+  event.preventDefault();
+  
   renderErrorUI(event.reason?.message || "An unexpected promise rejection occurred");
 });
 
@@ -70,6 +83,15 @@ const cleanup = setupIframeObserver();
 // Add an event listener to clean up when the window is closed
 window.addEventListener('beforeunload', () => {
   cleanup();
+  
+  // Ensure any pending promises are handled
+  if (queryClient) {
+    try {
+      queryClient.clear();
+    } catch (e) {
+      console.error('Error clearing query client:', e);
+    }
+  }
 });
 
 // Enhanced function to load React from CDN as a fallback
@@ -192,7 +214,10 @@ async function mountApp() {
 
 // Start the mounting process
 console.log('Initializing application...');
-mountApp();
+mountApp().catch(error => {
+  console.error('Unhandled error in mountApp:', error);
+  renderErrorUI(error instanceof Error ? error.message : "Failed during application initialization");
+});
 
 // Add a failsafe timeout to detect if the app doesn't render at all
 setTimeout(() => {

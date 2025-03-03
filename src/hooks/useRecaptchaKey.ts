@@ -36,7 +36,7 @@ export const useRecaptchaKey = () => {
         return FALLBACK_RECAPTCHA_KEY;
       }
     },
-    retry: 1, // Reduced retry attempts to prevent excessive requests
+    retry: 1, // Only retry once to prevent excessive requests
     staleTime: 1000 * 60 * 60, // Cache for 60 minutes - increased to reduce API calls
     refetchOnWindowFocus: false,
     // Make sure the query doesn't fail permanently and always returns a usable key

@@ -26,9 +26,14 @@ const Recaptcha: React.FC<RecaptchaProps> = ({
   const actualSitekey = sitekey || recaptchaKey || '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI'; // Fallback to Google's test key
 
   const isRecaptchaAvailable = useCallback(() => {
-    return typeof window !== 'undefined' && 
-           typeof window.grecaptcha !== 'undefined' && 
-           typeof window.grecaptcha.render === 'function';
+    try {
+      return typeof window !== 'undefined' && 
+             typeof window.grecaptcha !== 'undefined' && 
+             typeof window.grecaptcha.render === 'function';
+    } catch (error) {
+      console.error('Error checking reCAPTCHA availability:', error);
+      return false;
+    }
   }, []);
   
   const resetState = useCallback(() => {
@@ -47,13 +52,15 @@ const Recaptcha: React.FC<RecaptchaProps> = ({
   }, [isRecaptchaAvailable]);
   
   const loadRecaptchaScript = useCallback(() => {
-    if (scriptLoadAttemptRef.current > 3) {
+    // Hard limit on script load attempts to prevent infinite loops
+    if (scriptLoadAttemptRef.current > 2) {
       console.error('Maximum reCAPTCHA script load attempts reached');
       setLoadError(true);
       setScriptLoading(false);
       return;
     }
     
+    // Don't reload if script is already in the DOM
     if (document.querySelector('script[src*="recaptcha/api.js"]')) {
       console.log('reCAPTCHA script is already loading or loaded');
       return;
@@ -67,6 +74,9 @@ const Recaptcha: React.FC<RecaptchaProps> = ({
     scriptLoadAttemptRef.current += 1;
     console.log(`Loading reCAPTCHA script dynamically (attempt ${scriptLoadAttemptRef.current})`);
     setScriptLoading(true);
+    
+    // Remove any existing reCAPTCHA iframes to prevent conflicts
+    document.querySelectorAll('iframe[src*="recaptcha"]').forEach(iframe => iframe.remove());
     
     const script = document.createElement('script');
     script.src = 'https://www.google.com/recaptcha/api.js?render=explicit';
@@ -96,15 +106,22 @@ const Recaptcha: React.FC<RecaptchaProps> = ({
     const timeoutPromise = new Promise<void>((_, reject) => {
       setTimeout(() => {
         reject(new Error('reCAPTCHA script loading timed out'));
-      }, 15000); // 15 second timeout
+      }, 10000); // 10 second timeout
     });
     
     // Race the script load against the timeout
     Promise.race([scriptPromise, timeoutPromise])
       .then(() => {
+        // Add a delay to ensure grecaptcha is fully initialized
         setTimeout(() => {
-          if (isRecaptchaAvailable() && recaptchaRef.current) {
-            renderRecaptcha();
+          try {
+            if (isRecaptchaAvailable() && recaptchaRef.current) {
+              renderRecaptcha();
+            } else {
+              console.warn('reCAPTCHA API available but render conditions not met');
+            }
+          } catch (error) {
+            console.error('Error during delayed reCAPTCHA rendering:', error);
           }
         }, 500);
       })
@@ -116,13 +133,18 @@ const Recaptcha: React.FC<RecaptchaProps> = ({
   }, [isRecaptchaAvailable]);
   
   const renderRecaptcha = useCallback(() => {
-    if (!recaptchaRef.current || !isRecaptchaAvailable()) {
-      console.warn('Cannot render reCAPTCHA: DOM element or API not available');
+    if (!recaptchaRef.current) {
+      console.warn('Cannot render reCAPTCHA: DOM element not available');
+      return;
+    }
+    
+    if (!isRecaptchaAvailable()) {
+      console.warn('Cannot render reCAPTCHA: API not available');
       return;
     }
     
     // Prevent too many render attempts
-    if (renderAttempts > 3) {
+    if (renderAttempts > 2) {
       console.error('Maximum reCAPTCHA render attempts reached');
       setLoadError(true);
       return;
@@ -145,40 +167,52 @@ const Recaptcha: React.FC<RecaptchaProps> = ({
       // Clear any existing content to prevent ghosting/flashing
       if (recaptchaRef.current) {
         recaptchaRef.current.innerHTML = '';
-        
-        // Preserve data attributes
-        const dataAttributes = {};
-        Array.from(recaptchaRef.current.attributes).forEach(attr => {
-          if (attr.name.startsWith('data-')) {
-            dataAttributes[attr.name] = attr.value;
-          }
-        });
-        
-        Object.entries(dataAttributes).forEach(([key, value]) => {
-          recaptchaRef.current!.setAttribute(key, value as string);
-        });
       }
       
       // Add a small delay before rendering to ensure DOM stability
       setTimeout(() => {
         try {
-          if (!recaptchaRef.current) return;
+          if (!recaptchaRef.current || !isRecaptchaAvailable()) {
+            console.warn('reCAPTCHA render conditions not met during delayed render');
+            return;
+          }
           
           setRenderAttempts(prev => prev + 1);
-          recaptchaWidgetId.current = window.grecaptcha.render(recaptchaRef.current, {
-            sitekey: actualSitekey,
-            callback: (token: string) => {
+          
+          // Create an error handler for the callback
+          const safeCallback = (token: string) => {
+            try {
               console.log('reCAPTCHA callback received with token');
               onChange(token);
-            },
-            'expired-callback': () => {
+            } catch (error) {
+              console.error('Error in reCAPTCHA callback:', error);
+            }
+          };
+          
+          // Create safe error handlers
+          const safeExpiredCallback = () => {
+            try {
               console.log('reCAPTCHA token expired');
               onChange(null);
-            },
-            'error-callback': () => {
+            } catch (error) {
+              console.error('Error in reCAPTCHA expired callback:', error);
+            }
+          };
+          
+          const safeErrorCallback = () => {
+            try {
               console.log('reCAPTCHA encountered an error');
               onChange(null);
-            },
+            } catch (error) {
+              console.error('Error in reCAPTCHA error callback:', error);
+            }
+          };
+          
+          recaptchaWidgetId.current = window.grecaptcha.render(recaptchaRef.current, {
+            sitekey: actualSitekey,
+            callback: safeCallback,
+            'expired-callback': safeExpiredCallback,
+            'error-callback': safeErrorCallback,
             size: size
           });
           
@@ -200,13 +234,27 @@ const Recaptcha: React.FC<RecaptchaProps> = ({
           console.error('Error during delayed reCAPTCHA rendering:', error);
           setLoadError(true);
         }
-      }, 100);
+      }, 200);
       
     } catch (error) {
       console.error('Error rendering reCAPTCHA widget:', error);
       setLoadError(true);
     }
-  }, [actualSitekey, onChange, size, renderAttempts]);
+  }, [actualSitekey, onChange, size, renderAttempts, isRecaptchaAvailable]);
+  
+  useEffect(() => {
+    // Cleanup function to handle component unmount
+    return () => {
+      console.log('Cleaning up reCAPTCHA resources');
+      try {
+        if (recaptchaWidgetId.current !== null && isRecaptchaAvailable()) {
+          window.grecaptcha.reset(recaptchaWidgetId.current);
+        }
+      } catch (error) {
+        console.error('Error during reCAPTCHA cleanup:', error);
+      }
+    };
+  }, [isRecaptchaAvailable]);
   
   useEffect(() => {
     console.log('reCAPTCHA initialization attempt with sitekey available:', !!actualSitekey);
@@ -214,43 +262,59 @@ const Recaptcha: React.FC<RecaptchaProps> = ({
     // Clear any stale widget ID to prevent flashing on remounts
     recaptchaWidgetId.current = null;
     
-    if (isRecaptchaAvailable()) {
-      console.log('reCAPTCHA API is already available, rendering widget');
-      renderRecaptcha();
-      return;
-    }
-    
-    loadRecaptchaScript();
+    // Enforce a minimum delay to ensure DOM is ready
+    const initTimeout = setTimeout(() => {
+      try {
+        if (isRecaptchaAvailable()) {
+          console.log('reCAPTCHA API is already available, rendering widget');
+          renderRecaptcha();
+        } else {
+          console.log('reCAPTCHA API not available, loading script');
+          loadRecaptchaScript();
+        }
+      } catch (error) {
+        console.error('Error during reCAPTCHA initialization:', error);
+        setLoadError(true);
+      }
+    }, 100);
     
     const checkInterval = setInterval(() => {
-      if (isRecaptchaAvailable() && recaptchaRef.current) {
-        console.log('reCAPTCHA API detected during interval check');
-        clearInterval(checkInterval);
-        renderRecaptcha();
+      try {
+        if (isRecaptchaAvailable() && recaptchaRef.current && !recaptchaWidgetId.current) {
+          console.log('reCAPTCHA API detected during interval check');
+          renderRecaptcha();
+        }
+      } catch (error) {
+        console.error('Error during reCAPTCHA interval check:', error);
       }
-    }, 1000); // Increased interval to 1000ms to reduce frequency
+    }, 2000); // Increased interval to reduce frequency
     
     const timeout = setTimeout(() => {
       clearInterval(checkInterval);
       if (!isRecaptchaAvailable()) {
-        console.error('reCAPTCHA initialization timeout after 20 seconds');
+        console.error('reCAPTCHA initialization timeout after 15 seconds');
         setLoadError(true);
       }
-    }, 20000);
+    }, 15000);
+    
+    // Use window.onload to ensure everything is loaded
+    if (typeof window !== 'undefined') {
+      window.onload = () => {
+        try {
+          if (isRecaptchaAvailable() && recaptchaRef.current && !recaptchaWidgetId.current) {
+            console.log('reCAPTCHA API detected on window.onload');
+            renderRecaptcha();
+          }
+        } catch (error) {
+          console.error('Error during window.onload reCAPTCHA check:', error);
+        }
+      };
+    }
     
     return () => {
-      console.log('Cleaning up reCAPTCHA resources');
+      clearTimeout(initTimeout);
       clearInterval(checkInterval);
       clearTimeout(timeout);
-      
-      if (recaptchaWidgetId.current !== null && isRecaptchaAvailable()) {
-        try {
-          window.grecaptcha.reset(recaptchaWidgetId.current);
-          console.log('Reset reCAPTCHA widget during cleanup');
-        } catch (error) {
-          console.error('Error resetting reCAPTCHA during cleanup:', error);
-        }
-      }
     };
   }, [actualSitekey, isRecaptchaAvailable, loadRecaptchaScript, renderRecaptcha]);
   
@@ -265,6 +329,7 @@ const Recaptcha: React.FC<RecaptchaProps> = ({
     console.log('Manual retry of reCAPTCHA requested');
     resetState();
     setRenderAttempts(0);
+    scriptLoadAttemptRef.current = 0;
     
     // Clean up the existing script and reCAPTCHA state
     const existingScript = document.getElementById('recaptcha-script');
@@ -277,9 +342,6 @@ const Recaptcha: React.FC<RecaptchaProps> = ({
     const existingIframes = document.querySelectorAll('iframe[src*="recaptcha"]');
     existingIframes.forEach(iframe => iframe.remove());
     console.log('Removed existing reCAPTCHA iframes');
-    
-    // Reset script load attempt counter
-    scriptLoadAttemptRef.current = 0;
     
     // Reset the grecaptcha object to force a clean reload
     if (window.grecaptcha) {
@@ -300,7 +362,7 @@ const Recaptcha: React.FC<RecaptchaProps> = ({
 
   if (loadError || isError) {
     return (
-      <div className="border border-gray-300 rounded p-4 text-center bg-gray-50">
+      <div className="border border-gray-300 rounded p-4 text-center bg-gray-50" style={{ minHeight: '78px' }}>
         <p className="text-sm text-gray-700 font-medium">Unable to load CAPTCHA verification.</p>
         <p className="text-xs text-gray-600 mt-1">Please ensure cookies are enabled and try again.</p>
         <button 
@@ -317,7 +379,7 @@ const Recaptcha: React.FC<RecaptchaProps> = ({
   if (isLoading || scriptLoading) {
     return (
       <div className="g-recaptcha-loading">
-        <div className="border border-gray-300 rounded p-4 bg-gray-50 flex items-center justify-center min-h-[78px]">
+        <div className="border border-gray-300 rounded p-4 bg-gray-50 flex items-center justify-center" style={{ minHeight: '78px' }}>
           <svg className="animate-spin h-5 w-5 text-primary" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
@@ -334,6 +396,7 @@ const Recaptcha: React.FC<RecaptchaProps> = ({
       className="g-recaptcha" 
       data-sitekey={actualSitekey} 
       data-size={size}
+      style={{ minHeight: '78px' }}
     />
   );
 };
