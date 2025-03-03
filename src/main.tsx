@@ -72,6 +72,7 @@ const handleUnhandledRejection = (event) => {
       // Try invalidating commonly problematic queries
       queryClient.invalidateQueries({ queryKey: ['recaptcha_key'] });
       queryClient.invalidateQueries({ queryKey: ['map_config'] });
+      queryClient.invalidateQueries({ queryKey: ['settings'] });
       queryClient.invalidateQueries({ queryKey: ['locations'] });
     } catch (e) {
       console.error('Error invalidating queries:', e);
