@@ -6,21 +6,22 @@ const ScrollToTop = () => {
   const { pathname } = useLocation();
   const prevPathRef = useRef(pathname);
   const scrollInProgressRef = useRef(false);
-  const scrollAttemptCountRef = useRef(0);
+  const lastScrollTimeRef = useRef(0);
   
   useEffect(() => {
     // Only scroll to top if the path has actually changed and not in progress
     if (prevPathRef.current !== pathname && !scrollInProgressRef.current) {
       scrollInProgressRef.current = true;
       
-      // Track the number of consecutive scroll attempts to prevent infinite loops
-      if (Date.now() - scrollAttemptCountRef.current < 1000) {
-        console.warn('Multiple scroll attempts detected within 1 second, skipping this one');
+      // Throttle scroll attempts to prevent rapid consecutive scrolls
+      const now = Date.now();
+      if (now - lastScrollTimeRef.current < 500) {
+        console.log('Throttling scroll attempt - too soon after previous scroll');
         scrollInProgressRef.current = false;
         return;
       }
       
-      scrollAttemptCountRef.current = Date.now();
+      lastScrollTimeRef.current = now;
       
       console.log(`ScrollToTop: Scrolling to top due to path change from ${prevPathRef.current} to ${pathname}`);
       

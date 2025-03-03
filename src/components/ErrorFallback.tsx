@@ -15,7 +15,7 @@ const ErrorFallback = ({ error, resetErrorBoundary }: ErrorFallbackProps) => {
   // Refs to track component state
   const hasCleanedUp = useRef(false);
   const isMounted = useRef(true);
-  const resetTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const resetTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const recoveryAttemptCountRef = useRef(0);
   
   // Safer cleanup function
@@ -33,7 +33,7 @@ const ErrorFallback = ({ error, resetErrorBoundary }: ErrorFallbackProps) => {
     try {
       // Remove the error UI if it exists
       const errorUI = document.querySelector('.error-fallback');
-      if (errorUI && errorUI.parentNode) {
+      if (errorUI && errorUI.parentNode && errorUI.parentElement === errorUI.parentNode) {
         errorUI.parentNode.removeChild(errorUI);
       }
       

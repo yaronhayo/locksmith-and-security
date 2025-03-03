@@ -1,5 +1,5 @@
 
-import { ReactNode, useEffect, useState } from 'react';
+import { ReactNode, useEffect, useState, useRef } from 'react';
 import LoadingSpinner from '../LoadingSpinner';
 import { Button } from '../ui/button';
 import { RefreshCw } from 'lucide-react';
@@ -7,30 +7,69 @@ import { RefreshCw } from 'lucide-react';
 interface MapLoaderProps {
   children?: ReactNode;
   text?: string;
+  timeoutSeconds?: number;
 }
 
-const MapLoader = ({ children, text = "Loading map..." }: MapLoaderProps) => {
+const MapLoader = ({ 
+  children, 
+  text = "Loading map...",
+  timeoutSeconds = 15 
+}: MapLoaderProps) => {
   const [loadTime, setLoadTime] = useState(0);
   const [showRetryButton, setShowRetryButton] = useState(false);
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const isMountedRef = useRef(true);
   
   useEffect(() => {
-    // Track loading time and offer retry after 10 seconds
+    isMountedRef.current = true;
     const startTime = Date.now();
     
-    const interval = setInterval(() => {
+    // Clear any existing interval
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+    }
+    
+    // Track loading time and offer retry after specified seconds
+    intervalRef.current = setInterval(() => {
+      if (!isMountedRef.current) return;
+      
       const elapsed = Math.floor((Date.now() - startTime) / 1000);
       setLoadTime(elapsed);
       
-      if (elapsed > 10 && !showRetryButton) {
+      if (elapsed > timeoutSeconds && !showRetryButton) {
         setShowRetryButton(true);
       }
     }, 1000);
     
-    return () => clearInterval(interval);
-  }, [showRetryButton]);
+    return () => {
+      isMountedRef.current = false;
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+        intervalRef.current = null;
+      }
+    };
+  }, [showRetryButton, timeoutSeconds]);
   
   const handleRetry = () => {
-    // Reload the current window
+    // First clear Google Maps state if it exists
+    try {
+      if (window.google && window.google.maps) {
+        // @ts-ignore - Remove the API
+        if (window.google._maps_) {
+          // @ts-ignore
+          delete window.google._maps_;
+        }
+      }
+      
+      if (window.initGoogleMaps) {
+        // @ts-ignore
+        window.initGoogleMaps = undefined;
+      }
+    } catch (e) {
+      console.error("Error cleaning up maps before retry:", e);
+    }
+    
+    // Then reload the window
     window.location.reload();
   };
 

@@ -2,126 +2,63 @@
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 
-// In-memory cache
-let mapConfigCache: { apiKey: string } | null = null;
+// Fallback API key to use if the database request fails
+const FALLBACK_MAP_KEY = "";
 
-// Retry counter to prevent infinite retries
-let mapConfigRetryCount = 0;
-const MAX_RETRIES = 3;
-
-// Environment check that works in browser
-const isDevelopment = () => {
-  return window.location.hostname === 'localhost' || 
-         window.location.hostname === '127.0.0.1' ||
-         window.location.hostname.includes('.lovableproject.com');
-};
-
-/**
- * Clears the map config cache - useful for retries
- */
-export const clearMapConfigCache = () => {
-  mapConfigCache = null;
-  mapConfigRetryCount = 0;
-};
-
-/**
- * Fetches the Google Maps API key from Supabase settings
- */
-const fetchMapConfig = async (): Promise<{ apiKey: string }> => {
-  // Return from cache if available
-  if (mapConfigCache) {
-    console.log("Using cached map config");
-    return mapConfigCache;
-  }
-  
-  // If we've exceeded max retries, use a fallback key to prevent infinite retries
-  if (mapConfigRetryCount >= MAX_RETRIES) {
-    console.log("Using fallback map config after max retries");
-    const fallbackKey = "AIzaSyDtXM78yIhe-GIMQqRLttRIlqe7S7Msdcg"; // Public fallback key with restrictions
-    mapConfigCache = { apiKey: fallbackKey };
-    return mapConfigCache;
-  }
-  
-  mapConfigRetryCount++;
-  
-  try {
-    // In development, fetch from Supabase
-    if (isDevelopment()) {
-      console.log("Fetching map config from Supabase (dev mode)");
-      
-      // Switch from using the object format to array format to fix the 406 error
-      const { data, error } = await supabase
-        .from("settings")
-        .select("value")
-        .eq("key", "google_maps_api_key");
-
-      if (error) {
-        console.error("Error fetching map config:", error);
-        
-        // Use a fallback key if there's an error
-        console.warn("Using fallback API key after Supabase error");
-        const fallbackKey = "AIzaSyDtXM78yIhe-GIMQqRLttRIlqe7S7Msdcg"; // Public fallback key with restrictions
-        mapConfigCache = { apiKey: fallbackKey };
-        return mapConfigCache;
-      }
-
-      // Check if data is an array and has elements
-      if (!data || !Array.isArray(data) || data.length === 0) {
-        console.error("No Google Maps API key found in settings");
-        
-        // Use a fallback key if no key found
-        console.warn("Using fallback API key due to missing key in settings");
-        const fallbackKey = "AIzaSyDtXM78yIhe-GIMQqRLttRIlqe7S7Msdcg"; // Public fallback key with restrictions
-        mapConfigCache = { apiKey: fallbackKey };
-        return mapConfigCache;
-      }
-
-      // Cache the result
-      mapConfigCache = { apiKey: data[0].value };
-      return mapConfigCache;
-    } else {
-      // In production, we can use a more optimized approach
-      console.log("Using production map config approach");
-      
-      // This would be the API key set in your environment
-      // For safety, we'll still check Supabase as a fallback
-      const { data, error } = await supabase
-        .from("settings")
-        .select("value")
-        .eq("key", "google_maps_api_key");
-
-      if (error || !data || data.length === 0) {
-        console.warn("Using fallback API key mechanism");
-        
-        // Use a fallback mechanism (could be an Edge Function or directly from env)
-        const fallbackKey = "AIzaSyDtXM78yIhe-GIMQqRLttRIlqe7S7Msdcg"; // Public fallback key with restrictions
-        mapConfigCache = { apiKey: fallbackKey };
-        return mapConfigCache;
-      }
-
-      mapConfigCache = { apiKey: data[0].value };
-      return mapConfigCache;
-    }
-  } catch (error) {
-    console.error("Error in fetchMapConfig:", error);
-    
-    // Use a fallback key if there's an exception
-    console.warn("Using fallback API key after exception");
-    const fallbackKey = "AIzaSyDtXM78yIhe-GIMQqRLttRIlqe7S7Msdcg"; // Public fallback key with restrictions
-    mapConfigCache = { apiKey: fallbackKey };
-    return mapConfigCache;
-  }
-};
-
-/**
- * React hook to access the Google Maps API key
- */
 export const useMapConfig = () => {
   return useQuery({
-    queryKey: ["map_config"],
-    queryFn: fetchMapConfig,
-    staleTime: 1000 * 60 * 60, // 1 hour
-    retry: 1, // Limit retries to prevent infinite loops
-    retryDelay: (attempt) => Math.min(1000 * 2 ** attempt, 10000),
+    queryKey: ['map_config'],
+    queryFn: async () => {
+      try {
+        // First try the "select value" approach
+        let { data, error } = await supabase
+          .from('settings')
+          .select('value')
+          .eq('key', 'google_maps_api_key')
+          .single();
+
+        // If we get a 406 Not Acceptable error, the query might be malformed
+        // Try again with a different format
+        if (error && error.code === '406') {
+          console.warn('Received 406 error for map config, trying alternative format');
+          
+          // Try alternative array format
+          const { data: arrayData, error: arrayError } = await supabase
+            .from('settings')
+            .select('*')
+            .eq('key', 'google_maps_api_key');
+            
+          if (arrayError) {
+            console.error('Error fetching map config (alternative format):', arrayError);
+            return FALLBACK_MAP_KEY;
+          }
+          
+          // Extract value from array result if we have data
+          if (arrayData && arrayData.length > 0) {
+            return arrayData[0].value || FALLBACK_MAP_KEY;
+          }
+          
+          return FALLBACK_MAP_KEY;
+        }
+
+        if (error) {
+          console.error('Error fetching map config:', error);
+          return FALLBACK_MAP_KEY;
+        }
+
+        return data?.value || FALLBACK_MAP_KEY;
+      } catch (err) {
+        console.error('Unexpected error in map config fetch:', err);
+        return FALLBACK_MAP_KEY;
+      }
+    },
+    retry: 2,
+    staleTime: 300000, // 5 minutes
+    gcTime: 900000, // 15 minutes
+    meta: {
+      onError: (error: Error) => {
+        console.error('Error in map config query:', error);
+      }
+    }
   });
 };

@@ -13,14 +13,17 @@ interface DesktopNavigationLinkProps {
 
 const DesktopNavigationLink = ({ path, label, isActive, className }: DesktopNavigationLinkProps) => {
   const handleClick = useCallback((e: React.MouseEvent) => {
-    // Avoid scrolling if we're already on the same page
+    // Prevent navigation if already on the page
     if (window.location.pathname === path) {
       e.preventDefault();
+      e.stopPropagation(); // Stop event propagation
+      console.log(`DesktopNavigationLink: Already on ${path}, preventing navigation`);
       return;
     }
     
-    // Let the ScrollToTop component handle the scrolling
+    // Let default navigation behavior continue
     console.log(`DesktopNavigationLink: Navigating to ${path}`);
+    // The Router and ScrollToTop components will handle the rest
   }, [path]);
 
   return (

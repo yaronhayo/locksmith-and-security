@@ -16,19 +16,17 @@ const MobileNavigationLink = ({
   className = "" 
 }: MobileNavigationLinkProps) => {
   const handleClick = useCallback((e: React.MouseEvent) => {
-    // Avoid scrolling if we're already on the same page
+    // Only prevent default for same page navigation
     if (window.location.pathname === path) {
       e.preventDefault();
+      e.stopPropagation(); // Stop event propagation
+      console.log(`MobileNavigationLink: Already on ${path}, preventing navigation`);
       return;
     }
     
-    // Only scroll if not prevented
-    try {
-      console.log(`MobileNavigationLink: Navigating to ${path}`);
-      // Let the ScrollToTop component handle the scrolling
-    } catch (err) {
-      console.error("Error handling navigation click:", err);
-    }
+    // Just let the navigation happen naturally
+    console.log(`MobileNavigationLink: Navigating to ${path}`);
+    // Let the Router and ScrollToTop handle the rest
   }, [path]);
 
   return (
