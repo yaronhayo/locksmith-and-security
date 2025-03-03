@@ -38,7 +38,12 @@ const RecaptchaField = ({ onChange, error, className = "" }: RecaptchaFieldProps
   
   return (
     <div className={`w-full overflow-x-auto ${className}`}>
-      <div key={`recaptcha-${retryCount}`} className="relative">
+      <div 
+        key={`recaptcha-${retryCount}`} 
+        className="relative"
+        // Apply a stable minimum height to prevent layout shifts
+        style={{ minHeight: '78px' }}
+      >
         <Recaptcha 
           onChange={handleRecaptchaChange} 
         />
