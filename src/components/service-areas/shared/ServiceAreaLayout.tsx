@@ -31,16 +31,34 @@ const ServiceAreaLayout = memo(({ areaSlug }: ServiceAreaLayoutProps) => {
   const faqSchema = useMemo(() => {
     if (!schemas || schemas.length === 0) return undefined;
     
-    const faqByType = schemas.find(schema => 'type' in schema && schema.type === 'FAQPage');
-    if (faqByType) return faqByType as FAQSchema;
+    const faqByType = schemas.find(schema => {
+      // Check if it has a type property
+      if ('type' in schema && schema.type === 'FAQPage') {
+        return true;
+      }
+      
+      // Check for direct @type property (schema without wrapper)
+      if (schema && typeof schema === 'object' && "@type" in schema && schema["@type"] === 'FAQPage') {
+        return true;
+      }
+      
+      return false;
+    });
     
-    const faqByDataType = schemas.find(schema => 
-      'data' in schema && 
-      schema.data && 
-      schema.data["@type"] === 'FAQPage'
-    );
+    if (faqByType) {
+      // If schema has type/data structure, return as FAQSchema
+      if ('type' in faqByType && 'data' in faqByType) {
+        return faqByType as FAQSchema;
+      }
+      
+      // If it's a direct schema object, wrap it properly
+      return {
+        type: 'FAQPage',
+        data: faqByType
+      } as FAQSchema;
+    }
     
-    return faqByDataType as FAQSchema | undefined;
+    return undefined;
   }, [schemas]);
   
   const isLoading = settingsLoading || locationsLoading;
@@ -57,21 +75,16 @@ const ServiceAreaLayout = memo(({ areaSlug }: ServiceAreaLayoutProps) => {
   const pageDescription = `Professional locksmith services in ${location.name}. Licensed & insured experts providing residential, commercial & auto solutions with fast 24/7 response.`;
 
   const typedSchemas: Schema[] = schemas.map(schema => {
+    // If already in correct format
     if ('type' in schema && 'data' in schema) {
       return schema as Schema;
     }
     
-    if (schema && typeof schema === 'object') {
-      const schemaType = schema["@type"] || 'Unknown';
-      return {
-        type: schemaType,
-        data: schema
-      };
-    }
-    
+    // Convert direct schema objects to proper format
+    const schemaType = schema["@type"] || 'Unknown';
     return {
-      type: 'Unknown',
-      data: schema || {}
+      type: schemaType,
+      data: schema
     };
   });
 
