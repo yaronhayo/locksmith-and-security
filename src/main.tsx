@@ -2,7 +2,13 @@
 import React from 'react'
 import './index.css'
 import { setupGlobalErrorHandlers, setupWhiteScreenDetection, detectQuirksMode } from './utils/errorHandlers';
-import { checkForCSPIssues, setupPartitionedCookies, fixQuirksModeInIframes } from './utils/cspUtils';
+import { 
+  checkForCSPIssues, 
+  setupPartitionedCookies, 
+  fixQuirksModeInIframes, 
+  addCorsToThirdPartyRequests,
+  fixRecaptchaIframeLoading
+} from './utils/cspUtils';
 import { initializeApp } from './utils/appInitialization';
 
 // Setup error handling
@@ -13,6 +19,12 @@ setupWhiteScreenDetection();
 
 // Check for quirks mode issues
 detectQuirksMode();
+
+// Add CORS handling for third-party requests
+addCorsToThirdPartyRequests();
+
+// Fix reCAPTCHA iframe loading issues
+fixRecaptchaIframeLoading();
 
 // Check for CSP issues that might prevent scripts from loading
 console.log('Checking for potential CSP issues at startup...');

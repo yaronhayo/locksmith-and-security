@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ReCAPTCHA from 'react-google-recaptcha';
 import { useRecaptchaKey } from '@/hooks/useRecaptchaKey';
 import { Skeleton } from './skeleton';
@@ -14,6 +14,97 @@ interface RecaptchaProps {
 const Recaptcha: React.FC<RecaptchaProps> = ({ onChange }) => {
   const { data: siteKey, isLoading, error } = useRecaptchaKey();
   const [showInfo, setShowInfo] = useState(false);
+  const [recaptchaLoaded, setRecaptchaLoaded] = useState(false);
+
+  useEffect(() => {
+    // Check if reCAPTCHA script is already loaded
+    const existingScript = document.querySelector('script[src*="recaptcha/api.js"]');
+    if (!existingScript && siteKey) {
+      // Add preconnect for faster loading
+      const addPreconnect = (domain: string) => {
+        const link = document.createElement('link');
+        link.rel = 'preconnect';
+        link.href = domain;
+        link.crossOrigin = 'anonymous';
+        document.head.appendChild(link);
+      };
+      
+      addPreconnect('https://www.google.com');
+      addPreconnect('https://www.gstatic.com');
+      
+      // Ensure proper DOCTYPE for iframe content
+      const corsMetaTag = document.createElement('meta');
+      corsMetaTag.httpEquiv = 'Access-Control-Allow-Origin';
+      corsMetaTag.content = '*';
+      document.head.appendChild(corsMetaTag);
+      
+      // Load reCAPTCHA script with proper attributes
+      const recaptchaScript = document.createElement('script');
+      recaptchaScript.src = "https://www.google.com/recaptcha/api.js";
+      recaptchaScript.async = true;
+      recaptchaScript.defer = true;
+      recaptchaScript.onload = () => {
+        console.log('reCAPTCHA script loaded successfully');
+        setRecaptchaLoaded(true);
+      };
+      recaptchaScript.onerror = (e) => {
+        console.error('Failed to load reCAPTCHA script:', e);
+      };
+      document.head.appendChild(recaptchaScript);
+      
+      return () => {
+        // Cleanup
+        if (document.head.contains(corsMetaTag)) {
+          document.head.removeChild(corsMetaTag);
+        }
+      };
+    } else if (existingScript) {
+      setRecaptchaLoaded(true);
+    }
+  }, [siteKey]);
+
+  // Apply fix for stylesheets that fail to load
+  useEffect(() => {
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.type === 'childList') {
+          mutation.addedNodes.forEach((node) => {
+            if (node.nodeName === 'IFRAME') {
+              const iframe = node as HTMLIFrameElement;
+              
+              if (iframe.src && iframe.src.includes('recaptcha')) {
+                iframe.onload = () => {
+                  try {
+                    // Fix Quirks Mode if we can access the iframe
+                    if (iframe.contentDocument && 
+                        iframe.contentDocument.compatMode === 'BackCompat') {
+                      
+                      // Add DOCTYPE to fix Quirks Mode
+                      const doc = iframe.contentDocument;
+                      if (doc.open) {
+                        const html = doc.documentElement.outerHTML;
+                        doc.open();
+                        doc.write(`<!DOCTYPE html>${html}`);
+                        doc.close();
+                      }
+                    }
+                  } catch (e) {
+                    // Expected for cross-origin iframes
+                  }
+                };
+              }
+            }
+          });
+        }
+      });
+    });
+    
+    observer.observe(document.body, { childList: true, subtree: true });
+    
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
 
   if (isLoading) {
     return <Skeleton className="h-[78px] w-full max-w-[304px] mx-auto" />;

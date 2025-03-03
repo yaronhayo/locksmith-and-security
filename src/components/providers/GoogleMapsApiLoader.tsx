@@ -1,5 +1,5 @@
 
-import React, { useEffect, useState, ReactNode } from 'react';
+import React, { useEffect, useState, ReactNode } from "react";
 import { toast } from 'sonner';
 
 interface GoogleMapsApiLoaderProps {
@@ -41,6 +41,19 @@ const GoogleMapsApiLoader: React.FC<GoogleMapsApiLoaderProps> = ({
     corsMetaTag.httpEquiv = 'Access-Control-Allow-Origin';
     corsMetaTag.content = '*';
     document.head.appendChild(corsMetaTag);
+    
+    // Add preconnect for Google Maps domains
+    const addPreconnect = (domain: string) => {
+      const link = document.createElement('link');
+      link.rel = 'preconnect';
+      link.href = domain;
+      link.crossOrigin = 'anonymous';
+      document.head.appendChild(link);
+    };
+    
+    addPreconnect('https://maps.googleapis.com');
+    addPreconnect('https://maps.gstatic.com');
+    addPreconnect('https://fonts.googleapis.com');
 
     // Load Google Maps API
     const script = document.createElement("script");
@@ -53,6 +66,28 @@ const GoogleMapsApiLoader: React.FC<GoogleMapsApiLoaderProps> = ({
     window.initGoogleMaps = () => {
       console.log("Google Maps API loaded successfully with key:", apiKey.substring(0, 5) + "...");
       onLoaded();
+      
+      // Inject DOCTYPE into any Google Maps iframes
+      setTimeout(() => {
+        const iframes = document.querySelectorAll('iframe');
+        iframes.forEach(iframe => {
+          if (iframe.src && iframe.src.includes('maps.googleapis.com')) {
+            try {
+              if (iframe.contentDocument && iframe.contentDocument.compatMode === 'BackCompat') {
+                const doc = iframe.contentDocument;
+                if (doc.open) {
+                  const html = doc.documentElement.outerHTML;
+                  doc.open();
+                  doc.write(`<!DOCTYPE html>${html}`);
+                  doc.close();
+                }
+              }
+            } catch (e) {
+              // Expected for cross-origin iframes
+            }
+          }
+        });
+      }, 1000);
     };
     
     // Handle error

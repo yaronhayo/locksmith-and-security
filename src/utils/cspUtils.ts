@@ -95,15 +95,20 @@ const detectCookieRestrictions = () => {
   // Test partitioned cookie
   document.cookie = "testPartitionedCookie=1; path=/; SameSite=None; Secure; Partitioned; max-age=60";
   
+  // Set a test cookie for our own domain that should always work
+  document.cookie = "testSiteCookie=1; path=/; max-age=60";
+  
   setTimeout(() => {
     const hasCookie = document.cookie.indexOf("testCookie=") !== -1;
     const hasThirdPartyCookie = document.cookie.indexOf("testThirdPartyCookie=") !== -1;
     const hasPartitionedCookie = document.cookie.indexOf("testPartitionedCookie=") !== -1;
+    const hasSiteCookie = document.cookie.indexOf("testSiteCookie=") !== -1;
     
     console.log('Cookie test results:', {
       standardCookies: hasCookie ? 'working' : 'blocked',
       thirdPartyCookies: hasThirdPartyCookie ? 'working' : 'may be restricted',
-      partitionedCookies: hasPartitionedCookie ? 'working' : 'may not be supported'
+      partitionedCookies: hasPartitionedCookie ? 'working' : 'may not be supported',
+      siteCookies: hasSiteCookie ? 'working' : 'blocked'
     });
     
     if (hasCookie && !hasThirdPartyCookie) {
@@ -189,4 +194,117 @@ export const fixQuirksModeInIframes = () => {
       }
     });
   }, 3000);
+};
+
+// Fix for CORS issues with reCAPTCHA and other third-party resources
+export const addCorsToThirdPartyRequests = () => {
+  // Function to add CORS headers to a request
+  const addCorsToRequest = (request: XMLHttpRequest, origOpen: Function) => {
+    // Override open method to add CORS headers
+    request.open = function() {
+      const args = Array.prototype.slice.call(arguments);
+      const url = args[1];
+      
+      // Check if URL is for a third-party resource that needs CORS
+      if (url && typeof url === 'string' && (
+        url.includes('google.com') || 
+        url.includes('gstatic.com') || 
+        url.includes('recaptcha') ||
+        url.includes('doubleclick.net')
+      )) {
+        // Add crossorigin attribute for CORS requests
+        this.withCredentials = true;
+      }
+      
+      return origOpen.apply(this, args);
+    };
+  };
+  
+  // If XHR is used, patch it for CORS
+  if (window.XMLHttpRequest) {
+    const origOpen = XMLHttpRequest.prototype.open;
+    
+    Object.defineProperty(XMLHttpRequest.prototype, 'open', {
+      configurable: true,
+      get: function() {
+        return function() {
+          addCorsToRequest(this, origOpen);
+          return origOpen.apply(this, arguments);
+        };
+      }
+    });
+  }
+  
+  // Also fix fetch API if it's used
+  if (window.fetch) {
+    const origFetch = window.fetch;
+    window.fetch = function(input, init) {
+      if (input && typeof input === 'string' && (
+        input.includes('google.com') || 
+        input.includes('gstatic.com') || 
+        input.includes('recaptcha') ||
+        input.includes('doubleclick.net')
+      )) {
+        init = init || {};
+        init.credentials = 'include';
+        init.mode = 'cors';
+      }
+      return origFetch.call(this, input, init);
+    };
+  }
+};
+
+// Fix recaptcha loading issues with DOCTYPE
+export const fixRecaptchaIframeLoading = () => {
+  // Add preconnect for recaptcha domains to improve loading speed
+  const addPreconnect = (domain: string) => {
+    const link = document.createElement('link');
+    link.rel = 'preconnect';
+    link.href = domain;
+    link.crossOrigin = 'anonymous';
+    document.head.appendChild(link);
+  };
+  
+  addPreconnect('https://www.google.com');
+  addPreconnect('https://www.gstatic.com');
+  addPreconnect('https://www.recaptcha.net');
+  
+  // Add handler to dynamically correct loaded iframes
+  const observer = new MutationObserver((mutations) => {
+    mutations.forEach((mutation) => {
+      if (mutation.type === 'childList') {
+        mutation.addedNodes.forEach((node) => {
+          if (node.nodeName === 'IFRAME') {
+            const iframe = node as HTMLIFrameElement;
+            
+            // Add proper DOCTYPE to any new iframes
+            if (iframe.src && (
+              iframe.src.includes('recaptcha') ||
+              iframe.src.includes('google.com')
+            )) {
+              iframe.onload = () => {
+                try {
+                  if (iframe.contentDocument && 
+                      iframe.contentDocument.compatMode === 'BackCompat') {
+                    
+                    const doc = iframe.contentDocument;
+                    if (doc.open) {
+                      const html = doc.documentElement.outerHTML;
+                      doc.open();
+                      doc.write(`<!DOCTYPE html>${html}`);
+                      doc.close();
+                    }
+                  }
+                } catch (e) {
+                  // Expected for cross-origin iframes
+                }
+              };
+            }
+          }
+        });
+      }
+    });
+  });
+  
+  observer.observe(document.body, { childList: true, subtree: true });
 };

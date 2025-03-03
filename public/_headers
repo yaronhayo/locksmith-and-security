@@ -47,8 +47,22 @@
   X-Content-Type-Options: nosniff
   X-Frame-Options: DENY
   Referrer-Policy: strict-origin-when-cross-origin
-  Content-Security-Policy: default-src 'self' https:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.gpteng.co https://www.googletagmanager.com https://www.clarity.ms https://www.google-analytics.com https://maps.googleapis.com https://mtbgayqzjrxjjmsjikcg.supabase.co https://www.google.com https://www.gstatic.com https://*.clarity.ms https://*.google-analytics.com https://*.googletagmanager.com https://*.google.com https://*.doubleclick.net https://connect.facebook.net; connect-src 'self' https: wss:; img-src 'self' data: https:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; frame-src https://www.google.com https://recaptcha.google.com https://www.googletagmanager.com https://*.doubleclick.net https://www.facebook.com https://*.facebook.com;
+  Content-Security-Policy: default-src 'self' https:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.gpteng.co https://www.googletagmanager.com https://www.clarity.ms https://www.google-analytics.com https://maps.googleapis.com https://mtbgayqzjrxjjmsjikcg.supabase.co https://www.google.com https://www.gstatic.com https://*.clarity.ms https://*.google-analytics.com https://*.googletagmanager.com https://*.google.com https://*.doubleclick.net https://connect.facebook.net; connect-src 'self' https: wss:; img-src 'self' data: https:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://www.gstatic.com; font-src 'self' https://fonts.gstatic.com; frame-src https://www.google.com https://recaptcha.google.com https://www.googletagmanager.com https://*.doubleclick.net https://www.facebook.com https://*.facebook.com;
   Permissions-Policy: geolocation=self
   Access-Control-Allow-Origin: *
   Access-Control-Allow-Methods: GET, POST, OPTIONS
   Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept, Authorization, x-client-info, apikey
+  Access-Control-Max-Age: 86400
+
+# Enable CORS for specific API endpoints
+/api/*
+  Access-Control-Allow-Origin: *
+  Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS
+  Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept, Authorization, x-client-info, apikey
+  Access-Control-Max-Age: 86400
+
+# Allow embedding in iframes for development purposes
+/dev-server/*
+  Access-Control-Allow-Origin: *
+  X-Frame-Options: ALLOWALL
+  Content-Security-Policy: frame-ancestors *
