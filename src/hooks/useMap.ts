@@ -63,16 +63,19 @@ export const useMapConfig = () => {
         }
         
         // Check for any other keys that might contain "google" and "maps"
+        console.log("Trying to find any Google Maps related keys...");
         const settingsResult = await supabase
           .from('settings')
           .select('key, value')
-          .or('key.like.%google%,key.like.%maps%,key.like.%map%')
-          .catch(err => {
-            console.error("Error fetching potential map keys:", err);
-            return { data: null, error: err };
-          });
+          .or('key.like.%google%,key.like.%maps%,key.like.%map%');
           
-        if (!settingsResult.error && settingsResult.data) {
+        // Handle potential errors after the query
+        if (settingsResult.error) {
+          console.error("Error fetching potential map keys:", settingsResult.error);
+          // Continue to fallback as we don't want to throw here
+        }
+          
+        if (settingsResult.data) {
           console.log("Available settings:", settingsResult.data);
           
           // Try to find a key that looks like a Google Maps API key
