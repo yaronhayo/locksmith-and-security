@@ -1,5 +1,5 @@
 
-import { Suspense } from 'react';
+import { Suspense, useEffect } from 'react';
 import PageLayout from "@/components/layouts/PageLayout";
 import LoadingSpinner from "@/components/LoadingSpinner";
 import { motion, AnimatePresence } from "framer-motion";
@@ -9,6 +9,27 @@ interface HomeLayoutProps {
 }
 
 const HomeLayout = ({ children }: HomeLayoutProps) => {
+  useEffect(() => {
+    console.log('HomeLayout mounted');
+    
+    // Help clear any error UI that might be showing
+    const errorUI = document.querySelector('.error-fallback');
+    if (errorUI && errorUI.parentNode) {
+      try {
+        errorUI.parentNode.removeChild(errorUI);
+      } catch (e) {
+        console.error("Error removing error UI:", e);
+      }
+    }
+    
+    // Remove loading class on mount
+    document.body.classList.remove('loading');
+    
+    return () => {
+      console.log('HomeLayout unmounted');
+    };
+  }, []);
+  
   const enhancedSchema = [{
     type: 'WebPage',
     data: {

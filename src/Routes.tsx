@@ -40,6 +40,16 @@ const RouteWrapper = memo(({ element }: { element: ReactNode }) => {
             // @ts-ignore - Clean up callback
             window.initGoogleMaps = undefined;
           }
+          
+          // Force clear any error UI elements
+          const errorUI = document.querySelector('.error-fallback');
+          if (errorUI && errorUI.parentNode) {
+            try {
+              errorUI.parentNode.removeChild(errorUI);
+            } catch (e) {
+              console.error("Error removing error UI:", e);
+            }
+          }
         }
       }}
     >
@@ -63,13 +73,7 @@ const Routes = () => {
   useEffect(() => {
     // Only run this once to prevent repeated logging and class manipulation
     if (!routeMountedRef.current) {
-      console.log('Routes mounted - checking for duplicate headers');
-      
-      // Only log header count in development
-      if (process.env.NODE_ENV === 'development') {
-        const headers = document.querySelectorAll('header');
-        console.log(`Found ${headers.length} header elements in the DOM`);
-      }
+      console.log('Routes mounted - initializing...');
       
       // Set mounted flag
       routeMountedRef.current = true;
@@ -77,16 +81,17 @@ const Routes = () => {
       // Remove loading class on mount
       document.body.classList.remove('loading');
       
-      // Mark routes as initialized
-      setRoutesInitialized(true);
+      // Mark routes as initialized with slight delay to prevent
+      // double initialization issues
+      const initTimer = setTimeout(() => {
+        setRoutesInitialized(true);
+        console.log('Routes fully initialized');
+      }, 100);
+      
+      return () => {
+        clearTimeout(initTimer);
+      };
     }
-    
-    return () => {
-      // Only log if we've actually mounted properly before
-      if (routeMountedRef.current) {
-        console.log('Routes unmounting');
-      }
-    };
   }, []);
   
   // Map route data to Route components

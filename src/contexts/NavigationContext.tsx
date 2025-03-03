@@ -1,59 +1,65 @@
 
-import { createContext, useContext, ReactNode, useCallback, useRef, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import React, { createContext, useContext, useEffect, useState, useRef } from 'react';
+import { useLocation } from 'react-router-dom';
 
-interface NavigationContextType {
-  navigateTo: (path: string) => void;
-  currentPath: string;
-  isActive: (path: string) => boolean;
-}
+type NavigationContextType = {
+  isMobileMenuOpen: boolean;
+  setIsMobileMenuOpen: (isOpen: boolean) => void;
+  selectedPath: string;
+  setSelectedPath: (path: string) => void;
+};
 
 const NavigationContext = createContext<NavigationContextType | undefined>(undefined);
 
-export const NavigationProvider = ({ children }: { children: ReactNode }) => {
-  const navigate = useNavigate();
+export const NavigationProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [selectedPath, setSelectedPath] = useState('');
   const location = useLocation();
-  const navigationInProgressRef = useRef(false);
+  const navigationTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const prevPathRef = useRef(location.pathname);
   
-  const navigateTo = useCallback((path: string) => {
-    // Prevent duplicate navigation actions
-    if (navigationInProgressRef.current) {
-      return;
-    }
-    
-    // If we're already on this page, don't trigger unnecessary navigation
-    if (location.pathname === path) {
-      // Just scroll to top 
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      return;
-    }
-    
-    // Set navigation in progress flag
-    navigationInProgressRef.current = true;
-    
-    // Navigate and scroll to top
-    navigate(path);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-    
-    // Reset flag after navigation (with a small delay to prevent rapid clicks)
-    setTimeout(() => {
-      navigationInProgressRef.current = false;
-    }, 300);
-  }, [navigate, location.pathname]);
+  // Clean up timeouts when the component unmounts
+  useEffect(() => {
+    return () => {
+      if (navigationTimeoutRef.current) {
+        clearTimeout(navigationTimeoutRef.current);
+        navigationTimeoutRef.current = null;
+      }
+    };
+  }, []);
   
-  const isActive = useCallback((path: string) => {
-    if (path === '/') {
-      return location.pathname === '/';
+  // Update the selected path when the location changes
+  useEffect(() => {
+    // Add debouncing to prevent rapid navigation changes
+    if (prevPathRef.current === location.pathname) {
+      return; // Skip if the path hasn't actually changed
     }
-    return location.pathname.startsWith(path);
+    
+    console.log(`NavigationContext: Path changed from ${prevPathRef.current} to ${location.pathname}`);
+    prevPathRef.current = location.pathname;
+    
+    // Clear any existing timeout
+    if (navigationTimeoutRef.current) {
+      clearTimeout(navigationTimeoutRef.current);
+    }
+    
+    // Set a timeout to update the selected path
+    navigationTimeoutRef.current = setTimeout(() => {
+      setSelectedPath(location.pathname);
+      setIsMobileMenuOpen(false); // Close mobile menu on navigation
+      navigationTimeoutRef.current = null;
+    }, 50);
   }, [location.pathname]);
-  
+
   return (
-    <NavigationContext.Provider value={{ 
-      navigateTo, 
-      currentPath: location.pathname,
-      isActive
-    }}>
+    <NavigationContext.Provider
+      value={{
+        isMobileMenuOpen,
+        setIsMobileMenuOpen,
+        selectedPath,
+        setSelectedPath,
+      }}
+    >
       {children}
     </NavigationContext.Provider>
   );

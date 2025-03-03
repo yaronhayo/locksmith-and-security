@@ -73,21 +73,7 @@ const patchReactDOMRemoveChild = () => {
   }
 };
 
-// Safer error handler that won't break the app
-const safeErrorHandler = (handler) => {
-  return (event) => {
-    try {
-      handler(event);
-    } catch (e) {
-      console.error('Error in error handler (ironic):', e);
-    }
-  };
-};
-
-// Apply the patch before mounting the app
-patchReactDOMRemoveChild();
-
-// Improved UI rendering function with more safety checks
+// Improved UI rendering function with more error checking
 const renderErrorUI = (errorMessage = "Application failed to load properly") => {
   try {
     console.error('Rendering fallback error UI:', errorMessage);
@@ -97,8 +83,13 @@ const renderErrorUI = (errorMessage = "Application failed to load properly") => 
       return;
     }
     
-    // Only modify if the element isn't already showing an error
-    if (!rootElement.querySelector('.error-fallback')) {
+    // Only modify if the element isn't already showing an error and the error is severe
+    if (!rootElement.querySelector('.error-fallback') && 
+        !errorMessage.includes('ResizeObserver') && 
+        !errorMessage.includes('loading chunk') &&
+        !errorMessage.includes('Network request failed') && // Ignore network errors
+        !errorMessage.includes('Failed to fetch')) {
+      
       rootElement.innerHTML = `
         <div class="error-fallback" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif; padding: 20px; max-width: 500px; margin: 100px auto; text-align: center; border: 1px solid #e1e1e1; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
           <h1 style="color: #e63946; margin-bottom: 16px;">Something went wrong</h1>
@@ -115,44 +106,67 @@ const renderErrorUI = (errorMessage = "Application failed to load properly") => 
   }
 };
 
-// Improved global error handler
-const handleGlobalError = safeErrorHandler((event) => {
-  console.error('Global error caught:', event.error);
-  
-  // Prevent the error from causing a white screen if possible
-  if (event.preventDefault) event.preventDefault();
-  
-  // Only render error UI for real errors
-  if (event.error && !(event.error.message || '').includes('ResizeObserver')) {
-    renderErrorUI(event.error?.message || "An unexpected error occurred");
-  }
-});
-
-// Improved unhandled rejection handler
-const handleUnhandledRejection = safeErrorHandler((event) => {
-  console.error('Unhandled promise rejection caught:', event.reason);
-  
-  // Prevent the error from causing a white screen if possible
-  if (event.preventDefault) event.preventDefault();
-  
-  // Skip ResizeObserver errors as they're not fatal
-  const errorMsg = String(event.reason?.message || event.reason || '');
-  if (errorMsg.includes('ResizeObserver') || errorMsg.includes('loading chunk')) {
-    console.warn('Ignoring non-fatal error:', errorMsg);
-    return;
-  }
-  
-  // Handle invalidating queries
-  if (queryClient) {
-    try {
-      queryClient.invalidateQueries({ queryKey: ['map_config'] });
-    } catch (e) {
-      console.warn('Error invalidating queries:', e);
+// Improved global error handler with better filtering
+const handleGlobalError = (event) => {
+  try {
+    console.error('Global error caught:', event.error);
+    
+    // Prevent the error from causing a white screen if possible
+    if (event.preventDefault) event.preventDefault();
+    
+    // Skip rendering error UI for non-fatal errors
+    const errorMsg = String(event.error?.message || '');
+    if (errorMsg.includes('ResizeObserver') || 
+        errorMsg.includes('loading chunk') ||
+        errorMsg.includes('Network request failed') ||
+        errorMsg.includes('Failed to fetch') ||
+        errorMsg.includes('NetworkError') ||
+        errorMsg.includes('404')) {
+      console.warn('Ignoring non-fatal error:', errorMsg);
+      return;
     }
+    
+    // Only render error UI for real errors
+    renderErrorUI(errorMsg || "An unexpected error occurred");
+  } catch (e) {
+    console.error('Error in error handler (ironic):', e);
   }
-  
-  renderErrorUI(errorMsg || "An unexpected promise rejection occurred");
-});
+};
+
+// Improved unhandled rejection handler with better filtering
+const handleUnhandledRejection = (event) => {
+  try {
+    console.error('Unhandled promise rejection caught:', event.reason);
+    
+    // Prevent the error from causing a white screen if possible
+    if (event.preventDefault) event.preventDefault();
+    
+    // Skip non-fatal errors
+    const errorMsg = String(event.reason?.message || event.reason || '');
+    if (errorMsg.includes('ResizeObserver') || 
+        errorMsg.includes('loading chunk') ||
+        errorMsg.includes('Network request failed') ||
+        errorMsg.includes('Failed to fetch') ||
+        errorMsg.includes('NetworkError') ||
+        errorMsg.includes('404')) {
+      console.warn('Ignoring non-fatal error:', errorMsg);
+      return;
+    }
+    
+    // Handle invalidating queries
+    if (queryClient) {
+      try {
+        queryClient.invalidateQueries({ queryKey: ['map_config'] });
+      } catch (e) {
+        console.warn('Error invalidating queries:', e);
+      }
+    }
+    
+    renderErrorUI(errorMsg || "An unexpected promise rejection occurred");
+  } catch (e) {
+    console.error('Error in unhandled rejection handler:', e);
+  }
+};
 
 // Add global error handlers with improved safety
 window.addEventListener('error', handleGlobalError);
@@ -180,13 +194,21 @@ window.addEventListener('beforeunload', () => {
   }
 });
 
-// Use a safer timeout approach
+// Use a safer timeout approach - INCREASE TIMEOUT and make it more robust
 let globalAppTimeout = 0;
 try {
+  // Clear any existing timeout
+  if (globalAppTimeout) clearTimeout(globalAppTimeout);
+  
+  // Set a longer timeout (30 seconds)
   globalAppTimeout = window.setTimeout(() => {
-    console.warn('Application initialization timeout - 15 seconds elapsed');
-    // Don't render error UI automatically - this causes more problems than it solves
-  }, 15000);
+    console.warn('Application initialization timeout - 30 seconds elapsed');
+    // Check if app is actually loaded before showing error
+    const appContent = document.querySelector('main');
+    if (!appContent || !appContent.children || appContent.children.length === 0) {
+      renderErrorUI("Timeout while loading the application. Please try refreshing the page.");
+    }
+  }, 30000);
 } catch (e) {
   console.error('Error setting up timeout:', e);
 }

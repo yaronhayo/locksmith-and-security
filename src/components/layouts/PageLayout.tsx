@@ -64,13 +64,26 @@ const PageLayout: React.FC<PropsWithChildren<PageLayoutProps>> = ({
   const cleanupRef = useRef<(() => void) | null>(null);
   const isMounted = useRef(true);
   const didSetupObserver = useRef(false);
+  const mountTimeRef = useRef(Date.now());
   
   useEffect(() => {
     // Set mounted flag
     isMounted.current = true;
     
-    if (import.meta.env.DEV) {
-      console.log('PageLayout mounted');
+    console.log(`PageLayout mounted for page: ${title}`);
+    
+    // For debugging - track how long the page takes to mount
+    const mountTime = Date.now() - mountTimeRef.current;
+    console.log(`PageLayout mounting time: ${mountTime}ms`);
+    
+    // Remove any error UI that might be showing
+    const errorUI = document.querySelector('.error-fallback');
+    if (errorUI && errorUI.parentNode) {
+      try {
+        errorUI.parentNode.removeChild(errorUI);
+      } catch (e) {
+        console.error("Error removing error UI:", e);
+      }
     }
     
     // Prevent duplicate observer setup
@@ -101,10 +114,11 @@ const PageLayout: React.FC<PropsWithChildren<PageLayoutProps>> = ({
         }
       }
     };
-  }, []);
+  }, [title]);
 
+  // Show a loading state if needed
   if (isLoading) {
-    return <LoadingState timeoutMs={3000} />;
+    return <LoadingState timeoutMs={5000} />;
   }
 
   const baseUrl = 'https://247locksmithandsecurity.com';

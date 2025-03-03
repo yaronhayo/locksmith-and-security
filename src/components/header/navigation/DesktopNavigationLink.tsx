@@ -13,14 +13,15 @@ interface DesktopNavigationLinkProps {
 
 const DesktopNavigationLink = ({ path, label, isActive, className }: DesktopNavigationLinkProps) => {
   const handleClick = useCallback((e: React.MouseEvent) => {
-    // Only scroll if not prevented
-    try {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    } catch (err) {
-      // Fallback for older browsers
-      window.scrollTo(0, 0);
+    // Avoid scrolling if we're already on the same page
+    if (window.location.pathname === path) {
+      e.preventDefault();
+      return;
     }
-  }, []);
+    
+    // Let the ScrollToTop component handle the scrolling
+    console.log(`DesktopNavigationLink: Navigating to ${path}`);
+  }, [path]);
 
   return (
     <Link

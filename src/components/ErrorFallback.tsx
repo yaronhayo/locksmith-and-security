@@ -10,12 +10,13 @@ interface ErrorFallbackProps {
 
 const ErrorFallback = ({ error, resetErrorBoundary }: ErrorFallbackProps) => {
   // Log the error to console for debugging
-  console.error("Caught error:", error);
+  console.error("Caught error in ErrorFallback:", error);
   
   // Refs to track component state
   const hasCleanedUp = useRef(false);
   const isMounted = useRef(true);
-  const resetTimeoutRef = useRef<number | null>(null);
+  const resetTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const recoveryAttemptCountRef = useRef(0);
   
   // Safer cleanup function
   const cleanupTimeouts = useCallback(() => {
@@ -30,6 +31,12 @@ const ErrorFallback = ({ error, resetErrorBoundary }: ErrorFallbackProps) => {
     if (!isMounted.current) return;
     
     try {
+      // Remove the error UI if it exists
+      const errorUI = document.querySelector('.error-fallback');
+      if (errorUI && errorUI.parentNode) {
+        errorUI.parentNode.removeChild(errorUI);
+      }
+      
       // Target specific elements that might cause issues
       
       // 1. Clean up iframes safely
@@ -103,6 +110,18 @@ const ErrorFallback = ({ error, resetErrorBoundary }: ErrorFallbackProps) => {
     // Execute cleanup
     safelyCleanupDOM();
     
+    // Auto-recovery for timeout errors after 5 seconds
+    if (error.message?.includes('Timeout') && resetErrorBoundary && recoveryAttemptCountRef.current < 3) {
+      console.log(`Auto-recovery attempt ${recoveryAttemptCountRef.current + 1} for timeout error...`);
+      
+      resetTimeoutRef.current = setTimeout(() => {
+        if (isMounted.current && resetErrorBoundary) {
+          recoveryAttemptCountRef.current += 1;
+          resetErrorBoundary();
+        }
+      }, 5000);
+    }
+    
     return () => {
       // Mark component as unmounted
       isMounted.current = false;
@@ -120,7 +139,7 @@ const ErrorFallback = ({ error, resetErrorBoundary }: ErrorFallbackProps) => {
         console.debug("Error during unmount cleanup:", e);
       }
     };
-  }, [safelyCleanupDOM, cleanupTimeouts]);
+  }, [safelyCleanupDOM, cleanupTimeouts, error.message, resetErrorBoundary]);
 
   // Safely handle reset with debounce
   const handleReset = useCallback(() => {
@@ -138,8 +157,9 @@ const ErrorFallback = ({ error, resetErrorBoundary }: ErrorFallbackProps) => {
       hasCleanedUp.current = false;
       
       // Use timeout to avoid potential race conditions
-      resetTimeoutRef.current = window.setTimeout(() => {
+      resetTimeoutRef.current = setTimeout(() => {
         if (isMounted.current && resetErrorBoundary) {
+          console.log("User triggered error boundary reset");
           resetErrorBoundary();
         }
         resetTimeoutRef.current = null;
@@ -155,6 +175,11 @@ const ErrorFallback = ({ error, resetErrorBoundary }: ErrorFallbackProps) => {
     }
   }, [resetErrorBoundary, cleanupTimeouts]);
 
+  // If the error is a timeout, show a more informative message
+  const displayError = error.message?.includes('Timeout') 
+    ? "The application is taking too long to load. This might be due to a slow network connection or temporary server issues."
+    : (error.message || "An unexpected error occurred. Please try again.");
+
   return (
     <div className="flex min-h-[400px] w-full flex-col items-center justify-center p-8 text-center">
       <div className="mb-4 rounded-full bg-red-100 p-3">
@@ -162,7 +187,7 @@ const ErrorFallback = ({ error, resetErrorBoundary }: ErrorFallbackProps) => {
       </div>
       <h2 className="mb-2 text-2xl font-bold">Something went wrong</h2>
       <p className="mb-6 max-w-md text-gray-600">
-        {error.message || "An unexpected error occurred. Please try again."}
+        {displayError}
       </p>
       {resetErrorBoundary && (
         <Button 
