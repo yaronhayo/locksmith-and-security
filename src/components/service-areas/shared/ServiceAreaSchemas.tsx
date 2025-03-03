@@ -10,11 +10,15 @@ export const createServiceAreaSchemas = (
 ) => {
   if (!location) return [];
 
-  const breadcrumbSchema = createBreadcrumbSchema([
-    { name: "Home", url: "/" },
-    { name: "Service Areas", url: "/service-areas" },
-    { name: location.name, url: `/service-areas/${areaSlug}` }
-  ], "https://247locksmithandsecurity.com");
+  // Create schemas with consistent format (type + data properties)
+  const breadcrumbSchema = {
+    type: 'BreadcrumbList',
+    data: createBreadcrumbSchema([
+      { name: "Home", url: "/" },
+      { name: "Service Areas", url: "/service-areas" },
+      { name: location.name, url: `/service-areas/${areaSlug}` }
+    ], "https://247locksmithandsecurity.com")
+  };
 
   // Enhanced service schema with more structured data
   const serviceSchema = {
@@ -127,7 +131,18 @@ export const createServiceAreaSchemas = (
 
   const faqSchema = {
     type: 'FAQPage',
-    data: createFAQSchema(faqQuestions)
+    data: {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": faqQuestions.map(faq => ({
+        "@type": "Question",
+        "name": faq.question,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": faq.answer
+        }
+      }))
+    }
   };
 
   // Enhanced local business schema with more structured data
