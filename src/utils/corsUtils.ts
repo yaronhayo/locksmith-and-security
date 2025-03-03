@@ -9,10 +9,16 @@
  */
 export const addDocTypeToIframe = (iframe: HTMLIFrameElement): void => {
   try {
-    if (iframe.contentDocument && !iframe.contentDocument.doctype) {
-      const doctype = document.implementation.createDocumentType('html', '', '');
-      if (iframe.contentDocument.childNodes.length > 0) {
-        iframe.contentDocument.insertBefore(doctype, iframe.contentDocument.childNodes[0]);
+    if (iframe.contentDocument) {
+      // Check if document is in quirks mode
+      const isQuirksMode = iframe.contentDocument.compatMode === 'BackCompat';
+      
+      // If in quirks mode or missing doctype, add the proper DOCTYPE
+      if (isQuirksMode || !iframe.contentDocument.doctype) {
+        const doctype = document.implementation.createDocumentType('html', '', '');
+        if (iframe.contentDocument.childNodes.length > 0) {
+          iframe.contentDocument.insertBefore(doctype, iframe.contentDocument.childNodes[0]);
+        }
       }
     }
   } catch (e) {
@@ -62,5 +68,30 @@ export const checkThirdPartyCookies = async (): Promise<boolean> => {
   } catch (e) {
     console.error('Error checking third-party cookies:', e);
     return false;
+  }
+};
+
+/**
+ * Safe wrapper for joinAdInterestGroup to handle deprecated features
+ * @param group - The interest group configuration
+ * @param lifetime - Lifetime in seconds
+ */
+export const safeJoinAdInterestGroup = (group: any, lifetime: number): void => {
+  try {
+    // Clone the group to modify it without affecting the original
+    const updatedGroup = { ...group };
+    
+    // Handle the deprecated dailyUpdateUrl field
+    if (updatedGroup.dailyUpdateUrl && !updatedGroup.updateUrl) {
+      updatedGroup.updateUrl = updatedGroup.dailyUpdateUrl;
+      delete updatedGroup.dailyUpdateUrl;
+    }
+    
+    // Call the joinAdInterestGroup function with the updated group
+    if (navigator.joinAdInterestGroup) {
+      navigator.joinAdInterestGroup(updatedGroup, lifetime);
+    }
+  } catch (e) {
+    console.debug('Error joining ad interest group:', e);
   }
 };

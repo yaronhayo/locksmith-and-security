@@ -15,11 +15,26 @@ export function setupIframeDocTypeFixer() {
       
       iframes.forEach((iframe, index) => {
         try {
-          if (iframe.contentDocument && !iframe.contentDocument.doctype) {
-            console.log(`Fixing DOCTYPE for iframe #${index}`);
-            const doctype = document.implementation.createDocumentType('html', '', '');
-            if (iframe.contentDocument.childNodes.length > 0) {
-              iframe.contentDocument.insertBefore(doctype, iframe.contentDocument.childNodes[0]);
+          if (iframe.contentDocument) {
+            // Check if document is in quirks mode
+            const isQuirksMode = iframe.contentDocument.compatMode === 'BackCompat';
+            
+            // If in quirks mode or missing doctype, add the proper DOCTYPE
+            if (isQuirksMode || !iframe.contentDocument.doctype) {
+              console.log(`Fixing DOCTYPE for iframe #${index} - was in ${isQuirksMode ? 'Quirks Mode' : 'No DOCTYPE'}`);
+              
+              // Create a new doctype
+              const doctype = document.implementation.createDocumentType('html', '', '');
+              
+              // Insert it at the beginning of the document
+              if (iframe.contentDocument.childNodes.length > 0) {
+                iframe.contentDocument.insertBefore(doctype, iframe.contentDocument.childNodes[0]);
+              }
+              
+              // Force a reflow to apply the DOCTYPE
+              const tempDiv = iframe.contentDocument.createElement('div');
+              iframe.contentDocument.body?.appendChild(tempDiv);
+              iframe.contentDocument.body?.removeChild(tempDiv);
             }
           }
         } catch (e) {

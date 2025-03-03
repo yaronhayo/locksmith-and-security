@@ -149,10 +149,16 @@
             const iframes = document.querySelectorAll('iframe');
             iframes.forEach(iframe => {
               try {
-                if (iframe.contentDocument && !iframe.contentDocument.doctype) {
-                  const doctype = document.implementation.createDocumentType('html', '', '');
-                  if (iframe.contentDocument.childNodes.length > 0) {
-                    iframe.contentDocument.insertBefore(doctype, iframe.contentDocument.childNodes[0]);
+                if (iframe.contentDocument) {
+                  // Check if document is in quirks mode
+                  const isQuirksMode = iframe.contentDocument.compatMode === 'BackCompat';
+                  
+                  // If in quirks mode or missing doctype, add the proper DOCTYPE
+                  if (isQuirksMode || !iframe.contentDocument.doctype) {
+                    const doctype = document.implementation.createDocumentType('html', '', '');
+                    if (iframe.contentDocument.childNodes.length > 0) {
+                      iframe.contentDocument.insertBefore(doctype, iframe.contentDocument.childNodes[0]);
+                    }
                   }
                 }
               } catch (e) {
