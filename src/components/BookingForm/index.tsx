@@ -50,6 +50,10 @@ const BookingForm = ({ preselectedService }: BookingFormProps) => {
     setAddress(newAddress);
   };
 
+  // Convert string values to boolean for the FormContainer props
+  const isAllKeysLost = allKeysLost === "yes";
+  const isUnusedKey = hasUnusedKey === "yes";
+
   return (
     <FormContainer
       isSubmitting={isSubmitting}
@@ -59,10 +63,10 @@ const BookingForm = ({ preselectedService }: BookingFormProps) => {
       showVehicleInfo={showVehicleInfo}
       recaptchaToken={recaptchaToken}
       address={address}
-      allKeysLost={allKeysLost === true}
-      hasUnusedKey={hasUnusedKey === true}
-      showAllKeysLostField={showAllKeysLostField === true}
-      showUnusedKeyField={showUnusedKeyField === true}
+      allKeysLost={isAllKeysLost}
+      hasUnusedKey={isUnusedKey}
+      showAllKeysLostField={showAllKeysLostField}
+      showUnusedKeyField={showUnusedKeyField}
     >
       <PersonalInfoFields errors={errors} isSubmitting={isSubmitting} />
       

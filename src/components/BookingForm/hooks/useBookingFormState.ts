@@ -5,8 +5,8 @@ import { carKeyServices, allKeysLostServices, unusedKeyServices } from "../const
 export const useBookingFormState = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [selectedService, setSelectedService] = useState("");
-  const [allKeysLost, setAllKeysLost] = useState("no");
-  const [hasUnusedKey, setHasUnusedKey] = useState("no");
+  const [allKeysLost, setAllKeysLost] = useState<string>("no");
+  const [hasUnusedKey, setHasUnusedKey] = useState<string>("no");
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   const handleServiceChange = useCallback((value: string) => {
