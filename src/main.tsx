@@ -20,7 +20,7 @@ const queryClient = new QueryClient({
   },
 })
 
-// Enhanced error logging function
+// Enhanced error logging function with CSP detection
 const logError = (error: any, info: string) => {
   console.error(`[Error] ${info}:`, error);
   
@@ -32,6 +32,19 @@ const logError = (error: any, info: string) => {
   // Check for specific error types
   if (error?.name === 'ChunkLoadError' || (error?.message && error.message.includes('Loading chunk'))) {
     console.error('[ChunkLoadError] This might be a code splitting issue');
+  }
+
+  // Check for potential CSP issues
+  if (error?.message && (
+    error.message.includes('Content Security Policy') || 
+    error.message.includes('CSP') ||
+    error.message.includes('script-src') ||
+    error.message.includes('Failed to load module script')
+  )) {
+    console.error('[CSP Error] Potential Content Security Policy violation', error);
+    
+    // Show toast notification for CSP errors
+    toast.error('Content Security Policy error. Some scripts might be blocked.');
   }
 
   // Log browser information for cross-domain debugging
@@ -47,18 +60,92 @@ const logError = (error: any, info: string) => {
   });
 }
 
+// Check for common CSP issues
+const checkForCSPIssues = () => {
+  try {
+    // Create a test script element to see if inline scripts are allowed
+    const testScript = document.createElement('script');
+    testScript.textContent = 'window._cspTest = true;';
+    document.head.appendChild(testScript);
+    
+    // Check if our script executed (would fail with CSP restrictions)
+    if (window._cspTest !== true) {
+      console.warn('CSP might be blocking inline scripts');
+    }
+    
+    // Test external script loading
+    const externalScriptUrls = [
+      'https://www.googletagmanager.com/gtm.js',
+      'https://www.clarity.ms/tag',
+      'https://cdn.gpteng.co/gptengineer.js'
+    ];
+    
+    externalScriptUrls.forEach(url => {
+      const scriptTest = document.createElement('script');
+      scriptTest.src = url;
+      scriptTest.async = true;
+      
+      scriptTest.onerror = () => {
+        console.error(`CSP might be blocking external script: ${url}`);
+        toast.error(`Failed to load script from ${new URL(url).hostname}. Check CSP.`);
+      };
+      
+      document.head.appendChild(scriptTest);
+      // Remove test script after checking
+      setTimeout(() => document.head.removeChild(scriptTest), 1000);
+    });
+    
+  } catch (error) {
+    console.error('Error while checking for CSP issues:', error);
+  }
+};
+
 // Initialize hasRendered property
 if (typeof window !== 'undefined') {
   window.hasRendered = false;
+  
+  // Add CSP error detection to window object
+  window.cspErrors = [];
+  window._cspTest = false;
 }
 
 // Add global error handler to log any unhandled errors
 if (typeof window !== 'undefined') {
   window.addEventListener('error', (event) => {
+    // Check if this is a CSP error
+    if (event.message && event.message.includes('Content Security Policy')) {
+      window.cspErrors = window.cspErrors || [];
+      window.cspErrors.push({
+        message: event.message,
+        source: event.filename,
+        timestamp: new Date().toISOString()
+      });
+      console.error('[CSP Error]', event);
+    }
+    
     logError(event.error, 'Global error caught');
     
     // Show toast notification for errors
     toast.error('An error occurred. Please try refreshing the page.');
+  });
+
+  window.addEventListener('securitypolicyviolation', (event) => {
+    console.error('[CSP Violation]', {
+      violatedDirective: event.violatedDirective,
+      effectiveDirective: event.effectiveDirective,
+      blockedURI: event.blockedURI,
+      disposition: event.disposition,
+      sample: event.sample
+    });
+    
+    window.cspErrors = window.cspErrors || [];
+    window.cspErrors.push({
+      directive: event.violatedDirective,
+      blockedURI: event.blockedURI,
+      timestamp: new Date().toISOString()
+    });
+    
+    toast.error(`Content Security Policy blocked: ${event.blockedURI}`);
   });
 
   window.addEventListener('unhandledrejection', (event) => {
@@ -73,6 +160,11 @@ if (typeof window !== 'undefined') {
     if (window.hasRendered === false) {
       console.error('Potential white screen detected - application did not render within 5 seconds');
       
+      // Check if we have CSP errors
+      if (window.cspErrors && window.cspErrors.length > 0) {
+        console.error('CSP errors detected:', window.cspErrors);
+      }
+      
       // Try to render a basic message if possible
       const rootElement = document.getElementById('root');
       if (rootElement) {
@@ -84,6 +176,7 @@ if (typeof window !== 'undefined') {
             <button style="background: #2563EB; color: white; padding: 0.5rem 1rem; border: none; border-radius: 0.25rem; cursor: pointer;" onclick="location.reload()">Reload Page</button>
             <p style="margin-top: 1rem; font-size: 0.75rem; color: #6B7280;">Technical info: ${window.location.toString()}</p>
             <p style="margin-top: 0.5rem; font-size: 0.75rem; color: #6B7280;">CSP issues may prevent scripts from loading. Check console for details.</p>
+            ${window.cspErrors && window.cspErrors.length ? `<p style="color: red; font-size: 0.8rem;">CSP blocked: ${window.cspErrors.map(e => e.blockedURI || e.message).join(', ')}</p>` : ''}
           </div>
         `;
       }
@@ -93,22 +186,7 @@ if (typeof window !== 'undefined') {
 
 // Check for CSP issues that might prevent scripts from loading
 console.log('Checking for potential CSP issues at startup...');
-try {
-  // Try to detect if there are elements or resources that might be blocked by CSP
-  if (document.querySelector('script[src*="googletagmanager.com"]') ||
-      document.querySelector('script[src*="clarity.ms"]') ||
-      document.querySelector('script[src*="gpteng.co"]')) {
-    console.log('External scripts are present in the document, checking if they loaded...');
-    
-    // Create a test function to see if external scripts are accessible
-    if (typeof window.dataLayer === 'undefined' || 
-        typeof window.clarity === 'undefined') {
-      console.warn('External analytics scripts appear to be blocked. This may indicate CSP issues.');
-    }
-  }
-} catch (error) {
-  console.error('Error while checking for CSP issues:', error);
-}
+checkForCSPIssues();
 
 // Render the application with error boundaries
 const renderApp = () => {
@@ -160,6 +238,28 @@ const renderApp = () => {
   }
 };
 
-// Execute the render function
-console.log('Initializing application...');
-renderApp();
+// Wait for DOM to be fully loaded
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', renderApp);
+} else {
+  // Execute the render function
+  console.log('Initializing application...');
+  renderApp();
+}
+
+// Fix TypeScript errors by adding these declarations to the window object
+declare global {
+  interface Window {
+    hasRendered: boolean;
+    _cspTest: boolean;
+    cspErrors: Array<{
+      message?: string;
+      directive?: string;
+      blockedURI?: string;
+      source?: string;
+      timestamp: string;
+    }>;
+    dataLayer: any[];
+    clarity: any;
+  }
+}

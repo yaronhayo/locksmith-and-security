@@ -36,8 +36,8 @@ export default defineConfig(({ mode }) => ({
     port: 8080,
     cors: true, // Enable CORS for all origins
     headers: {
-      // Add permissive CSP during development to avoid blocking resources
-      'Content-Security-Policy': "default-src * 'unsafe-inline' 'unsafe-eval'; script-src * 'unsafe-inline' 'unsafe-eval'; connect-src * 'unsafe-inline'; img-src * data: blob: 'unsafe-inline'; frame-src *; style-src * 'unsafe-inline';"
+      // Completely disable CSP during development to avoid script blocking
+      'Content-Security-Policy': mode === 'development' ? '' : "default-src * 'unsafe-inline' 'unsafe-eval'; script-src * 'unsafe-inline' 'unsafe-eval'; connect-src * 'unsafe-inline'; img-src * data: blob: 'unsafe-inline'; frame-src *; style-src * 'unsafe-inline';"
     }
   },
   plugins: [
