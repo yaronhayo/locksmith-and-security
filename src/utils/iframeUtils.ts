@@ -1,159 +1,61 @@
 
 /**
- * Sets up a function to fix iframe DOCTYPEs, which can cause rendering issues in some browsers
- * 
- * @returns A cleanup function to remove event listeners
+ * Fixes doctypes in iframes to prevent Quirks Mode
+ * This is especially important for third-party iframes like DoubleClick
  */
-export function setupIframeDocTypeFixer() {
-  console.log('Setting up iframe DOCTYPE fixer');
-  
-  // Function to inject proper DOCTYPE into iframes
-  const fixIframeDoctype = () => {
-    try {
-      const iframes = document.querySelectorAll('iframe');
-      console.log(`Found ${iframes.length} iframes to check`);
-      
-      iframes.forEach((iframe, index) => {
-        try {
-          if (iframe.contentDocument) {
-            // Check if document is in quirks mode
-            const isQuirksMode = iframe.contentDocument.compatMode === 'BackCompat';
-            
-            // If in quirks mode or missing doctype, add the proper DOCTYPE
-            if (isQuirksMode || !iframe.contentDocument.doctype) {
-              console.log(`Fixing DOCTYPE for iframe #${index} - was in ${isQuirksMode ? 'Quirks Mode' : 'No DOCTYPE'}`);
-              
-              // First attempt: Create and insert a new doctype
-              const doctype = document.implementation.createDocumentType('html', '', '');
-              
-              if (iframe.contentDocument.childNodes.length > 0) {
-                iframe.contentDocument.insertBefore(doctype, iframe.contentDocument.childNodes[0]);
-              }
-              
-              // Force a reflow to apply the DOCTYPE
-              const tempDiv = iframe.contentDocument.createElement('div');
-              iframe.contentDocument.body?.appendChild(tempDiv);
-              iframe.contentDocument.body?.removeChild(tempDiv);
-              
-              // Check if we were successful in fixing the mode
-              const newMode = iframe.contentDocument.compatMode;
-              console.log(`Iframe #${index} mode after fix: ${newMode === 'CSS1Compat' ? 'Standards Mode' : 'Still in Quirks Mode'}`);
-              
-              // If still in Quirks Mode, try more aggressive approach
-              if (newMode === 'BackCompat') {
-                console.log(`Attempting more aggressive DOCTYPE fix for iframe #${index}`);
-                
-                try {
-                  // Try to rewrite the entire document with a DOCTYPE
-                  const originalContent = iframe.contentDocument.documentElement.outerHTML;
-                  const newContent = `<!DOCTYPE html>${originalContent}`;
-                  
-                  // Write the new content with DOCTYPE
-                  iframe.contentDocument.open();
-                  iframe.contentDocument.write(newContent);
-                  iframe.contentDocument.close();
-                  
-                  // Force a second reflow to ensure changes take effect
-                  const secondTempDiv = iframe.contentDocument.createElement('div');
-                  iframe.contentDocument.body?.appendChild(secondTempDiv);
-                  iframe.contentDocument.body?.removeChild(secondTempDiv);
-                  
-                  console.log(`Iframe #${index} mode after aggressive fix: ${iframe.contentDocument.compatMode}`);
-                } catch (rewriteError) {
-                  console.debug(`Could not rewrite iframe #${index} content:`, rewriteError);
-                }
-              }
-            }
-          }
-        } catch (e) {
-          // Skip CORS-restricted iframes
-          console.debug(`Could not access iframe #${index} content due to CORS policy:`, e);
-        }
-      });
-    } catch (error) {
-      console.error('Error fixing iframe doctypes:', error);
-    }
-  };
-  
-  // Handle third-party iframes dynamically loaded with postMessage communication
-  const handlePostMessageForIframes = (event: MessageEvent) => {
-    try {
-      // Only process messages from trusted origins (you may need to adjust this)
-      if (event.data === 'CHECK_DOCTYPE') {
-        setTimeout(fixIframeDoctype, 100); // Small delay to ensure iframe is loaded
-      }
-    } catch (error) {
-      console.debug('Error handling postMessage:', error);
-    }
-  };
-  
-  // Set up a mutation observer to handle dynamically added iframes
-  let observer;
-  let intervalId;
-  
+export const fixIframeDoctype = () => {
   try {
-    console.log('Setting up mutation observer for iframes');
-    observer = new MutationObserver((mutations) => {
-      let shouldFix = false;
-      
-      mutations.forEach((mutation) => {
-        if (mutation.type === 'childList' && mutation.addedNodes.length) {
-          // Check if any of the added nodes are iframes or could contain iframes
-          for (let i = 0; i < mutation.addedNodes.length; i++) {
-            const node = mutation.addedNodes[i];
-            if (node.nodeName === 'IFRAME' || 
-                (node instanceof Element && node.querySelectorAll && node.querySelectorAll('iframe').length > 0)) {
-              shouldFix = true;
-              break;
+    const iframes = document.querySelectorAll('iframe');
+    iframes.forEach(iframe => {
+      try {
+        if (iframe.contentDocument) {
+          // Only try to access cross-origin iframes that we can access
+          // Check if document is in quirks mode
+          const isQuirksMode = iframe.contentDocument.compatMode === 'BackCompat';
+          
+          // If in quirks mode or missing doctype, add the proper DOCTYPE
+          if (isQuirksMode || !iframe.contentDocument.doctype) {
+            const doctype = document.implementation.createDocumentType('html', '', '');
+            if (iframe.contentDocument.childNodes.length > 0) {
+              iframe.contentDocument.insertBefore(doctype, iframe.contentDocument.childNodes[0]);
             }
           }
         }
-      });
-      
-      if (shouldFix) {
-        console.log('New iframes detected, fixing DOCTYPEs');
-        setTimeout(fixIframeDoctype, 10); // Small delay to ensure iframe is loaded
+      } catch (e) {
+        // Skip CORS-restricted iframes
+        console.debug('Could not access iframe content due to CORS policy');
       }
     });
-    
-    // Start observing the document with specific configuration
-    observer.observe(document.body, { 
-      childList: true, 
-      subtree: true,
-      attributes: false,
-      characterData: false
-    });
-    
-    // Add postMessage listener for third-party communication
-    window.addEventListener('message', handlePostMessageForIframes, false);
-    
-    // Run the fixer initially
-    fixIframeDoctype();
-    
-    // Set up a periodic check to catch any iframes that might have been missed
-    intervalId = setInterval(() => {
-      console.log('Running periodic iframe DOCTYPE check');
-      fixIframeDoctype();
-    }, 3000); // Reduced from 5000ms to 3000ms for more frequent checks
-    
-    // Return a cleanup function
-    return () => {
-      console.log('Cleaning up iframe DOCTYPE fixer');
-      if (observer) {
-        observer.disconnect();
-      }
-      if (intervalId) {
-        clearInterval(intervalId);
-      }
-      window.removeEventListener('message', handlePostMessageForIframes);
-    };
   } catch (error) {
-    console.error('Error setting up iframe doctype fixer:', error);
-    return () => {
-      if (intervalId) {
-        clearInterval(intervalId);
-      }
-      window.removeEventListener('message', handlePostMessageForIframes);
-    }; // Return empty cleanup function
+    console.error('Error fixing iframe doctypes:', error);
   }
-}
+};
+
+/**
+ * Sets up a MutationObserver to fix doctypes in dynamically added iframes
+ */
+export const setupIframeObserver = () => {
+  // Run immediately
+  fixIframeDoctype();
+  
+  // Set up observer for dynamically added iframes
+  const observer = new MutationObserver((mutations) => {
+    mutations.forEach((mutation) => {
+      if (mutation.type === 'childList' && mutation.addedNodes.length) {
+        fixIframeDoctype();
+      }
+    });
+  });
+  
+  // Start observing the document
+  observer.observe(document.body, { childList: true, subtree: true });
+  
+  // Also set a periodic check every 2 seconds
+  const intervalId = setInterval(fixIframeDoctype, 2000);
+  
+  // Return a cleanup function to remove the observer and interval if needed
+  return () => {
+    observer.disconnect();
+    clearInterval(intervalId);
+  };
+};

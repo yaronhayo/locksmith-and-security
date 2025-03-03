@@ -10,6 +10,8 @@ import PageHero from './PageHero';
 import ScrollToTop from '../ScrollToTop';
 import { SchemaScripts } from '../meta/SchemaScripts';
 import { BreadcrumbItem } from '@/routes/types';
+import { HreflangTags } from '../meta/HreflangTags';
+import { setupIframeObserver } from '@/utils/iframeUtils';
 
 interface PageLayoutProps {
   title: string;
@@ -29,6 +31,8 @@ interface PageLayoutProps {
   isLoading?: boolean;
   schema?: { type: string; data: any }[];
   preselectedService?: string;
+  languages?: Array<{lang: string, path?: string}>;
+  defaultLang?: string;
 }
 
 /**
@@ -53,15 +57,27 @@ const PageLayout: React.FC<PropsWithChildren<PageLayoutProps>> = ({
   isLoading = false,
   schema = [],
   breadcrumbs = [],
-  preselectedService
+  preselectedService,
+  languages,
+  defaultLang = 'en-US'
 }) => {
   useEffect(() => {
     console.log('PageLayout mounted');
+    
+    // Set up iframe doctype fixer
+    const cleanupIframeObserver = setupIframeObserver();
+    
+    return () => {
+      // Clean up the observer when component unmounts
+      cleanupIframeObserver();
+    };
   }, []);
 
   if (isLoading) {
     return <LoadingState />;
   }
+
+  const baseUrl = 'https://247locksmithandsecurity.com';
 
   return (
     <>
@@ -76,6 +92,15 @@ const PageLayout: React.FC<PropsWithChildren<PageLayoutProps>> = ({
         nofollow={nofollow}
         modifiedDate={modifiedDate}
       />
+      
+      {/* Add hreflang tags if multiple languages are supported */}
+      {languages && (
+        <HreflangTags 
+          baseUrl={baseUrl} 
+          languages={languages} 
+          defaultLang={defaultLang} 
+        />
+      )}
       
       <SchemaScripts schemas={schema} />
       

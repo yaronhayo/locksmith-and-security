@@ -2,26 +2,35 @@
 import { Helmet } from "react-helmet";
 
 interface HreflangTagsProps {
-  alternateLanguages?: {
+  baseUrl: string;
+  languages?: Array<{
     lang: string;
-    href: string;
-  }[];
-  defaultHref: string;
+    path?: string;
+  }>;
   defaultLang?: string;
 }
 
-export const HreflangTags = ({ 
-  alternateLanguages = [], 
-  defaultHref, 
-  defaultLang = "en-US" 
+export const HreflangTags = ({
+  baseUrl,
+  languages = [{ lang: "en-US", path: "" }],
+  defaultLang = "en-US"
 }: HreflangTagsProps) => {
+  // Ensure baseUrl doesn't end with a slash
+  const cleanBaseUrl = baseUrl.endsWith("/") ? baseUrl.slice(0, -1) : baseUrl;
+
   return (
     <Helmet>
-      <link rel="alternate" hrefLang={defaultLang} href={defaultHref} />
-      <link rel="alternate" hrefLang="x-default" href={defaultHref} />
+      {/* Default language version */}
+      <link rel="alternate" hreflang="x-default" href={cleanBaseUrl} />
       
-      {alternateLanguages.map(({ lang, href }) => (
-        <link key={lang} rel="alternate" hrefLang={lang} href={href} />
+      {/* Language-specific versions */}
+      {languages.map(({ lang, path = "" }) => (
+        <link 
+          key={lang} 
+          rel="alternate" 
+          hreflang={lang} 
+          href={`${cleanBaseUrl}${path ? `/${path}` : ''}`} 
+        />
       ))}
     </Helmet>
   );
