@@ -1,11 +1,11 @@
 
-import { ReactNode, useEffect, useState, useCallback } from "react";
-import { LoadScript, LoadScriptProps } from "@react-google-maps/api";
+import { ReactNode, useEffect, useState } from "react";
+import { LoadScript } from "@react-google-maps/api";
 import { useMapConfig } from "@/hooks/useMap";
 import MapError from "../map/MapError";
 import MapLoader from "../map/MapLoader";
 
-const libraries: LoadScriptProps['libraries'] = ['places'];
+const libraries: ("places")[] = ['places'];
 
 interface GoogleMapsProviderProps {
   children: ReactNode;
@@ -14,35 +14,15 @@ interface GoogleMapsProviderProps {
 const GoogleMapsProvider = ({ children }: GoogleMapsProviderProps) => {
   const { data: apiKey, error: apiKeyError, isLoading } = useMapConfig();
   const [scriptError, setScriptError] = useState<string | null>(null);
-  const [scriptLoaded, setScriptLoaded] = useState(false);
 
-  const handleLoad = useCallback(() => {
-    console.log("Google Maps script loaded successfully");
-    setScriptLoaded(true);
-    setScriptError(null);
-  }, []);
-
-  const handleError = useCallback((error: Error) => {
-    console.error("Error loading Google Maps script:", error);
-    setScriptError(error.message || "Failed to load Google Maps");
-  }, []);
-
+  // Prevent duplicate script loading
   useEffect(() => {
-    if (apiKeyError) {
-      console.error("API Key Error:", apiKeyError);
+    const existingScript = document.querySelector('script[src*="maps.googleapis.com/maps/api"]');
+    if (existingScript) {
+      console.log("Google Maps script already loaded, reusing existing script");
+      return;
     }
-  }, [apiKeyError]);
-
-  // For debugging
-  useEffect(() => {
-    console.log("GoogleMapsProvider state:", { 
-      apiKey: apiKey ? "Available" : "Not available", 
-      isLoading, 
-      hasError: !!apiKeyError,
-      scriptLoaded,
-      scriptError
-    });
-  }, [apiKey, isLoading, apiKeyError, scriptLoaded, scriptError]);
+  }, []);
 
   if (isLoading) return <MapLoader />;
   if (apiKeyError) return <MapError error={apiKeyError.message} />;
@@ -53,9 +33,12 @@ const GoogleMapsProvider = ({ children }: GoogleMapsProviderProps) => {
     <LoadScript 
       googleMapsApiKey={apiKey}
       libraries={libraries}
-      onLoad={handleLoad}
-      onError={handleError}
+      onError={(error) => {
+        console.error("Error loading Google Maps script:", error);
+        setScriptError(error?.message || "Failed to load Google Maps");
+      }}
       loadingElement={<MapLoader />}
+      preventGoogleFontsLoading
     >
       {children}
     </LoadScript>

@@ -1,12 +1,12 @@
-
-import React, { CSSProperties } from "react";
+import React, { useCallback } from "react";
 import { GoogleMap as GoogleMapComponent } from "@react-google-maps/api";
 import MapLoader from "./MapLoader";
 import MapMarkers from "./MapMarkers";
 import MapError from "./MapError";
-import { MapMarker } from "@/types/service-area";
 import MapControls from "./MapControls";
+import { MapMarker } from "@/types/service-area";
 import { useGoogleMap } from "./useGoogleMap";
+import { clearMapConfigCache } from "@/hooks/useMap";
 
 const mapOptions: google.maps.MapOptions = {
   zoomControl: false, // We'll use our custom controls
@@ -32,12 +32,6 @@ interface GoogleMapProps {
   onClick?: (e: google.maps.MapMouseEvent) => void;
 }
 
-const containerStyle: CSSProperties = {
-  width: '100%',
-  height: '100%',
-  minHeight: '500px'
-};
-
 const GoogleMap = ({
   markers = [],
   highlightedMarker = null,
@@ -58,6 +52,12 @@ const GoogleMap = ({
     centerMap
   } = useGoogleMap(markers, highlightedMarker, showAllMarkers, zoom, center);
 
+  const handleError = useCallback((error: Error) => {
+    console.error("Map error:", error);
+    // Attempt to recover by clearing cache and reloading config
+    clearMapConfigCache();
+  }, []);
+
   if (mapError) {
     return <MapError error={mapError} />;
   }
@@ -71,13 +71,14 @@ const GoogleMap = ({
       )}
       <div className={`w-full h-full ${isLoading ? 'opacity-0' : 'opacity-100'} transition-opacity duration-300`}>
         <GoogleMapComponent
-          mapContainerStyle={containerStyle}
+          mapContainerStyle={{ width: '100%', height: '100%' }}
           center={center}
           zoom={zoom}
           options={mapOptions}
           onClick={onClick}
           onLoad={onLoadCallback}
           onUnmount={onUnmountCallback}
+          onError={handleError}
         >
           {!isLoading && visibleMarkers.length > 0 && (
             <MapMarkers
@@ -97,4 +98,4 @@ const GoogleMap = ({
   );
 };
 
-export default GoogleMap;
+export default React.memo(GoogleMap);

@@ -1,60 +1,29 @@
 
-import { Component, ReactNode } from 'react';
-import { AlertTriangle } from 'lucide-react';
-import { Button } from "@/components/ui/button";
-import { logToService } from "@/utils/performanceMonitoring";
+import React from 'react';
+import { ErrorBoundary } from 'react-error-boundary';
+import MapError from './MapError';
+import { clearMapConfigCache } from '@/hooks/useMap';
 
-interface Props {
-  children: ReactNode;
+interface MapErrorBoundaryProps {
+  children: React.ReactNode;
 }
 
-interface State {
-  hasError: boolean;
-  error: Error | null;
-}
-
-export class MapErrorBoundary extends Component<Props, State> {
-  public state: State = {
-    hasError: false,
-    error: null
+const MapErrorBoundary = ({ children }: MapErrorBoundaryProps) => {
+  const handleError = (error: Error) => {
+    console.error('Map Error Boundary caught error:', error);
+    // Clear cache on error to allow fresh reload
+    clearMapConfigCache();
   };
 
-  public static getDerivedStateFromError(error: Error): State {
-    return { hasError: true, error };
-  }
+  return (
+    <ErrorBoundary
+      FallbackComponent={({ error }) => <MapError error={error.message} />}
+      onError={handleError}
+      onReset={() => window.location.reload()}
+    >
+      {children}
+    </ErrorBoundary>
+  );
+};
 
-  public componentDidCatch(error: Error) {
-    logToService('error', 'Map Error:', {
-      message: error.message,
-      stack: error.stack,
-      timestamp: new Date().toISOString()
-    });
-  }
-
-  private handleRetry = () => {
-    this.setState({ hasError: false, error: null });
-  };
-
-  public render() {
-    if (this.state.hasError) {
-      return (
-        <div className="p-4 bg-red-50 rounded-lg text-center">
-          <AlertTriangle className="h-12 w-12 text-red-500 mx-auto mb-4" />
-          <h3 className="text-lg font-semibold text-red-900 mb-2">Map Error</h3>
-          <p className="text-red-700 mb-4">
-            {this.state.error?.message || 'An error occurred while loading the map'}
-          </p>
-          <Button 
-            onClick={this.handleRetry}
-            variant="secondary"
-            className="mx-auto"
-          >
-            Retry Loading Map
-          </Button>
-        </div>
-      );
-    }
-
-    return this.props.children;
-  }
-}
+export default MapErrorBoundary;
