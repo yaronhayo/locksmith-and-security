@@ -1,3 +1,4 @@
+
 import React, { useCallback } from "react";
 import { GoogleMap as GoogleMapComponent } from "@react-google-maps/api";
 import MapLoader from "./MapLoader";
@@ -52,11 +53,31 @@ const GoogleMap = ({
     centerMap
   } = useGoogleMap(markers, highlightedMarker, showAllMarkers, zoom, center);
 
-  const handleError = useCallback((error: Error) => {
-    console.error("Map error:", error);
+  const handleMapError = useCallback(() => {
+    console.error("Map error occurred");
     // Attempt to recover by clearing cache and reloading config
     clearMapConfigCache();
   }, []);
+
+  // Register error handling on window
+  React.useEffect(() => {
+    const originalOnError = window.onerror;
+    window.onerror = (message, source, lineno, colno, error) => {
+      if (source?.includes('maps.googleapis.com') || message?.toString().includes('google')) {
+        console.error("Google Maps error detected:", message);
+        handleMapError();
+      }
+      // Call the original handler if it exists
+      if (originalOnError) {
+        return originalOnError(message, source, lineno, colno, error);
+      }
+      return false;
+    };
+
+    return () => {
+      window.onerror = originalOnError;
+    };
+  }, [handleMapError]);
 
   if (mapError) {
     return <MapError error={mapError} />;
@@ -78,7 +99,6 @@ const GoogleMap = ({
           onClick={onClick}
           onLoad={onLoadCallback}
           onUnmount={onUnmountCallback}
-          onError={handleError}
         >
           {!isLoading && visibleMarkers.length > 0 && (
             <MapMarkers

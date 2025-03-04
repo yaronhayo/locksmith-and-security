@@ -58,5 +58,5 @@ export const useMapConfig = () => {
 export const clearMapConfigCache = () => {
   const queryClient = useQueryClient();
   queryClient.invalidateQueries({ queryKey: MAP_CONFIG_QUERY_KEY });
+  console.log('Map config cache cleared');
 };
-
