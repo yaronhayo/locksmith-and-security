@@ -7,7 +7,7 @@ import MapError from "./MapError";
 import MapControls from "./MapControls";
 import { MapMarker } from "@/types/service-area";
 import { useGoogleMap } from "./useGoogleMap";
-import { clearMapConfigCache } from "@/hooks/useMap";
+import { clearApiKeyCache } from "@/hooks/useApiKeys";
 
 const mapOptions: google.maps.MapOptions = {
   zoomControl: false, // We'll use our custom controls
@@ -56,7 +56,7 @@ const GoogleMap = ({
   const handleMapError = useCallback(() => {
     console.error("Map error occurred");
     // Attempt to recover by clearing cache and reloading config
-    clearMapConfigCache();
+    clearApiKeyCache('maps');
   }, []);
 
   // Register error handling on window

@@ -1,3 +1,4 @@
+
 /// <reference types="vite/client" />
 
 interface Window {
@@ -5,6 +6,7 @@ interface Window {
   gtag?: (...args: any[]) => void;
   clarity?: (...args: any[]) => void;
   google: any;
+  grecaptcha: any;
 }
 
 interface LayoutShiftEntry extends PerformanceEntry {

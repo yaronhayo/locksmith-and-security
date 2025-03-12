@@ -1,11 +1,11 @@
 
 import { useEffect, useRef, useState } from "react";
 import { Input } from "./input";
-import { useMapConfig } from "@/hooks/useMap";
 import { InputHTMLAttributes } from "react";
 import { Loader2 } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { cn } from "@/lib/utils";
+import { useScripts, ScriptError, ScriptLoading } from "@/components/providers/ScriptsProvider";
 
 type AddressAutocompleteProps = Omit<InputHTMLAttributes<HTMLInputElement>, 'onChange'> & {
   value: string;
@@ -22,54 +22,17 @@ const AddressAutocomplete = ({
 }: AddressAutocompleteProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const autocompleteRef = useRef<google.maps.places.Autocomplete | null>(null);
-  const { data: apiKey, error: apiKeyError, isLoading: isApiKeyLoading } = useMapConfig();
-  const [isGoogleLoaded, setIsGoogleLoaded] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [initializationAttempted, setInitializationAttempted] = useState(false);
-
-  // Check if Google Maps API is loaded
-  useEffect(() => {
-    const checkGoogleMapsLoaded = () => {
-      if (window.google?.maps?.places) {
-        setIsGoogleLoaded(true);
-        return true;
-      }
-      return false;
-    };
-
-    // Check immediately
-    if (checkGoogleMapsLoaded()) return;
-
-    // Set up a listener for when the API loads
-    const googleMapsListener = () => {
-      if (checkGoogleMapsLoaded()) {
-        document.removeEventListener('google-maps-loaded', googleMapsListener);
-      }
-    };
-
-    document.addEventListener('google-maps-loaded', googleMapsListener);
-
-    // Safety timeout - if not loaded after 5 seconds, we'll try initialization anyway
-    const timeoutId = setTimeout(() => {
-      if (!isGoogleLoaded && window.google?.maps?.places) {
-        setIsGoogleLoaded(true);
-      }
-    }, 5000);
-
-    return () => {
-      document.removeEventListener('google-maps-loaded', googleMapsListener);
-      clearTimeout(timeoutId);
-    };
-  }, []);
+  const { googleMapsLoaded, isLoadingMaps, mapsError } = useScripts();
 
   // Initialize autocomplete
   useEffect(() => {
     // Only try to initialize if:
     // 1. We have the input element ref
     // 2. Google Maps API is available
-    // 3. We have the API key
-    // 4. We haven't already attempted initialization
-    if (!inputRef.current || !isGoogleLoaded || !apiKey || initializationAttempted) return;
+    // 3. We haven't already attempted initialization
+    if (!inputRef.current || !googleMapsLoaded || initializationAttempted) return;
 
     try {
       console.log('Initializing address autocomplete');
@@ -115,14 +78,14 @@ const AddressAutocomplete = ({
       console.error('Error initializing address autocomplete:', err);
       setError(err instanceof Error ? err.message : 'Failed to initialize address autocomplete');
     }
-  }, [onChange, apiKey, isGoogleLoaded, initializationAttempted]);
+  }, [onChange, googleMapsLoaded, initializationAttempted]);
 
-  // Reset initialization attempted state when API key changes
+  // Reset initialization attempted state when Google Maps loads
   useEffect(() => {
-    if (apiKey) {
+    if (googleMapsLoaded) {
       setInitializationAttempted(false);
     }
-  }, [apiKey]);
+  }, [googleMapsLoaded]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -145,11 +108,14 @@ const AddressAutocomplete = ({
     setError(null);
   };
 
-  const displayError = error || (apiKeyError?.message ?? null);
-  const isLoading = (isApiKeyLoading || (!isGoogleLoaded && !displayError));
+  const displayError = error || mapsError;
 
   return (
     <div className="relative w-full space-y-2">
+      {isLoadingMaps && <ScriptLoading type="maps" />}
+      
+      {mapsError && <ScriptError type="maps" error={mapsError} />}
+      
       <div className="relative">
         <Input
           ref={inputRef}
@@ -157,23 +123,23 @@ const AddressAutocomplete = ({
           value={value}
           onChange={handleInputChange}
           className={cn(className, "w-full", displayError ? 'border-red-500' : '')}
-          disabled={disabled || isLoading}
+          disabled={disabled || isLoadingMaps || !!mapsError}
           placeholder={placeholder}
           aria-invalid={displayError ? "true" : "false"}
           aria-describedby={displayError ? "address-error" : undefined}
           {...props}
         />
-        {isLoading && (
+        {isLoadingMaps && (
           <div className="absolute right-3 top-1/2 -translate-y-1/2">
             <Loader2 className="h-4 w-4 animate-spin text-gray-400" />
           </div>
         )}
       </div>
       
-      {displayError && (
+      {error && !mapsError && (
         <Alert variant="destructive">
           <AlertDescription id="address-error">
-            {displayError}
+            {error}
           </AlertDescription>
         </Alert>
       )}

@@ -1,8 +1,7 @@
 
-import { useState, useEffect, useMemo, lazy, Suspense, memo } from 'react';
+import { useState, useEffect, useMemo, memo } from 'react';
 import GoogleMap from '../map/GoogleMap';
 import AreasList from './service-areas/AreasList';
-import EmergencyCallout from './service-areas/EmergencyCallout';
 import { useLocations } from '@/hooks/useLocations';
 import LoadingSpinner from '../LoadingSpinner';
 import GoogleMapsProvider from '../providers/GoogleMapsProvider';
@@ -60,16 +59,6 @@ const ServiceAreasSection = () => {
       observer.disconnect();
     };
   }, []);
-
-  // Log locations data for debugging
-  useEffect(() => {
-    if (locations) {
-      console.log("Locations data loaded:", { count: locations.length });
-    }
-    if (error) {
-      console.error("Error loading locations:", error);
-    }
-  }, [locations, error]);
 
   // Memoize map markers to prevent unnecessary recalculations
   const mapMarkers = useMemo(() => {
