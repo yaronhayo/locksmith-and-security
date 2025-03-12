@@ -14,8 +14,8 @@ interface AddressFieldsProps {
 const AddressFields = ({ address, onChange, errors, isSubmitting }: AddressFieldsProps) => {
   return (
     <>
-      <div className="space-y-1.5">
-        <Label htmlFor="address" className="text-sm">
+      <div className="form-group">
+        <Label htmlFor="address" className="block text-sm font-medium text-gray-700 mb-1">
           Service Address
         </Label>
         <AddressAutocomplete
@@ -32,8 +32,8 @@ const AddressFields = ({ address, onChange, errors, isSubmitting }: AddressField
 
       {address && (
         <>
-          <div className="space-y-1.5">
-            <Label htmlFor="unit_number" className="text-sm">
+          <div className="form-group">
+            <Label htmlFor="unit_number" className="block text-sm font-medium text-gray-700 mb-1">
               Unit Number (Optional)
             </Label>
             <Input
@@ -46,8 +46,8 @@ const AddressFields = ({ address, onChange, errors, isSubmitting }: AddressField
             />
           </div>
 
-          <div className="space-y-1.5">
-            <Label htmlFor="gate_code" className="text-sm">
+          <div className="form-group">
+            <Label htmlFor="gate_code" className="block text-sm font-medium text-gray-700 mb-1">
               Gate Code (Optional)
             </Label>
             <Input
