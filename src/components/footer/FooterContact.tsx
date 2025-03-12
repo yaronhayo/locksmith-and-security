@@ -1,48 +1,25 @@
 
-import { Phone, Mail, MapPin } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Mail, MapPin, Phone } from "lucide-react";
 
 const FooterContact = () => {
-  const handleClick = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
   return (
-    <div className="text-center md:text-left order-1 md:order-none">
-      <h3 className="text-xl font-bold mb-4 text-white">Contact Info</h3>
-      <div className="space-y-3">
-        <div className="flex items-center justify-center md:justify-start space-x-2 group">
-          <Phone className="w-5 h-5 group-hover:animate-bounce text-secondary" />
-          <div>
-            <a 
-              href="tel:2017482070" 
-              className="hover:text-secondary transition-colors" 
-              aria-label="Call our 24/7 emergency service"
-            >
-              (201) 748-2070
-            </a>
-            <p className="text-sm text-[#90EE90]">24/7 Emergency Service</p>
-          </div>
+    <div>
+      <h3 className="text-lg font-bold mb-4 text-white">Contact Us</h3>
+      <div className="space-y-2">
+        <div className="flex items-center text-gray-300 hover:text-white transition-colors">
+          <Phone className="h-4 w-4 mr-2 text-secondary" />
+          <a href="tel:2017482070">(201) 748-2070</a>
         </div>
-        <div className="flex items-center justify-center md:justify-start space-x-2 group">
-          <MapPin className="w-5 h-5 group-hover:animate-bounce text-secondary" />
-          <Link 
-            to="/service-areas" 
-            className="hover:text-secondary transition-colors" 
-            aria-label="View our service areas"
-            onClick={handleClick}
-          >
-            Serving North Bergen, NJ and surrounding areas
-          </Link>
-        </div>
-        <div className="flex items-center justify-center md:justify-start space-x-2 group">
-          <Mail className="w-5 h-5 group-hover:animate-bounce text-secondary" />
-          <a 
-            href="mailto:info@247locksmithandsecurity.com" 
-            className="hover:text-secondary transition-colors break-all" 
-            aria-label="Email our support team"
-          >
+        <div className="flex items-center text-gray-300 hover:text-white transition-colors">
+          <Mail className="h-4 w-4 mr-2 text-secondary" />
+          <a href="mailto:info@247locksmithandsecurity.com">
             info@247locksmithandsecurity.com
+          </a>
+        </div>
+        <div className="flex items-start text-gray-300 hover:text-white transition-colors">
+          <MapPin className="h-4 w-4 mr-2 mt-1 text-secondary flex-shrink-0" />
+          <a href="https://goo.gl/maps/mJhkEDDyzfZk1JaGA" target="_blank" rel="noopener noreferrer">
+            5000 Tonnelle Ave, North Bergen, NJ 07047
           </a>
         </div>
       </div>

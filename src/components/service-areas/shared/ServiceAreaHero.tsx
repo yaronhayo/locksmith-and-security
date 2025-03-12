@@ -1,77 +1,98 @@
 
-import { Button } from "@/components/ui/button";
-import { Phone, MapPin } from "lucide-react";
-import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
-import { Skeleton } from "@/components/ui/skeleton";
-import BookingForm from "@/components/BookingForm";
-import { memo } from "react";
+import { memo } from 'react';
+import { motion } from 'framer-motion';
+import { buttonVariants } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
+import { ChevronRight, PhoneCall } from 'lucide-react';
+import { useLocation } from '@/hooks/useLocations';
 
 interface ServiceAreaHeroProps {
-  areaName: string;
-  isLoading?: boolean;
+  location: string;
 }
 
-const ServiceAreaHero = ({ areaName, isLoading = false }: ServiceAreaHeroProps) => {
-  if (isLoading) {
-    return (
-      <div className="space-y-6">
-        <div className="flex items-center gap-2">
-          <Skeleton className="h-6 w-6 rounded" />
-          <Skeleton className="h-8 w-48" />
-        </div>
-        <Skeleton className="h-24 w-full" />
-        <div className="flex flex-col sm:flex-row gap-4">
-          <Skeleton className="h-10 w-full sm:w-32" />
-          <Skeleton className="h-10 w-full sm:w-32" />
+const ServiceAreaHero = memo(({ location }: ServiceAreaHeroProps) => {
+  const { data: locationData } = useLocation(location);
+  
+  return (
+    <div className="relative py-20 lg:py-32 overflow-hidden">
+      {/* Background Gradient */}
+      <div className="absolute inset-0 bg-gradient-to-r from-primary to-primary-dark" />
+      
+      {/* Texture Overlay */}
+      <div 
+        className="absolute inset-0 bg-repeat opacity-10" 
+        style={{ backgroundImage: 'url("/lovable-uploads/pattern.png")' }}
+      />
+      
+      {/* Hero Content */}
+      <div className="container mx-auto px-4 relative z-10">
+        <div className="max-w-3xl">
+          <motion.h1 
+            className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            24/7 Locksmith Services in {locationData?.name || location}
+          </motion.h1>
+          
+          <motion.p 
+            className="text-xl text-white/90 mb-8"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+          >
+            Professional, reliable locksmith services for residents and businesses in {locationData?.name || location}. 
+            Available 24/7 for all your emergency lockout and security needs.
+          </motion.p>
+          
+          <motion.div 
+            className="flex flex-col sm:flex-row gap-4"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+          >
+            <a
+              href="#contact-form"
+              className={cn(
+                buttonVariants({ size: "lg" }),
+                "font-medium bg-secondary hover:bg-secondary-hover"
+              )}
+              onClick={(e) => {
+                e.preventDefault();
+                document.getElementById('contact-form')?.scrollIntoView({ behavior: 'smooth' });
+              }}
+            >
+              Request Service
+              <ChevronRight className="ml-2 h-4 w-4" />
+            </a>
+            
+            <a
+              href="tel:2017482070"
+              className={cn(
+                buttonVariants({ variant: "outline", size: "lg" }),
+                "font-medium border-white text-white hover:bg-white/10"
+              )}
+            >
+              <PhoneCall className="mr-2 h-4 w-4" />
+              (201) 748-2070
+            </a>
+          </motion.div>
+          
+          <motion.div
+            className="mt-6 text-white/80 flex items-center"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+          >
+            <span className="text-secondary font-bold mr-2">★</span> Licensed & Insured | NJ #13VH13153100
+          </motion.div>
         </div>
       </div>
-    );
-  }
-
-  return (
-    <div className="flex flex-col lg:flex-row gap-8 items-start">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="space-y-6 w-full lg:w-1/2"
-      >
-        <div className="flex items-center gap-2">
-          <MapPin className="h-5 w-5 md:h-6 md:w-6 text-primary flex-shrink-0" />
-          <h1 className="text-xl sm:text-2xl md:text-3xl font-bold">Serving {areaName}, NJ</h1>
-        </div>
-        <p className="text-base sm:text-lg text-gray-700 md:text-xl">
-          At Locksmith & Security LLC, we provide comprehensive locksmith services throughout {areaName}. 
-          Our team of experienced professionals is available 24/7 to handle all your residential, 
-          commercial, and automotive locksmith needs with professional and reliable service.
-        </p>
-        <div className="flex flex-col sm:flex-row gap-4">
-          <Button size="lg" className="w-full sm:w-auto gap-2" asChild>
-            <a href="tel:2017482070">
-              <Phone className="h-5 w-5" />
-              <span>Call Now</span>
-            </a>
-          </Button>
-          <Button size="lg" variant="outline" className="w-full sm:w-auto" asChild>
-            <Link to="/book-online">
-              Book Online
-            </Link>
-          </Button>
-        </div>
-      </motion.div>
-
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.2 }}
-        className="bg-white rounded-xl shadow-sm p-4 sm:p-6 w-full lg:w-1/2 overflow-hidden"
-      >
-        <h2 className="text-lg sm:text-xl font-bold mb-4 text-primary">Book Your Locksmith Service</h2>
-        <BookingForm />
-      </motion.div>
     </div>
   );
-};
+});
 
-export default memo(ServiceAreaHero);
+ServiceAreaHero.displayName = 'ServiceAreaHero';
+
+export default ServiceAreaHero;

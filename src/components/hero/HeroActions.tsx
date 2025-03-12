@@ -1,43 +1,48 @@
 
+import { Link } from "react-router-dom";
+import { buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
-import { Button } from "@/components/ui/button";
-import { Phone, ArrowRight, Wrench } from "lucide-react";
+import { ChevronRight, PhoneCall } from "lucide-react";
 
 const HeroActions = () => {
   return (
-    <motion.div 
-      className="flex flex-col sm:flex-row gap-2 sm:gap-4 w-full sm:w-auto"
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 0.5 }}
-    >
-      <Button 
-        size="lg" 
-        variant="secondary" 
-        className="text-base sm:text-lg group transform hover:scale-105 transition-all duration-300 hover:shadow-lg relative overflow-hidden w-full sm:w-auto" 
-        asChild
-        aria-label="Call us now"
+    <div className="flex flex-col sm:flex-row gap-4 mt-8">
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.3, delay: 0.5 }}
       >
-        <a href="tel:2017482070" className="inline-flex items-center justify-center">
-          <Phone className="mr-2 h-5 w-5 animate-phone-ring group-hover:rotate-12 transition-transform duration-300 group-hover:text-black" aria-hidden="true" />
-          <span className="relative z-10 group-hover:text-black">Call Now</span>
-        </a>
-      </Button>
+        <Link
+          to="/book-online"
+          className={cn(
+            buttonVariants({ size: "lg" }),
+            "font-semibold bg-secondary hover:bg-secondary-hover/90 text-white"
+          )}
+          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+        >
+          Book Online
+          <ChevronRight className="ml-2 h-4 w-4" />
+        </Link>
+      </motion.div>
       
-      <Button 
-        size="lg" 
-        variant="outline" 
-        className="text-base sm:text-lg bg-white/10 hover:bg-white/20 text-white border-white group transform hover:scale-105 transition-all duration-300 hover:shadow-lg backdrop-blur-sm w-full sm:w-auto" 
-        asChild
-        aria-label="View our services"
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.3, delay: 0.6 }}
       >
-        <a href="/services" className="inline-flex items-center justify-center">
-          <Wrench className="mr-2 h-5 w-5 transition-colors duration-300 group-hover:text-secondary" aria-hidden="true" />
-          <span className="transition-colors duration-300 group-hover:text-secondary">Our Services</span>
-          <ArrowRight className="ml-2 h-5 w-5 transform transition-transform duration-300 group-hover:translate-x-2 group-hover:text-secondary" aria-hidden="true" />
+        <a
+          href="tel:2017482070"
+          className={cn(
+            buttonVariants({ variant: "outline", size: "lg" }),
+            "font-semibold border-white/20 text-white hover:bg-white/10"
+          )}
+        >
+          <PhoneCall className="mr-2 h-4 w-4" />
+          (201) 748-2070
         </a>
-      </Button>
-    </motion.div>
+      </motion.div>
+    </div>
   );
 };
 
