@@ -146,8 +146,8 @@ const ServiceAreasSection = () => {
                     markers={mapMarkers}
                     highlightedMarker={hoveredArea}
                     showAllMarkers={true}
-                    zoom={11}
-                    center={{ lat: 40.7795, lng: -74.0324 }}
+                    zoom={13}  // Increased from 11 to 13 for closer view
+                    center={{ lat: 40.7795, lng: -74.0324 }} // North Bergen coordinates
                   />
                 </GoogleMapsProvider>
               </ErrorBoundary>

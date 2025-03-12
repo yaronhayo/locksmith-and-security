@@ -16,6 +16,8 @@ const mapOptions: google.maps.MapOptions = {
   mapTypeControl: false,
   fullscreenControl: false,
   gestureHandling: 'cooperative',
+  minZoom: 11, // Add minimum zoom level
+  maxZoom: 16, // Add maximum zoom level
   styles: [
     {
       featureType: "poi",
