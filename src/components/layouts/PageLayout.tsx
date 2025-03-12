@@ -1,4 +1,3 @@
-
 import React from "react";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
@@ -33,6 +32,10 @@ interface PageLayoutProps {
   nofollow?: boolean;
   breadcrumbs?: Array<{name: string, item: string}>;
   ogType?: "website" | "article" | "product" | "profile" | "book";
+  geoRegion?: string;
+  geoPlaceName?: string;
+  geoPosition?: string;
+  icbm?: string;
 }
 
 const PageLayout = ({
@@ -52,28 +55,28 @@ const PageLayout = ({
   nofollow = false,
   breadcrumbs,
   ogType = "website",
+  geoRegion,
+  geoPlaceName,
+  geoPosition,
+  icbm,
 }: PageLayoutProps) => {
   if (isLoading) {
     return <PageLoading />;
   }
 
-  // Add schema to schemas array if provided
   const allSchemas = [...schemas];
   if (schema) {
     allSchemas.push({ type: 'schema', data: schema });
   }
   
-  // Add breadcrumb schema if breadcrumbs are provided
   if (breadcrumbs && breadcrumbs.length > 0) {
     const breadcrumbSchema = createBreadcrumbSchema({ breadcrumbs });
     allSchemas.push(breadcrumbSchema);
   }
   
-  // Add default LocalBusiness schema
   const localBusinessSchema = createLocalBusinessSchema();
   allSchemas.push(localBusinessSchema);
   
-  // Add default WebSite schema
   const websiteSchema = createWebSiteSchema();
   allSchemas.push(websiteSchema);
 
@@ -89,6 +92,10 @@ const PageLayout = ({
         noindex={noindex}
         nofollow={nofollow}
         ogType={ogType}
+        geoRegion={geoRegion}
+        geoPlaceName={geoPlaceName}
+        geoPosition={geoPosition}
+        icbm={icbm}
       />
       
       {(heroTitle || heroDescription) && (
