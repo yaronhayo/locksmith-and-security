@@ -30,12 +30,6 @@ const OptimizedImage = ({
   // Determine loading attribute based on priority
   const loading = priority ? "eager" : lazy ? "lazy" : "eager";
   
-  // Determine fetchPriority based on priority
-  const fetchPriority = priority ? "high" : "auto";
-  
-  // Generate sizes attribute for responsive images
-  const sizesAttribute = sizes ? sizes : undefined;
-  
   // Style for object-fit
   const imageStyle = {
     objectFit,
@@ -51,8 +45,7 @@ const OptimizedImage = ({
         width={width || undefined}
         height={height || undefined}
         loading={loading}
-        fetchPriority={fetchPriority}
-        sizes={sizesAttribute}
+        sizes={sizes}
         style={imageStyle as React.CSSProperties}
         className="w-full h-full"
         decoding="async"

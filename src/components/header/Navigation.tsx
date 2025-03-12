@@ -49,9 +49,8 @@ const Navigation = ({ className, isMenuOpen = false, isScrolled = false }: Navig
     }
   };
 
-  const displayItems = isOpen 
-    ? navItems 
-    : navItems.filter(item => !item.showMobileOnly);
+  // Display all items in mobile menu
+  const displayItems = navItems;
 
   return (
     <nav 

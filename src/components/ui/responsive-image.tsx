@@ -99,9 +99,6 @@ const ResponsiveImage = ({
   // Determine loading attribute based on priority
   const loading = priority ? "eager" : lazy ? "lazy" : "eager";
   
-  // Determine fetchPriority based on priority
-  const fetchPriority = priority ? "high" : "auto";
-
   // Style for aspect ratio and object-fit
   const containerStyle: React.CSSProperties = {
     position: 'relative',
@@ -125,7 +122,6 @@ const ResponsiveImage = ({
         height={height}
         data-image-id={src}
         loading={loading}
-        fetchPriority={fetchPriority}
         onLoad={handleImageLoad}
         onError={handleImageError}
         className={cn(
