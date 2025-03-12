@@ -3,11 +3,11 @@ import { memo } from "react";
 import PageLayout from "@/components/layouts/PageLayout";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import { FAQSchema } from "@/types/schema";
-import { Helmet } from "react-helmet";
 import { Card, CardContent } from "@/components/ui/card";
 import PageLoading from "@/components/layouts/PageLoading";
 import ServiceAreaContent from "./ServiceAreaContent";
 import { useServiceAreaData } from "./hooks/useServiceAreaData";
+import SEOHead from "@/components/meta/SEOHead";
 
 interface ServiceAreaLayoutProps {
   areaSlug: string;
@@ -33,46 +33,59 @@ const ServiceAreaLayout = memo(({ areaSlug }: ServiceAreaLayoutProps) => {
   }
 
   // Create optimized meta description (staying within 150-160 chars)
-  const pageTitle = `Top-Rated Locksmith in ${location.name}, NJ | 24/7 Emergency Service`;
-  const pageDescription = `Professional locksmith services in ${location.name}. Licensed & insured experts providing residential, commercial & auto solutions with fast 24/7 response.`;
+  const pageTitle = `Professional Locksmith in ${location.name}, NJ | 24/7 Emergency Service`;
+  const pageDescription = `Licensed & insured locksmith in ${location.name}, NJ. Expert residential, commercial & automotive locksmith services with fast 24/7 response. Call now for immediate assistance!`;
+  
+  // Enhanced service area schema attributes
+  const localSEOAttributes = {
+    geoRegion: "US-NJ",
+    geoPlaceName: location.name,
+    geoPosition: `${location.lat};${location.lng}`,
+    icbm: `${location.lat}, ${location.lng}`
+  };
+
+  // Keywords specific to this service area
+  const areaKeywords = `locksmith ${location.name}, 24/7 locksmith ${location.name} NJ, emergency locksmith ${location.name}, residential locksmith ${location.name}, commercial locksmith ${location.name}, automotive locksmith ${location.name}, lock repair ${location.name}, lock installation ${location.name}`;
 
   return (
-    <PageLayout
-      title={pageTitle}
-      description={pageDescription}
-      schema={schemas}
-      heroTitle={`Locksmith Services in ${location.name}, NJ`}
-      heroDescription={`Professional 24/7 locksmith services for residential, commercial, and automotive needs in ${location.name}`}
-    >
-      <Helmet>
-        <link rel="canonical" href={`https://247locksmithandsecurity.com/service-areas/${areaSlug}`} />
-        <meta name="geo.region" content="US-NJ" />
-        <meta name="geo.placename" content={location.name} />
-        <meta name="geo.position" content={`${location.lat};${location.lng}`} />
-        <meta name="ICBM" content={`${location.lat}, ${location.lng}`} />
-      </Helmet>
-
-      <div className="container mx-auto px-3 sm:px-4 py-4 sm:py-6 md:py-8 overflow-visible">
-        <Breadcrumbs />
-        
-        <Card className="mt-4 sm:mt-6 md:mt-8 border-secondary/20 shadow-md overflow-visible">
-          <div className="bg-gradient-to-r from-secondary/10 to-secondary/5 p-3 sm:p-4 md:p-6 lg:p-8 overflow-visible">
-            <CardContent className="p-0 max-w-full overflow-visible">
-              <ServiceAreaContent 
-                locationName={location.name}
-                locationDescription={location.description}
-                locationSlug={areaSlug}
-                locationCoordinates={{lat: location.lat, lng: location.lng}}
-                displayedReviews={displayedReviews}
-                isLoading={reviewsLoading}
-                totalReviews={totalReviews}
-                faqSchema={faqSchema as FAQSchema}
-              />
-            </CardContent>
-          </div>
-        </Card>
-      </div>
-    </PageLayout>
+    <>
+      <SEOHead 
+        title={pageTitle}
+        description={pageDescription}
+        canonicalUrl={`/service-areas/${areaSlug}`}
+        schemas={schemas}
+        keywords={areaKeywords}
+        {...localSEOAttributes}
+      />
+      
+      <PageLayout
+        title={pageTitle}
+        description={pageDescription}
+        heroTitle={`Professional Locksmith Services in ${location.name}, NJ`}
+        heroDescription={`24/7 expert locksmith services for residential, commercial, and automotive needs in ${location.name}. Licensed, insured, and locally trusted.`}
+      >
+        <div className="container mx-auto px-3 sm:px-4 py-4 sm:py-6 md:py-8 overflow-visible">
+          <Breadcrumbs />
+          
+          <Card className="mt-4 sm:mt-6 md:mt-8 border-secondary/20 shadow-md overflow-visible">
+            <div className="bg-gradient-to-r from-secondary/10 to-secondary/5 p-3 sm:p-4 md:p-6 lg:p-8 overflow-visible">
+              <CardContent className="p-0 max-w-full overflow-visible">
+                <ServiceAreaContent 
+                  locationName={location.name}
+                  locationDescription={location.description}
+                  locationSlug={areaSlug}
+                  locationCoordinates={{lat: location.lat, lng: location.lng}}
+                  displayedReviews={displayedReviews}
+                  isLoading={reviewsLoading}
+                  totalReviews={totalReviews}
+                  faqSchema={faqSchema as FAQSchema}
+                />
+              </CardContent>
+            </div>
+          </Card>
+        </div>
+      </PageLayout>
+    </>
   );
 });
 

@@ -3,6 +3,8 @@
 User-agent: *
 Allow: /
 Disallow: /thank-you
+Disallow: /api/
+Disallow: /admin/
 
 # Important pages that should be crawled
 Allow: /services/*
