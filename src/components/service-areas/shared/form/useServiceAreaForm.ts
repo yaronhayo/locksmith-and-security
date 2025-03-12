@@ -1,6 +1,7 @@
 
 import { useState, useEffect, useCallback, useMemo } from "react";
 import { toast } from "sonner";
+import { useNavigate } from "react-router-dom";
 import { getEmailError, getNameError, getPhoneError } from "@/utils/inputValidation";
 import { submitFormData } from "@/utils/formSubmission";
 
@@ -25,6 +26,7 @@ interface IsDirty {
 }
 
 export const useServiceAreaForm = () => {
+  const navigate = useNavigate();
   const [formState, setFormState] = useState<FormState>({
     name: "",
     email: "",
@@ -163,18 +165,12 @@ export const useServiceAreaForm = () => {
       await submitFormData(submissionData);
       
       setIsSubmitted(true);
-      toast.success("Message sent successfully!", {
-        description: "We'll get back to you shortly."
-      });
       
-      // Reset form
-      setFormState({
-        name: "",
-        email: "",
-        phone: "",
-        message: "",
-        service: ""
-      });
+      // Set session storage flag for thank-you page
+      sessionStorage.setItem('fromFormSubmission', 'true');
+      
+      // Redirect to thank-you page
+      navigate('/thank-you');
       
     } catch (error: any) {
       console.error("Form submission error:", error);
@@ -184,7 +180,7 @@ export const useServiceAreaForm = () => {
     } finally {
       setIsSubmitting(false);
     }
-  }, [formState, recaptchaToken]);
+  }, [formState, recaptchaToken, navigate]);
 
   return {
     formState,

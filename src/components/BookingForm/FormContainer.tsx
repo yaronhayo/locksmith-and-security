@@ -119,7 +119,8 @@ const FormContainer = ({
 
       await submitFormData(submissionData);
       
-      window.sessionStorage.setItem('fromFormSubmission', 'true');
+      // Store flag for thank-you page
+      sessionStorage.setItem('fromFormSubmission', 'true');
       
       toast({
         title: "Booking Received!",

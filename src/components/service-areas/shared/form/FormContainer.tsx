@@ -1,7 +1,6 @@
 
-import { ReactNode, useState } from "react";
+import { ReactNode } from "react";
 import FormHeader from "./FormHeader";
-import ThankYouMessage from "./ThankYouMessage";
 import ContactOptions from "./ContactOptions";
 import RecaptchaField from "@/components/BookingForm/RecaptchaField";
 import SubmitButton from "./SubmitButton";
@@ -35,24 +34,20 @@ const FormContainer = memo(({
       <FormHeader locationName={locationName} />
       
       <div className="p-4 sm:p-6 md:p-8 max-w-3xl mx-auto">
-        {isSubmitted ? (
-          <ThankYouMessage />
-        ) : (
-          <form onSubmit={onSubmit} className="space-y-4 max-w-full">
-            {children}
-            
-            <RecaptchaField 
-              onChange={onRecaptchaChange} 
-              error={recaptchaError || undefined}
-              className="pt-2"
-            />
-            
-            <SubmitButton 
-              isSubmitting={isSubmitting}
-              isDisabled={!isFormValid}
-            />
-          </form>
-        )}
+        <form onSubmit={onSubmit} className="space-y-4 max-w-full">
+          {children}
+          
+          <RecaptchaField 
+            onChange={onRecaptchaChange} 
+            error={recaptchaError || undefined}
+            className="pt-2"
+          />
+          
+          <SubmitButton 
+            isSubmitting={isSubmitting}
+            isDisabled={!isFormValid}
+          />
+        </form>
         
         <ContactOptions />
       </div>

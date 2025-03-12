@@ -94,14 +94,23 @@ const ContactForm = () => {
           platform: navigator.platform,
           screenResolution: `${window.screen.width}x${window.screen.height}`,
           windowSize: `${window.innerWidth}x${window.innerHeight}`,
-          timestamp: new Date().toISOString(),
+          timestamp: new Date().toISOString()
         },
         source_url: window.location.pathname
       };
 
       await submitFormData(submissionData);
 
+      // Set session storage for thank-you page redirect protection
       sessionStorage.setItem('fromFormSubmission', 'true');
+      
+      // Show success toast
+      toast({
+        title: "Message Sent",
+        description: "Thank you for contacting us. We'll be in touch soon!",
+        variant: "default",
+      });
+      
       navigate('/thank-you');
 
     } catch (error: any) {
