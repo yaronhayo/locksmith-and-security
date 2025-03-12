@@ -139,14 +139,14 @@ export const useServiceAreaForm = () => {
     try {
       // Prepare submission data
       const submissionData = {
-        type: 'contact',
+        type: "contact" as const, // Using "as const" to ensure it's treated as a literal
         name: formState.name,
         email: formState.email,
         phone: formState.phone,
         address: window.location.pathname.split('/').pop() || '',
         message: formState.message,
         service: formState.service,
-        status: 'pending',
+        status: "pending" as const,
         recaptcha_token: recaptchaToken,
         visitor_info: {
           userAgent: navigator.userAgent,

@@ -99,9 +99,9 @@ const FormContainer = ({
         };
       }
 
-      // Prepare the submission data
+      // Prepare the submission data with explicit type literal
       const submissionData = {
-        type: "booking",
+        type: "booking" as const, // Using "as const" to ensure it's treated as a literal
         name,
         phone,
         address: formattedAddress,
@@ -110,7 +110,7 @@ const FormContainer = ({
         service: service === "Other" ? otherService : service,
         timeframe,
         notes: notes || null,
-        status: "pending",
+        status: "pending" as const,
         visitor_info: collectVisitorInfo(),
         source_url: location.pathname,
         recaptcha_token: recaptchaToken,

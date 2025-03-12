@@ -80,13 +80,13 @@ const ContactForm = () => {
     try {
       const formData = new FormData(form.current);
       const submissionData = {
-        type: 'contact',
+        type: "contact" as const, // Using "as const" to ensure it's treated as a literal
         name: String(formData.get('user_name')),
         email: String(formData.get('user_email')),
         phone: String(formData.get('user_phone')),
         address: address,
         message: String(formData.get('message')),
-        status: 'pending',
+        status: "pending" as const,
         recaptcha_token: recaptchaToken,
         visitor_info: {
           userAgent: navigator.userAgent,
