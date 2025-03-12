@@ -14,8 +14,8 @@ const LockReplacement = () => {
   return (
     <main className="flex-grow">
       <Helmet>
-        <title>Professional Residential Lock Replacement Service | Expert Locksmiths</title>
-        <meta name="description" content="Expert lock replacement service by certified residential locksmiths. Upgrade your home security with professional installation of high-quality locks." />
+        <title>Home Lock Replacement | Security Grade Upgrades | Expert Installation</title>
+        <meta name="description" content="Upgrade your home security with professional lock installation. We offer deadbolts, smart locks, keyless entry & high-security options with same-day service." />
         <meta name="keywords" content="lock replacement, change locks, new locks, deadbolt installation, smart lock installation, home security upgrade, residential locksmith" />
         <link rel="canonical" href="https://247locksmithandsecurity.com/services/residential-locksmith/lock-replacement" />
       </Helmet>

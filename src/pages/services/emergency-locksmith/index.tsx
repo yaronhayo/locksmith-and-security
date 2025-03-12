@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { motion } from 'framer-motion';
 import ServicesHero from '@/components/sections/services/ServicesHero';
@@ -11,10 +12,18 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Clock, Car, Home, Building2, ArrowRight, ShieldCheck } from 'lucide-react';
 import ServicesGrid from '@/components/sections/services/ServicesGrid';
+import { Helmet } from 'react-helmet';
 
 const EmergencyLocksmith = () => {
   return (
     <main className="flex-grow">
+      <Helmet>
+        <title>24/7 Emergency Locksmith | 20-Minute Response | Licensed & Insured</title>
+        <meta name="description" content="Locked out? Our emergency locksmiths respond in 20 minutes or less. Available 24/7 for car, home & business lockouts with damage-free entry techniques." />
+        <meta name="keywords" content="emergency locksmith, 24/7 locksmith, lockout service, car lockout, house lockout, business lockout, lost keys, broken key extraction" />
+        <link rel="canonical" href="https://247locksmithandsecurity.com/services/emergency-locksmith" />
+      </Helmet>
+      
       <ServicesHero 
         title="24/7 Emergency Locksmith Services"
         description="Professional emergency locksmith services available 24/7 for residential, commercial, and automotive needs. Fast response by certified technicians."

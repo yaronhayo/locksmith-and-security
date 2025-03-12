@@ -32,9 +32,9 @@ const ServiceAreaLayout = memo(({ areaSlug }: ServiceAreaLayoutProps) => {
     return null;
   }
 
-  // Create optimized meta description (staying within 150-160 chars)
-  const pageTitle = `Professional Locksmith in ${location.name}, NJ | 24/7 Emergency Service`;
-  const pageDescription = `Licensed & insured locksmith in ${location.name}, NJ. Expert residential, commercial & automotive locksmith services with fast 24/7 response. Call now for immediate assistance!`;
+  // Create optimized meta title and description
+  const pageTitle = `Locksmith in ${location.name}, NJ | 24/7 Emergency Service | Quick Response`;
+  const pageDescription = `Locked out in ${location.name}? Our local locksmiths arrive in 20-30 minutes for home, business & auto emergencies. Licensed & insured service, fair pricing.`;
   
   // Enhanced service area schema attributes
   const localSEOAttributes = {

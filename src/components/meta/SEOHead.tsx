@@ -52,6 +52,12 @@ const SEOHead: React.FC<SEOHeadProps> = ({
   author = "Locksmith & Security LLC",
   baseUrl = "https://247locksmithandsecurity.com"
 }) => {
+  // Truncate title for optimal display (50-60 characters)
+  const optimizedTitle = title.length > 60 ? `${title.substring(0, 57)}...` : title;
+  
+  // Truncate description for optimal display (120-158 characters)
+  const optimizedDescription = description.length > 158 ? `${description.substring(0, 155)}...` : description;
+  
   // Ensure canonical URL has the proper base
   const fullCanonicalUrl = canonicalUrl.startsWith('http') 
     ? canonicalUrl 
@@ -60,8 +66,8 @@ const SEOHead: React.FC<SEOHeadProps> = ({
   return (
     <>
       <BasicMetaTags 
-        title={title}
-        description={description}
+        title={optimizedTitle}
+        description={optimizedDescription}
         keywords={keywords}
         noindex={noindex}
         nofollow={nofollow}
@@ -71,8 +77,8 @@ const SEOHead: React.FC<SEOHeadProps> = ({
       />
       
       <OpenGraphTags 
-        title={title}
-        description={description}
+        title={optimizedTitle}
+        description={optimizedDescription}
         image={ogImage}
         url={fullCanonicalUrl}
         modifiedDate={modifiedDate}
@@ -81,8 +87,8 @@ const SEOHead: React.FC<SEOHeadProps> = ({
       />
       
       <TwitterTags 
-        title={title}
-        description={description}
+        title={optimizedTitle}
+        description={optimizedDescription}
         image={ogImage}
         baseUrl={baseUrl}
         cardType={twitterCardType}

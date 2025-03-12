@@ -16,9 +16,9 @@ const Index = () => {
     // Future implementation: track page view in analytics
   }, []);
 
-  const pageTitle = "24/7 Locksmith & Security LLC | Trusted Emergency Locksmith Services";
-  const pageDescription = "Professional locksmith services available 24/7 for residential, commercial & automotive needs. Licensed & insured experts for all your security solutions.";
-  const keywords = "locksmith, emergency locksmith, 24/7 locksmith, residential locksmith, commercial locksmith, auto locksmith, car lockout, lockout service";
+  const pageTitle = "24/7 Professional Locksmith Services | Emergency Lockout Solutions";
+  const pageDescription = "Trusted locksmith experts available 24/7 for residential, commercial & auto emergencies. Fast response, licensed technicians & transparent pricing.";
+  const keywords = "24/7 locksmith, emergency locksmith, residential locksmith, commercial locksmith, auto locksmith, car lockout, lockout service, key replacement";
   const canonicalUrl = "https://247locksmithandsecurity.com/";
   const imageUrl = "/lovable-uploads/1bbeb1e6-5581-4e09-9600-7d1859bb17c5.png";
   const baseUrl = "https://247locksmithandsecurity.com";

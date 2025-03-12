@@ -55,15 +55,18 @@ const MetaTags = ({
     (canonicalUrl.startsWith('http') ? canonicalUrl : `${baseUrl}${canonicalUrl.startsWith('/') ? canonicalUrl : `/${canonicalUrl}`}`) 
     : baseUrl;
     
-  // Optimize meta description (150-160 chars is ideal)
-  const optimizedDescription = description.length > 160 ? 
-    `${description.substring(0, 157)}...` : 
+  // Optimize meta title (50-60 chars is ideal)
+  const optimizedTitle = title.length > 60 ? `${title.substring(0, 57)}...` : title;
+  
+  // Optimize meta description (120-158 chars is ideal)
+  const optimizedDescription = description.length > 158 ? 
+    `${description.substring(0, 155)}...` : 
     description;
     
   return (
     <>
       <BasicMetaTags 
-        title={title}
+        title={optimizedTitle}
         description={optimizedDescription}
         keywords={keywords}
         noindex={noindex}
@@ -73,7 +76,7 @@ const MetaTags = ({
       />
       
       <OpenGraphTags 
-        title={title}
+        title={optimizedTitle}
         description={optimizedDescription}
         image={ogImage}
         url={fullCanonicalUrl}
@@ -83,7 +86,7 @@ const MetaTags = ({
       />
       
       <TwitterTags 
-        title={title}
+        title={optimizedTitle}
         description={optimizedDescription}
         image={ogImage}
         baseUrl={baseUrl}
@@ -98,6 +101,7 @@ const MetaTags = ({
         {geoPlaceName && <meta name="geo.placename" content={geoPlaceName} />}
         {geoPosition && <meta name="geo.position" content={geoPosition} />}
         {icbm && <meta name="ICBM" content={icbm} />}
+        {author && <meta name="author" content={author} />}
       </Helmet>
       
       {schemas && schemas.length > 0 && (
