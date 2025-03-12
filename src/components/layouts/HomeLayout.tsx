@@ -19,7 +19,7 @@ const HomeLayout = ({ children }: HomeLayoutProps) => {
       "image": "/lovable-uploads/950b5c4c-f0b8-4d22-beb0-66a7d7554476.png",
       "priceRange": "$$",
       "telephone": "+12017482070",
-      "email": "info@247locksmithandsecurity.com",
+      "email": "support@247locksmithandsecurity.com",
       "areaServed": [
         {
           "@type": "City",

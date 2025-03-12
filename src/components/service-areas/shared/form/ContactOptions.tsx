@@ -18,7 +18,7 @@ const ContactOptions = () => {
           <Mail className="h-5 w-5 text-secondary" />
         </div>
         <h3 className="text-lg font-medium mb-1">Email Us</h3>
-        <a href="mailto:info@247locksmithandsecurity.com" className="text-secondary hover:underline text-sm sm:text-base">info@247locksmithandsecurity.com</a>
+        <a href="mailto:support@247locksmithandsecurity.com" className="text-secondary hover:underline text-sm sm:text-base">support@247locksmithandsecurity.com</a>
       </div>
       
       <div className="flex flex-col items-center text-center">

@@ -33,11 +33,11 @@ const FooterContact = () => {
         <div className="flex items-center justify-center md:justify-start space-x-2 group">
           <Mail className="w-5 h-5 group-hover:animate-bounce text-secondary" />
           <a 
-            href="mailto:info@247locksmithandsecurity.com" 
+            href="mailto:support@247locksmithandsecurity.com" 
             className="hover:text-secondary transition-colors break-all" 
             aria-label="Email our support team"
           >
-            info@247locksmithandsecurity.com
+            support@247locksmithandsecurity.com
           </a>
         </div>
       </div>
