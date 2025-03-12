@@ -1,4 +1,3 @@
-
 import HeroSection from "@/components/sections/HeroSection";
 import HomeLayout from "@/components/layouts/HomeLayout";
 import HomeContent from "@/components/sections/home/HomeContent";
@@ -10,20 +9,17 @@ import { OpenGraphTags } from "@/components/meta/OpenGraphTags";
 import { TwitterTags } from "@/components/meta/TwitterTags";
 
 const Index = () => {
-  // Page view tracking for analytics
   useEffect(() => {
     console.log("Home page viewed");
-    // Future implementation: track page view in analytics
   }, []);
 
-  const pageTitle = "24/7 Professional Locksmith Services | Emergency Lockout Solutions";
-  const pageDescription = "Trusted locksmith experts available 24/7 for residential, commercial & auto emergencies. Fast response, licensed technicians & transparent pricing.";
-  const keywords = "24/7 locksmith, emergency locksmith, residential locksmith, commercial locksmith, auto locksmith, car lockout, lockout service, key replacement";
+  const pageTitle = "Expert Locksmith Solutions | Trusted Security Professionals";
+  const pageDescription = "Transform your security with professional locksmith expertise. From advanced home security to modern business solutions, we deliver peace of mind with guaranteed results.";
+  const keywords = "professional locksmith, residential locksmith, commercial locksmith, auto locksmith, car lockout, lockout service, key replacement, security solutions";
   const canonicalUrl = "https://247locksmithandsecurity.com/";
   const imageUrl = "/lovable-uploads/1bbeb1e6-5581-4e09-9600-7d1859bb17c5.png";
   const baseUrl = "https://247locksmithandsecurity.com";
 
-  // Website schema data (WebSite schema)
   const websiteSchema = {
     "@context": "https://schema.org",
     "@type": "WebSite",
@@ -35,8 +31,7 @@ const Index = () => {
       "query-input": "required name=search_term_string"
     }
   };
-  
-  // Organization schema
+
   const organizationSchema = {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
@@ -104,7 +99,6 @@ const Index = () => {
         cardType="summary_large_image"
       />
       
-      {/* Specific tags for Bing/Microsoft */}
       <Helmet>
         <meta name="msvalidate.01" content="YOUR_BING_VERIFICATION_CODE" />
         <link rel="sitemap" type="application/xml" href={`${baseUrl}/sitemap.xml`} />
