@@ -17,12 +17,14 @@ interface FormErrors {
   name: string | null;
   email: string | null;
   phone: string | null;
+  service: string | null;
 }
 
 interface IsDirty {
   name: boolean;
   email: boolean;
   phone: boolean;
+  service: boolean;
 }
 
 export const useServiceAreaForm = () => {
@@ -38,13 +40,15 @@ export const useServiceAreaForm = () => {
   const [errors, setErrors] = useState<FormErrors>({
     name: null,
     email: null,
-    phone: null
+    phone: null,
+    service: null
   });
   
   const [isDirty, setIsDirty] = useState<IsDirty>({
     name: false,
     email: false,
-    phone: false
+    phone: false,
+    service: false
   });
   
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -71,6 +75,14 @@ export const useServiceAreaForm = () => {
     }
   }, [formState.phone, isDirty.phone]);
   
+  useEffect(() => {
+    if (isDirty.service && formState.service === '') {
+      setErrors(prev => ({ ...prev, service: 'Please select a service' }));
+    } else if (isDirty.service) {
+      setErrors(prev => ({ ...prev, service: null }));
+    }
+  }, [formState.service, isDirty.service]);
+  
   const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     
@@ -83,10 +95,12 @@ export const useServiceAreaForm = () => {
       setIsDirty(prev => ({ ...prev, email: true }));
     } else if (name === 'phone' && !isDirty.phone) {
       setIsDirty(prev => ({ ...prev, phone: true }));
+    } else if (name === 'service' && !isDirty.service) {
+      setIsDirty(prev => ({ ...prev, service: true }));
     }
   }, [isDirty]);
   
-  const handleBlur = useCallback((field: 'name' | 'email' | 'phone') => {
+  const handleBlur = useCallback((field: 'name' | 'email' | 'phone' | 'service') => {
     setIsDirty(prev => ({ ...prev, [field]: true }));
   }, []);
   
@@ -100,6 +114,7 @@ export const useServiceAreaForm = () => {
       !errors.name && 
       !errors.email && 
       !errors.phone && 
+      !errors.service &&
       formState.name.trim() !== '' && 
       formState.email.trim() !== '' && 
       formState.phone.trim() !== '' && 
@@ -115,14 +130,16 @@ export const useServiceAreaForm = () => {
     setIsDirty({
       name: true,
       email: true,
-      phone: true
+      phone: true,
+      service: true
     });
     
     // Update all errors
     const newErrors = {
       name: getNameError(formState.name) || (formState.name.trim() === '' ? 'Name is required' : null),
       email: getEmailError(formState.email) || (formState.email.trim() === '' ? 'Email is required' : null),
-      phone: getPhoneError(formState.phone) || (formState.phone.trim() === '' ? 'Phone number is required' : null)
+      phone: getPhoneError(formState.phone) || (formState.phone.trim() === '' ? 'Phone number is required' : null),
+      service: formState.service === '' ? 'Please select a service' : null
     };
     
     setErrors(newErrors);
@@ -132,7 +149,7 @@ export const useServiceAreaForm = () => {
       return;
     }
     
-    if (newErrors.name || newErrors.email || newErrors.phone || formState.service === '') {
+    if (newErrors.name || newErrors.email || newErrors.phone || newErrors.service) {
       return;
     }
     
