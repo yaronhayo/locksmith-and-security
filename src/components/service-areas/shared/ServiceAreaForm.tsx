@@ -5,21 +5,22 @@ import ContactFields from "./form/ContactFields";
 import EmailField from "./form/EmailField";
 import ServiceField from "./form/ServiceField";
 import MessageField from "./form/MessageField";
-import { memo } from "react";
 
 interface ServiceAreaFormProps {
   locationName?: string;
 }
 
-const ServiceAreaForm = memo(({ locationName }: ServiceAreaFormProps) => {
+const ServiceAreaForm = ({ locationName }: ServiceAreaFormProps) => {
   const {
     formState,
     errors,
     isSubmitting,
     isSubmitted,
-    recaptcha,
+    recaptchaToken,
+    recaptchaError,
     handleChange,
     handleBlur,
+    handleRecaptchaChange,
     isFormValid,
     handleSubmit
   } = useServiceAreaForm();
@@ -30,7 +31,9 @@ const ServiceAreaForm = memo(({ locationName }: ServiceAreaFormProps) => {
       isSubmitting={isSubmitting}
       isSubmitted={isSubmitted}
       isFormValid={isFormValid}
-      recaptcha={recaptcha}
+      recaptchaToken={recaptchaToken}
+      recaptchaError={recaptchaError}
+      onRecaptchaChange={handleRecaptchaChange}
       onSubmit={handleSubmit}
     >
       <ContactFields 
@@ -62,8 +65,6 @@ const ServiceAreaForm = memo(({ locationName }: ServiceAreaFormProps) => {
       />
     </FormContainer>
   );
-});
-
-ServiceAreaForm.displayName = 'ServiceAreaForm';
+};
 
 export default ServiceAreaForm;

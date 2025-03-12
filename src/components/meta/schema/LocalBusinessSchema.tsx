@@ -18,20 +18,6 @@ export interface LocalBusinessSchemaProps {
     latitude: number;
     longitude: number;
   };
-  serviceArea?: {
-    name: string;
-    type: string;
-    geoRadius: string;
-  };
-  hasOfferCatalog?: {
-    name: string;
-    itemListElement: Array<{
-      name: string;
-      description: string;
-      price: string;
-      priceCurrency: string;
-    }>;
-  };
 }
 
 const defaultProps: LocalBusinessSchemaProps = {
@@ -93,29 +79,6 @@ export const createLocalBusinessSchema = (props: LocalBusinessSchemaProps = {}) 
           "@type": "GeoCoordinates",
           "latitude": mergedProps.geo.latitude,
           "longitude": mergedProps.geo.longitude
-        }
-      }),
-      ...(mergedProps.serviceArea && {
-        "areaServed": {
-          "@type": mergedProps.serviceArea.type,
-          "name": mergedProps.serviceArea.name,
-          "geoRadius": mergedProps.serviceArea.geoRadius
-        }
-      }),
-      ...(mergedProps.hasOfferCatalog && {
-        "hasOfferCatalog": {
-          "@type": "OfferCatalog",
-          "name": mergedProps.hasOfferCatalog.name,
-          "itemListElement": mergedProps.hasOfferCatalog.itemListElement.map(item => ({
-            "@type": "Offer",
-            "itemOffered": {
-              "@type": "Service",
-              "name": item.name,
-              "description": item.description
-            },
-            "price": item.price,
-            "priceCurrency": item.priceCurrency
-          }))
         }
       })
     }

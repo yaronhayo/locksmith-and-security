@@ -1,6 +1,6 @@
 
 import { Helmet } from "react-helmet";
-import React, { useMemo, memo } from "react";
+import React from "react";
 
 interface Schema {
   type: string;
@@ -11,24 +11,15 @@ interface SchemaScriptsProps {
   schemas: Schema[];
 }
 
-export const SchemaScripts = memo(({ schemas }: SchemaScriptsProps) => {
-  // Deduplicate schemas by type and data hash to prevent duplicate schema markup
-  const uniqueSchemas = useMemo(() => {
-    const seen = new Map<string, boolean>();
-    
-    return schemas.filter(schema => {
-      // Create a unique key for this schema using type and serialized data
-      const dataStr = JSON.stringify(schema.data);
-      const key = `${schema.type}-${dataStr}`;
-      
-      if (seen.has(key)) {
-        return false;
-      }
-      
-      seen.set(key, true);
-      return true;
-    });
-  }, [schemas]);
+export const SchemaScripts = ({ schemas }: SchemaScriptsProps) => {
+  // Deduplicate schemas by type to prevent duplicate schema markup
+  const uniqueSchemas = schemas.reduce((acc: Schema[], schema) => {
+    const existingSchemaIndex = acc.findIndex(s => s.type === schema.type);
+    if (existingSchemaIndex === -1) {
+      acc.push(schema);
+    }
+    return acc;
+  }, []);
 
   return (
     <Helmet>
@@ -39,8 +30,4 @@ export const SchemaScripts = memo(({ schemas }: SchemaScriptsProps) => {
       ))}
     </Helmet>
   );
-});
-
-SchemaScripts.displayName = 'SchemaScripts';
-
-export default SchemaScripts;
+};
