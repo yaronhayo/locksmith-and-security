@@ -1,3 +1,4 @@
+
 import React from 'react';
 import EnhancedServicesHero from '@/components/sections/services/EnhancedServicesHero';
 import ServicePageContent from '@/components/sections/services/service-page';
@@ -33,11 +34,34 @@ const CarLockout = () => {
     baseUrl
   });
   
-  // Create LocalBusiness schema with customized info
+  // Create LocalBusiness schema with enhanced service offerings
   const localBusinessSchema = createLocalBusinessSchema({
     geo: {
       latitude: 40.7366,
       longitude: -74.0301
+    },
+    priceRange: "$$$",
+    serviceArea: {
+      name: "North Bergen and surrounding areas",
+      type: "GeoCircle",
+      geoRadius: "30"
+    },
+    hasOfferCatalog: {
+      name: "Automotive Locksmith Services",
+      itemListElement: [
+        {
+          name: "Car Lockout Service",
+          description: "Fast, professional vehicle entry without damage",
+          price: "$75.00 - $150.00",
+          priceCurrency: "USD"
+        },
+        {
+          name: "Car Key Replacement",
+          description: "Complete car key replacement for all makes and models",
+          price: "$120.00 - $350.00",
+          priceCurrency: "USD"
+        }
+      ]
     }
   });
   
@@ -66,19 +90,32 @@ const CarLockout = () => {
     description: service.description
   }));
 
-  // Critical resources preconnection
+  // Preconnect to critical third-party domains for improved performance
   const preconnectDomains = [
     "https://mtbgayqzjrxjjmsjikcg.supabase.co",
     "https://maps.googleapis.com",
     "https://www.google-analytics.com",
-    "https://www.googletagmanager.com"
+    "https://www.googletagmanager.com",
+    "https://fonts.googleapis.com",
+    "https://www.recaptcha.net"
   ];
 
-  // Preload critical images - fixing the 'as' property to use the expected literal type
+  // DNS prefetch for domains that will be needed later
+  const dnsPrefetchDomains = [
+    "https://www.clarity.ms",
+    "https://fonts.gstatic.com",
+    "https://www.google.com"
+  ];
+
+  // Preload critical resources
   const preloadResources = [
     {
       href: imageUrl,
-      as: "image" as const, // Explicitly type this as a literal "image" type
+      as: "image" as const,
+    },
+    {
+      href: "/lovable-uploads/1bbeb1e6-5581-4e09-9600-7d1859bb17c5.png",
+      as: "image" as const,
     }
   ];
 
@@ -87,7 +124,7 @@ const CarLockout = () => {
       <ResourceHints
         preconnect={preconnectDomains}
         preload={preloadResources}
-        dnsPrefetch={["https://www.clarity.ms", "https://fonts.gstatic.com"]}
+        dnsPrefetch={dnsPrefetchDomains}
       />
       
       <MetaTags 
