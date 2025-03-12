@@ -1,12 +1,16 @@
 
 import { AlertCircle, Clock, MapPin, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import DynamicPhoneNumber from "@/components/common/DynamicPhoneNumber";
+import { usePhoneNumber } from "@/utils/phoneUtils";
 
 interface ServiceAreaEmergencyProps {
   locationName: string;
 }
 
 const ServiceAreaEmergency = ({ locationName }: ServiceAreaEmergencyProps) => {
+  const { phoneHref } = usePhoneNumber();
+  
   return (
     <section className="bg-white rounded-xl shadow-md overflow-hidden mb-12">
       <div className="bg-gradient-to-br from-secondary/20 via-secondary/10 to-white p-4 sm:p-6 md:p-8 lg:p-12 relative">
@@ -47,7 +51,7 @@ const ServiceAreaEmergency = ({ locationName }: ServiceAreaEmergencyProps) => {
           
           <div className="flex flex-col sm:flex-row gap-4">
             <Button size="lg" className="gap-2 bg-secondary hover:bg-secondary/90 text-white" asChild>
-              <a href="tel:2017482070">
+              <a href={phoneHref}>
                 <Phone className="h-5 w-5" />
                 <span>Call Now</span>
               </a>

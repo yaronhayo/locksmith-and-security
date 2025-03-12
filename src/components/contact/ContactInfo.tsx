@@ -1,13 +1,17 @@
 
 import { MapPin, Phone, Mail, Clock } from 'lucide-react';
+import DynamicPhoneNumber from '@/components/common/DynamicPhoneNumber';
+import { usePhoneNumber } from '@/utils/phoneUtils';
 
 const ContactInfo = () => {
+  const { phoneHref } = usePhoneNumber();
+  
   const contactItems = [
     {
       icon: Phone,
       title: "Phone",
-      content: "(201) 748-2070",
-      link: "tel:2017482070"
+      content: <DynamicPhoneNumber />,
+      link: phoneHref
     },
     {
       icon: Mail,

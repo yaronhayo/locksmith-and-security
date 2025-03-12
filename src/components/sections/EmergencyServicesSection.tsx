@@ -3,8 +3,12 @@ import React from 'react';
 import { motion } from "framer-motion";
 import { Shield, Clock, MapPin, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import DynamicPhoneNumber from "@/components/common/DynamicPhoneNumber";
+import { usePhoneNumber } from "@/utils/phoneUtils";
 
 const EmergencyServicesSection = () => {
+  const { phoneHref } = usePhoneNumber();
+  
   return (
     <section className="py-20 bg-primary text-white">
       <div className="container mx-auto px-4">
@@ -68,9 +72,9 @@ const EmergencyServicesSection = () => {
           className="text-center"
         >
           <Button size="lg" variant="secondary" asChild>
-            <a href="tel:2017482070" className="flex items-center gap-2">
+            <a href={phoneHref} className="flex items-center gap-2">
               <Phone className="w-4 h-4" />
-              Call (201) 748-2070
+              Call <DynamicPhoneNumber />
             </a>
           </Button>
         </motion.div>

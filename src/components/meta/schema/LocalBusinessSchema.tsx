@@ -1,5 +1,6 @@
 
 import React from "react";
+import { getPhoneNumber } from "@/utils/phoneUtils";
 
 export interface LocalBusinessSchemaProps {
   name?: string;
@@ -22,7 +23,7 @@ export interface LocalBusinessSchemaProps {
 
 const defaultProps: LocalBusinessSchemaProps = {
   name: "247 Locksmith & Security",
-  telephone: "(201) 748-2070",
+  telephone: getPhoneNumber(),
   priceRange: "$$",
   streetAddress: "104 Harrison St",
   addressLocality: "Hoboken",
@@ -51,7 +52,7 @@ export const createLocalBusinessSchema = (props: LocalBusinessSchemaProps = {}) 
       "@type": "LocalBusiness",
       "@id": "https://247locksmithandsecurity.com/#localbusiness",
       "name": mergedProps.name,
-      "telephone": mergedProps.telephone,
+      "telephone": mergedProps.telephone || getPhoneNumber(),
       "priceRange": mergedProps.priceRange,
       "address": {
         "@type": "PostalAddress",

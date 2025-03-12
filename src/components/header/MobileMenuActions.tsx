@@ -3,9 +3,13 @@ import { Phone, Calendar } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { MobileMenuActionsProps } from './types/navigation';
+import DynamicPhoneNumber from "@/components/common/DynamicPhoneNumber";
+import { usePhoneNumber } from "@/utils/phoneUtils";
 
 const MobileMenuActions = ({ isMenuOpen }: MobileMenuActionsProps) => {
   if (!isMenuOpen) return null;
+  
+  const { phoneHref } = usePhoneNumber();
 
   return (
     <div className="mt-2 space-y-3 w-full px-4">
@@ -21,11 +25,11 @@ const MobileMenuActions = ({ isMenuOpen }: MobileMenuActionsProps) => {
       </Button>
       
       <a 
-        href="tel:2017482070" 
+        href={phoneHref} 
         className="w-full max-w-[calc(100%-2rem)] mx-auto inline-flex items-center justify-center gap-2 py-3 px-4 bg-white/10 rounded-md text-white text-lg font-bold hover:bg-white/20 transition-all duration-300"
       >
         <Phone className="w-5 h-5 animate-phone-ring" />
-        (201) 748-2070
+        <DynamicPhoneNumber />
       </a>
     </div>
   );

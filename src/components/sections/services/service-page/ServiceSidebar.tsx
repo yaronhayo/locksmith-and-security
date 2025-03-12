@@ -3,6 +3,8 @@ import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Phone, Calendar, ShieldCheck, Star, Clock, ArrowUpRight } from "lucide-react";
 import { Link } from "react-router-dom";
+import DynamicPhoneNumber from "@/components/common/DynamicPhoneNumber";
+import { usePhoneNumber } from "@/utils/phoneUtils";
 
 interface RelatedService {
   title: string;
@@ -16,6 +18,8 @@ interface ServiceSidebarProps {
 }
 
 const ServiceSidebar: React.FC<ServiceSidebarProps> = ({ serviceName, relatedServices }) => {
+  const { phoneHref } = usePhoneNumber();
+  
   return (
     <div className="lg:col-span-1">
       <div className="sticky top-24 space-y-8">
@@ -36,9 +40,9 @@ const ServiceSidebar: React.FC<ServiceSidebarProps> = ({ serviceName, relatedSer
                 className="w-full justify-center text-primary font-semibold hover:bg-secondary-hover hover:text-primary-dark"
                 asChild
               >
-                <a href="tel:2017482070" className="flex items-center justify-center">
+                <a href={phoneHref} className="flex items-center justify-center">
                   <Phone className="mr-2 h-5 w-5" />
-                  (201) 748-2070
+                  <DynamicPhoneNumber />
                 </a>
               </Button>
               <Button 

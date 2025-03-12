@@ -3,8 +3,12 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Phone, ArrowRight, Shield } from "lucide-react";
 import { Link } from "react-router-dom";
+import DynamicPhoneNumber from "@/components/common/DynamicPhoneNumber";
+import { usePhoneNumber } from "@/utils/phoneUtils";
 
 const ServicesCTA = () => {
+  const { phoneHref } = usePhoneNumber();
+  
   return (
     <section className="py-20 bg-gradient-to-br from-primary to-primary-hover text-white relative overflow-hidden">
       {/* Background pattern elements */}
@@ -48,9 +52,9 @@ const ServicesCTA = () => {
               asChild 
               className="border-2 border-white text-white bg-transparent hover:bg-white/10 shadow-lg hover:shadow-xl transition-all duration-300"
             >
-              <a href="tel:2017482070" className="flex items-center">
+              <a href={phoneHref} className="flex items-center">
                 <Phone className="mr-2 h-5 w-5" />
-                Call (201) 748-2070
+                Call <DynamicPhoneNumber />
               </a>
             </Button>
             <Button 

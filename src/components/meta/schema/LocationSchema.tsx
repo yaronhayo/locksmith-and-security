@@ -1,4 +1,6 @@
 
+import { getPhoneNumber } from "@/utils/phoneUtils";
+
 interface LocationSchemaProps {
   name: string;
   description: string;
@@ -27,7 +29,7 @@ export const createLocationSchema = ({
     "name": `${companyName} - ${name}`,
     "description": description,
     "image": "/lovable-uploads/1bbeb1e6-5581-4e09-9600-7d1859bb17c5.png",
-    "telephone": phone,
+    "telephone": phone || getPhoneNumber(),
     "@id": `https://247locksmithandsecurity.com/service-areas/${name.toLowerCase().replace(/ /g, '-')}`,
     "url": `https://247locksmithandsecurity.com/service-areas/${name.toLowerCase().replace(/ /g, '-')}`,
     "areaServed": {

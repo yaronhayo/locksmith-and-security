@@ -6,6 +6,8 @@ import { motion } from "framer-motion";
 import { Skeleton } from "@/components/ui/skeleton";
 import BookingForm from "@/components/BookingForm";
 import { memo } from "react";
+import DynamicPhoneNumber from "@/components/common/DynamicPhoneNumber";
+import { usePhoneNumber } from "@/utils/phoneUtils";
 
 interface ServiceAreaHeroProps {
   areaName: string;
@@ -13,6 +15,8 @@ interface ServiceAreaHeroProps {
 }
 
 const ServiceAreaHero = ({ areaName, isLoading = false }: ServiceAreaHeroProps) => {
+  const { phoneHref } = usePhoneNumber();
+  
   if (isLoading) {
     return (
       <div className="space-y-6">
@@ -48,7 +52,7 @@ const ServiceAreaHero = ({ areaName, isLoading = false }: ServiceAreaHeroProps) 
         </p>
         <div className="flex flex-col sm:flex-row gap-4">
           <Button size="lg" className="w-full sm:w-auto gap-2" asChild>
-            <a href="tel:2017482070">
+            <a href={phoneHref}>
               <Phone className="h-5 w-5" />
               <span>Call Now</span>
             </a>
