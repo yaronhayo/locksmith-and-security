@@ -1,4 +1,3 @@
-
 import React from 'react';
 import EnhancedServicesHero from '@/components/sections/services/EnhancedServicesHero';
 import ServicePageContent from '@/components/sections/services/service-page';
@@ -75,11 +74,11 @@ const CarLockout = () => {
     "https://www.googletagmanager.com"
   ];
 
-  // Preload critical images
+  // Preload critical images - fixing the 'as' property to use the expected literal type
   const preloadResources = [
     {
       href: imageUrl,
-      as: "image",
+      as: "image" as const, // Explicitly type this as a literal "image" type
     }
   ];
 
