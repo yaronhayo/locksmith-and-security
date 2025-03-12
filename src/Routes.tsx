@@ -1,6 +1,6 @@
 
 import { Routes as RouterRoutes, Route } from 'react-router-dom';
-import { Suspense, lazy } from "react";
+import { Suspense, lazy, memo } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { mainRoutes } from "./routes/mainRoutes";
 import { serviceRoutes } from "./routes/serviceRoutes";
@@ -11,7 +11,7 @@ import ErrorFallback from "./components/ErrorFallback";
 // Lazy load the 404 page
 const NotFound = lazy(() => import('./pages/404'));
 
-const Routes = () => {
+const Routes = memo(() => {
   return (
     <ErrorBoundary FallbackComponent={ErrorFallback}>
       <Suspense fallback={<PageLoading type="skeleton" />}>
@@ -37,6 +37,8 @@ const Routes = () => {
       </Suspense>
     </ErrorBoundary>
   );
-};
+});
+
+Routes.displayName = 'Routes';
 
 export default Routes;

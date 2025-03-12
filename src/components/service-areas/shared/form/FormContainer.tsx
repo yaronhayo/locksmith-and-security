@@ -12,9 +12,12 @@ interface FormContainerProps {
   isSubmitting: boolean;
   isSubmitted: boolean;
   isFormValid: boolean;
-  recaptchaToken: string | null;
-  recaptchaError: string | null;
-  onRecaptchaChange: (token: string | null) => void;
+  recaptcha: {
+    recaptchaToken: string | null;
+    recaptchaError: string | null;
+    isRecaptchaValid: boolean;
+    handleRecaptchaChange: (token: string | null) => void;
+  };
   onSubmit: (e: React.FormEvent) => void;
 }
 
@@ -24,9 +27,7 @@ const FormContainer = memo(({
   isSubmitting,
   isSubmitted,
   isFormValid,
-  recaptchaToken,
-  recaptchaError,
-  onRecaptchaChange,
+  recaptcha,
   onSubmit
 }: FormContainerProps) => {
   return (
@@ -38,14 +39,14 @@ const FormContainer = memo(({
           {children}
           
           <RecaptchaField 
-            onChange={onRecaptchaChange} 
-            error={recaptchaError || undefined}
+            onChange={recaptcha.handleRecaptchaChange} 
+            error={recaptcha.recaptchaError || undefined}
             className="pt-2"
           />
           
           <SubmitButton 
             isSubmitting={isSubmitting}
-            isDisabled={!isFormValid}
+            isDisabled={!isFormValid || !recaptcha.isRecaptchaValid}
           />
         </form>
         

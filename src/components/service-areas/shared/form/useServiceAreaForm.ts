@@ -3,7 +3,7 @@ import { useState, useCallback, useMemo } from "react";
 import { FormState, IsDirty } from "./types";
 import { useFormValidation } from "./useFormValidation";
 import { useFormSubmission } from "./useFormSubmission";
-import { useRecaptcha } from "./useRecaptcha";
+import useRecaptcha from "./useRecaptcha";
 
 export const useServiceAreaForm = () => {
   const [formState, setFormState] = useState<FormState>({
@@ -27,7 +27,7 @@ export const useServiceAreaForm = () => {
   const { errors, validateAllFields } = useFormValidation(formState, isDirty);
   
   // Use the recaptcha hook
-  const { recaptchaToken, recaptchaError, handleRecaptchaChange } = useRecaptcha();
+  const recaptcha = useRecaptcha();
   
   const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -51,7 +51,7 @@ export const useServiceAreaForm = () => {
   // Use the submission hook
   const { handleSubmit } = useFormSubmission({
     formState,
-    recaptchaToken,
+    recaptchaToken: recaptcha.recaptchaToken,
     setErrors: setIsDirty,
     setIsSubmitting,
     setIsSubmitted,
@@ -67,21 +67,21 @@ export const useServiceAreaForm = () => {
       formState.email.trim() !== '' && 
       formState.phone.trim() !== '' && 
       formState.service !== '' && 
-      !!recaptchaToken
+      !!recaptcha.recaptchaToken
     );
-  }, [errors, formState, recaptchaToken]);
+  }, [errors, formState, recaptcha.recaptchaToken]);
 
   return {
     formState,
     errors,
     isSubmitting,
     isSubmitted,
-    recaptchaToken,
-    recaptchaError,
+    recaptcha,
     handleChange,
     handleBlur,
-    handleRecaptchaChange,
     isFormValid,
     handleSubmit
   };
 };
+
+export default useServiceAreaForm;
