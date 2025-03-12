@@ -42,7 +42,7 @@ const GoogleMap = ({
   zoom = 12,
   center = { lat: 40.7795, lng: -74.0324 },
   onClick,
-  fitBounds = true
+  fitBounds = false
 }: GoogleMapProps) => {
   const {
     mapRef,
@@ -65,42 +65,34 @@ const GoogleMap = ({
   // Function to fit bounds to show all markers
   const fitMapBounds = useCallback(() => {
     if (mapRef.current && visibleMarkers.length > 0 && mapReady) {
-      try {
-        const bounds = new window.google.maps.LatLngBounds();
-        
-        visibleMarkers.forEach(marker => {
-          bounds.extend({ lat: marker.lat, lng: marker.lng });
-        });
-        
-        // Add padding to the bounds
-        mapRef.current.fitBounds(bounds, {
-          top: 50, right: 50, bottom: 50, left: 50
-        });
-        
-        // Ensure we don't zoom in too far on single markers
-        const currentZoom = mapRef.current.getZoom();
-        if (currentZoom && currentZoom > 15) {
-          mapRef.current.setZoom(15);
-        }
-        
-        // Similarly, don't zoom out too far
-        if (currentZoom && currentZoom < 9 && visibleMarkers.length < 5) {
-          mapRef.current.setZoom(9);
-        }
-      } catch (err) {
-        console.error('Error in fitMapBounds:', err);
+      const bounds = new window.google.maps.LatLngBounds();
+      
+      visibleMarkers.forEach(marker => {
+        bounds.extend({ lat: marker.lat, lng: marker.lng });
+      });
+      
+      // Add padding to the bounds
+      mapRef.current.fitBounds(bounds, {
+        top: 50, right: 50, bottom: 50, left: 50
+      });
+      
+      // Ensure we don't zoom in too far on single markers
+      const currentZoom = mapRef.current.getZoom();
+      if (currentZoom && currentZoom > 15) {
+        mapRef.current.setZoom(15);
+      }
+      
+      // Similarly, don't zoom out too far
+      if (currentZoom && currentZoom < 9 && visibleMarkers.length < 5) {
+        mapRef.current.setZoom(9);
       }
     }
   }, [mapRef, visibleMarkers, mapReady]);
 
   // Apply bounds fitting when markers change or when explicitly requested
   useEffect(() => {
-    if (fitBounds && visibleMarkers.length > 0 && mapReady) {
-      // Add small delay to ensure map is fully initialized
-      const timer = setTimeout(() => {
-        fitMapBounds();
-      }, 500);
-      return () => clearTimeout(timer);
+    if (fitBounds && visibleMarkers.length > 0) {
+      fitMapBounds();
     }
   }, [fitBounds, visibleMarkers, fitMapBounds, mapReady]);
 
@@ -111,7 +103,6 @@ const GoogleMap = ({
 
   // Handle map load completion
   const handleMapLoad = useCallback((map: google.maps.Map) => {
-    console.log("Map loaded in GoogleMap component");
     onLoadCallback(map);
     setMapReady(true);
   }, [onLoadCallback]);

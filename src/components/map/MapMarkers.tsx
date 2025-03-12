@@ -14,22 +14,14 @@ const MapMarkers = ({ markers, hoveredMarker }: MapMarkersProps) => {
 
   const handleMarkerClick = useCallback((slug?: string) => {
     if (slug) {
-      console.log('Marker clicked, navigating to:', `/service-areas/${slug}`);
       navigate(`/service-areas/${slug}`);
     }
   }, [navigate]);
 
   const renderedMarkers = useMemo(() => 
     markers.map((marker, index) => {
-      if (!marker || typeof marker.lat !== 'number' || typeof marker.lng !== 'number') {
-        console.error('Invalid marker data:', marker);
-        return null;
-      }
-      
       const position = { lat: marker.lat, lng: marker.lng };
       const isHovered = hoveredMarker === marker.slug;
-      
-      console.log(`Rendering marker for ${marker.title || 'Unnamed location'} at ${marker.lat},${marker.lng}`);
       
       return (
         <Marker
@@ -37,15 +29,15 @@ const MapMarkers = ({ markers, hoveredMarker }: MapMarkersProps) => {
           position={position}
           title={marker.title}
           onClick={() => handleMarkerClick(marker.slug)}
-          animation={isHovered && window.google?.maps?.Animation ? window.google.maps.Animation.BOUNCE : undefined}
+          animation={isHovered ? window.google?.maps?.Animation?.BOUNCE : undefined}
           options={{
-            optimized: true,
+            optimized: false,
             visible: true,
             zIndex: isHovered ? 999 : 1
           }}
         />
       );
-    }).filter(Boolean), [markers, hoveredMarker, handleMarkerClick]);
+    }), [markers, hoveredMarker, handleMarkerClick]);
 
   return <>{renderedMarkers}</>;
 };
