@@ -28,6 +28,56 @@ interface ServiceSchemaProps {
   availability?: "InStock" | "OutOfStock" | "PreOrder";
 }
 
+// Define the service schema type with all potential properties
+interface ServiceSchema {
+  "@context": string;
+  "@type": string;
+  name: string;
+  description: string;
+  serviceType: string;
+  provider: {
+    "@type": string;
+    name: string;
+    url: string;
+    telephone: string;
+    address: {
+      "@type": string;
+      streetAddress: string;
+      addressLocality: string;
+      addressRegion: string;
+      postalCode: string;
+      addressCountry: string;
+    };
+  };
+  areaServed: Array<{
+    "@type": string;
+    name: string;
+  }>;
+  offers: {
+    "@type": string;
+    availability: string;
+    availabilityStarts: string;
+    priceSpecification: {
+      "@type": string;
+      priceCurrency: string;
+    };
+  };
+  hasOfferCatalog?: {
+    "@type": string;
+    name: string;
+    itemListElement: Array<{
+      "@type": string;
+      itemOffered: {
+        "@type": string;
+        name: string;
+        description?: string;
+      };
+      price?: string;
+      priceCurrency?: string;
+    }>;
+  };
+}
+
 export const createEnhancedServiceSchema = ({
   name,
   description,
@@ -54,7 +104,7 @@ export const createEnhancedServiceSchema = ({
   availability = "InStock"
 }: ServiceSchemaProps) => {
   // Create base schema for the service
-  const serviceSchema = {
+  const serviceSchema: Partial<ServiceSchema> = {
     "@context": "https://schema.org",
     "@type": "Service",
     "name": name,
@@ -94,7 +144,7 @@ export const createEnhancedServiceSchema = ({
     serviceSchema.hasOfferCatalog = {
       "@type": "OfferCatalog",
       "name": `${name} Services`,
-      "itemListElement": offers.map((offer, index) => ({
+      "itemListElement": offers.map((offer) => ({
         "@type": "Offer",
         "itemOffered": {
           "@type": "Service",

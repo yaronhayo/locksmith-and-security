@@ -1,6 +1,7 @@
+
 import React from 'react';
 import RelatedServices from "@/components/shared/RelatedServices";
-import { relatedServices } from "./relatedServices";
+import { relatedEmergencyServices } from "./relatedServices";
 
 export const CarLockoutContent = () => {
   return (
@@ -114,7 +115,7 @@ export const CarLockoutContent = () => {
       
       <div className="mt-12">
         <RelatedServices 
-          services={relatedServices} 
+          services={relatedEmergencyServices} 
           currentServicePath="/services/emergency-locksmith/car-lockout" 
           className="max-w-4xl mx-auto"
         />
