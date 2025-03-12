@@ -4,6 +4,7 @@ import FormHeader from "./FormHeader";
 import ContactOptions from "./ContactOptions";
 import RecaptchaField from "@/components/BookingForm/RecaptchaField";
 import SubmitButton from "./SubmitButton";
+import { RecaptchaState } from "./useRecaptcha";
 import { memo } from "react";
 
 interface FormContainerProps {
@@ -12,9 +13,7 @@ interface FormContainerProps {
   isSubmitting: boolean;
   isSubmitted: boolean;
   isFormValid: boolean;
-  recaptchaToken: string | null;
-  recaptchaError: string | null;
-  onRecaptchaChange: (token: string | null) => void;
+  recaptcha: RecaptchaState;
   onSubmit: (e: React.FormEvent) => void;
 }
 
@@ -24,9 +23,7 @@ const FormContainer = memo(({
   isSubmitting,
   isSubmitted,
   isFormValid,
-  recaptchaToken,
-  recaptchaError,
-  onRecaptchaChange,
+  recaptcha,
   onSubmit
 }: FormContainerProps) => {
   return (
@@ -38,14 +35,14 @@ const FormContainer = memo(({
           {children}
           
           <RecaptchaField 
-            onChange={onRecaptchaChange} 
-            error={recaptchaError || undefined}
+            onChange={recaptcha.handleRecaptchaChange} 
+            error={recaptcha.recaptchaError || undefined}
             className="pt-2"
           />
           
           <SubmitButton 
             isSubmitting={isSubmitting}
-            isDisabled={!isFormValid}
+            isDisabled={!isFormValid || !recaptcha.isRecaptchaValid}
           />
         </form>
         
