@@ -4,6 +4,7 @@ import { OpenGraphTags } from "@/components/meta/OpenGraphTags";
 import { TwitterTags } from "@/components/meta/TwitterTags";
 import { SchemaScripts } from "@/components/meta/SchemaScripts";
 import React from "react";
+import { Helmet } from "react-helmet";
 
 interface Schema {
   type: string;
@@ -88,6 +89,16 @@ const MetaTags = ({
         baseUrl={baseUrl}
         cardType={twitterCardType}
       />
+      
+      {/* Bing/Microsoft Specific Meta Tags */}
+      <Helmet>
+        <link rel="sitemap" type="application/xml" href={`${baseUrl}/sitemap.xml`} />
+        <meta name="robots" content={`${noindex ? 'noindex' : 'index'},${nofollow ? 'nofollow' : 'follow'},max-image-preview:large,max-snippet:-1,max-video-preview:-1`} />
+        {geoRegion && <meta name="geo.region" content={geoRegion} />}
+        {geoPlaceName && <meta name="geo.placename" content={geoPlaceName} />}
+        {geoPosition && <meta name="geo.position" content={geoPosition} />}
+        {icbm && <meta name="ICBM" content={icbm} />}
+      </Helmet>
       
       {schemas && schemas.length > 0 && (
         <SchemaScripts schemas={schemas} />

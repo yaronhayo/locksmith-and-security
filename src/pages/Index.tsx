@@ -104,6 +104,13 @@ const Index = () => {
         cardType="summary_large_image"
       />
       
+      {/* Specific tags for Bing/Microsoft */}
+      <Helmet>
+        <meta name="msvalidate.01" content="YOUR_BING_VERIFICATION_CODE" />
+        <link rel="sitemap" type="application/xml" href={`${baseUrl}/sitemap.xml`} />
+        <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
+      </Helmet>
+      
       <SchemaScripts 
         schemas={[
           { type: 'website', data: websiteSchema },

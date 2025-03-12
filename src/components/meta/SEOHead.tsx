@@ -88,19 +88,21 @@ const SEOHead: React.FC<SEOHeadProps> = ({
         cardType={twitterCardType}
       />
       
+      <Helmet>
+        {/* Bing/Microsoft specific tags */}
+        <link rel="sitemap" type="application/xml" href={`${baseUrl}/sitemap.xml`} />
+        <meta name="robots" content={`${noindex ? 'noindex' : 'index'},${nofollow ? 'nofollow' : 'follow'},max-image-preview:large,max-snippet:-1,max-video-preview:-1`} />
+        
+        {/* Location-specific meta tags for service areas */}
+        {geoRegion && <meta name="geo.region" content={geoRegion} />}
+        {geoPlaceName && <meta name="geo.placename" content={geoPlaceName} />}
+        {geoPosition && <meta name="geo.position" content={geoPosition} />}
+        {icbm && <meta name="ICBM" content={icbm} />}
+        {author && <meta name="author" content={author} />}
+      </Helmet>
+      
       {schemas && schemas.length > 0 && (
         <SchemaScripts schemas={schemas} />
-      )}
-      
-      {/* Location-specific meta tags for service areas */}
-      {geoRegion && (
-        <Helmet>
-          <meta name="geo.region" content={geoRegion} />
-          {geoPlaceName && <meta name="geo.placename" content={geoPlaceName} />}
-          {geoPosition && <meta name="geo.position" content={geoPosition} />}
-          {icbm && <meta name="ICBM" content={icbm} />}
-          {author && <meta name="author" content={author} />}
-        </Helmet>
       )}
     </>
   );

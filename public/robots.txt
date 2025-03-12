@@ -6,6 +6,19 @@ Disallow: /thank-you
 Disallow: /api/
 Disallow: /admin/
 
+# Specific rules for Bing and Microsoft
+User-agent: Bingbot
+Allow: /
+Disallow: /thank-you
+Disallow: /api/
+Disallow: /admin/
+
+User-agent: MSNBot
+Allow: /
+Disallow: /thank-you
+Disallow: /api/
+Disallow: /admin/
+
 # Important pages that should be crawled
 Allow: /services/*
 Allow: /service-areas/*
@@ -24,5 +37,5 @@ Crawl-delay: 1
 # Primary domain declaration
 Host: https://247locksmithandsecurity.com
 
-# Sitemap declaration
+# Sitemap declarations
 Sitemap: https://247locksmithandsecurity.com/sitemap.xml
