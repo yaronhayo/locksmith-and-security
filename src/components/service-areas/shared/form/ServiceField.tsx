@@ -6,7 +6,7 @@ import { AlertCircle } from "lucide-react";
 
 interface ServiceFieldProps {
   service: string;
-  error: string | null;
+  error?: string | null;
   isSubmitting: boolean;
   handleChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
 }

@@ -54,6 +54,7 @@ const ServiceAreaForm = ({ locationName }: ServiceAreaFormProps) => {
       
       <ServiceField 
         service={formState.service}
+        error={errors.service}
         isSubmitting={isSubmitting}
         handleChange={handleChange}
       />

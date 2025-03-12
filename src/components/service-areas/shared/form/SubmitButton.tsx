@@ -6,9 +6,16 @@ import { Loader2 } from "lucide-react";
 interface SubmitButtonProps {
   isSubmitting: boolean;
   isDisabled: boolean;
+  text?: string;
+  loadingText?: string;
 }
 
-const SubmitButton = ({ isSubmitting, isDisabled }: SubmitButtonProps) => {
+const SubmitButton = ({ 
+  isSubmitting, 
+  isDisabled, 
+  text = "Send Message",
+  loadingText = "Sending..."
+}: SubmitButtonProps) => {
   return (
     <Button
       type="submit"
@@ -19,10 +26,10 @@ const SubmitButton = ({ isSubmitting, isDisabled }: SubmitButtonProps) => {
       {isSubmitting ? (
         <>
           <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-          Sending...
+          {loadingText}
         </>
       ) : (
-        "Send Message"
+        text
       )}
     </Button>
   );

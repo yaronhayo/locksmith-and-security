@@ -1,6 +1,7 @@
 
 import React from "react";
 import { MessageSquare } from "lucide-react";
+import { Textarea } from "@/components/ui/textarea";
 
 interface MessageFieldProps {
   message: string;
@@ -16,13 +17,13 @@ const MessageField = ({ message, isSubmitting, handleChange }: MessageFieldProps
         <div className="absolute left-3 top-3 pointer-events-none">
           <MessageSquare className="h-4 w-4 text-gray-400" />
         </div>
-        <textarea
+        <Textarea
           id="message"
           name="message"
           value={message}
           onChange={handleChange}
           rows={4}
-          className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:ring-secondary focus:border-secondary text-sm sm:text-base"
+          className="w-full pl-10 pr-3 py-2 min-h-[120px] border border-gray-300 rounded-md focus:ring-secondary focus:border-secondary text-sm sm:text-base"
           placeholder="Tell us about your locksmith needs..."
           disabled={isSubmitting}
         />

@@ -18,7 +18,7 @@ const ContactOptions = () => {
               href={`tel:${getPhoneNumber()}`}
               className="text-sm text-blue-600 hover:text-blue-800"
             >
-              {getPhoneNumber(true)}
+              {getPhoneNumber()}
             </a>
           </div>
         </div>
