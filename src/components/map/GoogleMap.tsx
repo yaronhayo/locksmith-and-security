@@ -82,13 +82,6 @@ const GoogleMap = ({
     };
   }, [handleMapError]);
 
-  // Debug log for markers
-  React.useEffect(() => {
-    if (visibleMarkers.length > 0) {
-      console.log('Visible markers in GoogleMap:', visibleMarkers.length);
-    }
-  }, [visibleMarkers]);
-
   if (mapError) {
     return <MapError error={mapError} />;
   }
