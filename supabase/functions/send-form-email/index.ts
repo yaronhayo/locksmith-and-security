@@ -26,6 +26,8 @@ interface FormData {
     year: string;
     make: string;
     model: string;
+    all_keys_lost?: boolean;
+    has_unused_key?: boolean;
   };
   message?: string;
   visitor_info?: {
@@ -172,6 +174,18 @@ const getEmailTemplate = (formData: FormData): string => {
                 <td style="padding: 8px 0;"><strong>Model:</strong></td>
                 <td style="padding: 8px 0;">${formData.vehicle_info.model}</td>
               </tr>
+              ${formData.vehicle_info.all_keys_lost !== undefined ? `
+                <tr>
+                  <td style="padding: 8px 0;"><strong>All Keys Lost:</strong></td>
+                  <td style="padding: 8px 0;">${formData.vehicle_info.all_keys_lost ? 'Yes' : 'No'}</td>
+                </tr>
+              ` : ''}
+              ${formData.vehicle_info.has_unused_key !== undefined ? `
+                <tr>
+                  <td style="padding: 8px 0;"><strong>Has Unused Key:</strong></td>
+                  <td style="padding: 8px 0;">${formData.vehicle_info.has_unused_key ? 'Yes' : 'No'}</td>
+                </tr>
+              ` : ''}
             ` : ''}
             ${formData.notes ? `
               <tr>
@@ -231,6 +245,12 @@ const getEmailTemplate = (formData: FormData): string => {
               <td style="padding: 8px 0;"><strong>Address:</strong></td>
               <td style="padding: 8px 0;">${formData.address}</td>
             </tr>
+            ${formData.service ? `
+              <tr>
+                <td style="padding: 8px 0;"><strong>Service:</strong></td>
+                <td style="padding: 8px 0;">${formData.service}</td>
+              </tr>
+            ` : ''}
             <tr>
               <td colspan="2">
                 <h2 style="${sectionHeaderStyle}">Message</h2>
@@ -272,44 +292,22 @@ const handler = async (req: Request): Promise<Response> => {
     const formData: FormData = await req.json();
     console.log("Received form data:", formData);
 
-    // Fetch email settings from the database
-    const { data: settings, error: settingsError } = await supabase
-      .from('settings')
-      .select('key, value')
-      .in('key', ['email_from', 'email_to']);
-
-    if (settingsError) {
-      console.error("Error fetching settings:", settingsError);
-      throw new Error("Failed to fetch email settings");
-    }
-
-    console.log("Retrieved settings:", settings);
-
-    // Convert settings array to object for easier access
-    const emailSettings = settings.reduce((acc: Record<string, string>, curr) => {
-      acc[curr.key] = curr.value;
-      return acc;
-    }, {});
-
-    // Verify Resend API key
-    const resendApiKey = Deno.env.get("RESEND_API_KEY");
-    console.log("Resend API key exists:", !!resendApiKey);
-    
-    if (!resendApiKey) {
-      throw new Error("RESEND_API_KEY is not configured");
-    }
-
     const emailHtml = getEmailTemplate(formData);
     const subject = formData.type === 'booking' ? 'New Service Booking Request' : 'New Contact Form Submission';
 
     console.log("Preparing to send email with subject:", subject);
-    console.log("Using email settings - From:", emailSettings.email_from);
-    console.log("Using email settings - To:", emailSettings.email_to.split(',').map(email => email.trim()));
+    
+    // Use the configured email addresses
+    const fromEmail = "support@247locksmith@security.com";
+    const toEmails = ["eviatarmarketing@gmail.com", "yaron@gettmarketing.com"];
+    
+    console.log("Using from email:", fromEmail);
+    console.log("Using to emails:", toEmails);
 
     try {
       const emailResponse = await resend.emails.send({
-        from: emailSettings.email_from,
-        to: emailSettings.email_to.split(',').map(email => email.trim()),
+        from: `Locksmith & Security <${fromEmail}>`,
+        to: toEmails,
         subject: subject,
         html: emailHtml,
       });

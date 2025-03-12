@@ -2,9 +2,9 @@
 import React from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { validateForm } from "./validation";
-import { submitBookingForm } from "./utils/submitForm";
 import SubmitButton from "./SubmitButton";
 import { useToast } from "@/hooks/use-toast";
+import { submitFormData } from "@/utils/formSubmission";
 
 interface FormContainerProps {
   children: React.ReactNode;
@@ -72,7 +72,53 @@ const FormContainer = ({
     setIsSubmitting(true);
 
     try {
-      await submitBookingForm(formData, showVehicleInfo, location.pathname, recaptchaToken, address);
+      // Prepare the submission data
+      const name = formData.get("name") as string;
+      const phone = formData.get("phone") as string;
+      const service = formData.get("service") as string;
+      const timeframe = formData.get("timeframe") as string;
+      const notes = formData.get("notes") as string;
+      const unitNumber = formData.get("unit_number") as string;
+      const gateCode = formData.get("gate_code") as string;
+      const otherService = formData.get("other_service") as string;
+
+      // Format address with unit number if provided
+      const formattedAddress = unitNumber 
+        ? `${address} Unit ${unitNumber}`
+        : address;
+
+      // Prepare vehicle information if needed
+      let vehicleInfo = null;
+      if (showVehicleInfo) {
+        vehicleInfo = {
+          year: formData.get("vehicle_year") as string,
+          make: formData.get("vehicle_make") as string,
+          model: formData.get("vehicle_model") as string,
+          all_keys_lost: allKeysLost === "yes",
+          has_unused_key: hasUnusedKey === "yes"
+        };
+      }
+
+      // Prepare the submission data
+      const submissionData = {
+        type: "booking",
+        name,
+        phone,
+        address: formattedAddress,
+        unit_number: unitNumber || null,
+        gate_code: gateCode || null,
+        service: service === "Other" ? otherService : service,
+        timeframe,
+        notes: notes || null,
+        status: "pending",
+        visitor_info: collectVisitorInfo(),
+        source_url: location.pathname,
+        recaptcha_token: recaptchaToken,
+        vehicle_info: vehicleInfo
+      };
+
+      await submitFormData(submissionData);
+      
       window.sessionStorage.setItem('fromFormSubmission', 'true');
       
       toast({
@@ -100,6 +146,17 @@ const FormContainer = ({
     } finally {
       setIsSubmitting(false);
     }
+  };
+
+  const collectVisitorInfo = () => {
+    return {
+      userAgent: navigator.userAgent,
+      language: navigator.language,
+      platform: navigator.platform,
+      screenResolution: `${window.screen.width}x${window.screen.height}`,
+      windowSize: `${window.innerWidth}x${window.innerHeight}`,
+      timestamp: new Date().toISOString()
+    };
   };
 
   return (

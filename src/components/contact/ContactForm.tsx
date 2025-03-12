@@ -3,13 +3,13 @@ import { useRef, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
-import { supabase } from "@/integrations/supabase/client";
 import Recaptcha from "@/components/ui/recaptcha";
 import PersonalInfoFields from "./form/PersonalInfoFields";
 import EmailField from "./form/EmailField";
 import AddressField from "./form/AddressField";
 import MessageField from "./form/MessageField";
 import { getEmailError, getNameError, getPhoneError } from "@/utils/inputValidation";
+import { submitFormData } from "@/utils/formSubmission";
 
 const ContactForm = () => {
   const form = useRef<HTMLFormElement>(null);
@@ -77,39 +77,29 @@ const ContactForm = () => {
     if (!form.current) return;
     setIsSubmitting(true);
 
-    const formData = new FormData(form.current);
-    const submissionData = {
-      type: 'contact',
-      name: String(formData.get('user_name')),
-      email: String(formData.get('user_email')),
-      phone: String(formData.get('user_phone')),
-      address: address,
-      message: String(formData.get('message')),
-      status: 'pending',
-      recaptcha_token: recaptchaToken,
-      visitor_info: {
-        userAgent: navigator.userAgent,
-        language: navigator.language,
-        platform: navigator.platform,
-        screenResolution: `${window.screen.width}x${window.screen.height}`,
-        windowSize: `${window.innerWidth}x${window.innerHeight}`,
-        timestamp: new Date().toISOString(),
-      },
-      source_url: window.location.pathname
-    };
-
     try {
-      const { error: dbError } = await supabase
-        .from('submissions')
-        .insert(submissionData);
+      const formData = new FormData(form.current);
+      const submissionData = {
+        type: 'contact',
+        name: String(formData.get('user_name')),
+        email: String(formData.get('user_email')),
+        phone: String(formData.get('user_phone')),
+        address: address,
+        message: String(formData.get('message')),
+        status: 'pending',
+        recaptcha_token: recaptchaToken,
+        visitor_info: {
+          userAgent: navigator.userAgent,
+          language: navigator.language,
+          platform: navigator.platform,
+          screenResolution: `${window.screen.width}x${window.screen.height}`,
+          windowSize: `${window.innerWidth}x${window.innerHeight}`,
+          timestamp: new Date().toISOString(),
+        },
+        source_url: window.location.pathname
+      };
 
-      if (dbError) throw dbError;
-
-      const { error } = await supabase.functions.invoke('send-form-email', {
-        body: submissionData
-      });
-
-      if (error) throw error;
+      await submitFormData(submissionData);
 
       sessionStorage.setItem('fromFormSubmission', 'true');
       navigate('/thank-you');

@@ -9,23 +9,29 @@ import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import { NavigationProvider } from "./contexts/NavigationContext";
 import { ScriptsProvider } from "./components/providers/ScriptsProvider";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+// Create a client
+const queryClient = new QueryClient();
 
 function App() {
   return (
-    <Router>
-      <RouteErrorBoundary>
-        <ScrollToTop />
-        <ScriptsProvider>
-          <NavigationProvider>
-            <Header />
-            <Routes />
-            <Footer />
-          </NavigationProvider>
-        </ScriptsProvider>
-        <Toaster />
-        <CookieConsent />
-      </RouteErrorBoundary>
-    </Router>
+    <QueryClientProvider client={queryClient}>
+      <Router>
+        <RouteErrorBoundary>
+          <ScrollToTop />
+          <ScriptsProvider>
+            <NavigationProvider>
+              <Header />
+              <Routes />
+              <Footer />
+            </NavigationProvider>
+          </ScriptsProvider>
+          <Toaster />
+          <CookieConsent />
+        </RouteErrorBoundary>
+      </Router>
+    </QueryClientProvider>
   );
 }
 

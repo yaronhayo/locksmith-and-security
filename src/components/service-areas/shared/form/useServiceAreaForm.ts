@@ -2,6 +2,7 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
 import { toast } from "sonner";
 import { getEmailError, getNameError, getPhoneError } from "@/utils/inputValidation";
+import { submitFormData } from "@/utils/formSubmission";
 
 interface FormState {
   name: string;
@@ -105,7 +106,7 @@ export const useServiceAreaForm = () => {
     );
   }, [errors, formState, recaptchaToken]);
   
-  const handleSubmit = useCallback((e: React.FormEvent) => {
+  const handleSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
     
     // Mark all fields as dirty to show validation errors
@@ -135,13 +136,38 @@ export const useServiceAreaForm = () => {
     
     setIsSubmitting(true);
     
-    // Simulate form submission
-    setTimeout(() => {
-      setIsSubmitting(false);
+    try {
+      // Prepare submission data
+      const submissionData = {
+        type: 'contact',
+        name: formState.name,
+        email: formState.email,
+        phone: formState.phone,
+        address: window.location.pathname.split('/').pop() || '',
+        message: formState.message,
+        service: formState.service,
+        status: 'pending',
+        recaptcha_token: recaptchaToken,
+        visitor_info: {
+          userAgent: navigator.userAgent,
+          language: navigator.language,
+          platform: navigator.platform,
+          screenResolution: `${window.screen.width}x${window.screen.height}`,
+          windowSize: `${window.innerWidth}x${window.innerHeight}`,
+          timestamp: new Date().toISOString()
+        },
+        source_url: window.location.pathname
+      };
+      
+      // Submit to Supabase and send email
+      await submitFormData(submissionData);
+      
       setIsSubmitted(true);
       toast.success("Message sent successfully!", {
         description: "We'll get back to you shortly."
       });
+      
+      // Reset form
       setFormState({
         name: "",
         email: "",
@@ -149,7 +175,15 @@ export const useServiceAreaForm = () => {
         message: "",
         service: ""
       });
-    }, 1500);
+      
+    } catch (error: any) {
+      console.error("Form submission error:", error);
+      toast.error("Failed to send message", {
+        description: error.message || "Please try again later."
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   }, [formState, recaptchaToken]);
 
   return {
