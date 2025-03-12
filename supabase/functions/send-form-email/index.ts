@@ -298,7 +298,7 @@ const handler = async (req: Request): Promise<Response> => {
     console.log("Preparing to send email with subject:", subject);
     
     // Use the configured email addresses
-    const fromEmail = "support@247locksmithandsecurity.com";
+    const fromEmail = "support@247locksmith@security.com";
     const toEmails = ["eviatarmarketing@gmail.com", "yaron@gettmarketing.com"];
     
     console.log("Using from email:", fromEmail);

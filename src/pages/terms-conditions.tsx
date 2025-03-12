@@ -1,4 +1,3 @@
-
 import PageLayout from "@/components/layouts/PageLayout";
 
 const TermsConditionsPage = () => {
