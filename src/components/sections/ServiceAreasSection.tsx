@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useMemo, memo } from 'react';
 import GoogleMap from '../map/GoogleMap';
 import AreasList from './service-areas/AreasList';
@@ -72,6 +71,13 @@ const ServiceAreasSection = () => {
       slug: location.slug
     }));
   }, [locations]);
+
+  // Debug logs
+  useEffect(() => {
+    if (mapMarkers.length > 0) {
+      console.log('Map markers created:', mapMarkers);
+    }
+  }, [mapMarkers]);
 
   if (isLoading) {
     return (
