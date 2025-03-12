@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { motion } from 'framer-motion';
 import ServicesHero from '@/components/sections/services/ServicesHero';
@@ -10,7 +9,21 @@ import { commercialFaqs } from '@/data/faqData';
 import { Link } from 'react-router-dom';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Key, Lock, ShieldCheck, Building2, ArrowRight } from 'lucide-react';
+import { 
+  Key, 
+  Lock, 
+  ShieldCheck, 
+  Building2, 
+  ArrowRight, 
+  Store, 
+  Building, 
+  Stethoscope, 
+  GraduationCap, 
+  Utensils, 
+  Hotel, 
+  Factory, 
+  Warehouse 
+} from 'lucide-react';
 import ServicesGrid from '@/components/sections/services/ServicesGrid';
 
 const commercialServices = [
@@ -47,8 +60,14 @@ const commercialServices = [
 ];
 
 const businessTypes = [
-  "Retail Stores", "Office Buildings", "Medical Facilities", "Educational Institutions", 
-  "Restaurants", "Hotels", "Manufacturing", "Warehouses"
+  { name: "Retail Stores", icon: Store },
+  { name: "Office Buildings", icon: Building },
+  { name: "Medical Facilities", icon: Stethoscope },
+  { name: "Educational Institutions", icon: GraduationCap },
+  { name: "Restaurants", icon: Utensils },
+  { name: "Hotels", icon: Hotel },
+  { name: "Manufacturing", icon: Factory },
+  { name: "Warehouses", icon: Warehouse }
 ];
 
 const CommercialLocksmith = () => {
@@ -240,13 +259,14 @@ const CommercialLocksmith = () => {
             {businessTypes.map((type, index) => (
               <motion.div
                 key={index}
-                className="bg-white rounded-lg shadow-sm p-6 flex items-center justify-center border border-gray-100"
+                className="bg-white rounded-lg shadow-sm p-6 flex flex-col items-center justify-center border border-gray-100"
                 initial={{ opacity: 0, scale: 0.9 }}
                 whileInView={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.3, delay: index * 0.05 }}
                 viewport={{ once: true }}
               >
-                <span className="text-lg font-semibold text-gray-700">{type}</span>
+                <type.icon className="h-8 w-8 text-primary mb-3" />
+                <span className="text-lg font-semibold text-gray-700">{type.name}</span>
               </motion.div>
             ))}
           </div>
