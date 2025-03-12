@@ -2,6 +2,7 @@
 import React from "react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
+import GoogleMapsProvider from "@/components/providers/GoogleMapsProvider";
 import AddressAutocomplete from "@/components/ui/address-autocomplete";
 
 interface AddressFieldsProps {
@@ -18,13 +19,15 @@ const AddressFields = ({ address, onChange, errors, isSubmitting }: AddressField
         <Label htmlFor="address" className="block text-sm font-medium text-gray-700 mb-1">
           Service Address
         </Label>
-        <AddressAutocomplete
-          value={address}
-          onChange={onChange}
-          placeholder="Enter your service address"
-          disabled={isSubmitting}
-          required
-        />
+        <GoogleMapsProvider>
+          <AddressAutocomplete
+            value={address}
+            onChange={onChange}
+            placeholder="Enter your service address"
+            disabled={isSubmitting}
+            required
+          />
+        </GoogleMapsProvider>
         {errors.address && (
           <p className="text-xs text-red-500 mt-1">{errors.address}</p>
         )}

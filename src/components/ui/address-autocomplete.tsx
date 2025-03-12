@@ -1,11 +1,11 @@
 
 import { useEffect, useRef, useState } from "react";
 import { Input } from "./input";
+import { useMapConfig } from "@/hooks/useMap";
 import { InputHTMLAttributes } from "react";
 import { Loader2 } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { cn } from "@/lib/utils";
-import { useScripts } from "@/components/providers/ScriptsProvider";
 
 type AddressAutocompleteProps = Omit<InputHTMLAttributes<HTMLInputElement>, 'onChange'> & {
   value: string;
@@ -22,25 +22,66 @@ const AddressAutocomplete = ({
 }: AddressAutocompleteProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const autocompleteRef = useRef<google.maps.places.Autocomplete | null>(null);
-  const { googleMapsStatus, googleMapsError } = useScripts();
+  const { data: apiKey, error: apiKeyError, isLoading: isApiKeyLoading } = useMapConfig();
+  const [isGoogleLoaded, setIsGoogleLoaded] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [isInitialized, setIsInitialized] = useState(false);
+  const [initializationAttempted, setInitializationAttempted] = useState(false);
 
-  // Initialize autocomplete when Google Maps is loaded
+  // Check if Google Maps API is loaded
   useEffect(() => {
-    if (googleMapsStatus !== 'loaded' || !inputRef.current || isInitialized) return;
+    const checkGoogleMapsLoaded = () => {
+      if (window.google?.maps?.places) {
+        setIsGoogleLoaded(true);
+        return true;
+      }
+      return false;
+    };
+
+    // Check immediately
+    if (checkGoogleMapsLoaded()) return;
+
+    // Set up a listener for when the API loads
+    const googleMapsListener = () => {
+      if (checkGoogleMapsLoaded()) {
+        document.removeEventListener('google-maps-loaded', googleMapsListener);
+      }
+    };
+
+    document.addEventListener('google-maps-loaded', googleMapsListener);
+
+    // Safety timeout - if not loaded after 5 seconds, we'll try initialization anyway
+    const timeoutId = setTimeout(() => {
+      if (!isGoogleLoaded && window.google?.maps?.places) {
+        setIsGoogleLoaded(true);
+      }
+    }, 5000);
+
+    return () => {
+      document.removeEventListener('google-maps-loaded', googleMapsListener);
+      clearTimeout(timeoutId);
+    };
+  }, []);
+
+  // Initialize autocomplete
+  useEffect(() => {
+    // Only try to initialize if:
+    // 1. We have the input element ref
+    // 2. Google Maps API is available
+    // 3. We have the API key
+    // 4. We haven't already attempted initialization
+    if (!inputRef.current || !isGoogleLoaded || !apiKey || initializationAttempted) return;
 
     try {
       console.log('Initializing address autocomplete');
-      
-      // Clean up existing autocomplete instance
+      setInitializationAttempted(true);
+
+      // Clear existing listeners before creating new autocomplete instance
       if (autocompleteRef.current) {
         google.maps.event.clearInstanceListeners(autocompleteRef.current);
         autocompleteRef.current = null;
       }
-      
-      // Create new autocomplete instance
-      autocompleteRef.current = new google.maps.places.Autocomplete(
+
+      autocompleteRef.current = new window.google.maps.places.Autocomplete(
         inputRef.current,
         {
           componentRestrictions: { country: "us" },
@@ -48,8 +89,7 @@ const AddressAutocomplete = ({
           types: ["address"]
         }
       );
-      
-      // Add place_changed listener
+
       const listener = autocompleteRef.current.addListener(
         "place_changed",
         () => {
@@ -60,12 +100,9 @@ const AddressAutocomplete = ({
           }
         }
       );
-      
-      setIsInitialized(true);
-      setError(null);
-      
-      // Cleanup function
+
       return () => {
+        // Only attempt cleanup if Google Maps is still available
         if (window.google?.maps?.event && listener) {
           listener.remove();
         }
@@ -78,22 +115,15 @@ const AddressAutocomplete = ({
       console.error('Error initializing address autocomplete:', err);
       setError(err instanceof Error ? err.message : 'Failed to initialize address autocomplete');
     }
-  }, [googleMapsStatus, onChange, isInitialized]);
+  }, [onChange, apiKey, isGoogleLoaded, initializationAttempted]);
 
-  // Listen for Google Maps script load event
+  // Reset initialization attempted state when API key changes
   useEffect(() => {
-    const handleGoogleMapsLoaded = () => {
-      setIsInitialized(false); // Reset initialization flag to trigger re-initialization
-    };
-    
-    document.addEventListener('google-maps-loaded', handleGoogleMapsLoaded);
-    
-    return () => {
-      document.removeEventListener('google-maps-loaded', handleGoogleMapsLoaded);
-    };
-  }, []);
+    if (apiKey) {
+      setInitializationAttempted(false);
+    }
+  }, [apiKey]);
 
-  // Prevent form submission on Enter key
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Enter' && autocompleteRef.current) {
@@ -115,8 +145,8 @@ const AddressAutocomplete = ({
     setError(null);
   };
 
-  const displayError = error || (googleMapsError?.message ?? null);
-  const isLoading = googleMapsStatus === 'loading' || (googleMapsStatus === 'loaded' && !isInitialized);
+  const displayError = error || (apiKeyError?.message ?? null);
+  const isLoading = (isApiKeyLoading || (!isGoogleLoaded && !displayError));
 
   return (
     <div className="relative w-full space-y-2">
@@ -127,7 +157,7 @@ const AddressAutocomplete = ({
           value={value}
           onChange={handleInputChange}
           className={cn(className, "w-full", displayError ? 'border-red-500' : '')}
-          disabled={disabled || isLoading || googleMapsStatus === 'error'}
+          disabled={disabled || isLoading}
           placeholder={placeholder}
           aria-invalid={displayError ? "true" : "false"}
           aria-describedby={displayError ? "address-error" : undefined}

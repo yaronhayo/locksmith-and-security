@@ -21,7 +21,7 @@ const ServiceAreaMap = ({ locationName, lat, lng, isLoading = false }: ServiceAr
   
   useEffect(() => {
     finishRenderTracking();
-  }, [finishRenderTracking]);
+  }, []);
   
   const markers: MapMarker[] = [
     {

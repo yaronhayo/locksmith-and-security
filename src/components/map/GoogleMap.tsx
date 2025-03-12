@@ -7,8 +7,7 @@ import MapError from "./MapError";
 import MapControls from "./MapControls";
 import { MapMarker } from "@/types/service-area";
 import { useGoogleMap } from "./useGoogleMap";
-import { useScripts } from "@/components/providers/ScriptsProvider";
-import { ScriptLoadError } from "@/components/providers/ScriptsProvider";
+import { clearMapConfigCache } from "@/hooks/useMap";
 
 const mapOptions: google.maps.MapOptions = {
   zoomControl: false, // We'll use our custom controls
@@ -42,8 +41,6 @@ const GoogleMap = ({
   center = { lat: 40.7795, lng: -74.0324 },
   onClick
 }: GoogleMapProps) => {
-  const { googleMapsStatus, googleMapsError, reloadGoogleMaps } = useScripts();
-  
   const {
     mapRef,
     isLoading,
@@ -58,9 +55,9 @@ const GoogleMap = ({
 
   const handleMapError = useCallback(() => {
     console.error("Map error occurred");
-    // Attempt to recover by reloading Google Maps
-    reloadGoogleMaps();
-  }, [reloadGoogleMaps]);
+    // Attempt to recover by clearing cache and reloading config
+    clearMapConfigCache();
+  }, []);
 
   // Register error handling on window
   React.useEffect(() => {
@@ -82,19 +79,8 @@ const GoogleMap = ({
     };
   }, [handleMapError]);
 
-  // Show error if Google Maps failed to load
-  if (googleMapsStatus === 'error') {
-    return <ScriptLoadError error={googleMapsError} />;
-  }
-
-  // Show error if there was a map-specific error
   if (mapError) {
     return <MapError error={mapError} />;
-  }
-  
-  // Show loading state if Google Maps is still loading
-  if (googleMapsStatus === 'loading') {
-    return <MapLoader />;
   }
 
   return (

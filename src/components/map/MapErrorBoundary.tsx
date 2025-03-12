@@ -2,6 +2,7 @@
 import React from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 import MapError from './MapError';
+import { clearMapConfigCache } from '@/hooks/useMap';
 
 interface MapErrorBoundaryProps {
   children: React.ReactNode;
@@ -10,7 +11,8 @@ interface MapErrorBoundaryProps {
 const MapErrorBoundary = ({ children }: MapErrorBoundaryProps) => {
   const handleError = (error: Error) => {
     console.error('Map Error Boundary caught error:', error);
-    // Just log the error, no cache clearing since useMap hook doesn't exist
+    // Clear cache on error to allow fresh reload
+    clearMapConfigCache();
   };
 
   return (
