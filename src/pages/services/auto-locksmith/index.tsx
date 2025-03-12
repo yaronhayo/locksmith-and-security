@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { motion } from 'framer-motion';
 import ServicesHero from '@/components/sections/services/ServicesHero';
@@ -9,20 +10,7 @@ import { automotiveFaqs } from '@/data/faqData';
 import { Link } from 'react-router-dom';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { 
-  Car, 
-  Key, 
-  ShieldCheck, 
-  Wrench, 
-  Settings, 
-  ArrowRight, 
-  CarFront, 
-  CircleUserRound,
-  BarChart4,
-  Zap,
-  CircleDollarSign,
-  BadgeCheck
-} from 'lucide-react';
+import { Car, Key, ShieldCheck, Wrench, Settings, ArrowRight } from 'lucide-react';
 import ServicesGrid from '@/components/sections/services/ServicesGrid';
 
 const autoServices = [
@@ -59,18 +47,8 @@ const autoServices = [
 ];
 
 const carBrands = [
-  { name: "Toyota", icon: CarFront },
-  { name: "Honda", icon: Car },
-  { name: "Ford", icon: Car },
-  { name: "Chevrolet", icon: CarFront },
-  { name: "BMW", icon: BadgeCheck },
-  { name: "Mercedes", icon: CircleUserRound },
-  { name: "Lexus", icon: CircleDollarSign },
-  { name: "Audi", icon: BadgeCheck },
-  { name: "Volkswagen", icon: Car },
-  { name: "Nissan", icon: CarFront },
-  { name: "Hyundai", icon: Zap },
-  { name: "Kia", icon: BarChart4 }
+  "Toyota", "Honda", "Ford", "Chevrolet", "BMW", "Mercedes", 
+  "Lexus", "Audi", "Volkswagen", "Nissan", "Hyundai", "Kia"
 ];
 
 const AutoLocksmith = () => {
@@ -262,14 +240,13 @@ const AutoLocksmith = () => {
             {carBrands.map((brand, index) => (
               <motion.div
                 key={index}
-                className="bg-white rounded-lg shadow-sm p-4 flex flex-col items-center justify-center border border-gray-100"
+                className="bg-white rounded-lg shadow-sm p-4 flex items-center justify-center border border-gray-100"
                 initial={{ opacity: 0, scale: 0.9 }}
                 whileInView={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.3, delay: index * 0.05 }}
                 viewport={{ once: true }}
               >
-                <brand.icon className="h-8 w-8 text-primary mb-2" />
-                <span className="font-semibold text-gray-700">{brand.name}</span>
+                <span className="font-semibold text-gray-700">{brand}</span>
               </motion.div>
             ))}
           </div>
