@@ -18,6 +18,7 @@ const ServiceAreaForm = ({ locationName }: ServiceAreaFormProps) => {
   // Use individual hooks for form functionality
   const {
     formState,
+    isDirty,
     handleChange,
     handleBlur
   } = useFormState();
@@ -26,7 +27,7 @@ const ServiceAreaForm = ({ locationName }: ServiceAreaFormProps) => {
     errors,
     validateForm,
     isFormValid
-  } = useFormValidation(formState);
+  } = useFormValidation(formState, isDirty);
   
   const {
     recaptchaToken,
