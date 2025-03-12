@@ -60,6 +60,13 @@ const CarLockout = () => {
     ]
   });
 
+  // Map relatedEmergencyServices to match the expected RelatedService type
+  const mappedRelatedServices = relatedEmergencyServices.map(service => ({
+    title: service.name,
+    path: service.path,
+    description: service.description
+  }));
+
   return (
     <main className="flex-grow">
       <MetaTags 
@@ -95,7 +102,7 @@ const CarLockout = () => {
         serviceName="Car Lockout"
         serviceCategory="Emergency Locksmith"
         mainContent={<CarLockoutContent />}
-        relatedServices={relatedEmergencyServices}
+        relatedServices={mappedRelatedServices}
         faqs={carLockoutFaqs}
       />
       
