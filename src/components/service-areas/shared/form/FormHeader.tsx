@@ -7,19 +7,15 @@ interface FormHeaderProps {
 
 const FormHeader = ({ locationName }: FormHeaderProps) => {
   return (
-    <div className="bg-gradient-to-r from-primary to-primary/90 text-white p-4 sm:p-6 md:p-8 rounded-t-lg">
-      <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-2 text-white">
-        Contact Your {locationName} Locksmith
+    <div className="bg-primary text-white px-4 sm:px-6 py-4 sm:py-5 rounded-t-xl">
+      <h2 className="text-xl sm:text-2xl font-bold">
+        {locationName 
+          ? `Contact Our ${locationName} Locksmith Team` 
+          : "Contact Our Locksmith Team"}
       </h2>
-      <p className="text-white/90 text-sm sm:text-base">
-        Fill out the form below and our team will get back to you promptly
+      <p className="mt-1 text-sm sm:text-base opacity-90">
+        Send us a message and we'll get back to you within 1 hour
       </p>
-      <div className="flex items-center gap-2 mt-3 text-xs sm:text-sm text-white/80">
-        <span className="inline-block w-2 h-2 bg-green-400 rounded-full"></span>
-        <span>Quick Response</span>
-        <span className="inline-block w-2 h-2 bg-green-400 rounded-full ml-3"></span>
-        <span>24/7 Available</span>
-      </div>
     </div>
   );
 };

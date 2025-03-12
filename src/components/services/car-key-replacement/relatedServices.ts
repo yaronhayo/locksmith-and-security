@@ -1,18 +1,29 @@
 
+import { Car, Key, KeySquare, Wrench } from "lucide-react";
+
 export const relatedAutoServices = [
   {
     title: "Key Fob Programming",
+    description: "Professional programming for remote key fobs and smart keys",
     path: "/services/auto-locksmith/key-fob-programming",
-    description: "Professional programming service for replacement or additional key fobs to ensure proper communication with your vehicle."
+    icon: KeySquare
   },
   {
     title: "Car Key Duplicate",
+    description: "Create spare keys for your vehicle to prevent lockouts",
     path: "/services/auto-locksmith/car-key-duplicate",
-    description: "Expert duplication of existing car keys to provide spares for emergencies or family members."
+    icon: Key
   },
   {
-    title: "Car Lockout Service",
+    title: "Car Lockout",
+    description: "Emergency lockout service when you're locked out of your vehicle",
     path: "/services/emergency-locksmith/car-lockout",
-    description: "Professional assistance when you're locked out of your vehicle with fast, damage-free entry methods."
+    icon: Car
   },
+  {
+    title: "Ignition Lock Cylinder",
+    description: "Repair or replace damaged ignition systems",
+    path: "/services/auto-locksmith/ignition-lock-cylinder",
+    icon: Wrench
+  }
 ];

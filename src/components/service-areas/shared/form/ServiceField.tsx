@@ -1,60 +1,48 @@
 
 import React from "react";
+import { Wrench } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { AlertCircle } from "lucide-react";
 
 interface ServiceFieldProps {
   service: string;
+  error: string | null;
   isSubmitting: boolean;
   handleChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
-  error?: string | null;
 }
 
-const ServiceField = ({ service, isSubmitting, handleChange, error }: ServiceFieldProps) => {
+const ServiceField = ({ service, error, isSubmitting, handleChange }: ServiceFieldProps) => {
   return (
     <div>
       <label htmlFor="service" className="block text-sm font-medium text-gray-700 mb-1">Service Needed</label>
-      <select
-        id="service"
-        name="service"
-        value={service}
-        onChange={handleChange}
-        className={`w-full px-3 sm:px-4 py-2 border ${error ? 'border-red-500' : 'border-gray-300'} rounded-md focus:ring-secondary focus:border-secondary text-sm sm:text-base`}
-        required
-        disabled={isSubmitting}
-        aria-invalid={!!error}
-        aria-describedby={error ? "service-error" : undefined}
-      >
-        <option value="">Select a service</option>
-        <optgroup label="Emergency Services">
-          <option value="residential">Residential Lockout</option>
-          <option value="commercial">Commercial Lockout</option>
-          <option value="automotive">Car Lockout</option>
-          <option value="storage">Storage Unit Lockout</option>
-        </optgroup>
-        <optgroup label="Residential Services">
-          <option value="residential-lock-replacement">Lock Replacement</option>
-          <option value="residential-lock-rekey">Lock Rekey</option>
-          <option value="residential-lock-repair">Lock Repair</option>
-          <option value="gate-locks">Gate Locks</option>
-        </optgroup>
-        <optgroup label="Commercial Services">
-          <option value="commercial-lock-replacement">Commercial Lock Replacement</option>
-          <option value="commercial-lock-rekey">Commercial Lock Rekey</option>
-          <option value="master-key">Master Key System</option>
-          <option value="access-control">Access Control</option>
-          <option value="emergency-exit">Emergency Exit Device</option>
-        </optgroup>
-        <optgroup label="Automotive Services">
-          <option value="car-key-replacement">Car Key Replacement</option>
-          <option value="key-fob-programming">Key Fob Programming</option>
-          <option value="car-key-duplicate">Car Key Duplicate</option>
-          <option value="car-key-cutting">Car Key Cutting</option>
-          <option value="ignition-repair">Ignition Repair</option>
-        </optgroup>
-        <option value="other">Other</option>
-      </select>
-      
+      <div className="relative">
+        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+          <Wrench className="h-4 w-4 text-gray-400" />
+        </div>
+        <select
+          id="service"
+          name="service"
+          value={service}
+          onChange={handleChange}
+          className={`w-full pl-10 pr-3 py-2 sm:py-2.5 border ${error ? 'border-red-500' : 'border-gray-300'} rounded-md focus:ring-secondary focus:border-secondary text-sm sm:text-base appearance-none`}
+          required
+          disabled={isSubmitting}
+          aria-invalid={!!error}
+          aria-describedby={error ? "service-error" : undefined}
+        >
+          <option value="">Select a service</option>
+          <option value="Emergency Lockout">Emergency Lockout</option>
+          <option value="Lock Replacement">Lock Replacement</option>
+          <option value="Lock Rekey">Lock Rekey</option>
+          <option value="Key Duplication">Key Duplication</option>
+          <option value="Broken Key Extraction">Broken Key Extraction</option>
+          <option value="Car Key Replacement">Car Key Replacement</option>
+          <option value="Car Lockout">Car Lockout</option>
+          <option value="Safe Unlocking">Safe Unlocking</option>
+          <option value="Security Assessment">Security Assessment</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
       {error && (
         <Alert variant="destructive" className="mt-1 py-2">
           <AlertCircle className="h-4 w-4" />

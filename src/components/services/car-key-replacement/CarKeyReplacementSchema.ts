@@ -9,24 +9,24 @@ export interface FAQItem {
 
 export const carKeyReplacementFaqs: FAQItem[] = [
   {
-    question: "How long does it take to replace a car key?",
-    answer: "The time required to replace a car key depends on the type of key and vehicle. Basic metal keys can be cut in minutes, while transponder keys, remote fobs, and smart keys typically take 30-60 minutes to cut and program. Complex key systems for luxury vehicles might take longer. Our mobile service means we come to you, eliminating the wait time at a dealership."
+    question: "How much does a car key replacement cost?",
+    answer: "The cost varies based on your vehicle's make, model, and key type. Basic metal keys start at $70, while transponder keys, remote fobs, and smart keys range from $120-$400 depending on complexity. We always provide a clear quote before beginning work."
   },
   {
-    question: "Do I need all my car keys lost before getting a replacement?",
-    answer: "No, you don't need to lose all your keys before getting a replacement. In fact, it's much more convenient and cost-effective to get a spare key made while you still have at least one working key. If you've lost all keys, we can still help, but the process may take longer and could require additional steps to program your vehicle's security system."
+    question: "Can you replace a car key if I've lost all my keys?",
+    answer: "Yes, we can replace keys even if you've lost all your original keys. This involves additional steps to extract the key code from your vehicle's locks or ECU and may require proof of ownership for security purposes."
   },
   {
-    question: "Can you replace keys for any car make and model?",
-    answer: "We can replace keys for virtually all domestic and imported vehicles, including cars, trucks, SUVs, and vans. Our technicians have experience with a wide range of manufacturers from Toyota and Honda to BMW and Mercedes, as well as less common makes. We regularly update our equipment and databases to stay current with newer vehicle models."
+    question: "How long does car key replacement take?",
+    answer: "Most standard key replacements take 30-60 minutes. However, more complex keys (like those for luxury vehicles) or situations where all keys are lost might take 1-2 hours. Our mobile service comes to your location, saving you the time and hassle of towing your vehicle."
   },
   {
-    question: "What information do I need to provide for car key replacement?",
-    answer: "To replace your car key, we'll need your vehicle identification number (VIN), proof of vehicle ownership (such as registration or title), a valid photo ID, and information about the make, model, and year of your vehicle. This information ensures security and allows us to create the correct key for your specific vehicle."
+    question: "Will a replacement key work with my car's immobilizer system?",
+    answer: "Yes, our replacement keys are fully programmed to work with your vehicle's immobilizer system. We use specialized equipment to properly code transponder chips and program remote functions to ensure seamless operation with your specific vehicle."
   },
   {
-    question: "Can you replace a key fob that's no longer working?",
-    answer: "Yes, we can replace non-functioning key fobs. If the remote buttons have stopped working but the key still starts the car, we can often replace just the remote portion. If the entire unit is damaged, we provide complete replacement key fobs and program them to work with your vehicle. We can also troubleshoot issues that might be caused by dead batteries or programming errors rather than physical damage."
+    question: "Do I need to go to the dealership for a replacement key?",
+    answer: "No, our automotive locksmiths can provide the same high-quality replacement keys as dealerships, often at 40-60% lower cost and with much faster service. We come to your location and can typically complete the service same-day, while dealerships might take days or weeks."
   }
 ];
 
@@ -34,7 +34,7 @@ export const carKeyReplacementServiceSchema = {
   "@context": "https://schema.org",
   "@type": "Service",
   "name": "Car Key Replacement Service",
-  "description": "Professional car key replacement service for all vehicle makes and models. Our certified automotive locksmiths provide expert key cutting and programming for traditional keys, transponders, remote fobs, and smart keys.",
+  "description": "Professional car key replacement service for all vehicle makes and models. We replace traditional keys, transponder keys, remote fobs, and smart keys with fast, mobile service at competitive rates.",
   "provider": {
     "@type": "LocalBusiness",
     "name": "Locksmith & Security LLC",
@@ -63,6 +63,13 @@ export const carKeyReplacementServiceSchema = {
         "@type": "Offer",
         "itemOffered": {
           "@type": "Service",
+          "name": "Traditional Car Key Replacement"
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
           "name": "Transponder Key Replacement"
         }
       },
@@ -70,7 +77,7 @@ export const carKeyReplacementServiceSchema = {
         "@type": "Offer",
         "itemOffered": {
           "@type": "Service",
-          "name": "Key Fob Replacement"
+          "name": "Remote Key Fob Replacement"
         }
       },
       {

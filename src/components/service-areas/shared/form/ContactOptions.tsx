@@ -1,32 +1,52 @@
 
 import React from "react";
-import { Phone, Mail, MessageSquare } from "lucide-react";
+import { Phone, Mail, Clock } from "lucide-react";
+import { getPhoneNumber } from "@/utils/phoneUtils";
 
 const ContactOptions = () => {
   return (
-    <div className="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-6">
-      <div className="flex flex-col items-center text-center">
-        <div className="w-12 h-12 rounded-full bg-secondary/10 flex items-center justify-center mb-3">
-          <Phone className="h-5 w-5 text-secondary" />
+    <div className="mt-8 border-t border-gray-200 pt-6">
+      <h3 className="text-lg font-medium text-gray-900 mb-4">Other ways to contact us</h3>
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div className="flex items-center gap-3">
+          <div className="bg-primary/10 p-2 rounded-full">
+            <Phone className="h-5 w-5 text-primary" />
+          </div>
+          <div>
+            <p className="text-sm font-medium">Phone</p>
+            <a
+              href={`tel:${getPhoneNumber()}`}
+              className="text-sm text-blue-600 hover:text-blue-800"
+            >
+              {getPhoneNumber(true)}
+            </a>
+          </div>
         </div>
-        <h3 className="text-lg font-medium mb-1">Call Us</h3>
-        <a href="tel:2017482070" className="text-secondary hover:underline">(201) 748-2070</a>
-      </div>
-      
-      <div className="flex flex-col items-center text-center">
-        <div className="w-12 h-12 rounded-full bg-secondary/10 flex items-center justify-center mb-3">
-          <Mail className="h-5 w-5 text-secondary" />
+        
+        <div className="flex items-center gap-3">
+          <div className="bg-primary/10 p-2 rounded-full">
+            <Mail className="h-5 w-5 text-primary" />
+          </div>
+          <div>
+            <p className="text-sm font-medium">Email</p>
+            <a
+              href="mailto:support@247locksmithandsecurity.com"
+              className="text-sm text-blue-600 hover:text-blue-800 break-all"
+            >
+              support@247locksmithandsecurity.com
+            </a>
+          </div>
         </div>
-        <h3 className="text-lg font-medium mb-1">Email Us</h3>
-        <a href="mailto:support@247locksmithandsecurity.com" className="text-secondary hover:underline text-sm sm:text-base">support@247locksmithandsecurity.com</a>
-      </div>
-      
-      <div className="flex flex-col items-center text-center">
-        <div className="w-12 h-12 rounded-full bg-secondary/10 flex items-center justify-center mb-3">
-          <MessageSquare className="h-5 w-5 text-secondary" />
+        
+        <div className="flex items-center gap-3">
+          <div className="bg-primary/10 p-2 rounded-full">
+            <Clock className="h-5 w-5 text-primary" />
+          </div>
+          <div>
+            <p className="text-sm font-medium">Hours</p>
+            <p className="text-sm">24/7 Emergency Service</p>
+          </div>
         </div>
-        <h3 className="text-lg font-medium mb-1">Emergency Service</h3>
-        <p className="text-gray-700">Available 24/7 for urgent assistance</p>
       </div>
     </div>
   );
