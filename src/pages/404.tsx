@@ -1,9 +1,10 @@
 
 import { Button } from "@/components/ui/button";
-import { Phone, Home, ArrowLeft } from "lucide-react";
+import { Home, ArrowLeft } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { memo } from "react";
+import PhoneNumber from "@/components/shared/PhoneNumber";
 
 const NotFoundPage = () => {
   const navigate = useNavigate();
@@ -40,10 +41,11 @@ const NotFoundPage = () => {
         <div className="pt-8 border-t">
           <p className="text-gray-600 mb-4">Need immediate assistance?</p>
           <Button asChild variant="secondary">
-            <a href="tel:2017482070" className="flex items-center justify-center">
-              <Phone className="mr-2 h-4 w-4" />
-              Call (201) 748-2070
-            </a>
+            <PhoneNumber
+              showIcon={true}
+              iconClassName="mr-2 h-4 w-4"
+              linkClassName="flex items-center justify-center"
+            />
           </Button>
         </div>
       </motion.div>

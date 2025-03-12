@@ -1,8 +1,9 @@
 
 import React from 'react';
 import { motion } from "framer-motion";
-import { Shield, Clock, MapPin, Phone } from "lucide-react";
+import { Shield, Clock, MapPin } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import PhoneNumber from "@/components/shared/PhoneNumber";
 
 const EmergencyServicesSection = () => {
   return (
@@ -68,10 +69,11 @@ const EmergencyServicesSection = () => {
           className="text-center"
         >
           <Button size="lg" variant="secondary" asChild>
-            <a href="tel:2017482070" className="flex items-center gap-2">
-              <Phone className="w-4 h-4" />
-              Call (201) 748-2070
-            </a>
+            <PhoneNumber 
+              showIcon={true} 
+              iconClassName="w-4 h-4 mr-2" 
+              linkClassName="flex items-center gap-2"
+            />
           </Button>
         </motion.div>
       </div>

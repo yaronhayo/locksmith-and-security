@@ -1,8 +1,9 @@
 
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { Phone, ArrowRight, Shield } from "lucide-react";
+import { ArrowRight, Shield } from "lucide-react";
 import { Link } from "react-router-dom";
+import PhoneNumber from "@/components/shared/PhoneNumber";
 
 const ServicesCTA = () => {
   return (
@@ -48,10 +49,11 @@ const ServicesCTA = () => {
               asChild 
               className="border-2 border-white text-white bg-transparent hover:bg-white/10 shadow-lg hover:shadow-xl transition-all duration-300"
             >
-              <a href="tel:2017482070" className="flex items-center">
-                <Phone className="mr-2 h-5 w-5" />
-                Call (201) 748-2070
-              </a>
+              <PhoneNumber
+                showIcon={true}
+                iconClassName="mr-2 h-5 w-5"
+                linkClassName="flex items-center"
+              />
             </Button>
             <Button 
               size="lg" 

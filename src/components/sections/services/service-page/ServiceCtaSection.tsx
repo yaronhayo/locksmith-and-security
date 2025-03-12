@@ -1,8 +1,9 @@
 
 import React from 'react';
 import { Button } from "@/components/ui/button";
-import { Phone, Calendar } from "lucide-react";
+import { Calendar } from "lucide-react";
 import { Link } from "react-router-dom";
+import PhoneNumber from "@/components/shared/PhoneNumber";
 
 interface ServiceCtaSectionProps {
   serviceName: string;
@@ -20,10 +21,11 @@ const ServiceCtaSection: React.FC<ServiceCtaSectionProps> = ({ serviceName }) =>
           className="w-full sm:w-auto justify-center text-primary font-semibold hover:bg-secondary-hover hover:text-primary-dark"
           asChild
         >
-          <a href="tel:2017482070" className="flex items-center justify-center">
-            <Phone className="mr-2 h-5 w-5" />
-            (201) 748-2070
-          </a>
+          <PhoneNumber 
+            showIcon={true} 
+            iconClassName="mr-2 h-5 w-5" 
+            linkClassName="flex items-center justify-center"
+          />
         </Button>
         <Button 
           variant="outline" 

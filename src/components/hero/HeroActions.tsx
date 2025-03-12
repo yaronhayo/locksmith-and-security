@@ -1,7 +1,8 @@
 
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { Phone, ArrowRight, Wrench } from "lucide-react";
+import { ArrowRight, Wrench } from "lucide-react";
+import PhoneNumber from "@/components/shared/PhoneNumber";
 
 const HeroActions = () => {
   return (
@@ -18,10 +19,12 @@ const HeroActions = () => {
         asChild
         aria-label="Call us now"
       >
-        <a href="tel:2017482070" className="inline-flex items-center justify-center">
-          <Phone className="mr-2 h-5 w-5 animate-phone-ring group-hover:rotate-12 transition-transform duration-300 group-hover:text-black" aria-hidden="true" />
-          <span className="relative z-10 group-hover:text-black">Call Now</span>
-        </a>
+        <PhoneNumber 
+          showIcon={true} 
+          iconClassName="mr-2 h-5 w-5 animate-phone-ring group-hover:rotate-12 transition-transform duration-300 group-hover:text-black" 
+          linkClassName="inline-flex items-center justify-center"
+          className="relative z-10 group-hover:text-black"
+        />
       </Button>
       
       <Button 

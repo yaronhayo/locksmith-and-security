@@ -1,13 +1,13 @@
 
-import { MapPin, Phone, Mail, Clock } from 'lucide-react';
+import { MapPin, Mail, Clock } from 'lucide-react';
+import PhoneNumber from '@/components/shared/PhoneNumber';
 
 const ContactInfo = () => {
   const contactItems = [
     {
-      icon: Phone,
+      icon: PhoneNumber,
       title: "Phone",
-      content: "(201) 748-2070",
-      link: "tel:2017482070"
+      isPhoneComponent: true
     },
     {
       icon: Mail,
@@ -42,16 +42,26 @@ const ContactInfo = () => {
         {contactItems.map((item, index) => (
           <div key={index} className="flex items-center space-x-4 p-4 bg-primary/5 rounded-lg">
             <div className="bg-primary/10 p-3 rounded-full">
-              <item.icon className="w-6 h-6 text-primary" />
+              {item.isPhoneComponent ? (
+                <PhoneNumber 
+                  showIcon={true}
+                  iconClassName="w-6 h-6 text-primary"
+                  linkClassName="text-primary hover:text-primary/80"
+                />
+              ) : (
+                <item.icon className="w-6 h-6 text-primary" />
+              )}
             </div>
             <div>
               <h3 className="font-semibold">{item.title}</h3>
-              {item.link ? (
-                <a href={item.link} className="text-primary hover:text-primary/80">
-                  {item.content}
-                </a>
-              ) : (
-                <p>{item.content}</p>
+              {!item.isPhoneComponent && (
+                item.link ? (
+                  <a href={item.link} className="text-primary hover:text-primary/80">
+                    {item.content}
+                  </a>
+                ) : (
+                  <p>{item.content}</p>
+                )
               )}
             </div>
           </div>
