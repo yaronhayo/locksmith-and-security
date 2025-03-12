@@ -19,11 +19,33 @@ export const ResourceHints = memo(({
   dnsPrefetch = []
 }: ResourceHintsProps) => {
   // Remove duplicates
-  const uniquePreconnect = Array.from(new Set(preconnect));
-  const uniqueDnsPrefetch = Array.from(new Set(dnsPrefetch));
+  const uniquePreconnect = Array.from(new Set([
+    ...preconnect,
+    'https://fonts.googleapis.com',
+    'https://fonts.gstatic.com',
+    'https://maps.googleapis.com',
+    'https://www.google.com'
+  ]));
+  
+  const uniqueDnsPrefetch = Array.from(new Set([
+    ...dnsPrefetch,
+    'https://fonts.googleapis.com',
+    'https://maps.googleapis.com',
+  ]));
   
   // Filter out preload items with same URLs
-  const uniquePreload = preload.filter((item, index, self) => 
+  const defaultPreload = [
+    {
+      href: '/fonts/inter-var-latin.woff2',
+      as: 'font',
+      type: 'font/woff2',
+      crossOrigin: 'anonymous'
+    }
+  ] as const;
+  
+  const allPreload = [...preload, ...defaultPreload];
+  
+  const uniquePreload = allPreload.filter((item, index, self) => 
     index === self.findIndex((t) => t.href === item.href && t.as === item.as)
   );
 

@@ -83,7 +83,7 @@ const OptimizedImage = memo(({
           width={width}
           height={height}
           loading={priority ? "eager" : "lazy"}
-          fetchPriority={priority ? "high" : "auto"}
+          fetchpriority={priority ? "high" : "auto"}
           decoding="async"
           className={cn(
             "transition-opacity duration-300",
