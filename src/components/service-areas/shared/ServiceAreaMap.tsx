@@ -21,7 +21,22 @@ const ServiceAreaMap = ({ locationName, lat, lng, isLoading = false }: ServiceAr
   
   useEffect(() => {
     finishRenderTracking();
-  }, []);
+  }, [finishRenderTracking]);
+  
+  // Validate coordinates
+  if (typeof lat !== 'number' || typeof lng !== 'number' || isNaN(lat) || isNaN(lng)) {
+    console.error(`Invalid coordinates for ${locationName}: lat=${lat}, lng=${lng}`);
+    return (
+      <div className="bg-white rounded-xl shadow-sm overflow-hidden">
+        <div className="p-4 bg-gray-50 border-b border-gray-200">
+          <h3 className="text-lg font-semibold text-gray-800">Serving {locationName}, NJ</h3>
+        </div>
+        <div className="h-[400px] flex items-center justify-center">
+          <MapError error={`Invalid coordinates for ${locationName}`} />
+        </div>
+      </div>
+    );
+  }
   
   const markers: MapMarker[] = [
     {
@@ -32,11 +47,13 @@ const ServiceAreaMap = ({ locationName, lat, lng, isLoading = false }: ServiceAr
     }
   ];
   
+  console.log(`ServiceAreaMap: Creating map for ${locationName} at ${lat},${lng}`);
+  
   // Simulate map loading for better UX
   useEffect(() => {
     const timer = setTimeout(() => {
       setMapReady(true);
-    }, 800);
+    }, 500);
     
     return () => clearTimeout(timer);
   }, []);

@@ -42,6 +42,7 @@ const ServiceAreasSection = () => {
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting) {
+          console.log("Service areas section is now visible, loading map");
           setIsMapVisible(true);
           // Force re-render map after it becomes visible
           setMapKey(prev => prev + 1);
@@ -63,15 +64,29 @@ const ServiceAreasSection = () => {
 
   // Memoize map markers to prevent unnecessary recalculations
   const mapMarkers = useMemo(() => {
-    if (!locations) return [];
+    if (!locations || !Array.isArray(locations)) {
+      console.log("No locations data available for markers");
+      return [];
+    }
     
-    return locations.map(location => ({
-      lat: location.lat,
-      lng: location.lng,
-      title: location.name,
-      slug: location.slug
-    }));
+    console.log(`Creating ${locations.length} markers for service areas map`);
+    
+    return locations.map(location => {
+      if (!location || typeof location.lat !== 'number' || typeof location.lng !== 'number') {
+        console.error('Invalid location data:', location);
+        return null;
+      }
+      
+      return {
+        lat: location.lat,
+        lng: location.lng,
+        title: location.name,
+        slug: location.slug
+      };
+    }).filter(Boolean);
   }, [locations]);
+
+  console.log(`ServiceAreasSection: Have ${mapMarkers.length} markers ready`);
 
   if (isLoading) {
     return (
@@ -139,7 +154,11 @@ const ServiceAreasSection = () => {
             className="bg-white rounded-xl shadow-lg overflow-hidden h-[450px] sm:h-[500px] md:h-[550px] lg:h-[600px]"
           >
             {isMapVisible ? (
-              <ErrorBoundary FallbackComponent={MapError} key={`map-error-boundary-${mapKey}`}>
+              <ErrorBoundary 
+                FallbackComponent={MapError} 
+                key={`map-error-boundary-${mapKey}`}
+                onError={(error) => console.error("Map error boundary caught:", error)}
+              >
                 <GoogleMapsProvider>
                   <GoogleMap 
                     key={`google-map-${mapKey}`}

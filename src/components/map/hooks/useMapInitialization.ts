@@ -7,10 +7,15 @@ export const useMapInitialization = () => {
   const [mapError, setMapError] = useState<string | null>(null);
   
   const onLoadCallback = useCallback((map: google.maps.Map) => {
-    console.log("Map loaded successfully");
+    console.log("Map loaded successfully in initialization hook");
     mapRef.current = map;
     try {
       // Add any map initialization logic here
+      // Ensure the map has valid center coordinates
+      if (!map.getCenter()) {
+        map.setCenter({ lat: 40.7795, lng: -74.0324 });
+      }
+      
       setIsLoading(false);
     } catch (error) {
       console.error("Map initialization error:", error);
