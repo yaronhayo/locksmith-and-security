@@ -148,6 +148,7 @@ const ServiceAreasSection = () => {
                     showAllMarkers={true}
                     zoom={11}
                     center={{ lat: 40.7795, lng: -74.0324 }}
+                    fitBounds={true}
                   />
                 </GoogleMapsProvider>
               </ErrorBoundary>

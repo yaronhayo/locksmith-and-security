@@ -25,11 +25,16 @@ const MapMarkers = ({ markers, hoveredMarker }: MapMarkersProps) => {
       
       return (
         <Marker
-          key={`${marker.slug || ''}-${index}`}
+          key={`marker-${marker.slug || ''}-${index}`}
           position={position}
           title={marker.title}
           onClick={() => handleMarkerClick(marker.slug)}
-          animation={isHovered ? google.maps.Animation.BOUNCE : undefined}
+          animation={isHovered ? window.google?.maps?.Animation?.BOUNCE : undefined}
+          options={{
+            optimized: false,
+            visible: true,
+            zIndex: isHovered ? 999 : 1
+          }}
         />
       );
     }), [markers, hoveredMarker, handleMarkerClick]);

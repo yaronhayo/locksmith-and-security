@@ -60,6 +60,7 @@ const ServiceAreaMap = ({ locationName, lat, lng, isLoading = false }: ServiceAr
                 showAllMarkers={true}
                 zoom={14}
                 center={{ lat, lng }}
+                fitBounds={false}
               />
             </GoogleMapsProvider>
           </ErrorBoundary>
