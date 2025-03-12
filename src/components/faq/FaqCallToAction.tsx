@@ -1,8 +1,8 @@
 
 import React from "react";
 import { Button } from "@/components/ui/button";
+import { Phone } from "lucide-react";
 import { motion } from "framer-motion";
-import PhoneNumber from "@/components/shared/PhoneNumber";
 
 const FaqCallToAction = () => {
   return (
@@ -17,12 +17,11 @@ const FaqCallToAction = () => {
         Our team is always here to help. Contact us anytime for immediate assistance 
         with your locksmith and security needs.
       </p>
-      <Button size="lg" className="bg-[#F97316] hover:bg-[#F97316]/90" asChild>
-        <PhoneNumber
-          showIcon={true}
-          iconClassName="mr-2 h-5 w-5"
-          linkClassName="flex items-center"
-        />
+      <Button size="lg" className="bg-[#F97316] hover:bg-[#F97316]/90">
+        <a href="tel:2017482070" className="flex items-center">
+          <Phone className="mr-2 h-5 w-5" />
+          Call (201) 748-2070
+        </a>
       </Button>
     </motion.div>
   );

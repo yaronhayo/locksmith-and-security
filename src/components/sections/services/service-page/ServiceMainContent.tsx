@@ -3,7 +3,6 @@ import React from 'react';
 import { Star, Check, AlertTriangle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import PhoneNumber from "@/components/shared/PhoneNumber";
 
 interface ServiceMainContentProps {
   serviceName: string;
@@ -55,11 +54,10 @@ const ServiceMainContent: React.FC<ServiceMainContentProps> = ({
                 className="font-semibold"
                 asChild
               >
-                <PhoneNumber 
-                  showIcon={true} 
-                  iconClassName="mr-2 h-4 w-4" 
-                  linkClassName="flex items-center"
-                />
+                <a href="tel:2017482070" className="flex items-center">
+                  <AlertTriangle className="mr-2 h-4 w-4" />
+                  (201) 748-2070
+                </a>
               </Button>
             </div>
           </div>

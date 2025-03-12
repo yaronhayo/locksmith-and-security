@@ -1,17 +1,44 @@
 
-import { useState, useCallback, useMemo } from "react";
-import { FormState, IsDirty } from "./types";
-import { useFormValidation } from "./useFormValidation";
-import { useFormSubmission } from "./useFormSubmission";
-import useRecaptcha from "./useRecaptcha";
+import { useState, useEffect, useCallback, useMemo } from "react";
+import { toast } from "sonner";
+import { useNavigate } from "react-router-dom";
+import { getEmailError, getNameError, getPhoneError } from "@/utils/inputValidation";
+import { submitFormData } from "@/utils/formSubmission";
+
+interface FormState {
+  name: string;
+  email: string;
+  phone: string;
+  message: string;
+  service: string;
+}
+
+interface FormErrors {
+  name: string | null;
+  email: string | null;
+  phone: string | null;
+}
+
+interface IsDirty {
+  name: boolean;
+  email: boolean;
+  phone: boolean;
+}
 
 export const useServiceAreaForm = () => {
+  const navigate = useNavigate();
   const [formState, setFormState] = useState<FormState>({
     name: "",
     email: "",
     phone: "",
     message: "",
     service: ""
+  });
+  
+  const [errors, setErrors] = useState<FormErrors>({
+    name: null,
+    email: null,
+    phone: null
   });
   
   const [isDirty, setIsDirty] = useState<IsDirty>({
@@ -22,12 +49,27 @@ export const useServiceAreaForm = () => {
   
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
+  const [recaptchaError, setRecaptchaError] = useState<string | null>(null);
   
-  // Use the validation hook
-  const { errors, validateAllFields } = useFormValidation(formState, isDirty);
+  // Validation effects
+  useEffect(() => {
+    if (isDirty.name) {
+      setErrors(prev => ({ ...prev, name: getNameError(formState.name) }));
+    }
+  }, [formState.name, isDirty.name]);
   
-  // Use the recaptcha hook
-  const recaptcha = useRecaptcha();
+  useEffect(() => {
+    if (isDirty.email) {
+      setErrors(prev => ({ ...prev, email: getEmailError(formState.email) }));
+    }
+  }, [formState.email, isDirty.email]);
+  
+  useEffect(() => {
+    if (isDirty.phone) {
+      setErrors(prev => ({ ...prev, phone: getPhoneError(formState.phone) }));
+    }
+  }, [formState.phone, isDirty.phone]);
   
   const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -48,15 +90,10 @@ export const useServiceAreaForm = () => {
     setIsDirty(prev => ({ ...prev, [field]: true }));
   }, []);
   
-  // Use the submission hook
-  const { handleSubmit } = useFormSubmission({
-    formState,
-    recaptchaToken: recaptcha.recaptchaToken,
-    setErrors: setIsDirty,
-    setIsSubmitting,
-    setIsSubmitted,
-    validateAllFields
-  });
+  const handleRecaptchaChange = useCallback((token: string | null) => {
+    setRecaptchaToken(token);
+    setRecaptchaError(token ? null : "Please complete the reCAPTCHA verification");
+  }, []);
   
   const isFormValid = useMemo(() => {
     return (
@@ -67,21 +104,95 @@ export const useServiceAreaForm = () => {
       formState.email.trim() !== '' && 
       formState.phone.trim() !== '' && 
       formState.service !== '' && 
-      !!recaptcha.recaptchaToken
+      !!recaptchaToken
     );
-  }, [errors, formState, recaptcha.recaptchaToken]);
+  }, [errors, formState, recaptchaToken]);
+  
+  const handleSubmit = useCallback(async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    // Mark all fields as dirty to show validation errors
+    setIsDirty({
+      name: true,
+      email: true,
+      phone: true
+    });
+    
+    // Update all errors
+    const newErrors = {
+      name: getNameError(formState.name) || (formState.name.trim() === '' ? 'Name is required' : null),
+      email: getEmailError(formState.email) || (formState.email.trim() === '' ? 'Email is required' : null),
+      phone: getPhoneError(formState.phone) || (formState.phone.trim() === '' ? 'Phone number is required' : null)
+    };
+    
+    setErrors(newErrors);
+    
+    if (!recaptchaToken) {
+      setRecaptchaError("Please complete the reCAPTCHA verification");
+      return;
+    }
+    
+    if (newErrors.name || newErrors.email || newErrors.phone || formState.service === '') {
+      return;
+    }
+    
+    setIsSubmitting(true);
+    
+    try {
+      // Prepare submission data
+      const submissionData = {
+        type: "contact" as const, // Using "as const" to ensure it's treated as a literal
+        name: formState.name,
+        email: formState.email,
+        phone: formState.phone,
+        address: window.location.pathname.split('/').pop() || '',
+        message: formState.message,
+        service: formState.service,
+        status: "pending" as const,
+        recaptcha_token: recaptchaToken,
+        visitor_info: {
+          userAgent: navigator.userAgent,
+          language: navigator.language,
+          platform: navigator.platform,
+          screenResolution: `${window.screen.width}x${window.screen.height}`,
+          windowSize: `${window.innerWidth}x${window.innerHeight}`,
+          timestamp: new Date().toISOString()
+        },
+        source_url: window.location.pathname
+      };
+      
+      // Submit to Supabase and send email
+      await submitFormData(submissionData);
+      
+      setIsSubmitted(true);
+      
+      // Set session storage flag for thank-you page
+      sessionStorage.setItem('fromFormSubmission', 'true');
+      
+      // Redirect to thank-you page
+      navigate('/thank-you');
+      
+    } catch (error: any) {
+      console.error("Form submission error:", error);
+      toast.error("Failed to send message", {
+        description: error.message || "Please try again later."
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  }, [formState, recaptchaToken, navigate]);
 
   return {
     formState,
     errors,
     isSubmitting,
     isSubmitted,
-    recaptcha,
+    recaptchaToken,
+    recaptchaError,
     handleChange,
     handleBlur,
+    handleRecaptchaChange,
     isFormValid,
     handleSubmit
   };
 };
-
-export default useServiceAreaForm;

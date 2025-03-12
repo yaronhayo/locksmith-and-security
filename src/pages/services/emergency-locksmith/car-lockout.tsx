@@ -4,6 +4,7 @@ import EnhancedServicesHero from '@/components/sections/services/EnhancedService
 import ServicePageContent from '@/components/sections/services/service-page';
 import { carServiceReviews } from '@/data/reviews/carServiceReviews';
 import ServicesProof from '@/components/sections/services/ServicesProof';
+import { Helmet } from 'react-helmet';
 import { CarLockoutContent } from '@/components/services/car-lockout/CarLockoutContent';
 import { carLockoutSchema, carLockoutFaqs, carLockoutFaqSchema } from '@/components/services/car-lockout/CarLockoutSchema';
 import { relatedEmergencyServices } from '@/components/services/car-lockout/relatedServices';
@@ -13,7 +14,6 @@ import MetaTags from '@/components/layouts/MetaTags';
 import { createLocalBusinessSchema } from '@/components/meta/schema/LocalBusinessSchema';
 import { createWebSiteSchema } from '@/components/meta/schema/WebSiteSchema';
 import { createSiteNavigationSchema } from '@/components/meta/schema/SiteNavigationSchema';
-import ResourceHints from '@/components/meta/ResourceHints';
 
 const CarLockout = () => {
   const pageTitle = "Professional Car Lockout Service | 24/7 Emergency Automotive Locksmith";
@@ -34,34 +34,11 @@ const CarLockout = () => {
     baseUrl
   });
   
-  // Create LocalBusiness schema with enhanced service offerings
+  // Create LocalBusiness schema with customized info
   const localBusinessSchema = createLocalBusinessSchema({
     geo: {
       latitude: 40.7366,
       longitude: -74.0301
-    },
-    priceRange: "$$$",
-    serviceArea: {
-      name: "North Bergen and surrounding areas",
-      type: "GeoCircle",
-      geoRadius: "30"
-    },
-    hasOfferCatalog: {
-      name: "Automotive Locksmith Services",
-      itemListElement: [
-        {
-          name: "Car Lockout Service",
-          description: "Fast, professional vehicle entry without damage",
-          price: "$75.00 - $150.00",
-          priceCurrency: "USD"
-        },
-        {
-          name: "Car Key Replacement",
-          description: "Complete car key replacement for all makes and models",
-          price: "$120.00 - $350.00",
-          priceCurrency: "USD"
-        }
-      ]
     }
   });
   
@@ -83,50 +60,8 @@ const CarLockout = () => {
     ]
   });
 
-  // Map relatedEmergencyServices to match the expected RelatedService type
-  const mappedRelatedServices = relatedEmergencyServices.map(service => ({
-    title: service.name,
-    path: service.path,
-    description: service.description
-  }));
-
-  // Preconnect to critical third-party domains for improved performance
-  const preconnectDomains = [
-    "https://mtbgayqzjrxjjmsjikcg.supabase.co",
-    "https://maps.googleapis.com",
-    "https://www.google-analytics.com",
-    "https://www.googletagmanager.com",
-    "https://fonts.googleapis.com",
-    "https://www.recaptcha.net"
-  ];
-
-  // DNS prefetch for domains that will be needed later
-  const dnsPrefetchDomains = [
-    "https://www.clarity.ms",
-    "https://fonts.gstatic.com",
-    "https://www.google.com"
-  ];
-
-  // Preload critical resources
-  const preloadResources = [
-    {
-      href: imageUrl,
-      as: "image" as const,
-    },
-    {
-      href: "/lovable-uploads/1bbeb1e6-5581-4e09-9600-7d1859bb17c5.png",
-      as: "image" as const,
-    }
-  ];
-
   return (
     <main className="flex-grow">
-      <ResourceHints
-        preconnect={preconnectDomains}
-        preload={preloadResources}
-        dnsPrefetch={dnsPrefetchDomains}
-      />
-      
       <MetaTags 
         title={pageTitle}
         description={pageDescription}
@@ -160,7 +95,7 @@ const CarLockout = () => {
         serviceName="Car Lockout"
         serviceCategory="Emergency Locksmith"
         mainContent={<CarLockoutContent />}
-        relatedServices={mappedRelatedServices}
+        relatedServices={relatedEmergencyServices}
         faqs={carLockoutFaqs}
       />
       

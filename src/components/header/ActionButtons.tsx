@@ -2,7 +2,6 @@
 import { Menu, Phone, Calendar } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import PhoneNumber from "@/components/shared/PhoneNumber";
 
 interface ActionButtonsProps {
   isMenuOpen: boolean;
@@ -18,12 +17,10 @@ const ActionButtons = ({ isMenuOpen, setIsMenuOpen }: ActionButtonsProps) => {
         className="flex gap-2 items-center group transform hover:scale-105 transition-all duration-300 hover:shadow-lg"
         asChild
       >
-        <PhoneNumber 
-          showIcon={true} 
-          iconClassName="h-4 w-4 animate-phone-ring group-hover:text-black transition-transform duration-300" 
-          linkClassName="flex items-center" 
-          className="group-hover:text-black transition-colors duration-300"
-        />
+        <a href="tel:2017482070">
+          <Phone className="h-4 w-4 animate-phone-ring group-hover:text-black transition-transform duration-300" />
+          <span className="hidden md:inline group-hover:text-black transition-colors duration-300">(201) 748-2070</span>
+        </a>
       </Button>
 
       <Button

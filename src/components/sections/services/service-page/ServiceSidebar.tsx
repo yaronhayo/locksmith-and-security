@@ -3,8 +3,6 @@ import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Phone, Calendar, ShieldCheck, Star, Clock, ArrowUpRight } from "lucide-react";
 import { Link } from "react-router-dom";
-import ServiceReviewStars from "@/components/services/shared/ServiceReviewStars";
-import PhoneNumber from "@/components/shared/PhoneNumber";
 
 interface RelatedService {
   title: string;
@@ -38,11 +36,10 @@ const ServiceSidebar: React.FC<ServiceSidebarProps> = ({ serviceName, relatedSer
                 className="w-full justify-center text-primary font-semibold hover:bg-secondary-hover hover:text-primary-dark"
                 asChild
               >
-                <PhoneNumber 
-                  showIcon={true} 
-                  iconClassName="mr-2 h-5 w-5" 
-                  linkClassName="flex items-center justify-center"
-                />
+                <a href="tel:2017482070" className="flex items-center justify-center">
+                  <Phone className="mr-2 h-5 w-5" />
+                  (201) 748-2070
+                </a>
               </Button>
               <Button 
                 variant="outline" 
@@ -70,11 +67,12 @@ const ServiceSidebar: React.FC<ServiceSidebarProps> = ({ serviceName, relatedSer
           <div className="p-6">
             <div className="flex flex-col">
               <div className="mb-4">
-                <ServiceReviewStars 
-                  rating={5} 
-                  reviewCount={150}
-                />
-                <p className="italic text-gray-600 text-sm mt-2">"I was locked out of my car in the middle of nowhere. Called these guys and they arrived within 20 minutes. Professional, fast service at a reasonable price. Highly recommend!"</p>
+                <div className="flex mb-2">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} className="h-4 w-4 fill-secondary text-secondary" />
+                  ))}
+                </div>
+                <p className="italic text-gray-600 text-sm">"I was locked out of my car in the middle of nowhere. Called these guys and they arrived within 20 minutes. Professional, fast service at a reasonable price. Highly recommend!"</p>
               </div>
               <div className="flex items-center mt-2">
                 <div className="bg-secondary/20 text-secondary font-bold h-10 w-10 rounded-full flex items-center justify-center mr-3">

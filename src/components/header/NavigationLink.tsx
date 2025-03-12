@@ -13,7 +13,7 @@ const NavigationLink = memo(({
   children,
   icon
 }: NavigationLinkProps) => {
-  // In mobile menu, always show the mobile link
+  // In mobile menu, just show the main link without children
   if (isMenuOpen) {
     return <MobileNavigationLink path={path} label={label} icon={icon} />;
   }

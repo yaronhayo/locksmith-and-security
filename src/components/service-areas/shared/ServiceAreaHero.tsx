@@ -1,12 +1,11 @@
 
 import { Button } from "@/components/ui/button";
-import { MapPin } from "lucide-react";
+import { Phone, MapPin } from "lucide-react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Skeleton } from "@/components/ui/skeleton";
 import BookingForm from "@/components/BookingForm";
 import { memo } from "react";
-import PhoneNumber from "@/components/shared/PhoneNumber";
 
 interface ServiceAreaHeroProps {
   areaName: string;
@@ -49,11 +48,10 @@ const ServiceAreaHero = ({ areaName, isLoading = false }: ServiceAreaHeroProps) 
         </p>
         <div className="flex flex-col sm:flex-row gap-4">
           <Button size="lg" className="w-full sm:w-auto gap-2" asChild>
-            <PhoneNumber
-              showIcon={true}
-              iconClassName="h-5 w-5"
-              linkClassName="flex items-center"
-            />
+            <a href="tel:2017482070">
+              <Phone className="h-5 w-5" />
+              <span>Call Now</span>
+            </a>
           </Button>
           <Button size="lg" variant="outline" className="w-full sm:w-auto" asChild>
             <Link to="/book-online">

@@ -1,7 +1,6 @@
 
-import { AlertCircle, Clock, MapPin } from "lucide-react";
+import { AlertCircle, Clock, MapPin, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import PhoneNumber from "@/components/shared/PhoneNumber";
 
 interface ServiceAreaEmergencyProps {
   locationName: string;
@@ -40,16 +39,7 @@ const ServiceAreaEmergency = ({ locationName }: ServiceAreaEmergencyProps) => {
             </div>
             
             <div className="bg-white p-4 sm:p-6 rounded-lg shadow-sm border-l-4 border-secondary sm:col-span-2 md:col-span-1">
-              <Button
-                variant="ghost"
-                className="h-6 w-6 sm:h-8 sm:w-8 text-secondary mb-2 sm:mb-3 p-0"
-                asChild
-              >
-                <PhoneNumber
-                  showIcon={true}
-                  iconClassName="h-6 w-6 sm:h-8 sm:w-8 text-secondary"
-                />
-              </Button>
+              <Phone className="h-6 w-6 sm:h-8 sm:w-8 text-secondary mb-2 sm:mb-3" />
               <h3 className="font-semibold text-base sm:text-lg mb-1 sm:mb-2">Call Anytime</h3>
               <p className="text-sm sm:text-base text-gray-600">Speak directly with a technician</p>
             </div>
@@ -57,11 +47,10 @@ const ServiceAreaEmergency = ({ locationName }: ServiceAreaEmergencyProps) => {
           
           <div className="flex flex-col sm:flex-row gap-4">
             <Button size="lg" className="gap-2 bg-secondary hover:bg-secondary/90 text-white" asChild>
-              <PhoneNumber
-                showIcon={true}
-                iconClassName="h-5 w-5"
-                linkClassName="flex items-center"
-              />
+              <a href="tel:2017482070">
+                <Phone className="h-5 w-5" />
+                <span>Call Now</span>
+              </a>
             </Button>
             <Button size="lg" variant="outline" className="border-secondary text-secondary hover:bg-secondary/10" asChild>
               <a href="#contact-form">
