@@ -16,7 +16,7 @@ const AreasList = ({ areas, hoveredArea, setHoveredArea }: AreasListProps) => {
       initial={{ opacity: 0, x: -20 }}
       whileInView={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.5 }}
-      className="bg-white rounded-xl shadow-lg p-8"
+      className="bg-white rounded-xl shadow-lg p-8 h-full"
     >
       <h2 className="text-2xl font-semibold mb-6 text-primary">Areas We Serve</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">

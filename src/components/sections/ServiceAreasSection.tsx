@@ -12,7 +12,7 @@ import { motion } from 'framer-motion';
 
 // Create a map loading component
 const MapLoadingPlaceholder = () => (
-  <div className="h-[450px] sm:h-[500px] md:h-[550px] lg:h-[600px] bg-white rounded-xl shadow-lg overflow-hidden flex items-center justify-center">
+  <div className="h-full bg-white rounded-xl shadow-lg overflow-hidden flex items-center justify-center">
     <div className="text-center">
       <LoadingSpinner size="lg" text="Loading map..." />
     </div>
@@ -117,12 +117,13 @@ const ServiceAreasSection = () => {
           </p>
         </motion.div>
 
-        <div className="grid md:grid-cols-2 gap-6 sm:gap-8 items-start">
+        <div className="grid md:grid-cols-2 gap-6 sm:gap-8">
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.1 }}
+            className="h-full"
           >
             <AreasList 
               areas={locations} 
@@ -136,7 +137,7 @@ const ServiceAreasSection = () => {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.2 }}
-            className="bg-white rounded-xl shadow-lg overflow-hidden h-[450px] sm:h-[500px] md:h-[550px] lg:h-[600px]"
+            className="bg-white rounded-xl shadow-lg overflow-hidden h-full"
           >
             {isMapVisible ? (
               <ErrorBoundary FallbackComponent={MapError} key={`map-error-boundary-${mapKey}`}>
