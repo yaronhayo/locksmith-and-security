@@ -49,9 +49,6 @@ const Navigation = ({ className, isMenuOpen = false, isScrolled = false }: Navig
     }
   };
 
-  // Display all items in mobile menu
-  const displayItems = navItems;
-
   return (
     <nav 
       className={cn(
@@ -64,7 +61,7 @@ const Navigation = ({ className, isMenuOpen = false, isScrolled = false }: Navig
       role="navigation"
       aria-label="Main navigation"
     >
-      {displayItems.map((item) => (
+      {navItems.map((item) => (
         <NavItem
           key={item.path}
           item={item}

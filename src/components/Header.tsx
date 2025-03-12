@@ -51,9 +51,9 @@ const Header = () => {
           <div className="flex items-center justify-between h-16 lg:h-20">
             <Logo />
 
-            {/* Desktop Navigation */}
+            {/* Desktop Navigation (hidden on mobile) */}
             <div className="hidden lg:block">
-              <Navigation isMenuOpen={isMenuOpen} isScrolled={isScrolled} />
+              <Navigation isMenuOpen={false} isScrolled={isScrolled} />
             </div>
 
             {/* Mobile Menu Overlay */}
@@ -63,7 +63,7 @@ const Header = () => {
                 aria-hidden={!isMenuOpen}
               >
                 <div className="pt-2 pb-20">
-                  <Navigation isMenuOpen={isMenuOpen} isScrolled={isScrolled} />
+                  <Navigation isMenuOpen={true} isScrolled={isScrolled} />
                 </div>
               </div>
             )}
