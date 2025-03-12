@@ -29,7 +29,6 @@ interface MetaTagsProps {
   geoPlaceName?: string;
   geoPosition?: string;
   icbm?: string;
-  language?: string;
 }
 
 const MetaTags = ({
@@ -49,8 +48,7 @@ const MetaTags = ({
   geoRegion,
   geoPlaceName,
   geoPosition,
-  icbm,
-  language = "en"
+  icbm
 }: MetaTagsProps) => {
   // Ensure canonical URL has the proper base
   const fullCanonicalUrl = canonicalUrl ? 
@@ -75,7 +73,6 @@ const MetaTags = ({
         nofollow={nofollow}
         canonicalUrl={fullCanonicalUrl}
         modifiedDate={modifiedDate}
-        language={language}
       />
       
       <OpenGraphTags 

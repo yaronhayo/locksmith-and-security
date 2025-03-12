@@ -3,21 +3,21 @@ import { AlertCircle } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 
 interface MapErrorProps {
-  error: string | Error;
+  error: string;
 }
 
 const MapError = ({ error }: MapErrorProps) => {
-  const errorMessage = error instanceof Error ? error.message : error;
-  console.error('Map Error:', errorMessage); // Add logging for debugging
+  console.error('Map Error:', error); // Add logging for debugging
 
   return (
     <Alert variant="destructive" className="mb-4">
       <AlertCircle className="h-4 w-4" />
       <AlertDescription>
-        {errorMessage}
+        {error}
       </AlertDescription>
     </Alert>
   );
 };
 
 export default MapError;
+

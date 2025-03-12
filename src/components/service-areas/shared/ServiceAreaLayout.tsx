@@ -7,7 +7,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import PageLoading from "@/components/layouts/PageLoading";
 import ServiceAreaContent from "./ServiceAreaContent";
 import { useServiceAreaData } from "./hooks/useServiceAreaData";
-import MetaTags from "@/components/layouts/MetaTags";
+import SEOHead from "@/components/meta/SEOHead";
 
 interface ServiceAreaLayoutProps {
   areaSlug: string;
@@ -49,7 +49,7 @@ const ServiceAreaLayout = memo(({ areaSlug }: ServiceAreaLayoutProps) => {
 
   return (
     <>
-      <MetaTags 
+      <SEOHead 
         title={pageTitle}
         description={pageDescription}
         canonicalUrl={`/service-areas/${areaSlug}`}

@@ -6,15 +6,9 @@ interface MapControlsProps {
   onZoomIn: () => void;
   onZoomOut: () => void;
   onCenterMap: () => void;
-  onFitBounds?: () => void;
 }
 
-const MapControls: React.FC<MapControlsProps> = ({ 
-  onZoomIn, 
-  onZoomOut, 
-  onCenterMap, 
-  onFitBounds 
-}) => {
+const MapControls: React.FC<MapControlsProps> = ({ onZoomIn, onZoomOut, onCenterMap }) => {
   return (
     <div className="absolute top-2 right-2 flex flex-col gap-1 z-10">
       <motion.button
@@ -51,23 +45,6 @@ const MapControls: React.FC<MapControlsProps> = ({
           <circle cx="12" cy="12" r="3"></circle>
         </svg>
       </motion.button>
-
-      {onFitBounds && (
-        <motion.button
-          aria-label="Fit all markers"
-          className="bg-white p-1 rounded-md shadow-md hover:bg-gray-100 transition-colors"
-          whileTap={{ scale: 0.95 }}
-          onClick={onFitBounds}
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M3 3h18v18H3z"></path>
-            <path d="M7 7h.01"></path>
-            <path d="M17 7h.01"></path>
-            <path d="M7 17h.01"></path>
-            <path d="M17 17h.01"></path>
-          </svg>
-        </motion.button>
-      )}
     </div>
   );
 };

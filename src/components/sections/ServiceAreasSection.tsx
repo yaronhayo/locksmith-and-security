@@ -31,12 +31,6 @@ const LocationsLoadingPlaceholder = () => (
   </div>
 );
 
-// Fallback component for map errors
-const MapErrorFallback = ({ error }: { error: Error }) => {
-  console.error("Map error caught in boundary:", error);
-  return <MapError error={error.message || "An error occurred loading the map"} />;
-};
-
 const ServiceAreasSection = () => {
   const [hoveredArea, setHoveredArea] = useState<string | null>(null);
   const [mapKey, setMapKey] = useState(0); // Force re-render key
@@ -67,34 +61,16 @@ const ServiceAreasSection = () => {
     };
   }, []);
 
-  // Validate and log location data
-  useEffect(() => {
-    if (locations) {
-      console.log("Loaded locations:", locations);
-      const invalidLocations = locations.filter(
-        loc => typeof loc.lat !== 'number' || isNaN(loc.lat) || typeof loc.lng !== 'number' || isNaN(loc.lng)
-      );
-      if (invalidLocations.length > 0) {
-        console.warn("Found invalid location coordinates:", invalidLocations);
-      }
-    }
-  }, [locations]);
-
   // Memoize map markers to prevent unnecessary recalculations
   const mapMarkers = useMemo(() => {
     if (!locations) return [];
     
-    return locations
-      .filter(location => 
-        typeof location.lat === 'number' && !isNaN(location.lat) && 
-        typeof location.lng === 'number' && !isNaN(location.lng)
-      )
-      .map(location => ({
-        lat: location.lat,
-        lng: location.lng,
-        title: location.name,
-        slug: location.slug
-      }));
+    return locations.map(location => ({
+      lat: location.lat,
+      lng: location.lng,
+      title: location.name,
+      slug: location.slug
+    }));
   }, [locations]);
 
   if (isLoading) {
@@ -163,23 +139,16 @@ const ServiceAreasSection = () => {
             className="bg-white rounded-xl shadow-lg overflow-hidden h-[450px] sm:h-[500px] md:h-[550px] lg:h-[600px]"
           >
             {isMapVisible ? (
-              <ErrorBoundary FallbackComponent={MapErrorFallback} key={`map-error-boundary-${mapKey}`}>
+              <ErrorBoundary FallbackComponent={MapError} key={`map-error-boundary-${mapKey}`}>
                 <GoogleMapsProvider>
-                  {mapMarkers.length > 0 ? (
-                    <GoogleMap 
-                      key={`google-map-${mapKey}`}
-                      markers={mapMarkers}
-                      highlightedMarker={hoveredArea}
-                      showAllMarkers={true}
-                      zoom={11}
-                      center={{ lat: 40.7795, lng: -74.0324 }}
-                      fitBounds={true}
-                    />
-                  ) : (
-                    <div className="flex items-center justify-center h-full">
-                      <p className="text-gray-500">No valid locations found to display on map</p>
-                    </div>
-                  )}
+                  <GoogleMap 
+                    key={`google-map-${mapKey}`}
+                    markers={mapMarkers}
+                    highlightedMarker={hoveredArea}
+                    showAllMarkers={true}
+                    zoom={11}
+                    center={{ lat: 40.7795, lng: -74.0324 }}
+                  />
                 </GoogleMapsProvider>
               </ErrorBoundary>
             ) : (

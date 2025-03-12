@@ -1,5 +1,5 @@
 
-import { useCallback, useState, useEffect } from "react";
+import { useCallback, useState } from "react";
 import { MapMarker } from "@/types/service-area";
 
 export const useMapInteractions = (
@@ -9,11 +9,6 @@ export const useMapInteractions = (
   initialZoom: number = 12
 ) => {
   const [zoomLevel, setZoomLevel] = useState(initialZoom);
-  
-  // Reset zoom level when markers change
-  useEffect(() => {
-    setZoomLevel(initialZoom);
-  }, [markers, initialZoom]);
   
   const zoomIn = useCallback(() => {
     setZoomLevel(prev => Math.min(prev + 1, 20));
@@ -31,36 +26,17 @@ export const useMapInteractions = (
     return null;
   }, [highlightedMarker, markers]);
   
-  // Filter visible markers based on showAllMarkers flag
-  const visibleMarkers = useCallback(() => {
-    if (!markers.length) return [];
-    
-    // Filter out invalid markers
-    const validMarkers = markers.filter(marker => 
-      typeof marker.lat === 'number' && !isNaN(marker.lat) && 
-      typeof marker.lng === 'number' && !isNaN(marker.lng)
-    );
-    
-    if (!validMarkers.length) {
-      console.warn("No valid markers found");
-      return [];
-    }
-    
-    if (showAllMarkers) {
-      return validMarkers;
-    } else if (highlightedMarker) {
-      return validMarkers.filter(marker => marker.slug === highlightedMarker);
-    }
-    
-    return validMarkers;
-  }, [markers, showAllMarkers, highlightedMarker])();
+  const visibleMarkers = showAllMarkers 
+    ? markers 
+    : highlightedMarker 
+      ? markers.filter(marker => marker.slug === highlightedMarker)
+      : markers;
 
   return {
     zoomLevel,
     zoomIn,
     zoomOut,
     centerMap,
-    visibleMarkers,
-    setZoomLevel
+    visibleMarkers
   };
 };

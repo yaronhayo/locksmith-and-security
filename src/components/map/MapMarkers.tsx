@@ -19,26 +19,17 @@ const MapMarkers = ({ markers, hoveredMarker }: MapMarkersProps) => {
   }, [navigate]);
 
   const renderedMarkers = useMemo(() => 
-    markers.filter(marker => {
-      // Filter out invalid markers
-      return typeof marker.lat === 'number' && !isNaN(marker.lat) && 
-             typeof marker.lng === 'number' && !isNaN(marker.lng);
-    }).map((marker, index) => {
+    markers.map((marker, index) => {
       const position = { lat: marker.lat, lng: marker.lng };
       const isHovered = hoveredMarker === marker.slug;
       
       return (
         <Marker
-          key={`marker-${marker.slug || ''}-${index}`}
+          key={`${marker.slug || ''}-${index}`}
           position={position}
           title={marker.title}
           onClick={() => handleMarkerClick(marker.slug)}
-          animation={isHovered ? window.google?.maps?.Animation?.BOUNCE : undefined}
-          options={{
-            optimized: false,
-            visible: true,
-            zIndex: isHovered ? 999 : 1
-          }}
+          animation={isHovered ? google.maps.Animation.BOUNCE : undefined}
         />
       );
     }), [markers, hoveredMarker, handleMarkerClick]);

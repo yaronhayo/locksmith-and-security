@@ -1,9 +1,12 @@
-
 import HeroSection from "@/components/sections/HeroSection";
 import HomeLayout from "@/components/layouts/HomeLayout";
 import HomeContent from "@/components/sections/home/HomeContent";
+import { Helmet } from "react-helmet";
 import { useEffect } from "react";
-import MetaTags from "@/components/layouts/MetaTags";
+import { SchemaScripts } from "@/components/meta/SchemaScripts";
+import { BasicMetaTags } from "@/components/meta/BasicMetaTags";
+import { OpenGraphTags } from "@/components/meta/OpenGraphTags";
+import { TwitterTags } from "@/components/meta/TwitterTags";
 
 const Index = () => {
   useEffect(() => {
@@ -68,17 +71,45 @@ const Index = () => {
 
   return (
     <>
-      <MetaTags 
+      <BasicMetaTags 
         title={pageTitle}
         description={pageDescription}
         keywords={keywords}
+        noindex={false}
+        nofollow={false}
         canonicalUrl={canonicalUrl}
-        ogImage={imageUrl}
+        modifiedDate={new Date().toISOString()}
+      />
+      
+      <OpenGraphTags 
+        title={pageTitle}
+        description={pageDescription}
+        image={imageUrl}
+        url={canonicalUrl}
+        modifiedDate={new Date().toISOString()}
         baseUrl={baseUrl}
+        type="website"
+      />
+      
+      <TwitterTags 
+        title={pageTitle}
+        description={pageDescription}
+        image={imageUrl}
+        baseUrl={baseUrl}
+        cardType="summary_large_image"
+      />
+      
+      <Helmet>
+        <meta name="msvalidate.01" content="YOUR_BING_VERIFICATION_CODE" />
+        <link rel="sitemap" type="application/xml" href={`${baseUrl}/sitemap.xml`} />
+        <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
+      </Helmet>
+      
+      <SchemaScripts 
         schemas={[
           { type: 'website', data: websiteSchema },
           { type: 'organization', data: organizationSchema }
-        ]}
+        ]} 
       />
       
       <HomeLayout>
