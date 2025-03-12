@@ -19,7 +19,11 @@ const MapMarkers = ({ markers, hoveredMarker }: MapMarkersProps) => {
   }, [navigate]);
 
   const renderedMarkers = useMemo(() => 
-    markers.map((marker, index) => {
+    markers.filter(marker => {
+      // Filter out invalid markers
+      return typeof marker.lat === 'number' && !isNaN(marker.lat) && 
+             typeof marker.lng === 'number' && !isNaN(marker.lng);
+    }).map((marker, index) => {
       const position = { lat: marker.lat, lng: marker.lng };
       const isHovered = hoveredMarker === marker.slug;
       

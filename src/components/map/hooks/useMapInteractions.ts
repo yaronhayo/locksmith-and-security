@@ -35,13 +35,24 @@ export const useMapInteractions = (
   const visibleMarkers = useCallback(() => {
     if (!markers.length) return [];
     
-    if (showAllMarkers) {
-      return markers;
-    } else if (highlightedMarker) {
-      return markers.filter(marker => marker.slug === highlightedMarker);
+    // Filter out invalid markers
+    const validMarkers = markers.filter(marker => 
+      typeof marker.lat === 'number' && !isNaN(marker.lat) && 
+      typeof marker.lng === 'number' && !isNaN(marker.lng)
+    );
+    
+    if (!validMarkers.length) {
+      console.warn("No valid markers found");
+      return [];
     }
     
-    return markers;
+    if (showAllMarkers) {
+      return validMarkers;
+    } else if (highlightedMarker) {
+      return validMarkers.filter(marker => marker.slug === highlightedMarker);
+    }
+    
+    return validMarkers;
   }, [markers, showAllMarkers, highlightedMarker])();
 
   return {
