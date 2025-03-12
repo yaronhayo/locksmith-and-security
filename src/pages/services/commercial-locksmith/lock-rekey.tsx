@@ -13,8 +13,8 @@ const CommercialLockRekey = () => {
   return (
     <main className="flex-grow">
       <Helmet>
-        <title>Professional Commercial Lock Rekey | Business Security Solutions</title>
-        <meta name="description" content="Expert commercial lock rekeying by certified locksmiths. Change your keys without replacing locks for improved business security. Serving North Bergen & all NJ areas." />
+        <title>Commercial Lock Rekeying | Instant Security Restoration</title>
+        <meta name="description" content="Regain complete access control after employee turnover or key loss with our cost-effective rekeying that instantly renders old keys useless." />
         <meta name="keywords" content="commercial lock rekey, business lock rekeying, change business keys, master key system, employee turnover security, business security" />
         <link rel="canonical" href="https://247locksmithandsecurity.com/services/commercial-locksmith/lock-rekey" />
       </Helmet>

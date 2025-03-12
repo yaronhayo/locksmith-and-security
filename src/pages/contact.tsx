@@ -2,22 +2,29 @@
 import PageLayout from "@/components/layouts/PageLayout";
 import ContactInfo from "@/components/contact/ContactInfo";
 import ContactForm from "@/components/contact/ContactForm";
+import { Helmet } from "react-helmet";
 
 const ContactPage = () => {
   return (
-    <PageLayout
-      title="Contact Us"
-      description="Need immediate assistance? Contact our 24/7 emergency locksmith service or fill out the form below, and we'll get back to you as soon as possible."
-      heroTitle="Get in Touch"
-      heroDescription="Locked out or need to upgrade your security? We're here to help you feel safe and secure."
-    >
-      <div className="container mx-auto px-4 py-12">
-        <div className="grid lg:grid-cols-2 gap-12">
-          <ContactInfo />
-          <ContactForm />
+    <>
+      <Helmet>
+        <title>Contact Our Security Experts | Professional Locksmith Solutions</title>
+        <meta name="description" content="Connect with certified security specialists who can solve your locksmith needs. Direct access to experts who deliver guaranteed results for all security challenges." />
+        <link rel="canonical" href="https://247locksmithandsecurity.com/contact" />
+      </Helmet>
+      
+      <PageLayout
+        title="Get in Touch"
+        description="Locked out or need to upgrade your security? We're here to help you feel safe and secure."
+      >
+        <div className="container mx-auto px-4 py-12">
+          <div className="grid lg:grid-cols-2 gap-12">
+            <ContactInfo />
+            <ContactForm />
+          </div>
         </div>
-      </div>
-    </PageLayout>
+      </PageLayout>
+    </>
   );
 };
 

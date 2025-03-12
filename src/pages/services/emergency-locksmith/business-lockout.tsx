@@ -14,8 +14,8 @@ const BusinessLockout = () => {
   return (
     <main className="flex-grow">
       <Helmet>
-        <title>Professional Business Lockout Service | 24/7 Emergency Commercial Locksmith</title>
-        <meta name="description" content="Expert business lockout service by certified commercial locksmiths. Fast, damage-free entry 24/7. Serving North Bergen, Jersey City, Hoboken & all NJ areas." />
+        <title>Business Lockout Solutions | Minimize Downtime & Security Risks</title>
+        <meta name="description" content="Keep your business running with our swift, professional lockout solutions that protect your assets, maintain security integrity, and minimize operational disruption." />
         <meta name="keywords" content="business lockout, locked out of business, commercial locksmith, emergency business lockout, commercial lockout service, business door unlock, business key locked in business, commercial locksmith" />
         <link rel="canonical" href="https://247locksmithandsecurity.com/services/emergency-locksmith/business-lockout" />
       </Helmet>

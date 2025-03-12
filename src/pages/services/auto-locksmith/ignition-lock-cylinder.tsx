@@ -14,8 +14,8 @@ const IgnitionLockCylinder = () => {
   return (
     <main className="flex-grow">
       <Helmet>
-        <title>Ignition Lock Cylinder Replacement & Repair | Auto Locksmith Services</title>
-        <meta name="description" content="Professional ignition lock cylinder replacement and repair for all vehicle makes and models. Expert service with fast response and fair pricing." />
+        <title>Ignition Lock Cylinder Service | Restore Smooth Vehicle Starting</title>
+        <meta name="description" content="Fix frustrating ignition problems with expert cylinder repair and replacement. Restore reliable starting and prevent key-related damage to your vehicle." />
         <meta name="keywords" content="ignition lock cylinder, ignition repair, ignition replacement, car ignition problems, ignition switch, automotive locksmith, car ignition repair" />
         <link rel="canonical" href="https://247locksmithandsecurity.com/services/auto-locksmith/ignition-lock-cylinder" />
       </Helmet>

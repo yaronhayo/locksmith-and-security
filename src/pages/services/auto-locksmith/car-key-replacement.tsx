@@ -14,8 +14,8 @@ const CarKeyReplacement = () => {
   return (
     <main className="flex-grow">
       <Helmet>
-        <title>Car Key Replacement | Save 50% vs Dealer Prices | All Makes & Models</title>
-        <meta name="description" content="Lost or broken car key? We make keys for all vehicles at 50% less than dealers. On-site service for standard, transponder, smart keys & key fobs." />
+        <title>Car Key Replacement | Expert Solutions for All Vehicle Makes & Models</title>
+        <meta name="description" content="Restore vehicle access with precision-engineered replacement keys crafted for your exact make and model. Advanced technology ensures perfect functionality." />
         <meta name="keywords" content="car key replacement, lost car keys, broken car key, car key fob, transponder key, smart key, replacement car keys, automotive locksmith, vehicle key" />
         <link rel="canonical" href="https://247locksmithandsecurity.com/services/auto-locksmith/car-key-replacement" />
       </Helmet>

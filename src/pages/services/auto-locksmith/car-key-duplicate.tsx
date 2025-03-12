@@ -14,8 +14,8 @@ const CarKeyDuplicate = () => {
   return (
     <main className="flex-grow">
       <Helmet>
-        <title>Professional Car Key Duplication | 24/7 Automotive Locksmith Services</title>
-        <meta name="description" content="Expert car key duplication for all vehicle makes and models. Get reliable spare keys at competitive prices. Serving North Bergen, Jersey City, Hoboken & all NJ areas." />
+        <title>Car Key Duplication | Never Be Stranded With Reliable Spares</title>
+        <meta name="description" content="Prevent future lockouts with perfectly duplicated spare keys. Our advanced equipment creates exact replicas that work flawlessly in your vehicle." />
         <meta name="keywords" content="car key duplication, duplicate car key, spare car key, copy car key, automotive locksmith, car key copy, transponder key duplication" />
         <link rel="canonical" href="https://247locksmithandsecurity.com/services/auto-locksmith/car-key-duplicate" />
       </Helmet>

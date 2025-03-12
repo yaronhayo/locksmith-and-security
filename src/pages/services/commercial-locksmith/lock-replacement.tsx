@@ -14,8 +14,8 @@ const CommercialLockReplacement = () => {
   return (
     <main className="flex-grow">
       <Helmet>
-        <title>Professional Commercial Lock Replacement | Business Security Solutions</title>
-        <meta name="description" content="Expert commercial lock replacement services by certified locksmiths. Upgrade your business security with professional installation of high-grade commercial locks." />
+        <title>Commercial Lock Replacement | Enhanced Business Security Solutions</title>
+        <meta name="description" content="Upgrade your business security with premium-grade commercial locks that resist tampering and forced entry while meeting insurance compliance requirements." />
         <meta name="keywords" content="commercial lock replacement, business locks, mortise locks, commercial door hardware, high-security locks, exit devices, ADA compliant locks, panic hardware" />
         <link rel="canonical" href="https://247locksmithandsecurity.com/services/commercial-locksmith/lock-replacement" />
       </Helmet>

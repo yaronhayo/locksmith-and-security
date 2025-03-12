@@ -14,8 +14,8 @@ const KeyFobProgramming = () => {
   return (
     <main className="flex-grow">
       <Helmet>
-        <title>Key Fob Programming Service | Auto Locksmith Services</title>
-        <meta name="description" content="Professional key fob programming by certified technicians. Expert service for all vehicle makes and models with same-day service and fair pricing." />
+        <title>Key Fob Programming | Restore Remote Access Control to Your Vehicle</title>
+        <meta name="description" content="Regain complete control of your car's remote functions with expert key fob programming. Restore convenience features and enhance your vehicle security." />
         <meta name="keywords" content="key fob programming, remote key programming, car key fob, car remote, automotive locksmith, car key programmer" />
         <link rel="canonical" href="https://247locksmithandsecurity.com/services/auto-locksmith/key-fob-programming" />
       </Helmet>

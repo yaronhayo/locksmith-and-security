@@ -14,8 +14,8 @@ const AccessControl = () => {
   return (
     <main className="flex-grow">
       <Helmet>
-        <title>Access Control Systems | Keyless Entry Solutions for Businesses</title>
-        <meta name="description" content="Modern access control solutions for businesses. Secure your facility with keycard, biometric, or mobile entry systems. Expert installation & service." />
+        <title>Access Control Systems | Modern Security Management Solutions</title>
+        <meta name="description" content="Gain complete visibility and control over who enters your facility with customizable electronic access solutions that eliminate key management headaches." />
         <meta name="keywords" content="access control, door access control, card readers, biometric access, electronic locks, keyless entry, commercial security" />
         <link rel="canonical" href="https://247locksmithandsecurity.com/services/commercial-locksmith/access-control" />
       </Helmet>

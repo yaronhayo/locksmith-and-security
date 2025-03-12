@@ -14,8 +14,8 @@ const StorageUnitLockout = () => {
   return (
     <main className="flex-grow">
       <Helmet>
-        <title>Professional Storage Unit Lockout Service | 24/7 Emergency Locksmith</title>
-        <meta name="description" content="Expert storage unit lockout service by certified locksmiths. Fast, reliable, and damage-free entry 24/7. Serving North Bergen, Jersey City, Hoboken & all NJ areas." />
+        <title>Storage Unit Lockout Solutions | Protect Your Stored Valuables</title>
+        <meta name="description" content="Secure access to your storage unit with our specialized lockout solutions that protect your belongings while maintaining the integrity of facility security systems." />
         <meta name="keywords" content="storage unit lockout, locked out of storage unit, storage unit lock opening, emergency locksmith, storage unit lock replacement, storage unit key" />
         <link rel="canonical" href="https://247locksmithandsecurity.com/services/emergency-locksmith/storage-unit-lockout" />
       </Helmet>

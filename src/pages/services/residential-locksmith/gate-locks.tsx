@@ -9,8 +9,8 @@ import EnhancedServicesHero from '@/components/sections/services/EnhancedService
 const GateLocks = () => {
   return (
     <PageLayout
-      title="Gate Lock Installation & Repair | Residential Locksmith Services"
-      description="Professional gate lock installation and repair by certified technicians. Expert solutions for all types of residential gates with quality hardware and guaranteed workmanship."
+      title="Gate Lock Solutions | Complete Perimeter Security Systems"
+      description="Secure your property boundaries with weather-resistant, tamper-proof gate locks professionally installed for optimal security and convenience."
       schema={gateLocksServiceSchema}
       keywords="gate locks, gate lock installation, gate lock repair, driveway gate locks, garden gate locks, residential gate security, gate lock replacement"
     >

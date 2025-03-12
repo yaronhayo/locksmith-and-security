@@ -1,11 +1,12 @@
+
 import PageLayout from "@/components/layouts/PageLayout";
 import ServiceAreasSection from "@/components/sections/ServiceAreasSection";
 
 const ServiceAreasPage = () => {
   return (
     <PageLayout
-      title="Service Areas | Locksmith & Security LLC"
-      description="Professional locksmith services available in North Bergen, Jersey City, Union City, and surrounding areas. Fast response times and reliable service."
+      title="Local Locksmith Services | Expert Security Solutions Near You"
+      description="Professional locksmith expertise in North Bergen, Jersey City, Hoboken and surrounding areas. Local specialists who understand your neighborhood's security needs."
     >
       <ServiceAreasSection />
     </PageLayout>

@@ -18,8 +18,8 @@ const EmergencyLocksmith = () => {
   return (
     <main className="flex-grow">
       <Helmet>
-        <title>24/7 Emergency Locksmith | 20-Minute Response | Licensed & Insured</title>
-        <meta name="description" content="Locked out? Our emergency locksmiths respond in 20 minutes or less. Available 24/7 for car, home & business lockouts with damage-free entry techniques." />
+        <title>Emergency Locksmith Solutions | Expert Help When You Need It Most</title>
+        <meta name="description" content="Regain access and restore security with our expert emergency locksmith services. Professional solutions for home, business & auto lockouts with guaranteed results." />
         <meta name="keywords" content="emergency locksmith, 24/7 locksmith, lockout service, car lockout, house lockout, business lockout, lost keys, broken key extraction" />
         <link rel="canonical" href="https://247locksmithandsecurity.com/services/emergency-locksmith" />
       </Helmet>

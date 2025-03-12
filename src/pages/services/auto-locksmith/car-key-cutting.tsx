@@ -14,8 +14,8 @@ const CarKeyCutting = () => {
   return (
     <main className="flex-grow">
       <Helmet>
-        <title>Professional Car Key Cutting Service | Auto Locksmith Services</title>
-        <meta name="description" content="Expert car key cutting services for all vehicle makes and models. Precision key cutting using advanced equipment with fast service and competitive prices." />
+        <title>Precision Car Key Cutting | Perfect-Fit Keys for Any Vehicle</title>
+        <meta name="description" content="Experience the perfect key fit with our precision cutting technology. Expert technicians create flawlessly operating keys for any vehicle make and model." />
         <meta name="keywords" content="car key cutting, auto locksmith, car key duplication, car key copy, vehicle key cutting, auto keys" />
         <link rel="canonical" href="https://247locksmithandsecurity.com/services/auto-locksmith/car-key-cutting" />
       </Helmet>

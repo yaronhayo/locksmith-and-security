@@ -7,10 +7,17 @@ import CompanyValues from "@/components/about/CompanyValues";
 import CompanyFeatures from "@/components/about/CompanyFeatures";
 import Testimonials from "@/components/about/Testimonials";
 import { motion } from "framer-motion";
+import { Helmet } from "react-helmet";
 
 const About = () => {
   return (
     <main className="flex-grow">
+      <Helmet>
+        <title>About Our Expert Locksmiths | Your Trusted Security Partner</title>
+        <meta name="description" content="Meet the certified professionals dedicated to protecting what matters most to you. Our locksmith expertise is backed by years of training and customer satisfaction." />
+        <link rel="canonical" href="https://247locksmithandsecurity.com/about" />
+      </Helmet>
+      
       <PageHero 
         title="About Locksmith & Security LLC"
         description="Professional locksmith services with a commitment to quality, reliability, and customer satisfaction."

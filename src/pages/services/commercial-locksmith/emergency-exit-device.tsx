@@ -13,8 +13,8 @@ const EmergencyExitDevice = () => {
   return (
     <main className="flex-grow">
       <Helmet>
-        <title>Emergency Exit Device Installation | Commercial Panic Bar Services</title>
-        <meta name="description" content="Professional emergency exit device installation and repairs by certified technicians. Ensure your business meets fire code requirements with expert panic bar services." />
+        <title>Emergency Exit Devices | Life Safety & Code Compliance Solutions</title>
+        <meta name="description" content="Ensure occupant safety and legal compliance with professionally installed panic hardware that provides reliable emergency egress without compromising security." />
         <meta name="keywords" content="emergency exit device, panic bar, push bar, exit device installation, commercial fire code, business emergency exit, panic hardware" />
         <link rel="canonical" href="https://247locksmithandsecurity.com/services/commercial-locksmith/emergency-exit-device" />
       </Helmet>

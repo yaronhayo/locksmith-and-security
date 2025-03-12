@@ -16,8 +16,8 @@ import { createWebSiteSchema } from '@/components/meta/schema/WebSiteSchema';
 import { createSiteNavigationSchema } from '@/components/meta/schema/SiteNavigationSchema';
 
 const CarLockout = () => {
-  const pageTitle = "Car Lockout Service | 30-Min Response 24/7 Emergency Locksmith";
-  const pageDescription = "Locked out of your car? Our mobile locksmiths arrive in 30 minutes or less with damage-free entry techniques. Licensed & insured, serving all NJ areas.";
+  const pageTitle = "Car Lockout Service | Damage-Free Professional Entry Solutions";
+  const pageDescription = "Locked out of your car? Our specialized automotive locksmiths use advanced tools for stress-free, damage-free entry that protects your vehicle's integrity.";
   const keywords = "car lockout, locked out of car, auto locksmith, emergency car lockout, vehicle lockout service, car door unlock, car key locked in car";
   const canonicalUrl = "/services/emergency-locksmith/car-lockout";
   const imageUrl = "/lovable-uploads/308ce2b0-551b-48b6-b078-c7e793fa2153.png";
