@@ -30,10 +30,10 @@ const ContactOptions = () => {
           <div>
             <p className="font-medium">Email us</p>
             <a 
-              href="mailto:info@247locksmithandsecurity.com" 
+              href="mailto:support@247locksmithandsecurity.com" 
               className="text-primary hover:underline transition-all"
             >
-              info@247locksmithandsecurity.com
+              support@247locksmithandsecurity.com
             </a>
           </div>
         </div>

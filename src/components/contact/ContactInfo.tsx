@@ -37,8 +37,8 @@ const ContactInfo = () => {
           <div>
             <h3 className="font-semibold">Email</h3>
             <p className="text-gray-700">
-              <a href="mailto:info@247locksmithandsecurity.com" className="hover:text-primary transition-colors">
-                info@247locksmithandsecurity.com
+              <a href="mailto:support@247locksmithandsecurity.com" className="hover:text-primary transition-colors">
+                support@247locksmithandsecurity.com
               </a>
             </p>
             <p className="text-sm text-gray-500 mt-1">We'll respond as soon as possible</p>

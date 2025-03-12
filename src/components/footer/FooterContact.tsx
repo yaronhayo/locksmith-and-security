@@ -12,8 +12,8 @@ const FooterContact = () => {
         </div>
         <div className="flex items-center text-gray-300 hover:text-white transition-colors">
           <Mail className="h-4 w-4 mr-2 text-secondary" />
-          <a href="mailto:info@247locksmithandsecurity.com">
-            info@247locksmithandsecurity.com
+          <a href="mailto:support@247locksmithandsecurity.com">
+            support@247locksmithandsecurity.com
           </a>
         </div>
         <div className="flex items-start text-gray-300 hover:text-white transition-colors">
