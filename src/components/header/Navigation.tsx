@@ -56,9 +56,10 @@ const Navigation = ({ className, isMenuOpen = false, isScrolled = false }: Navig
   return (
     <nav 
       className={cn(
-        "hidden lg:flex items-center space-x-8",
-        isOpen && "fixed inset-0 top-[65px] bg-primary/95 flex flex-col items-start px-6 py-6 space-y-3 overflow-y-auto lg:relative lg:top-0 lg:bg-transparent lg:flex-row lg:items-center lg:space-x-8 lg:space-y-0 lg:p-0 max-h-[calc(100vh-65px)]",
-        isOpen && "!flex",
+        "flex-col items-start space-y-3 w-full",
+        isOpen 
+          ? "flex px-6 py-6 lg:flex-row lg:items-center lg:space-x-8 lg:space-y-0 lg:p-0" 
+          : "hidden lg:flex lg:flex-row lg:items-center lg:space-x-8",
         className
       )}
       role="navigation"
