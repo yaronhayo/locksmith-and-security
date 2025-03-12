@@ -4,7 +4,6 @@ import EnhancedServicesHero from '@/components/sections/services/EnhancedService
 import ServicePageContent from '@/components/sections/services/service-page';
 import { carServiceReviews } from '@/data/reviews/carServiceReviews';
 import ServicesProof from '@/components/sections/services/ServicesProof';
-import { Helmet } from 'react-helmet';
 import { CarLockoutContent } from '@/components/services/car-lockout/CarLockoutContent';
 import { carLockoutSchema, carLockoutFaqs, carLockoutFaqSchema } from '@/components/services/car-lockout/CarLockoutSchema';
 import { relatedEmergencyServices } from '@/components/services/car-lockout/relatedServices';
@@ -14,6 +13,7 @@ import MetaTags from '@/components/layouts/MetaTags';
 import { createLocalBusinessSchema } from '@/components/meta/schema/LocalBusinessSchema';
 import { createWebSiteSchema } from '@/components/meta/schema/WebSiteSchema';
 import { createSiteNavigationSchema } from '@/components/meta/schema/SiteNavigationSchema';
+import ResourceHints from '@/components/meta/ResourceHints';
 
 const CarLockout = () => {
   const pageTitle = "Professional Car Lockout Service | 24/7 Emergency Automotive Locksmith";
@@ -67,8 +67,30 @@ const CarLockout = () => {
     description: service.description
   }));
 
+  // Critical resources preconnection
+  const preconnectDomains = [
+    "https://mtbgayqzjrxjjmsjikcg.supabase.co",
+    "https://maps.googleapis.com",
+    "https://www.google-analytics.com",
+    "https://www.googletagmanager.com"
+  ];
+
+  // Preload critical images
+  const preloadResources = [
+    {
+      href: imageUrl,
+      as: "image",
+    }
+  ];
+
   return (
     <main className="flex-grow">
+      <ResourceHints
+        preconnect={preconnectDomains}
+        preload={preloadResources}
+        dnsPrefetch={["https://www.clarity.ms", "https://fonts.gstatic.com"]}
+      />
+      
       <MetaTags 
         title={pageTitle}
         description={pageDescription}
