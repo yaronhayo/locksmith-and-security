@@ -8,10 +8,11 @@ import GoogleMapsProvider from '../providers/GoogleMapsProvider';
 import MapError from '../map/MapError';
 import { ErrorBoundary } from 'react-error-boundary';
 import { Skeleton } from '@/components/ui/skeleton';
+import { motion } from 'framer-motion';
 
 // Create a map loading component
 const MapLoadingPlaceholder = () => (
-  <div className="h-[600px] bg-white rounded-xl shadow-lg overflow-hidden flex items-center justify-center">
+  <div className="h-[450px] sm:h-[500px] md:h-[550px] lg:h-[600px] bg-white rounded-xl shadow-lg overflow-hidden flex items-center justify-center">
     <div className="text-center">
       <LoadingSpinner size="lg" text="Loading map..." />
     </div>
@@ -74,13 +75,13 @@ const ServiceAreasSection = () => {
 
   if (isLoading) {
     return (
-      <section className="py-20 bg-gray-50" id="service-areas-section">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <Skeleton className="h-10 w-2/3 mx-auto mb-4" />
-            <Skeleton className="h-6 w-3/4 mx-auto" />
+      <section className="py-12 sm:py-16 md:py-20 bg-gray-50" id="service-areas-section">
+        <div className="container mx-auto px-4 sm:px-6">
+          <div className="text-center mb-8 sm:mb-10 md:mb-12">
+            <Skeleton className="h-8 sm:h-9 md:h-10 w-2/3 mx-auto mb-3 sm:mb-4" />
+            <Skeleton className="h-5 sm:h-6 w-3/4 mx-auto" />
           </div>
-          <div className="grid lg:grid-cols-2 gap-8 items-start">
+          <div className="grid md:grid-cols-2 gap-6 sm:gap-8 items-start">
             <LocationsLoadingPlaceholder />
             <MapLoadingPlaceholder />
           </div>
@@ -91,8 +92,8 @@ const ServiceAreasSection = () => {
 
   if (error || !locations) {
     return (
-      <div className="py-20 bg-gray-50" id="service-areas-section">
-        <div className="container mx-auto px-4 flex justify-center items-center min-h-[400px]">
+      <div className="py-12 sm:py-16 md:py-20 bg-gray-50" id="service-areas-section">
+        <div className="container mx-auto px-4 sm:px-6 flex justify-center items-center min-h-[400px]">
           <MapError error={error?.message || 'Error loading service areas'} />
         </div>
       </div>
@@ -100,22 +101,43 @@ const ServiceAreasSection = () => {
   }
 
   return (
-    <section className="py-20 bg-gray-50" id="service-areas-section">
-      <div className="container mx-auto px-4">
-        <h2 className="text-4xl font-bold text-center mb-6">Our Service Areas</h2>
-        <p className="text-lg text-gray-600 text-center mb-12 max-w-2xl mx-auto">
-          Professional locksmith services available throughout North Bergen and surrounding areas. 
-          Fast response times and reliable service, available 24/7.
-        </p>
+    <section className="py-12 sm:py-16 md:py-20 bg-gray-50" id="service-areas-section">
+      <div className="container mx-auto px-4 sm:px-6">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+          className="text-center mb-8 sm:mb-10 md:mb-12"
+        >
+          <h2 className="text-3xl sm:text-4xl font-bold mb-4 sm:mb-6 text-primary">Our Service Areas</h2>
+          <p className="text-base sm:text-lg text-gray-600 max-w-2xl mx-auto">
+            Professional locksmith services available throughout North Bergen and surrounding areas. 
+            Fast response times and reliable service, available 24/7.
+          </p>
+        </motion.div>
 
-        <div className="grid lg:grid-cols-2 gap-8 items-start">
-          <AreasList 
-            areas={locations} 
-            hoveredArea={hoveredArea} 
-            setHoveredArea={setHoveredArea} 
-          />
+        <div className="grid md:grid-cols-2 gap-6 sm:gap-8 items-start">
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+          >
+            <AreasList 
+              areas={locations} 
+              hoveredArea={hoveredArea} 
+              setHoveredArea={setHoveredArea} 
+            />
+          </motion.div>
           
-          <div className="bg-white rounded-xl shadow-lg overflow-hidden" style={{ height: '600px' }}>
+          <motion.div 
+            initial={{ opacity: 0, x: 20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            className="bg-white rounded-xl shadow-lg overflow-hidden h-[450px] sm:h-[500px] md:h-[550px] lg:h-[600px]"
+          >
             {isMapVisible ? (
               <ErrorBoundary FallbackComponent={MapError} key={`map-error-boundary-${mapKey}`}>
                 <GoogleMapsProvider>
@@ -132,7 +154,7 @@ const ServiceAreasSection = () => {
             ) : (
               <MapLoadingPlaceholder />
             )}
-          </div>
+          </motion.div>
         </div>
       </div>
     </section>

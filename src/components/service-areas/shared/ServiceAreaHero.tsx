@@ -34,31 +34,31 @@ const ServiceAreaHero = ({ areaName, isLoading = false }: ServiceAreaHeroProps) 
   }
 
   return (
-    <div className="flex flex-col lg:flex-row gap-8 items-start">
+    <div className="flex flex-col lg:flex-row gap-6 sm:gap-8 items-start">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="space-y-6 w-full lg:w-1/2"
+        className="space-y-4 sm:space-y-6 w-full lg:w-1/2"
       >
         <div className="flex items-center gap-2">
           <MapPin className="h-5 w-5 md:h-6 md:w-6 text-primary flex-shrink-0" />
           <h1 className="text-xl sm:text-2xl md:text-3xl font-bold">Serving {areaName}, NJ</h1>
         </div>
-        <p className="text-base sm:text-lg text-gray-700 md:text-xl">
+        <p className="text-base sm:text-lg text-gray-700">
           At Locksmith & Security LLC, we provide comprehensive locksmith services throughout {areaName}. 
           Our team of experienced professionals is available 24/7 to handle all your residential, 
           commercial, and automotive locksmith needs with professional and reliable service.
         </p>
         <div className="flex flex-col sm:flex-row gap-4">
-          <Button size="lg" className="w-full sm:w-auto gap-2" asChild>
-            <a href={phoneHref}>
-              <Phone className="h-5 w-5" />
+          <Button size="lg" className="w-full sm:w-auto gap-2 group transition-all duration-300" asChild>
+            <a href={phoneHref} className="no-underline">
+              <Phone className="h-5 w-5 group-hover:animate-phone-ring" />
               <span>Call Now</span>
             </a>
           </Button>
-          <Button size="lg" variant="outline" className="w-full sm:w-auto" asChild>
-            <Link to="/book-online">
+          <Button size="lg" variant="outline" className="w-full sm:w-auto transition-all duration-300" asChild>
+            <Link to="/book-online" className="no-underline">
               Book Online
             </Link>
           </Button>

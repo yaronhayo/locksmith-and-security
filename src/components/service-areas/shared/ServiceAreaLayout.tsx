@@ -64,7 +64,7 @@ const ServiceAreaLayout = memo(({ areaSlug }: ServiceAreaLayoutProps) => {
         heroTitle={`Professional Locksmith Services in ${location.name}, NJ`}
         heroDescription={`24/7 expert locksmith services for residential, commercial, and automotive needs in ${location.name}. Licensed, insured, and locally trusted.`}
       >
-        <div className="container mx-auto px-3 sm:px-4 py-4 sm:py-6 md:py-8 overflow-visible">
+        <div className="container mx-auto px-4 py-4 sm:py-6 md:py-8 overflow-visible">
           <Breadcrumbs />
           
           <Card className="mt-4 sm:mt-6 md:mt-8 border-secondary/20 shadow-md overflow-visible">

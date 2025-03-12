@@ -5,6 +5,7 @@ import ContactOptions from "./ContactOptions";
 import RecaptchaField from "@/components/BookingForm/RecaptchaField";
 import SubmitButton from "./SubmitButton";
 import { memo } from "react";
+import { motion } from "framer-motion";
 
 interface FormContainerProps {
   children: ReactNode;
@@ -30,7 +31,14 @@ const FormContainer = memo(({
   onSubmit
 }: FormContainerProps) => {
   return (
-    <section className="bg-white rounded-xl shadow-md overflow-hidden" id="contact-form">
+    <motion.section 
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.5 }}
+      className="bg-white rounded-xl shadow-md overflow-hidden" 
+      id="contact-form"
+    >
       <FormHeader locationName={locationName} />
       
       <div className="p-4 sm:p-6 md:p-8 max-w-3xl mx-auto">
@@ -51,7 +59,7 @@ const FormContainer = memo(({
         
         <ContactOptions />
       </div>
-    </section>
+    </motion.section>
   );
 });
 

@@ -1,3 +1,4 @@
+
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
 
 @tailwind base;
@@ -47,23 +48,27 @@
   }
   
   h1 {
-    @apply text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-heading-dark;
+    @apply text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-heading-dark;
+    line-height: 1.2;
   }
   
   h2 {
-    @apply text-2xl sm:text-3xl md:text-4xl font-bold text-heading-primary;
+    @apply text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-heading-primary;
+    line-height: 1.3;
   }
   
   h3 {
-    @apply text-xl sm:text-2xl md:text-3xl font-semibold text-heading-secondary;
+    @apply text-lg sm:text-xl md:text-2xl lg:text-3xl font-semibold text-heading-secondary;
+    line-height: 1.4;
   }
   
   h4 {
-    @apply text-lg sm:text-xl md:text-2xl font-semibold text-heading-dark;
+    @apply text-base sm:text-lg md:text-xl lg:text-2xl font-semibold text-heading-dark;
+    line-height: 1.5;
   }
   
   .subtitle {
-    @apply text-base sm:text-lg md:text-xl text-heading-neutral;
+    @apply text-sm sm:text-base md:text-lg lg:text-xl text-heading-neutral;
   }
 
   img {
@@ -125,6 +130,31 @@
   [class*="bg-secondary"]:hover svg {
     @apply text-black;
   }
+  
+  /* Responsive text classes */
+  .text-responsive-xs {
+    @apply text-xs sm:text-sm;
+  }
+  
+  .text-responsive-sm {
+    @apply text-sm sm:text-base;
+  }
+  
+  .text-responsive-base {
+    @apply text-base sm:text-lg;
+  }
+  
+  .text-responsive-lg {
+    @apply text-lg sm:text-xl md:text-2xl;
+  }
+  
+  .text-responsive-xl {
+    @apply text-xl sm:text-2xl md:text-3xl lg:text-4xl;
+  }
+  
+  .text-responsive-2xl {
+    @apply text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl;
+  }
 }
 
 .hero-gradient {
@@ -154,6 +184,43 @@
   input, select, textarea {
     @apply text-base;
   }
+}
+
+/* Responsive spacing utilities */
+.p-responsive {
+  @apply p-3 sm:p-4 md:p-5 lg:p-6;
+}
+
+.px-responsive {
+  @apply px-3 sm:px-4 md:px-5 lg:px-6;
+}
+
+.py-responsive {
+  @apply py-3 sm:py-4 md:py-5 lg:py-6;
+}
+
+.m-responsive {
+  @apply m-3 sm:m-4 md:m-5 lg:m-6;
+}
+
+.mx-responsive {
+  @apply mx-3 sm:mx-4 md:mx-5 lg:mx-6;
+}
+
+.my-responsive {
+  @apply my-3 sm:my-4 md:my-5 lg:my-6;
+}
+
+.gap-responsive {
+  @apply gap-3 sm:gap-4 md:gap-5 lg:gap-6;
+}
+
+.space-y-responsive {
+  @apply space-y-3 sm:space-y-4 md:space-y-5 lg:space-y-6;
+}
+
+.space-x-responsive {
+  @apply space-x-3 sm:space-x-4 md:space-x-5 lg:space-x-6;
 }
 
 /* Print styles */
