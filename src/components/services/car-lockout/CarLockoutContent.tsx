@@ -1,9 +1,10 @@
-
 import React from 'react';
+import RelatedServices from "@/components/shared/RelatedServices";
+import { relatedServices } from "./relatedServices";
 
 export const CarLockoutContent = () => {
   return (
-    <>
+    <div>
       <p className="mb-4">
         Finding yourself locked out of your car can be a stressful experience, whether you're in a parking lot, on the side of the road, or in your own driveway. Our professional car lockout service provides quick and reliable assistance to get you back into your vehicle without causing damage to your locks or door.
       </p>
@@ -110,6 +111,14 @@ export const CarLockoutContent = () => {
       <p className="mb-4">
         We provide car lockout services throughout North Bergen, Jersey City, Hoboken, Weehawken, Union City, West New York, Secaucus, Guttenberg, and surrounding areas in New Jersey. Our mobile locksmiths come to your location with all the necessary equipment to resolve your car lockout situation.
       </p>
-    </>
+      
+      <div className="mt-12">
+        <RelatedServices 
+          services={relatedServices} 
+          currentServicePath="/services/emergency-locksmith/car-lockout" 
+          className="max-w-4xl mx-auto"
+        />
+      </div>
+    </div>
   );
 };
