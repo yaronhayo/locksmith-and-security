@@ -4,7 +4,8 @@ export const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type, content-length, content-type, range',
   'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS, PATCH',
   'Access-Control-Expose-Headers': 'Content-Length, Content-Range',
-  'Access-Control-Max-Age': '86400'
+  'Access-Control-Max-Age': '86400',
+  'Cache-Control': 'public, max-age=60, s-maxage=60'
 };
 
 /**

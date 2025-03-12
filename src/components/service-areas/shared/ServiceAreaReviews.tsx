@@ -6,7 +6,7 @@ import { SchemaScripts } from "@/components/meta/SchemaScripts";
 import { createReviewsSchema } from "@/schemas/reviewsSchema";
 import { ErrorBoundary } from "react-error-boundary";
 import ErrorFallback from "@/components/ErrorFallback";
-import { memo, useEffect } from "react";
+import { memo, useEffect, useMemo } from "react";
 import ReviewsLoadingSkeleton from "@/components/reviews/ReviewsLoadingSkeleton";
 import { trackComponentRender } from "@/utils/performanceMonitoring";
 import { motion } from "framer-motion";
@@ -30,7 +30,13 @@ const ServiceAreaReviews = memo(({
     finishRenderTracking();
   }, []);
   
-  const reviewsSchema = createReviewsSchema(displayedReviews, locationName);
+  const reviewsSchema = useMemo(() => 
+    createReviewsSchema(displayedReviews, locationName), 
+    [displayedReviews, locationName]
+  );
+  
+  // Precomputed stars array to avoid recreation on each render
+  const stars = useMemo(() => [1, 2, 3, 4, 5], []);
   
   return (
     <section className="py-12" id="reviews">
@@ -57,7 +63,7 @@ const ServiceAreaReviews = memo(({
             transition={{ delay: 0.3, duration: 0.5 }}
           >
             <div className="flex">
-              {[1, 2, 3, 4, 5].map((star) => (
+              {stars.map((star) => (
                 <StarIcon key={star} className="h-5 w-5 text-yellow-500 fill-current" />
               ))}
             </div>

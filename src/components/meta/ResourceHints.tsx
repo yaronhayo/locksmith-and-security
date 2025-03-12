@@ -1,5 +1,6 @@
 
 import { Helmet } from "react-helmet";
+import { memo } from "react";
 
 interface ResourceHintsProps {
   preconnect?: string[];
@@ -12,25 +13,34 @@ interface ResourceHintsProps {
   dnsPrefetch?: string[];
 }
 
-export const ResourceHints = ({
+export const ResourceHints = memo(({
   preconnect = [],
   preload = [],
   dnsPrefetch = []
 }: ResourceHintsProps) => {
+  // Remove duplicates
+  const uniquePreconnect = Array.from(new Set(preconnect));
+  const uniqueDnsPrefetch = Array.from(new Set(dnsPrefetch));
+  
+  // Filter out preload items with same URLs
+  const uniquePreload = preload.filter((item, index, self) => 
+    index === self.findIndex((t) => t.href === item.href && t.as === item.as)
+  );
+
   return (
     <Helmet>
       {/* Preconnect hints for third-party resources */}
-      {preconnect.map((url) => (
+      {uniquePreconnect.map((url) => (
         <link key={`preconnect-${url}`} rel="preconnect" href={url} crossOrigin="anonymous" />
       ))}
 
       {/* DNS prefetch for domains we'll need later */}
-      {dnsPrefetch.map((url) => (
+      {uniqueDnsPrefetch.map((url) => (
         <link key={`dns-prefetch-${url}`} rel="dns-prefetch" href={url} />
       ))}
 
       {/* Preload critical resources */}
-      {preload.map(({ href, as, type, crossOrigin }) => (
+      {uniquePreload.map(({ href, as, type, crossOrigin }) => (
         <link 
           key={`preload-${href}`} 
           rel="preload" 
@@ -42,6 +52,8 @@ export const ResourceHints = ({
       ))}
     </Helmet>
   );
-};
+});
+
+ResourceHints.displayName = 'ResourceHints';
 
 export default ResourceHints;

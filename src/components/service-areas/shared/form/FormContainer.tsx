@@ -4,7 +4,6 @@ import FormHeader from "./FormHeader";
 import ContactOptions from "./ContactOptions";
 import RecaptchaField from "@/components/BookingForm/RecaptchaField";
 import SubmitButton from "./SubmitButton";
-import { RecaptchaState } from "./useRecaptcha";
 import { memo } from "react";
 
 interface FormContainerProps {
@@ -13,7 +12,12 @@ interface FormContainerProps {
   isSubmitting: boolean;
   isSubmitted: boolean;
   isFormValid: boolean;
-  recaptcha: RecaptchaState;
+  recaptcha: {
+    recaptchaToken: string | null;
+    recaptchaError: string | null;
+    isRecaptchaValid: boolean;
+    handleRecaptchaChange: (token: string | null) => void;
+  };
   onSubmit: (e: React.FormEvent) => void;
 }
 

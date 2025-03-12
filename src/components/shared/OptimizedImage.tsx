@@ -1,5 +1,5 @@
 
-import { memo, useState } from "react";
+import { memo, useState, useRef, useEffect } from "react";
 import LoadingSpinner from "@/components/LoadingSpinner";
 import { cn } from "@/lib/utils";
 import { trackImageLoad } from "@/utils/performanceMonitoring";
@@ -15,7 +15,7 @@ interface OptimizedImageProps extends React.ImgHTMLAttributes<HTMLImageElement> 
   objectFit?: "contain" | "cover" | "fill" | "none" | "scale-down";
 }
 
-const OptimizedImage = ({
+const OptimizedImage = memo(({
   src,
   alt,
   width,
@@ -28,6 +28,27 @@ const OptimizedImage = ({
 }: OptimizedImageProps) => {
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
+  const imgRef = useRef<HTMLImageElement>(null);
+  
+  // Use intersection observer for lazy loading
+  useEffect(() => {
+    if (!priority && imgRef.current) {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting && imgRef.current) {
+            imgRef.current.src = src;
+            observer.disconnect();
+          }
+        });
+      }, {
+        rootMargin: '200px', // Load when image is 200px from viewport
+        threshold: 0.01
+      });
+      
+      observer.observe(imgRef.current);
+      return () => observer.disconnect();
+    }
+  }, [src, priority]);
   
   const handleLoad = () => {
     setIsLoading(false);
@@ -56,12 +77,14 @@ const OptimizedImage = ({
         </div>
       ) : (
         <img
-          src={src}
+          ref={imgRef}
+          src={priority ? src : undefined} // Only set src initially if priority
           alt={alt}
           width={width}
           height={height}
           loading={priority ? "eager" : "lazy"}
           fetchPriority={priority ? "high" : "auto"}
+          decoding="async"
           className={cn(
             "transition-opacity duration-300",
             isLoading ? "opacity-0" : "opacity-100",
@@ -83,6 +106,8 @@ const OptimizedImage = ({
       )}
     </div>
   );
-};
+});
 
-export default memo(OptimizedImage);
+OptimizedImage.displayName = 'OptimizedImage';
+
+export default OptimizedImage;

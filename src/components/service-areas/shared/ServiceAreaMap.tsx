@@ -4,7 +4,7 @@ import GoogleMap from "@/components/map/GoogleMap";
 import { MapMarker } from "@/types/service-area";
 import { ErrorBoundary } from "react-error-boundary";
 import MapError from "@/components/map/MapError";
-import { memo, useState, useEffect } from "react";
+import { memo, useState, useEffect, useRef } from "react";
 import LoadingSpinner from "@/components/LoadingSpinner";
 import { trackComponentRender } from "@/utils/performanceMonitoring";
 
@@ -15,31 +15,45 @@ interface ServiceAreaMapProps {
   isLoading?: boolean;
 }
 
-const ServiceAreaMap = ({ locationName, lat, lng, isLoading = false }: ServiceAreaMapProps) => {
+const ServiceAreaMap = memo(({ locationName, lat, lng, isLoading = false }: ServiceAreaMapProps) => {
   const finishRenderTracking = trackComponentRender('ServiceAreaMap');
   const [mapReady, setMapReady] = useState(false);
-  
-  useEffect(() => {
-    finishRenderTracking();
-  }, []);
-  
-  const markers: MapMarker[] = [
+  const timerRef = useRef<number | null>(null);
+  const markers = useRef<MapMarker[]>([
     {
       lat,
       lng,
       title: `${locationName} Locksmith Services`,
       slug: locationName.toLowerCase().replace(/\s+/g, '-')
     }
-  ];
+  ]).current;
   
-  // Simulate map loading for better UX
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setMapReady(true);
-    }, 800);
+    finishRenderTracking();
     
-    return () => clearTimeout(timer);
+    // Clean up map loading timer if component unmounts
+    return () => {
+      if (timerRef.current !== null) {
+        clearTimeout(timerRef.current);
+      }
+    };
   }, []);
+  
+  // Simulate map loading for better UX - use setTimeout with ref for proper cleanup
+  useEffect(() => {
+    if (!mapReady && !isLoading) {
+      timerRef.current = window.setTimeout(() => {
+        setMapReady(true);
+        timerRef.current = null;
+      }, 800);
+    }
+    
+    return () => {
+      if (timerRef.current !== null) {
+        clearTimeout(timerRef.current);
+      }
+    };
+  }, [mapReady, isLoading]);
 
   return (
     <div className="bg-white rounded-xl shadow-sm overflow-hidden">
@@ -67,6 +81,8 @@ const ServiceAreaMap = ({ locationName, lat, lng, isLoading = false }: ServiceAr
       </div>
     </div>
   );
-};
+});
 
-export default memo(ServiceAreaMap);
+ServiceAreaMap.displayName = 'ServiceAreaMap';
+
+export default ServiceAreaMap;
