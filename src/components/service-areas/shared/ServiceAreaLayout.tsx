@@ -1,42 +1,28 @@
 
-import { useSettings } from "@/hooks/useSettings";
+import { memo } from "react";
 import PageLayout from "@/components/layouts/PageLayout";
-import { useLocations } from "@/hooks/useLocations";
 import Breadcrumbs from "@/components/Breadcrumbs";
-import { useReviews } from "@/components/reviews/useReviews";
-import { createServiceAreaSchemas } from "./ServiceAreaSchemas";
-import ServiceAreaContent from "./ServiceAreaContent";
 import { FAQSchema } from "@/types/schema";
 import { Helmet } from "react-helmet";
 import { Card, CardContent } from "@/components/ui/card";
-import { memo, useMemo } from "react";
 import PageLoading from "@/components/layouts/PageLoading";
+import ServiceAreaContent from "./ServiceAreaContent";
+import { useServiceAreaData } from "./hooks/useServiceAreaData";
 
 interface ServiceAreaLayoutProps {
   areaSlug: string;
 }
 
 const ServiceAreaLayout = memo(({ areaSlug }: ServiceAreaLayoutProps) => {
-  const { data: settings, isLoading: settingsLoading } = useSettings();
-  const { data: locations, isLoading: locationsLoading } = useLocations();
-  
-  const location = useMemo(() => {
-    return locations?.find(loc => loc.slug === areaSlug);
-  }, [locations, areaSlug]);
-  
-  const { displayedReviews, isLoading: reviewsLoading, totalReviews } = useReviews(location?.name);
-
-  const schemas = useMemo(() => {
-    return createServiceAreaSchemas(location, settings, areaSlug);
-  }, [location, settings, areaSlug]);
-  
-  const rawFaqSchema = useMemo(() => {
-    return schemas.find(schema => schema.type === 'FAQPage');
-  }, [schemas]);
-  
-  const faqSchema = rawFaqSchema as FAQSchema | undefined;
-  
-  const isLoading = settingsLoading || locationsLoading;
+  const {
+    location,
+    schemas,
+    displayedReviews,
+    reviewsLoading,
+    totalReviews,
+    faqSchema,
+    isLoading
+  } = useServiceAreaData(areaSlug);
 
   if (isLoading) {
     return <PageLoading type="skeleton" />;
@@ -80,7 +66,7 @@ const ServiceAreaLayout = memo(({ areaSlug }: ServiceAreaLayoutProps) => {
                 displayedReviews={displayedReviews}
                 isLoading={reviewsLoading}
                 totalReviews={totalReviews}
-                faqSchema={faqSchema}
+                faqSchema={faqSchema as FAQSchema}
               />
             </CardContent>
           </div>

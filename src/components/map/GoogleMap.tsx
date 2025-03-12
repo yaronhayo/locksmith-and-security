@@ -6,11 +6,12 @@ import MapMarkers from "./MapMarkers";
 import MapError from "./MapError";
 import MapControls from "./MapControls";
 import { MapMarker } from "@/types/service-area";
-import { useGoogleMap } from "./useGoogleMap";
 import { clearApiKeyCache } from "@/hooks/useApiKeys";
+import { useMapInitialization } from "./hooks/useMapInitialization";
+import { useMapInteractions } from "./hooks/useMapInteractions";
 
 const mapOptions: google.maps.MapOptions = {
-  zoomControl: false, // We'll use our custom controls
+  zoomControl: false,
   streetViewControl: false,
   mapTypeControl: false,
   fullscreenControl: false,
@@ -45,17 +46,20 @@ const GoogleMap = ({
     mapRef,
     isLoading,
     mapError,
-    visibleMarkers,
     onLoadCallback,
-    onUnmountCallback,
+    onUnmountCallback
+  } = useMapInitialization();
+  
+  const {
+    zoomLevel,
     zoomIn,
     zoomOut,
-    centerMap
-  } = useGoogleMap(markers, highlightedMarker, showAllMarkers, zoom, center);
+    centerMap,
+    visibleMarkers
+  } = useMapInteractions(markers, highlightedMarker, showAllMarkers, zoom);
 
   const handleMapError = useCallback(() => {
     console.error("Map error occurred");
-    // Attempt to recover by clearing cache and reloading config
     clearApiKeyCache('maps');
   }, []);
 
@@ -67,7 +71,6 @@ const GoogleMap = ({
         console.error("Google Maps error detected:", message);
         handleMapError();
       }
-      // Call the original handler if it exists
       if (originalOnError) {
         return originalOnError(message, source, lineno, colno, error);
       }
@@ -94,7 +97,7 @@ const GoogleMap = ({
         <GoogleMapComponent
           mapContainerStyle={{ width: '100%', height: '100%' }}
           center={center}
-          zoom={zoom}
+          zoom={zoomLevel}
           options={mapOptions}
           onClick={onClick}
           onLoad={onLoadCallback}
