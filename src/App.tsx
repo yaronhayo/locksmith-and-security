@@ -1,28 +1,35 @@
 
 import { BrowserRouter as Router } from "react-router-dom";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Routes from "./Routes";
-import { RouteErrorBoundary } from "./components/layouts/RouteErrorBoundary";
-import { Toaster } from "./components/ui/sonner";
-import CookieConsent from "./components/CookieConsent";
-import ScrollToTop from "./components/ScrollToTop";
-import Footer from "@/components/Footer";
-import Header from "@/components/Header";
-import { NavigationProvider } from "./contexts/NavigationContext";
+import "./App.css";
+import { ScrollToTop } from "@/components/ScrollToTop";
+import { CookieConsent } from "@/components/CookieConsent";
+import { Toaster } from "@/components/ui/toaster";
+import { ScriptsProvider } from "@/components/providers/ScriptsProvider";
+
+// Create a react-query client
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: 1,
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
 function App() {
   return (
-    <Router>
-      <RouteErrorBoundary>
-        <ScrollToTop />
-        <NavigationProvider>
-          <Header />
+    <QueryClientProvider client={queryClient}>
+      <Router>
+        <ScriptsProvider>
+          <ScrollToTop />
           <Routes />
-          <Footer />
-        </NavigationProvider>
-        <Toaster />
-        <CookieConsent />
-      </RouteErrorBoundary>
-    </Router>
+          <CookieConsent />
+          <Toaster />
+        </ScriptsProvider>
+      </Router>
+    </QueryClientProvider>
   );
 }
 

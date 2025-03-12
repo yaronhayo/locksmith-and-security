@@ -1,8 +1,7 @@
 
-import { useState, useEffect, useMemo, lazy, Suspense, memo } from 'react';
+import { useState, useEffect, useMemo, memo } from 'react';
 import GoogleMap from '../map/GoogleMap';
 import AreasList from './service-areas/AreasList';
-import EmergencyCallout from './service-areas/EmergencyCallout';
 import { useLocations } from '@/hooks/useLocations';
 import LoadingSpinner from '../LoadingSpinner';
 import GoogleMapsProvider from '../providers/GoogleMapsProvider';

@@ -15,25 +15,27 @@ export const useGoogleMap = (
   const [mapError, setMapError] = useState<string | null>(null);
   const loadStartTime = useRef(performance.now());
   
+  // Compute which markers should be visible
   const visibleMarkers = useCallback(() => 
     showAllMarkers ? markers : markers.filter(m => m.slug === highlightedMarker),
     [markers, showAllMarkers, highlightedMarker]
   );
 
+  // Function to update the map view (center and zoom)
   const updateMapView = useCallback(() => {
     if (!mapRef.current) return;
     
     const map = mapRef.current;
-    const markers = visibleMarkers();
+    const visibleMarkersArray = visibleMarkers();
     
-    if (markers.length > 1) {
+    if (visibleMarkersArray.length > 1) {
       const bounds = new google.maps.LatLngBounds();
-      markers.forEach(marker => {
+      visibleMarkersArray.forEach(marker => {
         bounds.extend({ lat: marker.lat, lng: marker.lng });
       });
       map.fitBounds(bounds);
-    } else if (markers.length === 1) {
-      map.setCenter({ lat: markers[0].lat, lng: markers[0].lng });
+    } else if (visibleMarkersArray.length === 1) {
+      map.setCenter({ lat: visibleMarkersArray[0].lat, lng: visibleMarkersArray[0].lng });
       map.setZoom(initialZoom);
     } else {
       map.setCenter(initialCenter);
@@ -41,6 +43,7 @@ export const useGoogleMap = (
     }
   }, [visibleMarkers, initialZoom, initialCenter]);
 
+  // Callback for when the map loads
   const onLoadCallback = useCallback((map: google.maps.Map) => {
     try {
       const loadTime = performance.now() - loadStartTime.current;
@@ -60,11 +63,13 @@ export const useGoogleMap = (
     }
   }, [updateMapView]);
 
+  // Callback for when the map is unmounted
   const onUnmountCallback = useCallback(() => {
     console.log('Map unmounting');
     mapRef.current = null;
   }, []);
 
+  // Component lifecycle logging
   useEffect(() => {
     console.log("GoogleMap component mounted");
     return () => {
@@ -72,6 +77,7 @@ export const useGoogleMap = (
     };
   }, []);
 
+  // Update map view when markers or highlight change
   useEffect(() => {
     console.log("Markers updated:", { 
       total: markers.length, 
@@ -79,7 +85,7 @@ export const useGoogleMap = (
       highlighted: highlightedMarker
     });
     
-    if (mapRef.current && visibleMarkers().length > 0) {
+    if (mapRef.current && !isLoading) {
       try {
         updateMapView();
       } catch (error) {
@@ -87,8 +93,9 @@ export const useGoogleMap = (
         setMapError("Failed to update map view");
       }
     }
-  }, [markers, highlightedMarker, showAllMarkers, updateMapView, visibleMarkers]);
+  }, [markers, highlightedMarker, showAllMarkers, updateMapView, visibleMarkers, isLoading]);
   
+  // Map control functions
   const zoomIn = useCallback(() => {
     if (mapRef.current) {
       const currentZoom = mapRef.current.getZoom() || initialZoom;
