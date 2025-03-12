@@ -1,6 +1,9 @@
 
 import React from "react";
-import { useServiceAreaForm } from "./useServiceAreaForm";
+import { useFormState } from "./hooks/useFormState";
+import { useFormValidation } from "./hooks/useFormValidation";
+import { useRecaptcha } from "./hooks/useRecaptcha";
+import { useFormSubmission } from "./hooks/useFormSubmission";
 import FormContainer from "./FormContainer";
 import ContactFields from "./ContactFields";
 import EmailField from "./EmailField";
@@ -12,32 +15,53 @@ interface ServiceAreaFormProps {
 }
 
 const ServiceAreaForm = ({ locationName }: ServiceAreaFormProps) => {
+  // Use individual hooks for form functionality
   const {
     formState,
+    handleChange,
+    handleBlur
+  } = useFormState();
+  
+  const {
     errors,
-    isSubmitting,
-    isSubmitted,
+    validateForm,
+    isFormValid
+  } = useFormValidation(formState);
+  
+  const {
     recaptchaToken,
     recaptchaError,
-    handleChange,
-    handleBlur,
-    handleRecaptchaChange,
-    isFormValid,
+    setRecaptchaError,
+    handleRecaptchaChange
+  } = useRecaptcha();
+  
+  const {
+    isSubmitting,
+    isSubmitted,
     handleSubmit
-  } = useServiceAreaForm();
+  } = useFormSubmission(
+    formState, 
+    errors, 
+    validateForm, 
+    recaptchaToken,
+    setRecaptchaError
+  );
+
+  // Calculate if form is valid based on validation and recaptcha
+  const isFormValidState = isFormValid(recaptchaToken);
 
   return (
     <FormContainer
       locationName={locationName}
       isSubmitting={isSubmitting}
       isSubmitted={isSubmitted}
-      isFormValid={isFormValid}
+      isFormValid={isFormValidState}
       recaptchaToken={recaptchaToken}
       recaptchaError={recaptchaError}
       onRecaptchaChange={handleRecaptchaChange}
       onSubmit={handleSubmit}
     >
-      <ContactFields
+      <ContactFields 
         formState={formState}
         errors={errors}
         isSubmitting={isSubmitting}
@@ -45,7 +69,7 @@ const ServiceAreaForm = ({ locationName }: ServiceAreaFormProps) => {
         handleBlur={handleBlur}
       />
       
-      <EmailField
+      <EmailField 
         email={formState.email}
         error={errors.email}
         isSubmitting={isSubmitting}
@@ -53,14 +77,14 @@ const ServiceAreaForm = ({ locationName }: ServiceAreaFormProps) => {
         handleBlur={() => handleBlur('email')}
       />
       
-      <ServiceField
+      <ServiceField 
         service={formState.service}
-        error={null}
+        error={errors.service}
         isSubmitting={isSubmitting}
         handleChange={handleChange}
       />
       
-      <MessageField
+      <MessageField 
         message={formState.message}
         isSubmitting={isSubmitting}
         handleChange={handleChange}
