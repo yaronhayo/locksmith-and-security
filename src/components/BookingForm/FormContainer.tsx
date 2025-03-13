@@ -55,7 +55,11 @@ const FormContainer = ({
       <div className="space-y-2.5">
         {children}
       </div>
-      <SubmitButton isSubmitting={isSubmitting} />
+      <SubmitButton 
+        isSubmitting={isSubmitting} 
+        text="Request Service"
+        loadingText="Processing..."
+      />
     </form>
   );
 };
