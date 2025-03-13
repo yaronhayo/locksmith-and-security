@@ -1,4 +1,3 @@
-
 interface GeolocationData {
   city?: string;
   region?: string;
@@ -114,7 +113,7 @@ export const initSessionTracking = (): void => {
   // Record page load time
   if (window.performance) {
     const perfData = window.performance.timing;
-    pageLoaded = perfData.domContentLoaded - perfData.navigationStart;
+    pageLoaded = perfData.domContentLoadedEventEnd - perfData.navigationStart;
   }
   
   // Initialize entry page

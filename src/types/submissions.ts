@@ -23,7 +23,7 @@ export interface BaseSubmission {
   unit_number?: string | null;
   gate_code?: string | null;
   status: 'pending';
-  visitor_info: Record<string, string>;  // Changed to match Json type
+  visitor_info: Record<string, any>;  // Changed to match Json type
   source_url: string;
   traffic_source?: TrafficSource;
   recaptcha_token: string | null;

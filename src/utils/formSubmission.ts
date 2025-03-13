@@ -10,6 +10,15 @@ export const submitFormData = async (formData: SubmissionData) => {
     
     console.log("Session data collected:", sessionData);
     
+    // Prepare the traffic source data with correct field names for database
+    const trafficSourceData = {
+      source: sessionData.trafficSource.source,
+      medium: sessionData.trafficSource.medium,
+      campaign: sessionData.trafficSource.campaign,
+      keyword: sessionData.trafficSource.keyword,
+      click_path: sessionData.trafficSource.clickPath // Map clickPath to click_path for database
+    };
+    
     // Merge the session data with the form data
     const enhancedFormData = {
       ...formData,
@@ -17,12 +26,8 @@ export const submitFormData = async (formData: SubmissionData) => {
         ...formData.visitor_info,
         ...sessionData.visitorInfo
       },
-      traffic_source: {
-        ...sessionData.trafficSource
-      },
-      page_metrics: {
-        ...sessionData.pageMetrics
-      }
+      traffic_source: trafficSourceData, // Use the converted data structure
+      page_metrics: sessionData.pageMetrics
     };
     
     console.log("Submitting enhanced form data to Supabase:", enhancedFormData);
