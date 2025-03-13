@@ -1,3 +1,4 @@
+
 // Polyfill for requestIdleCallback for older browsers
 export const setupRequestIdleCallback = () => {
   if (typeof window !== 'undefined') {
@@ -11,14 +12,14 @@ export const setupRequestIdleCallback = () => {
               return Math.max(0, 50 - (Date.now() - start));
             }
           });
-        }, 1);
-      } as Window['requestIdleCallback'];
+        }, 1) as unknown as number;
+      };
     }
 
     if (!window.cancelIdleCallback) {
       window.cancelIdleCallback = function(id) {
-        clearTimeout(id);
-      } as Window['cancelIdleCallback'];
+        clearTimeout(id as unknown as NodeJS.Timeout);
+      };
     }
   }
 };
