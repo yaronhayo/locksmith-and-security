@@ -12,15 +12,15 @@ interface VehicleFieldsProps {
 const VehicleFields = ({ errors, isSubmitting }: VehicleFieldsProps) => {
   return (
     <div className="space-y-3">
-      <Label htmlFor="vehicleYear">Vehicle Information</Label>
+      <Label htmlFor="vehicle_year">Vehicle Information</Label>
       <div className="grid grid-cols-3 gap-3">
         <div>
           <Input
-            id="vehicleYear"
-            name="vehicleYear"
+            id="vehicle_year"
+            name="vehicle_year"
             type="text"
             placeholder="Year"
-            aria-describedby="vehicleYear-error"
+            aria-describedby="vehicle_year-error"
             className={`h-10 text-base ${errors.vehicleYear ? 'border-red-500' : ''}`}
             disabled={isSubmitting}
             autoComplete="off"
@@ -36,11 +36,11 @@ const VehicleFields = ({ errors, isSubmitting }: VehicleFieldsProps) => {
 
         <div>
           <Input
-            id="vehicleMake"
-            name="vehicleMake"
+            id="vehicle_make"
+            name="vehicle_make"
             type="text"
             placeholder="Make"
-            aria-describedby="vehicleMake-error"
+            aria-describedby="vehicle_make-error"
             className={`h-10 text-base ${errors.vehicleMake ? 'border-red-500' : ''}`}
             disabled={isSubmitting}
             autoComplete="off"
@@ -56,11 +56,11 @@ const VehicleFields = ({ errors, isSubmitting }: VehicleFieldsProps) => {
 
         <div>
           <Input
-            id="vehicleModel"
-            name="vehicleModel"
+            id="vehicle_model"
+            name="vehicle_model"
             type="text"
             placeholder="Model"
-            aria-describedby="vehicleModel-error"
+            aria-describedby="vehicle_model-error"
             className={`h-10 text-base ${errors.vehicleModel ? 'border-red-500' : ''}`}
             disabled={isSubmitting}
             autoComplete="off"

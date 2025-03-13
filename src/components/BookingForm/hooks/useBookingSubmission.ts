@@ -115,7 +115,7 @@ export const useBookingSubmission = ({
         };
       }
 
-      // Prepare the submission data with explicit type literal
+      // Prepare the submission data
       const submissionData = {
         type: "booking" as const,
         name,
@@ -134,7 +134,10 @@ export const useBookingSubmission = ({
       };
 
       console.log("Submitting booking data:", submissionData);
+      
+      // Submit the actual data using the production endpoint
       await submitFormData(submissionData);
+      
       console.log("Booking submitted successfully");
       
       // Store flag for thank-you page
