@@ -11,6 +11,7 @@ interface Window {
 
 interface LayoutShiftEntry extends PerformanceEntry {
   value: number;
+  hadRecentInput?: boolean;
 }
 
 interface FirstInputEntry extends PerformanceEntry {

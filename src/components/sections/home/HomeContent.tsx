@@ -4,9 +4,16 @@ import LoadingSpinner from '@/components/LoadingSpinner';
 import { Skeleton } from '@/components/ui/skeleton';
 import { motion } from 'framer-motion';
 
+// Type definition for component factory with preload capability
+type ComponentFactory = () => Promise<{ default: React.ComponentType<any> }>;
+type LazyComponentWithPreload = React.LazyExoticComponent<React.ComponentType<any>> & {
+  preload?: () => Promise<{ default: React.ComponentType<any> }>;
+};
+
 // Optimize lazy loading with custom preloading
-const preloadComponent = (factory) => {
+const preloadComponent = (factory: ComponentFactory): LazyComponentWithPreload => {
   const Component = lazy(factory);
+  // Add preload capability to the component
   Component.preload = factory;
   return Component;
 };
@@ -48,13 +55,13 @@ const HomeContent = () => {
   // Start preloading components after initial render
   useEffect(() => {
     // Preload essential components first
-    ServicesSection.preload();
-    EmergencyServicesSection.preload();
+    ServicesSection.preload?.();
+    EmergencyServicesSection.preload?.();
     
     // Preload secondary components after a short delay
     const timer = setTimeout(() => {
-      ProcessSection.preload();
-      WhyChooseUs.preload();
+      ProcessSection.preload?.();
+      WhyChooseUs.preload?.();
     }, 1000);
     
     return () => clearTimeout(timer);

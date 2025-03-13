@@ -1,4 +1,3 @@
-
 /**
  * Web Vitals monitoring utility
  * Helps track Core Web Vitals metrics in production
@@ -138,11 +137,6 @@ if (typeof window !== 'undefined') {
   }
 }
 
-// Types for Google Analytics
-declare global {
-  interface Window {
-    gtag?: (command: string, action: string, params: object) => void;
-  }
-}
+// Global types are already declared in vite-env.d.ts
 
 export default initWebVitals;
