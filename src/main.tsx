@@ -1,4 +1,3 @@
-
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App.tsx'
@@ -91,7 +90,7 @@ const queryClient = new QueryClient({
       retry: 1,
       refetchOnWindowFocus: false, // Disable refetching on window focus for better performance
       refetchOnMount: false, // Only fetch when needed
-      cacheTime: 1000 * 60 * 30, // Cache for 30 minutes
+      gcTime: 1000 * 60 * 30, // Cache for 30 minutes (previously cacheTime)
     },
   },
 })

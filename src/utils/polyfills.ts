@@ -1,10 +1,8 @@
-
 // Polyfill for requestIdleCallback for older browsers
 export const setupRequestIdleCallback = () => {
   if (typeof window !== 'undefined') {
-    window.requestIdleCallback = 
-      window.requestIdleCallback || 
-      function(cb) {
+    if (!window.requestIdleCallback) {
+      window.requestIdleCallback = function(cb) {
         const start = Date.now();
         return setTimeout(function() {
           cb({
@@ -14,13 +12,14 @@ export const setupRequestIdleCallback = () => {
             }
           });
         }, 1);
-      };
+      } as Window['requestIdleCallback'];
+    }
 
-    window.cancelIdleCallback = 
-      window.cancelIdleCallback || 
-      function(id) {
+    if (!window.cancelIdleCallback) {
+      window.cancelIdleCallback = function(id) {
         clearTimeout(id);
-      };
+      } as Window['cancelIdleCallback'];
+    }
   }
 };
 
