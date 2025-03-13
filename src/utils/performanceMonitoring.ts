@@ -19,8 +19,9 @@ export const trackImageLoad = (src: string, width?: number, height?: number) => 
     const isLargeImage = width > 1200 || height > 1200;
     const fileName = src.split('/').pop() || src;
     
-    // Log to console in development - fix type comparison by ensuring correct string type
-    if (typeof process.env.NODE_ENV === 'string' && process.env.NODE_ENV === 'development' && isLargeImage) {
+    // Log to console in development
+    const nodeEnv = process.env.NODE_ENV as string;
+    if (nodeEnv === 'development' && isLargeImage) {
       console.warn(`Large image detected: ${fileName} (${width}x${height}px). Consider resizing for better performance.`);
     }
     
@@ -100,7 +101,8 @@ export const trackComponentRender = (componentName: string) => {
   
   return () => {
     const duration = performance.now() - startTime;
-    if (process.env.NODE_ENV === 'development') {
+    const nodeEnv = process.env.NODE_ENV as string;
+    if (nodeEnv === 'development') {
       console.debug(`Component render time [${componentName}]: ${duration.toFixed(2)}ms`);
     }
     
@@ -128,7 +130,8 @@ export const measurePerformance = <T>(label: string, fn: () => T): T => {
   const result = fn();
   const duration = performance.now() - startTime;
   
-  if (process.env.NODE_ENV === 'development') {
+  const nodeEnv = process.env.NODE_ENV as string;
+  if (nodeEnv === 'development') {
     console.debug(`Performance [${label}]: ${duration.toFixed(2)}ms`);
   }
   
@@ -142,7 +145,8 @@ export const measurePerformance = <T>(label: string, fn: () => T): T => {
  * @param data Additional data to log
  */
 export const logToService = (level: 'info' | 'warn' | 'error', message: string, data?: Record<string, any>) => {
-  if (process.env.NODE_ENV !== 'production') {
+  const nodeEnv = process.env.NODE_ENV as string;
+  if (nodeEnv !== 'production') {
     console[level](`[${level.toUpperCase()}] ${message}`, data || '');
     return;
   }
@@ -172,7 +176,8 @@ export const trackImageLoad2 = (src: string, imgElement: HTMLImageElement | null
       const { naturalWidth, naturalHeight } = imgElement;
       const size = `${naturalWidth}x${naturalHeight}`;
       
-      if (process.env.NODE_ENV === 'development') {
+      const nodeEnv = process.env.NODE_ENV as string;
+      if (nodeEnv === 'development') {
         console.debug(`Image loaded: ${src} (${size}) in ${loadTime.toFixed(2)}ms`);
       }
       
@@ -207,7 +212,8 @@ export const trackImageLoad2 = (src: string, imgElement: HTMLImageElement | null
  */
 export const mapPerformance = {
   trackInitialization: (duration: number) => {
-    if (typeof process.env.NODE_ENV === 'string' && process.env.NODE_ENV === 'development') {
+    const nodeEnv = process.env.NODE_ENV as string;
+    if (nodeEnv === 'development') {
       console.debug(`Map initialization: ${duration.toFixed(2)}ms`);
     }
     
@@ -220,7 +226,8 @@ export const mapPerformance = {
   },
   
   trackInteraction: (type: string, duration: number) => {
-    if (typeof process.env.NODE_ENV === 'string' && process.env.NODE_ENV === 'development') {
+    const nodeEnv = process.env.NODE_ENV as string;
+    if (nodeEnv === 'development') {
       console.debug(`Map interaction [${type}]: ${duration.toFixed(2)}ms`);
     }
     
@@ -236,7 +243,8 @@ export const mapPerformance = {
   // Adding the missing trackInstanceLoad method
   trackInstanceLoad: (startTime: number) => {
     const duration = performance.now() - startTime;
-    if (typeof process.env.NODE_ENV === 'string' && process.env.NODE_ENV === 'development') {
+    const nodeEnv = process.env.NODE_ENV as string;
+    if (nodeEnv === 'development') {
       console.debug(`Map instance loaded in: ${duration.toFixed(2)}ms`);
     }
     
