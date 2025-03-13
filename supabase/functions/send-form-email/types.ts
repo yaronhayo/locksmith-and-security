@@ -23,6 +23,22 @@ export interface FormData {
     screenResolution: string;
     windowSize: string;
     timestamp: string;
+    timezone: string;
+    deviceType: string;
+    browser: string;
+    browserVersion: string;
+    operatingSystem: string;
+    ipAddress?: string;
+    geolocation?: {
+      city?: string;
+      region?: string;
+      country?: string;
+      latitude?: number;
+      longitude?: number;
+    };
+    formCompletionTime?: number;
+    pageLoadTime?: number;
+    visitDuration?: number;
   };
   source_url?: string;
   traffic_source?: {
@@ -31,5 +47,18 @@ export interface FormData {
     campaign: string;
     keyword: string;
     clickPath: string[];
+    entryPage: string;
+    referrer: string;
+    directNavigation: boolean;
+    previousVisits?: number;
+    previousSubmissions?: number;
+    lastVisitDate?: string;
+  };
+  page_metrics?: {
+    timeOnPage: number;
+    scrollDepth: number;
+    pageInteractions: number;
+    formFocusEvents: number;
+    conversionTime: number;
   };
 }

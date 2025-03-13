@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom/client'
 import App from './App.tsx'
 import './index.css'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { initSessionTracking } from './utils/sessionTracker.ts'
 
 // Save UTM parameters to localStorage for tracking throughout the session
 const saveUtmParams = () => {
@@ -12,15 +13,22 @@ const saveUtmParams = () => {
     const utmSource = urlParams.get('utm_source');
     const utmMedium = urlParams.get('utm_medium');
     const utmCampaign = urlParams.get('utm_campaign');
+    const utmTerm = urlParams.get('utm_term');
     
     if (utmSource) localStorage.setItem('utm_source', utmSource);
     if (utmMedium) localStorage.setItem('utm_medium', utmMedium);
     if (utmCampaign) localStorage.setItem('utm_campaign', utmCampaign);
+    if (utmTerm) localStorage.setItem('utm_term', utmTerm);
   }
 };
 
 // Call the function to save UTM parameters
 saveUtmParams();
+
+// Initialize session tracking
+document.addEventListener('DOMContentLoaded', () => {
+  initSessionTracking();
+});
 
 const queryClient = new QueryClient({
   defaultOptions: {

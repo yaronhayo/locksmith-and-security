@@ -1,8 +1,9 @@
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import { submitFormData } from "@/utils/formSubmission";
+import { startFormTracking } from "@/utils/sessionTracker";
 
 interface UseBookingSubmissionProps {
   validateForm: (formData: FormData, showVehicleInfo: boolean) => { 
@@ -34,6 +35,11 @@ export const useBookingSubmission = ({
   const location = useLocation();
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Start form tracking when the component loads
+  useEffect(() => {
+    startFormTracking();
+  }, []);
 
   const collectVisitorInfo = useCallback(() => {
     return {

@@ -1,10 +1,11 @@
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import { submitFormData } from "@/utils/formSubmission";
 import { FormState } from "./useFormState";
 import { FormErrors } from "./useFormValidation";
+import { startFormTracking } from "@/utils/sessionTracker";
 
 export const useFormSubmission = (
   formState: FormState, 
@@ -16,6 +17,11 @@ export const useFormSubmission = (
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  
+  // Start form tracking when the component loads
+  useEffect(() => {
+    startFormTracking();
+  }, []);
   
   const handleSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();

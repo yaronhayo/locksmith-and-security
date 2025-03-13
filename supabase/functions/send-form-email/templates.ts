@@ -112,7 +112,7 @@ export const getBookingTemplate = (formData: FormData): string => {
             <td style="padding: 8px 0;"><strong>Source URL:</strong></td>
             <td style="padding: 8px 0;">${formData.source_url || 'Not available'}</td>
           </tr>
-          ${formatTrafficSource(formData.traffic_source)}
+          ${formatTrafficSource(formData.traffic_source, formData.page_metrics)}
           ${formatVisitorInfo(formData.visitor_info)}
         </table>
       </div>
@@ -178,7 +178,7 @@ export const getContactTemplate = (formData: FormData): string => {
             <td style="padding: 8px 0;"><strong>Source URL:</strong></td>
             <td style="padding: 8px 0;">${formData.source_url || 'Not available'}</td>
           </tr>
-          ${formatTrafficSource(formData.traffic_source)}
+          ${formatTrafficSource(formData.traffic_source, formData.page_metrics)}
           ${formatVisitorInfo(formData.visitor_info)}
         </table>
       </div>

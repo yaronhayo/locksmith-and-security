@@ -1,15 +1,36 @@
 
 import { supabase } from "@/integrations/supabase/client";
 import { SubmissionData } from "@/types/submissions";
+import { getSessionData } from "./sessionTracker";
 
 export const submitFormData = async (formData: SubmissionData) => {
   try {
-    console.log("Submitting form data to Supabase:", formData);
+    console.log("Collecting session data...");
+    const sessionData = await getSessionData();
+    
+    console.log("Session data collected:", sessionData);
+    
+    // Merge the session data with the form data
+    const enhancedFormData = {
+      ...formData,
+      visitor_info: {
+        ...formData.visitor_info,
+        ...sessionData.visitorInfo
+      },
+      traffic_source: {
+        ...sessionData.trafficSource
+      },
+      page_metrics: {
+        ...sessionData.pageMetrics
+      }
+    };
+    
+    console.log("Submitting enhanced form data to Supabase:", enhancedFormData);
     
     // Insert data into Supabase submissions table
     const { data, error } = await supabase
       .from('submissions')
-      .insert(formData)
+      .insert(enhancedFormData)
       .select()
       .single();
       
@@ -22,7 +43,7 @@ export const submitFormData = async (formData: SubmissionData) => {
     
     // Trigger email notification via Edge Function
     const { error: emailError } = await supabase.functions.invoke('send-form-email', {
-      body: formData
+      body: enhancedFormData
     });
     
     if (emailError) {

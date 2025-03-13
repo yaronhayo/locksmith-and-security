@@ -1,9 +1,10 @@
 
-import { useRef, useState, useCallback } from "react";
+import { useRef, useState, useCallback, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import { getEmailError, getNameError, getPhoneError } from "@/utils/inputValidation";
 import { submitFormData } from "@/utils/formSubmission";
+import { startFormTracking } from "@/utils/sessionTracker";
 
 export const useContactForm = () => {
   const form = useRef<HTMLFormElement>(null);
@@ -13,6 +14,11 @@ export const useContactForm = () => {
   const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
+
+  // Start form tracking when the component loads
+  useEffect(() => {
+    startFormTracking();
+  }, []);
 
   // Check form validity before submission
   const validateForm = useCallback(() => {
