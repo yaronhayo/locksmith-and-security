@@ -10,7 +10,7 @@ import { CarKeyReplacementContent } from '@/components/services/car-key-replacem
 import { carKeyReplacementFaqs, carKeyReplacementServiceSchema, carKeyReplacementFaqSchema } from '@/components/services/car-key-replacement/CarKeyReplacementSchema';
 import { relatedAutoServices } from '@/components/services/car-key-replacement/relatedServices';
 import ServicePageHeader from '@/components/sections/services/service-page/ServicePageHeader';
-import { OptimizedImage } from '@/components/ui/optimized-image';
+import OptimizedImage from '@/components/ui/optimized-image';
 
 const CarKeyReplacement = () => {
   // Enhanced metadata for SEO

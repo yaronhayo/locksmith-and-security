@@ -1,7 +1,6 @@
 
-import React, { ReactNode, useEffect } from 'react';
+import React, { ReactNode } from 'react';
 import { memo } from 'react';
-import { trackComponentRender } from '@/utils/performanceMonitoring';
 import { motion } from 'framer-motion';
 
 export interface ExpertSolutionProps {
@@ -19,12 +18,6 @@ const ExpertSolution = ({
   className,
   delay = 0
 }: ExpertSolutionProps) => {
-  const finishRenderTracking = trackComponentRender('ExpertSolution');
-  
-  useEffect(() => {
-    finishRenderTracking();
-  }, []);
-
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}

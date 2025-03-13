@@ -17,6 +17,9 @@ export type SiteSettings = {
   GOOGLE_MAPS_API_KEY: string;
 };
 
+// Define a broader type that can be used for Settings
+export type Settings = SiteSettings;
+
 export const useSettings = () => {
   return useQuery({
     queryKey: ['settings'],

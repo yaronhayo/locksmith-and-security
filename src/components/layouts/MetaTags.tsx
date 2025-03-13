@@ -22,6 +22,7 @@ interface MetaTagsProps {
   nofollow?: boolean;
   baseUrl?: string;
   modifiedDate?: string;
+  publishedDate?: string;
   ogType?: "website" | "article" | "product" | "profile" | "book";
   twitterCardType?: "summary" | "summary_large_image" | "app" | "player";
   author?: string;
@@ -42,6 +43,7 @@ const MetaTags = ({
   nofollow = false,
   baseUrl = "https://247locksmithandsecurity.com",
   modifiedDate = new Date().toISOString(),
+  publishedDate,
   ogType = "website",
   twitterCardType = "summary_large_image",
   author = "Locksmith & Security LLC",
@@ -83,6 +85,7 @@ const MetaTags = ({
         modifiedDate={modifiedDate}
         baseUrl={baseUrl}
         type={ogType}
+        publishedDate={publishedDate}
       />
       
       <TwitterTags 

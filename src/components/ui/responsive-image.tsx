@@ -1,6 +1,6 @@
 
 import { memo, useState, useEffect } from 'react';
-import { trackImageLoad } from '@/utils/performanceMonitoring';
+import { trackImageLoad2 } from '@/utils/performanceMonitoring';
 import { Skeleton } from '@/components/ui/skeleton';
 import { cn } from '@/lib/utils';
 import { Helmet } from 'react-helmet';
@@ -70,6 +70,12 @@ const ResponsiveImage = ({
   const [imgSrcSet, setImgSrcSet] = useState<string | undefined>(
     lazyLoad && !priority ? undefined : srcSet || getImageSrcSet(src)
   );
+  const [imgElement, setImgElement] = useState<HTMLImageElement | null>(null);
+  
+  // Register ref callback to get access to the image element
+  const imgRef = (element: HTMLImageElement | null) => {
+    setImgElement(element);
+  };
   
   useEffect(() => {
     if (lazyLoad && !priority) {
@@ -80,7 +86,7 @@ const ResponsiveImage = ({
         img.srcset = srcSet || getImageSrcSet(src);
       }
       
-      const { onLoad, onError } = trackImageLoad(src, img);
+      const { onLoad, onError } = trackImageLoad2(src, img);
       
       img.onload = () => {
         setImgSrc(src);
@@ -107,16 +113,20 @@ const ResponsiveImage = ({
     }
   }, [src, srcSet, fallbackSrc, lazyLoad, priority, externalOnLoadHandler, externalOnErrorHandler]);
 
-  const handleImageLoad = () => {
+  const handleImageLoad = (e: React.SyntheticEvent<HTMLImageElement>) => {
     setIsLoading(false);
-    if (externalOnLoadHandler) externalOnLoadHandler({} as React.SyntheticEvent<HTMLImageElement>);
+    // Report performance data
+    trackImageLoad2(src, e.currentTarget).onLoad();
+    if (externalOnLoadHandler) externalOnLoadHandler(e);
   };
 
-  const handleImageError = () => {
+  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement>) => {
     setImgSrc(fallbackSrc);
     setImgSrcSet(undefined);
     setIsLoading(false);
-    if (externalOnErrorHandler) externalOnErrorHandler({} as React.SyntheticEvent<HTMLImageElement>);
+    // Report error
+    trackImageLoad2(src, e.currentTarget).onError(e);
+    if (externalOnErrorHandler) externalOnErrorHandler(e);
   };
 
   // Extract filename from path for a fallback alt text if needed
@@ -162,6 +172,7 @@ const ResponsiveImage = ({
           />
         )}
         <img
+          ref={imgRef}
           src={imgSrc}
           srcSet={imgSrcSet}
           sizes={sizes}

@@ -1,8 +1,7 @@
 
 import { cn } from "@/lib/utils";
 import { Loader2 } from "lucide-react";
-import { memo, useEffect } from "react";
-import { trackComponentRender } from "@/utils/performanceMonitoring";
+import { memo } from "react";
 
 type SpinnerSize = "sm" | "md" | "lg" | "xl";
 
@@ -30,12 +29,6 @@ const LoadingSpinner = ({
   containerClassName,
   centered = true
 }: LoadingSpinnerProps) => {
-  const finishRenderTracking = trackComponentRender('LoadingSpinner');
-  
-  useEffect(() => {
-    finishRenderTracking();
-  }, []);
-
   return (
     <div className={cn(
       centered ? "flex flex-col justify-center items-center" : "inline-flex items-center",

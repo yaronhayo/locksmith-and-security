@@ -2,7 +2,6 @@
 import { useState, useEffect, useCallback, useRef, useMemo } from 'react';
 import { reviews, getReviewsByCategory, getReviewsByLocation } from '@/data/reviewsData';
 import type { Review, ServiceCategory } from '@/types/reviews';
-import { logToService, measurePerformance } from '@/utils/performanceMonitoring';
 
 export const useReviews = (location?: string, category?: ServiceCategory) => {
   const [displayedReviews, setDisplayedReviews] = useState<Review[]>([]);
@@ -25,21 +24,19 @@ export const useReviews = (location?: string, category?: ServiceCategory) => {
   }, []);
 
   const filteredReviews = useMemo(() => {
-    return measurePerformance('Filter Reviews', () => {
-      if (!location && !category) return reviews;
-      
-      let filtered = [...reviews];
-      
-      if (category) {
-        filtered = getReviewsByCategory(category);
-      }
-      
-      if (location) {
-        filtered = filtered.filter(review => review.location.includes(location));
-      }
-      
-      return filtered;
-    });
+    if (!location && !category) return reviews;
+    
+    let filtered = [...reviews];
+    
+    if (category) {
+      filtered = getReviewsByCategory(category);
+    }
+    
+    if (location) {
+      filtered = filtered.filter(review => review.location.includes(location));
+    }
+    
+    return filtered;
   }, [category, location]);
 
   // Preload initial batch immediately when component renders
@@ -85,10 +82,10 @@ export const useReviews = (location?: string, category?: ServiceCategory) => {
         setPage(prev => prev + 1);
         setIsLoading(false);
         
-        // Log performance metrics only in production
+        // Log performance metrics only in production (simplified)
         if (process.env.NODE_ENV === 'production') {
           const duration = performance.now() - startTime;
-          logToService('info', 'Reviews load performance', {
+          console.log('Reviews load performance', {
             duration,
             batchSize: pageSize,
             totalLoaded: displayedReviews.length + newReviews.length
