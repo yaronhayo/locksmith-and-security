@@ -78,9 +78,11 @@ export const useFormSubmission = (
       
       toast.success("Your message has been sent! We'll be in touch soon.");
       
-      // Redirect to thank-you page
+      // Force redirection to thank-you page with timeout to ensure state updates complete
       console.log("Redirecting to thank-you page");
-      navigate('/thank-you');
+      setTimeout(() => {
+        navigate('/thank-you');
+      }, 500);
       
     } catch (error: any) {
       console.error("Form submission error:", error);

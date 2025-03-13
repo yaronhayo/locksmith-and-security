@@ -44,14 +44,15 @@ export const submitFormData = async (formData: SubmissionData) => {
     // Insert data into Supabase submissions table
     const { data, error } = await supabase
       .from('submissions')
-      .insert(enhancedFormData);
+      .insert(enhancedFormData)
+      .select();
       
     if (error) {
       console.error("Error inserting submission to Supabase:", error);
       throw new Error(`Failed to submit form: ${error.message}`);
     }
     
-    console.log("Successfully submitted to Supabase database");
+    console.log("Successfully submitted to Supabase database:", data);
     
     // Trigger email notification via Edge Function
     try {
@@ -72,7 +73,7 @@ export const submitFormData = async (formData: SubmissionData) => {
       // Don't throw here, still consider the form submission successful
     }
     
-    return true;
+    return data || true;
   } catch (error: any) {
     console.error("Form submission error:", error);
     throw error;

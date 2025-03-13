@@ -166,9 +166,12 @@ export const useBookingSubmission = ({
         });
       }
 
-      // Redirect to thank-you page
+      // Redirect to thank-you page with timeout to ensure state updates complete
       console.log("Redirecting to thank-you page");
-      navigate('/thank-you');
+      setTimeout(() => {
+        navigate('/thank-you');
+      }, 500);
+      
     } catch (error: any) {
       console.error('Booking form submission error:', error);
       toast({

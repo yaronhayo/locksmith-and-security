@@ -115,7 +115,10 @@ export const useContactForm = () => {
       });
       
       console.log("Redirecting to thank-you page");
-      navigate('/thank-you');
+      // Force redirection with timeout to ensure state updates complete
+      setTimeout(() => {
+        navigate('/thank-you');
+      }, 500);
 
     } catch (error: any) {
       console.error('Contact form submission error:', error);
