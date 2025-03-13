@@ -11,7 +11,12 @@ export const validateForm = (formData: FormData, showVehicleInfo: boolean) => {
     errors.name = "Please enter a valid name (minimum 2 characters)";
   }
   
-  if (!phone || !/^[\d\s()-]{10,}$/.test(phone)) {
+  // Update phone validation to allow 11 digits with country code
+  const cleanedPhone = phone ? phone.replace(/\D/g, '') : '';
+  if (!phone || !(
+    cleanedPhone.length === 10 || 
+    (cleanedPhone.length === 11 && cleanedPhone.charAt(0) === '1')
+  )) {
     errors.phone = "Please enter a valid phone number";
   }
   
