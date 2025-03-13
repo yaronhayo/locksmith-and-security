@@ -46,12 +46,41 @@ export default defineConfig(({ mode }) => ({
     },
   },
   build: {
+    target: 'es2015',
+    minify: 'terser',
+    cssMinify: true,
+    reportCompressedSize: false, // Speeds up build
+    chunkSizeWarningLimit: 1000, // Higher threshold for warnings
+    terserOptions: {
+      compress: {
+        drop_console: true, // Remove console.log in production
+        drop_debugger: true,
+      },
+    },
     rollupOptions: {
       output: {
         manualChunks: {
           vendor: ['react', 'react-dom', 'react-router-dom'],
+          ui: [
+            '@/components/ui/button', 
+            '@/components/ui/card',
+            '@/components/ui/form',
+            '@/components/ui/input',
+            '@/components/ui/skeleton'
+          ],
+          utils: ['@/lib/utils', '@/utils/performanceMonitoring'],
+          maps: ['@react-google-maps/api'],
+          animations: ['framer-motion'],
+          forms: ['react-hook-form', 'zod'],
         },
+        // Ensure consistent file naming to improve caching
+        entryFileNames: 'assets/[name]-[hash].js',
+        chunkFileNames: 'assets/[name]-[hash].js',
+        assetFileNames: 'assets/[name]-[hash].[ext]',
       },
     },
+  },
+  optimizeDeps: {
+    include: ['react', 'react-dom', 'react-router-dom', 'framer-motion'],
   },
 }));

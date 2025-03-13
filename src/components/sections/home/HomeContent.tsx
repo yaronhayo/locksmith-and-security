@@ -58,13 +58,17 @@ const HomeContent = () => {
   // Start preloading components after initial render
   useEffect(() => {
     // Preload essential components first
-    ServicesSection.preload();
-    EmergencyServicesSection.preload();
+    window.requestIdleCallback(() => {
+      ServicesSection.preload();
+      EmergencyServicesSection.preload();
+    });
     
     // Preload secondary components after a short delay
     const timer = setTimeout(() => {
-      ProcessSection.preload();
-      WhyChooseUs.preload();
+      window.requestIdleCallback(() => {
+        ProcessSection.preload();
+        WhyChooseUs.preload();
+      });
     }, 1000);
     
     return () => clearTimeout(timer);
@@ -79,7 +83,7 @@ const HomeContent = () => {
           observer.disconnect();
         }
       },
-      { rootMargin: '200px' }
+      { rootMargin: '400px' } // Increased from 200px for earlier preloading
     );
     
     observer.observe(document.getElementById('home-content-observer') || document.body);

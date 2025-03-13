@@ -7,6 +7,14 @@ interface Window {
   clarity?: (...args: any[]) => void;
   google: any;
   grecaptcha: any;
+  requestIdleCallback: (
+    callback: (deadline: {
+      didTimeout: boolean;
+      timeRemaining: () => number;
+    }) => void,
+    options?: { timeout: number }
+  ) => number;
+  cancelIdleCallback: (handle: number) => void;
 }
 
 interface LayoutShiftEntry extends PerformanceEntry {

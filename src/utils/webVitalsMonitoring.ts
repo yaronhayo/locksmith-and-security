@@ -1,3 +1,4 @@
+
 /**
  * Web Vitals monitoring utility
  * Helps track Core Web Vitals metrics in production
@@ -136,7 +137,5 @@ if (typeof window !== 'undefined') {
     window.addEventListener('load', () => setTimeout(initWebVitals, 0));
   }
 }
-
-// Global types are already declared in vite-env.d.ts
 
 export default initWebVitals;

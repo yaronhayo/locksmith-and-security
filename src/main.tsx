@@ -6,6 +6,10 @@ import './index.css'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { initSessionTracking } from './utils/sessionTracker.ts'
 import initWebVitals from './utils/webVitalsMonitoring.ts'
+import { initPolyfills } from './utils/polyfills.ts'
+
+// Initialize polyfills first
+initPolyfills();
 
 // Preload critical fonts and resources
 const preloadCriticalResources = () => {
@@ -14,6 +18,7 @@ const preloadCriticalResources = () => {
   logoPreload.rel = 'preload';
   logoPreload.as = 'image';
   logoPreload.href = 'https://mtbgayqzjrxjjmsjikcg.supabase.co/storage/v1/object/public/uploads//Locksmithandsecuritylogo.jpg';
+  logoPreload.fetchPriority = 'high';
   document.head.appendChild(logoPreload);
   
   // Preload critical font
@@ -24,6 +29,28 @@ const preloadCriticalResources = () => {
   fontPreload.type = 'font/woff2';
   fontPreload.crossOrigin = 'anonymous';
   document.head.appendChild(fontPreload);
+  
+  // DNS prefetch for external domains
+  const domains = [
+    'fonts.googleapis.com',
+    'fonts.gstatic.com',
+    'mtbgayqzjrxjjmsjikcg.supabase.co',
+    'maps.googleapis.com'
+  ];
+  
+  domains.forEach(domain => {
+    const link = document.createElement('link');
+    link.rel = 'dns-prefetch';
+    link.href = `https://${domain}`;
+    document.head.appendChild(link);
+    
+    // Also add preconnect for critical domains
+    const preconnect = document.createElement('link');
+    preconnect.rel = 'preconnect';
+    preconnect.href = `https://${domain}`;
+    preconnect.crossOrigin = 'anonymous';
+    document.head.appendChild(preconnect);
+  });
 };
 
 // Save UTM parameters to localStorage for tracking throughout the session
@@ -64,6 +91,7 @@ const queryClient = new QueryClient({
       retry: 1,
       refetchOnWindowFocus: false, // Disable refetching on window focus for better performance
       refetchOnMount: false, // Only fetch when needed
+      cacheTime: 1000 * 60 * 30, // Cache for 30 minutes
     },
   },
 })
