@@ -80,7 +80,7 @@ const HomeLayout = ({ children }: HomeLayoutProps) => {
 
   return (
     <PageLayout
-      title="24/7 Emergency Locksmith Services in North Bergen, NJ | Licensed & Insured"
+      title="24/7 Locksmith Services | North Bergen, NJ | Licensed & Insured"
       description="Professional locksmith services in North Bergen. Available 24/7 for residential, commercial, and automotive locksmith needs. Fast response and reliable service. Licensed (#13VH13153100) & insured."
       schema={enhancedSchema}
       keywords="locksmith north bergen, emergency locksmith, 24/7 locksmith nj, car lockout service, house lockout, residential locksmith, commercial locksmith, automotive locksmith, lock repair, lock installation, lock rekey, high security locks, master key systems"

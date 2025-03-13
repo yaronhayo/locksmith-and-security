@@ -92,11 +92,17 @@ const PageLayout = ({
   const currentPath = typeof window !== 'undefined' ? window.location.pathname : '';
   const actualCanonicalUrl = canonicalUrl || currentPath || '/';
 
+  // Optimize title length (under 75 characters)
+  const optimizedTitle = title.length > 75 ? `${title.substring(0, 72)}...` : title;
+  
+  // Optimize description length (under 160 characters)
+  const optimizedDescription = description.length > 160 ? `${description.substring(0, 157)}...` : description;
+
   return (
     <ErrorBoundary FallbackComponent={ErrorFallback}>
       <MetaTags
-        title={title}
-        description={description}
+        title={optimizedTitle}
+        description={optimizedDescription}
         schemas={allSchemas}
         canonicalUrl={actualCanonicalUrl}
         ogImage={ogImage}
@@ -115,8 +121,8 @@ const PageLayout = ({
       
       {(heroTitle || heroDescription) && (
         <PageHero 
-          title={heroTitle || title}
-          description={heroDescription || description}
+          title={heroTitle || optimizedTitle}
+          description={heroDescription || optimizedDescription}
         />
       )}
       
