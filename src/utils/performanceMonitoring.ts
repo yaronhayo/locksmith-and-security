@@ -19,7 +19,7 @@ export const trackImageLoad = (src: string, width?: number, height?: number) => 
     const isLargeImage = width > 1200 || height > 1200;
     const fileName = src.split('/').pop() || src;
     
-    // Log to console in development (using proper type comparison)
+    // Log to console in development (fixing type comparison)
     if (process.env.NODE_ENV === 'development' && isLargeImage) {
       console.warn(`Large image detected: ${fileName} (${width}x${height}px). Consider resizing for better performance.`);
     }
