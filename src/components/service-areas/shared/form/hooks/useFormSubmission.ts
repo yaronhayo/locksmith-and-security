@@ -25,6 +25,7 @@ export const useFormSubmission = (
   
   const handleSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
+    console.log("Service area form submission started");
     
     if (!recaptchaToken) {
       setRecaptchaError("Please complete the reCAPTCHA verification");
@@ -33,12 +34,14 @@ export const useFormSubmission = (
     
     const isValid = validateForm();
     if (!isValid) {
+      console.log("Form validation failed:", errors);
       return;
     }
     
     setIsSubmitting(true);
     
     try {
+      console.log("Preparing service area form data");
       // Prepare submission data
       const submissionData = {
         type: "contact" as const,
@@ -61,13 +64,19 @@ export const useFormSubmission = (
         source_url: window.location.pathname
       };
       
+      console.log("Submitting service area form data:", JSON.stringify(submissionData, null, 2));
+      
       // Submit to Supabase and send email
       await submitFormData(submissionData);
+      
+      console.log("Service area form submitted successfully");
       
       setIsSubmitted(true);
       
       // Set session storage flag for thank-you page
       sessionStorage.setItem('fromFormSubmission', 'true');
+      
+      toast.success("Your message has been sent! We'll be in touch soon.");
       
       // Redirect to thank-you page
       navigate('/thank-you');
@@ -80,7 +89,7 @@ export const useFormSubmission = (
     } finally {
       setIsSubmitting(false);
     }
-  }, [formState, recaptchaToken, validateForm, setRecaptchaError, navigate]);
+  }, [formState, recaptchaToken, validateForm, setRecaptchaError, navigate, errors]);
 
   return {
     isSubmitting,

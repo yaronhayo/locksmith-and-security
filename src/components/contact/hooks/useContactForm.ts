@@ -25,10 +25,10 @@ export const useContactForm = () => {
     if (!form.current) return false;
 
     const formData = new FormData(form.current);
-    const name = String(formData.get('user_name'));
-    const email = String(formData.get('user_email'));
-    const phone = String(formData.get('user_phone'));
-    const message = String(formData.get('message'));
+    const name = String(formData.get('user_name') || '');
+    const email = String(formData.get('user_email') || '');
+    const phone = String(formData.get('user_phone') || '');
+    const message = String(formData.get('message') || '');
 
     const newErrors: Record<string, string> = {};
     
@@ -81,11 +81,11 @@ export const useContactForm = () => {
       const formData = new FormData(form.current);
       const submissionData = {
         type: "contact" as const,
-        name: String(formData.get('user_name')),
-        email: String(formData.get('user_email')),
-        phone: String(formData.get('user_phone')),
+        name: String(formData.get('user_name') || ''),
+        email: String(formData.get('user_email') || ''),
+        phone: String(formData.get('user_phone') || ''),
         address: address,
-        message: String(formData.get('message')),
+        message: String(formData.get('message') || ''),
         status: "pending" as const,
         recaptcha_token: recaptchaToken,
         visitor_info: {
