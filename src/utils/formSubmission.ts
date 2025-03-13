@@ -5,19 +5,20 @@ import { getSessionData } from "./sessionTracker";
 
 export const submitFormData = async (formData: SubmissionData) => {
   try {
+    console.log("Starting form submission process");
     console.log("Collecting session data...");
     const sessionData = await getSessionData();
     
     console.log("Session data collected:", sessionData);
     
     // Prepare the traffic source data with correct field names for database
-    const trafficSourceData = {
+    const trafficSourceData = sessionData.trafficSource ? {
       source: sessionData.trafficSource.source,
       medium: sessionData.trafficSource.medium,
       campaign: sessionData.trafficSource.campaign,
       keyword: sessionData.trafficSource.keyword,
       click_path: sessionData.trafficSource.clickPath // Map clickPath to click_path for database
-    };
+    } : null;
     
     // Convert visitor info to a plain JSON-serializable object
     // This ensures all nested objects are compatible with Json type
@@ -25,7 +26,7 @@ export const submitFormData = async (formData: SubmissionData) => {
       ...formData.visitor_info,
       ...sessionData.visitorInfo,
       // If geolocation exists, convert it to a plain object
-      geolocation: sessionData.visitorInfo.geolocation ? 
+      geolocation: sessionData.visitorInfo?.geolocation ? 
         { ...sessionData.visitorInfo.geolocation } : 
         undefined
     };
@@ -43,20 +44,19 @@ export const submitFormData = async (formData: SubmissionData) => {
     // Insert data into Supabase submissions table
     const { data, error } = await supabase
       .from('submissions')
-      .insert(enhancedFormData)
-      .select()
-      .single();
+      .insert(enhancedFormData);
       
     if (error) {
       console.error("Error inserting submission to Supabase:", error);
       throw new Error(`Failed to submit form: ${error.message}`);
     }
     
-    console.log("Successfully submitted to Supabase:", data);
+    console.log("Successfully submitted to Supabase database");
     
     // Trigger email notification via Edge Function
     try {
-      const { error: emailError } = await supabase.functions.invoke('send-form-email', {
+      console.log("Invoking send-form-email function");
+      const { data: emailData, error: emailError } = await supabase.functions.invoke('send-form-email', {
         body: enhancedFormData
       });
       
@@ -65,14 +65,14 @@ export const submitFormData = async (formData: SubmissionData) => {
         // Don't throw here, we still want to consider the form submission successful
         console.warn(`Email notification failed: ${emailError.message}`);
       } else {
-        console.log("Email notification sent successfully");
+        console.log("Email notification sent successfully:", emailData);
       }
-    } catch (emailFunctionError) {
+    } catch (emailFunctionError: any) {
       console.error("Failed to invoke email function:", emailFunctionError);
       // Don't throw here, still consider the form submission successful
     }
     
-    return data;
+    return true;
   } catch (error: any) {
     console.error("Form submission error:", error);
     throw error;

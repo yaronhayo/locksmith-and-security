@@ -143,12 +143,12 @@ export const useBookingSubmission = ({
         vehicle_info: vehicleInfo
       };
 
-      console.log("Submitting booking data:", submissionData);
+      console.log("Submitting booking data:", JSON.stringify(submissionData, null, 2));
       
       // Submit the actual data to Supabase
-      await submitFormData(submissionData);
+      const result = await submitFormData(submissionData);
       
-      console.log("Booking submitted successfully");
+      console.log("Booking submitted successfully, result:", result);
       
       // Store flag for thank-you page
       sessionStorage.setItem('fromFormSubmission', 'true');
@@ -167,6 +167,7 @@ export const useBookingSubmission = ({
       }
 
       // Redirect to thank-you page
+      console.log("Redirecting to thank-you page");
       navigate('/thank-you');
     } catch (error: any) {
       console.error('Booking form submission error:', error);

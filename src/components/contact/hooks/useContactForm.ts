@@ -55,6 +55,7 @@ export const useContactForm = () => {
 
   const handleSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
+    console.log("Contact form submission started");
     
     if (!recaptchaToken) {
       toast({
@@ -99,7 +100,9 @@ export const useContactForm = () => {
         source_url: window.location.pathname
       };
 
-      await submitFormData(submissionData);
+      console.log("Submitting contact form data:", JSON.stringify(submissionData, null, 2));
+      const result = await submitFormData(submissionData);
+      console.log("Contact form submitted successfully, result:", result);
 
       // Set session storage for thank-you page redirect protection
       sessionStorage.setItem('fromFormSubmission', 'true');
@@ -111,6 +114,7 @@ export const useContactForm = () => {
         variant: "default",
       });
       
+      console.log("Redirecting to thank-you page");
       navigate('/thank-you');
 
     } catch (error: any) {

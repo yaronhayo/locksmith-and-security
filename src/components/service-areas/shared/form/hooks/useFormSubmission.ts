@@ -67,9 +67,9 @@ export const useFormSubmission = (
       console.log("Submitting service area form data:", JSON.stringify(submissionData, null, 2));
       
       // Submit to Supabase and send email
-      await submitFormData(submissionData);
+      const result = await submitFormData(submissionData);
       
-      console.log("Service area form submitted successfully");
+      console.log("Service area form submitted successfully, result:", result);
       
       setIsSubmitted(true);
       
@@ -79,6 +79,7 @@ export const useFormSubmission = (
       toast.success("Your message has been sent! We'll be in touch soon.");
       
       // Redirect to thank-you page
+      console.log("Redirecting to thank-you page");
       navigate('/thank-you');
       
     } catch (error: any) {

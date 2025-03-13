@@ -8,7 +8,7 @@ export type SiteSettings = {
   company_address: string;
   company_city: string;
   company_state: string;
-  company_zip: string;  // Ensuring this field is explicitly defined
+  company_zip: string;
   company_lat: string;
   company_lng: string;
   base_url: string;
@@ -24,12 +24,23 @@ export const useSettings = () => {
   return useQuery({
     queryKey: ['settings'],
     queryFn: async () => {
+      console.log("Fetching settings from Supabase");
       const { data, error } = await supabase
         .from('settings')
         .select('key, value');
 
-      if (error) throw error;
+      if (error) {
+        console.error("Error fetching settings:", error);
+        throw error;
+      }
 
+      if (!data || data.length === 0) {
+        console.warn("No settings found in database");
+        return {} as SiteSettings;
+      }
+
+      console.log("Settings fetched successfully, count:", data.length);
+      
       const settings = data.reduce((acc, { key, value }) => {
         acc[key as keyof SiteSettings] = value;
         return acc;
@@ -39,5 +50,6 @@ export const useSettings = () => {
     },
     staleTime: 1000 * 60 * 5, // Cache for 5 minutes
     gcTime: 1000 * 60 * 60, // Keep in garbage collection for 1 hour
+    retry: 2,
   });
 };
