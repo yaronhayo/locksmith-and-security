@@ -23,6 +23,13 @@ export const validateForm = (formData: FormData, showVehicleInfo: boolean) => {
     errors.service = "Please select a service";
   }
 
+  if (service === "Other") {
+    const otherService = formData.get("other_service") as string;
+    if (!otherService || otherService.trim().length < 2) {
+      errors.other_service = "Please specify the service needed";
+    }
+  }
+
   if (showVehicleInfo) {
     const vehicleYear = formData.get("vehicle_year") as string;
     const vehicleMake = formData.get("vehicle_make") as string;

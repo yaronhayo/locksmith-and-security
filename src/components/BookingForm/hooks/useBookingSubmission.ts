@@ -80,6 +80,11 @@ export const useBookingSubmission = ({
     if (!validationResult.isValid) {
       setErrors(validationResult.errors);
       console.log("Form validation failed:", validationResult.errors);
+      toast({
+        title: "Form Validation Failed",
+        description: "Please check the form for errors",
+        variant: "destructive",
+      });
       return;
     }
 
@@ -146,7 +151,6 @@ export const useBookingSubmission = ({
       toast({
         title: "Booking Received!",
         description: "We'll contact you shortly to confirm your appointment.",
-        variant: "default",
       });
 
       if (typeof window.gtag === 'function') {

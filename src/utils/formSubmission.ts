@@ -61,10 +61,12 @@ export const submitFormData = async (formData: SubmissionData) => {
     
     if (emailError) {
       console.error("Error sending email notification:", emailError);
-      throw new Error(`Failed to send email notification: ${emailError.message}`);
+      // Don't throw here, we still want to consider the form submission successful
+      console.warn(`Email notification failed: ${emailError.message}`);
+    } else {
+      console.log("Email notification sent successfully");
     }
     
-    console.log("Email notification sent successfully");
     return data;
   } catch (error: any) {
     console.error("Form submission error:", error);
