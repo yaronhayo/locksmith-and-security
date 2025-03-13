@@ -29,6 +29,7 @@ const FormContainer = ({
   showAllKeysLostField,
   showUnusedKeyField
 }: FormContainerProps) => {
+  // Use the booking submission hook
   const { isSubmitting, handleSubmit } = useBookingSubmission({
     validateForm,
     setErrors,
