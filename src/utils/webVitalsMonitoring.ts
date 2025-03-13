@@ -140,7 +140,7 @@ export const initWebVitals = () => {
           };
           reportMetric(metric);
         }
-      }).observe({ type: 'event', durationThreshold: 16, buffered: true });
+      }).observe({ type: 'event', buffered: true }); // Removed durationThreshold as it's not in PerformanceObserverInit
     }
     
     // Time to First Byte

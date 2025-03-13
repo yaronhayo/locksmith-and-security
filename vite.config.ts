@@ -1,4 +1,3 @@
-
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react-swc';
 import path from 'path';
@@ -44,8 +43,8 @@ const compressionPlugin = () => {
         if (!fs.existsSync('./dist')) return;
         
         // Find JS and CSS files to compress
-        const files = [];
-        const walkDir = (dir) => {
+        const files: string[] = [];
+        const walkDir = (dir: string): void => {
           const entries = fs.readdirSync(dir, { withFileTypes: true });
           for (const entry of entries) {
             const fullPath = path.join(dir, entry.name);
