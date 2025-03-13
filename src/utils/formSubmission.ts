@@ -19,13 +19,21 @@ export const submitFormData = async (formData: SubmissionData) => {
       click_path: sessionData.trafficSource.clickPath // Map clickPath to click_path for database
     };
     
+    // Convert visitor info to a plain JSON-serializable object
+    // This ensures all nested objects are compatible with Json type
+    const visitorInfo = {
+      ...formData.visitor_info,
+      ...sessionData.visitorInfo,
+      // If geolocation exists, convert it to a plain object
+      geolocation: sessionData.visitorInfo.geolocation ? 
+        { ...sessionData.visitorInfo.geolocation } : 
+        undefined
+    };
+    
     // Merge the session data with the form data
     const enhancedFormData = {
       ...formData,
-      visitor_info: {
-        ...formData.visitor_info,
-        ...sessionData.visitorInfo
-      },
+      visitor_info: visitorInfo,
       traffic_source: trafficSourceData, // Use the converted data structure
       page_metrics: sessionData.pageMetrics
     };
