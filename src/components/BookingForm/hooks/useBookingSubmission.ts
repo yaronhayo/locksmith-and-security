@@ -65,9 +65,13 @@ export const useBookingSubmission = ({
       return;
     }
 
+    setIsSubmitting(true);
     const formData = new FormData(e.currentTarget);
+    
+    // Ensure address is included
     formData.set('address', address);
     
+    // Include conditional fields if shown
     if (showAllKeysLostField) {
       formData.set('all_keys_lost', allKeysLost);
     }
@@ -76,6 +80,7 @@ export const useBookingSubmission = ({
       formData.set('has_unused_key', hasUnusedKey);
     }
     
+    // Validate the form data
     const validationResult = validateForm(formData, showVehicleInfo);
     if (!validationResult.isValid) {
       setErrors(validationResult.errors);
@@ -85,11 +90,11 @@ export const useBookingSubmission = ({
         description: "Please check the form for errors",
         variant: "destructive",
       });
+      setIsSubmitting(false);
       return;
     }
 
     setErrors({});
-    setIsSubmitting(true);
     console.log("Form validation passed, submitting...");
 
     try {
@@ -98,10 +103,10 @@ export const useBookingSubmission = ({
       const phone = formData.get("phone") as string;
       const service = formData.get("service") as string;
       const timeframe = formData.get("timeframe") as string;
-      const notes = formData.get("notes") as string;
-      const unitNumber = formData.get("unit_number") as string;
-      const gateCode = formData.get("gate_code") as string;
-      const otherService = formData.get("other_service") as string;
+      const notes = formData.get("notes") as string || null;
+      const unitNumber = formData.get("unit_number") as string || null;
+      const gateCode = formData.get("gate_code") as string || null;
+      const otherService = formData.get("other_service") as string || null;
 
       // Format address with unit number if provided
       const formattedAddress = unitNumber 
@@ -126,11 +131,11 @@ export const useBookingSubmission = ({
         name,
         phone,
         address: formattedAddress,
-        unit_number: unitNumber || null,
-        gate_code: gateCode || null,
+        unit_number: unitNumber,
+        gate_code: gateCode,
         service: service === "Other" ? otherService : service,
         timeframe,
-        notes: notes || null,
+        notes: notes,
         status: "pending" as const,
         visitor_info: collectVisitorInfo(),
         source_url: location.pathname,
@@ -140,7 +145,7 @@ export const useBookingSubmission = ({
 
       console.log("Submitting booking data:", submissionData);
       
-      // Submit the actual data using the production endpoint
+      // Submit the actual data to Supabase
       await submitFormData(submissionData);
       
       console.log("Booking submitted successfully");
@@ -161,6 +166,7 @@ export const useBookingSubmission = ({
         });
       }
 
+      // Redirect to thank-you page
       navigate('/thank-you');
     } catch (error: any) {
       console.error('Booking form submission error:', error);
