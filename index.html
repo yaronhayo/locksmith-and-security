@@ -1,14 +1,24 @@
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <!-- Google Tag Manager -->
+    <meta charset="UTF-8" />
+    
+    <!-- Preload critical assets -->
+    <link rel="preload" href="https://mtbgayqzjrxjjmsjikcg.supabase.co/storage/v1/object/public/uploads//Locksmithandsecuritylogo.jpg" as="image" fetchpriority="high" />
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&display=swap" as="style" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://mtbgayqzjrxjjmsjikcg.supabase.co" crossorigin />
+    
+    <!-- Google Tag Manager - async loading -->
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
     new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
     j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
     })(window,document,'script','dataLayer','GTM-MNWHJSS6');</script>
     
-    <!-- Microsoft Clarity -->
+    <!-- Microsoft Clarity - async loading -->
     <script type="text/javascript">
       (function(c,l,a,r,i,t,y){
           c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
@@ -18,7 +28,7 @@
       clarity("set", "cookieConsent", true);
     </script>
 
-    <!-- Google tag (gtag.js) -->
+    <!-- Google tag (gtag.js) - async loading -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZE9WV5PLTD"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
@@ -53,7 +63,7 @@
     <meta http-equiv="Strict-Transport-Security" content="max-age=31536000; includeSubDomains" />
     <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin" />
 
-    <!-- reCAPTCHA Script -->
+    <!-- reCAPTCHA Script - defer loading -->
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 
     <!-- Schema.org markup -->
@@ -129,6 +139,22 @@
             }
           ]
         }
+      }
+    </script>
+    
+    <!-- Font loading optimization -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" />
+    
+    <!-- Service worker registration -->
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/sw.js').then(reg => {
+            console.log('Service worker registered');
+          }).catch(err => {
+            console.error('Service worker registration failed:', err);
+          });
+        });
       }
     </script>
   </head>

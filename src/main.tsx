@@ -5,6 +5,26 @@ import App from './App.tsx'
 import './index.css'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { initSessionTracking } from './utils/sessionTracker.ts'
+import initWebVitals from './utils/webVitalsMonitoring.ts'
+
+// Preload critical fonts and resources
+const preloadCriticalResources = () => {
+  // Preload logo (critical for LCP)
+  const logoPreload = document.createElement('link');
+  logoPreload.rel = 'preload';
+  logoPreload.as = 'image';
+  logoPreload.href = 'https://mtbgayqzjrxjjmsjikcg.supabase.co/storage/v1/object/public/uploads//Locksmithandsecuritylogo.jpg';
+  document.head.appendChild(logoPreload);
+  
+  // Preload critical font
+  const fontPreload = document.createElement('link');
+  fontPreload.rel = 'preload';
+  fontPreload.as = 'font';
+  fontPreload.href = 'https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&display=swap';
+  fontPreload.type = 'font/woff2';
+  fontPreload.crossOrigin = 'anonymous';
+  document.head.appendChild(fontPreload);
+};
 
 // Save UTM parameters to localStorage for tracking throughout the session
 const saveUtmParams = () => {
@@ -22,23 +42,33 @@ const saveUtmParams = () => {
   }
 };
 
-// Call the function to save UTM parameters
+// Execute performance optimizations immediately
+preloadCriticalResources();
 saveUtmParams();
 
-// Initialize session tracking
-document.addEventListener('DOMContentLoaded', () => {
-  initSessionTracking();
-});
+// Initialize web vitals monitoring to gather performance metrics
+initWebVitals();
 
+// Initialize session tracking once DOM is ready
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initSessionTracking);
+} else {
+  initSessionTracking();
+}
+
+// Configure React Query for optimal performance
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       staleTime: 1000 * 60 * 5, // 5 minutes
       retry: 1,
+      refetchOnWindowFocus: false, // Disable refetching on window focus for better performance
+      refetchOnMount: false, // Only fetch when needed
     },
   },
 })
 
+// Use createRoot for better hydration performance
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
