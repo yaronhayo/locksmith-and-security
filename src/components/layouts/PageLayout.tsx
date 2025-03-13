@@ -1,3 +1,4 @@
+
 import React from "react";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
@@ -36,6 +37,9 @@ interface PageLayoutProps {
   geoPlaceName?: string;
   geoPosition?: string;
   icbm?: string;
+  publishedDate?: string;
+  modifiedDate?: string;
+  author?: string;
 }
 
 const PageLayout = ({
@@ -59,6 +63,9 @@ const PageLayout = ({
   geoPlaceName,
   geoPosition,
   icbm,
+  publishedDate,
+  modifiedDate,
+  author,
 }: PageLayoutProps) => {
   if (isLoading) {
     return <PageLoading />;
@@ -74,11 +81,16 @@ const PageLayout = ({
     allSchemas.push(breadcrumbSchema);
   }
   
+  // Always add these core schemas
   const localBusinessSchema = createLocalBusinessSchema();
   allSchemas.push(localBusinessSchema);
   
   const websiteSchema = createWebSiteSchema();
   allSchemas.push(websiteSchema);
+
+  // Calculate actual canonical URL
+  const currentPath = typeof window !== 'undefined' ? window.location.pathname : '';
+  const actualCanonicalUrl = canonicalUrl || currentPath || '/';
 
   return (
     <ErrorBoundary FallbackComponent={ErrorFallback}>
@@ -86,7 +98,7 @@ const PageLayout = ({
         title={title}
         description={description}
         schemas={allSchemas}
-        canonicalUrl={canonicalUrl}
+        canonicalUrl={actualCanonicalUrl}
         ogImage={ogImage}
         keywords={keywords}
         noindex={noindex}
@@ -96,6 +108,9 @@ const PageLayout = ({
         geoPlaceName={geoPlaceName}
         geoPosition={geoPosition}
         icbm={icbm}
+        modifiedDate={modifiedDate}
+        publishedDate={publishedDate}
+        author={author}
       />
       
       {(heroTitle || heroDescription) && (

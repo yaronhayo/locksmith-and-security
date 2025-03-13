@@ -53,64 +53,62 @@ const OptimizedImage = ({
     setError(false);
   }, [src]);
 
-  const handleLoad = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+  const handleLoad = (e: React.SyntheticEvent<HTMLImageElement>) => {
     setLoaded(true);
+    setError(false);
     onLoadingComplete?.();
-    props.onLoad?.(e);
+    
+    // Track for performance monitoring
+    trackImageLoad(src, e.currentTarget.naturalWidth, e.currentTarget.naturalHeight);
   };
 
-  const handleError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+  const handleError = () => {
     setError(true);
-    props.onError?.(e);
+    console.error(`Failed to load image: ${src}`);
   };
-
-  // Track loading using performance utility
-  const loadTracker = trackImageLoad(src);
 
   return (
     <div 
       className={cn(
-        'relative overflow-hidden bg-gray-100',
+        'relative overflow-hidden bg-muted',
         aspectRatioClass,
         containerClassName
       )}
-      style={typeof aspectRatio === 'number' ? { aspectRatio: String(aspectRatio) } : {}}
+      style={typeof aspectRatio === 'number' ? { aspectRatio: String(aspectRatio) } : undefined}
     >
+      {(!loaded || error) && (
+        <img 
+          src={placeholder} 
+          alt="Loading placeholder"
+          className={cn(
+            'w-full h-full',
+            `object-${objectFit}`,
+            'transition-opacity duration-500',
+            'absolute inset-0'
+          )}
+          loading="lazy"
+        />
+      )}
+      
       <img
-        src={error ? placeholder : src}
+        src={src}
         alt={alt}
-        width={props.width}
-        height={props.height}
-        onLoad={(e) => {
-          handleLoad(e);
-          loadTracker.onLoad();
-        }}
-        onError={(e) => {
-          handleError(e);
-          loadTracker.onError(new Error('Image failed to load'));
-        }}
-        loading={priority ? 'eager' : 'lazy'}
-        fetchPriority={priority ? 'high' : 'auto'}
-        decoding={priority ? 'sync' : 'async'}
-        sizes={sizes}
         className={cn(
-          'transition-opacity duration-300',
-          loaded ? 'opacity-100' : 'opacity-0',
-          objectFit === 'cover' && 'object-cover',
-          objectFit === 'contain' && 'object-contain',
-          objectFit === 'fill' && 'object-fill',
-          objectFit === 'none' && 'object-none',
-          objectFit === 'scale-down' && 'object-scale-down',
           'w-full h-full',
+          `object-${objectFit}`,
+          'transition-opacity duration-500',
+          !loaded ? 'opacity-0' : 'opacity-100',
+          error ? 'hidden' : 'block',
           className
         )}
+        onLoad={handleLoad}
+        onError={handleError}
+        loading={priority ? 'eager' : 'lazy'}
+        decoding={priority ? 'sync' : 'async'}
+        fetchPriority={priority ? 'high' : 'auto'}
+        sizes={sizes}
         {...props}
       />
-      {!loaded && !error && (
-        <div className="absolute inset-0 flex items-center justify-center bg-gray-100 animate-pulse">
-          <div className="w-10 h-10 rounded-full border-2 border-gray-300 border-t-primary animate-spin" />
-        </div>
-      )}
     </div>
   );
 };
