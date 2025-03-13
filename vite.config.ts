@@ -30,6 +30,49 @@ const generateSitemap = () => {
   };
 };
 
+// Compression plugin for better production performance
+const compressionPlugin = () => {
+  return {
+    name: 'compression-plugin',
+    closeBundle: async () => {
+      try {
+        // Only import if needed to avoid dev dependencies in production
+        const { gzip } = await import('zlib');
+        const { promisify } = await import('util');
+        const gzipPromise = promisify(gzip);
+        
+        if (!fs.existsSync('./dist')) return;
+        
+        // Find JS and CSS files to compress
+        const files = [];
+        const walkDir = (dir) => {
+          const entries = fs.readdirSync(dir, { withFileTypes: true });
+          for (const entry of entries) {
+            const fullPath = path.join(dir, entry.name);
+            if (entry.isDirectory()) {
+              walkDir(fullPath);
+            } else if (/\.(js|css|html|svg)$/.test(entry.name)) {
+              files.push(fullPath);
+            }
+          }
+        };
+        
+        walkDir('./dist');
+        
+        // Compress files
+        for (const file of files) {
+          const content = fs.readFileSync(file);
+          const compressed = await gzipPromise(content);
+          fs.writeFileSync(`${file}.gz`, compressed);
+          console.log(`Compressed: ${file}.gz`);
+        }
+      } catch (error) {
+        console.error('Failed to compress assets:', error);
+      }
+    },
+  };
+};
+
 export default defineConfig(({ mode }) => ({
   server: {
     host: "::",
@@ -39,6 +82,7 @@ export default defineConfig(({ mode }) => ({
     react(),
     mode === 'development' && componentTagger(),
     mode === 'production' && generateSitemap(),
+    mode === 'production' && compressionPlugin(),
   ].filter(Boolean),
   resolve: {
     alias: {
@@ -55,6 +99,11 @@ export default defineConfig(({ mode }) => ({
       compress: {
         drop_console: true, // Remove console.log in production
         drop_debugger: true,
+        passes: 2, // Extra optimization pass
+      },
+      mangle: true,
+      format: {
+        comments: false, // Remove comments
       },
     },
     rollupOptions: {
@@ -68,10 +117,10 @@ export default defineConfig(({ mode }) => ({
             '@/components/ui/input',
             '@/components/ui/skeleton'
           ],
-          utils: ['@/lib/utils', '@/utils/performanceMonitoring'],
           maps: ['@react-google-maps/api'],
           animations: ['framer-motion'],
           forms: ['react-hook-form', 'zod'],
+          utils: ['@/lib/utils', '@/utils/performanceMonitoring'],
         },
         // Ensure consistent file naming to improve caching
         entryFileNames: 'assets/[name]-[hash].js',
@@ -79,8 +128,20 @@ export default defineConfig(({ mode }) => ({
         assetFileNames: 'assets/[name]-[hash].[ext]',
       },
     },
+    // Increase concurrency for faster builds
+    sourcemap: mode !== 'production',
   },
   optimizeDeps: {
     include: ['react', 'react-dom', 'react-router-dom', 'framer-motion'],
+    esbuildOptions: {
+      target: 'es2020',
+    }
+  },
+  // Improve CSS handling
+  css: {
+    devSourcemap: true,
+    preprocessorOptions: {
+      // Add any preprocessor options if needed
+    },
   },
 }));

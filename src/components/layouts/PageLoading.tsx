@@ -1,5 +1,4 @@
 
-import LoadingSpinner from "@/components/LoadingSpinner";
 import { Skeleton } from "@/components/ui/skeleton";
 import { memo, useEffect } from "react";
 import { trackComponentRender } from "@/utils/performanceMonitoring";
@@ -31,7 +30,7 @@ const PageLoading = ({ type = 'spinner', message, count = 6 }: PageLoadingProps)
   
   useEffect(() => {
     finishRenderTracking();
-  }, []);
+  }, [finishRenderTracking]);
 
   if (type === 'skeleton') {
     return (
@@ -68,8 +67,10 @@ const PageLoading = ({ type = 'spinner', message, count = 6 }: PageLoadingProps)
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.3 }}
+        className="text-center"
       >
-        <LoadingSpinner size="lg" text={message} />
+        <div className="w-16 h-16 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+        {message && <p className="text-lg text-gray-600">{message}</p>}
       </motion.div>
     </div>
   );

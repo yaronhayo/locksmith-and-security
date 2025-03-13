@@ -1,22 +1,19 @@
 
 import { lazy, Suspense, memo, useState, useEffect } from 'react';
-import LoadingSpinner from '@/components/LoadingSpinner';
 import { Skeleton } from '@/components/ui/skeleton';
 import { motion } from 'framer-motion';
 
-// Type definition for component factory function
+// Define a type for component factory functions
 type ComponentFactory = () => Promise<{ default: React.ComponentType<any> }>;
 
-// Create a custom type that extends LazyExoticComponent to include preload
+// Add preload capability to lazy components
 interface LazyComponentWithPreload extends React.LazyExoticComponent<React.ComponentType<any>> {
   preload: () => Promise<{ default: React.ComponentType<any> }>;
 }
 
 // Custom function to create lazy components with preload capability
 const preloadComponent = (factory: ComponentFactory): LazyComponentWithPreload => {
-  // Create the lazy component
   const Component = lazy(factory) as LazyComponentWithPreload;
-  // Add the preload method
   Component.preload = factory;
   return Component;
 };
@@ -58,20 +55,35 @@ const HomeContent = () => {
   // Start preloading components after initial render
   useEffect(() => {
     // Preload essential components first
-    window.requestIdleCallback(() => {
-      ServicesSection.preload();
-      EmergencyServicesSection.preload();
-    });
-    
-    // Preload secondary components after a short delay
-    const timer = setTimeout(() => {
+    if ('requestIdleCallback' in window) {
       window.requestIdleCallback(() => {
+        ServicesSection.preload();
+        EmergencyServicesSection.preload();
+      });
+      
+      // Preload secondary components after a short delay
+      const timer = setTimeout(() => {
+        window.requestIdleCallback(() => {
+          ProcessSection.preload();
+          WhyChooseUs.preload();
+        });
+      }, 1000);
+      
+      return () => clearTimeout(timer);
+    } else {
+      // Fallback for browsers without requestIdleCallback
+      setTimeout(() => {
+        ServicesSection.preload();
+        EmergencyServicesSection.preload();
+      }, 100);
+      
+      const timer = setTimeout(() => {
         ProcessSection.preload();
         WhyChooseUs.preload();
-      });
-    }, 1000);
-    
-    return () => clearTimeout(timer);
+      }, 1000);
+      
+      return () => clearTimeout(timer);
+    }
   }, []);
   
   // Set up visibility observer for below-the-fold content

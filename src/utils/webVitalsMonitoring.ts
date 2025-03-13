@@ -78,6 +78,20 @@ export const initWebVitals = () => {
       }
     }).observe({ type: 'largest-contentful-paint', buffered: true });
     
+    // First Contentful Paint
+    new PerformanceObserver((entryList) => {
+      const entry = entryList.getEntriesByName('first-contentful-paint')[0];
+      if (entry) {
+        const value = entry.startTime;
+        const metric: PerformanceMetric = {
+          name: 'FCP',
+          value,
+          rating: getRating('FCP', value)
+        };
+        reportMetric(metric);
+      }
+    }).observe({ type: 'paint', buffered: true });
+    
     // Cumulative Layout Shift
     let clsValue = 0;
     new PerformanceObserver((entryList) => {
@@ -109,6 +123,26 @@ export const initWebVitals = () => {
       }
     }).observe({ type: 'first-input', buffered: true });
     
+    // Interaction to Next Paint (INP) - newer metric
+    if ('interactionCount' in PerformanceEventTiming.prototype) {
+      new PerformanceObserver((entryList) => {
+        const interactions = entryList.getEntries();
+        // Calculate 98th percentile of interaction durations
+        if (interactions.length > 0) {
+          const durations = interactions.map(entry => entry.duration).sort((a, b) => a - b);
+          const idx = Math.floor(durations.length * 0.98);
+          const value = durations[idx] || durations[durations.length - 1];
+          
+          const metric: PerformanceMetric = {
+            name: 'INP',
+            value,
+            rating: getRating('INP', value)
+          };
+          reportMetric(metric);
+        }
+      }).observe({ type: 'event', durationThreshold: 16, buffered: true });
+    }
+    
     // Time to First Byte
     new PerformanceObserver((entryList) => {
       const [entry] = entryList.getEntries();
@@ -125,6 +159,50 @@ export const initWebVitals = () => {
     
   } catch (e) {
     console.error('Error setting up web vitals:', e);
+  }
+};
+
+// Expose API for manual performance tracking
+export const trackPerformance = {
+  measureRender: (componentName: string, renderTime: number) => {
+    console.debug(`[Performance] ${componentName} rendered in ${renderTime.toFixed(2)}ms`);
+    
+    // Report if render time exceeds threshold
+    if (renderTime > 50) {
+      if (window.gtag) {
+        window.gtag('event', 'slow_render', {
+          component: componentName,
+          render_time: Math.round(renderTime),
+          page_path: window.location.pathname,
+        });
+      }
+    }
+  },
+  
+  markAndMeasure: (name: string, markStart = `${name}_start`, markEnd = `${name}_end`) => {
+    performance.mark(markEnd);
+    try {
+      const measure = performance.measure(name, markStart, markEnd);
+      console.debug(`[Performance] ${name}: ${measure.duration.toFixed(2)}ms`);
+      return measure.duration;
+    } catch (e) {
+      console.error(`Failed to measure ${name}:`, e);
+      return 0;
+    }
+  },
+  
+  start: (name: string) => {
+    performance.mark(`${name}_start`);
+  },
+  
+  end: (name: string) => {
+    const markName = `${name}_start`;
+    if (performance.getEntriesByName(markName).length === 0) {
+      console.warn(`No start mark found for ${name}`);
+      return 0;
+    }
+    performance.mark(`${name}_end`);
+    return trackPerformance.markAndMeasure(name);
   }
 };
 

@@ -1,3 +1,4 @@
+
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App.tsx'
@@ -103,3 +104,16 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
     </QueryClientProvider>
   </React.StrictMode>,
 )
+
+// Register service worker for better offline experience and caching
+if ('serviceWorker' in navigator && window.location.hostname !== 'localhost') {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js')
+      .then(registration => {
+        console.info('Service worker registered');
+      })
+      .catch(error => {
+        console.error('Service worker registration failed:', error);
+      });
+  });
+}
