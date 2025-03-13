@@ -47,7 +47,7 @@ export default defineConfig(({ mode }) => ({
   },
   build: {
     target: 'es2015',
-    minify: 'terser',
+    minify: 'terser', // Make sure terser is installed
     cssMinify: true,
     reportCompressedSize: false, // Speeds up build
     chunkSizeWarningLimit: 1000, // Higher threshold for warnings
