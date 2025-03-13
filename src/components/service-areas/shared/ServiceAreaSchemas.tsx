@@ -1,8 +1,8 @@
-
 import { createFAQSchema } from "@/components/meta/schema/FAQSchema";
 import { createLocationSchema } from "@/components/meta/schema/LocationSchema";
 import { createBreadcrumbSchema } from "@/components/meta/schema/BreadcrumbSchema";
-import { Location, Settings } from "@/types/service-area";
+import { Location } from "@/types/service-area";
+import { SiteSettings as Settings } from "@/hooks/useSettings";
 
 export const createServiceAreaSchemas = (
   location: Location | undefined,
