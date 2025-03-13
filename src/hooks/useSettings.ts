@@ -8,7 +8,7 @@ export type SiteSettings = {
   company_address: string;
   company_city: string;
   company_state: string;
-  company_zip: string;
+  company_zip: string;  // Ensuring this field is explicitly defined
   company_lat: string;
   company_lng: string;
   base_url: string;

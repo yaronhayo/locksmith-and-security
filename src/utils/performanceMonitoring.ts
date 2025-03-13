@@ -19,7 +19,7 @@ export const trackImageLoad = (src: string, width?: number, height?: number) => 
     const isLargeImage = width > 1200 || height > 1200;
     const fileName = src.split('/').pop() || src;
     
-    // Log to console in development (using string comparison instead of enum)
+    // Log to console in development (using proper type comparison)
     if (process.env.NODE_ENV === 'development' && isLargeImage) {
       console.warn(`Large image detected: ${fileName} (${width}x${height}px). Consider resizing for better performance.`);
     }
@@ -228,6 +228,21 @@ export const mapPerformance = {
       window.gtag('event', 'map_performance', {
         event_type: 'interaction',
         interaction_type: type,
+        duration: Math.round(duration)
+      });
+    }
+  },
+  
+  // Adding the missing trackInstanceLoad method
+  trackInstanceLoad: (startTime: number) => {
+    const duration = performance.now() - startTime;
+    if (process.env.NODE_ENV === 'development') {
+      console.debug(`Map instance loaded in: ${duration.toFixed(2)}ms`);
+    }
+    
+    if (window.gtag && duration > 500) {
+      window.gtag('event', 'map_performance', {
+        event_type: 'instance_load',
         duration: Math.round(duration)
       });
     }
