@@ -49,7 +49,14 @@ export const useContactForm = () => {
     }
 
     setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+    
+    if (Object.keys(newErrors).length > 0) {
+      console.log("Form validation errors:", newErrors);
+      toast.error("Please fix the errors in the form before submitting");
+      return false;
+    }
+    
+    return true;
   }, [address]);
 
   const handleSubmit = useCallback(async (e: React.FormEvent) => {
@@ -62,7 +69,6 @@ export const useContactForm = () => {
     }
 
     if (!validateForm()) {
-      toast.error("Please fix the errors in the form before submitting");
       return;
     }
 
@@ -102,10 +108,14 @@ export const useContactForm = () => {
       toast.success("Thank you for contacting us. We'll be in touch soon!");
       
       console.log("Redirecting to thank-you page");
-      // Use direct window.location for more reliable navigation
-      setTimeout(() => {
-        window.location.href = '/thank-you';
-      }, 800); // Increase timeout to ensure changes are fully processed
+      
+      // Use a separate function for redirection to avoid issues with React state updates
+      const redirectToThankYou = () => {
+        console.log("Executing redirect to thank-you page");
+        window.location.href = '/thank-you'; // Use direct window.location for more reliable navigation
+      };
+      
+      setTimeout(redirectToThankYou, 1000); // Increase timeout to ensure changes are fully processed
 
     } catch (error: any) {
       console.error('Contact form submission error:', error);

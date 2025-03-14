@@ -42,43 +42,50 @@ export const submitFormData = async (formData: SubmissionData) => {
     
     console.log("Submitting enhanced form data to Supabase:", JSON.stringify(enhancedFormData, null, 2));
     
-    // Insert data into Supabase submissions table
-    const { data, error } = await supabase
-      .from('submissions')
-      .insert(enhancedFormData)
-      .select();
-      
-    if (error) {
-      console.error("Error inserting submission to Supabase:", error);
-      toast.error(`Failed to submit form: ${error.message}`);
-      throw new Error(`Failed to submit form: ${error.message}`);
-    }
-    
-    console.log("Successfully submitted to Supabase database:", data);
-    
-    // Trigger email notification via Edge Function
     try {
-      console.log("Invoking send-form-email function");
-      const { data: emailData, error: emailError } = await supabase.functions.invoke('send-form-email', {
-        body: enhancedFormData
-      });
-      
-      if (emailError) {
-        console.error("Error sending email notification:", emailError);
-        console.warn(`Email notification failed: ${emailError.message}`);
-      } else {
-        console.log("Email notification sent successfully:", emailData);
+      // Insert data into Supabase submissions table
+      const { data, error } = await supabase
+        .from('submissions')
+        .insert(enhancedFormData)
+        .select();
+        
+      if (error) {
+        console.error("Error inserting submission to Supabase:", error);
+        toast.error(`Failed to submit form: ${error.message}`);
+        throw new Error(`Failed to submit form: ${error.message}`);
       }
-    } catch (emailFunctionError: any) {
-      console.error("Failed to invoke email function:", emailFunctionError);
-      // Don't throw here, still consider the form submission successful
+      
+      console.log("Successfully submitted to Supabase database:", data);
+      
+      // Set session storage flag for thank-you page
+      sessionStorage.setItem('fromFormSubmission', 'true');
+      toast.success("Your message has been sent! We'll be in touch soon.");
+      
+      // Trigger email notification via Edge Function
+      try {
+        console.log("Invoking send-form-email function");
+        const { data: emailData, error: emailError } = await supabase.functions.invoke('send-form-email', {
+          body: enhancedFormData
+        });
+        
+        if (emailError) {
+          console.error("Error sending email notification:", emailError);
+          console.warn(`Email notification failed, but form data was saved: ${emailError.message}`);
+          // Don't throw error here since form data was saved successfully
+        } else {
+          console.log("Email notification sent successfully:", emailData);
+        }
+      } catch (emailFunctionError: any) {
+        console.error("Failed to invoke email function:", emailFunctionError);
+        // Don't throw here, still consider the form submission successful
+      }
+      
+      return { success: true, data };
+    } catch (submitError: any) {
+      console.error("Submit error:", submitError);
+      toast.error(`Submit error: ${submitError.message}`);
+      throw submitError;
     }
-    
-    // Set session storage flag for thank-you page
-    sessionStorage.setItem('fromFormSubmission', 'true');
-    toast.success("Your message has been sent! We'll be in touch soon.");
-    
-    return data || true;
   } catch (error: any) {
     console.error("Form submission error:", error);
     toast.error(`Form submission failed: ${error.message}`);

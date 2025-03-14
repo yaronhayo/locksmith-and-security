@@ -156,9 +156,14 @@ export const useBookingSubmission = ({
 
       // Redirect to thank-you page with direct window location for more reliability
       console.log("Redirecting to thank-you page");
-      setTimeout(() => {
-        window.location.href = '/thank-you';
-      }, 800); // Increase timeout to ensure changes are fully processed
+      
+      // Use a separate function for redirection to avoid issues with React state updates
+      const redirectToThankYou = () => {
+        console.log("Executing redirect to thank-you page");
+        window.location.href = '/thank-you'; // Use direct window.location for more reliable navigation
+      };
+      
+      setTimeout(redirectToThankYou, 1000); // Increase timeout to ensure changes are fully processed
       
     } catch (error: any) {
       console.error('Booking form submission error:', error);

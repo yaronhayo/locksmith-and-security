@@ -82,9 +82,14 @@ export const useFormSubmission = (
       
       // Force redirection to thank-you page with timeout to ensure state updates complete
       console.log("Redirecting to thank-you page");
-      setTimeout(() => {
+      
+      // Use a separate function for redirection to avoid issues with React state updates
+      const redirectToThankYou = () => {
+        console.log("Executing redirect to thank-you page");
         window.location.href = '/thank-you'; // Use direct window.location for more reliable navigation
-      }, 800); // Increase timeout to ensure changes are fully processed
+      };
+      
+      setTimeout(redirectToThankYou, 1000); // Increase timeout to ensure changes are fully processed
       
     } catch (error: any) {
       console.error("Form submission error:", error);
@@ -92,7 +97,7 @@ export const useFormSubmission = (
     } finally {
       setIsSubmitting(false);
     }
-  }, [formState, recaptchaToken, validateForm, setRecaptchaError, errors]);
+  }, [formState, recaptchaToken, validateForm, setRecaptchaError, errors, navigate]);
 
   return {
     isSubmitting,
