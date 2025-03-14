@@ -80,6 +80,10 @@ export const submitFormData = async (formData: SubmissionData) => {
         // Don't throw here, still consider the form submission successful
       }
       
+      // Redirect to thank-you page - using a safer approach with a separate function
+      console.log("Preparing to redirect to thank-you page");
+      redirectToThankYou();
+      
       return { success: true, data };
     } catch (submitError: any) {
       console.error("Submit error:", submitError);
@@ -92,3 +96,14 @@ export const submitFormData = async (formData: SubmissionData) => {
     throw error;
   }
 };
+
+// Separate function for redirection to avoid issues with React state updates
+function redirectToThankYou() {
+  console.log("Setting up redirection to thank-you page");
+  
+  // Force a delay to ensure toasts are shown and all async operations complete
+  setTimeout(() => {
+    console.log("Executing redirect to thank-you page now");
+    window.location.href = '/thank-you';
+  }, 1000); // Increased timeout for more reliability
+}

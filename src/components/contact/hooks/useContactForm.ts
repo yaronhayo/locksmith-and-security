@@ -1,6 +1,5 @@
 
 import { useRef, useState, useCallback, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { getEmailError, getNameError, getPhoneError } from "@/utils/inputValidation";
 import { submitFormData } from "@/utils/formSubmission";
@@ -8,11 +7,11 @@ import { startFormTracking } from "@/utils/sessionTracker";
 
 export const useContactForm = () => {
   const form = useRef<HTMLFormElement>(null);
-  const navigate = useNavigate();
   const [address, setAddress] = useState("");
   const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [submissionAttempted, setSubmissionAttempted] = useState(false);
 
   // Start form tracking when the component loads
   useEffect(() => {
@@ -48,26 +47,32 @@ export const useContactForm = () => {
       newErrors.message = "Please enter a message";
     }
 
+    if (!recaptchaToken) {
+      newErrors.recaptcha = "Please complete the reCAPTCHA verification";
+    }
+
     setErrors(newErrors);
     
     if (Object.keys(newErrors).length > 0) {
       console.log("Form validation errors:", newErrors);
-      toast.error("Please fix the errors in the form before submitting");
+      
+      // Show the first error as a toast notification
+      if (Object.values(newErrors).length > 0) {
+        toast.error(Object.values(newErrors)[0]);
+      }
+      
       return false;
     }
     
     return true;
-  }, [address]);
+  }, [address, recaptchaToken]);
 
   const handleSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
     console.log("Contact form submission started");
     
-    if (!recaptchaToken) {
-      toast.error("Please complete the reCAPTCHA verification");
-      return;
-    }
-
+    setSubmissionAttempted(true);
+    
     if (!validateForm()) {
       return;
     }
@@ -101,21 +106,7 @@ export const useContactForm = () => {
       await submitFormData(submissionData);
       console.log("Contact form submitted successfully");
 
-      // Set session storage for thank-you page redirect protection
-      sessionStorage.setItem('fromFormSubmission', 'true');
-      
-      // Show success toast
-      toast.success("Thank you for contacting us. We'll be in touch soon!");
-      
-      console.log("Redirecting to thank-you page");
-      
-      // Use a separate function for redirection to avoid issues with React state updates
-      const redirectToThankYou = () => {
-        console.log("Executing redirect to thank-you page");
-        window.location.href = '/thank-you'; // Use direct window.location for more reliable navigation
-      };
-      
-      setTimeout(redirectToThankYou, 1000); // Increase timeout to ensure changes are fully processed
+      // Note: Redirection is now handled in submitFormData
 
     } catch (error: any) {
       console.error('Contact form submission error:', error);
@@ -123,7 +114,7 @@ export const useContactForm = () => {
     } finally {
       setIsSubmitting(false);
     }
-  }, [recaptchaToken, address, validateForm, navigate]);
+  }, [recaptchaToken, address, validateForm]);
 
   return {
     form,
@@ -133,6 +124,7 @@ export const useContactForm = () => {
     setRecaptchaToken,
     isSubmitting,
     errors,
+    submissionAttempted,
     handleSubmit
   };
 };

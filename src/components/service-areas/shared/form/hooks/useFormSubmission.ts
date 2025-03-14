@@ -1,7 +1,6 @@
 
 import { useState, useCallback, useEffect } from "react";
 import { toast } from "sonner";
-import { useNavigate } from "react-router-dom";
 import { submitFormData } from "@/utils/formSubmission";
 import { FormState } from "./useFormState";
 import { FormErrors } from "./useFormValidation";
@@ -14,7 +13,6 @@ export const useFormSubmission = (
   recaptchaToken: string | null,
   setRecaptchaError: (error: string | null) => void
 ) => {
-  const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   
@@ -28,8 +26,9 @@ export const useFormSubmission = (
     console.log("Service area form submission started");
     
     if (!recaptchaToken) {
-      setRecaptchaError("Please complete the reCAPTCHA verification");
-      toast.error("Please complete the reCAPTCHA verification");
+      const error = "Please complete the reCAPTCHA verification";
+      setRecaptchaError(error);
+      toast.error(error);
       return;
     }
     
@@ -75,21 +74,7 @@ export const useFormSubmission = (
       
       setIsSubmitted(true);
       
-      // Set session storage flag for thank-you page
-      sessionStorage.setItem('fromFormSubmission', 'true');
-      
-      toast.success("Your message has been sent! We'll be in touch soon.");
-      
-      // Force redirection to thank-you page with timeout to ensure state updates complete
-      console.log("Redirecting to thank-you page");
-      
-      // Use a separate function for redirection to avoid issues with React state updates
-      const redirectToThankYou = () => {
-        console.log("Executing redirect to thank-you page");
-        window.location.href = '/thank-you'; // Use direct window.location for more reliable navigation
-      };
-      
-      setTimeout(redirectToThankYou, 1000); // Increase timeout to ensure changes are fully processed
+      // Note: Redirection is now handled in submitFormData
       
     } catch (error: any) {
       console.error("Form submission error:", error);
@@ -97,7 +82,7 @@ export const useFormSubmission = (
     } finally {
       setIsSubmitting(false);
     }
-  }, [formState, recaptchaToken, validateForm, setRecaptchaError, errors, navigate]);
+  }, [formState, recaptchaToken, validateForm, setRecaptchaError, errors]);
 
   return {
     isSubmitting,
