@@ -92,8 +92,8 @@ export const useContactForm = () => {
       };
 
       console.log("Submitting contact form data:", JSON.stringify(submissionData, null, 2));
-      const result = await submitFormData(submissionData);
-      console.log("Contact form submitted successfully, result:", result);
+      await submitFormData(submissionData);
+      console.log("Contact form submitted successfully");
 
       // Set session storage for thank-you page redirect protection
       sessionStorage.setItem('fromFormSubmission', 'true');
@@ -105,7 +105,7 @@ export const useContactForm = () => {
       // Use direct window.location for more reliable navigation
       setTimeout(() => {
         window.location.href = '/thank-you';
-      }, 500);
+      }, 800); // Increase timeout to ensure changes are fully processed
 
     } catch (error: any) {
       console.error('Contact form submission error:', error);

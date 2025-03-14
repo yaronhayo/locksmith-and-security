@@ -137,9 +137,9 @@ export const useBookingSubmission = ({
       console.log("Submitting booking data:", JSON.stringify(submissionData, null, 2));
       
       // Submit the actual data to Supabase
-      const result = await submitFormData(submissionData);
+      await submitFormData(submissionData);
       
-      console.log("Booking submitted successfully, result:", result);
+      console.log("Booking submitted successfully");
       
       // Store flag for thank-you page
       sessionStorage.setItem('fromFormSubmission', 'true');
@@ -158,7 +158,7 @@ export const useBookingSubmission = ({
       console.log("Redirecting to thank-you page");
       setTimeout(() => {
         window.location.href = '/thank-you';
-      }, 500);
+      }, 800); // Increase timeout to ensure changes are fully processed
       
     } catch (error: any) {
       console.error('Booking form submission error:', error);

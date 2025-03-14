@@ -69,9 +69,9 @@ export const useFormSubmission = (
       console.log("Submitting service area form data:", JSON.stringify(submissionData, null, 2));
       
       // Submit to Supabase and send email
-      const result = await submitFormData(submissionData);
+      await submitFormData(submissionData);
       
-      console.log("Service area form submitted successfully, result:", result);
+      console.log("Service area form submitted successfully");
       
       setIsSubmitted(true);
       
@@ -84,7 +84,7 @@ export const useFormSubmission = (
       console.log("Redirecting to thank-you page");
       setTimeout(() => {
         window.location.href = '/thank-you'; // Use direct window.location for more reliable navigation
-      }, 500);
+      }, 800); // Increase timeout to ensure changes are fully processed
       
     } catch (error: any) {
       console.error("Form submission error:", error);
