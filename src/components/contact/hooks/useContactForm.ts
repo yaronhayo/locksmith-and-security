@@ -15,7 +15,11 @@ export const useContactForm = () => {
 
   // Start form tracking when the component loads
   useEffect(() => {
-    startFormTracking();
+    try {
+      startFormTracking();
+    } catch (error) {
+      console.error("Failed to start form tracking:", error);
+    }
   }, []);
 
   // Check form validity before submission
@@ -110,7 +114,7 @@ export const useContactForm = () => {
 
     } catch (error: any) {
       console.error('Contact form submission error:', error);
-      toast.error("Please try again or contact us directly.");
+      toast.error(error.message || "Please try again or contact us directly.");
     } finally {
       setIsSubmitting(false);
     }

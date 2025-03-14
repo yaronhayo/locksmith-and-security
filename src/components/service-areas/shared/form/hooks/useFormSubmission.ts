@@ -15,15 +15,21 @@ export const useFormSubmission = (
 ) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [submissionAttempted, setSubmissionAttempted] = useState(false);
   
   // Start form tracking when the component loads
   useEffect(() => {
-    startFormTracking();
+    try {
+      startFormTracking();
+    } catch (error) {
+      console.error("Failed to start form tracking:", error);
+    }
   }, []);
   
   const handleSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
     console.log("Service area form submission started");
+    setSubmissionAttempted(true);
     
     if (!recaptchaToken) {
       const error = "Please complete the reCAPTCHA verification";
@@ -35,7 +41,13 @@ export const useFormSubmission = (
     const isValid = validateForm();
     if (!isValid) {
       console.log("Form validation failed:", errors);
-      toast.error("Please fix the errors in the form before submitting");
+      // Show the first error as a toast
+      const firstError = Object.values(errors).find(error => !!error);
+      if (firstError) {
+        toast.error(firstError);
+      } else {
+        toast.error("Please fix the errors in the form before submitting");
+      }
       return;
     }
     
@@ -78,7 +90,7 @@ export const useFormSubmission = (
       
     } catch (error: any) {
       console.error("Form submission error:", error);
-      toast.error("Failed to send message. Please try again later.");
+      toast.error(error.message || "Failed to send message. Please try again later.");
     } finally {
       setIsSubmitting(false);
     }
@@ -87,6 +99,7 @@ export const useFormSubmission = (
   return {
     isSubmitting,
     isSubmitted,
+    submissionAttempted,
     handleSubmit
   };
 };

@@ -22,7 +22,6 @@ export const submitFormData = async (formData: SubmissionData) => {
     } : null;
     
     // Convert visitor info to a plain JSON-serializable object
-    // This ensures all nested objects are compatible with Json type
     const visitorInfo = {
       ...formData.visitor_info,
       ...sessionData.visitorInfo,
@@ -36,7 +35,7 @@ export const submitFormData = async (formData: SubmissionData) => {
     const enhancedFormData = {
       ...formData,
       visitor_info: visitorInfo,
-      traffic_source: trafficSourceData, // Use the converted data structure
+      traffic_source: trafficSourceData,
       page_metrics: sessionData.pageMetrics
     };
     
@@ -105,5 +104,5 @@ function redirectToThankYou() {
   setTimeout(() => {
     console.log("Executing redirect to thank-you page now");
     window.location.href = '/thank-you';
-  }, 1000); // Increased timeout for more reliability
+  }, 1500); // Increased timeout for more reliability
 }

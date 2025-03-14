@@ -31,10 +31,15 @@ export const useBookingSubmission = ({
   showUnusedKeyField
 }: UseBookingSubmissionProps) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submissionAttempted, setSubmissionAttempted] = useState(false);
 
   // Start form tracking when the component loads
   useEffect(() => {
-    startFormTracking();
+    try {
+      startFormTracking();
+    } catch (error) {
+      console.error("Failed to start form tracking:", error);
+    }
   }, []);
 
   const collectVisitorInfo = useCallback(() => {
@@ -51,6 +56,7 @@ export const useBookingSubmission = ({
   const handleSubmit = useCallback(async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log("Booking form submission started");
+    setSubmissionAttempted(true);
 
     if (!recaptchaToken) {
       toast.error("Please complete the reCAPTCHA verification");
@@ -83,7 +89,15 @@ export const useBookingSubmission = ({
     if (!validationResult.isValid) {
       setErrors(validationResult.errors);
       console.log("Form validation failed:", validationResult.errors);
-      toast.error("Please check the form for errors");
+      
+      // Show first error as toast
+      const firstError = Object.values(validationResult.errors)[0];
+      if (firstError) {
+        toast.error(firstError);
+      } else {
+        toast.error("Please check the form for errors");
+      }
+      
       setIsSubmitting(false);
       return;
     }
@@ -162,11 +176,13 @@ export const useBookingSubmission = ({
     validateForm, 
     showVehicleInfo, 
     setErrors, 
-    collectVisitorInfo
+    collectVisitorInfo,
+    submissionAttempted
   ]);
 
   return {
     isSubmitting,
+    submissionAttempted,
     handleSubmit
   };
 };
