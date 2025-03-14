@@ -82,13 +82,11 @@ export const useFormSubmission = (
       console.log("Redirecting to thank-you page");
       setTimeout(() => {
         navigate('/thank-you');
-      }, 500);
+      }, 300);
       
     } catch (error: any) {
       console.error("Form submission error:", error);
-      toast.error("Failed to send message", {
-        description: error.message || "Please try again later."
-      });
+      toast.error("Failed to send message. Please try again later.");
     } finally {
       setIsSubmitting(false);
     }
