@@ -50,7 +50,6 @@ export const submitFormData = async (formData: SubmissionData) => {
       
     if (error) {
       console.error("Error inserting submission to Supabase:", error);
-      toast(`Failed to submit form: ${error.message}`);
       throw new Error(`Failed to submit form: ${error.message}`);
     }
     
@@ -65,7 +64,6 @@ export const submitFormData = async (formData: SubmissionData) => {
       
       if (emailError) {
         console.error("Error sending email notification:", emailError);
-        // Don't throw here, we still want to consider the form submission successful
         console.warn(`Email notification failed: ${emailError.message}`);
       } else {
         console.log("Email notification sent successfully:", emailData);
@@ -77,12 +75,10 @@ export const submitFormData = async (formData: SubmissionData) => {
     
     // Set session storage flag for thank-you page
     sessionStorage.setItem('fromFormSubmission', 'true');
-    toast.success("Your message has been sent! We'll be in touch soon.");
     
     return data || true;
   } catch (error: any) {
     console.error("Form submission error:", error);
-    toast.error(`Form submission failed: ${error.message}`);
     throw error;
   }
 };

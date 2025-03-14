@@ -154,11 +154,11 @@ export const useBookingSubmission = ({
         });
       }
 
-      // Redirect to thank-you page with timeout to ensure state updates complete
+      // Redirect to thank-you page with direct window location for more reliability
       console.log("Redirecting to thank-you page");
       setTimeout(() => {
-        navigate('/thank-you');
-      }, 300);
+        window.location.href = '/thank-you';
+      }, 500);
       
     } catch (error: any) {
       console.error('Booking form submission error:', error);

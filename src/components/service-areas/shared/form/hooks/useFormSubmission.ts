@@ -29,12 +29,14 @@ export const useFormSubmission = (
     
     if (!recaptchaToken) {
       setRecaptchaError("Please complete the reCAPTCHA verification");
+      toast.error("Please complete the reCAPTCHA verification");
       return;
     }
     
     const isValid = validateForm();
     if (!isValid) {
       console.log("Form validation failed:", errors);
+      toast.error("Please fix the errors in the form before submitting");
       return;
     }
     
@@ -81,8 +83,8 @@ export const useFormSubmission = (
       // Force redirection to thank-you page with timeout to ensure state updates complete
       console.log("Redirecting to thank-you page");
       setTimeout(() => {
-        navigate('/thank-you');
-      }, 300);
+        window.location.href = '/thank-you'; // Use direct window.location for more reliable navigation
+      }, 500);
       
     } catch (error: any) {
       console.error("Form submission error:", error);
@@ -90,7 +92,7 @@ export const useFormSubmission = (
     } finally {
       setIsSubmitting(false);
     }
-  }, [formState, recaptchaToken, validateForm, setRecaptchaError, navigate, errors]);
+  }, [formState, recaptchaToken, validateForm, setRecaptchaError, errors]);
 
   return {
     isSubmitting,

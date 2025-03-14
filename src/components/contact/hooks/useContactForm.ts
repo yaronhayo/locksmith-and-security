@@ -102,10 +102,10 @@ export const useContactForm = () => {
       toast.success("Thank you for contacting us. We'll be in touch soon!");
       
       console.log("Redirecting to thank-you page");
-      // Force redirection with timeout to ensure state updates complete
+      // Use direct window.location for more reliable navigation
       setTimeout(() => {
-        navigate('/thank-you');
-      }, 300);
+        window.location.href = '/thank-you';
+      }, 500);
 
     } catch (error: any) {
       console.error('Contact form submission error:', error);
