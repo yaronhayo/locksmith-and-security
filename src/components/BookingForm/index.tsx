@@ -154,13 +154,6 @@ const BookingForm = () => {
               />
             )}
             
-            <TimeframeSelection
-              timeframe={timeframe}
-              setTimeframe={setTimeframe}
-              error={errors.timeframe}
-              isSubmitting={isSubmitting}
-            />
-            
             <AddressFields
               address={address}
               setAddress={setAddress}
@@ -172,8 +165,15 @@ const BookingForm = () => {
               isSubmitting={isSubmitting}
             />
             
+            <TimeframeSelection
+              timeframe={timeframe}
+              setTimeframe={setTimeframe}
+              error={errors.timeframe}
+              isSubmitting={isSubmitting}
+            />
+            
             {showVehicleInfo && (
-              <>
+              <div className="space-y-3">
                 <VehicleFields errors={errors} isSubmitting={isSubmitting} />
                 
                 {showAllKeysLostField && (
@@ -191,7 +191,7 @@ const BookingForm = () => {
                     isSubmitting={isSubmitting}
                   />
                 )}
-              </>
+              </div>
             )}
             
             <AdditionalNotes

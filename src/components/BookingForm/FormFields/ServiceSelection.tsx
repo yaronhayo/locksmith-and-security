@@ -1,4 +1,3 @@
-
 import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { AlertCircle } from "lucide-react";
@@ -11,7 +10,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { services } from "../constants";
+import { services, carKeyServices } from "../constants";
 
 interface ServiceSelectionProps {
   service: string;
@@ -48,13 +47,12 @@ const ServiceSelection = ({
     
     setShowVehicleInfo(isCarService);
     
-    // Show all keys lost field for key replacement services
-    setShowAllKeysLostField(
-      ["Car Key Replacement", "Key Fob Programming"].includes(value)
-    );
+    // Only show these fields when specific services are selected and keep them close to vehicle info
+    const showAllKeysLost = ["Car Key Replacement", "Key Fob Programming"].includes(value);
+    const showUnusedKey = value === "Key Fob Programming";
     
-    // Show unused key field for programming services
-    setShowUnusedKeyField(value === "Key Fob Programming");
+    setShowAllKeysLostField(showAllKeysLost);
+    setShowUnusedKeyField(showUnusedKey);
   };
 
   // Group services by category
