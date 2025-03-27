@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { carKeyServices, allKeysLostServices, unusedKeyServices } from "../constants";
 
@@ -42,3 +41,5 @@ export const useBookingFormState = () => {
     handleUnusedKeyChange,
   };
 };
+
+export const useBookingForm = useBookingFormState;

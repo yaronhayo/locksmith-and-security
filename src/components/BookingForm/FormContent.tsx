@@ -1,16 +1,13 @@
 
 import React from "react";
-import PersonalInfoFields from "./FormFields/PersonalInfoFields";
-import ServiceSelection from "./FormFields/ServiceSelection";
-import TimeframeSelection from "./FormFields/TimeframeSelection";
-import AddressFields from "./FormFields/AddressFields";
-import VehicleFields from "./FormFields/VehicleFields";
-import AdditionalNotes from "./FormFields/AdditionalNotes";
-import RecaptchaField from "./RecaptchaField";
 import FormContainer from "./FormContainer";
-import OtherServiceField from "./FormFields/OtherServiceField";
-import AllKeysLostField from "./FormFields/AllKeysLostField";
-import UnusedKeyField from "./FormFields/UnusedKeyField";
+import PersonalInfoSection from "./FormSections/PersonalInfoSection";
+import ServiceSection from "./FormSections/ServiceSection";
+import TimeframeSection from "./FormSections/TimeframeSection";
+import AddressSection from "./FormSections/AddressSection";
+import VehicleSection from "./FormSections/VehicleSection";
+import NotesSection from "./FormSections/NotesSection";
+import RecaptchaSection from "./FormSections/RecaptchaSection";
 
 interface FormContentProps {
   formState: {
@@ -102,7 +99,7 @@ const FormContent: React.FC<FormContentProps> = ({
       showUnusedKeyField={showUnusedKeyField}
       onSubmit={onSubmit}
     >
-      <PersonalInfoFields
+      <PersonalInfoSection
         name={name}
         setName={setName}
         phone={phone}
@@ -111,33 +108,26 @@ const FormContent: React.FC<FormContentProps> = ({
         isSubmitting={isSubmitting}
       />
       
-      <ServiceSelection
+      <ServiceSection
         service={service}
         setService={setService}
-        error={errors.service}
+        otherService={otherService}
+        setOtherService={setOtherService}
+        errors={errors}
         isSubmitting={isSubmitting}
         setShowVehicleInfo={setShowVehicleInfo}
         setShowAllKeysLostField={setShowAllKeysLostField}
         setShowUnusedKeyField={setShowUnusedKeyField}
       />
       
-      {service === "Other" && (
-        <OtherServiceField
-          value={otherService}
-          onChange={setOtherService}
-          error={errors.otherService}
-          isSubmitting={isSubmitting}
-        />
-      )}
-      
-      <TimeframeSelection
+      <TimeframeSection
         timeframe={timeframe}
         setTimeframe={setTimeframe}
-        error={errors.timeframe}
+        errors={errors}
         isSubmitting={isSubmitting}
       />
       
-      <AddressFields
+      <AddressSection
         address={address}
         setAddress={setAddress}
         unitNumber={unitNumber}
@@ -149,34 +139,25 @@ const FormContent: React.FC<FormContentProps> = ({
       />
       
       {showVehicleInfo && (
-        <>
-          <VehicleFields errors={errors} isSubmitting={isSubmitting} />
-          
-          {showAllKeysLostField && (
-            <AllKeysLostField
-              value={allKeysLost}
-              onChange={setAllKeysLost}
-              isSubmitting={isSubmitting}
-            />
-          )}
-          
-          {showUnusedKeyField && (
-            <UnusedKeyField
-              value={hasUnusedKey}
-              onChange={setHasUnusedKey}
-              isSubmitting={isSubmitting}
-            />
-          )}
-        </>
+        <VehicleSection
+          errors={errors}
+          isSubmitting={isSubmitting}
+          showAllKeysLostField={showAllKeysLostField}
+          showUnusedKeyField={showUnusedKeyField}
+          allKeysLost={allKeysLost}
+          setAllKeysLost={setAllKeysLost}
+          hasUnusedKey={hasUnusedKey}
+          setHasUnusedKey={setHasUnusedKey}
+        />
       )}
       
-      <AdditionalNotes
-        value={notes}
-        onChange={setNotes}
+      <NotesSection
+        notes={notes}
+        setNotes={setNotes}
         isSubmitting={isSubmitting}
       />
       
-      <RecaptchaField
+      <RecaptchaSection
         onChange={setRecaptchaToken}
         error={errors.recaptcha}
       />
