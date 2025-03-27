@@ -5,13 +5,17 @@ export const createLocalBusinessSchema = (name: string, city: string, state: str
   "image": "/website-uploads/950b5c4c-f0b8-4d22-beb0-66a7d7554476.png",
   "telephone": "+12017482070",
   "email": "info@247locksmithandsecurity.com",
+  "url": "https://247locksmithandsecurity.com",
+  "priceRange": "$$",
+  "description": `Professional 24/7 locksmith services in ${city}, ${state}. Licensed (#13VH13153100) and insured technicians providing residential, commercial, and automotive locksmith solutions.`,
   "areaServed": {
     "@type": "City",
     "name": city,
-    "sameAs": `https://en.wikipedia.org/wiki/${city},_${state}`
+    "sameAs": `https://en.wikipedia.org/wiki/${city.replace(' ', '_')},_${state}`
   },
   "address": {
     "@type": "PostalAddress",
+    "streetAddress": "7116 Bergenline Ave",
     "addressLocality": city,
     "addressRegion": state,
     "postalCode": "07047",
@@ -22,8 +26,6 @@ export const createLocalBusinessSchema = (name: string, city: string, state: str
     "latitude": "40.7795",
     "longitude": "-74.0324"
   },
-  "url": "https://247locksmithandsecurity.com",
-  "priceRange": "$$",
   "openingHoursSpecification": {
     "@type": "OpeningHoursSpecification",
     "dayOfWeek": [
@@ -44,7 +46,57 @@ export const createLocalBusinessSchema = (name: string, city: string, state: str
     "reviewCount": "150",
     "bestRating": "5",
     "worstRating": "1"
-  }
+  },
+  "hasOfferCatalog": {
+    "@type": "OfferCatalog",
+    "name": "Locksmith Services",
+    "itemListElement": [
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Emergency Lockout Service",
+          "description": "24/7 emergency lockout services for homes, businesses, and vehicles"
+        },
+        "priceSpecification": {
+          "@type": "PriceSpecification",
+          "priceCurrency": "USD",
+          "price": "49.00"
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Lock Installation",
+          "description": "Professional installation of high-security locks"
+        },
+        "priceSpecification": {
+          "@type": "PriceSpecification",
+          "priceCurrency": "USD",
+          "price": "99.00"
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Car Key Replacement",
+          "description": "Cutting and programming of car keys and fobs"
+        },
+        "priceSpecification": {
+          "@type": "PriceSpecification",
+          "priceCurrency": "USD",
+          "price": "129.00"
+        }
+      }
+    ]
+  },
+  "sameAs": [
+    "https://www.facebook.com/247locksmithandsecurity/",
+    "https://www.instagram.com/247locksmithandsecurity/",
+    "https://www.yelp.com/biz/locksmith-and-security-north-bergen"
+  ]
 });
 
 export const createServiceSchema = (
@@ -58,12 +110,22 @@ export const createServiceSchema = (
   "provider": {
     "@type": "LocalBusiness",
     "name": "Locksmith & Security LLC",
-    "image": "/website-uploads/950b5c4c-f0b8-4d22-beb0-66a7d7554476.png"
+    "image": "/website-uploads/950b5c4c-f0b8-4d22-beb0-66a7d7554476.png",
+    "telephone": "+12017482070",
+    "priceRange": "$$",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "7116 Bergenline Ave",
+      "addressLocality": "North Bergen",
+      "addressRegion": "NJ",
+      "postalCode": "07047",
+      "addressCountry": "US"
+    }
   },
   "areaServed": {
     "@type": "City",
     "name": areaServed,
-    "sameAs": `https://en.wikipedia.org/wiki/${areaServed},_New_Jersey`
+    "sameAs": `https://en.wikipedia.org/wiki/${areaServed.replace(' ', '_')},_New_Jersey`
   },
   "category": "Locksmith",
   "hasOfferCatalog": {
