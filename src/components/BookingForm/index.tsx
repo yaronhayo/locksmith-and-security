@@ -13,17 +13,40 @@ const BookingForm = () => {
   
   const {
     isLoading,
+    name,
+    setName,
+    phone,
+    setPhone,
+    service,
+    setService,
+    otherService,
+    setOtherService,
+    timeframe,
+    setTimeframe,
+    address,
+    setAddress,
+    unitNumber,
+    setUnitNumber,
+    gateCode,
+    setGateCode,
+    notes,
+    setNotes,
     showVehicleInfo,
+    setShowVehicleInfo,
+    allKeysLost,
+    setAllKeysLost,
+    hasUnusedKey,
+    setHasUnusedKey,
+    showAllKeysLostField,
+    setShowAllKeysLostField,
+    showUnusedKeyField,
+    setShowUnusedKeyField,
     recaptchaToken,
     setRecaptchaToken,
-    address,
-    allKeysLost,
-    hasUnusedKey,
-    showAllKeysLostField,
-    showUnusedKeyField,
     errors,
     setErrors,
-    validateForm
+    validateForm,
+    handleServiceChange
   } = formState;
 
   // Use the booking submission hook
@@ -49,7 +72,37 @@ const BookingForm = () => {
       ) : (
         <>
           <FormContent 
-            formState={formState}
+            formState={{
+              name,
+              setName,
+              phone,
+              setPhone,
+              service,
+              setService,
+              otherService,
+              setOtherService,
+              timeframe,
+              setTimeframe,
+              address,
+              setAddress,
+              unitNumber,
+              setUnitNumber,
+              gateCode,
+              setGateCode,
+              notes,
+              setNotes,
+              showVehicleInfo,
+              setShowVehicleInfo,
+              allKeysLost,
+              setAllKeysLost,
+              hasUnusedKey,
+              setHasUnusedKey,
+              showAllKeysLostField,
+              setShowAllKeysLostField,
+              showUnusedKeyField,
+              setShowUnusedKeyField,
+              errors
+            }}
             recaptchaToken={recaptchaToken}
             setRecaptchaToken={setRecaptchaToken}
             isSubmitting={isSubmitting}

@@ -25,7 +25,8 @@ const PersonalInfoSection: React.FC<PersonalInfoSectionProps> = ({
       <PersonalInfoFields
         name={name}
         setName={setName}
-        phone={setPhone}
+        phone={phone}
+        setPhone={setPhone}
         errors={errors}
         isSubmitting={isSubmitting}
       />

@@ -25,6 +25,28 @@ export const useBookingForm = () => {
   const [showUnusedKeyField, setShowUnusedKeyField] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
 
+  // Handlers for service selection changes
+  const handleServiceChange = (value: string) => {
+    setService(value);
+    
+    // Determine if vehicle info should be shown based on service
+    const shouldShowVehicleInfo = value === "Car Lockout" || 
+      ["Car Key Replacement", "Car Key Programming", "Ignition Repair"].includes(value);
+    setShowVehicleInfo(shouldShowVehicleInfo);
+    
+    // Determine if all keys lost field should be shown
+    const shouldShowAllKeysLostField = ["Car Key Replacement", "Car Key Programming"].includes(value);
+    setShowAllKeysLostField(shouldShowAllKeysLostField);
+    
+    // Determine if unused key field should be shown
+    const shouldShowUnusedKeyField = ["Car Key Programming"].includes(value);
+    setShowUnusedKeyField(shouldShowUnusedKeyField);
+    
+    // Clear vehicle info errors when changing service
+    const { vehicleYear, vehicleMake, vehicleModel, ...remainingErrors } = errors;
+    setErrors(remainingErrors);
+  };
+
   return {
     isLoading,
     setIsLoading,
@@ -60,6 +82,7 @@ export const useBookingForm = () => {
     setShowUnusedKeyField,
     errors,
     setErrors,
-    validateForm
+    validateForm,
+    handleServiceChange
   };
 };
