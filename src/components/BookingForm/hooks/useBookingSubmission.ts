@@ -62,6 +62,7 @@ export const useBookingSubmission = ({
         description: "Please complete the reCAPTCHA verification",
         duration: 6000,
       });
+      setIsSubmitting(false);
       return;
     }
 
@@ -70,6 +71,7 @@ export const useBookingSubmission = ({
         description: "Please enter a valid service address",
         duration: 6000,
       });
+      setIsSubmitting(false);
       return;
     }
 
@@ -157,6 +159,10 @@ export const useBookingSubmission = ({
       
       console.log("Booking submitted successfully, result:", result);
       
+      toast.success("Your request has been submitted successfully!", {
+        duration: 6000
+      });
+      
       // Use the improved redirect helper
       redirectToThankYou(navigate);
 
@@ -174,7 +180,6 @@ export const useBookingSubmission = ({
         description: error.message || "Please try again or contact us directly.",
         duration: 6000,
       });
-    } finally {
       setIsSubmitting(false);
     }
   }, [

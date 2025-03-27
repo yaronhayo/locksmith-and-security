@@ -54,10 +54,6 @@ export const submitFormData = async (formData: SubmissionData) => {
     }
     
     console.log("Successfully submitted to Supabase database:", data);
-    toast.success("Your message has been sent successfully!", {
-      duration: 6000,
-      position: "top-center"
-    });
     
     // Set the session storage flag for the thank-you page redirect protection
     sessionStorage.setItem('fromFormSubmission', 'true');
@@ -85,11 +81,6 @@ export const submitFormData = async (formData: SubmissionData) => {
     return data || true;
   } catch (error: any) {
     console.error("Form submission error:", error);
-    toast.error("There was a problem submitting the form", {
-      description: error.message || "Please try again later",
-      duration: 6000,
-      position: "top-center"
-    });
     throw error;
   }
 };
