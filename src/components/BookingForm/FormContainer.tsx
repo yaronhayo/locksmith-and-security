@@ -14,6 +14,7 @@ interface FormContainerProps {
   hasUnusedKey: string;
   showAllKeysLostField: boolean;
   showUnusedKeyField: boolean;
+  isSubmitting?: boolean;
 }
 
 const FormContainer = ({
@@ -27,11 +28,12 @@ const FormContainer = ({
   allKeysLost,
   hasUnusedKey,
   showAllKeysLostField,
-  showUnusedKeyField
+  showUnusedKeyField,
+  isSubmitting = false
 }: FormContainerProps) => {
   return (
     <div className="w-full">
-      <FormHeader />
+      <FormHeader isSubmitting={isSubmitting} />
       <form 
         id="booking-form" 
         className="space-y-6 mb-6"
