@@ -1,5 +1,5 @@
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import { getEmailError, getNameError, getPhoneError } from "@/utils/inputValidation";
 import { FormState, IsDirty } from "./useFormState";
 
@@ -45,9 +45,7 @@ export const useFormValidation = (formState: FormState, isDirty: IsDirty) => {
     }
   }, [formState.service, isDirty.service]);
   
-  const validateForm = useCallback(() => {
-    console.log("Validating form with state:", formState);
-    
+  const validateForm = () => {
     const newErrors = {
       name: getNameError(formState.name) || (formState.name.trim() === '' ? 'Name is required' : null),
       email: getEmailError(formState.email) || (formState.email.trim() === '' ? 'Email is required' : null),
@@ -56,13 +54,11 @@ export const useFormValidation = (formState: FormState, isDirty: IsDirty) => {
     };
     
     setErrors(newErrors);
-    const isValid = !newErrors.name && !newErrors.email && !newErrors.phone && !newErrors.service;
-    console.log("Form validation result:", isValid, "Errors:", newErrors);
-    return isValid;
-  }, [formState]);
+    return !newErrors.name && !newErrors.email && !newErrors.phone && !newErrors.service;
+  };
   
-  const isFormValid = useCallback((recaptchaToken: string | null): boolean => {
-    const valid = (
+  const isFormValid = (recaptchaToken: string | null): boolean => {
+    return (
       !errors.name && 
       !errors.email && 
       !errors.phone && 
@@ -73,9 +69,7 @@ export const useFormValidation = (formState: FormState, isDirty: IsDirty) => {
       formState.service !== '' && 
       !!recaptchaToken
     );
-    
-    return valid;
-  }, [errors, formState]);
+  };
 
   return {
     errors,

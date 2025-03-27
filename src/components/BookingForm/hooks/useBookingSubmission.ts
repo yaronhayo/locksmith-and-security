@@ -1,6 +1,7 @@
 
 import { useState, useCallback, useEffect } from "react";
-import { toast } from "sonner";
+import { useNavigate, useLocation } from "react-router-dom";
+import { useToast } from "@/hooks/use-toast";
 import { submitFormData } from "@/utils/formSubmission";
 import { startFormTracking } from "@/utils/sessionTracker";
 
@@ -30,16 +31,14 @@ export const useBookingSubmission = ({
   showAllKeysLostField,
   showUnusedKeyField
 }: UseBookingSubmissionProps) => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submissionAttempted, setSubmissionAttempted] = useState(false);
 
   // Start form tracking when the component loads
   useEffect(() => {
-    try {
-      startFormTracking();
-    } catch (error) {
-      console.error("Failed to start form tracking:", error);
-    }
+    startFormTracking();
   }, []);
 
   const collectVisitorInfo = useCallback(() => {
@@ -56,16 +55,13 @@ export const useBookingSubmission = ({
   const handleSubmit = useCallback(async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log("Booking form submission started");
-    setSubmissionAttempted(true);
 
     if (!recaptchaToken) {
-      toast.error("Please complete the reCAPTCHA verification");
-      return;
-    }
-    
-    if (!address.trim()) {
-      setErrors({address: "Please enter a valid service address"});
-      toast.error("Please enter a valid service address");
+      toast({
+        title: "Verification Required",
+        description: "Please complete the reCAPTCHA verification",
+        variant: "destructive",
+      });
       return;
     }
 
@@ -89,15 +85,11 @@ export const useBookingSubmission = ({
     if (!validationResult.isValid) {
       setErrors(validationResult.errors);
       console.log("Form validation failed:", validationResult.errors);
-      
-      // Show first error as toast
-      const firstError = Object.values(validationResult.errors)[0];
-      if (firstError) {
-        toast.error(firstError);
-      } else {
-        toast.error("Please check the form for errors");
-      }
-      
+      toast({
+        title: "Form Validation Failed",
+        description: "Please check the form for errors",
+        variant: "destructive",
+      });
       setIsSubmitting(false);
       return;
     }
@@ -154,15 +146,39 @@ export const useBookingSubmission = ({
       console.log("Submitting booking data:", JSON.stringify(submissionData, null, 2));
       
       // Submit the actual data to Supabase
-      await submitFormData(submissionData);
+      const result = await submitFormData(submissionData);
       
-      console.log("Booking submitted successfully");
+      console.log("Booking submitted successfully, result:", result);
       
-      // Note: Redirection is now handled in submitFormData
+      // Store flag for thank-you page
+      sessionStorage.setItem('fromFormSubmission', 'true');
+      
+      toast({
+        title: "Booking Received!",
+        description: "We'll contact you shortly to confirm your appointment.",
+      });
 
+      if (typeof window.gtag === 'function') {
+        window.gtag('event', 'conversion', {
+          'event_category': 'form',
+          'event_label': 'booking_submission',
+          'value': 1
+        });
+      }
+
+      // Redirect to thank-you page with timeout to ensure state updates complete
+      console.log("Redirecting to thank-you page");
+      setTimeout(() => {
+        navigate('/thank-you');
+      }, 500);
+      
     } catch (error: any) {
       console.error('Booking form submission error:', error);
-      toast.error(error.message || "Please try again or contact us directly.");
+      toast({
+        title: "Submission Failed",
+        description: error.message || "Please try again or contact us directly.",
+        variant: "destructive",
+      });
     } finally {
       setIsSubmitting(false);
     }
@@ -176,13 +192,14 @@ export const useBookingSubmission = ({
     validateForm, 
     showVehicleInfo, 
     setErrors, 
-    collectVisitorInfo,
-    submissionAttempted
+    toast, 
+    collectVisitorInfo, 
+    location.pathname, 
+    navigate
   ]);
 
   return {
     isSubmitting,
-    submissionAttempted,
     handleSubmit
   };
 };
