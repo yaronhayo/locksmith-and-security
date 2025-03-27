@@ -45,8 +45,7 @@ const BookingForm = () => {
     setRecaptchaToken,
     errors,
     setErrors,
-    validateForm,
-    handleServiceChange
+    validateForm
   } = formState;
 
   // Use the booking submission hook
