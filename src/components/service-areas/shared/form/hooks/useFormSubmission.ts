@@ -2,7 +2,7 @@
 import { useState, useCallback, useEffect } from "react";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
-import { submitFormData } from "@/utils/formSubmission";
+import { submitFormData, redirectToThankYou } from "@/utils/formSubmission";
 import { FormState } from "./useFormState";
 import { FormErrors } from "./useFormValidation";
 import { startFormTracking } from "@/utils/sessionTracker";
@@ -17,6 +17,7 @@ export const useFormSubmission = (
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [submissionAttempted, setSubmissionAttempted] = useState(false);
   
   // Start form tracking when the component loads
   useEffect(() => {
@@ -26,15 +27,24 @@ export const useFormSubmission = (
   const handleSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
     console.log("Service area form submission started");
+    setSubmissionAttempted(true);
     
     if (!recaptchaToken) {
       setRecaptchaError("Please complete the reCAPTCHA verification");
+      toast.error("Verification required", {
+        description: "Please complete the reCAPTCHA verification",
+        duration: 6000
+      });
       return;
     }
     
     const isValid = validateForm();
     if (!isValid) {
       console.log("Form validation failed:", errors);
+      toast.error("Form validation failed", {
+        description: "Please fix the errors in the form before submitting",
+        duration: 6000
+      });
       return;
     }
     
@@ -73,21 +83,14 @@ export const useFormSubmission = (
       
       setIsSubmitted(true);
       
-      // Set session storage flag for thank-you page
-      sessionStorage.setItem('fromFormSubmission', 'true');
-      
-      toast.success("Your message has been sent! We'll be in touch soon.");
-      
-      // Force redirection to thank-you page with timeout to ensure state updates complete
-      console.log("Redirecting to thank-you page");
-      setTimeout(() => {
-        navigate('/thank-you');
-      }, 500);
+      // Call the helper to handle redirection
+      redirectToThankYou(navigate);
       
     } catch (error: any) {
       console.error("Form submission error:", error);
       toast.error("Failed to send message", {
-        description: error.message || "Please try again later."
+        description: error.message || "Please try again later.",
+        duration: 6000
       });
     } finally {
       setIsSubmitting(false);
@@ -97,6 +100,7 @@ export const useFormSubmission = (
   return {
     isSubmitting,
     isSubmitted,
+    submissionAttempted,
     handleSubmit
   };
 };

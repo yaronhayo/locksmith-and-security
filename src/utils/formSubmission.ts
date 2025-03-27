@@ -2,6 +2,7 @@
 import { supabase } from "@/integrations/supabase/client";
 import { SubmissionData } from "@/types/submissions";
 import { getSessionData } from "./sessionTracker";
+import { toast } from "sonner";
 
 export const submitFormData = async (formData: SubmissionData) => {
   try {
@@ -53,6 +54,13 @@ export const submitFormData = async (formData: SubmissionData) => {
     }
     
     console.log("Successfully submitted to Supabase database:", data);
+    toast.success("Your message has been sent successfully!", {
+      duration: 6000,
+      position: "top-center"
+    });
+    
+    // Set the session storage flag for the thank-you page redirect protection
+    sessionStorage.setItem('fromFormSubmission', 'true');
     
     // Trigger email notification via Edge Function
     try {
@@ -73,9 +81,25 @@ export const submitFormData = async (formData: SubmissionData) => {
       // Don't throw here, still consider the form submission successful
     }
     
+    // Return the result before redirecting
     return data || true;
   } catch (error: any) {
     console.error("Form submission error:", error);
+    toast.error("There was a problem submitting the form", {
+      description: error.message || "Please try again later",
+      duration: 6000,
+      position: "top-center"
+    });
     throw error;
   }
+};
+
+// Helper function to redirect to thank-you page reliably
+export const redirectToThankYou = (navigate: any) => {
+  // Set a longer timeout to ensure data is properly saved before redirect
+  console.log("Setting up thank-you page redirect");
+  setTimeout(() => {
+    console.log("Executing redirect to thank-you page");
+    navigate('/thank-you');
+  }, 2000); // 2 second delay for more reliable redirect
 };

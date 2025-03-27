@@ -13,6 +13,7 @@ const ThankYouPage = () => {
   useEffect(() => {
     const fromForm = sessionStorage.getItem('fromFormSubmission');
     if (!fromForm) {
+      console.log("User tried to access thank-you page directly, redirecting to home");
       navigate('/');
     }
     // Clear the flag after checking

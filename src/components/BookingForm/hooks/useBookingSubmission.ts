@@ -1,8 +1,8 @@
 
 import { useState, useCallback, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { useToast } from "@/hooks/use-toast";
-import { submitFormData } from "@/utils/formSubmission";
+import { toast } from "sonner";
+import { submitFormData, redirectToThankYou } from "@/utils/formSubmission";
 import { startFormTracking } from "@/utils/sessionTracker";
 
 interface UseBookingSubmissionProps {
@@ -33,8 +33,8 @@ export const useBookingSubmission = ({
 }: UseBookingSubmissionProps) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submissionAttempted, setSubmissionAttempted] = useState(false);
 
   // Start form tracking when the component loads
   useEffect(() => {
@@ -55,12 +55,20 @@ export const useBookingSubmission = ({
   const handleSubmit = useCallback(async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log("Booking form submission started");
+    setSubmissionAttempted(true);
 
     if (!recaptchaToken) {
-      toast({
-        title: "Verification Required",
+      toast.error("Verification Required", {
         description: "Please complete the reCAPTCHA verification",
-        variant: "destructive",
+        duration: 6000,
+      });
+      return;
+    }
+
+    if (!address || address.trim() === '') {
+      toast.error("Address Required", {
+        description: "Please enter a valid service address",
+        duration: 6000,
       });
       return;
     }
@@ -85,10 +93,9 @@ export const useBookingSubmission = ({
     if (!validationResult.isValid) {
       setErrors(validationResult.errors);
       console.log("Form validation failed:", validationResult.errors);
-      toast({
-        title: "Form Validation Failed",
+      toast.error("Form Validation Failed", {
         description: "Please check the form for errors",
-        variant: "destructive",
+        duration: 6000,
       });
       setIsSubmitting(false);
       return;
@@ -150,13 +157,8 @@ export const useBookingSubmission = ({
       
       console.log("Booking submitted successfully, result:", result);
       
-      // Store flag for thank-you page
-      sessionStorage.setItem('fromFormSubmission', 'true');
-      
-      toast({
-        title: "Booking Received!",
-        description: "We'll contact you shortly to confirm your appointment.",
-      });
+      // Use the improved redirect helper
+      redirectToThankYou(navigate);
 
       if (typeof window.gtag === 'function') {
         window.gtag('event', 'conversion', {
@@ -166,18 +168,11 @@ export const useBookingSubmission = ({
         });
       }
 
-      // Redirect to thank-you page with timeout to ensure state updates complete
-      console.log("Redirecting to thank-you page");
-      setTimeout(() => {
-        navigate('/thank-you');
-      }, 500);
-      
     } catch (error: any) {
       console.error('Booking form submission error:', error);
-      toast({
-        title: "Submission Failed",
+      toast.error("Submission Failed", {
         description: error.message || "Please try again or contact us directly.",
-        variant: "destructive",
+        duration: 6000,
       });
     } finally {
       setIsSubmitting(false);
@@ -192,7 +187,6 @@ export const useBookingSubmission = ({
     validateForm, 
     showVehicleInfo, 
     setErrors, 
-    toast, 
     collectVisitorInfo, 
     location.pathname, 
     navigate
@@ -200,6 +194,7 @@ export const useBookingSubmission = ({
 
   return {
     isSubmitting,
+    submissionAttempted,
     handleSubmit
   };
 };
