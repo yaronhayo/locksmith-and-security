@@ -5,7 +5,8 @@ import { InputHTMLAttributes } from "react";
 import { Loader2 } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { cn } from "@/lib/utils";
-import { useScripts, ScriptError, ScriptLoading } from "@/components/providers/ScriptsProvider";
+import { useScripts, ScriptError } from "@/components/providers/ScriptsProvider";
+import { Button } from "./button";
 
 type AddressAutocompleteProps = Omit<InputHTMLAttributes<HTMLInputElement>, 'onChange'> & {
   value: string;
@@ -24,7 +25,7 @@ const AddressAutocomplete = ({
   const autocompleteRef = useRef<google.maps.places.Autocomplete | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [initializationAttempted, setInitializationAttempted] = useState(false);
-  const { googleMapsLoaded, isLoadingMaps, mapsError } = useScripts();
+  const { googleMapsLoaded, isLoadingMaps, mapsError, reloadMapsScript } = useScripts();
 
   // Initialize autocomplete
   useEffect(() => {
@@ -67,7 +68,7 @@ const AddressAutocomplete = ({
       return () => {
         // Only attempt cleanup if Google Maps is still available
         if (window.google?.maps?.event && listener) {
-          listener.remove();
+          google.maps.event.clearInstanceListeners(listener);
         }
         if (window.google?.maps?.event && autocompleteRef.current) {
           google.maps.event.clearInstanceListeners(autocompleteRef.current);
@@ -76,7 +77,15 @@ const AddressAutocomplete = ({
       };
     } catch (err) {
       console.error('Error initializing address autocomplete:', err);
-      setError(err instanceof Error ? err.message : 'Failed to initialize address autocomplete');
+      const errorMessage = err instanceof Error ? err.message : 'Failed to initialize address autocomplete';
+      setError(errorMessage);
+      
+      // Check if this is a billing error
+      if (errorMessage.toLowerCase().includes('billing') || 
+          errorMessage.toLowerCase().includes('payment') ||
+          errorMessage.toLowerCase().includes('api key')) {
+        setError("Google Maps API billing issue. Please enable billing in Google Cloud Console.");
+      }
     }
   }, [onChange, googleMapsLoaded, initializationAttempted]);
 
@@ -108,14 +117,19 @@ const AddressAutocomplete = ({
     setError(null);
   };
 
+  const handleRetry = () => {
+    setError(null);
+    setInitializationAttempted(false);
+    reloadMapsScript();
+  };
+
   const displayError = error || mapsError;
+  const isBillingError = displayError?.toLowerCase().includes('billing') || 
+                          displayError?.toLowerCase().includes('payment') ||
+                          displayError?.toLowerCase().includes('development');
 
   return (
     <div className="relative w-full space-y-2">
-      {isLoadingMaps && <ScriptLoading type="maps" />}
-      
-      {mapsError && <ScriptError type="maps" error={mapsError} />}
-      
       <div className="relative">
         <Input
           ref={inputRef}
@@ -136,10 +150,36 @@ const AddressAutocomplete = ({
         )}
       </div>
       
-      {error && !mapsError && (
+      {displayError && (
         <Alert variant="destructive">
-          <AlertDescription id="address-error">
-            {error}
+          <AlertDescription id="address-error" className="space-y-2">
+            <p>{displayError}</p>
+            
+            {isBillingError && (
+              <div className="text-xs mt-1">
+                <p>To resolve this issue:</p>
+                <ol className="list-decimal ml-4 mt-1">
+                  <li>Enable billing for your Google Cloud Project</li>
+                  <li>Ensure the Maps JavaScript API and Places API are enabled</li>
+                </ol>
+                <div className="mt-2 flex space-x-2">
+                  <Button 
+                    variant="link" 
+                    className="p-0 h-6 text-xs text-blue-500 hover:text-blue-700" 
+                    onClick={() => window.open("https://console.cloud.google.com/project/_/billing/enable", '_blank')}
+                  >
+                    Google Cloud Console
+                  </Button>
+                  <Button
+                    variant="link"
+                    className="p-0 h-6 text-xs text-blue-500 hover:text-blue-700"
+                    onClick={handleRetry}
+                  >
+                    Retry Loading
+                  </Button>
+                </div>
+              </div>
+            )}
           </AlertDescription>
         </Alert>
       )}
