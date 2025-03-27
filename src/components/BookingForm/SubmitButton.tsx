@@ -9,6 +9,7 @@ interface SubmitButtonProps {
   loadingText?: string;
   className?: string;
   disabled?: boolean;
+  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
 const SubmitButton = ({ 
@@ -16,14 +17,16 @@ const SubmitButton = ({
   text = "Request Service",
   loadingText = "Processing...",
   className = "",
-  disabled = false
+  disabled = false,
+  onClick
 }: SubmitButtonProps) => {
   return (
     <Button
-      type="submit"
+      type="button"
       className={`w-full py-2.5 mt-4 bg-primary hover:bg-primary-hover text-white font-medium ${className}`}
       disabled={isSubmitting || disabled}
       size="lg"
+      onClick={onClick}
     >
       {isSubmitting ? (
         <>
