@@ -1,4 +1,5 @@
-import { Shield, Clock, DollarSign, Phone } from "lucide-react";
+
+import { Shield, DollarSign, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import BookingForm from "@/components/BookingForm";
@@ -19,7 +20,7 @@ const LockChangeHero = () => {
             </h1>
             <p className="text-xl text-white/90 mb-8">
               Expert lock replacement services in North Bergen. We install high-security locks 
-              to keep your property safe and secure. Available 24/7 with fast response times.
+              to keep your property safe and secure. Available 24/7.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <Button size="lg" variant="secondary" asChild className="text-lg">
@@ -34,16 +35,12 @@ const LockChangeHero = () => {
             </div>
             <div className="grid grid-cols-2 gap-6 mt-12">
               <div className="flex items-center gap-3">
-                <Clock className="h-6 w-6 text-secondary" />
-                <span className="text-white">Same-Day Service</span>
-              </div>
-              <div className="flex items-center gap-3">
                 <Shield className="h-6 w-6 text-secondary" />
                 <span className="text-white">Licensed & Insured</span>
               </div>
               <div className="flex items-center gap-3">
                 <DollarSign className="h-6 w-6 text-secondary" />
-                <span className="text-white">Upfront Pricing</span>
+                <span className="text-white">Professional Service</span>
               </div>
             </div>
           </motion.div>
@@ -56,7 +53,7 @@ const LockChangeHero = () => {
             <div className="bg-white rounded-2xl p-6 lg:p-8 shadow-2xl">
               <div className="text-center mb-6">
                 <h2 className="text-xl lg:text-2xl font-bold text-gray-900">Request Emergency Service</h2>
-                <p className="text-gray-600 mt-2">Get help within 15-30 minutes</p>
+                <p className="text-gray-600 mt-2">Professional locksmith assistance</p>
               </div>
               <BookingForm />
             </div>

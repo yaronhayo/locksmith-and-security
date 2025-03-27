@@ -57,11 +57,6 @@ export const createLocalBusinessSchema = (name: string, city: string, state: str
           "@type": "Service",
           "name": "Emergency Lockout Service",
           "description": "24/7 emergency lockout services for homes, businesses, and vehicles"
-        },
-        "priceSpecification": {
-          "@type": "PriceSpecification",
-          "priceCurrency": "USD",
-          "price": "49.00"
         }
       },
       {
@@ -70,11 +65,6 @@ export const createLocalBusinessSchema = (name: string, city: string, state: str
           "@type": "Service",
           "name": "Lock Installation",
           "description": "Professional installation of high-security locks"
-        },
-        "priceSpecification": {
-          "@type": "PriceSpecification",
-          "priceCurrency": "USD",
-          "price": "99.00"
         }
       },
       {
@@ -83,11 +73,6 @@ export const createLocalBusinessSchema = (name: string, city: string, state: str
           "@type": "Service",
           "name": "Car Key Replacement",
           "description": "Cutting and programming of car keys and fobs"
-        },
-        "priceSpecification": {
-          "@type": "PriceSpecification",
-          "priceCurrency": "USD",
-          "price": "129.00"
         }
       }
     ]

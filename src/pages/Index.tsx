@@ -16,7 +16,7 @@ const Index = () => {
   }, []);
 
   const pageTitle = "Emergency Locksmith Services | North Bergen, NJ";
-  const pageDescription = "24/7 locksmith services in North Bergen. Fast response for residential, commercial, and auto lockouts. Licensed & insured professionals.";
+  const pageDescription = "24/7 locksmith services in North Bergen. Professional assistance for residential, commercial, and auto lockouts. Licensed & insured professionals.";
   const keywords = "locksmith north bergen, emergency locksmith, 24/7 locksmith, car lockout, house lockout, business lockout, key replacement";
   const canonicalUrl = "https://247locksmithandsecurity.com/";
   const imageUrl = "/lovable-uploads/1bbeb1e6-5581-4e09-9600-7d1859bb17c5.png";

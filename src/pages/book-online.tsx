@@ -1,7 +1,7 @@
 
 import PageLayout from "@/components/layouts/PageLayout";
 import { motion } from "framer-motion";
-import { Clock, Shield, Star, ArrowRight } from "lucide-react";
+import { Shield, Star, ArrowRight } from "lucide-react";
 import BookingForm from "@/components/BookingForm";
 
 const BookOnlinePage = () => {
@@ -26,7 +26,6 @@ const BookOnlinePage = () => {
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
               <div className="bg-white p-6 rounded-lg shadow-md">
-                <Clock className="w-12 h-12 text-primary mx-auto mb-4" />
                 <h3 className="font-semibold text-lg mb-2">24/7 Availability</h3>
                 <p className="text-gray-600">Book anytime, day or night</p>
               </div>

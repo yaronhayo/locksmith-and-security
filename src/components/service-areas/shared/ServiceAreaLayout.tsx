@@ -34,7 +34,7 @@ const ServiceAreaLayout = memo(({ areaSlug }: ServiceAreaLayoutProps) => {
 
   // Create optimized meta title and description
   const pageTitle = `Locksmith in ${location.name}, NJ | 24/7 Emergency Service`;
-  const pageDescription = `Locked out in ${location.name}? Our local locksmiths arrive in 20-30 minutes for home, business & auto emergencies. Licensed & insured service, fair pricing.`;
+  const pageDescription = `Professional locksmith services in ${location.name}. Our local locksmiths provide expert solutions for home, business & auto needs. Licensed & insured service.`;
   
   // Enhanced service area schema attributes
   const localSEOAttributes = {
