@@ -1,3 +1,4 @@
+
 import { Shield, Clock, DollarSign, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
@@ -35,7 +36,7 @@ const BusinessLockChangeHero = () => {
             <div className="grid grid-cols-2 gap-6 mt-12">
               <div className="flex items-center gap-3">
                 <Clock className="h-6 w-6 text-secondary" />
-                <span className="text-white">Same-Day Service</span>
+                <span className="text-white">24/7 Service</span>
               </div>
               <div className="flex items-center gap-3">
                 <Shield className="h-6 w-6 text-secondary" />
@@ -43,7 +44,7 @@ const BusinessLockChangeHero = () => {
               </div>
               <div className="flex items-center gap-3">
                 <DollarSign className="h-6 w-6 text-secondary" />
-                <span className="text-white">Competitive Rates</span>
+                <span className="text-white">Professional Service</span>
               </div>
             </div>
           </motion.div>

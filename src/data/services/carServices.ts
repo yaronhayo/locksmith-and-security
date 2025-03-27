@@ -1,3 +1,4 @@
+
 import { Clock, Shield, Key, Lock } from "lucide-react";
 import { ServiceItem } from "@/types/lockoutServices";
 
@@ -5,7 +6,7 @@ export const carLockoutServices: ServiceItem[] = [
   {
     icon: Clock,
     title: "24/7 Emergency Car Lockout",
-    description: "Available around the clock for immediate response to your car lockout emergency. Our team arrives within 15-30 minutes in North Bergen area."
+    description: "Available around the clock for immediate response to your car lockout emergency. Our professional team is ready to help throughout the North Bergen area."
   },
   {
     icon: Shield,
@@ -27,8 +28,8 @@ export const carLockoutServices: ServiceItem[] = [
 export const carKeyServices: ServiceItem[] = [
   {
     icon: Clock,
-    title: "Fast Key Creation",
-    description: "Quick and efficient car key cutting and programming service, often completed within an hour."
+    title: "Professional Key Creation",
+    description: "Professional car key cutting and programming service by certified technicians."
   },
   {
     icon: Shield,
