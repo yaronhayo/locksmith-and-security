@@ -154,24 +154,7 @@ const BookingForm = () => {
               />
             )}
             
-            <AddressFields
-              address={address}
-              setAddress={setAddress}
-              unitNumber={unitNumber}
-              setUnitNumber={setUnitNumber}
-              gateCode={gateCode}
-              setGateCode={setGateCode}
-              errors={errors}
-              isSubmitting={isSubmitting}
-            />
-            
-            <TimeframeSelection
-              timeframe={timeframe}
-              setTimeframe={setTimeframe}
-              error={errors.timeframe}
-              isSubmitting={isSubmitting}
-            />
-            
+            {/* Show vehicle information immediately after service selection when applicable */}
             {showVehicleInfo && (
               <div className="space-y-3">
                 <VehicleFields errors={errors} isSubmitting={isSubmitting} />
@@ -193,6 +176,24 @@ const BookingForm = () => {
                 )}
               </div>
             )}
+            
+            <AddressFields
+              address={address}
+              setAddress={setAddress}
+              unitNumber={unitNumber}
+              setUnitNumber={setUnitNumber}
+              gateCode={gateCode}
+              setGateCode={setGateCode}
+              errors={errors}
+              isSubmitting={isSubmitting}
+            />
+            
+            <TimeframeSelection
+              timeframe={timeframe}
+              setTimeframe={setTimeframe}
+              error={errors.timeframe}
+              isSubmitting={isSubmitting}
+            />
             
             <AdditionalNotes
               value={notes}
