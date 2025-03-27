@@ -1,48 +1,49 @@
 
 import React from "react";
+import PersonalInfoFields from "./FormFields/PersonalInfoFields";
+import ServiceSelection from "./FormFields/ServiceSelection";
+import TimeframeSelection from "./FormFields/TimeframeSelection";
+import AddressFields from "./FormFields/AddressFields";
+import VehicleFields from "./FormFields/VehicleFields";
+import AdditionalNotes from "./FormFields/AdditionalNotes";
+import RecaptchaField from "./RecaptchaField";
 import FormContainer from "./FormContainer";
-import PersonalInfoSection from "./FormSections/PersonalInfoSection";
-import ServiceSection from "./FormSections/ServiceSection";
-import TimeframeSection from "./FormSections/TimeframeSection";
-import AddressSection from "./FormSections/AddressSection";
-import VehicleSection from "./FormSections/VehicleSection";
-import NotesSection from "./FormSections/NotesSection";
-import RecaptchaSection from "./FormSections/RecaptchaSection";
-
-interface FormStateProps {
-  name: string;
-  setName: (name: string) => void;
-  phone: string;
-  setPhone: (phone: string) => void;
-  service: string;
-  setService: (service: string) => void;
-  otherService: string;
-  setOtherService: (service: string) => void;
-  timeframe: string;
-  setTimeframe: (timeframe: string) => void;
-  address: string;
-  setAddress: (address: string) => void;
-  unitNumber: string;
-  setUnitNumber: (unitNumber: string) => void;
-  gateCode: string;
-  setGateCode: (gateCode: string) => void;
-  notes: string;
-  setNotes: (notes: string) => void;
-  showVehicleInfo: boolean;
-  setShowVehicleInfo: (show: boolean) => void;
-  showAllKeysLostField: boolean;
-  setShowAllKeysLostField: (show: boolean) => void;
-  showUnusedKeyField: boolean;
-  setShowUnusedKeyField: (show: boolean) => void;
-  allKeysLost: string;
-  setAllKeysLost: (value: string) => void;
-  hasUnusedKey: string;
-  setHasUnusedKey: (value: string) => void;
-  errors: Record<string, string>;
-}
+import OtherServiceField from "./FormFields/OtherServiceField";
+import AllKeysLostField from "./FormFields/AllKeysLostField";
+import UnusedKeyField from "./FormFields/UnusedKeyField";
 
 interface FormContentProps {
-  formState: FormStateProps;
+  formState: {
+    name: string;
+    setName: (name: string) => void;
+    phone: string;
+    setPhone: (phone: string) => void;
+    service: string;
+    setService: (service: string) => void;
+    otherService: string;
+    setOtherService: (service: string) => void;
+    timeframe: string;
+    setTimeframe: (timeframe: string) => void;
+    address: string;
+    setAddress: (address: string) => void;
+    unitNumber: string;
+    setUnitNumber: (unitNumber: string) => void;
+    gateCode: string;
+    setGateCode: (gateCode: string) => void;
+    notes: string;
+    setNotes: (notes: string) => void;
+    showVehicleInfo: boolean;
+    setShowVehicleInfo: (show: boolean) => void;
+    showAllKeysLostField: boolean;
+    setShowAllKeysLostField: (show: boolean) => void;
+    showUnusedKeyField: boolean;
+    setShowUnusedKeyField: (show: boolean) => void;
+    allKeysLost: string;
+    setAllKeysLost: (value: string) => void;
+    hasUnusedKey: string;
+    setHasUnusedKey: (value: string) => void;
+    errors: Record<string, string>;
+  };
   recaptchaToken: string | null;
   setRecaptchaToken: (token: string | null) => void;
   isSubmitting: boolean;
@@ -101,7 +102,7 @@ const FormContent: React.FC<FormContentProps> = ({
       showUnusedKeyField={showUnusedKeyField}
       onSubmit={onSubmit}
     >
-      <PersonalInfoSection
+      <PersonalInfoFields
         name={name}
         setName={setName}
         phone={phone}
@@ -110,26 +111,33 @@ const FormContent: React.FC<FormContentProps> = ({
         isSubmitting={isSubmitting}
       />
       
-      <ServiceSection
+      <ServiceSelection
         service={service}
         setService={setService}
-        otherService={otherService}
-        setOtherService={setOtherService}
-        errors={errors}
+        error={errors.service}
         isSubmitting={isSubmitting}
         setShowVehicleInfo={setShowVehicleInfo}
         setShowAllKeysLostField={setShowAllKeysLostField}
         setShowUnusedKeyField={setShowUnusedKeyField}
       />
       
-      <TimeframeSection
+      {service === "Other" && (
+        <OtherServiceField
+          value={otherService}
+          onChange={setOtherService}
+          error={errors.otherService}
+          isSubmitting={isSubmitting}
+        />
+      )}
+      
+      <TimeframeSelection
         timeframe={timeframe}
         setTimeframe={setTimeframe}
-        errors={errors}
+        error={errors.timeframe}
         isSubmitting={isSubmitting}
       />
       
-      <AddressSection
+      <AddressFields
         address={address}
         setAddress={setAddress}
         unitNumber={unitNumber}
@@ -141,25 +149,34 @@ const FormContent: React.FC<FormContentProps> = ({
       />
       
       {showVehicleInfo && (
-        <VehicleSection
-          errors={errors}
-          isSubmitting={isSubmitting}
-          showAllKeysLostField={showAllKeysLostField}
-          showUnusedKeyField={showUnusedKeyField}
-          allKeysLost={allKeysLost}
-          setAllKeysLost={setAllKeysLost}
-          hasUnusedKey={hasUnusedKey}
-          setHasUnusedKey={setHasUnusedKey}
-        />
+        <>
+          <VehicleFields errors={errors} isSubmitting={isSubmitting} />
+          
+          {showAllKeysLostField && (
+            <AllKeysLostField
+              value={allKeysLost}
+              onChange={setAllKeysLost}
+              isSubmitting={isSubmitting}
+            />
+          )}
+          
+          {showUnusedKeyField && (
+            <UnusedKeyField
+              value={hasUnusedKey}
+              onChange={setHasUnusedKey}
+              isSubmitting={isSubmitting}
+            />
+          )}
+        </>
       )}
       
-      <NotesSection
-        notes={notes}
-        setNotes={setNotes}
+      <AdditionalNotes
+        value={notes}
+        onChange={setNotes}
         isSubmitting={isSubmitting}
       />
       
-      <RecaptchaSection
+      <RecaptchaField
         onChange={setRecaptchaToken}
         error={errors.recaptcha}
       />
