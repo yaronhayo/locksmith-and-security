@@ -5,24 +5,27 @@ import { Input } from "@/components/ui/input";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { AlertCircle } from "lucide-react";
 import { formatPhoneNumber } from "@/utils/inputValidation";
-import { useFieldValidation } from "../hooks/useFieldValidation";
 
 interface PersonalInfoFieldsProps {
+  name: string;
+  setName: (name: string) => void;
+  phone: string;
+  setPhone: (phone: string) => void;
   errors: Record<string, string>;
   isSubmitting: boolean;
 }
 
-const PersonalInfoFields = ({ errors: externalErrors, isSubmitting }: PersonalInfoFieldsProps) => {
-  const { 
-    values, 
-    handlers, 
-    errors 
-  } = useFieldValidation({ externalErrors });
-
+const PersonalInfoFields = ({
+  name,
+  setName,
+  phone,
+  setPhone,
+  errors,
+  isSubmitting
+}: PersonalInfoFieldsProps) => {
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const formattedPhone = formatPhoneNumber(e.target.value);
-    e.target.value = formattedPhone;
-    handlers.handlePhoneChange(e);
+    setPhone(formattedPhone);
   };
 
   return (
@@ -39,9 +42,8 @@ const PersonalInfoFields = ({ errors: externalErrors, isSubmitting }: PersonalIn
           autoComplete="name"
           required
           placeholder="Enter your name"
-          value={values.name}
-          onChange={handlers.handleNameChange}
-          onBlur={() => handlers.markFieldAsDirty('name')}
+          value={name}
+          onChange={(e) => setName(e.target.value)}
         />
         {errors.name && (
           <Alert variant="destructive" className="py-2 px-3">
@@ -63,9 +65,8 @@ const PersonalInfoFields = ({ errors: externalErrors, isSubmitting }: PersonalIn
           autoComplete="tel"
           required
           placeholder="Enter your phone number"
-          value={values.phone}
+          value={phone}
           onChange={handlePhoneChange}
-          onBlur={() => handlers.markFieldAsDirty('phone')}
         />
         {errors.phone && (
           <Alert variant="destructive" className="py-2 px-3">

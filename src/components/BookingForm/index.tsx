@@ -1,12 +1,13 @@
+
 import React, { useState, useCallback } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
-import {
-  getNameError,
-  getPhoneError,
-  getServiceError,
-  getTimeframeError,
-  getAddressError,
+import { 
+  getNameError, 
+  getPhoneError, 
+  getServiceError, 
+  getTimeframeError, 
+  getAddressError 
 } from "@/utils/inputValidation";
 import PersonalInfoFields from "./FormFields/PersonalInfoFields";
 import ServiceSelection from "./FormFields/ServiceSelection";
@@ -61,7 +62,7 @@ const BookingForm = () => {
     if (phoneError) newErrors.phone = phoneError;
   
     const serviceError = getServiceError(service);
-      if (serviceError) newErrors.service = serviceError;
+    if (serviceError) newErrors.service = serviceError;
   
     const timeframeError = getTimeframeError(timeframe);
     if (timeframeError) newErrors.timeframe = timeframeError;
@@ -123,6 +124,7 @@ const BookingForm = () => {
             hasUnusedKey={hasUnusedKey}
             showAllKeysLostField={showAllKeysLostField}
             showUnusedKeyField={showUnusedKeyField}
+            onSubmit={handleSubmit}
           >
             <PersonalInfoFields
               name={name}

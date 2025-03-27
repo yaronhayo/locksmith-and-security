@@ -82,3 +82,33 @@ export const getNameError = (name: string): string | null => {
   }
   return null;
 };
+
+/**
+ * Validates that a service is selected
+ * @param service The selected service
+ * @returns Error message or null if valid
+ */
+export const getServiceError = (service: string): string | null => {
+  if (!service) return "Please select a service";
+  return null;
+};
+
+/**
+ * Validates that a timeframe is selected
+ * @param timeframe The selected timeframe
+ * @returns Error message or null if valid
+ */
+export const getTimeframeError = (timeframe: string): string | null => {
+  if (!timeframe) return "Please select when you need service";
+  return null;
+};
+
+/**
+ * Validates that an address is provided
+ * @param address The address string
+ * @returns Error message or null if valid
+ */
+export const getAddressError = (address: string): string | null => {
+  if (!address || address.trim() === '') return "Please enter a valid address";
+  return null;
+};

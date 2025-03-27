@@ -15,36 +15,17 @@ interface FormContainerProps {
   hasUnusedKey: string;
   showAllKeysLostField: boolean;
   showUnusedKeyField: boolean;
+  onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
 }
 
 const FormContainer = ({
   children,
-  errors,
-  setErrors,
-  showVehicleInfo,
-  recaptchaToken,
-  address,
-  allKeysLost,
-  hasUnusedKey,
-  showAllKeysLostField,
-  showUnusedKeyField
+  onSubmit,
+  ...props
 }: FormContainerProps) => {
-  // Use the booking submission hook
-  const { isSubmitting, handleSubmit } = useBookingSubmission({
-    validateForm,
-    setErrors,
-    showVehicleInfo,
-    recaptchaToken,
-    address,
-    allKeysLost,
-    hasUnusedKey,
-    showAllKeysLostField,
-    showUnusedKeyField
-  });
-
   return (
     <form 
-      onSubmit={handleSubmit} 
+      onSubmit={onSubmit} 
       className="space-y-2.5 max-w-full overflow-visible" 
       role="form" 
       aria-label="Service booking form"
