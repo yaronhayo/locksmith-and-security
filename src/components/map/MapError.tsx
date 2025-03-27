@@ -4,12 +4,16 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 
 interface MapErrorProps {
-  error: string;
+  error: string | React.ReactNode;
+  onRetry?: () => void;
 }
 
-const MapError = ({ error }: MapErrorProps) => {
-  const isBillingError = error?.toLowerCase().includes('billing') || 
-                          error?.toLowerCase().includes('payment');
+const MapError = ({ error, onRetry }: MapErrorProps) => {
+  const errorStr = typeof error === 'string' ? error : '';
+  
+  const isBillingError = errorStr?.toLowerCase().includes('billing') || 
+                          errorStr?.toLowerCase().includes('payment') ||
+                          errorStr?.toLowerCase().includes('development purposes');
 
   const googleConsoleUrl = "https://console.cloud.google.com/project/_/billing/enable";
 
@@ -17,7 +21,7 @@ const MapError = ({ error }: MapErrorProps) => {
     <Alert variant="destructive" className="mb-4">
       <AlertCircle className="h-4 w-4" />
       <AlertDescription className="space-y-2">
-        <p>{error}</p>
+        {error}
         {isBillingError && (
           <div className="mt-2 text-sm">
             <p className="font-medium">This appears to be a Google Maps billing issue.</p>
@@ -25,14 +29,26 @@ const MapError = ({ error }: MapErrorProps) => {
             <ol className="list-decimal ml-5 mt-1 space-y-1">
               <li>Enable billing for your Google Cloud Project</li>
               <li>Ensure the Maps JavaScript API and Places API are enabled</li>
+              <li>Wait a few minutes for the changes to propagate</li>
             </ol>
-            <Button 
-              variant="link" 
-              className="p-0 h-auto mt-1 text-blue-500 hover:text-blue-700" 
-              onClick={() => window.open(googleConsoleUrl, '_blank')}
-            >
-              Open Google Cloud Console
-            </Button>
+            <div className="mt-2 flex flex-wrap gap-3">
+              <Button 
+                variant="link" 
+                className="p-0 h-auto text-blue-500 hover:text-blue-700" 
+                onClick={() => window.open(googleConsoleUrl, '_blank')}
+              >
+                Open Google Cloud Console
+              </Button>
+              {onRetry && (
+                <Button 
+                  variant="link" 
+                  className="p-0 h-auto text-blue-500 hover:text-blue-700" 
+                  onClick={onRetry}
+                >
+                  Try Again
+                </Button>
+              )}
+            </div>
           </div>
         )}
       </AlertDescription>

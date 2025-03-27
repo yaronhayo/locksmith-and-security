@@ -96,7 +96,7 @@ const GoogleMap = ({
   if (combinedError) {
     return (
       <div className="h-full flex items-center justify-center p-4">
-        <MapError error={combinedError} />
+        <MapError error={combinedError} onRetry={reloadMapsScript} />
       </div>
     );
   }

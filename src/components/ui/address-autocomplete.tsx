@@ -5,7 +5,7 @@ import { InputHTMLAttributes } from "react";
 import { Loader2 } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { cn } from "@/lib/utils";
-import { useScripts, ScriptError } from "@/components/providers/ScriptsProvider";
+import { useScripts } from "@/components/providers/ScriptsProvider";
 import { Button } from "./button";
 
 type AddressAutocompleteProps = Omit<InputHTMLAttributes<HTMLInputElement>, 'onChange'> & {
@@ -83,7 +83,8 @@ const AddressAutocomplete = ({
       // Check if this is a billing error
       if (errorMessage.toLowerCase().includes('billing') || 
           errorMessage.toLowerCase().includes('payment') ||
-          errorMessage.toLowerCase().includes('api key')) {
+          errorMessage.toLowerCase().includes('api key') ||
+          errorMessage.toLowerCase().includes('development')) {
         setError("Google Maps API billing issue. Please enable billing in Google Cloud Console.");
       }
     }
@@ -161,6 +162,7 @@ const AddressAutocomplete = ({
                 <ol className="list-decimal ml-4 mt-1">
                   <li>Enable billing for your Google Cloud Project</li>
                   <li>Ensure the Maps JavaScript API and Places API are enabled</li>
+                  <li>Wait a few minutes for changes to propagate</li>
                 </ol>
                 <div className="mt-2 flex space-x-2">
                   <Button 
