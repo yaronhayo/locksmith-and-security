@@ -26,7 +26,8 @@ https://www.247locksmithandsecurity.com/* https://247locksmithandsecurity.com/:s
 # Handle client-side routing
 /* /index.html 200
 
-# Specific routes
+# Specific routes - explicitly mention thank-you page
+/thank-you /index.html 200
 /service-areas/* /index.html 200
 /services/* /index.html 200
 /about /index.html 200
@@ -35,7 +36,6 @@ https://www.247locksmithandsecurity.com/* https://247locksmithandsecurity.com/:s
 /faq /index.html 200
 /privacy-policy /index.html 200
 /terms-conditions /index.html 200
-/thank-you /index.html 200
 /book-online /index.html 200
 /sitemap /index.html 200
 
