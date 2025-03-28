@@ -1,9 +1,10 @@
+
 interface GeolocationData {
-  city?: string;
-  region?: string;
-  country?: string;
-  latitude?: number;
-  longitude?: number;
+  city?: string | null;
+  region?: string | null;
+  country?: string | null;
+  latitude?: number | null;
+  longitude?: number | null;
 }
 
 export interface SessionData {
@@ -260,8 +261,11 @@ export const getSessionData = async (): Promise<SessionData> => {
       
       if (position && position.coords) {
         geolocationData = {
-          latitude: position.coords.latitude,
-          longitude: position.coords.longitude
+          latitude: position.coords.latitude || null,
+          longitude: position.coords.longitude || null,
+          city: null,
+          region: null,
+          country: null
           // city, region and country would be populated by a reverse geocoding service
           // but for now we'll just include the coordinates
         };

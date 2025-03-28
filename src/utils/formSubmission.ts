@@ -13,44 +13,57 @@ export const submitFormData = async (formData: SubmissionData) => {
     // Convert visitor info to a plain JSON-serializable object
     const visitorInfo = {
       ...formData.visitor_info,
-      ...sessionData.visitorInfo,
+      userAgent: sessionData.visitorInfo.userAgent,
+      language: sessionData.visitorInfo.language,
+      platform: sessionData.visitorInfo.platform,
+      screenResolution: sessionData.visitorInfo.screenResolution,
+      windowSize: sessionData.visitorInfo.windowSize,
+      timestamp: sessionData.visitorInfo.timestamp,
+      timezone: sessionData.visitorInfo.timezone,
+      deviceType: sessionData.visitorInfo.deviceType,
+      browser: sessionData.visitorInfo.browser,
+      browserVersion: sessionData.visitorInfo.browserVersion,
+      operatingSystem: sessionData.visitorInfo.operatingSystem,
+      formCompletionTime: sessionData.visitorInfo.formCompletionTime,
+      pageLoadTime: sessionData.visitorInfo.pageLoadTime,
+      visitDuration: sessionData.visitorInfo.visitDuration
     };
     
     // If geolocation exists, convert it to a plain object
     if (sessionData.visitorInfo.geolocation) {
-      visitorInfo.geolocation = {
-        city: sessionData.visitorInfo.geolocation.city,
-        region: sessionData.visitorInfo.geolocation.region,
-        country: sessionData.visitorInfo.geolocation.country,
-        latitude: sessionData.visitorInfo.geolocation.latitude,
-        longitude: sessionData.visitorInfo.geolocation.longitude
+      (visitorInfo as any).geolocation = {
+        city: sessionData.visitorInfo.geolocation.city || null,
+        region: sessionData.visitorInfo.geolocation.region || null,
+        country: sessionData.visitorInfo.geolocation.country || null,
+        latitude: sessionData.visitorInfo.geolocation.latitude || null,
+        longitude: sessionData.visitorInfo.geolocation.longitude || null
       };
     }
     
     // Prepare the traffic source data with correct field names for database
     const trafficSourceData = {
-      source: sessionData.trafficSource.source,
-      medium: sessionData.trafficSource.medium,
-      campaign: sessionData.trafficSource.campaign,
-      keyword: sessionData.trafficSource.keyword,
-      click_path: sessionData.trafficSource.clickPath // Map clickPath to click_path for database
+      source: sessionData.trafficSource.source || 'direct',
+      medium: sessionData.trafficSource.medium || 'none',
+      campaign: sessionData.trafficSource.campaign || '',
+      keyword: sessionData.trafficSource.keyword || '',
+      click_path: sessionData.trafficSource.clickPath || [] // Map clickPath to click_path for database
     };
     
     // Prepare page metrics for storage
     const pageMetricsData = {
-      timeOnPage: sessionData.pageMetrics.timeOnPage,
-      scrollDepth: sessionData.pageMetrics.scrollDepth,
-      pageInteractions: sessionData.pageMetrics.pageInteractions,
-      formFocusEvents: sessionData.pageMetrics.formFocusEvents,
-      conversionTime: sessionData.pageMetrics.conversionTime
+      timeOnPage: sessionData.pageMetrics.timeOnPage || 0,
+      scrollDepth: sessionData.pageMetrics.scrollDepth || 0,
+      pageInteractions: sessionData.pageMetrics.pageInteractions || 0,
+      formFocusEvents: sessionData.pageMetrics.formFocusEvents || 0,
+      conversionTime: sessionData.pageMetrics.conversionTime || 0
     };
     
     // Merge the session data with the form data
     const enhancedFormData = {
       ...formData,
-      visitor_info: visitorInfo,
-      traffic_source: trafficSourceData, // Use the converted data structure
-      page_metrics: pageMetricsData,
+      visitor_info: visitorInfo as any,
+      traffic_source: trafficSourceData as any, // Use the converted data structure
+      page_metrics: pageMetricsData as any,
       // Ensure unit_number and gate_code are included if they exist
       unit_number: formData.unit_number || null,
       gate_code: formData.gate_code || null
@@ -61,7 +74,7 @@ export const submitFormData = async (formData: SubmissionData) => {
     // Insert data into Supabase submissions table
     const { data, error } = await supabase
       .from('submissions')
-      .insert(enhancedFormData)
+      .insert(enhancedFormData as any)
       .select()
       .single();
       

@@ -13,44 +13,51 @@ export const submitBookingForm = async (data: SubmitData) => {
     console.log("Collecting session data for booking form...");
     const sessionData = await getSessionData();
     
-    // Convert geolocation to a regular object that's compatible with JSON
+    // Convert visitor info to a plain JSON-serializable object
     const visitorInfo = {
-      ...sessionData.visitorInfo,
       userAgent: navigator.userAgent,
       language: navigator.language,
       platform: navigator.platform,
       screenResolution: `${window.screen.width}x${window.screen.height}`,
       windowSize: `${window.innerWidth}x${window.innerHeight}`,
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
+      timezone: sessionData.visitorInfo.timezone,
+      deviceType: sessionData.visitorInfo.deviceType,
+      browser: sessionData.visitorInfo.browser,
+      browserVersion: sessionData.visitorInfo.browserVersion,
+      operatingSystem: sessionData.visitorInfo.operatingSystem,
+      formCompletionTime: sessionData.visitorInfo.formCompletionTime,
+      pageLoadTime: sessionData.visitorInfo.pageLoadTime,
+      visitDuration: sessionData.visitorInfo.visitDuration
     };
 
-    // If geolocation exists, convert it to a plain object
+    // Add geolocation as a plain object if it exists
     if (sessionData.visitorInfo.geolocation) {
-      visitorInfo.geolocation = {
-        city: sessionData.visitorInfo.geolocation.city,
-        region: sessionData.visitorInfo.geolocation.region,
-        country: sessionData.visitorInfo.geolocation.country,
-        latitude: sessionData.visitorInfo.geolocation.latitude,
-        longitude: sessionData.visitorInfo.geolocation.longitude
+      (visitorInfo as any).geolocation = {
+        city: sessionData.visitorInfo.geolocation.city || null,
+        region: sessionData.visitorInfo.geolocation.region || null,
+        country: sessionData.visitorInfo.geolocation.country || null,
+        latitude: sessionData.visitorInfo.geolocation.latitude || null,
+        longitude: sessionData.visitorInfo.geolocation.longitude || null
       };
     }
     
-    // Prepare the traffic source as a plain object
+    // Prepare traffic source as a plain object
     const trafficSource = {
-      source: sessionData.trafficSource.source,
-      medium: sessionData.trafficSource.medium,
-      campaign: sessionData.trafficSource.campaign,
-      keyword: sessionData.trafficSource.keyword,
-      click_path: sessionData.trafficSource.clickPath
+      source: sessionData.trafficSource.source || 'direct',
+      medium: sessionData.trafficSource.medium || 'none',
+      campaign: sessionData.trafficSource.campaign || '',
+      keyword: sessionData.trafficSource.keyword || '',
+      click_path: sessionData.trafficSource.clickPath || []
     };
     
     // Prepare the page metrics as a plain object
     const pageMetrics = {
-      timeOnPage: sessionData.pageMetrics.timeOnPage,
-      scrollDepth: sessionData.pageMetrics.scrollDepth,
-      pageInteractions: sessionData.pageMetrics.pageInteractions,
-      formFocusEvents: sessionData.pageMetrics.formFocusEvents,
-      conversionTime: sessionData.pageMetrics.conversionTime
+      timeOnPage: sessionData.pageMetrics.timeOnPage || 0,
+      scrollDepth: sessionData.pageMetrics.scrollDepth || 0,
+      pageInteractions: sessionData.pageMetrics.pageInteractions || 0,
+      formFocusEvents: sessionData.pageMetrics.formFocusEvents || 0,
+      conversionTime: sessionData.pageMetrics.conversionTime || 0
     };
     
     // Prepare vehicle info if it exists
@@ -62,7 +69,7 @@ export const submitBookingForm = async (data: SubmitData) => {
       has_unused_key: data.vehicle_info.has_unused_key || false
     } : null;
     
-    // Prepare the submission data
+    // Prepare the submission data as a plain JSON-serializable object
     const submissionData = {
       type: "booking",
       name: data.name,
@@ -75,12 +82,12 @@ export const submitBookingForm = async (data: SubmitData) => {
       timeframe: data.timeframe,
       notes: data.notes || null,
       status: "pending",
-      visitor_info: visitorInfo,
+      visitor_info: visitorInfo as any, // Type assertion to avoid TypeScript errors
       source_url: data.source_url,
       recaptcha_token: data.recaptchaToken,
       vehicle_info: vehicleInfo,
-      traffic_source: trafficSource,
-      page_metrics: pageMetrics
+      traffic_source: trafficSource as any, // Type assertion to avoid TypeScript errors
+      page_metrics: pageMetrics as any // Type assertion to avoid TypeScript errors
     };
     
     console.log("Submitting booking form data to Supabase:", submissionData);
@@ -88,7 +95,7 @@ export const submitBookingForm = async (data: SubmitData) => {
     // Insert the submission into the Supabase table
     const { data: result, error } = await supabase
       .from('submissions')
-      .insert(submissionData)
+      .insert(submissionData as any) // Type assertion to avoid TypeScript errors
       .select()
       .single();
       
