@@ -46,7 +46,7 @@ const ThankYouPage = () => {
             transition={{ delay: 0.2, type: "spring" }}
             className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto"
           >
-            <Check className="w-10 h-10 text-green-600" />
+            <Check className="h-10 w-10 text-green-600" />
           </motion.div>
 
           <h1 className="text-3xl font-bold text-gray-900">Thank You!</h1>
