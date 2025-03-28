@@ -146,11 +146,19 @@ export default defineConfig(({ mode }) => ({
     ],
     exclude: []
   },
-  // Ensure proper content types are set for JavaScript modules
+  // Fix the preview headers format to match OutgoingHttpHeaders type
   preview: {
     headers: {
-      '*.js': {
+      // Use proper format for headers instead of wildcard key
+      '.js': {
         'Content-Type': 'application/javascript'
+      },
+      // Adding more specific content types to ensure proper loading
+      '.mjs': {
+        'Content-Type': 'application/javascript'
+      },
+      '.css': {
+        'Content-Type': 'text/css'
       }
     }
   }
