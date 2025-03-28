@@ -27,7 +27,7 @@ const ImageOptimized = ({
     width,
     height,
     loading: priority ? "eager" : "lazy",
-    fetchPriority: priority ? "high" : "auto", // TypeScript expects camelCase
+    fetchPriority: priority ? "high" : "auto" as "high" | "auto" | "low",
     decoding: "async" as const,
     onError: (e: React.SyntheticEvent<HTMLImageElement>) => {
       const img = e.target as HTMLImageElement;
@@ -37,10 +37,12 @@ const ImageOptimized = ({
   };
 
   // Convert the props to a format the DOM expects (lowercase attributes)
-  const domProps = {
-    ...imgProps,
-    fetchpriority: imgProps.fetchPriority,
+  const domProps: React.ImgHTMLAttributes<HTMLImageElement> = {
+    ...imgProps
   };
+  
+  // Add the lowercase fetchpriority attribute for DOM rendering
+  (domProps as any).fetchpriority = imgProps.fetchPriority;
   
   // Remove the camelCase property to avoid duplicate attributes
   delete (domProps as any).fetchPriority;

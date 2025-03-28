@@ -1,3 +1,4 @@
+
 import { memo, useState, useEffect } from 'react';
 import { trackImageLoad } from '@/utils/performanceMonitoring';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -144,7 +145,7 @@ const ResponsiveImage = ({
     sizes,
     alt: safeAlt,
     loading: priority ? "eager" : (lazyLoad ? "lazy" : "eager"),
-    fetchPriority: priority ? "high" : "auto",
+    fetchPriority: priority ? "high" : "auto" as "high" | "auto" | "low",
     onLoad: handleImageLoad,
     onError: handleImageError,
     className: cn(
@@ -155,11 +156,15 @@ const ResponsiveImage = ({
     ...props
   };
 
-  const domProps = {
-    ...imgProps,
-    fetchpriority: imgProps.fetchPriority,
+  // Create a DOM-compatible props object
+  const domProps: React.ImgHTMLAttributes<HTMLImageElement> = {
+    ...imgProps
   };
-
+  
+  // Add lowercase fetchpriority for DOM rendering
+  (domProps as any).fetchpriority = imgProps.fetchPriority;
+  
+  // Remove camelCase fetchPriority to avoid duplicates
   delete (domProps as any).fetchPriority;
 
   return (
