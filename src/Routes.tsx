@@ -12,7 +12,6 @@ import ErrorFallback from "./components/ErrorFallback";
 const NotFound = lazy(() => import('./pages/404'));
 
 const Routes = () => {
-  console.log("Rendering Routes component");
   return (
     <ErrorBoundary FallbackComponent={ErrorFallback}>
       <Suspense fallback={<PageLoading type="skeleton" />}>
