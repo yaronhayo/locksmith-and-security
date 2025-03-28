@@ -11,8 +11,19 @@ export const validateForm = (formData: FormData, showVehicleInfo: boolean) => {
     errors.name = "Please enter a valid name (minimum 2 characters)";
   }
   
-  if (!phone || !/^[\d\s()-]{10,}$/.test(phone)) {
-    errors.phone = "Please enter a valid phone number";
+  // More flexible phone validation to accept various US formats
+  if (!phone) {
+    errors.phone = "Please enter a phone number";
+  } else {
+    const cleanedPhone = phone.replace(/\D/g, '');
+    // Account for country code (starting with 1)
+    const phoneDigits = cleanedPhone.startsWith('1') && cleanedPhone.length > 10 
+      ? cleanedPhone.substring(1) 
+      : cleanedPhone;
+      
+    if (phoneDigits.length < 10) {
+      errors.phone = "Please enter a valid US phone number";
+    }
   }
   
   if (!address || !address.trim()) {
@@ -44,4 +55,3 @@ export const validateForm = (formData: FormData, showVehicleInfo: boolean) => {
     errors
   };
 };
-

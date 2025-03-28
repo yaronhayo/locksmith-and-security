@@ -5,8 +5,13 @@
  * @returns Formatted phone number
  */
 export const formatPhoneNumber = (value: string): string => {
-  // Strip all non-numeric characters
-  const cleaned = value.replace(/\D/g, '');
+  // Remove all non-digit characters
+  let cleaned = value.replace(/\D/g, '');
+  
+  // Handle country code: if it starts with 1 and has more than 10 digits, remove the 1
+  if (cleaned.length > 10 && cleaned.startsWith('1')) {
+    cleaned = cleaned.substring(1);
+  }
   
   // Limit to 10 digits
   const trimmed = cleaned.substring(0, 10);
@@ -49,7 +54,13 @@ export const getEmailError = (email: string): string | null => {
 export const getPhoneError = (phone: string): string | null => {
   if (!phone) return null;
   const cleaned = phone.replace(/\D/g, '');
-  if (cleaned.length < 10) {
+  
+  // Handle country code: if it starts with 1 and has more than 10 digits, remove the 1
+  const digits = cleaned.startsWith('1') && cleaned.length > 10 
+    ? cleaned.substring(1) 
+    : cleaned;
+    
+  if (digits.length < 10) {
     return "Please enter a complete phone number";
   }
   return null;
