@@ -103,11 +103,18 @@ export const ScriptsProvider = ({ children }: ScriptsProviderProps) => {
     if (isLoadingRecaptchaKey || !recaptchaKey || recaptchaKeyError) return;
     if (recaptchaLoaded) return;
 
-    // Check if script is already loaded
-    if (window.grecaptcha) {
-      console.log("reCAPTCHA already loaded");
-      setRecaptchaLoaded(true);
-      return;
+    // Check if script is already loaded or in the process of loading
+    if (document.getElementById('recaptcha-script')) {
+      // Script tag exists, check if API is available
+      if (window.grecaptcha && window.grecaptcha.render) {
+        console.log("reCAPTCHA already loaded and initialized");
+        setRecaptchaLoaded(true);
+        return;
+      }
+      
+      // Script tag exists but API might not be ready yet, wait for it
+      console.log("reCAPTCHA script tag exists but API not ready yet");
+      // We'll continue with the loading process and let the load event handle it
     }
 
     console.log("Loading reCAPTCHA script...");
@@ -117,16 +124,34 @@ export const ScriptsProvider = ({ children }: ScriptsProviderProps) => {
     if (!script) {
       script = document.createElement('script');
       script.id = scriptId;
-      script.src = `https://www.google.com/recaptcha/api.js?render=explicit`;
+      // Explicitly use the explicit render mode
+      script.src = `https://www.google.com/recaptcha/api.js?onload=onRecaptchaLoaded&render=explicit`;
       script.async = true;
       script.defer = true;
     }
 
-    const handleLoad = () => {
-      console.log("reCAPTCHA script loaded successfully");
+    // Define global callback for reCAPTCHA
+    window.onRecaptchaLoaded = () => {
+      console.log("reCAPTCHA script loaded successfully via callback");
       setRecaptchaLoaded(true);
       setRecaptchaError(null);
       document.dispatchEvent(new Event('recaptcha-loaded'));
+    };
+
+    const handleLoad = () => {
+      console.log("reCAPTCHA script onload event fired");
+      // The onload callback should be triggered separately
+      // Wait a bit for grecaptcha to be fully initialized
+      setTimeout(() => {
+        if (window.grecaptcha && window.grecaptcha.render) {
+          console.log("reCAPTCHA fully initialized on script load");
+          setRecaptchaLoaded(true);
+          setRecaptchaError(null);
+          document.dispatchEvent(new Event('recaptcha-loaded'));
+        } else {
+          console.log("reCAPTCHA not fully initialized yet, waiting for callback");
+        }
+      }, 500);
     };
 
     const handleError = () => {

@@ -6,6 +6,14 @@ import './index.css'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { initSessionTracking } from './utils/sessionTracker.ts'
 
+// Add reCAPTCHA callback to window
+declare global {
+  interface Window {
+    onRecaptchaLoaded: () => void;
+    grecaptcha: any;
+  }
+}
+
 // Save UTM parameters to localStorage for tracking throughout the session
 const saveUtmParams = () => {
   if (typeof window !== 'undefined') {
@@ -20,6 +28,11 @@ const saveUtmParams = () => {
     if (utmCampaign) localStorage.setItem('utm_campaign', utmCampaign);
     if (utmTerm) localStorage.setItem('utm_term', utmTerm);
   }
+};
+
+// Default global callback for reCAPTCHA
+window.onRecaptchaLoaded = () => {
+  console.log("reCAPTCHA loaded callback triggered from global scope");
 };
 
 // Call the function to save UTM parameters

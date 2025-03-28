@@ -11,7 +11,7 @@ interface RecaptchaFieldProps {
 }
 
 const RecaptchaField = ({ onChange, error, className = "" }: RecaptchaFieldProps) => {
-  const recaptchaId = "g-recaptcha-response";
+  const recaptchaId = "booking-recaptcha";
   
   return (
     <div className={`w-full overflow-x-auto ${className}`} id="recaptcha-container">
