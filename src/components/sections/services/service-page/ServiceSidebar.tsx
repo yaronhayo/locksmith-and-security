@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Phone, Calendar, ShieldCheck, Star, Clock, ArrowUpRight } from "lucide-react";
@@ -35,14 +34,13 @@ const ServiceSidebar: React.FC<ServiceSidebarProps> = ({ serviceName, relatedSer
             </p>
             <div className="space-y-3">
               <Button 
-                variant="secondary" 
+                className="w-full bg-secondary hover:bg-secondary-hover text-primary font-semibold shadow-lg hover:shadow-xl transition-all duration-300" 
                 size="lg" 
-                className="w-full justify-center text-primary font-semibold hover:bg-secondary-hover hover:text-primary-dark"
                 asChild
               >
-                <a href={phoneHref} className="flex items-center justify-center">
+                <a href="tel:+12017482070" className="flex items-center justify-center py-6">
                   <Phone className="mr-2 h-5 w-5" />
-                  <DynamicPhoneNumber />
+                  Call For Assistance
                 </a>
               </Button>
               <Button 

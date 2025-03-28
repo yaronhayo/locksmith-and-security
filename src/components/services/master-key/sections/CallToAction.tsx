@@ -12,7 +12,7 @@ const CallToAction = () => {
         </div>
         <div className="flex flex-col sm:flex-row gap-3">
           <Button asChild size="lg">
-            <a href="tel:2017482070">Call Now</a>
+            <a href="tel:+12017482070">Call Now</a>
           </Button>
           <Button asChild variant="outline" size="lg">
             <Link to="/contact">Get a Quote</Link>

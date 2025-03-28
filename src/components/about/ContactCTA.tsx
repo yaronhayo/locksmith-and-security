@@ -41,7 +41,7 @@ const ContactCTA = () => {
                   <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center mr-4 group-hover:bg-white/20 transition-colors">
                     <Phone className="h-5 w-5 text-white" />
                   </div>
-                  <span className="text-lg">(551) 303-7874</span>
+                  <span className="text-lg">+1 (347) 806-9970</span>
                 </motion.div>
                 
                 <motion.div 

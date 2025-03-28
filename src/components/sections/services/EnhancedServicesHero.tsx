@@ -1,4 +1,3 @@
-
 import React, { useEffect } from 'react';
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
@@ -88,9 +87,9 @@ const EnhancedServicesHero: React.FC<EnhancedServicesHeroProps> = memo(({
                 asChild 
                 className="text-primary font-semibold hover:text-primary-dark hover:bg-secondary-hover text-base sm:text-lg py-6 px-6 shadow-lg hover:shadow-xl transition-all duration-300"
               >
-                <a href="tel:2017482070" className="flex items-center">
+                <a href="tel:+12017482070" className="flex items-center">
                   <Phone className="mr-3 h-5 w-5" />
-                  (201) 748-2070
+                  +1 (201) 748-2070
                 </a>
               </Button>
               <Button 

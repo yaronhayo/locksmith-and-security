@@ -1,21 +1,22 @@
-
 /**
  * Formats a phone number input to US format: (XXX) XXX-XXXX
  * @param value The input phone number string
  * @returns Formatted phone number
  */
 export const formatPhoneNumber = (value: string): string => {
-  // Strip all non-numeric characters
-  const cleaned = value.replace(/\D/g, '');
+  // Remove all non-digit characters
+  const digits = value.replace(/\D/g, '');
   
-  // Limit to 10 digits
-  const trimmed = cleaned.substring(0, 10);
-  
-  // Format as (XXX) XXX-XXXX
-  if (trimmed.length === 0) return '';
-  if (trimmed.length <= 3) return `(${trimmed}`;
-  if (trimmed.length <= 6) return `(${trimmed.slice(0, 3)}) ${trimmed.slice(3)}`;
-  return `(${trimmed.slice(0, 3)}) ${trimmed.slice(3, 6)}-${trimmed.slice(6)}`;
+  // Format based on the number of digits
+  if (digits.length === 0) {
+    return '';
+  } else if (digits.length <= 3) {
+    return `+1 (${digits}`;
+  } else if (digits.length <= 6) {
+    return `+1 (${digits.slice(0, 3)}) ${digits.slice(3)}`;
+  } else {
+    return `+1 (${digits.slice(0, 3)}) ${digits.slice(3, 6)}-${digits.slice(6, 10)}`;
+  }
 };
 
 /**
@@ -47,11 +48,18 @@ export const getEmailError = (email: string): string | null => {
  * @returns Error message or null if valid
  */
 export const getPhoneError = (phone: string): string | null => {
-  if (!phone) return null;
-  const cleaned = phone.replace(/\D/g, '');
-  if (cleaned.length < 10) {
-    return "Please enter a complete phone number";
+  if (!phone) {
+    return 'Phone number is required';
   }
+  
+  // Strip all non-digit characters for validation
+  const digits = phone.replace(/\D/g, '');
+  
+  // Check the length (accounting for the country code)
+  if (digits.length < 10) {
+    return 'Please enter a valid phone number';
+  }
+  
   return null;
 };
 

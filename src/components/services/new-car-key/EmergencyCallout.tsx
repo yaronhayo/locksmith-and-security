@@ -30,8 +30,8 @@ const EmergencyCallout = () => {
           </div>
         </div>
         <Button size="lg" variant="secondary" asChild className="whitespace-nowrap">
-          <a href="tel:2017482070" className="text-lg">
-            (201) 748-2070
+          <a href="tel:+12017482070" className="text-lg">
+            +1 (201) 748-2070
           </a>
         </Button>
       </div>

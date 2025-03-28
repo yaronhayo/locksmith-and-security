@@ -11,9 +11,9 @@ const EmergencyCallout = () => {
       </p>
       <div className="flex flex-col sm:flex-row gap-4">
         <Button size="lg" asChild>
-          <a href="tel:2017482070" className="flex items-center">
+          <a href="tel:+12017482070" className="flex items-center">
             <Phone className="mr-2" />
-            Call (201) 748-2070
+            Call +1 (201) 748-2070
           </a>
         </Button>
         <Button size="lg" variant="secondary" asChild>
