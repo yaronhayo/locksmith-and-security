@@ -1,4 +1,3 @@
-
 /**
  * Utility to track Maps API loading state and manage initialization
  */
@@ -11,10 +10,24 @@ export const MapLoader = {
    * Add a callback to be executed when Maps API is loaded
    */
   onLoad(callback: Function) {
-    if (this.isLoaded) {
+    // If Maps API is already loaded, execute callback immediately
+    if (window.google?.maps?.places) {
+      this.isLoaded = true;
       callback();
-    } else {
-      this.callbacks.push(callback);
+      return;
+    }
+    
+    // Otherwise, queue the callback for when it loads
+    this.callbacks.push(callback);
+    
+    // Check again after a short delay (maps might be loading)
+    if (!this.isLoading) {
+      this.isLoading = true;
+      setTimeout(() => {
+        if (window.google?.maps?.places) {
+          this.initialize();
+        }
+      }, 500);
     }
   },
 
@@ -42,10 +55,7 @@ export const MapLoader = {
    * Verify that the required libraries are loaded
    */
   verifyLibraries(): boolean {
-    return !!(
-      window.google?.maps?.places?.Place?.PlaceAutocompleteElement ||
-      window.google?.maps?.places?.Autocomplete
-    );
+    return !!(window.google?.maps?.places);
   }
 };
 

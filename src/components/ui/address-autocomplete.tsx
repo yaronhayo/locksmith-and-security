@@ -152,6 +152,13 @@ const AddressAutocomplete = ({
     }
   }, [googleMapsLoaded]);
 
+  // Always show fallback input if Google Maps fails to load or if initialization fails
+  useEffect(() => {
+    if (mapsError || !googleMapsLoaded) {
+      setShowFallbackInput(true);
+    }
+  }, [mapsError, googleMapsLoaded]);
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     onChange(e.target.value);
     setError(null);
