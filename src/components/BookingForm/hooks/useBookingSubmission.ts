@@ -98,9 +98,6 @@ export const useBookingSubmission = ({
       const gateCode = formData.get("gate_code") as string;
       const otherService = formData.get("other_service") as string;
 
-      // Format address with unit number if provided
-      const formattedAddress = address;
-
       // Prepare vehicle information if needed
       let vehicleInfo = null;
       if (showVehicleInfo) {
@@ -111,6 +108,9 @@ export const useBookingSubmission = ({
           all_keys_lost: allKeysLost === "yes",
           has_unused_key: hasUnusedKey === "yes"
         };
+        
+        // Log the vehicle info to verify it's being populated correctly
+        console.log("Vehicle information being sent:", vehicleInfo);
       }
 
       // Prepare the submission data with explicit type literal
@@ -118,7 +118,7 @@ export const useBookingSubmission = ({
         type: "booking" as const,
         name,
         phone,
-        address: formattedAddress,
+        address: address,
         unit_number: unitNumber || null,
         gate_code: gateCode || null,
         service: service === "Other" ? otherService : service,

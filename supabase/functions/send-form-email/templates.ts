@@ -51,6 +51,18 @@ export const getBookingTemplate = (formData: FormData): string => {
             <td style="padding: 8px 0;"><strong>Address:</strong></td>
             <td style="padding: 8px 0;">${formData.address}</td>
           </tr>
+          ${formData.unit_number ? `
+          <tr>
+            <td style="padding: 8px 0;"><strong>Unit Number:</strong></td>
+            <td style="padding: 8px 0;">${formData.unit_number}</td>
+          </tr>
+          ` : ''}
+          ${formData.gate_code ? `
+          <tr>
+            <td style="padding: 8px 0;"><strong>Gate Code:</strong></td>
+            <td style="padding: 8px 0;">${formData.gate_code}</td>
+          </tr>
+          ` : ''}
           <tr>
             <td colspan="2">
               <h2 style="${sectionHeaderStyle}">Service Details</h2>
@@ -70,18 +82,24 @@ export const getBookingTemplate = (formData: FormData): string => {
                 <h2 style="${sectionHeaderStyle}">Vehicle Information</h2>
               </td>
             </tr>
+            ${formData.vehicle_info.year ? `
             <tr>
               <td style="padding: 8px 0;"><strong>Year:</strong></td>
-              <td style="padding: 8px 0;">${formData.vehicle_info.year || 'Not provided'}</td>
+              <td style="padding: 8px 0;">${formData.vehicle_info.year}</td>
             </tr>
+            ` : ''}
+            ${formData.vehicle_info.make ? `
             <tr>
               <td style="padding: 8px 0;"><strong>Make:</strong></td>
-              <td style="padding: 8px 0;">${formData.vehicle_info.make || 'Not provided'}</td>
+              <td style="padding: 8px 0;">${formData.vehicle_info.make}</td>
             </tr>
+            ` : ''}
+            ${formData.vehicle_info.model ? `
             <tr>
               <td style="padding: 8px 0;"><strong>Model:</strong></td>
-              <td style="padding: 8px 0;">${formData.vehicle_info.model || 'Not provided'}</td>
+              <td style="padding: 8px 0;">${formData.vehicle_info.model}</td>
             </tr>
+            ` : ''}
             ${formData.vehicle_info.all_keys_lost !== undefined ? `
               <tr>
                 <td style="padding: 8px 0;"><strong>All Keys Lost:</strong></td>
