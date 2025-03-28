@@ -24,7 +24,7 @@ const ActionButtons = ({ isMenuOpen, setIsMenuOpen }: ActionButtonsProps) => {
         <a href={phoneHref}>
           <Phone className="h-4 w-4 animate-phone-ring group-hover:text-black transition-transform duration-300" />
           <span className="hidden md:inline group-hover:text-black transition-colors duration-300">
-            <DynamicPhoneNumber />
+            <DynamicPhoneNumber asLink={false} />
           </span>
         </a>
       </Button>

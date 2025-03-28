@@ -1,9 +1,11 @@
 
 import React from "react";
 import { Phone, Mail, Clock } from "lucide-react";
-import { getPhoneNumber } from "@/utils/phoneUtils";
+import { usePhoneNumber } from "@/utils/phoneUtils";
 
 const ContactOptions = () => {
+  const { phoneNumber, phoneHref } = usePhoneNumber();
+  
   return (
     <div className="mt-8 border-t border-gray-200 pt-6">
       <h3 className="text-lg font-medium text-gray-900 mb-4">Other ways to contact us</h3>
@@ -15,10 +17,10 @@ const ContactOptions = () => {
           <div>
             <p className="text-sm font-medium">Phone</p>
             <a
-              href={`tel:${getPhoneNumber()}`}
+              href={phoneHref}
               className="text-sm text-blue-600 hover:text-blue-800"
             >
-              {getPhoneNumber()}
+              {phoneNumber}
             </a>
           </div>
         </div>

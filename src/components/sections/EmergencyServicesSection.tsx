@@ -74,7 +74,7 @@ const EmergencyServicesSection = () => {
           <Button size="lg" variant="secondary" asChild>
             <a href={phoneHref} className="flex items-center gap-2">
               <Phone className="w-4 h-4" />
-              Call <DynamicPhoneNumber />
+              Call <DynamicPhoneNumber asLink={false} />
             </a>
           </Button>
         </motion.div>

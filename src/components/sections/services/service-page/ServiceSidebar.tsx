@@ -42,7 +42,7 @@ const ServiceSidebar: React.FC<ServiceSidebarProps> = ({ serviceName, relatedSer
               >
                 <a href={phoneHref} className="flex items-center justify-center">
                   <Phone className="mr-2 h-5 w-5" />
-                  <DynamicPhoneNumber />
+                  <DynamicPhoneNumber asLink={false} />
                 </a>
               </Button>
               <Button 

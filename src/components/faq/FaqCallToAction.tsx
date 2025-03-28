@@ -24,7 +24,7 @@ const FaqCallToAction = () => {
       <Button size="lg" className="bg-[#F97316] hover:bg-[#F97316]/90">
         <a href={phoneHref} className="flex items-center">
           <Phone className="mr-2 h-5 w-5" />
-          Call <DynamicPhoneNumber />
+          Call <DynamicPhoneNumber asLink={false} />
         </a>
       </Button>
     </motion.div>
