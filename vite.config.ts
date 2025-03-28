@@ -43,6 +43,20 @@ const copyRedirects = () => {
   };
 };
 
+// Create a plugin to add a custom header to the index.html
+const addHtmlHeaders = () => {
+  return {
+    name: 'add-html-headers',
+    transformIndexHtml(html) {
+      // Ensure the DOCTYPE is correctly set
+      if (!html.trim().startsWith('<!DOCTYPE html>')) {
+        html = '<!DOCTYPE html>\n' + html.trim();
+      }
+      return html;
+    }
+  };
+};
+
 export default defineConfig(({ mode }) => ({
   server: {
     host: "::",
@@ -50,6 +64,7 @@ export default defineConfig(({ mode }) => ({
   },
   plugins: [
     react(),
+    addHtmlHeaders(),
     mode === 'development' && componentTagger(),
     mode === 'production' && generateSitemap(),
     mode === 'production' && copyRedirects(),
@@ -62,6 +77,8 @@ export default defineConfig(({ mode }) => ({
   build: {
     rollupOptions: {
       output: {
+        // Ensure proper module format and MIME types
+        format: 'es',
         manualChunks: (id) => {
           if (id.includes('node_modules')) {
             if (id.includes('react') || id.includes('react-dom')) {

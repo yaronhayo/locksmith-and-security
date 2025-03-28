@@ -1,5 +1,5 @@
 
-const CACHE_NAME = 'locksmith-cache-v3'; // Incrementing version to force cache purge
+const CACHE_NAME = 'locksmith-cache-v4'; // Incrementing version to force cache purge
 const urlsToCache = [
   '/',
   '/index.html',
@@ -17,6 +17,16 @@ self.addEventListener('install', (event) => {
 });
 
 self.addEventListener('fetch', (event) => {
+  // Special handling for JavaScript module scripts
+  if (event.request.url.endsWith('.js') && event.request.destination === 'script') {
+    event.respondWith(
+      fetch(event.request)
+        .catch(() => caches.match(event.request))
+    );
+    return;
+  }
+
+  // Default handling for other resources
   event.respondWith(
     caches.match(event.request)
       .then((response) => {
@@ -45,4 +55,3 @@ self.addEventListener('activate', (event) => {
   // Ensure the new service worker takes control immediately
   self.clients.claim();
 });
-

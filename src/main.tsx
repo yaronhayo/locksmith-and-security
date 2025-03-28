@@ -24,3 +24,15 @@ if ('serviceWorker' in navigator && import.meta.env.PROD) {
       });
   });
 }
+
+// Add console warning for module loading issues
+if (import.meta.env.PROD) {
+  console.log('Production build loaded successfully');
+  
+  // Add diagnostics for module loading
+  window.addEventListener('error', (event) => {
+    if (event.message && event.message.includes('Failed to load module script')) {
+      console.error('Module loading error detected. Please check network tab for details.');
+    }
+  });
+}
