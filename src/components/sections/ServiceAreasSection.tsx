@@ -42,6 +42,7 @@ const ServiceAreasSection = () => {
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting) {
+          console.log('ServiceAreasSection is in view, loading map...');
           setIsMapVisible(true);
           // Force re-render map after it becomes visible
           setMapKey(prev => prev + 1);
@@ -91,6 +92,7 @@ const ServiceAreasSection = () => {
   }
 
   if (error || !locations) {
+    console.error('Error loading service areas:', error);
     return (
       <div className="py-12 sm:py-16 md:py-20 bg-gray-50" id="service-areas-section">
         <div className="container mx-auto px-4 sm:px-6 flex justify-center items-center min-h-[400px]">
@@ -137,7 +139,7 @@ const ServiceAreasSection = () => {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.2 }}
-            className="bg-white rounded-xl shadow-lg overflow-hidden h-full"
+            className="bg-white rounded-xl shadow-lg overflow-hidden h-[400px] md:h-[500px]"
           >
             {isMapVisible ? (
               <ErrorBoundary FallbackComponent={MapError} key={`map-error-boundary-${mapKey}`}>
@@ -147,7 +149,7 @@ const ServiceAreasSection = () => {
                     markers={mapMarkers}
                     highlightedMarker={hoveredArea}
                     showAllMarkers={true}
-                    zoom={13}  // Increased from 11 to 13 for closer view
+                    zoom={11}
                     center={{ lat: 40.7795, lng: -74.0324 }} // North Bergen coordinates
                   />
                 </GoogleMapsProvider>

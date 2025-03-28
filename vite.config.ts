@@ -43,16 +43,31 @@ const copyRedirects = () => {
   };
 };
 
+// Custom plugin to copy index.html to the dist folder as 200.html for SPA routing
+const copySpaFallback = () => {
+  return {
+    name: 'copy-spa-fallback',
+    closeBundle: () => {
+      if (fs.existsSync('./dist/index.html')) {
+        fs.copyFileSync('./dist/index.html', './dist/200.html');
+        console.log('Created SPA fallback (200.html)');
+      }
+    },
+  };
+};
+
 export default defineConfig(({ mode }) => ({
   server: {
     host: "::",
     port: 8080,
+    cors: true
   },
   plugins: [
     react(),
     mode === 'development' && componentTagger(),
     mode === 'production' && generateSitemap(),
     mode === 'production' && copyRedirects(),
+    mode === 'production' && copySpaFallback()
   ].filter(Boolean),
   resolve: {
     alias: {
@@ -60,6 +75,10 @@ export default defineConfig(({ mode }) => ({
     },
   },
   build: {
+    outDir: 'dist',
+    assetsDir: 'assets',
+    emptyOutDir: true,
+    sourcemap: true,
     rollupOptions: {
       output: {
         manualChunks: (id) => {
@@ -92,9 +111,12 @@ export default defineConfig(({ mode }) => ({
           }
           if (id.includes('/pages/')) {
             // Extract more general page name to prevent too many chunks
-            const path = id.split('/pages/')[1].split('/')[0];
-            return `page-${path.replace(/\/.*/g, '')}`; // Remove nested paths to consolidate chunks
+            const path = id.split('/pages/')[1]?.split('/')[0];
+            if (path) {
+              return `page-${path.replace(/\/.*/g, '')}`; // Remove nested paths to consolidate chunks
+            }
           }
+          return null; // use default chunk
         },
         // Ensure proper MIME types for JavaScript modules
         entryFileNames: 'assets/[name].[hash].js',
@@ -103,9 +125,7 @@ export default defineConfig(({ mode }) => ({
       },
     },
     // Improve chunking to prevent dynamic import issues
-    chunkSizeWarningLimit: 1500,
-    sourcemap: true,
-    // Add minify options to optimize output
+    chunkSizeWarningLimit: 2000,
     minify: 'terser',
     terserOptions: {
       compress: {
@@ -126,4 +146,12 @@ export default defineConfig(({ mode }) => ({
     ],
     exclude: []
   },
+  // Ensure proper content types are set for JavaScript modules
+  preview: {
+    headers: {
+      '*.js': {
+        'Content-Type': 'application/javascript'
+      }
+    }
+  }
 }));
