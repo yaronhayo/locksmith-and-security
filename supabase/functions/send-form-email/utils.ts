@@ -1,154 +1,127 @@
 
-export const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
-};
+import { formatInTimeZone } from "date-fns-tz";
+import { VisitorInfo, TrafficSource, PageMetrics } from "./types.ts";
 
+// Format a date in Eastern Time
 export const formatInEasternTime = (date: Date): string => {
-  // Format date in Eastern Time (ET) as "M/D/YY at h:mma"
-  const options: Intl.DateTimeFormatOptions = {
-    timeZone: 'America/New_York',
-    month: 'numeric',
-    day: 'numeric',
-    year: '2-digit',
-    hour: 'numeric',
-    minute: '2-digit',
-    hour12: true
-  };
-  
-  const formattedDate = new Intl.DateTimeFormat('en-US', options).format(date);
-  // Replace the default comma with " at "
-  return formattedDate.replace(',', ' at');
+  try {
+    return formatInTimeZone(date, "America/New_York", "MMM d, yyyy 'at' h:mm a zzz");
+  } catch (error) {
+    console.error("Error formatting date in Eastern time:", error);
+    return date.toLocaleString('en-US', { 
+      timeZone: 'America/New_York',
+      dateStyle: 'medium',
+      timeStyle: 'medium'
+    }) + " ET";
+  }
 };
 
-export const formatVisitorInfo = (info?: FormData['visitor_info']): string => {
-  if (!info) return '';
-  
-  const sections = [
-    { title: 'Device Information', items: [
-      { label: 'Browser', value: info.browser || info.userAgent },
-      { label: 'Browser Version', value: info.browserVersion },
-      { label: 'Operating System', value: info.operatingSystem || info.platform },
-      { label: 'Device Type', value: info.deviceType || 'Unknown' },
-      { label: 'Language', value: info.language },
-      { label: 'Screen Size', value: info.screenResolution },
-      { label: 'Window Size', value: info.windowSize },
-      { label: 'Timezone', value: info.timezone || 'Unknown' },
-    ]},
-    { title: 'Session Metrics', items: [
-      { label: 'Form Completion Time', value: info.formCompletionTime ? `${info.formCompletionTime} seconds` : 'Unknown' },
-      { label: 'Page Load Time', value: info.pageLoadTime ? `${info.pageLoadTime} ms` : 'Unknown' },
-      { label: 'Visit Duration', value: info.visitDuration ? `${info.visitDuration} seconds` : 'Unknown' },
-      { label: 'Timestamp', value: info.timestamp },
-    ]}
-  ];
-  
-  let sectionHtml = '';
-  
-  sections.forEach(section => {
-    let itemsHtml = '';
-    section.items.forEach(item => {
-      if (item.value) {
-        itemsHtml += `<p style="margin: 5px 0;"><strong>${item.label}:</strong> ${item.value}</p>`;
-      }
-    });
-    
-    if (itemsHtml) {
-      sectionHtml += `
-        <h3 style="color: #1a365d; margin: 15px 0 10px; border-bottom: 1px solid #e2e8f0; padding-bottom: 5px;">${section.title}</h3>
-        ${itemsHtml}
-      `;
-    }
-  });
+// Format traffic source data
+export const formatTrafficSource = (source?: TrafficSource, metrics?: PageMetrics): string => {
+  if (!source) return '';
   
   return `
     <tr>
-      <td colspan="2" style="padding: 20px 0;">
-        <h3 style="color: #1a365d; margin-bottom: 15px; border-bottom: 1px solid #e2e8f0; padding-bottom: 10px;">Visitor Information</h3>
-        ${sectionHtml}
+      <td colspan="2">
+        <h3 style="color: #4a5568; margin: 20px 0 10px; border-bottom: 1px solid #edf2f7; padding-bottom: 5px;">
+          Traffic Source
+        </h3>
       </td>
     </tr>
+    <tr>
+      <td style="padding: 8px 0;"><strong>Source:</strong></td>
+      <td style="padding: 8px 0;">${source.source || 'Direct'}</td>
+    </tr>
+    <tr>
+      <td style="padding: 8px 0;"><strong>Medium:</strong></td>
+      <td style="padding: 8px 0;">${source.medium || 'None'}</td>
+    </tr>
+    ${source.campaign ? `
+      <tr>
+        <td style="padding: 8px 0;"><strong>Campaign:</strong></td>
+        <td style="padding: 8px 0;">${source.campaign}</td>
+      </tr>
+    ` : ''}
+    ${source.keyword ? `
+      <tr>
+        <td style="padding: 8px 0;"><strong>Keyword:</strong></td>
+        <td style="padding: 8px 0;">${source.keyword}</td>
+      </tr>
+    ` : ''}
+    ${metrics ? `
+      <tr>
+        <td style="padding: 8px 0;"><strong>Time on Page:</strong></td>
+        <td style="padding: 8px 0;">${metrics.timeOnPage} seconds</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px 0;"><strong>Scroll Depth:</strong></td>
+        <td style="padding: 8px 0;">${metrics.scrollDepth}%</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px 0;"><strong>Form Focus Events:</strong></td>
+        <td style="padding: 8px 0;">${metrics.formFocusEvents}</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px 0;"><strong>Conversion Time:</strong></td>
+        <td style="padding: 8px 0;">${metrics.conversionTime} seconds</td>
+      </tr>
+    ` : ''}
   `;
 };
 
-export const formatTrafficSource = (info?: FormData['traffic_source'], pageMetrics?: FormData['page_metrics']): string => {
-  if (!info && !pageMetrics) return '';
-  
-  const trafficInfoItems = info ? [
-    { label: 'Source', value: info.source || 'Direct' },
-    { label: 'Medium', value: info.medium || 'N/A' },
-    { label: 'Campaign', value: info.campaign || 'N/A' },
-    { label: 'Keyword', value: info.keyword || 'N/A' },
-    { label: 'Referrer', value: info.referrer || 'N/A' },
-    { label: 'Entry Page', value: info.entryPage || 'N/A' },
-    { label: 'Direct Navigation', value: info.directNavigation ? 'Yes' : 'No' },
-    { label: 'Previous Visits', value: info.previousVisits !== undefined ? info.previousVisits.toString() : 'Unknown' },
-    { label: 'Previous Submissions', value: info.previousSubmissions !== undefined ? info.previousSubmissions.toString() : 'Unknown' },
-    { label: 'Last Visit Date', value: info.lastVisitDate || 'N/A' },
-  ] : [];
-  
-  const browsingHistoryItems = info && info.clickPath ? [
-    { label: 'Browsing Path', value: info.clickPath.join(' → ') || 'N/A' },
-  ] : [];
-  
-  const pageMetricsItems = pageMetrics ? [
-    { label: 'Time on Page', value: `${pageMetrics.timeOnPage} seconds` },
-    { label: 'Scroll Depth', value: `${pageMetrics.scrollDepth}%` },
-    { label: 'Page Interactions', value: pageMetrics.pageInteractions.toString() },
-    { label: 'Form Focus Events', value: pageMetrics.formFocusEvents.toString() },
-    { label: 'Conversion Time', value: `${pageMetrics.conversionTime} seconds` },
-  ] : [];
-  
-  let trafficInfoHtml = '';
-  trafficInfoItems.forEach(item => {
-    if (item.value) {
-      trafficInfoHtml += `<p style="margin: 5px 0;"><strong>${item.label}:</strong> ${item.value}</p>`;
-    }
-  });
-  
-  let browsingHistoryHtml = '';
-  browsingHistoryItems.forEach(item => {
-    if (item.value) {
-      browsingHistoryHtml += `<p style="margin: 5px 0;"><strong>${item.label}:</strong> ${item.value}</p>`;
-    }
-  });
-  
-  let pageMetricsHtml = '';
-  pageMetricsItems.forEach(item => {
-    if (item.value) {
-      pageMetricsHtml += `<p style="margin: 5px 0;"><strong>${item.label}:</strong> ${item.value}</p>`;
-    }
-  });
-  
-  let sectionHtml = '';
-  
-  if (trafficInfoHtml) {
-    sectionHtml += `
-      <h3 style="color: #1a365d; margin: 15px 0 10px; border-bottom: 1px solid #e2e8f0; padding-bottom: 5px;">Traffic Source</h3>
-      ${trafficInfoHtml}
+// Format visitor information
+export const formatVisitorInfo = (visitorInfo?: VisitorInfo): string => {
+  if (!visitorInfo) return '';
+
+  let geolocationHtml = '';
+  if (visitorInfo.geolocation) {
+    geolocationHtml = `
+      <tr>
+        <td style="padding: 8px 0;"><strong>Geolocation:</strong></td>
+        <td style="padding: 8px 0;">
+          Lat: ${visitorInfo.geolocation.latitude}, 
+          Long: ${visitorInfo.geolocation.longitude}
+        </td>
+      </tr>
     `;
   }
-  
-  if (browsingHistoryHtml) {
-    sectionHtml += `
-      <h3 style="color: #1a365d; margin: 15px 0 10px; border-bottom: 1px solid #e2e8f0; padding-bottom: 5px;">Browsing History</h3>
-      ${browsingHistoryHtml}
-    `;
-  }
-  
-  if (pageMetricsHtml) {
-    sectionHtml += `
-      <h3 style="color: #1a365d; margin: 15px 0 10px; border-bottom: 1px solid #e2e8f0; padding-bottom: 5px;">Page Metrics</h3>
-      ${pageMetricsHtml}
-    `;
-  }
-  
+
   return `
     <tr>
-      <td colspan="2" style="padding: 20px 0;">
-        <h3 style="color: #1a365d; margin-bottom: 15px; border-bottom: 1px solid #e2e8f0; padding-bottom: 10px;">Traffic & User Journey</h3>
-        ${sectionHtml}
+      <td colspan="2">
+        <h3 style="color: #4a5568; margin: 20px 0 10px; border-bottom: 1px solid #edf2f7; padding-bottom: 5px;">
+          Visitor Information
+        </h3>
       </td>
+    </tr>
+    <tr>
+      <td style="padding: 8px 0;"><strong>Device:</strong></td>
+      <td style="padding: 8px 0;">${visitorInfo.deviceType || visitorInfo.platform || 'Unknown'}</td>
+    </tr>
+    <tr>
+      <td style="padding: 8px 0;"><strong>Browser:</strong></td>
+      <td style="padding: 8px 0;">${visitorInfo.browser || 'Unknown'} ${visitorInfo.browserVersion || ''}</td>
+    </tr>
+    <tr>
+      <td style="padding: 8px 0;"><strong>OS:</strong></td>
+      <td style="padding: 8px 0;">${visitorInfo.operatingSystem || visitorInfo.platform || 'Unknown'}</td>
+    </tr>
+    <tr>
+      <td style="padding: 8px 0;"><strong>Screen:</strong></td>
+      <td style="padding: 8px 0;">${visitorInfo.screenResolution || 'Unknown'}</td>
+    </tr>
+    ${geolocationHtml}
+    <tr>
+      <td style="padding: 8px 0;"><strong>Language:</strong></td>
+      <td style="padding: 8px 0;">${visitorInfo.language || 'Unknown'}</td>
+    </tr>
+    <tr>
+      <td style="padding: 8px 0;"><strong>Timezone:</strong></td>
+      <td style="padding: 8px 0;">${visitorInfo.timezone || 'Unknown'}</td>
+    </tr>
+    <tr>
+      <td style="padding: 8px 0;"><strong>User Agent:</strong></td>
+      <td style="padding: 8px 0; word-break: break-word;">${visitorInfo.userAgent || 'Unknown'}</td>
     </tr>
   `;
 };
