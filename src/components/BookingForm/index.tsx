@@ -89,7 +89,10 @@ const BookingForm = () => {
 
       <AdditionalNotes isSubmitting={isSubmitting} />
       
-      <RecaptchaField onChange={setRecaptchaToken} />
+      <RecaptchaField 
+        onChange={setRecaptchaToken} 
+        error={errors.recaptcha}
+      />
     </FormContainer>
   );
 };

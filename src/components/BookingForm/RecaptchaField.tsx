@@ -12,7 +12,7 @@ interface RecaptchaFieldProps {
 
 const RecaptchaField = ({ onChange, error, className = "" }: RecaptchaFieldProps) => {
   return (
-    <div className={`w-full overflow-x-auto ${className}`}>
+    <div className={`w-full overflow-x-auto ${className}`} id="recaptcha-container">
       <Recaptcha onChange={onChange} />
       
       {error && (

@@ -37,6 +37,8 @@ const Recaptcha: React.FC<RecaptchaProps> = ({ onChange }) => {
         sitekey: siteKey,
         callback: onChange,
         'expired-callback': () => onChange(null),
+        'id': 'g-recaptcha',
+        'name': 'g-recaptcha-response'
       });
       setRecaptchaId(id);
       console.log("reCAPTCHA widget rendered successfully");
@@ -75,7 +77,7 @@ const Recaptcha: React.FC<RecaptchaProps> = ({ onChange }) => {
 
   return (
     <div className="flex justify-center my-4 w-full overflow-x-auto">
-      <div className="max-w-full" ref={containerRef}></div>
+      <div className="max-w-full" ref={containerRef} id="recaptcha-element"></div>
     </div>
   );
 };
