@@ -50,7 +50,7 @@ export const ScriptsProvider = ({ children }: ScriptsProviderProps) => {
     isLoading: isLoadingRecaptchaKey
   } = useRecaptchaKey();
 
-  // Load Google Maps script
+  // Load Google Maps script with async attribute
   useEffect(() => {
     if (isLoadingMapsKey || !mapsApiKey || mapsKeyError) return;
     if (googleMapsLoaded) return;
@@ -70,7 +70,7 @@ export const ScriptsProvider = ({ children }: ScriptsProviderProps) => {
       script = document.createElement('script');
       script.id = scriptId;
       script.src = `https://maps.googleapis.com/maps/api/js?key=${mapsApiKey}&libraries=places`;
-      script.async = true;
+      script.async = true; // Ensure async loading for better performance
       script.defer = true;
     }
 

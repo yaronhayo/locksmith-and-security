@@ -1,4 +1,3 @@
-
 import { useEffect, useRef, useState } from "react";
 import { Input } from "./input";
 import { InputHTMLAttributes } from "react";
@@ -44,6 +43,9 @@ const AddressAutocomplete = ({
         autocompleteRef.current = null;
       }
 
+      // Note: While the console shows a deprecation warning, we're keeping this implementation
+      // for now as PlaceAutocompleteElement requires DOM manipulation which would be a larger
+      // refactoring task. The current approach will continue to work until at least March 2025.
       autocompleteRef.current = new window.google.maps.places.Autocomplete(
         inputRef.current,
         {

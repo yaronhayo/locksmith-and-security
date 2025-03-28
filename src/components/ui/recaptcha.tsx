@@ -8,9 +8,17 @@ interface RecaptchaProps {
   onChange: (token: string | null) => void;
   id?: string;
   name?: string;
+  'aria-labelledby'?: string;
+  'aria-describedby'?: string;
 }
 
-const Recaptcha: React.FC<RecaptchaProps> = ({ onChange, id = 'g-recaptcha-response', name = 'g-recaptcha-response' }) => {
+const Recaptcha: React.FC<RecaptchaProps> = ({ 
+  onChange, 
+  id = 'g-recaptcha-response', 
+  name = 'g-recaptcha-response',
+  'aria-labelledby': ariaLabelledBy,
+  'aria-describedby': ariaDescribedBy 
+}) => {
   const [recaptchaId, setRecaptchaId] = useState<number | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const { recaptchaLoaded, isLoadingRecaptcha, recaptchaError } = useScripts();
@@ -85,7 +93,8 @@ const Recaptcha: React.FC<RecaptchaProps> = ({ onChange, id = 'g-recaptcha-respo
         ref={containerRef} 
         id="recaptcha-element"
         role="group"
-        aria-describedby="recaptcha-instructions"
+        aria-labelledby={ariaLabelledBy}
+        aria-describedby={ariaDescribedBy}
       ></div>
       <span id="recaptcha-instructions" className="sr-only">
         Please complete the reCAPTCHA verification to submit the form
