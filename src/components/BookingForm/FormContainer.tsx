@@ -1,8 +1,6 @@
 
 import React from "react";
-import { validateForm } from "./validation";
-import SubmitButton from "./SubmitButton";
-import { useBookingSubmission } from "./hooks/useBookingSubmission";
+import FormHeader from "./FormHeader";
 
 interface FormContainerProps {
   children: React.ReactNode;
@@ -16,24 +14,29 @@ interface FormContainerProps {
   showAllKeysLostField: boolean;
   showUnusedKeyField: boolean;
   onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
+  isSubmitting: boolean;
 }
 
 const FormContainer = ({
   children,
   onSubmit,
+  isSubmitting,
   ...props
 }: FormContainerProps) => {
   return (
-    <form 
-      onSubmit={onSubmit} 
-      className="space-y-2.5 max-w-full overflow-visible" 
-      role="form" 
-      aria-label="Service booking form"
-    >
-      <div className="space-y-2.5">
-        {children}
-      </div>
-    </form>
+    <>
+      <FormHeader isSubmitting={isSubmitting} />
+      <form 
+        onSubmit={onSubmit} 
+        className="space-y-2.5 max-w-full overflow-visible" 
+        role="form" 
+        aria-label="Service booking form"
+      >
+        <div className="space-y-2.5">
+          {children}
+        </div>
+      </form>
+    </>
   );
 };
 

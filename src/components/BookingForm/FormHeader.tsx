@@ -1,8 +1,9 @@
+
 interface FormHeaderProps {
-  isSubmitting: boolean;
+  isSubmitting?: boolean;
 }
 
-const FormHeader = ({ isSubmitting }: FormHeaderProps) => {
+const FormHeader = ({ isSubmitting = false }: FormHeaderProps) => {
   return (
     <div className="text-center mb-6">
       <h2 className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-900">

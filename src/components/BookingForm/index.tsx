@@ -125,6 +125,7 @@ const BookingForm = () => {
             showAllKeysLostField={showAllKeysLostField}
             showUnusedKeyField={showUnusedKeyField}
             onSubmit={handleSubmit}
+            isSubmitting={isSubmitting}
           >
             <PersonalInfoFields
               name={name}
@@ -205,12 +206,12 @@ const BookingForm = () => {
               onChange={setRecaptchaToken}
               error={errors.recaptcha}
             />
+            
+            <SubmitButton 
+              isSubmitting={isSubmitting} 
+              disabled={Object.keys(errors).length > 0}
+            />
           </FormContainer>
-
-          <SubmitButton 
-            isSubmitting={isSubmitting} 
-            disabled={Object.keys(errors).length > 0}
-          />
         </>
       )}
       
