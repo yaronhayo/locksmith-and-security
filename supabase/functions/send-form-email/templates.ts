@@ -30,7 +30,7 @@ export const getBookingTemplate = (formData: FormData): string => {
     <div style="${commonStyles}">
       <div style="${headerStyle}">
         <h1 style="margin: 0; font-size: 24px;">New Service Booking Request</h1>
-        <p style="margin: 10px 0 0; opacity: 0.9;">Received on ${currentTimeEastern} EST</p>
+        <p style="margin: 10px 0 0; opacity: 0.9;">Received on ${currentTimeEastern} ET</p>
       </div>
       <div style="padding: 30px; background-color: white; border-radius: 0 0 8px 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
         <table style="width: 100%; border-collapse: collapse;">
@@ -130,7 +130,7 @@ export const getContactTemplate = (formData: FormData): string => {
     <div style="${commonStyles}">
       <div style="${headerStyle}">
         <h1 style="margin: 0; font-size: 24px;">New Contact Form Submission</h1>
-        <p style="margin: 10px 0 0; opacity: 0.9;">Received on ${currentTimeEastern} EST</p>
+        <p style="margin: 10px 0 0; opacity: 0.9;">Received on ${currentTimeEastern} ET</p>
       </div>
       <div style="padding: 30px; background-color: white; border-radius: 0 0 8px 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
         <table style="width: 100%; border-collapse: collapse;">

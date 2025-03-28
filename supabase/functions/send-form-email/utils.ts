@@ -4,15 +4,20 @@ export const corsHeaders = {
 };
 
 export const formatInEasternTime = (date: Date): string => {
-  return new Intl.DateTimeFormat('en-US', {
+  // Format date in Eastern Time (ET) as "M/D/YY at h:mma"
+  const options: Intl.DateTimeFormatOptions = {
     timeZone: 'America/New_York',
-    year: 'numeric',
-    month: 'long',
+    month: 'numeric',
     day: 'numeric',
+    year: '2-digit',
     hour: 'numeric',
-    minute: 'numeric',
+    minute: '2-digit',
     hour12: true
-  }).format(date);
+  };
+  
+  const formattedDate = new Intl.DateTimeFormat('en-US', options).format(date);
+  // Replace the default comma with " at "
+  return formattedDate.replace(',', ' at');
 };
 
 export const formatVisitorInfo = (info?: FormData['visitor_info']): string => {
