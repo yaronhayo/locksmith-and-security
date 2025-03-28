@@ -1,7 +1,7 @@
 
 import { lazy } from 'react';
 import Index from "@/pages/Index";
-import ThankYou from "@/pages/thank-you"; // Import directly instead of lazy-loading
+import PageLayout from "@/components/layouts/PageLayout";
 
 // Lazy load main pages
 const About = lazy(() => import("@/pages/about"));
@@ -13,6 +13,7 @@ const BookOnline = lazy(() => import("@/pages/book-online"));
 const ServiceAreas = lazy(() => import("@/pages/service-areas"));
 const PrivacyPolicy = lazy(() => import("@/pages/privacy-policy"));
 const TermsConditions = lazy(() => import("@/pages/terms-conditions"));
+const ThankYou = lazy(() => import("@/pages/thank-you"));
 const Sitemap = lazy(() => import("@/pages/sitemap"));
 const NotFound = lazy(() => import("@/pages/404"));
 

@@ -101,15 +101,10 @@ export const useBookingSubmission = ({
       // Prepare vehicle information if needed
       let vehicleInfo = null;
       if (showVehicleInfo) {
-        // Get vehicle data with fallbacks to empty strings so they're correctly read as empty
-        const vehicleYear = formData.get("vehicle_year") as string || "";
-        const vehicleMake = formData.get("vehicle_make") as string || "";
-        const vehicleModel = formData.get("vehicle_model") as string || "";
-        
         vehicleInfo = {
-          year: vehicleYear,
-          make: vehicleMake,
-          model: vehicleModel,
+          year: formData.get("vehicle_year") as string,
+          make: formData.get("vehicle_make") as string,
+          model: formData.get("vehicle_model") as string,
           all_keys_lost: allKeysLost === "yes",
           has_unused_key: hasUnusedKey === "yes"
         };
@@ -157,8 +152,8 @@ export const useBookingSubmission = ({
         });
       }
 
-      // Use window.location for a hard redirect to avoid dynamic import issues
-      window.location.href = '/thank-you';
+      // Redirect to thank-you page
+      navigate('/thank-you');
     } catch (error: any) {
       console.error('Booking form submission error:', error);
       toast({

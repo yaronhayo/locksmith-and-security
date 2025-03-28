@@ -1,2 +1,53 @@
 
-/* /index.html 200
+# Redirect domain aliases to primary domain
+https://www.247locksmithandsecurity.com/* https://247locksmithandsecurity.com/:splat 301!
+
+# Old service URLs to new structure
+/services/car-lockout              /services/emergency-locksmith/car-lockout 301
+/services/house-lockout            /services/emergency-locksmith/house-lockout 301
+/services/business-lockout         /services/emergency-locksmith/business-lockout 301
+/services/storage-unit-lockout     /services/emergency-locksmith/storage-unit-lockout 301
+
+/services/lock-replacement         /services/residential-locksmith/lock-replacement 301
+/services/lock-rekey              /services/residential-locksmith/lock-rekey 301
+/services/lock-repair             /services/residential-locksmith/lock-repair 301
+/services/gate-locks              /services/residential-locksmith/gate-locks 301
+
+/services/commercial-locks         /services/commercial-locksmith/lock-replacement 301
+/services/master-key              /services/commercial-locksmith/master-key 301
+/services/access-control          /services/commercial-locksmith/access-control 301
+/services/emergency-exit          /services/commercial-locksmith/emergency-exit-device 301
+
+/services/car-key-replacement     /services/auto-locksmith/car-key-replacement 301
+/services/key-fob-programming     /services/auto-locksmith/key-fob-programming 301
+/services/car-key-duplicate       /services/auto-locksmith/car-key-duplicate 301
+/services/ignition-repair         /services/auto-locksmith/ignition-lock-cylinder 301
+
+# Ensure JavaScript module files have proper MIME types
+*.js       application/javascript 200
+*.mjs      application/javascript 200
+*.js.map   application/json 200
+*.css      text/css 200
+*.css.map  application/json 200
+
+# Handle module loading for chunk files specifically
+/assets/*  /assets/:splat 200
+
+# Handle client-side routing 
+/*  /index.html 200
+
+# Specific routes with higher precedence than the wildcard rule
+/thank-you /index.html 200
+/service-areas/* /index.html 200
+/services/* /index.html 200
+/about /index.html 200
+/contact /index.html 200
+/reviews /index.html 200
+/faq /index.html 200
+/privacy-policy /index.html 200
+/terms-conditions /index.html 200
+/book-online /index.html 200
+/sitemap /index.html 200
+
+# Force HTTPS
+http://* https://:splat 301!

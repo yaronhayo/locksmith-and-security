@@ -9,7 +9,7 @@ import PageLayout from "@/components/layouts/PageLayout";
 const ThankYouPage = () => {
   const navigate = useNavigate();
 
-  // Check for form submission flag
+  // Prevent accessing this page directly by URL and handle edge cases
   useEffect(() => {
     const fromForm = sessionStorage.getItem('fromFormSubmission');
     
