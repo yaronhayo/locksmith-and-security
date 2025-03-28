@@ -12,6 +12,7 @@ import UnusedKeyField from "./FormFields/UnusedKeyField";
 import FormContainer from "./FormContainer";
 import AddressFields from "./AddressFields";
 import RecaptchaField from "./RecaptchaField";
+import FormHeader from "./FormHeader";
 
 const BookingForm = () => {
   const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
@@ -33,64 +34,67 @@ const BookingForm = () => {
   } = useBookingFormState();
 
   return (
-    <FormContainer
-      isSubmitting={isSubmitting}
-      setIsSubmitting={setIsSubmitting}
-      errors={errors}
-      setErrors={setErrors}
-      showVehicleInfo={showVehicleInfo}
-      recaptchaToken={recaptchaToken}
-      address={address}
-      allKeysLost={allKeysLost}
-      hasUnusedKey={hasUnusedKey}
-      showAllKeysLostField={showAllKeysLostField}
-      showUnusedKeyField={showUnusedKeyField}
-    >
-      <PersonalInfoFields errors={errors} isSubmitting={isSubmitting} />
-      
-      <AddressFields 
-        address={address}
-        onChange={setAddress}
+    <>
+      <FormHeader isSubmitting={isSubmitting} />
+      <FormContainer
+        isSubmitting={isSubmitting}
+        setIsSubmitting={setIsSubmitting}
         errors={errors}
-        isSubmitting={isSubmitting}
-      />
-      
-      <ServiceSelection 
-        error={errors.service}
-        isSubmitting={isSubmitting}
-        onServiceChange={handleServiceChange}
-      />
-
-      {showAllKeysLostField && (
-        <AllKeysLostField
+        setErrors={setErrors}
+        showVehicleInfo={showVehicleInfo}
+        recaptchaToken={recaptchaToken}
+        address={address}
+        allKeysLost={allKeysLost}
+        hasUnusedKey={hasUnusedKey}
+        showAllKeysLostField={showAllKeysLostField}
+        showUnusedKeyField={showUnusedKeyField}
+      >
+        <PersonalInfoFields errors={errors} isSubmitting={isSubmitting} />
+        
+        <AddressFields 
+          address={address}
+          onChange={setAddress}
+          errors={errors}
           isSubmitting={isSubmitting}
-          onChange={handleAllKeysLostChange}
-          value={allKeysLost}
         />
-      )}
-
-      {showUnusedKeyField && (
-        <UnusedKeyField
+        
+        <ServiceSelection 
+          error={errors.service}
           isSubmitting={isSubmitting}
-          onChange={handleUnusedKeyChange}
-          value={hasUnusedKey}
+          onServiceChange={handleServiceChange}
         />
-      )}
 
-      {showVehicleInfo && (
-        <VehicleFields errors={errors} isSubmitting={isSubmitting} />
-      )}
+        {showAllKeysLostField && (
+          <AllKeysLostField
+            isSubmitting={isSubmitting}
+            onChange={handleAllKeysLostChange}
+            value={allKeysLost}
+          />
+        )}
 
-      <TimeframeSelection isSubmitting={isSubmitting} />
+        {showUnusedKeyField && (
+          <UnusedKeyField
+            isSubmitting={isSubmitting}
+            onChange={handleUnusedKeyChange}
+            value={hasUnusedKey}
+          />
+        )}
 
-      {selectedService === "Other" && (
-        <OtherServiceField isSubmitting={isSubmitting} />
-      )}
+        {showVehicleInfo && (
+          <VehicleFields errors={errors} isSubmitting={isSubmitting} />
+        )}
 
-      <AdditionalNotes isSubmitting={isSubmitting} />
-      
-      <RecaptchaField onChange={setRecaptchaToken} />
-    </FormContainer>
+        <TimeframeSelection isSubmitting={isSubmitting} />
+
+        {selectedService === "Other" && (
+          <OtherServiceField isSubmitting={isSubmitting} />
+        )}
+
+        <AdditionalNotes isSubmitting={isSubmitting} />
+        
+        <RecaptchaField onChange={setRecaptchaToken} />
+      </FormContainer>
+    </>
   );
 };
 
