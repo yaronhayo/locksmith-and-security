@@ -108,23 +108,6 @@ const BookingForm = () => {
     showUnusedKeyField
   });
 
-  // Ensure the form has an onSubmit handler attached
-  const onFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    console.log("Form submitted");
-    handleSubmit(e);
-  };
-  
-  // Create an adapter function for the button click that triggers form submission
-  const handleButtonClick = () => {
-    console.log("Submit button clicked");
-    // Get the form element and submit it programmatically
-    const form = document.getElementById('booking-form') as HTMLFormElement;
-    if (form) {
-      form.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
-    }
-  };
-
   return (
     <div className="relative">
       {isLoading ? (
@@ -141,8 +124,7 @@ const BookingForm = () => {
             hasUnusedKey={hasUnusedKey}
             showAllKeysLostField={showAllKeysLostField}
             showUnusedKeyField={showUnusedKeyField}
-            onSubmit={onFormSubmit}
-            isSubmitting={isSubmitting}
+            onSubmit={handleSubmit}
           >
             <PersonalInfoFields
               name={name}
@@ -227,8 +209,7 @@ const BookingForm = () => {
 
           <SubmitButton 
             isSubmitting={isSubmitting} 
-            disabled={isSubmitting}
-            onClick={handleButtonClick}
+            disabled={Object.keys(errors).length > 0}
           />
         </>
       )}
