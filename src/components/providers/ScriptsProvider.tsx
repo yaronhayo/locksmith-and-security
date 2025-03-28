@@ -1,4 +1,3 @@
-
 import { createContext, useContext, ReactNode, useState, useEffect } from "react";
 import { useGoogleMapsApiKey, useRecaptchaKey } from "@/hooks/useApiKeys";
 import { Alert, AlertDescription } from "@/components/ui/alert";
@@ -50,7 +49,7 @@ export const ScriptsProvider = ({ children }: ScriptsProviderProps) => {
     isLoading: isLoadingRecaptchaKey
   } = useRecaptchaKey();
 
-  // Load Google Maps script with async attribute
+  // Load Google Maps script with async attribute and correct loading pattern
   useEffect(() => {
     if (isLoadingMapsKey || !mapsApiKey || mapsKeyError) return;
     if (googleMapsLoaded) return;
@@ -62,20 +61,22 @@ export const ScriptsProvider = ({ children }: ScriptsProviderProps) => {
       return;
     }
 
-    console.log("Loading Google Maps script...");
+    console.log("Loading Google Maps script with correct loading pattern...");
     const scriptId = 'google-maps-script';
     let script = document.getElementById(scriptId) as HTMLScriptElement;
 
     if (!script) {
       script = document.createElement('script');
       script.id = scriptId;
-      script.src = `https://maps.googleapis.com/maps/api/js?key=${mapsApiKey}&libraries=places`;
-      script.async = true; // Ensure async loading for better performance
+      // Use the recommended pattern with callback=initMap
+      script.src = `https://maps.googleapis.com/maps/api/js?key=${mapsApiKey}&libraries=places&callback=initMap&loading=async`;
+      script.async = true;
       script.defer = true;
     }
 
-    const handleLoad = () => {
-      console.log("Google Maps script loaded successfully");
+    // Define global callback for Maps API
+    window.initMap = () => {
+      console.log("Google Maps script initialized via callback");
       setGoogleMapsLoaded(true);
       setMapsError(null);
       document.dispatchEvent(new Event('google-maps-loaded'));
@@ -87,13 +88,10 @@ export const ScriptsProvider = ({ children }: ScriptsProviderProps) => {
       script.remove();
     };
 
-    script.addEventListener('load', handleLoad);
     script.addEventListener('error', handleError);
-
     document.head.appendChild(script);
 
     return () => {
-      script.removeEventListener('load', handleLoad);
       script.removeEventListener('error', handleError);
     };
   }, [mapsApiKey, isLoadingMapsKey, mapsKeyError, googleMapsLoaded]);

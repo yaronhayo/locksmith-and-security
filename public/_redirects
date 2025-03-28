@@ -23,12 +23,14 @@ https://www.247locksmithandsecurity.com/* https://247locksmithandsecurity.com/:s
 /services/car-key-duplicate       /services/auto-locksmith/car-key-duplicate 301
 /services/ignition-repair         /services/auto-locksmith/ignition-lock-cylinder 301
 
-# Handle JavaScript module files correctly with proper MIME types
+# Ensure JavaScript module files have proper MIME types
+*.js  application/javascript 200
+*.mjs application/javascript 200
+*.js.map application/json 200
+
+# Handle module loading for chunk files specifically
 /assets/*.js /assets/:splat 200
 /assets/*.mjs /assets/:splat 200
-/assets/*.jsx /assets/:splat 200
-/assets/*.ts /assets/:splat 200
-/assets/*.tsx /assets/:splat 200
 
 # Handle client-side routing 
 /* /index.html 200

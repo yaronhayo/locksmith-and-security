@@ -68,4 +68,9 @@ export default defineConfig(({ mode }) => ({
     chunkSizeWarningLimit: 1000,
     sourcemap: true,
   },
+  // Add optimizeDeps to improve loading of dynamic imports
+  optimizeDeps: {
+    include: ['react', 'react-dom', 'react-router-dom', 'framer-motion'],
+    exclude: []
+  },
 }));
