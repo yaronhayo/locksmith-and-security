@@ -146,7 +146,7 @@ export default defineConfig(({ mode }) => ({
     ],
     exclude: []
   },
-  // Fix the preview headers to use the correct format
+  // Fix the preview headers to use the correct format for content types
   preview: {
     headers: {
       'Content-Type': 'application/javascript; charset=utf-8'
