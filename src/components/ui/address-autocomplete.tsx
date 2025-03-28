@@ -52,10 +52,15 @@ const AddressAutocomplete = ({
           if (!containerRef.current) return;
           
           // Create the new recommended PlaceAutocompleteElement
-          const { Place } = google.maps.places;
+          if (!window.google?.maps?.places?.Place) {
+            console.error('Google Maps Place API not available');
+            setError('Google Maps Places API not loaded correctly');
+            setShowFallbackInput(true);
+            return;
+          }
           
           // Create and configure the autocomplete element
-          const autocomplete = new Place.Autocomplete({
+          const autocomplete = new window.google.maps.places.Place.PlaceAutocompleteElement({
             types: ['address'],
             componentRestrictions: { country: 'us' },
             fields: ['formatted_address', 'address_components', 'geometry', 'place_id']

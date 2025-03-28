@@ -43,7 +43,7 @@ export const MapLoader = {
    */
   verifyLibraries(): boolean {
     return !!(
-      window.google?.maps?.places?.Place?.Autocomplete ||
+      window.google?.maps?.places?.Place?.PlaceAutocompleteElement ||
       window.google?.maps?.places?.Autocomplete
     );
   }

@@ -7,6 +7,7 @@ interface Window {
       places?: {
         Autocomplete?: any;
         Place?: {
+          PlaceAutocompleteElement?: any;
           Autocomplete?: any;
         };
       };
