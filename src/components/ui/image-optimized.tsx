@@ -27,7 +27,7 @@ const ImageOptimized = ({
       width={width}
       height={height}
       loading={priority ? "eager" : "lazy"}
-      fetchpriority={priority ? "high" : "auto"} {/* Changed from fetchPriority to lowercase fetchpriority */}
+      fetchpriority={priority ? "high" : "auto"}
       decoding="async"
       onError={(e) => {
         const img = e.target as HTMLImageElement;
