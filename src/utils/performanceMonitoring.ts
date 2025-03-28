@@ -1,258 +1,106 @@
 
-// Performance monitoring utilities
+// Consolidated performance monitoring utilities
+type LogLevel = 'info' | 'warn' | 'error';
 
-/**
- * Tracks image load performance
- * @param src Image source URL
- * @param width Natural width of the image
- * @param height Natural height of the image
- */
-export const trackImageLoad = (src: string, width?: number, height?: number) => {
-  // Only track in production
-  if (process.env.NODE_ENV !== 'production') return;
+export const logToService = (level: LogLevel, message: string, data?: any) => {
+  console[level](`[Performance] ${message}`, data);
   
-  try {
-    // Skip if no dimensions are provided
-    if (!width || !height) return;
-    
-    // Check if image is properly sized for its display
-    const isLargeImage = width > 1200 || height > 1200;
-    const fileName = src.split('/').pop() || src;
-    
-    // Log to console in development
-    const nodeEnv = process.env.NODE_ENV as string;
-    if (nodeEnv === 'development' && isLargeImage) {
-      console.warn(`Large image detected: ${fileName} (${width}x${height}px). Consider resizing for better performance.`);
-    }
-    
-    // Send to analytics in production
-    if (typeof window !== 'undefined' && window.gtag && isLargeImage) {
-      window.gtag('event', 'large_image_loaded', {
-        image_url: src,
-        image_size: `${width}x${height}`,
-        page_path: window.location.pathname
-      });
-    }
-  } catch (error) {
-    console.error('Error tracking image performance:', error);
+  // Can be extended to send to monitoring service
+  if (process.env.NODE_ENV === 'production') {
+    // Send to monitoring service if needed
   }
 };
 
-/**
- * Tracks Core Web Vitals
- */
-export const trackCoreWebVitals = () => {
-  if (typeof window === 'undefined') return;
-  
-  try {
-    // Safe access to web vitals if loaded globally
-    const webVitals = (window as any).webVitals;
-    if (webVitals) {
-      const { getCLS, getFID, getLCP } = webVitals;
-      
-      getCLS((metric: any) => {
-        console.log('CLS:', metric.value);
-        if (window.gtag) {
-          window.gtag('event', 'web_vitals', {
-            event_category: 'Web Vitals',
-            event_label: 'CLS',
-            value: Math.round(metric.value * 1000) / 1000,
-            non_interaction: true,
-          });
-        }
-      });
-      
-      getFID((metric: any) => {
-        console.log('FID:', metric.value);
-        if (window.gtag) {
-          window.gtag('event', 'web_vitals', {
-            event_category: 'Web Vitals',
-            event_label: 'FID', 
-            value: Math.round(metric.value),
-            non_interaction: true,
-          });
-        }
-      });
-      
-      getLCP((metric: any) => {
-        console.log('LCP:', metric.value);
-        if (window.gtag) {
-          window.gtag('event', 'web_vitals', {
-            event_category: 'Web Vitals',
-            event_label: 'LCP',
-            value: Math.round(metric.value),
-            non_interaction: true,
-          });
-        }
-      });
-    }
-  } catch (error) {
-    console.error('Error tracking web vitals:', error);
-  }
-};
-
-/**
- * Tracks component render time
- * @param componentName Name of the component being tracked
- * @returns Function to call when component has finished rendering
- */
+// Component rendering performance tracking
 export const trackComponentRender = (componentName: string) => {
   const startTime = performance.now();
   
   return () => {
     const duration = performance.now() - startTime;
-    const nodeEnv = process.env.NODE_ENV as string;
-    if (nodeEnv === 'development') {
-      console.debug(`Component render time [${componentName}]: ${duration.toFixed(2)}ms`);
-    }
-    
-    // Only send to analytics if render time is significant (>100ms)
-    if (duration > 100 && window.gtag) {
-      window.gtag('event', 'component_render', {
-        component_name: componentName,
-        render_time: Math.round(duration),
-        non_interaction: true
-      });
-    }
-    
+    logToService('info', `Component Render: ${componentName}`, { duration });
     return duration;
   };
 };
 
-/**
- * Measures performance of a function
- * @param label Label for the performance measurement
- * @param fn Function to measure
- * @returns Result of the function
- */
-export const measurePerformance = <T>(label: string, fn: () => T): T => {
-  const startTime = performance.now();
-  const result = fn();
-  const duration = performance.now() - startTime;
-  
-  const nodeEnv = process.env.NODE_ENV as string;
-  if (nodeEnv === 'development') {
-    console.debug(`Performance [${label}]: ${duration.toFixed(2)}ms`);
+// Map specific performance monitoring
+interface MapLoadMetrics {
+  scriptLoadTime: number;
+  instanceLoadTime: number;
+  markersCount: number;
+}
+
+class MapPerformanceTracker {
+  private static instance: MapPerformanceTracker;
+  private metrics: MapLoadMetrics = {
+    scriptLoadTime: 0,
+    instanceLoadTime: 0,
+    markersCount: 0
+  };
+
+  private constructor() {}
+
+  static getInstance(): MapPerformanceTracker {
+    if (!MapPerformanceTracker.instance) {
+      MapPerformanceTracker.instance = new MapPerformanceTracker();
+    }
+    return MapPerformanceTracker.instance;
   }
-  
-  return result;
+
+  trackScriptLoad(startTime: number) {
+    this.metrics.scriptLoadTime = performance.now() - startTime;
+    this.logMetrics('Script Load');
+  }
+
+  trackInstanceLoad(startTime: number) {
+    this.metrics.instanceLoadTime = performance.now() - startTime;
+    this.logMetrics('Instance Load');
+  }
+
+  setMarkersCount(count: number) {
+    this.metrics.markersCount = count;
+    this.logMetrics('Markers Update');
+  }
+
+  private logMetrics(event: string) {
+    logToService('info', `Map Performance - ${event}:`, this.metrics);
+  }
+}
+
+export const mapPerformance = MapPerformanceTracker.getInstance();
+
+// General performance monitoring
+export const measurePerformance = <T>(label: string, callback: () => T): T => {
+  const start = performance.now();
+  try {
+    const result = callback();
+    const duration = performance.now() - start;
+    logToService('info', `Performance measurement: ${label}`, { duration });
+    return result;
+  } catch (error) {
+    const duration = performance.now() - start;
+    logToService('error', `Performance measurement error: ${label}`, { duration, error });
+    throw error;
+  }
 };
 
-/**
- * Logs performance data to monitoring service
- * @param level Log level
- * @param message Log message
- * @param data Additional data to log
- */
-export const logToService = (level: 'info' | 'warn' | 'error', message: string, data?: Record<string, any>) => {
-  const nodeEnv = process.env.NODE_ENV as string;
-  if (nodeEnv !== 'production') {
-    console[level](`[${level.toUpperCase()}] ${message}`, data || '');
-    return;
-  }
-  
-  if (window.gtag) {
-    window.gtag('event', 'performance_log', {
-      level,
-      message,
-      ...data
-    });
-  }
-};
-
-/**
- * Track image load performance (new version with proper return type)
- * @param src Image source URL
- * @param imgElement Image element or null
- * @returns Object with onLoad and onError callbacks
- */
-export const trackImageLoad2 = (src: string, imgElement: HTMLImageElement | null) => {
+// Image loading performance tracker
+export const trackImageLoad = (imageUrl: string, element?: HTMLImageElement) => {
   const startTime = performance.now();
   
   const onLoad = () => {
-    const loadTime = performance.now() - startTime;
-    
-    if (imgElement) {
-      const { naturalWidth, naturalHeight } = imgElement;
-      const size = `${naturalWidth}x${naturalHeight}`;
-      
-      const nodeEnv = process.env.NODE_ENV as string;
-      if (nodeEnv === 'development') {
-        console.debug(`Image loaded: ${src} (${size}) in ${loadTime.toFixed(2)}ms`);
-      }
-      
-      if (window.gtag && loadTime > 300) {
-        window.gtag('event', 'image_load', {
-          image_url: src,
-          image_size: size,
-          load_time: Math.round(loadTime),
-          page_path: window.location.pathname
-        });
-      }
-    }
+    const duration = performance.now() - startTime;
+    logToService('info', 'Image loaded', { url: imageUrl, duration });
   };
   
   const onError = (error: any) => {
-    console.error(`Failed to load image: ${src}`, error);
-    
-    if (window.gtag) {
-      window.gtag('event', 'image_error', {
-        image_url: src,
-        error_message: error?.message || 'Unknown error',
-        page_path: window.location.pathname
-      });
-    }
+    const duration = performance.now() - startTime;
+    logToService('error', 'Image load failed', { url: imageUrl, duration, error });
   };
   
-  return { onLoad, onError };
-};
-
-/**
- * Map performance tracking function
- */
-export const mapPerformance = {
-  trackInitialization: (duration: number) => {
-    const nodeEnv = process.env.NODE_ENV as string;
-    if (nodeEnv === 'development') {
-      console.debug(`Map initialization: ${duration.toFixed(2)}ms`);
-    }
-    
-    if (window.gtag && duration > 1000) {
-      window.gtag('event', 'map_performance', {
-        event_type: 'initialization',
-        duration: Math.round(duration)
-      });
-    }
-  },
-  
-  trackInteraction: (type: string, duration: number) => {
-    const nodeEnv = process.env.NODE_ENV as string;
-    if (nodeEnv === 'development') {
-      console.debug(`Map interaction [${type}]: ${duration.toFixed(2)}ms`);
-    }
-    
-    if (window.gtag && duration > 300) {
-      window.gtag('event', 'map_performance', {
-        event_type: 'interaction',
-        interaction_type: type,
-        duration: Math.round(duration)
-      });
-    }
-  },
-  
-  // Adding the missing trackInstanceLoad method
-  trackInstanceLoad: (startTime: number) => {
-    const duration = performance.now() - startTime;
-    const nodeEnv = process.env.NODE_ENV as string;
-    if (nodeEnv === 'development') {
-      console.debug(`Map instance loaded in: ${duration.toFixed(2)}ms`);
-    }
-    
-    if (window.gtag && duration > 500) {
-      window.gtag('event', 'map_performance', {
-        event_type: 'instance_load',
-        duration: Math.round(duration)
-      });
-    }
+  if (element) {
+    element.addEventListener('load', onLoad, { once: true });
+    element.addEventListener('error', onError, { once: true });
   }
+  
+  return { onLoad, onError };
 };

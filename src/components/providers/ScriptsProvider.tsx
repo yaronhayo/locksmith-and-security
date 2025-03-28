@@ -4,7 +4,6 @@ import { useGoogleMapsApiKey, useRecaptchaKey } from "@/hooks/useApiKeys";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { AlertCircle } from "lucide-react";
 import LoadingSpinner from "@/components/LoadingSpinner";
-import { toast } from "sonner";
 
 type ScriptType = 'maps' | 'recaptcha';
 
@@ -15,8 +14,6 @@ interface ScriptsContextType {
   recaptchaError: string | null;
   isLoadingMaps: boolean;
   isLoadingRecaptcha: boolean;
-  reloadMapsScript: () => void;
-  reloadRecaptchaScript: () => void;
 }
 
 const ScriptsContext = createContext<ScriptsContextType | undefined>(undefined);
@@ -39,8 +36,6 @@ export const ScriptsProvider = ({ children }: ScriptsProviderProps) => {
   const [recaptchaLoaded, setRecaptchaLoaded] = useState(false);
   const [mapsError, setMapsError] = useState<string | null>(null);
   const [recaptchaError, setRecaptchaError] = useState<string | null>(null);
-  const [mapsScriptAttempt, setMapsScriptAttempt] = useState(0);
-  const [recaptchaScriptAttempt, setRecaptchaScriptAttempt] = useState(0);
 
   // Fetch API keys
   const { 
@@ -54,25 +49,6 @@ export const ScriptsProvider = ({ children }: ScriptsProviderProps) => {
     error: recaptchaKeyError, 
     isLoading: isLoadingRecaptchaKey
   } = useRecaptchaKey();
-
-  // Manual reload functions
-  const reloadMapsScript = () => {
-    console.log("Manually reloading Google Maps script");
-    setGoogleMapsLoaded(false);
-    setMapsError(null);
-    const script = document.getElementById('google-maps-script');
-    if (script) script.remove();
-    setMapsScriptAttempt(prev => prev + 1);
-  };
-  
-  const reloadRecaptchaScript = () => {
-    console.log("Manually reloading reCAPTCHA script");
-    setRecaptchaLoaded(false);
-    setRecaptchaError(null);
-    const script = document.getElementById('recaptcha-script');
-    if (script) script.remove();
-    setRecaptchaScriptAttempt(prev => prev + 1);
-  };
 
   // Load Google Maps script
   useEffect(() => {
@@ -105,50 +81,22 @@ export const ScriptsProvider = ({ children }: ScriptsProviderProps) => {
       document.dispatchEvent(new Event('google-maps-loaded'));
     };
 
-    const handleError = (e: Event | string) => {
-      let errorMsg = "Failed to load Google Maps";
-      
-      // Check for specific Google Maps errors in console
-      if (e instanceof ErrorEvent && e.error) {
-        errorMsg = `Google Maps error: ${e.error.message || e.message}`;
-        
-        if (e.error.message?.includes('billing')) {
-          errorMsg = "You must enable Billing on the Google Cloud Project. For development purposes only.";
-          toast.error("Google Maps API Billing Required", {
-            description: "Please enable billing in your Google Cloud Console for full functionality.",
-            duration: 10000,
-          });
-        }
-      }
-      
-      console.error(errorMsg);
-      setMapsError(errorMsg);
-      setGoogleMapsLoaded(false);
+    const handleError = () => {
+      console.error("Failed to load Google Maps script");
+      setMapsError("Failed to load Google Maps");
       script.remove();
     };
 
     script.addEventListener('load', handleLoad);
     script.addEventListener('error', handleError);
 
-    // Also listen for Google Maps specific errors
-    const originalOnError = window.onerror;
-    window.onerror = (message, source, lineno, colno, error) => {
-      if (source?.includes('maps.googleapis.com') || 
-          message?.toString().includes('google') || 
-          message?.toString().includes('maps')) {
-        handleError(String(message));
-      }
-      return originalOnError ? originalOnError(message, source, lineno, colno, error) : false;
-    };
-
     document.head.appendChild(script);
 
     return () => {
       script.removeEventListener('load', handleLoad);
       script.removeEventListener('error', handleError);
-      window.onerror = originalOnError;
     };
-  }, [mapsApiKey, isLoadingMapsKey, mapsKeyError, googleMapsLoaded, mapsScriptAttempt]);
+  }, [mapsApiKey, isLoadingMapsKey, mapsKeyError, googleMapsLoaded]);
 
   // Load reCAPTCHA script
   useEffect(() => {
@@ -182,15 +130,9 @@ export const ScriptsProvider = ({ children }: ScriptsProviderProps) => {
     };
 
     const handleError = () => {
-      const errorMsg = "Failed to load reCAPTCHA script";
-      console.error(errorMsg);
-      setRecaptchaError(errorMsg);
+      console.error("Failed to load reCAPTCHA script");
+      setRecaptchaError("Failed to load reCAPTCHA");
       script.remove();
-      
-      toast.error("reCAPTCHA API Error", {
-        description: "Please check your reCAPTCHA configuration in the Google Cloud Console.",
-        duration: 8000,
-      });
     };
 
     script.addEventListener('load', handleLoad);
@@ -202,12 +144,21 @@ export const ScriptsProvider = ({ children }: ScriptsProviderProps) => {
       script.removeEventListener('load', handleLoad);
       script.removeEventListener('error', handleError);
     };
-  }, [recaptchaKey, isLoadingRecaptchaKey, recaptchaKeyError, recaptchaLoaded, recaptchaScriptAttempt]);
+  }, [recaptchaKey, isLoadingRecaptchaKey, recaptchaKeyError, recaptchaLoaded]);
 
   // Handle reload requests
   useEffect(() => {
-    const handleMapsReload = () => reloadMapsScript();
-    const handleRecaptchaReload = () => reloadRecaptchaScript();
+    const handleMapsReload = () => {
+      setGoogleMapsLoaded(false);
+      const script = document.getElementById('google-maps-script');
+      if (script) script.remove();
+    };
+
+    const handleRecaptchaReload = () => {
+      setRecaptchaLoaded(false);
+      const script = document.getElementById('recaptcha-script');
+      if (script) script.remove();
+    };
 
     document.addEventListener('reload-google-maps', handleMapsReload);
     document.addEventListener('reload-recaptcha', handleRecaptchaReload);
@@ -224,9 +175,7 @@ export const ScriptsProvider = ({ children }: ScriptsProviderProps) => {
     mapsError: mapsKeyError ? mapsKeyError.message : mapsError,
     recaptchaError: recaptchaKeyError ? recaptchaKeyError.message : recaptchaError,
     isLoadingMaps: isLoadingMapsKey || (!googleMapsLoaded && !mapsError && !mapsKeyError),
-    isLoadingRecaptcha: isLoadingRecaptchaKey || (!recaptchaLoaded && !recaptchaError && !recaptchaKeyError),
-    reloadMapsScript,
-    reloadRecaptchaScript
+    isLoadingRecaptcha: isLoadingRecaptchaKey || (!recaptchaLoaded && !recaptchaError && !recaptchaKeyError)
   };
 
   return (
@@ -238,36 +187,11 @@ export const ScriptsProvider = ({ children }: ScriptsProviderProps) => {
 
 // Error component for script loading errors
 export const ScriptError = ({ type, error }: { type: ScriptType, error: string }) => {
-  const { reloadMapsScript, reloadRecaptchaScript } = useScripts();
-  const isBillingError = error?.toLowerCase().includes('billing') || 
-                          error?.toLowerCase().includes('payment');
-
   return (
     <Alert variant="destructive" className="mb-4">
       <AlertCircle className="h-4 w-4" />
-      <AlertDescription className="space-y-1">
-        <p>{`Failed to load ${type === 'maps' ? 'Google Maps' : 'reCAPTCHA'}: ${error}`}</p>
-        
-        {isBillingError && (
-          <p className="text-xs mt-1">
-            You need to enable billing for your Google Cloud Project.{' '}
-            <a 
-              href="https://console.cloud.google.com/project/_/billing/enable" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="underline hover:text-blue-700"
-            >
-              Open Google Cloud Console
-            </a>
-          </p>
-        )}
-        
-        <button
-          onClick={type === 'maps' ? reloadMapsScript : reloadRecaptchaScript}
-          className="text-xs underline mt-1 hover:text-blue-700"
-        >
-          Try again
-        </button>
+      <AlertDescription>
+        {`Failed to load ${type === 'maps' ? 'Google Maps' : 'reCAPTCHA'}: ${error}`}
       </AlertDescription>
     </Alert>
   );

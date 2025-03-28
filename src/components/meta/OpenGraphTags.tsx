@@ -11,7 +11,6 @@ interface OpenGraphTagsProps {
   type?: "website" | "article" | "product" | "profile" | "book";
   siteName?: string;
   locale?: string;
-  publishedDate?: string;
 }
 
 export const OpenGraphTags = ({ 
@@ -23,8 +22,7 @@ export const OpenGraphTags = ({
   baseUrl,
   type = "website",
   siteName = "Locksmith & Security LLC",
-  locale = "en_US",
-  publishedDate
+  locale = "en_US" 
 }: OpenGraphTagsProps) => {
   // Ensure OG description stays within recommended length (150-157 characters to be safe)
   const optimizedDescription = description.length > 157 
@@ -33,12 +31,11 @@ export const OpenGraphTags = ({
 
   // Ensure image URL is absolute
   const absoluteImageUrl = image && !image.startsWith('http') && baseUrl 
-    ? `${baseUrl}${image.startsWith('/') ? image : `/${image}`}` 
+    ? `${baseUrl}${image}` 
     : image || "https://mtbgayqzjrxjjmsjikcg.supabase.co/storage/v1/object/public/uploads//Locksmithandsecuritylogo.jpg";
 
   return (
     <Helmet>
-      {/* Basic Open Graph */}
       <meta property="og:title" content={title} />
       <meta property="og:description" content={optimizedDescription} />
       <meta property="og:image" content={absoluteImageUrl} />
@@ -50,27 +47,6 @@ export const OpenGraphTags = ({
       <meta property="og:site_name" content={siteName} />
       <meta property="og:locale" content={locale} />
       <meta property="og:updated_time" content={modifiedDate} />
-      
-      {/* Additional article metadata */}
-      {type === "article" && publishedDate && (
-        <meta property="article:published_time" content={publishedDate} />
-      )}
-      {type === "article" && modifiedDate && (
-        <meta property="article:modified_time" content={modifiedDate} />
-      )}
-      {type === "article" && (
-        <meta property="article:publisher" content={`${baseUrl}`} />
-      )}
-      {type === "article" && (
-        <meta property="article:section" content="Locksmith" />
-      )}
-      {type === "article" && (
-        <>
-          <meta property="article:tag" content="Locksmith" />
-          <meta property="article:tag" content="Security" />
-          <meta property="article:tag" content="Lock Repair" />
-        </>
-      )}
     </Helmet>
   );
 };

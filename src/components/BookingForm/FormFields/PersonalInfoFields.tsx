@@ -5,27 +5,24 @@ import { Input } from "@/components/ui/input";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { AlertCircle } from "lucide-react";
 import { formatPhoneNumber } from "@/utils/inputValidation";
+import { useFieldValidation } from "../hooks/useFieldValidation";
 
 interface PersonalInfoFieldsProps {
-  name: string;
-  setName: (name: string) => void;
-  phone: string;
-  setPhone: (phone: string) => void;
   errors: Record<string, string>;
   isSubmitting: boolean;
 }
 
-const PersonalInfoFields = ({
-  name,
-  setName,
-  phone,
-  setPhone,
-  errors,
-  isSubmitting
-}: PersonalInfoFieldsProps) => {
+const PersonalInfoFields = ({ errors: externalErrors, isSubmitting }: PersonalInfoFieldsProps) => {
+  const { 
+    values, 
+    handlers, 
+    errors 
+  } = useFieldValidation({ externalErrors });
+
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const formattedPhone = formatPhoneNumber(e.target.value);
-    setPhone(formattedPhone);
+    e.target.value = formattedPhone;
+    handlers.handlePhoneChange(e);
   };
 
   return (
@@ -42,8 +39,9 @@ const PersonalInfoFields = ({
           autoComplete="name"
           required
           placeholder="Enter your name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
+          value={values.name}
+          onChange={handlers.handleNameChange}
+          onBlur={() => handlers.markFieldAsDirty('name')}
         />
         {errors.name && (
           <Alert variant="destructive" className="py-2 px-3">
@@ -65,8 +63,9 @@ const PersonalInfoFields = ({
           autoComplete="tel"
           required
           placeholder="Enter your phone number"
-          value={phone}
+          value={values.phone}
           onChange={handlePhoneChange}
+          onBlur={() => handlers.markFieldAsDirty('phone')}
         />
         {errors.phone && (
           <Alert variant="destructive" className="py-2 px-3">

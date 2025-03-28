@@ -1,7 +1,8 @@
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { CheckCircle } from 'lucide-react';
 import { memo } from 'react';
+import { trackComponentRender } from '@/utils/performanceMonitoring';
 import { motion } from 'framer-motion';
 
 export interface LockoutStepProps {
@@ -19,6 +20,12 @@ const LockoutStep = ({
   className,
   delay = 0
 }: LockoutStepProps) => {
+  const finishRenderTracking = trackComponentRender('LockoutStep');
+  
+  useEffect(() => {
+    finishRenderTracking();
+  }, []);
+
   return (
     <motion.div 
       initial={{ opacity: 0, y: 20 }}

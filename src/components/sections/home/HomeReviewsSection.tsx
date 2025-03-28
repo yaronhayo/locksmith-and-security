@@ -1,47 +1,51 @@
 
-import { memo, useState, useCallback, useEffect } from 'react';
+import { memo, useEffect, useState, useCallback } from 'react';
 import { Review } from '@/types/reviews';
 import ReviewsList from '@/components/reviews/ReviewsList';
 import { motion } from 'framer-motion';
 import { reviews } from '@/data/reviewsData';
 import { Button } from '@/components/ui/button';
 import { Star } from 'lucide-react';
+import { trackComponentRender, measurePerformance } from '@/utils/performanceMonitoring';
 import ReviewsLoadingSkeleton from '@/components/reviews/ReviewsLoadingSkeleton';
 
 // Select diverse reviews representing different service areas and services
 const getHomePageReviews = (): Review[] => {
-  // Create a map to track already selected locations and services for diversity
-  const selectedLocations = new Set<string>();
-  const selectedServices = new Set<string>();
-  const selectedReviews: Review[] = [];
-  
-  // First pass: get reviews with unique combinations of location and service
-  for (const review of reviews) {
-    const locationServiceKey = `${review.location}-${review.service}`;
-    if (!selectedLocations.has(review.location) || !selectedServices.has(review.service)) {
-      selectedReviews.push(review);
-      selectedLocations.add(review.location);
-      selectedServices.add(review.service);
-      
-      if (selectedReviews.length >= 26) break;
-    }
-  }
-  
-  // If we don't have enough reviews yet, add more diverse ones
-  if (selectedReviews.length < 26) {
+  return measurePerformance('Get Home Page Reviews', () => {
+    // Create a map to track already selected locations and services for diversity
+    const selectedLocations = new Set<string>();
+    const selectedServices = new Set<string>();
+    const selectedReviews: Review[] = [];
+    
+    // First pass: get reviews with unique combinations of location and service
     for (const review of reviews) {
-      if (!selectedReviews.includes(review)) {
+      const locationServiceKey = `${review.location}-${review.service}`;
+      if (!selectedLocations.has(review.location) || !selectedServices.has(review.service)) {
         selectedReviews.push(review);
+        selectedLocations.add(review.location);
+        selectedServices.add(review.service);
+        
         if (selectedReviews.length >= 26) break;
       }
     }
-  }
-  
-  // Take only first 26 reviews
-  return selectedReviews.slice(0, 26);
+    
+    // If we don't have enough reviews yet, add more diverse ones
+    if (selectedReviews.length < 26) {
+      for (const review of reviews) {
+        if (!selectedReviews.includes(review)) {
+          selectedReviews.push(review);
+          if (selectedReviews.length >= 26) break;
+        }
+      }
+    }
+    
+    // Take only first 26 reviews
+    return selectedReviews.slice(0, 26);
+  });
 };
 
 const HomeReviewsSection = () => {
+  const finishRenderTracking = trackComponentRender('HomeReviewsSection');
   const [isLoading, setIsLoading] = useState(true);
   const [homeReviews, setHomeReviews] = useState<Review[]>([]);
   
@@ -58,6 +62,7 @@ const HomeReviewsSection = () => {
   
   useEffect(() => {
     const cleanup = loadReviews();
+    finishRenderTracking();
     return cleanup;
   }, [loadReviews]);
   

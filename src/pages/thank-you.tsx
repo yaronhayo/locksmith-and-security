@@ -13,12 +13,10 @@ const ThankYouPage = () => {
   useEffect(() => {
     const fromForm = sessionStorage.getItem('fromFormSubmission');
     if (!fromForm) {
-      console.log("User tried to access thank-you page directly, redirecting to home");
       navigate('/');
-    } else {
-      // Clear the flag after checking
-      sessionStorage.removeItem('fromFormSubmission');
     }
+    // Clear the flag after checking
+    sessionStorage.removeItem('fromFormSubmission');
   }, [navigate]);
 
   return (

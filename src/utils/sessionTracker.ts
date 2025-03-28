@@ -110,72 +110,53 @@ const detectBrowser = (): { browser: string; version: string; os: string; device
 
 // Initialize session tracking
 export const initSessionTracking = (): void => {
-  // Use requestIdleCallback for non-critical tracking activities to avoid impacting INP
-  const scheduleIdleTask = (callback) => {
-    if ('requestIdleCallback' in window) {
-      window.requestIdleCallback(callback, { timeout: 2000 });
-    } else {
-      setTimeout(callback, 50);
-    }
-  };
-
-  // Record page load time with less impact on initial rendering
-  scheduleIdleTask(() => {
-    if (window.performance) {
-      const perfData = window.performance.timing;
-      pageLoaded = perfData.domContentLoadedEventEnd - perfData.navigationStart;
-    }
-    
-    // Initialize entry page
-    if (!sessionStorage.getItem('entryPage')) {
-      sessionStorage.setItem('entryPage', window.location.pathname);
-    }
-    
-    // Track previous visits
-    const visitCount = localStorage.getItem('visitCount');
-    const newVisitCount = visitCount ? parseInt(visitCount) + 1 : 1;
-    localStorage.setItem('visitCount', newVisitCount.toString());
-    localStorage.setItem('lastVisitDate', new Date().toISOString());
-  });
+  // Record page load time
+  if (window.performance) {
+    const perfData = window.performance.timing;
+    pageLoaded = perfData.domContentLoadedEventEnd - perfData.navigationStart;
+  }
   
-  // Initialize click path with current page - delay to avoid blocking main thread
-  scheduleIdleTask(() => {
-    if (sessionStorage.getItem('clickPath')) {
-      const paths = JSON.parse(sessionStorage.getItem('clickPath') || '[]');
-      if (paths[paths.length - 1] !== window.location.pathname) {
-        paths.push(window.location.pathname);
-        sessionStorage.setItem('clickPath', JSON.stringify(paths));
-      }
-      clickPaths = paths;
-    } else {
-      clickPaths = [window.location.pathname];
-      sessionStorage.setItem('clickPath', JSON.stringify(clickPaths));
-    }
-  });
+  // Initialize entry page
+  if (!sessionStorage.getItem('entryPage')) {
+    sessionStorage.setItem('entryPage', window.location.pathname);
+  }
   
-  // Set up passive event listeners to minimize impact on INP
+  // Track previous visits
+  const visitCount = localStorage.getItem('visitCount');
+  const newVisitCount = visitCount ? parseInt(visitCount) + 1 : 1;
+  localStorage.setItem('visitCount', newVisitCount.toString());
+  localStorage.setItem('lastVisitDate', new Date().toISOString());
+  
+  // Initialize click path with current page
+  if (sessionStorage.getItem('clickPath')) {
+    const paths = JSON.parse(sessionStorage.getItem('clickPath') || '[]');
+    if (paths[paths.length - 1] !== window.location.pathname) {
+      paths.push(window.location.pathname);
+      sessionStorage.setItem('clickPath', JSON.stringify(paths));
+    }
+    clickPaths = paths;
+  } else {
+    clickPaths = [window.location.pathname];
+    sessionStorage.setItem('clickPath', JSON.stringify(clickPaths));
+  }
+  
+  // Set up scroll depth tracking
   document.addEventListener('scroll', () => {
-    // Use requestAnimationFrame to limit scroll depth calculations
-    if (!scrollRAF) {
-      scrollRAF = window.requestAnimationFrame(() => {
-        const scrollTop = window.scrollY;
-        const docHeight = document.documentElement.scrollHeight;
-        const winHeight = window.innerHeight;
-        const scrollPercent = (scrollTop / (docHeight - winHeight)) * 100;
-        maxScrollDepth = Math.max(maxScrollDepth, Math.round(scrollPercent));
-        scrollRAF = null;
-      });
-    }
-  }, { passive: true });
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight;
+    const winHeight = window.innerHeight;
+    const scrollPercent = (scrollTop / (docHeight - winHeight)) * 100;
+    maxScrollDepth = Math.max(maxScrollDepth, Math.round(scrollPercent));
+  });
   
   // Track user interactions
   document.addEventListener('click', () => {
     interactionCount++;
-  }, { passive: true });
+  });
   
   document.addEventListener('keydown', () => {
     interactionCount++;
-  }, { passive: true });
+  });
   
   // Track form interactions
   document.addEventListener('focusin', (e) => {
@@ -186,7 +167,7 @@ export const initSessionTracking = (): void => {
       }
       formFocusCount++;
     }
-  }, { passive: true });
+  });
 };
 
 // Start tracking form interaction
@@ -327,5 +308,3 @@ export const getSessionData = async (): Promise<SessionData> => {
     }
   };
 };
-
-let scrollRAF: number | null = null;

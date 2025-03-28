@@ -66,10 +66,24 @@ const ServiceSchema = ({
             "@type": "Service",
             "name": name,
             "description": description
-          }
+          },
+          ...(price && {
+            "priceSpecification": {
+              "@type": "PriceSpecification",
+              "price": price.amount,
+              "priceCurrency": price.currency
+            }
+          })
         }
       ]
     },
+    ...(estimatedTime && {
+      "serviceOutput": {
+        "@type": "Duration",
+        "name": "Estimated Service Time",
+        "value": estimatedTime
+      }
+    }),
     "review": {
       "@type": "Review",
       "reviewRating": {

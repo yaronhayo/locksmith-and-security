@@ -11,12 +11,7 @@ export const validateForm = (formData: FormData, showVehicleInfo: boolean) => {
     errors.name = "Please enter a valid name (minimum 2 characters)";
   }
   
-  // Update phone validation to allow 11 digits with country code
-  const cleanedPhone = phone ? phone.replace(/\D/g, '') : '';
-  if (!phone || !(
-    cleanedPhone.length === 10 || 
-    (cleanedPhone.length === 11 && cleanedPhone.charAt(0) === '1')
-  )) {
+  if (!phone || !/^[\d\s()-]{10,}$/.test(phone)) {
     errors.phone = "Please enter a valid phone number";
   }
   
@@ -28,17 +23,10 @@ export const validateForm = (formData: FormData, showVehicleInfo: boolean) => {
     errors.service = "Please select a service";
   }
 
-  if (service === "Other") {
-    const otherService = formData.get("other_service") as string;
-    if (!otherService || otherService.trim().length < 2) {
-      errors.other_service = "Please specify the service needed";
-    }
-  }
-
   if (showVehicleInfo) {
-    const vehicleYear = formData.get("vehicle_year") as string;
-    const vehicleMake = formData.get("vehicle_make") as string;
-    const vehicleModel = formData.get("vehicle_model") as string;
+    const vehicleYear = formData.get("vehicleYear") as string;
+    const vehicleMake = formData.get("vehicleMake") as string;
+    const vehicleModel = formData.get("vehicleModel") as string;
 
     if (!vehicleYear || !/^\d{4}$/.test(vehicleYear)) {
       errors.vehicleYear = "Please enter a valid year (YYYY)";
@@ -51,13 +39,9 @@ export const validateForm = (formData: FormData, showVehicleInfo: boolean) => {
     }
   }
 
-  console.log("Form validation results:", {
-    errors,
-    isValid: Object.keys(errors).length === 0
-  });
-
   return {
     isValid: Object.keys(errors).length === 0,
     errors
   };
 };
+

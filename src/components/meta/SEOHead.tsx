@@ -30,9 +30,6 @@ interface SEOHeadProps {
   icbm?: string;
   author?: string;
   baseUrl?: string;
-  publishedDate?: string;
-  alternateLanguages?: {locale: string, url: string}[];
-  nextPrevLinks?: {prev?: string, next?: string};
 }
 
 const SEOHead: React.FC<SEOHeadProps> = ({
@@ -45,7 +42,6 @@ const SEOHead: React.FC<SEOHeadProps> = ({
   noindex = false,
   nofollow = false,
   modifiedDate = new Date().toISOString(),
-  publishedDate,
   ogType = "website",
   twitterCardType = "summary_large_image",
   language = "en",
@@ -54,9 +50,7 @@ const SEOHead: React.FC<SEOHeadProps> = ({
   geoPosition,
   icbm,
   author = "Locksmith & Security LLC",
-  baseUrl = "https://247locksmithandsecurity.com",
-  alternateLanguages,
-  nextPrevLinks
+  baseUrl = "https://247locksmithandsecurity.com"
 }) => {
   // Truncate title for optimal display (50-60 characters)
   const optimizedTitle = title.length > 60 ? `${title.substring(0, 57)}...` : title;
@@ -90,7 +84,6 @@ const SEOHead: React.FC<SEOHeadProps> = ({
         modifiedDate={modifiedDate}
         baseUrl={baseUrl}
         type={ogType}
-        publishedDate={publishedDate}
       />
       
       <TwitterTags 
@@ -102,13 +95,9 @@ const SEOHead: React.FC<SEOHeadProps> = ({
       />
       
       <Helmet>
-        {/* Core meta tags */}
+        {/* Bing/Microsoft specific tags */}
         <link rel="sitemap" type="application/xml" href={`${baseUrl}/sitemap.xml`} />
         <meta name="robots" content={`${noindex ? 'noindex' : 'index'},${nofollow ? 'nofollow' : 'follow'},max-image-preview:large,max-snippet:-1,max-video-preview:-1`} />
-        
-        {/* Structured data attributes */}
-        {publishedDate && <meta name="article:published_time" content={publishedDate} />}
-        {modifiedDate && <meta name="article:modified_time" content={modifiedDate} />}
         
         {/* Location-specific meta tags for service areas */}
         {geoRegion && <meta name="geo.region" content={geoRegion} />}
@@ -116,30 +105,6 @@ const SEOHead: React.FC<SEOHeadProps> = ({
         {geoPosition && <meta name="geo.position" content={geoPosition} />}
         {icbm && <meta name="ICBM" content={icbm} />}
         {author && <meta name="author" content={author} />}
-        
-        {/* Alternate language versions */}
-        {alternateLanguages && alternateLanguages.map(alt => (
-          <link 
-            key={alt.locale} 
-            rel="alternate" 
-            hrefLang={alt.locale} 
-            href={alt.url.startsWith('http') ? alt.url : `${baseUrl}${alt.url.startsWith('/') ? alt.url : `/${alt.url}`}`}
-          />
-        ))}
-        
-        {/* Pagination links for sequential content */}
-        {nextPrevLinks?.prev && (
-          <link 
-            rel="prev" 
-            href={nextPrevLinks.prev.startsWith('http') ? nextPrevLinks.prev : `${baseUrl}${nextPrevLinks.prev.startsWith('/') ? nextPrevLinks.prev : `/${nextPrevLinks.prev}`}`}
-          />
-        )}
-        {nextPrevLinks?.next && (
-          <link 
-            rel="next" 
-            href={nextPrevLinks.next.startsWith('http') ? nextPrevLinks.next : `${baseUrl}${nextPrevLinks.next.startsWith('/') ? nextPrevLinks.next : `/${nextPrevLinks.next}`}`}
-          />
-        )}
       </Helmet>
       
       {schemas && schemas.length > 0 && (

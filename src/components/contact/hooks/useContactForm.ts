@@ -1,19 +1,19 @@
 
 import { useRef, useState, useCallback, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { toast } from "sonner";
+import { useToast } from "@/hooks/use-toast";
 import { getEmailError, getNameError, getPhoneError } from "@/utils/inputValidation";
-import { submitFormData, redirectToThankYou } from "@/utils/formSubmission";
+import { submitFormData } from "@/utils/formSubmission";
 import { startFormTracking } from "@/utils/sessionTracker";
 
 export const useContactForm = () => {
   const form = useRef<HTMLFormElement>(null);
   const navigate = useNavigate();
+  const { toast } = useToast();
   const [address, setAddress] = useState("");
   const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const [submissionAttempted, setSubmissionAttempted] = useState(false);
 
   // Start form tracking when the component loads
   useEffect(() => {
@@ -25,10 +25,10 @@ export const useContactForm = () => {
     if (!form.current) return false;
 
     const formData = new FormData(form.current);
-    const name = String(formData.get('user_name') || '');
-    const email = String(formData.get('user_email') || '');
-    const phone = String(formData.get('user_phone') || '');
-    const message = String(formData.get('message') || '');
+    const name = String(formData.get('user_name'));
+    const email = String(formData.get('user_email'));
+    const phone = String(formData.get('user_phone'));
+    const message = String(formData.get('message'));
 
     const newErrors: Record<string, string> = {};
     
@@ -55,21 +55,21 @@ export const useContactForm = () => {
 
   const handleSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Contact form submission started");
-    setSubmissionAttempted(true);
     
     if (!recaptchaToken) {
-      toast.error("Verification Required", {
+      toast({
+        title: "Verification Required",
         description: "Please complete the reCAPTCHA verification",
-        duration: 6000,
+        variant: "destructive",
       });
       return;
     }
 
     if (!validateForm()) {
-      toast.error("Form Error", {
+      toast({
+        title: "Form Error",
         description: "Please fix the errors in the form before submitting",
-        duration: 6000,
+        variant: "destructive",
       });
       return;
     }
@@ -81,11 +81,11 @@ export const useContactForm = () => {
       const formData = new FormData(form.current);
       const submissionData = {
         type: "contact" as const,
-        name: String(formData.get('user_name') || ''),
-        email: String(formData.get('user_email') || ''),
-        phone: String(formData.get('user_phone') || ''),
+        name: String(formData.get('user_name')),
+        email: String(formData.get('user_email')),
+        phone: String(formData.get('user_phone')),
         address: address,
-        message: String(formData.get('message') || ''),
+        message: String(formData.get('message')),
         status: "pending" as const,
         recaptcha_token: recaptchaToken,
         visitor_info: {
@@ -99,23 +99,31 @@ export const useContactForm = () => {
         source_url: window.location.pathname
       };
 
-      console.log("Submitting contact form data:", JSON.stringify(submissionData, null, 2));
-      const result = await submitFormData(submissionData);
-      console.log("Contact form submitted successfully, result:", result);
+      await submitFormData(submissionData);
 
-      // Handle redirect with the improved helper function
-      redirectToThankYou(navigate);
+      // Set session storage for thank-you page redirect protection
+      sessionStorage.setItem('fromFormSubmission', 'true');
+      
+      // Show success toast
+      toast({
+        title: "Message Sent",
+        description: "Thank you for contacting us. We'll be in touch soon!",
+        variant: "default",
+      });
+      
+      navigate('/thank-you');
 
     } catch (error: any) {
       console.error('Contact form submission error:', error);
-      toast.error("Submission Failed", {
+      toast({
+        title: "Submission Failed",
         description: "Please try again or contact us directly.",
-        duration: 6000,
+        variant: "destructive",
       });
     } finally {
       setIsSubmitting(false);
     }
-  }, [recaptchaToken, address, validateForm, navigate]);
+  }, [recaptchaToken, address, validateForm, toast, navigate]);
 
   return {
     form,
@@ -125,7 +133,6 @@ export const useContactForm = () => {
     setRecaptchaToken,
     isSubmitting,
     errors,
-    submissionAttempted,
     handleSubmit
   };
 };

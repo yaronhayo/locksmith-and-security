@@ -1,4 +1,3 @@
-
 import { Shield, Clock, DollarSign, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
@@ -36,7 +35,7 @@ const CarKeyProgramHero = () => {
             <div className="grid grid-cols-2 gap-6 mt-12">
               <div className="flex items-center gap-3">
                 <Clock className="h-6 w-6 text-secondary" />
-                <span className="text-white">24/7 Service</span>
+                <span className="text-white">Same Day Service</span>
               </div>
               <div className="flex items-center gap-3">
                 <Shield className="h-6 w-6 text-secondary" />
@@ -44,7 +43,7 @@ const CarKeyProgramHero = () => {
               </div>
               <div className="flex items-center gap-3">
                 <DollarSign className="h-6 w-6 text-secondary" />
-                <span className="text-white">Professional Service</span>
+                <span className="text-white">Upfront Pricing</span>
               </div>
             </div>
           </motion.div>
@@ -55,6 +54,10 @@ const CarKeyProgramHero = () => {
             className="relative"
           >
             <div className="bg-white rounded-2xl p-6 lg:p-8 shadow-2xl">
+              <div className="text-center mb-6">
+                <h2 className="text-xl lg:text-2xl font-bold text-gray-900">Request Car Key Programming</h2>
+                <p className="text-gray-600 mt-2">Professional programming for all vehicle types</p>
+              </div>
               <BookingForm />
             </div>
           </motion.div>

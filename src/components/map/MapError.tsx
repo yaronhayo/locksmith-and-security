@@ -1,59 +1,23 @@
 
 import { AlertCircle } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Button } from "@/components/ui/button";
 
 interface MapErrorProps {
-  error: string | React.ReactNode;
-  onRetry?: () => void;
+  error: string;
 }
 
-const MapError = ({ error, onRetry }: MapErrorProps) => {
-  const errorStr = typeof error === 'string' ? error : '';
-  
-  const isBillingError = errorStr?.toLowerCase().includes('billing') || 
-                          errorStr?.toLowerCase().includes('payment') ||
-                          errorStr?.toLowerCase().includes('development purposes');
-
-  const googleConsoleUrl = "https://console.cloud.google.com/project/_/billing/enable";
+const MapError = ({ error }: MapErrorProps) => {
+  console.error('Map Error:', error); // Add logging for debugging
 
   return (
     <Alert variant="destructive" className="mb-4">
       <AlertCircle className="h-4 w-4" />
-      <AlertDescription className="space-y-2">
+      <AlertDescription>
         {error}
-        {isBillingError && (
-          <div className="mt-2 text-sm">
-            <p className="font-medium">This appears to be a Google Maps billing issue.</p>
-            <p className="mt-1">For this app to function properly, you need to:</p>
-            <ol className="list-decimal ml-5 mt-1 space-y-1">
-              <li>Enable billing for your Google Cloud Project</li>
-              <li>Ensure the Maps JavaScript API and Places API are enabled</li>
-              <li>Wait a few minutes for the changes to propagate</li>
-            </ol>
-            <div className="mt-2 flex flex-wrap gap-3">
-              <Button 
-                variant="link" 
-                className="p-0 h-auto text-blue-500 hover:text-blue-700" 
-                onClick={() => window.open(googleConsoleUrl, '_blank')}
-              >
-                Open Google Cloud Console
-              </Button>
-              {onRetry && (
-                <Button 
-                  variant="link" 
-                  className="p-0 h-auto text-blue-500 hover:text-blue-700" 
-                  onClick={onRetry}
-                >
-                  Try Again
-                </Button>
-              )}
-            </div>
-          </div>
-        )}
       </AlertDescription>
     </Alert>
   );
 };
 
 export default MapError;
+

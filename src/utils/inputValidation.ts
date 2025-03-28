@@ -1,6 +1,6 @@
 
 /**
- * Formats a phone number input to US format: (XXX) XXX-XXXX or +1 (XXX) XXX-XXXX
+ * Formats a phone number input to US format: (XXX) XXX-XXXX
  * @param value The input phone number string
  * @returns Formatted phone number
  */
@@ -8,22 +8,10 @@ export const formatPhoneNumber = (value: string): string => {
   // Strip all non-numeric characters
   const cleaned = value.replace(/\D/g, '');
   
-  // Handle +1 country code (11 digits)
-  if (cleaned.length > 10) {
-    // Format as +1 (XXX) XXX-XXXX
-    const countryCode = cleaned.substring(0, 1);
-    const areaCode = cleaned.substring(1, 4);
-    const middle = cleaned.substring(4, 7);
-    const last = cleaned.substring(7, 11);
-    
-    if (countryCode === '1') {
-      return `+1 (${areaCode}) ${middle}${last ? `-${last}` : ''}`;
-    }
-  }
-  
-  // Format as (XXX) XXX-XXXX (10 digits)
+  // Limit to 10 digits
   const trimmed = cleaned.substring(0, 10);
   
+  // Format as (XXX) XXX-XXXX
   if (trimmed.length === 0) return '';
   if (trimmed.length <= 3) return `(${trimmed}`;
   if (trimmed.length <= 6) return `(${trimmed.slice(0, 3)}) ${trimmed.slice(3)}`;
@@ -61,13 +49,10 @@ export const getEmailError = (email: string): string | null => {
 export const getPhoneError = (phone: string): string | null => {
   if (!phone) return null;
   const cleaned = phone.replace(/\D/g, '');
-  
-  // Allow 10 digits or 11 digits starting with 1 (US country code)
-  if (cleaned.length === 10 || (cleaned.length === 11 && cleaned.charAt(0) === '1')) {
-    return null;
+  if (cleaned.length < 10) {
+    return "Please enter a complete phone number";
   }
-  
-  return "Please enter a complete phone number";
+  return null;
 };
 
 /**
@@ -80,35 +65,5 @@ export const getNameError = (name: string): string | null => {
   if (name.trim().length < 2) {
     return "Name should be at least 2 characters";
   }
-  return null;
-};
-
-/**
- * Validates that a service is selected
- * @param service The selected service
- * @returns Error message or null if valid
- */
-export const getServiceError = (service: string): string | null => {
-  if (!service) return "Please select a service";
-  return null;
-};
-
-/**
- * Validates that a timeframe is selected
- * @param timeframe The selected timeframe
- * @returns Error message or null if valid
- */
-export const getTimeframeError = (timeframe: string): string | null => {
-  if (!timeframe) return "Please select when you need service";
-  return null;
-};
-
-/**
- * Validates that an address is provided
- * @param address The address string
- * @returns Error message or null if valid
- */
-export const getAddressError = (address: string): string | null => {
-  if (!address || address.trim() === '') return "Please enter a valid address";
   return null;
 };

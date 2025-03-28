@@ -10,34 +10,25 @@ import {
 import { timeframes } from "../constants";
 
 interface TimeframeSelectionProps {
-  timeframe: string;
-  setTimeframe: (value: string) => void;
-  error?: string;
   isSubmitting: boolean;
 }
 
-const TimeframeSelection = ({ timeframe, setTimeframe, error, isSubmitting }: TimeframeSelectionProps) => {
+const TimeframeSelection = ({ isSubmitting }: TimeframeSelectionProps) => {
   return (
     <div className="space-y-1.5">
       <Label htmlFor="timeframe" className="text-sm">When do you need service?</Label>
-      <Select 
-        name="timeframe" 
-        disabled={isSubmitting} 
-        value={timeframe} 
-        onValueChange={setTimeframe}
-      >
+      <Select name="timeframe" disabled={isSubmitting}>
         <SelectTrigger id="timeframe" className="h-9 text-sm">
           <SelectValue placeholder="When do you need service?" />
         </SelectTrigger>
         <SelectContent>
-          {timeframes.map((timeframeOption) => (
-            <SelectItem key={timeframeOption} value={timeframeOption} className="text-sm">
-              {timeframeOption}
+          {timeframes.map((timeframe) => (
+            <SelectItem key={timeframe} value={timeframe} className="text-sm">
+              {timeframe}
             </SelectItem>
           ))}
         </SelectContent>
       </Select>
-      {error && <p className="text-xs text-red-500 mt-1">{error}</p>}
     </div>
   );
 };

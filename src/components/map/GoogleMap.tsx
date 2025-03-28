@@ -6,10 +6,9 @@ import MapMarkers from "./MapMarkers";
 import MapError from "./MapError";
 import MapControls from "./MapControls";
 import { MapMarker } from "@/types/service-area";
+import { clearApiKeyCache } from "@/hooks/useApiKeys";
 import { useMapInitialization } from "./hooks/useMapInitialization";
 import { useMapInteractions } from "./hooks/useMapInteractions";
-import { toast } from "sonner";
-import { useScripts } from "../providers/ScriptsProvider";
 
 const mapOptions: google.maps.MapOptions = {
   zoomControl: false,
@@ -45,8 +44,6 @@ const GoogleMap = ({
   center = { lat: 40.7795, lng: -74.0324 },
   onClick
 }: GoogleMapProps) => {
-  const { mapsError: scriptError, reloadMapsScript } = useScripts();
-  
   const {
     mapRef,
     isLoading,
@@ -64,13 +61,9 @@ const GoogleMap = ({
   } = useMapInteractions(markers, highlightedMarker, showAllMarkers, zoom);
 
   const handleMapError = useCallback(() => {
-    console.error("Map error occurred, attempting to reload");
-    toast.error("Google Maps error detected", {
-      description: "Attempting to reload the map...",
-      duration: 4000,
-    });
-    reloadMapsScript();
-  }, [reloadMapsScript]);
+    console.error("Map error occurred");
+    clearApiKeyCache('maps');
+  }, []);
 
   // Register error handling on window
   React.useEffect(() => {
@@ -91,14 +84,8 @@ const GoogleMap = ({
     };
   }, [handleMapError]);
 
-  const combinedError = scriptError || mapError;
-  
-  if (combinedError) {
-    return (
-      <div className="h-full flex items-center justify-center p-4">
-        <MapError error={combinedError} onRetry={reloadMapsScript} />
-      </div>
-    );
+  if (mapError) {
+    return <MapError error={mapError} />;
   }
 
   return (

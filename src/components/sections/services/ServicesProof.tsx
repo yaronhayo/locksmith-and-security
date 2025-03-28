@@ -1,9 +1,10 @@
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Review } from '@/types/reviews';
 import { StarIcon } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { reviews, reviewsByCategory } from '@/data/reviewsData';
+import { trackComponentRender } from '@/utils/performanceMonitoring';
 import { memo } from 'react';
 
 interface ServicesProofProps {
@@ -12,6 +13,12 @@ interface ServicesProofProps {
 }
 
 const ServicesProof: React.FC<ServicesProofProps> = memo(({ reviewsData, category }) => {
+  const finishRenderTracking = trackComponentRender('ServicesProof');
+  
+  useEffect(() => {
+    finishRenderTracking();
+  }, []);
+  
   // Use provided reviews data if available, otherwise use reviews based on category or default to all reviews
   const displaySourceReviews = reviewsData || 
     (category ? reviewsByCategory[category] : reviews);

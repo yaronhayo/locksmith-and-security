@@ -1,6 +1,6 @@
 
 import { memo, useState, useEffect } from 'react';
-import { trackImageLoad2 } from '@/utils/performanceMonitoring';
+import { trackImageLoad } from '@/utils/performanceMonitoring';
 import { Skeleton } from '@/components/ui/skeleton';
 import { cn } from '@/lib/utils';
 import { Helmet } from 'react-helmet';
@@ -70,12 +70,6 @@ const ResponsiveImage = ({
   const [imgSrcSet, setImgSrcSet] = useState<string | undefined>(
     lazyLoad && !priority ? undefined : srcSet || getImageSrcSet(src)
   );
-  const [imgElement, setImgElement] = useState<HTMLImageElement | null>(null);
-  
-  // Register ref callback to get access to the image element
-  const imgRef = (element: HTMLImageElement | null) => {
-    setImgElement(element);
-  };
   
   useEffect(() => {
     if (lazyLoad && !priority) {
@@ -86,7 +80,7 @@ const ResponsiveImage = ({
         img.srcset = srcSet || getImageSrcSet(src);
       }
       
-      const { onLoad, onError } = trackImageLoad2(src, img);
+      const { onLoad, onError } = trackImageLoad(src, img);
       
       img.onload = () => {
         setImgSrc(src);
@@ -113,20 +107,16 @@ const ResponsiveImage = ({
     }
   }, [src, srcSet, fallbackSrc, lazyLoad, priority, externalOnLoadHandler, externalOnErrorHandler]);
 
-  const handleImageLoad = (e: React.SyntheticEvent<HTMLImageElement>) => {
+  const handleImageLoad = () => {
     setIsLoading(false);
-    // Report performance data
-    trackImageLoad2(src, e.currentTarget).onLoad();
-    if (externalOnLoadHandler) externalOnLoadHandler(e);
+    if (externalOnLoadHandler) externalOnLoadHandler({} as React.SyntheticEvent<HTMLImageElement>);
   };
 
-  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement>) => {
+  const handleImageError = () => {
     setImgSrc(fallbackSrc);
     setImgSrcSet(undefined);
     setIsLoading(false);
-    // Report error
-    trackImageLoad2(src, e.currentTarget).onError(e);
-    if (externalOnErrorHandler) externalOnErrorHandler(e);
+    if (externalOnErrorHandler) externalOnErrorHandler({} as React.SyntheticEvent<HTMLImageElement>);
   };
 
   // Extract filename from path for a fallback alt text if needed
@@ -172,7 +162,6 @@ const ResponsiveImage = ({
           />
         )}
         <img
-          ref={imgRef}
           src={imgSrc}
           srcSet={imgSrcSet}
           sizes={sizes}

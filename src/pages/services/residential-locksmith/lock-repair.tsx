@@ -9,20 +9,22 @@ import { lockRepairFaqs, lockRepairServiceSchema, lockRepairFaqSchema } from '@/
 import { relatedResidentialServices } from '@/components/services/lock-repair/relatedServices';
 import ServicesProof from '@/components/sections/services/ServicesProof';
 import ServicesCTA from '@/components/sections/services/ServicesCTA';
-import SEOHead from '@/components/meta/SEOHead';
 
 const LockRepair = () => {
   return (
     <main className="flex-grow">
-      <SEOHead
-        title="Professional Lock Repair Services | 24/7 Residential Locksmith"
-        description="Expert lock repair services by certified technicians. We diagnose and fix all types of lock issues including stuck locks, broken keys, and misalignments."
-        keywords="lock repair, fix lock, stuck lock, broken key in lock, lock not working, residential locksmith, lock malfunction, lock service"
-        canonicalUrl="https://247locksmithandsecurity.com/services/residential-locksmith/lock-repair"
+      <Helmet>
+        <title>Professional Lock Repair Services | 24/7 Residential Locksmith</title>
+        <meta name="description" content="Expert lock repair services by certified technicians. We diagnose and fix all types of lock issues including stuck locks, broken keys, and misalignments." />
+        <meta name="keywords" content="lock repair, fix lock, stuck lock, broken key in lock, lock not working, residential locksmith, lock malfunction, lock service" />
+        <link rel="canonical" href="https://247locksmithandsecurity.com/services/residential-locksmith/lock-repair" />
+      </Helmet>
+      
+      <SchemaScripts 
         schemas={[
           { type: 'service', data: lockRepairServiceSchema },
           { type: 'faq', data: lockRepairFaqSchema }
-        ]}
+        ]} 
       />
       
       <EnhancedServicesHero 

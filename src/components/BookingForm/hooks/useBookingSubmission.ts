@@ -1,8 +1,8 @@
 
 import { useState, useCallback, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { toast } from "sonner";
-import { submitFormData, redirectToThankYou } from "@/utils/formSubmission";
+import { useToast } from "@/hooks/use-toast";
+import { submitFormData } from "@/utils/formSubmission";
 import { startFormTracking } from "@/utils/sessionTracker";
 
 interface UseBookingSubmissionProps {
@@ -33,8 +33,8 @@ export const useBookingSubmission = ({
 }: UseBookingSubmissionProps) => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submissionAttempted, setSubmissionAttempted] = useState(false);
 
   // Start form tracking when the component loads
   useEffect(() => {
@@ -54,34 +54,19 @@ export const useBookingSubmission = ({
 
   const handleSubmit = useCallback(async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("Booking form submission started");
-    setSubmissionAttempted(true);
 
     if (!recaptchaToken) {
-      toast.error("Verification Required", {
+      toast({
+        title: "Verification Required",
         description: "Please complete the reCAPTCHA verification",
-        duration: 6000,
+        variant: "destructive",
       });
-      setIsSubmitting(false);
       return;
     }
 
-    if (!address || address.trim() === '') {
-      toast.error("Address Required", {
-        description: "Please enter a valid service address",
-        duration: 6000,
-      });
-      setIsSubmitting(false);
-      return;
-    }
-
-    setIsSubmitting(true);
     const formData = new FormData(e.currentTarget);
-    
-    // Ensure address is included
     formData.set('address', address);
     
-    // Include conditional fields if shown
     if (showAllKeysLostField) {
       formData.set('all_keys_lost', allKeysLost);
     }
@@ -90,21 +75,14 @@ export const useBookingSubmission = ({
       formData.set('has_unused_key', hasUnusedKey);
     }
     
-    // Validate the form data
     const validationResult = validateForm(formData, showVehicleInfo);
     if (!validationResult.isValid) {
       setErrors(validationResult.errors);
-      console.log("Form validation failed:", validationResult.errors);
-      toast.error("Form Validation Failed", {
-        description: "Please check the form for errors",
-        duration: 6000,
-      });
-      setIsSubmitting(false);
       return;
     }
 
     setErrors({});
-    console.log("Form validation passed, submitting...");
+    setIsSubmitting(true);
 
     try {
       // Prepare the submission data
@@ -112,10 +90,10 @@ export const useBookingSubmission = ({
       const phone = formData.get("phone") as string;
       const service = formData.get("service") as string;
       const timeframe = formData.get("timeframe") as string;
-      const notes = formData.get("notes") as string || null;
-      const unitNumber = formData.get("unit_number") as string || null;
-      const gateCode = formData.get("gate_code") as string || null;
-      const otherService = formData.get("other_service") as string || null;
+      const notes = formData.get("notes") as string;
+      const unitNumber = formData.get("unit_number") as string;
+      const gateCode = formData.get("gate_code") as string;
+      const otherService = formData.get("other_service") as string;
 
       // Format address with unit number if provided
       const formattedAddress = unitNumber 
@@ -134,17 +112,17 @@ export const useBookingSubmission = ({
         };
       }
 
-      // Prepare the submission data
+      // Prepare the submission data with explicit type literal
       const submissionData = {
         type: "booking" as const,
         name,
         phone,
         address: formattedAddress,
-        unit_number: unitNumber,
-        gate_code: gateCode,
+        unit_number: unitNumber || null,
+        gate_code: gateCode || null,
         service: service === "Other" ? otherService : service,
         timeframe,
-        notes: notes,
+        notes: notes || null,
         status: "pending" as const,
         visitor_info: collectVisitorInfo(),
         source_url: location.pathname,
@@ -152,19 +130,16 @@ export const useBookingSubmission = ({
         vehicle_info: vehicleInfo
       };
 
-      console.log("Submitting booking data:", JSON.stringify(submissionData, null, 2));
+      await submitFormData(submissionData);
       
-      // Submit the actual data to Supabase
-      const result = await submitFormData(submissionData);
+      // Store flag for thank-you page
+      sessionStorage.setItem('fromFormSubmission', 'true');
       
-      console.log("Booking submitted successfully, result:", result);
-      
-      toast.success("Your request has been submitted successfully!", {
-        duration: 6000
+      toast({
+        title: "Booking Received!",
+        description: "We'll contact you shortly to confirm your appointment.",
+        variant: "default",
       });
-      
-      // Use the improved redirect helper
-      redirectToThankYou(navigate);
 
       if (typeof window.gtag === 'function') {
         window.gtag('event', 'conversion', {
@@ -174,12 +149,15 @@ export const useBookingSubmission = ({
         });
       }
 
+      navigate('/thank-you');
     } catch (error: any) {
       console.error('Booking form submission error:', error);
-      toast.error("Submission Failed", {
+      toast({
+        title: "Submission Failed",
         description: error.message || "Please try again or contact us directly.",
-        duration: 6000,
+        variant: "destructive",
       });
+    } finally {
       setIsSubmitting(false);
     }
   }, [
@@ -192,6 +170,7 @@ export const useBookingSubmission = ({
     validateForm, 
     showVehicleInfo, 
     setErrors, 
+    toast, 
     collectVisitorInfo, 
     location.pathname, 
     navigate
@@ -199,7 +178,6 @@ export const useBookingSubmission = ({
 
   return {
     isSubmitting,
-    submissionAttempted,
     handleSubmit
   };
 };

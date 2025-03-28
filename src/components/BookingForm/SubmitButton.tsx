@@ -1,42 +1,37 @@
 
-import React from "react";
 import { Button } from "@/components/ui/button";
-import { Loader2 } from "lucide-react";
+import { Lock, Loader2 } from "lucide-react";
 
 interface SubmitButtonProps {
   isSubmitting: boolean;
-  text?: string;
-  loadingText?: string;
-  className?: string;
-  disabled?: boolean;
-  onClick?: () => void;
 }
 
-const SubmitButton = ({ 
-  isSubmitting, 
-  text = "Request Service",
-  loadingText = "Processing...",
-  className = "",
-  disabled = false,
-  onClick
-}: SubmitButtonProps) => {
+const SubmitButton = ({ isSubmitting }: SubmitButtonProps) => {
   return (
-    <Button
-      type="submit"
-      className={`w-full py-2.5 mt-4 bg-primary hover:bg-primary-hover text-white font-medium ${className}`}
-      disabled={isSubmitting || disabled}
-      size="lg"
-      onClick={onClick}
-    >
-      {isSubmitting ? (
-        <>
-          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-          {loadingText}
-        </>
-      ) : (
-        text
-      )}
-    </Button>
+    <>
+      <Button
+        type="submit"
+        size="lg"
+        className="w-full text-lg font-semibold h-10"
+        disabled={isSubmitting}
+      >
+        {isSubmitting ? (
+          <>
+            <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+            Submitting...
+          </>
+        ) : (
+          <>
+            <Lock className="w-5 h-5 mr-2" />
+            Request Service
+          </>
+        )}
+      </Button>
+
+      <p className="text-sm text-gray-500 text-center">
+        Professional Service • Licensed & Insured • 24/7 Available
+      </p>
+    </>
   );
 };
 

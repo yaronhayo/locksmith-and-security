@@ -1,3 +1,4 @@
+
 import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { AlertCircle } from "lucide-react";
@@ -10,51 +11,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { services, carKeyServices } from "../constants";
+import { services } from "../constants";
 
 interface ServiceSelectionProps {
-  service: string;
-  setService: (value: string) => void;
   error?: string;
   isSubmitting: boolean;
-  setShowVehicleInfo: (show: boolean) => void;
-  setShowAllKeysLostField: (show: boolean) => void;
-  setShowUnusedKeyField: (show: boolean) => void;
+  onServiceChange: (value: string) => void;
 }
 
-const ServiceSelection = ({
-  service,
-  setService,
-  error,
-  isSubmitting,
-  setShowVehicleInfo,
-  setShowAllKeysLostField,
-  setShowUnusedKeyField
-}: ServiceSelectionProps) => {
-  // Handle service change and set vehicle info visibility
-  const onServiceChange = (value: string) => {
-    setService(value);
-    
-    // Check if vehicle-related service is selected
-    const isCarService = [
-      "Car Lockout",
-      "Car Key Replacement",
-      "Key Fob Programming",
-      "Car Key Duplicate",
-      "Car Key Cutting",
-      "Ignition Lock Cylinder Repair"
-    ].includes(value);
-    
-    setShowVehicleInfo(isCarService);
-    
-    // Only show these fields when specific services are selected and keep them close to vehicle info
-    const showAllKeysLost = ["Car Key Replacement", "Key Fob Programming"].includes(value);
-    const showUnusedKey = value === "Key Fob Programming";
-    
-    setShowAllKeysLostField(showAllKeysLost);
-    setShowUnusedKeyField(showUnusedKey);
-  };
-
+const ServiceSelection = ({ error, isSubmitting, onServiceChange }: ServiceSelectionProps) => {
   // Group services by category
   const emergencyServices = services.filter(service => 
     ["Car Lockout", "House Lockout", "Business Lockout", "Storage Unit Lockout"].includes(service)
@@ -79,12 +44,7 @@ const ServiceSelection = ({
   return (
     <div className="space-y-2">
       <Label htmlFor="service">Service Needed</Label>
-      <Select 
-        onValueChange={onServiceChange} 
-        name="service" 
-        disabled={isSubmitting}
-        value={service}
-      >
+      <Select onValueChange={onServiceChange} name="service" disabled={isSubmitting}>
         <SelectTrigger 
           id="service"
           className={`h-10 text-base ${error ? 'border-red-500' : ''}`}
@@ -95,43 +55,43 @@ const ServiceSelection = ({
         <SelectContent>
           <SelectGroup>
             <SelectLabel>Emergency Services</SelectLabel>
-            {emergencyServices.map((serviceOption) => (
-              <SelectItem key={serviceOption} value={serviceOption}>
-                {serviceOption}
+            {emergencyServices.map((service) => (
+              <SelectItem key={service} value={service}>
+                {service}
               </SelectItem>
             ))}
           </SelectGroup>
           
           <SelectGroup>
             <SelectLabel>Residential Services</SelectLabel>
-            {residentialServices.map((serviceOption) => (
-              <SelectItem key={serviceOption} value={serviceOption}>
-                {serviceOption}
+            {residentialServices.map((service) => (
+              <SelectItem key={service} value={service}>
+                {service}
               </SelectItem>
             ))}
           </SelectGroup>
           
           <SelectGroup>
             <SelectLabel>Commercial Services</SelectLabel>
-            {commercialServices.map((serviceOption) => (
-              <SelectItem key={serviceOption} value={serviceOption}>
-                {serviceOption}
+            {commercialServices.map((service) => (
+              <SelectItem key={service} value={service}>
+                {service}
               </SelectItem>
             ))}
           </SelectGroup>
           
           <SelectGroup>
             <SelectLabel>Automotive Services</SelectLabel>
-            {automotiveServices.map((serviceOption) => (
-              <SelectItem key={serviceOption} value={serviceOption}>
-                {serviceOption}
+            {automotiveServices.map((service) => (
+              <SelectItem key={service} value={service}>
+                {service}
               </SelectItem>
             ))}
           </SelectGroup>
           
-          {otherServices.map((serviceOption) => (
-            <SelectItem key={serviceOption} value={serviceOption}>
-              {serviceOption}
+          {otherServices.map((service) => (
+            <SelectItem key={service} value={service}>
+              {service}
             </SelectItem>
           ))}
         </SelectContent>

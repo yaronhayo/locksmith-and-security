@@ -9,20 +9,22 @@ import { Helmet } from 'react-helmet';
 import { LockRekeyContent } from '@/components/services/lock-rekey/LockRekeyContent';
 import { lockRekeyFaqs, lockRekeyServiceSchema, lockRekeyFaqSchema } from '@/components/services/lock-rekey/LockRekeySchema';
 import { relatedResidentialServices } from '@/components/services/lock-rekey/relatedServices';
-import SEOHead from '@/components/meta/SEOHead';
 
 const LockRekey = () => {
   return (
     <main className="flex-grow">
-      <SEOHead
-        title="Professional Lock Rekey Service | Expert Residential Locksmiths"
-        description="Expert lock rekeying service by certified locksmiths. Change your keys without replacing locks. Serving North Bergen, Jersey City, Hoboken & all NJ areas."
-        keywords="lock rekey, rekey locks, change lock pins, new keys, same lock, key alike, master key, residential locksmith, home security"
-        canonicalUrl="https://247locksmithandsecurity.com/services/residential-locksmith/lock-rekey"
+      <Helmet>
+        <title>Professional Lock Rekey Service | Expert Residential Locksmiths</title>
+        <meta name="description" content="Expert lock rekeying service by certified locksmiths. Change your keys without replacing locks. Serving North Bergen, Jersey City, Hoboken & all NJ areas." />
+        <meta name="keywords" content="lock rekey, rekey locks, change lock pins, new keys, same lock, key alike, master key, residential locksmith, home security" />
+        <link rel="canonical" href="https://247locksmithandsecurity.com/services/residential-locksmith/lock-rekey" />
+      </Helmet>
+      
+      <SchemaScripts 
         schemas={[
           { type: 'service', data: lockRekeyServiceSchema },
           { type: 'faq', data: lockRekeyFaqSchema }
-        ]}
+        ]} 
       />
       
       <EnhancedServicesHero 
