@@ -1,14 +1,16 @@
 
-import { useState, useCallback } from "react";
-import { toast } from "sonner";
-import { useNavigate } from "react-router-dom";
-import { validateForm } from "../validation";
-import { BookingFormValues, SubmissionStatus, FormErrors } from "../types";
-import { submitBookingForm } from "../utils/submitForm";
+import { useState, useCallback, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import { useToast } from "@/hooks/use-toast";
+import { submitFormData } from "@/utils/formSubmission";
+import { startFormTracking } from "@/utils/sessionTracker";
 
 interface UseBookingSubmissionProps {
-  validateForm: (formValues: BookingFormValues) => { isValid: boolean; errors: FormErrors };
-  setErrors: (errors: FormErrors) => void;
+  validateForm: (formData: FormData, showVehicleInfo: boolean) => { 
+    isValid: boolean; 
+    errors: Record<string, string>; 
+  };
+  setErrors: (errors: Record<string, string>) => void;
   showVehicleInfo: boolean;
   recaptchaToken: string | null;
   address: string;
@@ -18,82 +20,173 @@ interface UseBookingSubmissionProps {
   showUnusedKeyField: boolean;
 }
 
-export const useBookingSubmission = (props: UseBookingSubmissionProps) => {
+export const useBookingSubmission = ({
+  validateForm,
+  setErrors,
+  showVehicleInfo,
+  recaptchaToken,
+  address,
+  allKeysLost,
+  hasUnusedKey,
+  showAllKeysLostField,
+  showUnusedKeyField
+}: UseBookingSubmissionProps) => {
   const navigate = useNavigate();
-  const [status, setStatus] = useState<SubmissionStatus>("idle");
+  const location = useLocation();
+  const { toast } = useToast();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = useCallback(async (e?: React.FormEvent) => {
-    if (e) {
-      e.preventDefault();
-    }
+  // Start form tracking when the component loads
+  useEffect(() => {
+    startFormTracking();
+  }, []);
 
-    // Collect form data from the form elements
-    const form = e?.target as HTMLFormElement;
-    if (!form) return;
-
-    const formData = new FormData(form);
-    const formValues: BookingFormValues = {
-      name: formData.get('name') as string,
-      phone: formData.get('phone') as string,
-      email: formData.get('email') as string,
-      address: props.address,
-      unit_number: formData.get('unit_number') as string || undefined,
-      gate_code: formData.get('gate_code') as string || undefined,
-      service: formData.get('service') as string,
-      timeframe: formData.get('timeframe') as string || 'ASAP',
-      notes: formData.get('notes') as string || undefined,
-      other_service: formData.get('other_service') as string || undefined,
-      vehicle_info: props.showVehicleInfo ? {
-        year: formData.get('vehicle_year') as string || undefined,
-        make: formData.get('vehicle_make') as string || undefined,
-        model: formData.get('vehicle_model') as string || undefined,
-        all_keys_lost: props.showAllKeysLostField ? props.allKeysLost === 'yes' : undefined,
-        has_unused_key: props.showUnusedKeyField ? props.hasUnusedKey === 'yes' : undefined
-      } : undefined
+  const collectVisitorInfo = useCallback(() => {
+    return {
+      userAgent: navigator.userAgent,
+      language: navigator.language,
+      platform: navigator.platform,
+      screenResolution: `${window.screen.width}x${window.screen.height}`,
+      windowSize: `${window.innerWidth}x${window.innerHeight}`,
+      timestamp: new Date().toISOString()
     };
+  }, []);
 
-    // First validate the form
-    const { isValid, errors } = validateForm(formValues);
-    props.setErrors(errors);
+  const handleSubmit = useCallback(async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    console.log("Form submission initiated");
 
-    if (!isValid) {
-      toast.error("Please fill in all required fields correctly");
+    if (!recaptchaToken) {
+      toast({
+        title: "Verification Required",
+        description: "Please complete the reCAPTCHA verification",
+        variant: "destructive",
+      });
       return;
     }
 
-    if (!props.recaptchaToken) {
-      props.setErrors({ ...errors, recaptcha: "Please complete the reCAPTCHA verification" });
-      toast.error("Please complete the reCAPTCHA verification");
+    const formData = new FormData(e.currentTarget);
+    formData.set('address', address);
+    
+    if (showAllKeysLostField) {
+      formData.set('all_keys_lost', allKeysLost);
+    }
+    
+    if (showUnusedKeyField) {
+      formData.set('has_unused_key', hasUnusedKey);
+    }
+    
+    const validationResult = validateForm(formData, showVehicleInfo);
+    if (!validationResult.isValid) {
+      setErrors(validationResult.errors);
+      console.log("Form validation failed:", validationResult.errors);
       return;
     }
 
-    setStatus("submitting");
+    setErrors({});
+    setIsSubmitting(true);
+    console.log("Form validation passed, proceeding with submission");
 
     try {
-      await submitBookingForm({
-        ...formValues,
-        recaptchaToken: props.recaptchaToken,
-        source_url: window.location.pathname
-      });
+      // Prepare the submission data
+      const name = formData.get("name") as string;
+      const phone = formData.get("phone") as string;
+      const service = formData.get("service") as string;
+      const timeframe = formData.get("timeframe") as string;
+      const notes = formData.get("notes") as string;
+      const unitNumber = formData.get("unit_number") as string;
+      const gateCode = formData.get("gate_code") as string;
+      const otherService = formData.get("other_service") as string;
 
-      setStatus("success");
-      toast.success("Booking request submitted successfully");
+      // Prepare vehicle information if needed
+      let vehicleInfo = null;
+      if (showVehicleInfo) {
+        // Get vehicle data with fallbacks to empty strings so they're correctly read as empty
+        const vehicleYear = formData.get("vehicle_year") as string || "";
+        const vehicleMake = formData.get("vehicle_make") as string || "";
+        const vehicleModel = formData.get("vehicle_model") as string || "";
+        
+        vehicleInfo = {
+          year: vehicleYear,
+          make: vehicleMake,
+          model: vehicleModel,
+          all_keys_lost: allKeysLost === "yes",
+          has_unused_key: hasUnusedKey === "yes"
+        };
+        
+        // Log the vehicle info to verify it's being populated correctly
+        console.log("Vehicle information being sent:", vehicleInfo);
+      }
+
+      // Prepare the submission data with explicit type literal
+      const submissionData = {
+        type: "booking" as const,
+        name,
+        phone,
+        address: address,
+        unit_number: unitNumber || null,
+        gate_code: gateCode || null,
+        service: service === "Other" ? otherService : service,
+        timeframe,
+        notes: notes || null,
+        status: "pending" as const,
+        visitor_info: collectVisitorInfo(),
+        source_url: location.pathname,
+        recaptcha_token: recaptchaToken,
+        vehicle_info: vehicleInfo
+      };
+
+      console.log("Submitting form data:", submissionData);
+      await submitFormData(submissionData);
+      console.log("Form submission successful");
       
-      // Set session storage flag for thank-you page
+      // Store flag for thank-you page
       sessionStorage.setItem('fromFormSubmission', 'true');
       
-      // Use window.location for a hard redirect instead of navigate
+      toast({
+        title: "Booking Received!",
+        description: "We'll contact you shortly to confirm your appointment.",
+        variant: "default",
+      });
+
+      if (typeof window.gtag === 'function') {
+        window.gtag('event', 'conversion', {
+          'event_category': 'form',
+          'event_label': 'booking_submission',
+          'value': 1
+        });
+      }
+
+      // Use window.location for a hard redirect to avoid dynamic import issues
       window.location.href = '/thank-you';
-      
     } catch (error: any) {
-      console.error("Form submission error:", error);
-      setStatus("error");
-      toast.error(error.message || "Failed to submit form. Please try again later.");
+      console.error('Booking form submission error:', error);
+      toast({
+        title: "Submission Failed",
+        description: error.message || "Please try again or contact us directly.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
     }
-  }, [props, navigate]);
+  }, [
+    recaptchaToken, 
+    address, 
+    showAllKeysLostField, 
+    allKeysLost, 
+    showUnusedKeyField, 
+    hasUnusedKey, 
+    validateForm, 
+    showVehicleInfo, 
+    setErrors, 
+    toast, 
+    collectVisitorInfo, 
+    location.pathname, 
+    navigate
+  ]);
 
   return {
-    status,
+    isSubmitting,
     handleSubmit
   };
 };

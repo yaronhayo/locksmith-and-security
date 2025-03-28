@@ -1,14 +1,2 @@
 
-# Redirect all routes to index.html for client-side routing
-/*    /index.html    200
-
-# Specific redirects for SEO (if old paths exist)
-/booking    /book-online    301
-
-# Additional common path redirects
-/about-us    /about    301
-/contact-us    /contact    301
-/services/automotive    /services/auto-locksmith    301
-/services/residential    /services/residential-locksmith    301
-/services/commercial    /services/commercial-locksmith    301
-/services/emergency    /services/emergency-locksmith    301
+/* /index.html 200

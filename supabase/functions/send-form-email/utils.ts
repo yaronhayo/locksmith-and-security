@@ -1,51 +1,127 @@
 
-import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { formatInTimeZone } from "npm:date-fns-tz@3.0.0";
+import { VisitorInfo, TrafficSource, PageMetrics } from "./types.ts";
 
-// CORS headers for browser requests
-export const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
-  'Access-Control-Allow-Methods': 'POST, OPTIONS',
+// Format a date in Eastern Time
+export const formatInEasternTime = (date: Date): string => {
+  try {
+    return formatInTimeZone(date, "America/New_York", "MMM d, yyyy 'at' h:mm a zzz");
+  } catch (error) {
+    console.error("Error formatting date in Eastern time:", error);
+    return date.toLocaleString('en-US', { 
+      timeZone: 'America/New_York',
+      dateStyle: 'medium',
+      timeStyle: 'medium'
+    }) + " ET";
+  }
 };
 
-// Format date for email templates
-export const formatDate = (date: string | Date, format = 'MMM dd, yyyy h:mm a') => {
-  const dateObj = typeof date === 'string' ? new Date(date) : date;
-  return formatInTimeZone(dateObj, 'America/New_York', format);
+// Format traffic source data
+export const formatTrafficSource = (source?: TrafficSource, metrics?: PageMetrics): string => {
+  if (!source) return '';
+  
+  return `
+    <tr>
+      <td colspan="2">
+        <h3 style="color: #4a5568; margin: 20px 0 10px; border-bottom: 1px solid #edf2f7; padding-bottom: 5px;">
+          Traffic Source
+        </h3>
+      </td>
+    </tr>
+    <tr>
+      <td style="padding: 8px 0;"><strong>Source:</strong></td>
+      <td style="padding: 8px 0;">${source.source || 'Direct'}</td>
+    </tr>
+    <tr>
+      <td style="padding: 8px 0;"><strong>Medium:</strong></td>
+      <td style="padding: 8px 0;">${source.medium || 'None'}</td>
+    </tr>
+    ${source.campaign ? `
+      <tr>
+        <td style="padding: 8px 0;"><strong>Campaign:</strong></td>
+        <td style="padding: 8px 0;">${source.campaign}</td>
+      </tr>
+    ` : ''}
+    ${source.keyword ? `
+      <tr>
+        <td style="padding: 8px 0;"><strong>Keyword:</strong></td>
+        <td style="padding: 8px 0;">${source.keyword}</td>
+      </tr>
+    ` : ''}
+    ${metrics ? `
+      <tr>
+        <td style="padding: 8px 0;"><strong>Time on Page:</strong></td>
+        <td style="padding: 8px 0;">${metrics.timeOnPage} seconds</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px 0;"><strong>Scroll Depth:</strong></td>
+        <td style="padding: 8px 0;">${metrics.scrollDepth}%</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px 0;"><strong>Form Focus Events:</strong></td>
+        <td style="padding: 8px 0;">${metrics.formFocusEvents}</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px 0;"><strong>Conversion Time:</strong></td>
+        <td style="padding: 8px 0;">${metrics.conversionTime} seconds</td>
+      </tr>
+    ` : ''}
+  `;
 };
 
-// Helper for creating response objects
-export const createResponse = (body: any, status = 200) => {
-  return new Response(JSON.stringify(body), {
-    status,
-    headers: { 
-      ...corsHeaders,
-      'Content-Type': 'application/json' 
-    },
-  });
-};
+// Format visitor information
+export const formatVisitorInfo = (visitorInfo?: VisitorInfo): string => {
+  if (!visitorInfo) return '';
 
-// Helper for creating error responses
-export const createErrorResponse = (message: string, status = 400) => {
-  return createResponse({ error: message }, status);
-};
+  let geolocationHtml = '';
+  if (visitorInfo.geolocation) {
+    geolocationHtml = `
+      <tr>
+        <td style="padding: 8px 0;"><strong>Geolocation:</strong></td>
+        <td style="padding: 8px 0;">
+          Lat: ${visitorInfo.geolocation.latitude}, 
+          Long: ${visitorInfo.geolocation.longitude}
+        </td>
+      </tr>
+    `;
+  }
 
-// Strip HTML from strings
-export const stripHtml = (html: string): string => {
-  return html.replace(/<[^>]*>?/gm, '');
-};
-
-// Truncate text to a specified length
-export const truncate = (text: string, length = 200): string => {
-  if (text.length <= length) return text;
-  return text.substring(0, length - 3) + '...';
-};
-
-// Create a debug log function that adds a timestamp
-export const createLogger = (prefix: string) => {
-  return (...args: any[]) => {
-    const timestamp = new Date().toISOString();
-    console.log(`[${timestamp}][${prefix}]`, ...args);
-  };
+  return `
+    <tr>
+      <td colspan="2">
+        <h3 style="color: #4a5568; margin: 20px 0 10px; border-bottom: 1px solid #edf2f7; padding-bottom: 5px;">
+          Visitor Information
+        </h3>
+      </td>
+    </tr>
+    <tr>
+      <td style="padding: 8px 0;"><strong>Device:</strong></td>
+      <td style="padding: 8px 0;">${visitorInfo.deviceType || visitorInfo.platform || 'Unknown'}</td>
+    </tr>
+    <tr>
+      <td style="padding: 8px 0;"><strong>Browser:</strong></td>
+      <td style="padding: 8px 0;">${visitorInfo.browser || 'Unknown'} ${visitorInfo.browserVersion || ''}</td>
+    </tr>
+    <tr>
+      <td style="padding: 8px 0;"><strong>OS:</strong></td>
+      <td style="padding: 8px 0;">${visitorInfo.operatingSystem || visitorInfo.platform || 'Unknown'}</td>
+    </tr>
+    <tr>
+      <td style="padding: 8px 0;"><strong>Screen:</strong></td>
+      <td style="padding: 8px 0;">${visitorInfo.screenResolution || 'Unknown'}</td>
+    </tr>
+    ${geolocationHtml}
+    <tr>
+      <td style="padding: 8px 0;"><strong>Language:</strong></td>
+      <td style="padding: 8px 0;">${visitorInfo.language || 'Unknown'}</td>
+    </tr>
+    <tr>
+      <td style="padding: 8px 0;"><strong>Timezone:</strong></td>
+      <td style="padding: 8px 0;">${visitorInfo.timezone || 'Unknown'}</td>
+    </tr>
+    <tr>
+      <td style="padding: 8px 0;"><strong>User Agent:</strong></td>
+      <td style="padding: 8px 0; word-break: break-word;">${visitorInfo.userAgent || 'Unknown'}</td>
+    </tr>
+  `;
 };

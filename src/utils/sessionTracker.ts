@@ -1,5 +1,12 @@
+interface GeolocationData {
+  city?: string;
+  region?: string;
+  country?: string;
+  latitude?: number;
+  longitude?: number;
+}
 
-interface SessionData {
+export interface SessionData {
   visitorInfo: {
     userAgent: string;
     language: string;
@@ -13,6 +20,7 @@ interface SessionData {
     browserVersion: string;
     operatingSystem: string;
     ipAddress?: string;
+    geolocation?: GeolocationData;
     formCompletionTime?: number;
     pageLoadTime?: number;
     visitDuration?: number;
@@ -236,7 +244,7 @@ export const getSessionData = async (): Promise<SessionData> => {
   
   // Schedule the increment for after this function returns
   setTimeout(incrementSubmissionCount, 0);
-
+  
   return {
     visitorInfo: {
       userAgent: navigator.userAgent,
@@ -250,6 +258,7 @@ export const getSessionData = async (): Promise<SessionData> => {
       browser,
       browserVersion: version,
       operatingSystem: os,
+      geolocation: undefined,
       formCompletionTime,
       pageLoadTime: pageLoaded,
       visitDuration,

@@ -63,7 +63,6 @@ export default defineConfig(({ mode }) => ({
     rollupOptions: {
       output: {
         manualChunks: (id) => {
-          // Vendor chunks
           if (id.includes('node_modules')) {
             if (id.includes('react') || id.includes('react-dom')) {
               return 'vendor-react';
@@ -80,7 +79,7 @@ export default defineConfig(({ mode }) => ({
             return 'vendor'; // all other node_modules
           }
           
-          // Group by feature
+          // Group by route/feature
           if (id.includes('/components/BookingForm/')) {
             return 'booking-form';
           }
@@ -91,39 +90,24 @@ export default defineConfig(({ mode }) => ({
             return 'contact';
           }
           if (id.includes('/pages/')) {
-            // Extract more general page name to prevent too many chunks
-            const path = id.split('/pages/')[1].split('/')[0];
-            return `page-${path.replace(/\/.*/g, '')}`; // Remove nested paths to consolidate chunks
+            // Extract the name of the page
+            const pageName = id.split('/pages/')[1].split('/')[0];
+            return `page-${pageName}`;
           }
         },
         // Ensure proper MIME types for JavaScript modules
-        entryFileNames: 'assets/[name].[hash].js',
-        chunkFileNames: 'assets/[name].[hash].js',
-        assetFileNames: 'assets/[name].[hash].[ext]'
+        entryFileNames: 'assets/[name]-[hash].js',
+        chunkFileNames: 'assets/[name]-[hash].js',
+        assetFileNames: 'assets/[name]-[hash].[ext]'
       },
     },
     // Improve chunking to prevent dynamic import issues
-    chunkSizeWarningLimit: 1500,
+    chunkSizeWarningLimit: 1000,
     sourcemap: true,
-    // Add minify options to optimize output
-    minify: 'terser',
-    terserOptions: {
-      compress: {
-        drop_console: false,
-        drop_debugger: true
-      }
-    }
   },
   // Add optimizeDeps to improve loading of dynamic imports
   optimizeDeps: {
-    include: [
-      'react', 
-      'react-dom', 
-      'react-router-dom', 
-      'framer-motion',
-      '@tanstack/react-query',
-      'sonner'
-    ],
+    include: ['react', 'react-dom', 'react-router-dom', 'framer-motion'],
     exclude: []
   },
 }));

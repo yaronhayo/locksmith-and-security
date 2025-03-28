@@ -1,68 +1,57 @@
 
-import { BookingFormValues, FormErrors } from "./types";
+export const validateForm = (formData: FormData, showVehicleInfo: boolean) => {
+  const errors: Record<string, string> = {};
+  
+  const name = formData.get("name") as string;
+  const phone = formData.get("phone") as string;
+  const address = formData.get("address") as string;
+  const service = formData.get("service") as string;
+  
+  if (!name || name.trim().length < 2) {
+    errors.name = "Please enter a valid name (minimum 2 characters)";
+  }
+  
+  // More flexible phone validation to accept various US formats
+  if (!phone) {
+    errors.phone = "Please enter a phone number";
+  } else {
+    const cleanedPhone = phone.replace(/\D/g, '');
+    // Account for country code (starting with 1)
+    const phoneDigits = cleanedPhone.startsWith('1') && cleanedPhone.length > 10 
+      ? cleanedPhone.substring(1) 
+      : cleanedPhone;
+      
+    if (phoneDigits.length < 10) {
+      errors.phone = "Please enter a valid US phone number";
+    }
+  }
+  
+  if (!address || !address.trim()) {
+    errors.address = "Please enter a valid address";
+  }
+  
+  if (!service) {
+    errors.service = "Please select a service";
+  }
 
-export const validateForm = (formValues: BookingFormValues) => {
-  const errors: FormErrors = {};
-  let isValid = true;
-  
-  // Validate name
-  if (!formValues.name || formValues.name.trim() === '') {
-    errors.name = 'Name is required';
-    isValid = false;
-  }
-  
-  // Validate phone
-  if (!formValues.phone || formValues.phone.trim() === '') {
-    errors.phone = 'Phone number is required';
-    isValid = false;
-  }
-  
-  // Validate email
-  if (!formValues.email || formValues.email.trim() === '') {
-    errors.email = 'Email is required';
-    isValid = false;
-  } else if (!/\S+@\S+\.\S+/.test(formValues.email)) {
-    errors.email = 'Invalid email format';
-    isValid = false;
-  }
-  
-  // Validate address
-  if (!formValues.address || formValues.address.trim() === '') {
-    errors.address = 'Service address is required';
-    isValid = false;
-  }
-  
-  // Validate service
-  if (!formValues.service || formValues.service === 'Select a service') {
-    errors.service = 'Please select a service';
-    isValid = false;
-  }
-  
-  // Validate other service if applicable
-  if (formValues.service === 'Other' && (!formValues.other_service || formValues.other_service.trim() === '')) {
-    errors.other_service = 'Please describe the service you need';
-    isValid = false;
-  }
-  
-  // Validate vehicle info if applicable
-  if (formValues.service && ['Car Key Replacement', 'Car Lockout', 'Car Key Programming', 'Ignition Repair'].includes(formValues.service)) {
-    const vehicle = formValues.vehicle_info || {};
-    
-    if (!vehicle.year) {
-      errors['vehicle_year'] = 'Vehicle year is required';
-      isValid = false;
+  if (showVehicleInfo) {
+    const vehicleYear = formData.get("vehicleYear") as string;
+    const vehicleMake = formData.get("vehicleMake") as string;
+    const vehicleModel = formData.get("vehicleModel") as string;
+
+    if (!vehicleYear || !/^\d{4}$/.test(vehicleYear)) {
+      errors.vehicleYear = "Please enter a valid year (YYYY)";
     }
-    
-    if (!vehicle.make) {
-      errors['vehicle_make'] = 'Vehicle make is required';
-      isValid = false;
+    if (!vehicleMake || vehicleMake.trim().length < 2) {
+      errors.vehicleMake = "Please enter vehicle make";
     }
-    
-    if (!vehicle.model) {
-      errors['vehicle_model'] = 'Vehicle model is required';
-      isValid = false;
+    if (!vehicleModel || vehicleModel.trim().length < 2) {
+      errors.vehicleModel = "Please enter vehicle model";
     }
   }
-  
-  return { isValid, errors };
+
+  return {
+    isValid: Object.keys(errors).length === 0,
+    errors
+  };
 };

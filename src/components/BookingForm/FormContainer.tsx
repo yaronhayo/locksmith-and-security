@@ -1,15 +1,15 @@
 
 import React from "react";
+import { validateForm } from "./validation";
 import SubmitButton from "./SubmitButton";
 import { useBookingSubmission } from "./hooks/useBookingSubmission";
-import { FormErrors } from "./types";
 
 interface FormContainerProps {
   children: React.ReactNode;
   isSubmitting: boolean;
   setIsSubmitting: (isSubmitting: boolean) => void;
-  errors: FormErrors;
-  setErrors: (errors: FormErrors) => void;
+  errors: Record<string, string>;
+  setErrors: (errors: Record<string, string>) => void;
   showVehicleInfo: boolean;
   recaptchaToken: string | null;
   address: string;
@@ -33,8 +33,8 @@ const FormContainer = ({
   showAllKeysLostField,
   showUnusedKeyField
 }: FormContainerProps) => {
-  const { handleSubmit, status } = useBookingSubmission({
-    validateForm: (formValues) => ({ isValid: true, errors: {} }), // This will be overridden by the real validation in the hook
+  const { handleSubmit } = useBookingSubmission({
+    validateForm,
     setErrors,
     showVehicleInfo,
     recaptchaToken,
@@ -44,15 +44,6 @@ const FormContainer = ({
     showAllKeysLostField,
     showUnusedKeyField
   });
-
-  // Update the submitting state based on the status from the hook
-  React.useEffect(() => {
-    if (status === 'submitting') {
-      setIsSubmitting(true);
-    } else {
-      setIsSubmitting(false);
-    }
-  }, [status, setIsSubmitting]);
 
   return (
     <form 
