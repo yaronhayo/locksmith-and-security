@@ -144,8 +144,8 @@ const ResponsiveImage = ({
     srcSet: imgSrcSet,
     sizes,
     alt: safeAlt,
-    loading: priority ? "eager" : (lazyLoad ? "lazy" : "eager"),
-    fetchPriority: priority ? "high" : "auto" as "high" | "auto" | "low",
+    loading: (priority ? "eager" : (lazyLoad ? "lazy" : "eager")) as "eager" | "lazy",
+    fetchPriority: priority ? "high" as const : "auto" as const,
     onLoad: handleImageLoad,
     onError: handleImageError,
     className: cn(

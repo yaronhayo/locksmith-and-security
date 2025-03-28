@@ -26,8 +26,8 @@ const ImageOptimized = ({
     className,
     width,
     height,
-    loading: priority ? "eager" : "lazy",
-    fetchPriority: priority ? "high" : "auto" as "high" | "auto" | "low",
+    loading: priority ? "eager" as const : "lazy" as const,
+    fetchPriority: priority ? "high" as const : "auto" as const,
     decoding: "async" as const,
     onError: (e: React.SyntheticEvent<HTMLImageElement>) => {
       const img = e.target as HTMLImageElement;
