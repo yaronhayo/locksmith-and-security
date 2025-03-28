@@ -25,7 +25,6 @@ const FormContainer = ({
 }: FormContainerProps) => {
   return (
     <>
-      <FormHeader isSubmitting={isSubmitting} />
       <form 
         onSubmit={onSubmit} 
         className="space-y-2.5 max-w-full overflow-visible" 
