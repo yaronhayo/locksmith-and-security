@@ -24,16 +24,17 @@ https://www.247locksmithandsecurity.com/* https://247locksmithandsecurity.com/:s
 /services/ignition-repair         /services/auto-locksmith/ignition-lock-cylinder 301
 
 # Ensure JavaScript module files have proper MIME types
-*.js  application/javascript 200
-*.mjs application/javascript 200
-*.js.map application/json 200
+*.js       application/javascript 200
+*.mjs      application/javascript 200
+*.js.map   application/json 200
+*.css      text/css 200
+*.css.map  application/json 200
 
 # Handle module loading for chunk files specifically
-/assets/*.js /assets/:splat 200
-/assets/*.mjs /assets/:splat 200
+/assets/*  /assets/:splat 200
 
 # Handle client-side routing 
-/* /index.html 200
+/*  /index.html 200
 
 # Specific routes with higher precedence than the wildcard rule
 /thank-you /index.html 200

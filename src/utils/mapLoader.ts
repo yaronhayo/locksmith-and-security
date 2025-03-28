@@ -36,12 +36,28 @@ export const MapLoader = {
     
     // Clear callbacks
     this.callbacks = [];
+  },
+
+  /**
+   * Verify that the required libraries are loaded
+   */
+  verifyLibraries(): boolean {
+    return !!(
+      window.google?.maps?.places?.Place?.Autocomplete ||
+      window.google?.maps?.places?.Autocomplete
+    );
   }
 };
 
 // Set up global initialization function
 window.initMap = () => {
   console.log('Maps API initialized via global callback');
+  
+  // Verify required libraries
+  if (!MapLoader.verifyLibraries()) {
+    console.warn('Maps API loaded but Place libraries not found. Check your API key configuration.');
+  }
+  
   MapLoader.initialize();
   
   // Dispatch event for components that might be listening

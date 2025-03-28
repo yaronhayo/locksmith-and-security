@@ -68,8 +68,8 @@ export const ScriptsProvider = ({ children }: ScriptsProviderProps) => {
     if (!script) {
       script = document.createElement('script');
       script.id = scriptId;
-      // Use the recommended pattern with callback=initMap
-      script.src = `https://maps.googleapis.com/maps/api/js?key=${mapsApiKey}&libraries=places&callback=initMap&loading=async`;
+      // Use the recommended pattern with callback=initMap and specify the places library
+      script.src = `https://maps.googleapis.com/maps/api/js?key=${mapsApiKey}&libraries=places&callback=initMap&loading=async&v=weekly`;
       script.async = true;
       script.defer = true;
     }
