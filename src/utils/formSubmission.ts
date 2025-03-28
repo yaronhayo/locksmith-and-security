@@ -44,7 +44,10 @@ export const submitFormData = async (formData: SubmissionData) => {
       ...formData,
       visitor_info: visitorInfo,
       traffic_source: trafficSourceData, // Use the converted data structure
-      page_metrics: pageMetricsData
+      page_metrics: pageMetricsData,
+      // Ensure unit_number and gate_code are included if they exist
+      unit_number: formData.unit_number || null,
+      gate_code: formData.gate_code || null
     };
     
     console.log("Submitting enhanced form data to Supabase:", enhancedFormData);

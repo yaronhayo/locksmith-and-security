@@ -168,6 +168,7 @@ export type Database = {
             | Database["public"]["CompositeTypes"]["traffic_source_type"]
             | null
           type: string
+          unit_number: string | null
           updated_at: string | null
           vehicle_info: Json | null
           visitor_info: Json | null
@@ -195,6 +196,7 @@ export type Database = {
             | Database["public"]["CompositeTypes"]["traffic_source_type"]
             | null
           type: string
+          unit_number?: string | null
           updated_at?: string | null
           vehicle_info?: Json | null
           visitor_info?: Json | null
@@ -222,6 +224,7 @@ export type Database = {
             | Database["public"]["CompositeTypes"]["traffic_source_type"]
             | null
           type?: string
+          unit_number?: string | null
           updated_at?: string | null
           vehicle_info?: Json | null
           visitor_info?: Json | null

@@ -79,12 +79,17 @@ export const useContactForm = () => {
 
     try {
       const formData = new FormData(form.current);
+      const unitNumber = formData.get('unit_number') as string || null;
+      const gateCode = formData.get('gate_code') as string || null;
+      
       const submissionData = {
         type: "contact" as const,
         name: String(formData.get('user_name')),
         email: String(formData.get('user_email')),
         phone: String(formData.get('user_phone')),
         address: address,
+        unit_number: unitNumber,
+        gate_code: gateCode,
         message: String(formData.get('message')),
         status: "pending" as const,
         recaptcha_token: recaptchaToken,

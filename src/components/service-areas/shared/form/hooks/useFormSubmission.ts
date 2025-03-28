@@ -46,6 +46,8 @@ export const useFormSubmission = (
         email: formState.email,
         phone: formState.phone,
         address: window.location.pathname.split('/').pop() || '',
+        unit_number: null, // Add unit_number field
+        gate_code: null, // Add gate_code field
         message: formState.message,
         service: formState.service,
         status: "pending" as const,

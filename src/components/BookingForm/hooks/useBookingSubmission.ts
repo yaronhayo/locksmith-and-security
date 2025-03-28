@@ -99,9 +99,7 @@ export const useBookingSubmission = ({
       const otherService = formData.get("other_service") as string;
 
       // Format address with unit number if provided
-      const formattedAddress = unitNumber 
-        ? `${address} Unit ${unitNumber}`
-        : address;
+      const formattedAddress = address;
 
       // Prepare vehicle information if needed
       let vehicleInfo = null;

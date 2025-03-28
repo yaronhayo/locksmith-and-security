@@ -31,7 +31,7 @@ export interface BaseSubmission {
   unit_number?: string | null;
   gate_code?: string | null;
   status: 'pending';
-  visitor_info: Record<string, any>;  // Changed to match Json type
+  visitor_info: Record<string, any>;
   source_url: string;
   traffic_source?: TrafficSource;
   page_metrics?: PageMetrics;
