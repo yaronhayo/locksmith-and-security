@@ -1,3 +1,4 @@
+
 import React, { useState, useCallback } from "react";
 import { useBookingSubmission } from "./hooks/useBookingSubmission";
 import { useFormValidation } from "./hooks/useFormValidation";
@@ -10,6 +11,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Checkbox } from "@/components/ui/checkbox";
 import BookingFormSkeleton from "./BookingFormSkeleton";
 import FormContainer from "./FormContainer";
+import SubmitButton from "./SubmitButton";
 
 const BookingForm = () => {
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -248,6 +250,8 @@ const BookingForm = () => {
           )}
         </div>
       )}
+
+      <SubmitButton isSubmitting={isSubmitting} />
     </FormContainer>
   );
 };
