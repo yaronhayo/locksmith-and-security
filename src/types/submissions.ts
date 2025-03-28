@@ -16,6 +16,14 @@ export interface VisitorInfo {
   timestamp: string;
 }
 
+export interface PageMetrics {
+  timeOnPage: number;
+  scrollDepth: number;
+  pageInteractions: number;
+  formFocusEvents: number;
+  conversionTime: number;
+}
+
 export interface BaseSubmission {
   name: string;
   phone: string;
@@ -26,6 +34,7 @@ export interface BaseSubmission {
   visitor_info: Record<string, any>;  // Changed to match Json type
   source_url: string;
   traffic_source?: TrafficSource;
+  page_metrics?: PageMetrics;
   recaptcha_token: string | null;
 }
 

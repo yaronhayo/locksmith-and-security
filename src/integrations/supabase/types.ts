@@ -156,6 +156,7 @@ export type Database = {
           message: string | null
           name: string
           notes: string | null
+          page_metrics: Json | null
           phone: string
           place_id: string | null
           recaptcha_token: string | null
@@ -182,6 +183,7 @@ export type Database = {
           message?: string | null
           name: string
           notes?: string | null
+          page_metrics?: Json | null
           phone: string
           place_id?: string | null
           recaptcha_token?: string | null
@@ -208,6 +210,7 @@ export type Database = {
           message?: string | null
           name?: string
           notes?: string | null
+          page_metrics?: Json | null
           phone?: string
           place_id?: string | null
           recaptcha_token?: string | null

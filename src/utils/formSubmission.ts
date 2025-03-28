@@ -30,12 +30,21 @@ export const submitFormData = async (formData: SubmissionData) => {
         undefined
     };
     
+    // Prepare page metrics for storage
+    const pageMetricsData = {
+      timeOnPage: sessionData.pageMetrics.timeOnPage,
+      scrollDepth: sessionData.pageMetrics.scrollDepth,
+      pageInteractions: sessionData.pageMetrics.pageInteractions,
+      formFocusEvents: sessionData.pageMetrics.formFocusEvents,
+      conversionTime: sessionData.pageMetrics.conversionTime
+    };
+    
     // Merge the session data with the form data
     const enhancedFormData = {
       ...formData,
       visitor_info: visitorInfo,
       traffic_source: trafficSourceData, // Use the converted data structure
-      page_metrics: sessionData.pageMetrics
+      page_metrics: pageMetricsData
     };
     
     console.log("Submitting enhanced form data to Supabase:", enhancedFormData);
