@@ -33,8 +33,6 @@ const FormContainer = ({
   showAllKeysLostField,
   showUnusedKeyField
 }: FormContainerProps) => {
-  console.log("FormContainer rendering with address:", address);
-  
   const { handleSubmit } = useBookingSubmission({
     validateForm,
     setErrors,

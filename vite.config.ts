@@ -30,6 +30,19 @@ const generateSitemap = () => {
   };
 };
 
+// Custom plugin to copy _redirects file to the dist folder
+const copyRedirects = () => {
+  return {
+    name: 'copy-redirects',
+    closeBundle: () => {
+      if (fs.existsSync('./public/_redirects')) {
+        fs.copyFileSync('./public/_redirects', './dist/_redirects');
+        console.log('Copied _redirects file to dist folder');
+      }
+    },
+  };
+};
+
 export default defineConfig(({ mode }) => ({
   server: {
     host: "::",
@@ -39,6 +52,7 @@ export default defineConfig(({ mode }) => ({
     react(),
     mode === 'development' && componentTagger(),
     mode === 'production' && generateSitemap(),
+    mode === 'production' && copyRedirects(),
   ].filter(Boolean),
   resolve: {
     alias: {
@@ -48,15 +62,38 @@ export default defineConfig(({ mode }) => ({
   build: {
     rollupOptions: {
       output: {
-        manualChunks: {
-          vendor: ['react', 'react-dom', 'react-router-dom'],
-          ui: ['@/components/ui'],
-          framer: ['framer-motion'],
-          forms: [
-            '@/components/BookingForm', 
-            '@/components/contact',
-            '@/components/service-areas/shared/form'
-          ]
+        manualChunks: (id) => {
+          if (id.includes('node_modules')) {
+            if (id.includes('react') || id.includes('react-dom')) {
+              return 'vendor-react';
+            }
+            if (id.includes('@tanstack/react-query')) {
+              return 'vendor-query';
+            }
+            if (id.includes('framer-motion')) {
+              return 'vendor-framer';
+            }
+            if (id.includes('@radix-ui')) {
+              return 'vendor-radix';
+            }
+            return 'vendor'; // all other node_modules
+          }
+          
+          // Group by route/feature
+          if (id.includes('/components/BookingForm/')) {
+            return 'booking-form';
+          }
+          if (id.includes('/components/service-areas/')) {
+            return 'service-areas';
+          }
+          if (id.includes('/components/contact/')) {
+            return 'contact';
+          }
+          if (id.includes('/pages/')) {
+            // Extract the name of the page
+            const pageName = id.split('/pages/')[1].split('/')[0];
+            return `page-${pageName}`;
+          }
         },
         // Ensure proper MIME types for JavaScript modules
         entryFileNames: 'assets/[name]-[hash].js',

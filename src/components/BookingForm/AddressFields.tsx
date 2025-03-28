@@ -13,8 +13,6 @@ interface AddressFieldsProps {
 }
 
 const AddressFields = ({ address, onChange, errors, isSubmitting }: AddressFieldsProps) => {
-  console.log("Rendering AddressFields component with address:", address);
-  
   return (
     <>
       <div className="form-group">

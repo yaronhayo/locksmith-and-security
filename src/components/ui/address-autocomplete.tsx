@@ -28,9 +28,6 @@ const AddressAutocomplete = ({
   const { googleMapsLoaded, isLoadingMaps, mapsError } = useScripts();
   const [showFallbackInput, setShowFallbackInput] = useState(false);
 
-  console.log("AddressAutocomplete rendering with value:", value);
-  console.log("GoogleMaps loaded:", googleMapsLoaded, "Loading:", isLoadingMaps);
-
   // Initialize autocomplete
   useEffect(() => {
     // Only try to initialize if:
@@ -47,13 +44,6 @@ const AddressAutocomplete = ({
       if (autocompleteRef.current) {
         containerRef.current.removeChild(autocompleteRef.current);
         autocompleteRef.current = null;
-      }
-
-      // Always show fallback input until Maps API is fully loaded
-      if (!window.google?.maps?.places) {
-        console.log("Google Maps places API not yet available, showing fallback input");
-        setShowFallbackInput(true);
-        return;
       }
 
       // Wait for the MapLoader to be ready
@@ -122,7 +112,6 @@ const AddressAutocomplete = ({
             if (place?.formattedAddress) {
               onChange(place.formattedAddress);
               setError(null);
-              console.log("Place selected:", place.formattedAddress);
             }
           });
           
@@ -130,8 +119,6 @@ const AddressAutocomplete = ({
           autocomplete.addEventListener('input', () => {
             onChange(autocomplete.value);
           });
-          
-          setShowFallbackInput(false);
           
         } catch (err) {
           console.error('Error initializing PlaceAutocompleteElement:', err);
@@ -164,13 +151,6 @@ const AddressAutocomplete = ({
     }
   }, [googleMapsLoaded]);
 
-  // Always show fallback input initially, and switch to autocomplete when available
-  useEffect(() => {
-    if (!googleMapsLoaded || !window.google?.maps?.places) {
-      setShowFallbackInput(true);
-    }
-  }, [googleMapsLoaded]);
-
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     onChange(e.target.value);
     setError(null);
@@ -185,7 +165,7 @@ const AddressAutocomplete = ({
       {mapsError && <ScriptError type="maps" error={mapsError} />}
       
       <div ref={containerRef} className="relative w-full">
-        {/* Always show fallback input until autocomplete is ready */}
+        {/* Fallback input for when PlaceAutocompleteElement fails or isn't available */}
         {showFallbackInput && (
           <Input
             type="text"
@@ -193,7 +173,7 @@ const AddressAutocomplete = ({
             onChange={handleInputChange}
             className={cn(className, "w-full", displayError ? 'border-red-500' : '')}
             disabled={disabled || isLoadingMaps || !!mapsError}
-            placeholder={placeholder || "Enter address"}
+            placeholder={placeholder}
             aria-invalid={displayError ? "true" : "false"}
             aria-describedby={displayError ? "address-error" : undefined}
             {...props}

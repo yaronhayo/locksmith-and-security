@@ -1,7 +1,7 @@
 
 import PageLayout from "@/components/layouts/PageLayout";
 import { motion } from "framer-motion";
-import { Clock, Shield, CreditCard, Calendar } from "lucide-react";
+import { Clock, Shield, Star, ArrowRight } from "lucide-react";
 import BookingForm from "@/components/BookingForm";
 
 const BookingPage = () => {
@@ -24,79 +24,33 @@ const BookingPage = () => {
       }}
     >
       <div className="container mx-auto px-4 py-12">
-        <div className="grid lg:grid-cols-2 gap-12">
-          <div className="space-y-8">
-            <div className="prose max-w-none">
-              <h2 className="text-3xl font-bold">Why Book Online?</h2>
-              <p className="text-lg text-gray-600">
-                Schedule your locksmith service at your convenience. Our online booking system ensures a smooth and efficient process for all your security needs.
-              </p>
-            </div>
-
-            <div className="grid sm:grid-cols-2 gap-6">
-              {[
-                {
-                  icon: Clock,
-                  title: "24/7 Availability",
-                  description: "Book anytime, day or night, for emergency or scheduled services"
-                },
-                {
-                  icon: Shield,
-                  title: "Secure Booking",
-                  description: "Your information is protected with advanced encryption"
-                },
-                {
-                  icon: CreditCard,
-                  title: "Transparent Pricing",
-                  description: "Clear upfront pricing with no hidden fees"
-                },
-                {
-                  icon: Calendar,
-                  title: "Instant Confirmation",
-                  description: "Receive immediate confirmation of your booking"
-                }
-              ].map((feature, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.1 }}
-                  className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow"
-                >
-                  <feature.icon className="w-10 h-10 text-primary mb-4" />
-                  <h3 className="font-semibold text-lg mb-2">{feature.title}</h3>
-                  <p className="text-gray-600">{feature.description}</p>
-                </motion.div>
-              ))}
-            </div>
-
-            <div className="bg-primary/5 p-6 rounded-lg border border-primary/10">
-              <h3 className="text-xl font-semibold mb-4">Our Commitment</h3>
-              <ul className="space-y-3">
-                <li className="flex items-start">
-                  <span className="bg-primary/10 p-1 rounded mr-3 mt-1">
-                    <Shield className="w-4 h-4 text-primary" />
-                  </span>
-                  <span>Licensed and insured professionals</span>
-                </li>
-                <li className="flex items-start">
-                  <span className="bg-primary/10 p-1 rounded mr-3 mt-1">
-                    <Clock className="w-4 h-4 text-primary" />
-                  </span>
-                  <span>Fast response times</span>
-                </li>
-                <li className="flex items-start">
-                  <span className="bg-primary/10 p-1 rounded mr-3 mt-1">
-                    <CreditCard className="w-4 h-4 text-primary" />
-                  </span>
-                  <span>Competitive and transparent pricing</span>
-                </li>
-              </ul>
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-12">
+            <h1 className="text-4xl font-bold mb-6">Book Your Service Online</h1>
+            <p className="text-xl text-gray-600 mb-8">
+              Schedule your locksmith service quickly and easily. Available 24/7 for all your security needs.
+            </p>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+              <div className="bg-white p-6 rounded-lg shadow-md">
+                <Clock className="w-12 h-12 text-primary mx-auto mb-4" />
+                <h3 className="font-semibold text-lg mb-2">24/7 Availability</h3>
+                <p className="text-gray-600">Book anytime, day or night</p>
+              </div>
+              <div className="bg-white p-6 rounded-lg shadow-md">
+                <Shield className="w-12 h-12 text-primary mx-auto mb-4" />
+                <h3 className="font-semibold text-lg mb-2">Licensed & Insured</h3>
+                <p className="text-gray-600">Professional, trusted service</p>
+              </div>
+              <div className="bg-white p-6 rounded-lg shadow-md">
+                <Star className="w-12 h-12 text-primary mx-auto mb-4" />
+                <h3 className="font-semibold text-lg mb-2">5-Star Service</h3>
+                <p className="text-gray-600">Highly rated by customers</p>
+              </div>
             </div>
           </div>
 
-          <div className="bg-white p-6 rounded-lg shadow-lg">
-            <h2 className="text-2xl font-bold mb-6">Book Your Service</h2>
+          <div className="bg-white rounded-xl shadow-xl p-8">
             <BookingForm />
           </div>
         </div>
