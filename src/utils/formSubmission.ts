@@ -56,23 +56,16 @@ export const submitFormData = async (formData: SubmissionData) => {
     
     // Trigger email notification via Edge Function
     console.log("Calling send-form-email function with data:", enhancedFormData);
-    try {
-      const { error: emailError } = await supabase.functions.invoke('send-form-email', {
-        body: enhancedFormData
-      });
-      
-      if (emailError) {
-        console.error("Error sending email notification:", emailError);
-        throw new Error(`Failed to send email notification: ${emailError.message}`);
-      }
-      
-      console.log("Email notification sent successfully");
-    } catch (emailEx: any) {
-      console.error("Exception during email notification:", emailEx);
-      // Don't throw here - we want the form submission to succeed even if email fails
-      // Just log the error
+    const { error: emailError } = await supabase.functions.invoke('send-form-email', {
+      body: enhancedFormData
+    });
+    
+    if (emailError) {
+      console.error("Error sending email notification:", emailError);
+      throw new Error(`Failed to send email notification: ${emailError.message}`);
     }
     
+    console.log("Email notification sent successfully");
     return data;
   } catch (error: any) {
     console.error("Form submission error:", error);
