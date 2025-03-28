@@ -1,6 +1,8 @@
+
 import PageLayout from "@/components/layouts/PageLayout";
 import { motion } from "framer-motion";
 import { Clock, Shield, CreditCard, Calendar } from "lucide-react";
+import BookingForm from "@/components/BookingForm";
 
 const BookingPage = () => {
   return (
@@ -95,11 +97,7 @@ const BookingPage = () => {
 
           <div className="bg-white p-6 rounded-lg shadow-lg">
             <h2 className="text-2xl font-bold mb-6">Book Your Service</h2>
-            <iframe 
-              src="REPLACE_WITH_YOUR_BOOKING_FORM_URL"
-              className="w-full min-h-[600px] border-0"
-              title="Booking Form"
-            />
+            <BookingForm />
           </div>
         </div>
       </div>

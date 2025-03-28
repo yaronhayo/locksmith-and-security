@@ -10,6 +10,7 @@ const Services = lazy(() => import("@/pages/services"));
 const Reviews = lazy(() => import("@/pages/reviews"));
 const FAQ = lazy(() => import("@/pages/faq"));
 const BookOnline = lazy(() => import("@/pages/book-online"));
+const Booking = lazy(() => import("@/pages/booking"));
 const ServiceAreas = lazy(() => import("@/pages/service-areas"));
 const PrivacyPolicy = lazy(() => import("@/pages/privacy-policy"));
 const TermsConditions = lazy(() => import("@/pages/terms-conditions"));
@@ -45,6 +46,10 @@ export const mainRoutes = [
   {
     path: "/book-online",
     element: <BookOnline />
+  },
+  {
+    path: "/booking",
+    element: <Booking />
   },
   {
     path: "/service-areas",
