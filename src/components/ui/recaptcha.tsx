@@ -1,7 +1,6 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import { useRecaptchaKey } from '@/hooks/useApiKeys';
-import { Skeleton } from './skeleton';
 import { useScripts, ScriptError, ScriptLoading } from '@/components/providers/ScriptsProvider';
 
 interface RecaptchaProps {
@@ -47,9 +46,7 @@ const Recaptcha: React.FC<RecaptchaProps> = ({
         sitekey: siteKey,
         callback: onChange,
         'expired-callback': () => onChange(null),
-        'id': id,
-        'name': name,
-        'aria-required': 'true'
+        'error-callback': () => onChange(null)
       });
       setRecaptchaId(widgetId);
       console.log("reCAPTCHA widget rendered successfully with ID:", id);

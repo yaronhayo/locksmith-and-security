@@ -151,6 +151,7 @@ export type Database = {
           email: string | null
           error_message: string | null
           formatted_address: string | null
+          gate_code: string | null
           id: number
           message: string | null
           name: string
@@ -176,6 +177,7 @@ export type Database = {
           email?: string | null
           error_message?: string | null
           formatted_address?: string | null
+          gate_code?: string | null
           id?: number
           message?: string | null
           name: string
@@ -201,6 +203,7 @@ export type Database = {
           email?: string | null
           error_message?: string | null
           formatted_address?: string | null
+          gate_code?: string | null
           id?: number
           message?: string | null
           name?: string
