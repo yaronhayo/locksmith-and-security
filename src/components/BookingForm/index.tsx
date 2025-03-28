@@ -1,3 +1,4 @@
+
 import React, { useState, useCallback } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
@@ -91,6 +92,7 @@ const BookingForm = () => {
     };
   }, []);
 
+  // Handle form submission
   const {
     isSubmitting,
     handleSubmit
@@ -111,103 +113,106 @@ const BookingForm = () => {
       {isLoading ? (
         <FormLoadingSkeleton />
       ) : (
-        <FormContainer
-          errors={errors}
-          setErrors={setErrors}
-          showVehicleInfo={showVehicleInfo}
-          recaptchaToken={recaptchaToken}
-          address={address}
-          allKeysLost={allKeysLost}
-          hasUnusedKey={hasUnusedKey}
-          showAllKeysLostField={showAllKeysLostField}
-          showUnusedKeyField={showUnusedKeyField}
-          onSubmit={handleSubmit}
-          isSubmitting={isSubmitting}
-        >
-          <PersonalInfoFields
-            name={name}
-            setName={setName}
-            phone={phone}
-            setPhone={setPhone}
+        <>
+          <FormContainer
             errors={errors}
+            setErrors={setErrors}
+            showVehicleInfo={showVehicleInfo}
+            recaptchaToken={recaptchaToken}
+            address={address}
+            allKeysLost={allKeysLost}
+            hasUnusedKey={hasUnusedKey}
+            showAllKeysLostField={showAllKeysLostField}
+            showUnusedKeyField={showUnusedKeyField}
+            onSubmit={handleSubmit}
             isSubmitting={isSubmitting}
-          />
-          
-          <ServiceSelection
-            service={service}
-            setService={setService}
-            error={errors.service}
-            isSubmitting={isSubmitting}
-            setShowVehicleInfo={setShowVehicleInfo}
-            setShowAllKeysLostField={setShowAllKeysLostField}
-            setShowUnusedKeyField={setShowUnusedKeyField}
-          />
-          
-          {service === "Other" && (
-            <OtherServiceField
-              value={otherService}
-              onChange={setOtherService}
-              error={errors.otherService}
+          >
+            <PersonalInfoFields
+              name={name}
+              setName={setName}
+              phone={phone}
+              setPhone={setPhone}
+              errors={errors}
               isSubmitting={isSubmitting}
             />
-          )}
-          
-          {showVehicleInfo && (
-            <div className="space-y-3">
-              <VehicleFields errors={errors} isSubmitting={isSubmitting} />
-              
-              {showAllKeysLostField && (
-                <AllKeysLostField
-                  value={allKeysLost}
-                  onChange={setAllKeysLost}
-                  isSubmitting={isSubmitting}
-                />
-              )}
-              
-              {showUnusedKeyField && (
-                <UnusedKeyField
-                  value={hasUnusedKey}
-                  onChange={setHasUnusedKey}
-                  isSubmitting={isSubmitting}
-                />
-              )}
-            </div>
-          )}
-          
-          <AddressFields
-            address={address}
-            setAddress={setAddress}
-            unitNumber={unitNumber}
-            setUnitNumber={setUnitNumber}
-            gateCode={gateCode}
-            setGateCode={setGateCode}
-            errors={errors}
-            isSubmitting={isSubmitting}
-          />
-          
-          <TimeframeSelection
-            timeframe={timeframe}
-            setTimeframe={setTimeframe}
-            error={errors.timeframe}
-            isSubmitting={isSubmitting}
-          />
-          
-          <AdditionalNotes
-            value={notes}
-            onChange={setNotes}
-            isSubmitting={isSubmitting}
-          />
-          
-          <RecaptchaField
-            onChange={setRecaptchaToken}
-            error={errors.recaptcha}
-          />
-          
-          <SubmitButton 
-            isSubmitting={isSubmitting} 
-            disabled={Object.keys(errors).length > 0}
-          />
-        </FormContainer>
+            
+            <ServiceSelection
+              service={service}
+              setService={setService}
+              error={errors.service}
+              isSubmitting={isSubmitting}
+              setShowVehicleInfo={setShowVehicleInfo}
+              setShowAllKeysLostField={setShowAllKeysLostField}
+              setShowUnusedKeyField={setShowUnusedKeyField}
+            />
+            
+            {service === "Other" && (
+              <OtherServiceField
+                value={otherService}
+                onChange={setOtherService}
+                error={errors.otherService}
+                isSubmitting={isSubmitting}
+              />
+            )}
+            
+            {/* Show vehicle information immediately after service selection when applicable */}
+            {showVehicleInfo && (
+              <div className="space-y-3">
+                <VehicleFields errors={errors} isSubmitting={isSubmitting} />
+                
+                {showAllKeysLostField && (
+                  <AllKeysLostField
+                    value={allKeysLost}
+                    onChange={setAllKeysLost}
+                    isSubmitting={isSubmitting}
+                  />
+                )}
+                
+                {showUnusedKeyField && (
+                  <UnusedKeyField
+                    value={hasUnusedKey}
+                    onChange={setHasUnusedKey}
+                    isSubmitting={isSubmitting}
+                  />
+                )}
+              </div>
+            )}
+            
+            <AddressFields
+              address={address}
+              setAddress={setAddress}
+              unitNumber={unitNumber}
+              setUnitNumber={setUnitNumber}
+              gateCode={gateCode}
+              setGateCode={setGateCode}
+              errors={errors}
+              isSubmitting={isSubmitting}
+            />
+            
+            <TimeframeSelection
+              timeframe={timeframe}
+              setTimeframe={setTimeframe}
+              error={errors.timeframe}
+              isSubmitting={isSubmitting}
+            />
+            
+            <AdditionalNotes
+              value={notes}
+              onChange={setNotes}
+              isSubmitting={isSubmitting}
+            />
+            
+            <RecaptchaField
+              onChange={setRecaptchaToken}
+              error={errors.recaptcha}
+            />
+            
+            <SubmitButton 
+              isSubmitting={isSubmitting} 
+              disabled={Object.keys(errors).length > 0}
+            />
+          </FormContainer>
+        </>
       )}
       
       <FormFooter />

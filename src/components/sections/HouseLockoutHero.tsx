@@ -51,6 +51,10 @@ const HouseLockoutHero = () => {
             className="relative"
           >
             <div className="bg-white rounded-2xl p-6 lg:p-8 shadow-2xl">
+              <div className="text-center mb-6">
+                <h2 className="text-xl lg:text-2xl font-bold text-gray-900">Request Emergency Service</h2>
+                <p className="text-gray-600 mt-2">Professional locksmith assistance</p>
+              </div>
               <BookingForm />
             </div>
           </motion.div>

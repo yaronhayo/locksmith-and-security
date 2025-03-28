@@ -63,6 +63,10 @@ const NewCarKeyHero = () => {
             className="relative"
           >
             <div className="bg-white rounded-2xl p-8 shadow-2xl">
+              <div className="text-center mb-6">
+                <h2 className="text-2xl font-bold text-gray-900">Request Car Key Service</h2>
+                <p className="text-gray-600 mt-2">Professional key cutting and programming</p>
+              </div>
               <BookingForm />
             </div>
           </motion.div>
