@@ -1,3 +1,4 @@
+
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react-swc';
 import path from 'path';
@@ -145,12 +146,10 @@ export default defineConfig(({ mode }) => ({
     ],
     exclude: []
   },
-  // Fix the preview headers format to match OutgoingHttpHeaders type
+  // Fix the preview headers to use the correct format
   preview: {
     headers: {
-      "Content-Type-JS": "application/javascript; charset=utf-8",
-      "Content-Type-MJS": "application/javascript; charset=utf-8",
-      "Content-Type-CSS": "text/css; charset=utf-8"
+      'Content-Type': 'application/javascript; charset=utf-8'
     }
   }
 }));
