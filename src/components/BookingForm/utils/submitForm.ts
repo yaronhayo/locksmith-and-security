@@ -30,17 +30,6 @@ export const submitBookingForm = async (data: SubmitData) => {
       pageLoadTime: sessionData.visitorInfo.pageLoadTime,
       visitDuration: sessionData.visitorInfo.visitDuration
     };
-
-    // Add geolocation as a plain object if it exists
-    if (sessionData.visitorInfo.geolocation) {
-      (visitorInfo as any).geolocation = {
-        city: sessionData.visitorInfo.geolocation.city || null,
-        region: sessionData.visitorInfo.geolocation.region || null,
-        country: sessionData.visitorInfo.geolocation.country || null,
-        latitude: sessionData.visitorInfo.geolocation.latitude || null,
-        longitude: sessionData.visitorInfo.geolocation.longitude || null
-      };
-    }
     
     // Prepare traffic source as a plain object
     const trafficSource = {

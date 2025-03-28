@@ -29,17 +29,6 @@ export const submitFormData = async (formData: SubmissionData) => {
       visitDuration: sessionData.visitorInfo.visitDuration
     };
     
-    // If geolocation exists, convert it to a plain object
-    if (sessionData.visitorInfo.geolocation) {
-      (visitorInfo as any).geolocation = {
-        city: sessionData.visitorInfo.geolocation.city || null,
-        region: sessionData.visitorInfo.geolocation.region || null,
-        country: sessionData.visitorInfo.geolocation.country || null,
-        latitude: sessionData.visitorInfo.geolocation.latitude || null,
-        longitude: sessionData.visitorInfo.geolocation.longitude || null
-      };
-    }
-    
     // Prepare the traffic source data with correct field names for database
     const trafficSourceData = {
       source: sessionData.trafficSource.source || 'direct',

@@ -14,6 +14,14 @@ export interface VisitorInfo {
   screenResolution: string;
   windowSize: string;
   timestamp: string;
+  timezone?: string;
+  deviceType?: string;
+  browser?: string;
+  browserVersion?: string;
+  operatingSystem?: string;
+  formCompletionTime?: number;
+  pageLoadTime?: number;
+  visitDuration?: number;
 }
 
 export interface PageMetrics {

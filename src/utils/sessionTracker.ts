@@ -1,13 +1,5 @@
 
-interface GeolocationData {
-  city?: string | null;
-  region?: string | null;
-  country?: string | null;
-  latitude?: number | null;
-  longitude?: number | null;
-}
-
-export interface SessionData {
+interface SessionData {
   visitorInfo: {
     userAgent: string;
     language: string;
@@ -21,7 +13,6 @@ export interface SessionData {
     browserVersion: string;
     operatingSystem: string;
     ipAddress?: string;
-    geolocation?: GeolocationData;
     formCompletionTime?: number;
     pageLoadTime?: number;
     visitDuration?: number;
@@ -246,35 +237,6 @@ export const getSessionData = async (): Promise<SessionData> => {
   // Schedule the increment for after this function returns
   setTimeout(incrementSubmissionCount, 0);
 
-  // Prepare geolocation data as a plain object
-  let geolocationData: GeolocationData | undefined = undefined;
-  
-  // Only include geolocation if we have lat/long values
-  if (window.navigator.geolocation) {
-    try {
-      const position = await new Promise<GeolocationPosition>((resolve, reject) => {
-        navigator.geolocation.getCurrentPosition(resolve, reject, {
-          timeout: 5000,
-          enableHighAccuracy: false
-        });
-      });
-      
-      if (position && position.coords) {
-        geolocationData = {
-          latitude: position.coords.latitude || null,
-          longitude: position.coords.longitude || null,
-          city: null,
-          region: null,
-          country: null
-          // city, region and country would be populated by a reverse geocoding service
-          // but for now we'll just include the coordinates
-        };
-      }
-    } catch (error) {
-      console.log("Geolocation not available:", error);
-    }
-  }
-  
   return {
     visitorInfo: {
       userAgent: navigator.userAgent,
@@ -288,7 +250,6 @@ export const getSessionData = async (): Promise<SessionData> => {
       browser,
       browserVersion: version,
       operatingSystem: os,
-      geolocation: geolocationData,
       formCompletionTime,
       pageLoadTime: pageLoaded,
       visitDuration,
