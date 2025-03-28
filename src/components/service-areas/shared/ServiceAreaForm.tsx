@@ -1,10 +1,12 @@
 
-import { useServiceAreaForm } from "./form/useServiceAreaForm";
-import FormContainer from "./form/FormContainer";
-import ContactFields from "./form/ContactFields";
-import EmailField from "./form/EmailField";
-import ServiceField from "./form/ServiceField";
-import MessageField from "./form/MessageField";
+import { 
+  useServiceAreaForm,
+  FormContainer,
+  ContactFields,
+  EmailField,
+  ServiceField,
+  MessageField
+} from "./form";
 
 interface ServiceAreaFormProps {
   locationName?: string;
