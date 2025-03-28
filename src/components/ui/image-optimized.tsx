@@ -19,23 +19,33 @@ const ImageOptimized = ({
   priority = false,
   ...props
 }: ImageOptimizedProps) => {
-  return (
-    <img
-      src={src}
-      alt={alt}
-      className={className}
-      width={width}
-      height={height}
-      loading={priority ? "eager" : "lazy"}
-      fetchpriority={priority ? "high" : "auto"}
-      decoding="async"
-      onError={(e) => {
-        const img = e.target as HTMLImageElement;
-        img.src = '/placeholder.svg';
-      }}
-      {...props}
-    />
-  );
+  // Create a props object with the correct camelCase for TypeScript
+  const imgProps = {
+    src,
+    alt,
+    className,
+    width,
+    height,
+    loading: priority ? "eager" : "lazy",
+    fetchPriority: priority ? "high" : "auto", // TypeScript expects camelCase
+    decoding: "async" as const,
+    onError: (e: React.SyntheticEvent<HTMLImageElement>) => {
+      const img = e.target as HTMLImageElement;
+      img.src = '/placeholder.svg';
+    },
+    ...props
+  };
+
+  // Convert the props to a format the DOM expects (lowercase attributes)
+  const domProps = {
+    ...imgProps,
+    fetchpriority: imgProps.fetchPriority,
+  };
+  
+  // Remove the camelCase property to avoid duplicate attributes
+  delete (domProps as any).fetchPriority;
+
+  return <img {...domProps} />;
 };
 
 export default ImageOptimized;
