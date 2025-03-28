@@ -14,14 +14,14 @@ interface EmailFieldProps {
 const EmailField = ({ email, error, isSubmitting, handleChange, handleBlur }: EmailFieldProps) => {
   return (
     <div>
-      <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+      <label htmlFor="email-field" className="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
       <div className="relative">
         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
           <Mail className="h-4 w-4 text-gray-400" />
         </div>
         <input
           type="email"
-          id="email"
+          id="email-field"
           name="email"
           value={email}
           onChange={handleChange}

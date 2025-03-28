@@ -45,14 +45,14 @@ const ContactFields = ({
   return (
     <div className="grid sm:grid-cols-2 gap-4">
       <div>
-        <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">Your Name</label>
+        <label htmlFor="contact-name" className="block text-sm font-medium text-gray-700 mb-1">Your Name</label>
         <div className="relative">
           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
             <User className="h-4 w-4 text-gray-400" />
           </div>
           <input
             type="text"
-            id="name"
+            id="contact-name"
             name="name"
             value={formState.name}
             onChange={handleChange}
@@ -74,14 +74,14 @@ const ContactFields = ({
       </div>
       
       <div>
-        <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
+        <label htmlFor="contact-phone" className="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
         <div className="relative">
           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
             <Phone className="h-4 w-4 text-gray-400" />
           </div>
           <input
             type="tel"
-            id="phone"
+            id="contact-phone"
             name="phone"
             value={formState.phone}
             onChange={handlePhoneChange}
