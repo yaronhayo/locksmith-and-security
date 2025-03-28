@@ -1,4 +1,3 @@
-
 export const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
@@ -30,12 +29,6 @@ export const formatVisitorInfo = (info?: FormData['visitor_info']): string => {
       { label: 'Window Size', value: info.windowSize },
       { label: 'Timezone', value: info.timezone || 'Unknown' },
     ]},
-    { title: 'Location Information', items: info.geolocation ? [
-      { label: 'City', value: info.geolocation.city || 'Unknown' },
-      { label: 'Region', value: info.geolocation.region || 'Unknown' },
-      { label: 'Country', value: info.geolocation.country || 'Unknown' },
-      { label: 'IP Address', value: info.ipAddress || 'Unknown' },
-    ] : [{ label: 'Location', value: 'Not available' }]},
     { title: 'Session Metrics', items: [
       { label: 'Form Completion Time', value: info.formCompletionTime ? `${info.formCompletionTime} seconds` : 'Unknown' },
       { label: 'Page Load Time', value: info.pageLoadTime ? `${info.pageLoadTime} ms` : 'Unknown' },

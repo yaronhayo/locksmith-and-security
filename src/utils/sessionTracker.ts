@@ -245,29 +245,6 @@ export const getSessionData = async (): Promise<SessionData> => {
   // Schedule the increment for after this function returns
   setTimeout(incrementSubmissionCount, 0);
   
-  // Try to get approximate geolocation
-  let geolocation: GeolocationData | undefined = undefined;
-  
-  try {
-    if (navigator.geolocation) {
-      const position = await new Promise<GeolocationPosition>((resolve, reject) => {
-        navigator.geolocation.getCurrentPosition(resolve, reject, {
-          timeout: 5000,
-          maximumAge: 60000,
-        });
-      }).catch(() => null);
-      
-      if (position) {
-        geolocation = {
-          latitude: position.coords.latitude,
-          longitude: position.coords.longitude,
-        };
-      }
-    }
-  } catch (error) {
-    console.log('Geolocation error:', error);
-  }
-  
   return {
     visitorInfo: {
       userAgent: navigator.userAgent,
@@ -281,7 +258,7 @@ export const getSessionData = async (): Promise<SessionData> => {
       browser,
       browserVersion: version,
       operatingSystem: os,
-      geolocation,
+      geolocation: undefined,
       formCompletionTime,
       pageLoadTime: pageLoaded,
       visitDuration,
