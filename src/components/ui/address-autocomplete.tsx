@@ -22,8 +22,8 @@ const AddressAutocomplete = ({
   ...props
 }: AddressAutocompleteProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const autocompleteRef = useRef<HTMLElement | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const autocompleteRef = useRef<google.maps.places.Autocomplete | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [initializationAttempted, setInitializationAttempted] = useState(false);
   const { googleMapsLoaded, isLoadingMaps, mapsError } = useScripts();
@@ -32,97 +32,49 @@ const AddressAutocomplete = ({
   // Initialize autocomplete
   useEffect(() => {
     // Only try to initialize if:
-    // 1. We have the container element ref
+    // 1. We have the container and input element refs
     // 2. Google Maps API is available
     // 3. We haven't already attempted initialization
-    if (!containerRef.current || !googleMapsLoaded || initializationAttempted) return;
+    if (!containerRef.current || !inputRef.current || !googleMapsLoaded || initializationAttempted) return;
 
     try {
-      console.log('Initializing address autocomplete with PlaceAutocompleteElement');
+      console.log('Initializing address autocomplete with standard Places Autocomplete');
       setInitializationAttempted(true);
-
-      // Clear existing element before creating new one
-      if (autocompleteRef.current) {
-        containerRef.current.removeChild(autocompleteRef.current);
-        autocompleteRef.current = null;
-      }
 
       // Wait for the MapLoader to be ready
       MapLoader.onLoad(() => {
         try {
-          if (!containerRef.current) return;
+          if (!inputRef.current) return;
           
-          // Create the new recommended PlaceAutocompleteElement
-          if (!window.google?.maps?.places?.Place) {
-            console.error('Google Maps Place API not available');
+          // Check if the Google Maps Places API is available
+          if (!window.google?.maps?.places) {
+            console.error('Google Maps Places API not available');
             setError('Google Maps Places API not loaded correctly');
             setShowFallbackInput(true);
             return;
           }
           
-          // Create and configure the autocomplete element
-          const autocomplete = new window.google.maps.places.Place.PlaceAutocompleteElement({
+          // Create and configure the autocomplete using the standard Autocomplete API
+          const autocomplete = new window.google.maps.places.Autocomplete(inputRef.current, {
             types: ['address'],
             componentRestrictions: { country: 'us' },
             fields: ['formatted_address', 'address_components', 'geometry', 'place_id']
           });
           
-          // Set initial value if available
-          if (value) {
-            autocomplete.value = value;
-          }
-          
-          // Style the element to match the site's design
-          autocomplete.style.width = '100%';
-          autocomplete.style.height = '40px';
-          autocomplete.style.padding = '8px 12px';
-          autocomplete.style.borderRadius = '0.375rem';
-          autocomplete.style.border = '1px solid rgb(226, 232, 240)';
-          autocomplete.style.fontSize = '0.875rem';
-          autocomplete.className = cn(
-            "flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors",
-            "file:border-0 file:bg-transparent file:text-sm file:font-medium",
-            "placeholder:text-muted-foreground",
-            "focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring",
-            "disabled:cursor-not-allowed disabled:opacity-50",
-            className
-          );
-          
-          if (disabled) {
-            autocomplete.disabled = true;
-          }
-          
-          if (placeholder) {
-            autocomplete.placeholder = placeholder;
-          }
-          
-          // Add accessibility attributes
-          Object.entries(props).forEach(([key, value]) => {
-            if (key.startsWith('aria-') || key === 'role' || key === 'id') {
-              autocomplete.setAttribute(key, value as string);
-            }
-          });
-          
-          // Add the element to the DOM
-          containerRef.current.appendChild(autocomplete);
+          // Store the autocomplete instance
           autocompleteRef.current = autocomplete;
           
           // Add event listener for place selection
-          autocomplete.addEventListener('place_changed', (event) => {
-            const place = event.place;
-            if (place?.formattedAddress) {
-              onChange(place.formattedAddress);
+          autocomplete.addListener('place_changed', () => {
+            const place = autocomplete.getPlace();
+            if (place?.formatted_address) {
+              onChange(place.formatted_address);
               setError(null);
             }
           });
           
-          // Handle input changes to sync with parent component
-          autocomplete.addEventListener('input', () => {
-            onChange(autocomplete.value);
-          });
-          
         } catch (err) {
-          console.error('Error initializing PlaceAutocompleteElement:', err);
+          console.error('Error initializing Places Autocomplete:', err);
           setError('Failed to initialize address autocomplete. Using fallback input instead.');
           setShowFallbackInput(true);
         }
@@ -134,12 +86,9 @@ const AddressAutocomplete = ({
     }
     
     return () => {
-      if (autocompleteRef.current && containerRef.current) {
-        try {
-          containerRef.current.removeChild(autocompleteRef.current);
-        } catch (e) {
-          console.error('Error cleaning up autocomplete element:', e);
-        }
+      // Clean up the autocomplete instance
+      if (autocompleteRef.current) {
+        // No explicit cleanup needed for standard Autocomplete API
         autocompleteRef.current = null;
       }
     };
@@ -173,21 +122,18 @@ const AddressAutocomplete = ({
       {mapsError && <ScriptError type="maps" error={mapsError} />}
       
       <div ref={containerRef} className="relative w-full">
-        {/* Fallback input for when PlaceAutocompleteElement fails or isn't available */}
-        {showFallbackInput && (
-          <Input
-            ref={inputRef}
-            type="text"
-            value={value}
-            onChange={handleInputChange}
-            className={cn(className, "w-full", displayError ? 'border-red-500' : '')}
-            disabled={disabled || isLoadingMaps || !!mapsError}
-            placeholder={placeholder}
-            aria-invalid={displayError ? "true" : "false"}
-            aria-describedby={displayError ? "address-error" : undefined}
-            {...props}
-          />
-        )}
+        <Input
+          ref={inputRef}
+          type="text"
+          value={value}
+          onChange={handleInputChange}
+          className={cn(className, "w-full", displayError ? 'border-red-500' : '')}
+          disabled={disabled || isLoadingMaps || !!mapsError}
+          placeholder={placeholder}
+          aria-invalid={displayError ? "true" : "false"}
+          aria-describedby={displayError ? "address-error" : undefined}
+          {...props}
+        />
         
         {isLoadingMaps && (
           <div className="absolute right-3 top-1/2 -translate-y-1/2">
