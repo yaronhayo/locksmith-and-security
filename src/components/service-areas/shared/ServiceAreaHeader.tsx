@@ -1,4 +1,3 @@
-
 import { MapPin, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
@@ -26,7 +25,7 @@ const ServiceAreaHeader = ({ location }: ServiceAreaHeaderProps) => {
       </p>
       <div className="flex flex-col sm:flex-row gap-4">
         <Button size="lg" className="w-full sm:w-auto" asChild>
-          <a href="tel:+12017482070">
+          <a href="tel:2017482070">
             <Phone className="mr-2 h-5 w-5" />
             Call Now
           </a>

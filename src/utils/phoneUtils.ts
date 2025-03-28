@@ -3,8 +3,8 @@ import { useState, useEffect } from 'react';
 
 // Phone numbers configuration
 const PHONE_NUMBERS = {
-  default: '+1 (201) 748-2070',
-  googleAds: '+1 (551) 209-2928'
+  default: '(201) 748-2070',
+  googleAds: '(551) 209-2928'
 };
 
 // Get the appropriate phone number based on traffic source
