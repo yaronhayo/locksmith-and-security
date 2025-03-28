@@ -71,8 +71,9 @@ export const useFormSubmission = (
       // Set session storage flag for thank-you page
       sessionStorage.setItem('fromFormSubmission', 'true');
       
-      // Redirect to thank-you page
-      navigate('/thank-you');
+      // Use window.location for a full page reload and redirect
+      // This is more reliable than navigate for some setups
+      window.location.href = '/thank-you';
       
     } catch (error: any) {
       console.error("Form submission error:", error);
@@ -82,7 +83,7 @@ export const useFormSubmission = (
     } finally {
       setIsSubmitting(false);
     }
-  }, [formState, recaptchaToken, validateForm, setRecaptchaError, navigate]);
+  }, [formState, recaptchaToken, validateForm, setRecaptchaError]);
 
   return {
     isSubmitting,

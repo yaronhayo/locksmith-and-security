@@ -90,24 +90,38 @@ export default defineConfig(({ mode }) => ({
             return 'contact';
           }
           if (id.includes('/pages/')) {
-            // Extract the name of the page
-            const pageName = id.split('/pages/')[1].split('/')[0];
-            return `page-${pageName}`;
+            // Extract more general page name to prevent too many chunks
+            const path = id.split('/pages/')[1].split('/')[0];
+            return `page-${path.replace(/\/.*/g, '')}`; // Remove nested paths to consolidate chunks
           }
         },
         // Ensure proper MIME types for JavaScript modules
-        entryFileNames: 'assets/[name]-[hash].js',
-        chunkFileNames: 'assets/[name]-[hash].js',
-        assetFileNames: 'assets/[name]-[hash].[ext]'
+        entryFileNames: 'assets/[name].[hash].js',
+        chunkFileNames: 'assets/[name].[hash].js',
+        assetFileNames: 'assets/[name].[hash].[ext]'
       },
     },
     // Improve chunking to prevent dynamic import issues
-    chunkSizeWarningLimit: 1000,
+    chunkSizeWarningLimit: 1500,
     sourcemap: true,
+    // Add minify options to optimize output
+    minify: 'terser',
+    terserOptions: {
+      compress: {
+        drop_console: false,
+        drop_debugger: true
+      }
+    }
   },
   // Add optimizeDeps to improve loading of dynamic imports
   optimizeDeps: {
-    include: ['react', 'react-dom', 'react-router-dom', 'framer-motion'],
+    include: [
+      'react', 
+      'react-dom', 
+      'react-router-dom', 
+      'framer-motion',
+      '@tanstack/react-query'
+    ],
     exclude: []
   },
 }));

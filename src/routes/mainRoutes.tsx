@@ -9,7 +9,7 @@ const Contact = lazy(() => import("@/pages/contact"));
 const Services = lazy(() => import("@/pages/services"));
 const Reviews = lazy(() => import("@/pages/reviews"));
 const FAQ = lazy(() => import("@/pages/faq"));
-const BookOnline = lazy(() => import("@/pages/book-online"));
+const Booking = lazy(() => import("@/pages/booking")); // Updated to match file name
 const ServiceAreas = lazy(() => import("@/pages/service-areas"));
 const PrivacyPolicy = lazy(() => import("@/pages/privacy-policy"));
 const TermsConditions = lazy(() => import("@/pages/terms-conditions"));
@@ -43,7 +43,11 @@ export const mainRoutes = [
   },
   {
     path: "/book-online",
-    element: <BookOnline />
+    element: <Booking /> // Keep the route path consistent but use the correct component
+  },
+  {
+    path: "/booking",
+    element: <Booking /> // Add an additional route path to avoid 404s
   },
   {
     path: "/service-areas",

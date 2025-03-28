@@ -1,2 +1,6 @@
 
+# Redirect all routes to index.html for client-side routing
 /* /index.html 200
+
+# Specific redirects for SEO (if old paths exist)
+/booking /book-online 301
