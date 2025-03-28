@@ -12,7 +12,6 @@ export const submitFormData = async (formData: SubmissionData) => {
     
     // Convert visitor info to a plain JSON-serializable object
     const visitorInfo = {
-      ...formData.visitor_info,
       userAgent: sessionData.visitorInfo.userAgent,
       language: sessionData.visitorInfo.language,
       platform: sessionData.visitorInfo.platform,
