@@ -1,5 +1,5 @@
 
-import { formatInTimeZone } from "date-fns-tz";
+import { formatInTimeZone } from "npm:date-fns-tz@3.0.0";
 import { VisitorInfo, TrafficSource, PageMetrics } from "./types.ts";
 
 // Format a date in Eastern Time
