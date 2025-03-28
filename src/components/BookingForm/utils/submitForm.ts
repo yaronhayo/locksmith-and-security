@@ -1,91 +1,91 @@
 
-import { BookingSubmission } from "@/types/submissions";
+import { supabase } from "@/integrations/supabase/client";
+import { BookingFormValues } from "../types";
+import { getSessionData } from "@/utils/sessionTracker";
 
-export const submitBookingForm = async (
-  formData: FormData,
-  showVehicleInfo: boolean,
-  sourceUrl: string,
-  recaptchaToken: string | null,
-  address: string
-) => {
-  const name = formData.get("name") as string;
-  const phone = formData.get("phone") as string;
-  const service = formData.get("service") as string;
-  const timeframe = formData.get("timeframe") as string;
-  const notes = formData.get("notes") as string;
-  const unitNumber = formData.get("unit_number") as string;
-  const gateCode = formData.get("gate_code") as string;
-  const otherService = formData.get("other_service") as string;
-  const allKeysLost = formData.get("all_keys_lost") as string;
-  const hasUnusedKey = formData.get("has_unused_key") as string;
+interface SubmitData extends BookingFormValues {
+  recaptchaToken: string;
+  source_url: string;
+}
 
-  // Format address with unit number if provided
-  const formattedAddress = unitNumber 
-    ? `${address} Unit ${unitNumber}`
-    : address;
-
-  // Prepare vehicle information if needed
-  let vehicleInfo = null;
-  if (showVehicleInfo) {
-    vehicleInfo = {
-      year: formData.get("vehicle_year") as string,
-      make: formData.get("vehicle_make") as string,
-      model: formData.get("vehicle_model") as string,
-      all_keys_lost: allKeysLost === "yes",
-      has_unused_key: hasUnusedKey === "yes"
-    };
-  }
-
-  // Prepare the submission data
-  const submissionData: BookingSubmission = {
-    type: "booking",
-    name,
-    phone,
-    address: formattedAddress,
-    unit_number: unitNumber || null,
-    gate_code: gateCode || null,
-    service: service === "Other" ? otherService : service,
-    timeframe,
-    notes: notes || null,
-    status: "pending",
-    visitor_info: collectVisitorInfo(),
-    source_url: sourceUrl,
-    recaptcha_token: recaptchaToken,
-    vehicle_info: vehicleInfo
-  };
-
+export const submitBookingForm = async (data: SubmitData) => {
   try {
-    // In a real application, this would send the data to a server
-    // For this demo, we'll simulate a successful submission
-    // const response = await fetch("/api/submit-booking", {
-    //   method: "POST",
-    //   headers: { "Content-Type": "application/json" },
-    //   body: JSON.stringify(submissionData)
-    // });
+    console.log("Collecting session data for booking form...");
+    const sessionData = await getSessionData();
     
-    // if (!response.ok) {
-    //   throw new Error("Failed to submit booking");
-    // }
+    // Prepare the submission data
+    const submissionData = {
+      type: "booking",
+      name: data.name,
+      email: data.email,
+      phone: data.phone,
+      address: data.address,
+      unit_number: data.unit_number || null,
+      gate_code: data.gate_code || null,
+      service: data.service,
+      timeframe: data.timeframe,
+      notes: data.notes || null,
+      status: "pending",
+      visitor_info: {
+        ...sessionData.visitorInfo,
+        userAgent: navigator.userAgent,
+        language: navigator.language,
+        platform: navigator.platform,
+        screenResolution: `${window.screen.width}x${window.screen.height}`,
+        windowSize: `${window.innerWidth}x${window.innerHeight}`,
+        timestamp: new Date().toISOString()
+      },
+      source_url: data.source_url,
+      recaptcha_token: data.recaptchaToken,
+      vehicle_info: data.vehicle_info || null,
+      traffic_source: {
+        source: sessionData.trafficSource.source,
+        medium: sessionData.trafficSource.medium,
+        campaign: sessionData.trafficSource.campaign,
+        keyword: sessionData.trafficSource.keyword,
+        click_path: sessionData.trafficSource.clickPath
+      },
+      page_metrics: {
+        timeOnPage: sessionData.pageMetrics.timeOnPage,
+        scrollDepth: sessionData.pageMetrics.scrollDepth,
+        pageInteractions: sessionData.pageMetrics.pageInteractions,
+        formFocusEvents: sessionData.pageMetrics.formFocusEvents,
+        conversionTime: sessionData.pageMetrics.conversionTime
+      }
+    };
     
-    console.log("Booking submission data:", submissionData);
+    console.log("Submitting booking form data to Supabase:", submissionData);
     
-    // Simulate a network request
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    // Insert the submission into the Supabase table
+    const { data: result, error } = await supabase
+      .from('submissions')
+      .insert(submissionData)
+      .select()
+      .single();
+      
+    if (error) {
+      console.error("Error submitting booking form to Supabase:", error);
+      throw new Error(`Failed to submit booking: ${error.message}`);
+    }
     
-    return true;
-  } catch (error) {
-    console.error("Error submitting booking:", error);
-    throw new Error("Failed to submit your booking. Please try again or contact us directly.");
+    console.log("Booking form submission successful:", result);
+    
+    // Trigger email notification via Edge Function
+    console.log("Calling send-form-email function with booking data");
+    const { error: emailError } = await supabase.functions.invoke('send-form-email', {
+      body: submissionData
+    });
+    
+    if (emailError) {
+      console.error("Error sending booking email notification:", emailError);
+      // Don't throw here, as the form submission was successful
+    } else {
+      console.log("Booking email notification sent successfully");
+    }
+    
+    return result;
+  } catch (error: any) {
+    console.error("Booking form submission error:", error);
+    throw error;
   }
-};
-
-const collectVisitorInfo = () => {
-  return {
-    userAgent: navigator.userAgent,
-    language: navigator.language,
-    platform: navigator.platform,
-    screenResolution: `${window.screen.width}x${window.screen.height}`,
-    windowSize: `${window.innerWidth}x${window.innerHeight}`,
-    timestamp: new Date().toISOString()
-  };
 };

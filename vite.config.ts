@@ -63,6 +63,7 @@ export default defineConfig(({ mode }) => ({
     rollupOptions: {
       output: {
         manualChunks: (id) => {
+          // Vendor chunks
           if (id.includes('node_modules')) {
             if (id.includes('react') || id.includes('react-dom')) {
               return 'vendor-react';
@@ -79,7 +80,7 @@ export default defineConfig(({ mode }) => ({
             return 'vendor'; // all other node_modules
           }
           
-          // Group by route/feature
+          // Group by feature
           if (id.includes('/components/BookingForm/')) {
             return 'booking-form';
           }
@@ -120,7 +121,8 @@ export default defineConfig(({ mode }) => ({
       'react-dom', 
       'react-router-dom', 
       'framer-motion',
-      '@tanstack/react-query'
+      '@tanstack/react-query',
+      'sonner'
     ],
     exclude: []
   },
