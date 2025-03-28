@@ -55,6 +55,7 @@ export const submitFormData = async (formData: SubmissionData) => {
     console.log("Successfully submitted to Supabase:", data);
     
     // Trigger email notification via Edge Function
+    console.log("Calling send-form-email function with data:", enhancedFormData);
     const { error: emailError } = await supabase.functions.invoke('send-form-email', {
       body: enhancedFormData
     });

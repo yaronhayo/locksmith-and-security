@@ -54,6 +54,7 @@ export const useBookingSubmission = ({
 
   const handleSubmit = useCallback(async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    console.log("Form submission initiated");
 
     if (!recaptchaToken) {
       toast({
@@ -78,11 +79,13 @@ export const useBookingSubmission = ({
     const validationResult = validateForm(formData, showVehicleInfo);
     if (!validationResult.isValid) {
       setErrors(validationResult.errors);
+      console.log("Form validation failed:", validationResult.errors);
       return;
     }
 
     setErrors({});
     setIsSubmitting(true);
+    console.log("Form validation passed, proceeding with submission");
 
     try {
       // Prepare the submission data
@@ -130,7 +133,9 @@ export const useBookingSubmission = ({
         vehicle_info: vehicleInfo
       };
 
+      console.log("Submitting form data:", submissionData);
       await submitFormData(submissionData);
+      console.log("Form submission successful");
       
       // Store flag for thank-you page
       sessionStorage.setItem('fromFormSubmission', 'true');
@@ -149,6 +154,7 @@ export const useBookingSubmission = ({
         });
       }
 
+      // Redirect to thank-you page
       navigate('/thank-you');
     } catch (error: any) {
       console.error('Booking form submission error:', error);
