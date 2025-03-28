@@ -50,8 +50,22 @@ export default defineConfig(({ mode }) => ({
       output: {
         manualChunks: {
           vendor: ['react', 'react-dom', 'react-router-dom'],
+          ui: ['@/components/ui'],
+          framer: ['framer-motion'],
+          forms: [
+            '@/components/BookingForm', 
+            '@/components/contact',
+            '@/components/service-areas/shared/form'
+          ]
         },
+        // Ensure proper MIME types for JavaScript modules
+        entryFileNames: 'assets/[name]-[hash].js',
+        chunkFileNames: 'assets/[name]-[hash].js',
+        assetFileNames: 'assets/[name]-[hash].[ext]'
       },
     },
+    // Improve chunking to prevent dynamic import issues
+    chunkSizeWarningLimit: 1000,
+    sourcemap: true,
   },
 }));

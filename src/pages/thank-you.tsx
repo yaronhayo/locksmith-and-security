@@ -9,14 +9,21 @@ import PageLayout from "@/components/layouts/PageLayout";
 const ThankYouPage = () => {
   const navigate = useNavigate();
 
-  // Prevent accessing this page directly by URL
+  // Prevent accessing this page directly by URL and handle edge cases
   useEffect(() => {
     const fromForm = sessionStorage.getItem('fromFormSubmission');
+    
     if (!fromForm) {
-      navigate('/');
+      console.log("User attempted to access thank-you page directly, redirecting to home");
+      navigate('/', { replace: true });
+      return;
     }
-    // Clear the flag after checking
+    
+    // Clear the flag after checking to prevent stale state
     sessionStorage.removeItem('fromFormSubmission');
+    
+    // Log successful access
+    console.log("Thank you page accessed via proper form submission");
   }, [navigate]);
 
   return (
