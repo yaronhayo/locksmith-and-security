@@ -26,7 +26,9 @@ const AddressAutocomplete = ({
   const [error, setError] = useState<string | null>(null);
   const [initializationAttempted, setInitializationAttempted] = useState(false);
   const { googleMapsLoaded, isLoadingMaps, mapsError } = useScripts();
-  const [showFallbackInput, setShowFallbackInput] = useState(false);
+  
+  // Always show the Input field initially, and only replace with Maps component when ready
+  const [showGoogleAutocomplete, setShowGoogleAutocomplete] = useState(false);
 
   // Initialize autocomplete
   useEffect(() => {
@@ -55,7 +57,6 @@ const AddressAutocomplete = ({
           if (!window.google?.maps?.places?.Place) {
             console.error('Google Maps Place API not available');
             setError('Google Maps Places API not loaded correctly');
-            setShowFallbackInput(true);
             return;
           }
           
@@ -105,6 +106,7 @@ const AddressAutocomplete = ({
           // Add the element to the DOM
           containerRef.current.appendChild(autocomplete);
           autocompleteRef.current = autocomplete;
+          setShowGoogleAutocomplete(true);
           
           // Add event listener for place selection
           autocomplete.addEventListener('place_changed', (event) => {
@@ -123,13 +125,11 @@ const AddressAutocomplete = ({
         } catch (err) {
           console.error('Error initializing PlaceAutocompleteElement:', err);
           setError('Failed to initialize address autocomplete. Using fallback input instead.');
-          setShowFallbackInput(true);
         }
       });
     } catch (err) {
       console.error('Error setting up address autocomplete:', err);
       setError(err instanceof Error ? err.message : 'Failed to initialize address autocomplete');
-      setShowFallbackInput(true);
     }
     
     return () => {
@@ -140,6 +140,7 @@ const AddressAutocomplete = ({
           console.error('Error cleaning up autocomplete element:', e);
         }
         autocompleteRef.current = null;
+        setShowGoogleAutocomplete(false);
       }
     };
   }, [onChange, googleMapsLoaded, initializationAttempted, className, disabled, placeholder, value, props]);
@@ -165,14 +166,14 @@ const AddressAutocomplete = ({
       {mapsError && <ScriptError type="maps" error={mapsError} />}
       
       <div ref={containerRef} className="relative w-full">
-        {/* Fallback input for when PlaceAutocompleteElement fails or isn't available */}
-        {showFallbackInput && (
+        {/* Always show the input field if Google Maps autocomplete is not visible */}
+        {!showGoogleAutocomplete && (
           <Input
             type="text"
             value={value}
             onChange={handleInputChange}
             className={cn(className, "w-full", displayError ? 'border-red-500' : '')}
-            disabled={disabled || isLoadingMaps || !!mapsError}
+            disabled={disabled}
             placeholder={placeholder}
             aria-invalid={displayError ? "true" : "false"}
             aria-describedby={displayError ? "address-error" : undefined}

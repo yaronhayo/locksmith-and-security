@@ -65,7 +65,11 @@ export const useBookingSubmission = ({
       return;
     }
 
+    // Ensure the address is set in the form data
     const formData = new FormData(e.currentTarget);
+    
+    // Explicitly add address to the form data to ensure it's included
+    console.log("Setting address in form data:", address);
     formData.set('address', address);
     
     if (showAllKeysLostField) {
@@ -181,8 +185,7 @@ export const useBookingSubmission = ({
     setErrors, 
     toast, 
     collectVisitorInfo, 
-    location.pathname, 
-    navigate
+    location.pathname
   ]);
 
   return {
