@@ -1,3 +1,4 @@
+
 import React from 'react';
 
 interface ImageOptimizedProps extends React.ImgHTMLAttributes<HTMLImageElement> {
@@ -26,7 +27,7 @@ const ImageOptimized = ({
       width={width}
       height={height}
       loading={priority ? "eager" : "lazy"}
-      fetchPriority={priority ? "high" : "auto"}
+      fetchpriority={priority ? "high" : "auto"} {/* Changed from fetchPriority to lowercase fetchpriority */}
       decoding="async"
       onError={(e) => {
         const img = e.target as HTMLImageElement;
