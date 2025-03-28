@@ -10,6 +10,23 @@ export const submitFormData = async (formData: SubmissionData) => {
     
     console.log("Session data collected:", sessionData);
     
+    // Convert visitor info to a plain JSON-serializable object
+    const visitorInfo = {
+      ...formData.visitor_info,
+      ...sessionData.visitorInfo,
+    };
+    
+    // If geolocation exists, convert it to a plain object
+    if (sessionData.visitorInfo.geolocation) {
+      visitorInfo.geolocation = {
+        city: sessionData.visitorInfo.geolocation.city,
+        region: sessionData.visitorInfo.geolocation.region,
+        country: sessionData.visitorInfo.geolocation.country,
+        latitude: sessionData.visitorInfo.geolocation.latitude,
+        longitude: sessionData.visitorInfo.geolocation.longitude
+      };
+    }
+    
     // Prepare the traffic source data with correct field names for database
     const trafficSourceData = {
       source: sessionData.trafficSource.source,
@@ -17,17 +34,6 @@ export const submitFormData = async (formData: SubmissionData) => {
       campaign: sessionData.trafficSource.campaign,
       keyword: sessionData.trafficSource.keyword,
       click_path: sessionData.trafficSource.clickPath // Map clickPath to click_path for database
-    };
-    
-    // Convert visitor info to a plain JSON-serializable object
-    // This ensures all nested objects are compatible with Json type
-    const visitorInfo = {
-      ...formData.visitor_info,
-      ...sessionData.visitorInfo,
-      // If geolocation exists, convert it to a plain object
-      geolocation: sessionData.visitorInfo.geolocation ? 
-        { ...sessionData.visitorInfo.geolocation } : 
-        undefined
     };
     
     // Prepare page metrics for storage

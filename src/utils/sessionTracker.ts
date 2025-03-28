@@ -244,6 +244,32 @@ export const getSessionData = async (): Promise<SessionData> => {
   
   // Schedule the increment for after this function returns
   setTimeout(incrementSubmissionCount, 0);
+
+  // Prepare geolocation data as a plain object
+  let geolocationData: GeolocationData | undefined = undefined;
+  
+  // Only include geolocation if we have lat/long values
+  if (window.navigator.geolocation) {
+    try {
+      const position = await new Promise<GeolocationPosition>((resolve, reject) => {
+        navigator.geolocation.getCurrentPosition(resolve, reject, {
+          timeout: 5000,
+          enableHighAccuracy: false
+        });
+      });
+      
+      if (position && position.coords) {
+        geolocationData = {
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude
+          // city, region and country would be populated by a reverse geocoding service
+          // but for now we'll just include the coordinates
+        };
+      }
+    } catch (error) {
+      console.log("Geolocation not available:", error);
+    }
+  }
   
   return {
     visitorInfo: {
@@ -258,7 +284,7 @@ export const getSessionData = async (): Promise<SessionData> => {
       browser,
       browserVersion: version,
       operatingSystem: os,
-      geolocation: undefined,
+      geolocation: geolocationData,
       formCompletionTime,
       pageLoadTime: pageLoaded,
       visitDuration,

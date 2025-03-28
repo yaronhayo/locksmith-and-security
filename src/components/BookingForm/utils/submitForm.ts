@@ -13,6 +13,55 @@ export const submitBookingForm = async (data: SubmitData) => {
     console.log("Collecting session data for booking form...");
     const sessionData = await getSessionData();
     
+    // Convert geolocation to a regular object that's compatible with JSON
+    const visitorInfo = {
+      ...sessionData.visitorInfo,
+      userAgent: navigator.userAgent,
+      language: navigator.language,
+      platform: navigator.platform,
+      screenResolution: `${window.screen.width}x${window.screen.height}`,
+      windowSize: `${window.innerWidth}x${window.innerHeight}`,
+      timestamp: new Date().toISOString()
+    };
+
+    // If geolocation exists, convert it to a plain object
+    if (sessionData.visitorInfo.geolocation) {
+      visitorInfo.geolocation = {
+        city: sessionData.visitorInfo.geolocation.city,
+        region: sessionData.visitorInfo.geolocation.region,
+        country: sessionData.visitorInfo.geolocation.country,
+        latitude: sessionData.visitorInfo.geolocation.latitude,
+        longitude: sessionData.visitorInfo.geolocation.longitude
+      };
+    }
+    
+    // Prepare the traffic source as a plain object
+    const trafficSource = {
+      source: sessionData.trafficSource.source,
+      medium: sessionData.trafficSource.medium,
+      campaign: sessionData.trafficSource.campaign,
+      keyword: sessionData.trafficSource.keyword,
+      click_path: sessionData.trafficSource.clickPath
+    };
+    
+    // Prepare the page metrics as a plain object
+    const pageMetrics = {
+      timeOnPage: sessionData.pageMetrics.timeOnPage,
+      scrollDepth: sessionData.pageMetrics.scrollDepth,
+      pageInteractions: sessionData.pageMetrics.pageInteractions,
+      formFocusEvents: sessionData.pageMetrics.formFocusEvents,
+      conversionTime: sessionData.pageMetrics.conversionTime
+    };
+    
+    // Prepare vehicle info if it exists
+    const vehicleInfo = data.vehicle_info ? {
+      year: data.vehicle_info.year || null,
+      make: data.vehicle_info.make || null,
+      model: data.vehicle_info.model || null,
+      all_keys_lost: data.vehicle_info.all_keys_lost || false,
+      has_unused_key: data.vehicle_info.has_unused_key || false
+    } : null;
+    
     // Prepare the submission data
     const submissionData = {
       type: "booking",
@@ -26,32 +75,12 @@ export const submitBookingForm = async (data: SubmitData) => {
       timeframe: data.timeframe,
       notes: data.notes || null,
       status: "pending",
-      visitor_info: {
-        ...sessionData.visitorInfo,
-        userAgent: navigator.userAgent,
-        language: navigator.language,
-        platform: navigator.platform,
-        screenResolution: `${window.screen.width}x${window.screen.height}`,
-        windowSize: `${window.innerWidth}x${window.innerHeight}`,
-        timestamp: new Date().toISOString()
-      },
+      visitor_info: visitorInfo,
       source_url: data.source_url,
       recaptcha_token: data.recaptchaToken,
-      vehicle_info: data.vehicle_info || null,
-      traffic_source: {
-        source: sessionData.trafficSource.source,
-        medium: sessionData.trafficSource.medium,
-        campaign: sessionData.trafficSource.campaign,
-        keyword: sessionData.trafficSource.keyword,
-        click_path: sessionData.trafficSource.clickPath
-      },
-      page_metrics: {
-        timeOnPage: sessionData.pageMetrics.timeOnPage,
-        scrollDepth: sessionData.pageMetrics.scrollDepth,
-        pageInteractions: sessionData.pageMetrics.pageInteractions,
-        formFocusEvents: sessionData.pageMetrics.formFocusEvents,
-        conversionTime: sessionData.pageMetrics.conversionTime
-      }
+      vehicle_info: vehicleInfo,
+      traffic_source: trafficSource,
+      page_metrics: pageMetrics
     };
     
     console.log("Submitting booking form data to Supabase:", submissionData);
