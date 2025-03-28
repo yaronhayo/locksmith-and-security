@@ -23,6 +23,7 @@ const AddressAutocomplete = ({
 }: AddressAutocompleteProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const autocompleteRef = useRef<HTMLElement | null>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
   const [error, setError] = useState<string | null>(null);
   const [initializationAttempted, setInitializationAttempted] = useState(false);
   const { googleMapsLoaded, isLoadingMaps, mapsError } = useScripts();
@@ -168,6 +169,7 @@ const AddressAutocomplete = ({
         {/* Fallback input for when PlaceAutocompleteElement fails or isn't available */}
         {showFallbackInput && (
           <Input
+            ref={inputRef}
             type="text"
             value={value}
             onChange={handleInputChange}
