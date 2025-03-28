@@ -72,15 +72,15 @@ export const getBookingTemplate = (formData: FormData): string => {
             </tr>
             <tr>
               <td style="padding: 8px 0;"><strong>Year:</strong></td>
-              <td style="padding: 8px 0;">${formData.vehicle_info.year}</td>
+              <td style="padding: 8px 0;">${formData.vehicle_info.year || 'Not provided'}</td>
             </tr>
             <tr>
               <td style="padding: 8px 0;"><strong>Make:</strong></td>
-              <td style="padding: 8px 0;">${formData.vehicle_info.make}</td>
+              <td style="padding: 8px 0;">${formData.vehicle_info.make || 'Not provided'}</td>
             </tr>
             <tr>
               <td style="padding: 8px 0;"><strong>Model:</strong></td>
-              <td style="padding: 8px 0;">${formData.vehicle_info.model}</td>
+              <td style="padding: 8px 0;">${formData.vehicle_info.model || 'Not provided'}</td>
             </tr>
             ${formData.vehicle_info.all_keys_lost !== undefined ? `
               <tr>
