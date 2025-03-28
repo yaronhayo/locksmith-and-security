@@ -11,14 +11,17 @@ interface RecaptchaFieldProps {
 }
 
 const RecaptchaField = ({ onChange, error, className = "" }: RecaptchaFieldProps) => {
+  const recaptchaId = "g-recaptcha-response";
+  
   return (
     <div className={`w-full overflow-x-auto ${className}`} id="recaptcha-container">
-      <Recaptcha onChange={onChange} />
+      <label htmlFor={recaptchaId} className="sr-only">reCAPTCHA verification</label>
+      <Recaptcha onChange={onChange} id={recaptchaId} name={recaptchaId} />
       
       {error && (
-        <Alert variant="destructive" className="mt-2 py-2">
+        <Alert variant="destructive" className="mt-2 py-2" role="alert" aria-live="assertive">
           <AlertCircle className="h-4 w-4" />
-          <AlertDescription>{error}</AlertDescription>
+          <AlertDescription id="recaptcha-error" aria-describedby="recaptcha-container">{error}</AlertDescription>
         </Alert>
       )}
       

@@ -6,9 +6,11 @@ import { useScripts, ScriptError, ScriptLoading } from '@/components/providers/S
 
 interface RecaptchaProps {
   onChange: (token: string | null) => void;
+  id?: string;
+  name?: string;
 }
 
-const Recaptcha: React.FC<RecaptchaProps> = ({ onChange }) => {
+const Recaptcha: React.FC<RecaptchaProps> = ({ onChange, id = 'g-recaptcha-response', name = 'g-recaptcha-response' }) => {
   const [recaptchaId, setRecaptchaId] = useState<number | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const { recaptchaLoaded, isLoadingRecaptcha, recaptchaError } = useScripts();
@@ -33,15 +35,16 @@ const Recaptcha: React.FC<RecaptchaProps> = ({ onChange }) => {
     
     try {
       console.log("Rendering reCAPTCHA widget...");
-      const id = window.grecaptcha.render(containerRef.current, {
+      const widgetId = window.grecaptcha.render(containerRef.current, {
         sitekey: siteKey,
         callback: onChange,
         'expired-callback': () => onChange(null),
-        'id': 'g-recaptcha',
-        'name': 'g-recaptcha-response'
+        'id': id,
+        'name': name,
+        'aria-required': 'true'
       });
-      setRecaptchaId(id);
-      console.log("reCAPTCHA widget rendered successfully");
+      setRecaptchaId(widgetId);
+      console.log("reCAPTCHA widget rendered successfully with ID:", id);
     } catch (error) {
       console.error("Error rendering reCAPTCHA:", error);
     }
@@ -57,7 +60,7 @@ const Recaptcha: React.FC<RecaptchaProps> = ({ onChange }) => {
         }
       }
     };
-  }, [recaptchaLoaded, siteKey, onChange]);
+  }, [recaptchaLoaded, siteKey, onChange, id, name]);
 
   if (isLoading) {
     return (
@@ -77,7 +80,16 @@ const Recaptcha: React.FC<RecaptchaProps> = ({ onChange }) => {
 
   return (
     <div className="flex justify-center my-4 w-full overflow-x-auto">
-      <div className="max-w-full" ref={containerRef} id="recaptcha-element"></div>
+      <div 
+        className="max-w-full" 
+        ref={containerRef} 
+        id="recaptcha-element"
+        role="group"
+        aria-describedby="recaptcha-instructions"
+      ></div>
+      <span id="recaptcha-instructions" className="sr-only">
+        Please complete the reCAPTCHA verification to submit the form
+      </span>
     </div>
   );
 };
