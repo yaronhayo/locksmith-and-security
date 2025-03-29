@@ -22,7 +22,7 @@ const ContactForm = () => {
   return (
     <div className="bg-white p-8 rounded-xl shadow-lg">
       <h2 className="text-2xl font-bold mb-6">Send Us a Message</h2>
-      <form ref={form} onSubmit={handleSubmit} className="space-y-6">
+      <form ref={form} onSubmit={handleSubmit} className="space-y-6" aria-label="Contact form">
         <PersonalInfoFields isSubmitting={isSubmitting} />
         <EmailField isSubmitting={isSubmitting} />
         <AddressField 

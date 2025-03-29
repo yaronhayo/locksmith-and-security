@@ -96,7 +96,7 @@ const ContactForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
+    <form onSubmit={handleSubmit} className="space-y-6" aria-label="Contact form">
       <div className="space-y-4">
         <div>
           <Input
@@ -105,6 +105,8 @@ const ContactForm = () => {
             placeholder="Your Name"
             required
             disabled={isSubmitting}
+            id="contact-name-main"
+            autoComplete="name"
           />
         </div>
         <div>
@@ -114,6 +116,8 @@ const ContactForm = () => {
             placeholder="Your Email"
             required
             disabled={isSubmitting}
+            id="contact-email-main"
+            autoComplete="email"
           />
         </div>
         <div>
@@ -123,6 +127,8 @@ const ContactForm = () => {
             placeholder="Your Phone"
             required
             disabled={isSubmitting}
+            id="contact-phone-main"
+            autoComplete="tel"
           />
         </div>
         <div>
@@ -133,6 +139,8 @@ const ContactForm = () => {
             placeholder="Service Address"
             required
             disabled={isSubmitting}
+            id="service-address"
+            autoComplete="street-address"
           />
         </div>
         <div>
@@ -142,6 +150,7 @@ const ContactForm = () => {
             required
             disabled={isSubmitting}
             className="min-h-[150px]"
+            id="contact-message"
           />
         </div>
       </div>

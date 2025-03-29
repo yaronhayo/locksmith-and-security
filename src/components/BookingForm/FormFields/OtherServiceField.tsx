@@ -17,6 +17,7 @@ const OtherServiceField = ({ isSubmitting }: OtherServiceFieldProps) => {
         required
         className="h-10 text-base"
         disabled={isSubmitting}
+        autoComplete="off"
       />
     </div>
   );

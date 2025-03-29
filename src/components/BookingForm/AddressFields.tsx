@@ -30,6 +30,7 @@ const AddressFields = ({ address, onChange, errors, isSubmitting }: AddressField
             name="address"
             aria-describedby={errors.address ? "address-error" : undefined}
             aria-invalid={errors.address ? "true" : "false"}
+            autoComplete="street-address"
           />
         </GoogleMapsProvider>
         {errors.address && (
@@ -51,6 +52,7 @@ const AddressFields = ({ address, onChange, errors, isSubmitting }: AddressField
               disabled={isSubmitting}
               placeholder="Apartment, suite, unit number"
               aria-label="Unit Number"
+              autoComplete="address-line2"
             />
           </div>
 
@@ -66,6 +68,7 @@ const AddressFields = ({ address, onChange, errors, isSubmitting }: AddressField
               disabled={isSubmitting}
               placeholder="Enter gate code if applicable"
               aria-label="Gate Code"
+              autoComplete="off"
             />
           </div>
         </>

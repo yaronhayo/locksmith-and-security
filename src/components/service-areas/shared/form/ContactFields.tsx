@@ -27,6 +27,9 @@ const ContactFields = ({
   handleChange, 
   handleBlur 
 }: ContactFieldsProps) => {
+  const nameId = "contact-name";
+  const phoneId = "contact-phone";
+  
   // Custom phone input handler to format as user types
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     // Create a synthetic event with the formatted value
@@ -45,14 +48,14 @@ const ContactFields = ({
   return (
     <div className="grid sm:grid-cols-2 gap-4">
       <div>
-        <label htmlFor="contact-name" className="block text-sm font-medium text-gray-700 mb-1">Your Name</label>
+        <label htmlFor={nameId} className="block text-sm font-medium text-gray-700 mb-1">Your Name</label>
         <div className="relative">
           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
             <User className="h-4 w-4 text-gray-400" />
           </div>
           <input
             type="text"
-            id="contact-name"
+            id={nameId}
             name="name"
             value={formState.name}
             onChange={handleChange}
@@ -63,6 +66,7 @@ const ContactFields = ({
             disabled={isSubmitting}
             aria-invalid={!!errors.name}
             aria-describedby={errors.name ? "name-error" : undefined}
+            autoComplete="name"
           />
         </div>
         {errors.name && (
@@ -74,14 +78,14 @@ const ContactFields = ({
       </div>
       
       <div>
-        <label htmlFor="contact-phone" className="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
+        <label htmlFor={phoneId} className="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
         <div className="relative">
           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
             <Phone className="h-4 w-4 text-gray-400" />
           </div>
           <input
             type="tel"
-            id="contact-phone"
+            id={phoneId}
             name="phone"
             value={formState.phone}
             onChange={handlePhoneChange}
@@ -92,6 +96,7 @@ const ContactFields = ({
             disabled={isSubmitting}
             aria-invalid={!!errors.phone}
             aria-describedby={errors.phone ? "phone-error" : undefined}
+            autoComplete="tel"
           />
         </div>
         {errors.phone && (
