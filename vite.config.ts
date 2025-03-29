@@ -47,7 +47,7 @@ const copyRedirects = () => {
 const addHtmlHeaders = () => {
   return {
     name: 'add-html-headers',
-    transformIndexHtml(html) {
+    transformIndexHtml(html: string): string {
       // Ensure the DOCTYPE is correctly set
       if (!html.trim().startsWith('<!DOCTYPE html>')) {
         html = '<!DOCTYPE html>\n' + html.trim();
