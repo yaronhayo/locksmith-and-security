@@ -3,9 +3,16 @@
 /* /index.html 200
 
 # Proper MIME type handling for JavaScript modules
-/*.js /index.html 200!
-/*.js.map /index.html 200!
+/*.js
+  Content-Type: application/javascript
+
+/*.js.map
+  Content-Type: application/json
+
+/*.css
+  Content-Type: text/css
 
 # Ensure static assets are served directly
 /assets/* /assets/:splat 200
 /website-uploads/* /website-uploads/:splat 200
+

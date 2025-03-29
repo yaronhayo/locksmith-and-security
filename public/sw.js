@@ -1,11 +1,20 @@
 
-const CACHE_NAME = 'locksmith-cache-v4'; // Incrementing version to force cache purge
+const CACHE_NAME = 'locksmith-cache-v5'; // Incrementing version to force cache purge
 const urlsToCache = [
   '/',
   '/index.html',
   '/manifest.json',
   // Add other static assets here
 ];
+
+// Set correct Content-Type headers for JavaScript modules
+const jsHeaders = new Headers({
+  'Content-Type': 'application/javascript'
+});
+
+const cssHeaders = new Headers({
+  'Content-Type': 'text/css'
+});
 
 self.addEventListener('install', (event) => {
   event.waitUntil(
@@ -17,11 +26,48 @@ self.addEventListener('install', (event) => {
 });
 
 self.addEventListener('fetch', (event) => {
+  const url = new URL(event.request.url);
+  
   // Special handling for JavaScript module scripts
   if (event.request.url.endsWith('.js') && event.request.destination === 'script') {
     event.respondWith(
-      fetch(event.request)
-        .catch(() => caches.match(event.request))
+      fetch(event.request, { 
+        headers: jsHeaders 
+      })
+      .catch(() => {
+        return caches.match(event.request).then(cachedResponse => {
+          if (cachedResponse) {
+            // Create a new response with proper headers
+            return new Response(cachedResponse.body, {
+              status: 200,
+              headers: jsHeaders
+            });
+          }
+          return cachedResponse;
+        });
+      })
+    );
+    return;
+  }
+  
+  // Special handling for CSS files
+  if (event.request.url.endsWith('.css')) {
+    event.respondWith(
+      fetch(event.request, { 
+        headers: cssHeaders 
+      })
+      .catch(() => {
+        return caches.match(event.request).then(cachedResponse => {
+          if (cachedResponse) {
+            // Create a new response with proper headers
+            return new Response(cachedResponse.body, {
+              status: 200,
+              headers: cssHeaders
+            });
+          }
+          return cachedResponse;
+        });
+      })
     );
     return;
   }
@@ -50,8 +96,17 @@ self.addEventListener('activate', (event) => {
           }
         })
       );
+    }).then(() => {
+      // Ensure the new service worker takes control immediately
+      return self.clients.claim();
     })
   );
-  // Ensure the new service worker takes control immediately
-  self.clients.claim();
+});
+
+// Add error handling for module loading
+self.addEventListener('error', (event) => {
+  console.error('Service worker error:', event.message);
+  if (event.message && event.message.includes('Failed to load module script')) {
+    console.error('Module loading error detected in service worker');
+  }
 });

@@ -57,10 +57,40 @@ const addHtmlHeaders = () => {
   };
 };
 
+// Custom plugin to generate headers file for Netlify
+const generateNetlifyHeaders = () => {
+  return {
+    name: 'generate-netlify-headers',
+    closeBundle: () => {
+      const headers = `
+# Netlify headers file
+# Proper MIME type for JavaScript modules
+/*.js
+  Content-Type: application/javascript
+
+/*.js.map
+  Content-Type: application/json
+
+/*.css
+  Content-Type: text/css
+
+/*.svg
+  Content-Type: image/svg+xml
+      `;
+      
+      fs.writeFileSync('./dist/_headers', headers.trim());
+      console.log('Generated _headers file for Netlify');
+    }
+  };
+};
+
 export default defineConfig(({ mode }) => ({
   server: {
     host: "::",
     port: 8080,
+    headers: {
+      'Content-Type': 'application/javascript',
+    },
   },
   plugins: [
     react(),
@@ -68,6 +98,7 @@ export default defineConfig(({ mode }) => ({
     mode === 'development' && componentTagger(),
     mode === 'production' && generateSitemap(),
     mode === 'production' && copyRedirects(),
+    mode === 'production' && generateNetlifyHeaders(),
   ].filter(Boolean),
   resolve: {
     alias: {
