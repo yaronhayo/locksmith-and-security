@@ -1,5 +1,5 @@
 
-import { Route, Routes } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 import { Fragment } from 'react';
 import { RouteConfig } from '@/types/routes';
 

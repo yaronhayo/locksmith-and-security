@@ -18,17 +18,35 @@ const Routes = () => {
         <RouterRoutes>
           {/* Render main routes */}
           {mainRoutes.map(({ path, element }) => (
-            <Route key={path} path={path} element={element} />
+            <Route key={path} path={path} element={
+              <ErrorBoundary FallbackComponent={ErrorFallback}>
+                <Suspense fallback={<PageLoading type="skeleton" />}>
+                  {element}
+                </Suspense>
+              </ErrorBoundary>
+            } />
           ))}
           
           {/* Render service routes */}
           {serviceRoutes.map(({ path, element }) => (
-            <Route key={path} path={path} element={element} />
+            <Route key={path} path={path} element={
+              <ErrorBoundary FallbackComponent={ErrorFallback}>
+                <Suspense fallback={<PageLoading type="skeleton" />}>
+                  {element}
+                </Suspense>
+              </ErrorBoundary>
+            } />
           ))}
           
           {/* Render service area routes */}
           {serviceAreaRoutes.map(({ path, element }) => (
-            <Route key={path} path={path} element={element} />
+            <Route key={path} path={path} element={
+              <ErrorBoundary FallbackComponent={ErrorFallback}>
+                <Suspense fallback={<PageLoading type="skeleton" />}>
+                  {element}
+                </Suspense>
+              </ErrorBoundary>
+            } />
           ))}
           
           {/* 404 page */}

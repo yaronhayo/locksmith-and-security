@@ -18,6 +18,7 @@ const OtherServiceField = ({ isSubmitting }: OtherServiceFieldProps) => {
         className="h-10 text-base"
         disabled={isSubmitting}
         autoComplete="off"
+        aria-label="Other service description"
       />
     </div>
   );
