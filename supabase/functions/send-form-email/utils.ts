@@ -5,8 +5,9 @@ export const corsHeaders = {
 };
 
 export const formatInEasternTime = (date: Date): string => {
+  // Create formatter with explicit Eastern Time Zone setting
   return new Intl.DateTimeFormat('en-US', {
-    timeZone: 'America/New_York',
+    timeZone: 'America/New_York', // This formats to US Eastern Time (ET)
     year: 'numeric',
     month: 'long',
     day: 'numeric',
