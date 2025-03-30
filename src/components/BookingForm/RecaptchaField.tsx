@@ -17,7 +17,7 @@ const RecaptchaField = ({ onChange, error, className = "", id = "recaptcha-field
   
   return (
     <div className={`w-full overflow-x-auto ${className}`} id={id} aria-describedby={descriptionId}>
-      <Recaptcha onChange={onChange} />
+      <Recaptcha onChange={onChange} id={`${id}-widget`} />
       
       {error && (
         <Alert variant="destructive" className="mt-2 py-2">

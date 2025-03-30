@@ -10,15 +10,17 @@ interface MessageFieldProps {
 }
 
 const MessageField = ({ message, isSubmitting, handleChange }: MessageFieldProps) => {
+  const messageId = "service-area-message";
+  
   return (
     <div>
-      <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1">Message</label>
+      <label htmlFor={messageId} className="block text-sm font-medium text-gray-700 mb-1">Message</label>
       <div className="relative">
         <div className="absolute left-3 top-3 pointer-events-none">
-          <MessageSquare className="h-4 w-4 text-gray-400" />
+          <MessageSquare className="h-4 w-4 text-gray-400" aria-hidden="true" />
         </div>
         <Textarea
-          id="message"
+          id={messageId}
           name="message"
           value={message}
           onChange={handleChange}

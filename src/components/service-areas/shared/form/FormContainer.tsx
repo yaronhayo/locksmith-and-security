@@ -31,6 +31,7 @@ const FormContainer = memo(({
   onSubmit
 }: FormContainerProps) => {
   const formId = "service-area-form";
+  const formHeadingId = "service-area-form-heading";
   const recaptchaFieldId = "service-area-recaptcha";
   
   return (
@@ -49,9 +50,9 @@ const FormContainer = memo(({
           id={formId}
           onSubmit={onSubmit} 
           className="space-y-4 max-w-full"
-          aria-labelledby="form-heading"
+          aria-labelledby={formHeadingId}
         >
-          <h2 id="form-heading" className="sr-only">Contact Form for {locationName || "Service Area"}</h2>
+          <h2 id={formHeadingId} className="sr-only">Contact Form for {locationName || "Service Area"}</h2>
           
           {children}
           

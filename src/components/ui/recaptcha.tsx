@@ -5,9 +5,10 @@ import { ScriptError, ScriptLoading, useScripts } from '@/components/providers/S
 
 interface RecaptchaProps {
   onChange: (token: string | null) => void;
+  id?: string;
 }
 
-const Recaptcha: React.FC<RecaptchaProps> = ({ onChange }) => {
+const Recaptcha: React.FC<RecaptchaProps> = ({ onChange, id = 'recaptcha-container' }) => {
   const [recaptchaId, setRecaptchaId] = useState<number | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const renderAttempted = useRef<boolean>(false);
@@ -17,6 +18,7 @@ const Recaptcha: React.FC<RecaptchaProps> = ({ onChange }) => {
 
   const isLoading = isLoadingRecaptcha || isLoadingKey;
   const error = recaptchaError || (keyError ? keyError.message : null);
+  const instructionsId = `${id}-instructions`;
 
   // Cleanup function to reset the widget when component unmounts
   useEffect(() => {
@@ -56,6 +58,7 @@ const Recaptcha: React.FC<RecaptchaProps> = ({ onChange }) => {
         sitekey: siteKey,
         callback: onChange,
         'expired-callback': () => onChange(null),
+        'aria-describedby': instructionsId
       });
       setRecaptchaId(id);
       widgetRendered.current = true;
@@ -68,7 +71,7 @@ const Recaptcha: React.FC<RecaptchaProps> = ({ onChange }) => {
         console.error("Error rendering reCAPTCHA:", error);
       }
     }
-  }, [recaptchaLoaded, siteKey, onChange]);
+  }, [recaptchaLoaded, siteKey, onChange, instructionsId]);
 
   if (isLoading) {
     return (
@@ -88,8 +91,8 @@ const Recaptcha: React.FC<RecaptchaProps> = ({ onChange }) => {
 
   return (
     <div className="flex justify-center my-4 w-full overflow-x-auto">
-      <div className="max-w-full g-recaptcha" ref={containerRef} id="recaptcha-container" aria-describedby="recaptcha-instructions"></div>
-      <span id="recaptcha-instructions" className="sr-only">Please complete the reCAPTCHA to submit this form</span>
+      <div className="max-w-full g-recaptcha" ref={containerRef} id={id} aria-labelledby={instructionsId}></div>
+      <span id={instructionsId} className="sr-only">Please complete the reCAPTCHA to submit this form</span>
     </div>
   );
 };

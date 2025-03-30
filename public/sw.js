@@ -1,9 +1,9 @@
 
-const CACHE_NAME = 'locksmith-cache-v5'; // Incrementing version to force cache purge
-const STATIC_CACHE_NAME = 'locksmith-static-v5';
-const IMAGE_CACHE_NAME = 'locksmith-images-v5';
-const FONT_CACHE_NAME = 'locksmith-fonts-v5';
-const API_CACHE_NAME = 'locksmith-api-v5';
+const CACHE_NAME = 'locksmith-cache-v6'; // Incrementing version to force cache purge
+const STATIC_CACHE_NAME = 'locksmith-static-v6';
+const IMAGE_CACHE_NAME = 'locksmith-images-v6';
+const FONT_CACHE_NAME = 'locksmith-fonts-v6';
+const API_CACHE_NAME = 'locksmith-api-v6';
 
 // Assets to cache immediately on service worker install
 const PRECACHE_ASSETS = [
@@ -20,6 +20,22 @@ const CRITICAL_ASSETS = [
   'https://mtbgayqzjrxjjmsjikcg.supabase.co/storage/v1/object/public/uploads//Locksmithandsecuritylogo.jpg',
   'https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&display=swap'
 ];
+
+// External domains that should be excluded from service worker interception
+const BYPASS_DOMAINS = [
+  'cloudflareinsights.com',
+  'static.cloudflareinsights.com',
+  'www.google.com',
+  'www.gstatic.com',
+  'maps.googleapis.com',
+  'maps.gstatic.com'
+];
+
+// Check if URL is from a domain that should bypass service worker
+const shouldBypass = (url) => {
+  const urlObj = new URL(url);
+  return BYPASS_DOMAINS.some(domain => urlObj.hostname.includes(domain));
+};
 
 // Cache strategies
 const CACHE_STRATEGIES = {
@@ -166,13 +182,18 @@ self.addEventListener('install', (event) => {
   );
 });
 
-// Fetch event - apply appropriate caching strategy
+// Fetch event - apply appropriate caching strategy or bypass for certain domains
 self.addEventListener('fetch', (event) => {
   // Only handle GET requests
   if (event.request.method !== 'GET') return;
   
   // Skip non-HTTP(S) requests
   if (!event.request.url.startsWith('http')) return;
+  
+  // Bypass service worker for specific domains (Cloudflare, Google, etc.)
+  if (shouldBypass(event.request.url)) {
+    return;
+  }
   
   // Skip Google Analytics and other tracking requests
   const url = new URL(event.request.url);

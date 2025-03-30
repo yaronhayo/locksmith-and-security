@@ -22,13 +22,14 @@ const EmailField = ({
   isSubmitting, 
   required = true 
 }: EmailFieldProps) => {
-  const emailErrorId = "email-error";
+  const emailId = "booking-email";
+  const emailErrorId = "booking-email-error";
   
   return (
     <div className="space-y-1.5">
-      <Label htmlFor="email" className="text-sm">Email Address</Label>
+      <Label htmlFor={emailId} className="text-sm">Email Address</Label>
       <Input
-        id="email"
+        id={emailId}
         name="email"
         type="email"
         aria-describedby={error ? emailErrorId : undefined}
