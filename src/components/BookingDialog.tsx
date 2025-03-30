@@ -1,3 +1,5 @@
+
+import React, { useEffect } from "react";
 import {
   Dialog,
   DialogContent,
@@ -8,7 +10,6 @@ import {
 import { Button } from "@/components/ui/button";
 import { Calendar } from "lucide-react";
 import BookingForm from "@/components/BookingForm";
-import { useEffect } from "react";
 
 interface BookingDialogProps {
   className?: string;
@@ -17,7 +18,12 @@ interface BookingDialogProps {
   children?: React.ReactNode;
 }
 
-const BookingDialog = ({ className, variant = "default", size = "default", children }: BookingDialogProps) => {
+const BookingDialog = ({ 
+  className, 
+  variant = "default", 
+  size = "default", 
+  children 
+}: BookingDialogProps) => {
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
@@ -41,6 +47,7 @@ const BookingDialog = ({ className, variant = "default", size = "default", child
             size={size}
             className={className}
             aria-label="Open booking form"
+            id="booking-dialog-trigger"
           >
             <Calendar className="w-5 h-5 mr-2" aria-hidden="true" />
             Book Online

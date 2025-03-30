@@ -53,7 +53,7 @@
     script-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.cloudflareinsights.com https://cloudflareinsights.com https://*.cloudflare.com https://google.com https://*.google.com https://*.gstatic.com https://*.googleapis.com https://*.googletagmanager.com https://*.clarity.ms https://*.c.clarity.ms https://*.google-analytics.com https://cdn.gpteng.co https://*.doubleclick.net https://*.googleadservices.com https://*.bing.com https://*.clickcease.com https://www.clickcease.com www.clickcease.com https://*.google-analytics.com https://*.googleadservices.com https://www.google.com/pagead/ https://googleads.g.doubleclick.net https://*.googletagmanager.com https://*.facebook.com https://connect.facebook.net https://static.cloudflareinsights.com;
     script-src-elem 'self' 'unsafe-inline' 'unsafe-eval' https://*.cloudflareinsights.com https://cloudflareinsights.com https://*.cloudflare.com https://google.com https://*.google.com https://*.gstatic.com https://*.googleapis.com https://*.googletagmanager.com https://*.clarity.ms https://*.c.clarity.ms https://*.google-analytics.com https://cdn.gpteng.co https://*.doubleclick.net https://*.googleadservices.com https://*.bing.com https://*.clickcease.com https://www.clickcease.com www.clickcease.com https://www.google.com/recaptcha/ https://www.gstatic.com/recaptcha/ https://*.googleadservices.com https://www.google.com/pagead/ https://googleads.g.doubleclick.net https://*.googletagmanager.com https://*.facebook.com https://connect.facebook.net https://www.clickcease.com/monitor/stat.js https://static.cloudflareinsights.com/beacon.min.js;
     frame-src 'self' https://google.com https://*.google.com https://*.doubleclick.net https://*.googleadservices.com https://td.doubleclick.net https://www.google.com/recaptcha/ https://recaptcha.google.com/recaptcha/ https://googleads.g.doubleclick.net https://www.googleadservices.com https://www.googletagmanager.com https://*.googletagmanager.com https://*.facebook.com; 
-    frame-ancestors 'self' https://www.google.com;
+    frame-ancestors 'self' https://www.google.com https://lovable.dev;
     style-src 'self' 'unsafe-inline' https://*.googleapis.com https://*.gstatic.com https://fonts.googleapis.com; 
     font-src 'self' https://fonts.gstatic.com https://fonts.googleapis.com https://*.gstatic.com data:; 
     worker-src blob: 'self'; 
@@ -160,8 +160,8 @@
       }
     </script>
     
-    <!-- Cloudflare Web Analytics -->
-    <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "your-token-here"}'></script>
+    <!-- Cloudflare Web Analytics with correct CORS config -->
+    <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "your-token-here"}' crossorigin="anonymous"></script>
   </head>
   <body>
     <!-- Google Tag Manager (noscript) -->

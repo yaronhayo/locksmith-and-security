@@ -13,9 +13,10 @@ interface RecaptchaFieldProps {
 
 const RecaptchaField = ({ onChange, error, className = "", id = "recaptcha-field" }: RecaptchaFieldProps) => {
   const errorId = `${id}-error`;
+  const descriptionId = `${id}-description`;
   
   return (
-    <div className={`w-full overflow-x-auto ${className}`} id={id}>
+    <div className={`w-full overflow-x-auto ${className}`} id={id} aria-describedby={descriptionId}>
       <Recaptcha onChange={onChange} />
       
       {error && (
@@ -25,7 +26,7 @@ const RecaptchaField = ({ onChange, error, className = "", id = "recaptcha-field
         </Alert>
       )}
       
-      <p className="text-xs text-gray-500 mt-2">
+      <p id={descriptionId} className="text-xs text-gray-500 mt-2">
         This site is protected by reCAPTCHA and the Google
         <a href="https://policies.google.com/privacy" className="text-secondary hover:underline mx-1" target="_blank" rel="noopener noreferrer">
           Privacy Policy

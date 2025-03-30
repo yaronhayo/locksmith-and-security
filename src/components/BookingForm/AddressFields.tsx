@@ -28,10 +28,12 @@ const AddressFields = ({ address, onChange, errors, isSubmitting }: AddressField
             required
             id="service_address"
             name="address"
+            aria-describedby={errors.address ? "address-error" : undefined}
+            aria-invalid={!!errors.address}
           />
         </GoogleMapsProvider>
         {errors.address && (
-          <p className="text-xs text-red-500 mt-1">{errors.address}</p>
+          <p className="text-xs text-red-500 mt-1" id="address-error">{errors.address}</p>
         )}
       </div>
 

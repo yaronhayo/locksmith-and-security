@@ -30,6 +30,9 @@ const FormContainer = memo(({
   onRecaptchaChange,
   onSubmit
 }: FormContainerProps) => {
+  const formId = "service-area-form";
+  const recaptchaFieldId = "service-area-recaptcha";
+  
   return (
     <motion.section 
       initial={{ opacity: 0, y: 20 }}
@@ -42,13 +45,21 @@ const FormContainer = memo(({
       <FormHeader locationName={locationName} />
       
       <div className="p-4 sm:p-6 md:p-8 max-w-3xl mx-auto">
-        <form onSubmit={onSubmit} className="space-y-4 max-w-full">
+        <form 
+          id={formId}
+          onSubmit={onSubmit} 
+          className="space-y-4 max-w-full"
+          aria-labelledby="form-heading"
+        >
+          <h2 id="form-heading" className="sr-only">Contact Form for {locationName || "Service Area"}</h2>
+          
           {children}
           
           <RecaptchaField 
             onChange={onRecaptchaChange} 
             error={recaptchaError || undefined}
             className="pt-2"
+            id={recaptchaFieldId}
           />
           
           <SubmitButton 

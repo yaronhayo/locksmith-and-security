@@ -22,6 +22,8 @@ const EmailField = ({
   isSubmitting, 
   required = true 
 }: EmailFieldProps) => {
+  const emailErrorId = "email-error";
+  
   return (
     <div className="space-y-1.5">
       <Label htmlFor="email" className="text-sm">Email Address</Label>
@@ -29,7 +31,8 @@ const EmailField = ({
         id="email"
         name="email"
         type="email"
-        aria-describedby={error ? "email-error" : undefined}
+        aria-describedby={error ? emailErrorId : undefined}
+        aria-invalid={!!error}
         className={`h-9 text-sm ${error ? 'border-red-500' : ''}`}
         disabled={isSubmitting}
         autoComplete="email"
@@ -42,7 +45,7 @@ const EmailField = ({
       {error && (
         <Alert variant="destructive" className="py-2 px-3">
           <AlertCircle className="h-4 w-4" />
-          <AlertDescription className="text-xs" id="email-error">{error}</AlertDescription>
+          <AlertDescription className="text-xs" id={emailErrorId}>{error}</AlertDescription>
         </Alert>
       )}
     </div>

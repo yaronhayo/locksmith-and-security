@@ -19,6 +19,9 @@ const PersonalInfoFields = ({ errors: externalErrors, isSubmitting }: PersonalIn
     errors 
   } = useFieldValidation({ externalErrors });
 
+  const nameErrorId = "name-error-field";
+  const phoneErrorId = "phone-error-field";
+
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const formattedPhone = formatPhoneNumber(e.target.value);
     e.target.value = formattedPhone;
@@ -33,7 +36,8 @@ const PersonalInfoFields = ({ errors: externalErrors, isSubmitting }: PersonalIn
           id="name"
           name="name"
           type="text"
-          aria-describedby="name-error"
+          aria-describedby={errors.name ? nameErrorId : undefined}
+          aria-invalid={!!errors.name}
           className={`h-9 text-sm ${errors.name ? 'border-red-500' : ''}`}
           disabled={isSubmitting}
           autoComplete="name"
@@ -46,7 +50,7 @@ const PersonalInfoFields = ({ errors: externalErrors, isSubmitting }: PersonalIn
         {errors.name && (
           <Alert variant="destructive" className="py-2 px-3">
             <AlertCircle className="h-4 w-4" />
-            <AlertDescription className="text-xs" id="name-error">{errors.name}</AlertDescription>
+            <AlertDescription className="text-xs" id={nameErrorId}>{errors.name}</AlertDescription>
           </Alert>
         )}
       </div>
@@ -57,7 +61,8 @@ const PersonalInfoFields = ({ errors: externalErrors, isSubmitting }: PersonalIn
           id="phone"
           name="phone"
           type="tel"
-          aria-describedby="phone-error"
+          aria-describedby={errors.phone ? phoneErrorId : undefined}
+          aria-invalid={!!errors.phone}
           className={`h-9 text-sm ${errors.phone ? 'border-red-500' : ''}`}
           disabled={isSubmitting}
           autoComplete="tel"
@@ -70,7 +75,7 @@ const PersonalInfoFields = ({ errors: externalErrors, isSubmitting }: PersonalIn
         {errors.phone && (
           <Alert variant="destructive" className="py-2 px-3">
             <AlertCircle className="h-4 w-4" />
-            <AlertDescription className="text-xs" id="phone-error">{errors.phone}</AlertDescription>
+            <AlertDescription className="text-xs" id={phoneErrorId}>{errors.phone}</AlertDescription>
           </Alert>
         )}
       </div>

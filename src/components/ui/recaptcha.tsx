@@ -11,6 +11,7 @@ const Recaptcha: React.FC<RecaptchaProps> = ({ onChange }) => {
   const [recaptchaId, setRecaptchaId] = useState<number | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const renderAttempted = useRef<boolean>(false);
+  const widgetRendered = useRef<boolean>(false);
   const { recaptchaLoaded, isLoadingRecaptcha, recaptchaError } = useScripts();
   const { data: siteKey, isLoading: isLoadingKey, error: keyError } = useRecaptchaKey();
 
@@ -24,6 +25,7 @@ const Recaptcha: React.FC<RecaptchaProps> = ({ onChange }) => {
         try {
           window.grecaptcha.reset(recaptchaId);
           renderAttempted.current = false;
+          widgetRendered.current = false;
         } catch (e) {
           console.error("Failed to reset reCAPTCHA on cleanup:", e);
         }
@@ -37,14 +39,16 @@ const Recaptcha: React.FC<RecaptchaProps> = ({ onChange }) => {
     if (!recaptchaLoaded || !siteKey || !containerRef.current) return;
     
     // Prevent duplicate rendering attempts
-    if (renderAttempted.current) return;
+    if (renderAttempted.current || widgetRendered.current) return;
     
     try {
-      console.log("Rendering reCAPTCHA widget...");
+      console.log("Attempting to render reCAPTCHA widget...");
+      renderAttempted.current = true;
       
       // Check if reCAPTCHA is already rendered in this container
-      if (containerRef.current.firstChild) {
-        console.log("reCAPTCHA already rendered in this container, skipping");
+      if (containerRef.current.childElementCount > 0) {
+        console.log("reCAPTCHA container already has children, skipping render");
+        widgetRendered.current = true;
         return;
       }
       
@@ -54,11 +58,12 @@ const Recaptcha: React.FC<RecaptchaProps> = ({ onChange }) => {
         'expired-callback': () => onChange(null),
       });
       setRecaptchaId(id);
-      renderAttempted.current = true;
-      console.log("reCAPTCHA widget rendered successfully");
+      widgetRendered.current = true;
+      console.log("reCAPTCHA widget rendered successfully with ID:", id);
     } catch (error) {
       if (error instanceof Error && error.message.includes('already been rendered')) {
         console.log("reCAPTCHA has already been rendered, skipping");
+        widgetRendered.current = true;
       } else {
         console.error("Error rendering reCAPTCHA:", error);
       }
@@ -83,7 +88,8 @@ const Recaptcha: React.FC<RecaptchaProps> = ({ onChange }) => {
 
   return (
     <div className="flex justify-center my-4 w-full overflow-x-auto">
-      <div className="max-w-full" ref={containerRef}></div>
+      <div className="max-w-full g-recaptcha" ref={containerRef} id="recaptcha-container" aria-describedby="recaptcha-instructions"></div>
+      <span id="recaptcha-instructions" className="sr-only">Please complete the reCAPTCHA to submit this form</span>
     </div>
   );
 };
