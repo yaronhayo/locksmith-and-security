@@ -23,9 +23,6 @@ const queryClient = new QueryClient({
   },
 });
 
-// Loading fallback
-const LoadingFallback = lazy(() => import('@/components/layouts/PageLoading'));
-
 function App() {
   return (
     <QueryClientProvider client={queryClient}>

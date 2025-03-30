@@ -5,12 +5,18 @@ import App from './App';
 import './index.css';
 import './utils/mapLoader'; // Import the map loader to ensure global initialization is set up
 
-// Create root and render app
-ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-);
+// Create root and render app with error handling
+const rootElement = document.getElementById('root');
+
+if (!rootElement) {
+  console.error('Root element not found. Make sure there is a <div id="root"></div> in your HTML');
+} else {
+  ReactDOM.createRoot(rootElement).render(
+    <React.StrictMode>
+      <App />
+    </React.StrictMode>
+  );
+}
 
 // Register service worker for production
 if ('serviceWorker' in navigator && import.meta.env.PROD) {
