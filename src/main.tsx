@@ -40,9 +40,14 @@ const handleThirdPartyIframes = () => {
       });
     });
     
-    observer.observe(document.body, { childList: true, subtree: true });
-    
-    return () => observer.disconnect();
+    if (document.body) {
+      observer.observe(document.body, { childList: true, subtree: true });
+      return () => observer.disconnect();
+    } else {
+      document.addEventListener('DOMContentLoaded', () => {
+        observer.observe(document.body, { childList: true, subtree: true });
+      });
+    }
   } catch (error) {
     console.error('Error setting up iframe observer:', error);
   }
@@ -55,7 +60,7 @@ const preloadCriticalResources = () => {
   logoPreload.rel = 'preload';
   logoPreload.as = 'image';
   logoPreload.href = 'https://mtbgayqzjrxjjmsjikcg.supabase.co/storage/v1/object/public/uploads//Locksmithandsecuritylogo.jpg';
-  logoPreload.fetchPriority = 'high';
+  logoPreload.setAttribute('fetchpriority', 'high');
   document.head.appendChild(logoPreload);
   
   // Preload critical font

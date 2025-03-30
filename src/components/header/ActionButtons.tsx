@@ -2,7 +2,6 @@
 import { Menu, Phone, Calendar } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import DynamicPhoneNumber from "@/components/common/DynamicPhoneNumber";
 import { usePhoneNumber } from "@/utils/phoneUtils";
 
 interface ActionButtonsProps {
@@ -11,7 +10,7 @@ interface ActionButtonsProps {
 }
 
 const ActionButtons = ({ isMenuOpen, setIsMenuOpen }: ActionButtonsProps) => {
-  const { phoneHref } = usePhoneNumber();
+  const { phoneHref, phoneNumber } = usePhoneNumber();
   
   return (
     <div className="flex items-center gap-2">
@@ -24,7 +23,7 @@ const ActionButtons = ({ isMenuOpen, setIsMenuOpen }: ActionButtonsProps) => {
         <a href={phoneHref}>
           <Phone className="h-4 w-4 animate-phone-ring group-hover:text-black transition-transform duration-300" />
           <span className="hidden md:inline group-hover:text-black transition-colors duration-300">
-            <DynamicPhoneNumber />
+            {phoneNumber}
           </span>
         </a>
       </Button>

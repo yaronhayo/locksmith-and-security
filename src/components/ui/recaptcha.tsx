@@ -11,6 +11,7 @@ interface RecaptchaProps {
 const Recaptcha: React.FC<RecaptchaProps> = ({ onChange }) => {
   const [recaptchaId, setRecaptchaId] = useState<number | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
+  const renderAttempted = useRef<boolean>(false);
   const { recaptchaLoaded, isLoadingRecaptcha, recaptchaError } = useScripts();
   const { data: siteKey, isLoading: isLoadingKey, error: keyError } = useRecaptchaKey();
 
@@ -19,20 +20,22 @@ const Recaptcha: React.FC<RecaptchaProps> = ({ onChange }) => {
 
   // Render the reCAPTCHA widget when everything is loaded
   useEffect(() => {
-    // Clean up any existing widget first
-    if (recaptchaId !== null && window.grecaptcha) {
-      try {
-        window.grecaptcha.reset(recaptchaId);
-      } catch (e) {
-        console.error("Failed to reset reCAPTCHA:", e);
-      }
-    }
-
     // Only attempt to render if everything is loaded and we have a site key
     if (!recaptchaLoaded || !siteKey || !containerRef.current) return;
     
+    // Prevent duplicate rendering attempts
+    if (renderAttempted.current) return;
+    renderAttempted.current = true;
+    
     try {
       console.log("Rendering reCAPTCHA widget...");
+      
+      // Check if reCAPTCHA is already rendered in this container
+      if (containerRef.current.innerHTML !== '') {
+        console.log("reCAPTCHA already rendered in this container, skipping");
+        return;
+      }
+      
       const id = window.grecaptcha.render(containerRef.current, {
         sitekey: siteKey,
         callback: onChange,
