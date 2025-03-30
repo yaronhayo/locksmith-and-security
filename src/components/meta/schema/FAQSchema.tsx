@@ -9,19 +9,21 @@ interface FAQSchemaProps {
 }
 
 export const createFAQSchema = ({ questions }: FAQSchemaProps) => {
+  const faqData = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": questions.map(faq => ({
+      "@type": "Question",
+      "name": faq.question,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": faq.answer
+      }
+    }))
+  };
+  
   return {
     type: 'FAQPage',
-    data: {
-      "@context": "https://schema.org",
-      "@type": "FAQPage",
-      "mainEntity": questions.map(faq => ({
-        "@type": "Question",
-        "name": faq.question,
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": faq.answer
-        }
-      }))
-    }
+    data: faqData
   };
 };

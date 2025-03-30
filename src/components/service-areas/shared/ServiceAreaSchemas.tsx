@@ -105,7 +105,7 @@ export const createServiceAreaSchemas = (
   });
 
   // Enhanced FAQ schema with more location-specific questions and answers
-  const faqData = createFAQSchema({
+  const faqSchema = createFAQSchema({
     questions: [
       {
         question: `What locksmith services do you offer in ${location.name}, NJ?`,
@@ -141,11 +141,6 @@ export const createServiceAreaSchemas = (
       }
     ]
   });
-
-  const faqSchema = {
-    type: 'FAQPage',
-    data: faqData.data
-  };
 
   return [breadcrumbSchema, serviceSchema, locationSchema, faqSchema].filter(Boolean);
 };
