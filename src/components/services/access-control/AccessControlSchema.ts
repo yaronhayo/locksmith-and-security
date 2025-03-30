@@ -76,3 +76,6 @@ export const accessControlServiceSchema = {
     }
   }
 };
+
+// Export for use in the access control page
+export const accessControlSchema = accessControlServiceSchema;

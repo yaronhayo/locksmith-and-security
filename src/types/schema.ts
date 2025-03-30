@@ -16,3 +16,8 @@ export interface FAQSchema {
     mainEntity: FAQQuestion[];
   };
 }
+
+export interface SchemaData {
+  type: string;
+  data: any;
+}

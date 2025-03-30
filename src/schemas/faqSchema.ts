@@ -1,4 +1,6 @@
 
+import { SchemaData } from "@/types/schema";
+
 export const createFAQSchema = (faqs: Array<{ question: string; answer: string }>) => ({
   type: 'FAQPage',
   data: {
@@ -13,4 +15,4 @@ export const createFAQSchema = (faqs: Array<{ question: string; answer: string }
       }
     }))
   }
-});
+}) as SchemaData;

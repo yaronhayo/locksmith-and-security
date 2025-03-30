@@ -4,6 +4,7 @@ import SEOHead from './SEOHead';
 import { createServiceAreaSchema } from './schema/ServiceAreaSchema';
 import { createFAQSchema } from './schema/FAQSchema';
 import { useSettings } from '@/hooks/useSettings';
+import { SchemaData } from '@/types/schema';
 
 interface Question {
   question: string;
@@ -64,37 +65,25 @@ const ServiceAreaHead: React.FC<ServiceAreaHeadProps> = ({
   };
   
   // Build schemas
-  const schemas = [
-    {
-      type: 'serviceArea',
-      data: createServiceAreaSchema({
-        areaName,
-        areaDescription: description,
-        baseUrl,
-        settings: settings.data || defaultSettings,
-        canonicalUrl,
-        services,
-        geoCoordinates,
-        dateModified: modifiedDate,
-        datePublished: publishedDate,
-        areaServedRegion
-      })
-    }
+  const schemas: SchemaData[] = [
+    createServiceAreaSchema({
+      areaName,
+      areaDescription: description,
+      baseUrl,
+      settings: settings.data || defaultSettings,
+      canonicalUrl,
+      services,
+      geoCoordinates,
+      dateModified: modifiedDate,
+      datePublished: publishedDate,
+      areaServedRegion
+    })
   ];
   
   // Add FAQ schema if FAQs exist
   if (faqs && faqs.length > 0) {
     schemas.push(createFAQSchema({ questions: faqs }));
   }
-
-  // Construct geoRegion from state
-  const geoRegion = `US-${areaServedRegion}`;
-  
-  // ICBM format for coordinates
-  const icbm = geoCoordinates ? `${geoCoordinates.latitude}, ${geoCoordinates.longitude}` : undefined;
-  
-  // GeoPosition format
-  const geoPosition = geoCoordinates ? `${geoCoordinates.latitude};${geoCoordinates.longitude}` : undefined;
 
   // Optimize title for SEO (50-60 characters is ideal)
   const optimizedTitle = title.length > 60 ? title.substring(0, 57) + "..." : title;
@@ -117,10 +106,10 @@ const ServiceAreaHead: React.FC<ServiceAreaHeadProps> = ({
       ogType="website"
       twitterCardType="summary_large_image"
       baseUrl={baseUrl}
-      geoRegion={geoRegion}
+      geoRegion={`US-${areaServedRegion}`}
       geoPlaceName={areaName}
-      geoPosition={geoPosition}
-      icbm={icbm}
+      geoPosition={geoCoordinates ? `${geoCoordinates.latitude};${geoCoordinates.longitude}` : undefined}
+      icbm={geoCoordinates ? `${geoCoordinates.latitude}, ${geoCoordinates.longitude}` : undefined}
       author={`${settings.data?.company_name || 'Locksmith & Security LLC'} - ${areaName}`}
     />
   );

@@ -4,6 +4,7 @@ import SEOHead from './SEOHead';
 import { createServiceSchema } from './schema/ServiceSchema';
 import { createFAQSchema } from './schema/FAQSchema';
 import { useSettings } from '@/hooks/useSettings';
+import { SchemaData } from '@/types/schema';
 
 interface Question {
   question: string;
@@ -67,24 +68,21 @@ const ServicePageHead: React.FC<ServicePageHeadProps> = ({
   };
   
   // Build schemas
-  const schemas = [
-    {
-      type: 'service',
-      data: createServiceSchema({
-        title: serviceName,
-        description: serviceDescription || description,
-        baseUrl,
-        settings: settings.data || defaultSettings,
-        canonicalUrl,
-        category: serviceCategory,
-        dateModified: modifiedDate,
-        datePublished: publishedDate,
-        offerings: serviceOfferings.length > 0 ? serviceOfferings : [serviceName],
-        relatedServices,
-        price: servicePrice,
-        priceCurrency: servicePriceCurrency
-      })
-    }
+  const schemas: SchemaData[] = [
+    createServiceSchema({
+      title: serviceName,
+      description: serviceDescription || description,
+      baseUrl,
+      settings: settings.data || defaultSettings,
+      canonicalUrl,
+      category: serviceCategory,
+      dateModified: modifiedDate,
+      datePublished: publishedDate,
+      offerings: serviceOfferings.length > 0 ? serviceOfferings : [serviceName],
+      relatedServices,
+      price: servicePrice,
+      priceCurrency: servicePriceCurrency
+    })
   ];
   
   // Add FAQ schema if FAQs exist
