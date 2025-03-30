@@ -26,7 +26,8 @@ const handleThirdPartyIframes = () => {
       mutations.forEach((mutation) => {
         if (mutation.addedNodes.length) {
           mutation.addedNodes.forEach((node) => {
-            if (node.nodeName === 'IFRAME') {
+            // Check if node is an Element before accessing Element-specific methods
+            if (node.nodeName === 'IFRAME' && node instanceof Element) {
               // Add proper attributes to help with standards mode
               node.setAttribute('loading', 'lazy');
               node.setAttribute('frameBorder', '0');
