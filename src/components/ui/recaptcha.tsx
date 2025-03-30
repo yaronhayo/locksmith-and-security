@@ -1,8 +1,7 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import { useRecaptchaKey } from '@/hooks/useApiKeys';
-import { Skeleton } from './skeleton';
-import { useScripts, ScriptError, ScriptLoading } from '@/components/providers/ScriptsProvider';
+import { ScriptError, ScriptLoading, useScripts } from '@/components/providers/ScriptsProvider';
 
 interface RecaptchaProps {
   onChange: (token: string | null) => void;
@@ -31,7 +30,7 @@ const Recaptcha: React.FC<RecaptchaProps> = ({ onChange }) => {
       console.log("Rendering reCAPTCHA widget...");
       
       // Check if reCAPTCHA is already rendered in this container
-      if (containerRef.current.innerHTML !== '') {
+      if (containerRef.current.firstChild) {
         console.log("reCAPTCHA already rendered in this container, skipping");
         return;
       }

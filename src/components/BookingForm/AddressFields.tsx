@@ -26,6 +26,8 @@ const AddressFields = ({ address, onChange, errors, isSubmitting }: AddressField
             placeholder="Enter your service address"
             disabled={isSubmitting}
             required
+            id="address"
+            name="address"
           />
         </GoogleMapsProvider>
         {errors.address && (
