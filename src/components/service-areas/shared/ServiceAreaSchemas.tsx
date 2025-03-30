@@ -1,3 +1,4 @@
+
 import { createFAQSchema } from "@/components/meta/schema/FAQSchema";
 import { createLocationSchema } from "@/components/meta/schema/LocationSchema";
 import { createBreadcrumbSchema } from "@/components/meta/schema/BreadcrumbSchema";
@@ -104,7 +105,7 @@ export const createServiceAreaSchemas = (
   });
 
   // Enhanced FAQ schema with more location-specific questions and answers
-  const faqSchema = createFAQSchema({
+  const faqData = createFAQSchema({
     questions: [
       {
         question: `What locksmith services do you offer in ${location.name}, NJ?`,
@@ -140,6 +141,11 @@ export const createServiceAreaSchemas = (
       }
     ]
   });
+
+  const faqSchema = {
+    type: 'FAQPage',
+    data: faqData.data
+  };
 
   return [breadcrumbSchema, serviceSchema, locationSchema, faqSchema].filter(Boolean);
 };
