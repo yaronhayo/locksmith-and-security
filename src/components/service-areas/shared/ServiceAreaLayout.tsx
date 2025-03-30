@@ -41,6 +41,7 @@ const ServiceAreaLayout = memo(({ areaSlug }: ServiceAreaLayoutProps) => {
 
   // Get FAQs from the schema for SEO with proper type checking
   const faqs = faqSchema?.data && 
+    faqSchema.type === 'FAQPage' && 
     'mainEntity' in faqSchema.data ? 
     faqSchema.data.mainEntity.map((item: any) => ({
       question: item.name,

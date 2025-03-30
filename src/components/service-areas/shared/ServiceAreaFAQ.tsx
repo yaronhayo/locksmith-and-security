@@ -14,6 +14,11 @@ interface ServiceAreaFAQProps {
 }
 
 const ServiceAreaFAQ = ({ locationName, faqSchema }: ServiceAreaFAQProps) => {
+  // Check if the schema has the expected structure and data
+  if (!faqSchema?.data?.mainEntity || !Array.isArray(faqSchema.data.mainEntity) || faqSchema.data.mainEntity.length === 0) {
+    return null;
+  }
+
   return (
     <section className="py-16 bg-gradient-to-b from-gray-50 to-white rounded-xl" id="faq">
       <div className="container mx-auto px-4">
