@@ -1,9 +1,9 @@
 
-const CACHE_NAME = 'locksmith-cache-v6'; // Incrementing version to force cache purge
-const STATIC_CACHE_NAME = 'locksmith-static-v6';
-const IMAGE_CACHE_NAME = 'locksmith-images-v6';
-const FONT_CACHE_NAME = 'locksmith-fonts-v6';
-const API_CACHE_NAME = 'locksmith-api-v6';
+const CACHE_NAME = 'locksmith-cache-v7'; // Incrementing version to force cache purge
+const STATIC_CACHE_NAME = 'locksmith-static-v7';
+const IMAGE_CACHE_NAME = 'locksmith-images-v7';
+const FONT_CACHE_NAME = 'locksmith-fonts-v7';
+const API_CACHE_NAME = 'locksmith-api-v7';
 
 // Assets to cache immediately on service worker install
 const PRECACHE_ASSETS = [
@@ -28,7 +28,12 @@ const BYPASS_DOMAINS = [
   'www.google.com',
   'www.gstatic.com',
   'maps.googleapis.com',
-  'maps.gstatic.com'
+  'maps.gstatic.com',
+  'www.googletagmanager.com',
+  'googletagmanager.com',
+  'www.clarity.ms',
+  'www.google-analytics.com',
+  'google-analytics.com'
 ];
 
 // Check if URL is from a domain that should bypass service worker
@@ -200,12 +205,27 @@ self.addEventListener('fetch', (event) => {
   if (
     url.hostname.includes('google-analytics.com') ||
     url.hostname.includes('googletagmanager.com') ||
-    url.hostname.includes('clarity.ms')
+    url.hostname.includes('clarity.ms') ||
+    url.hostname.includes('cloudflareinsights.com')
   ) {
     return;
   }
   
-  event.respondWith(getStrategyForRequest(event.request)(event.request));
+  // Check if request has Content-Type header and might cause CORS issues
+  const hasContentType = event.request.headers.has('content-type');
+  
+  // Skip handling for requests with content-type header to external domains
+  if (hasContentType && !url.hostname.includes(self.location.hostname)) {
+    return;
+  }
+
+  try {
+    event.respondWith(getStrategyForRequest(event.request)(event.request));
+  } catch (error) {
+    console.error('Service worker fetch error:', error);
+    // If something goes wrong, do not intercept the request
+    return;
+  }
 });
 
 // Activate event - clean up old caches
