@@ -12,6 +12,12 @@ interface ServiceAreaSchemaProps {
     latitude: number;
     longitude: number;
   };
+  datePublished?: string;
+  dateModified?: string;
+  imageUrl?: string;
+  priceRange?: string;
+  areaServedRegion?: string;
+  telephone?: string;
 }
 
 export const createServiceAreaSchema = ({ 
@@ -21,9 +27,15 @@ export const createServiceAreaSchema = ({
   settings,
   canonicalUrl,
   services = [],
-  geoCoordinates
+  geoCoordinates,
+  datePublished = new Date().toISOString(),
+  dateModified = new Date().toISOString(),
+  imageUrl = "/lovable-uploads/1bbeb1e6-5581-4e09-9600-7d1859bb17c5.png",
+  priceRange = "$$",
+  areaServedRegion = "NJ",
+  telephone
 }: ServiceAreaSchemaProps) => ({
-  type: 'ServiceArea',
+  type: 'LocalBusiness',
   data: {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
@@ -31,18 +43,21 @@ export const createServiceAreaSchema = ({
     "name": `${settings.company_name} - ${areaName}`,
     "description": areaDescription,
     "url": `${baseUrl}${canonicalUrl}`,
-    "telephone": settings.company_phone,
-    "priceRange": "$$",
+    "telephone": telephone || settings.company_phone,
+    "priceRange": priceRange,
+    "image": imageUrl && !imageUrl.startsWith('http') ? `${baseUrl}${imageUrl}` : imageUrl,
+    "datePublished": datePublished,
+    "dateModified": dateModified,
     "address": {
       "@type": "PostalAddress",
       "addressLocality": areaName,
-      "addressRegion": "NJ",
+      "addressRegion": areaServedRegion,
       "addressCountry": "US"
     },
     "areaServed": {
       "@type": "City",
       "name": areaName,
-      "sameAs": `https://en.wikipedia.org/wiki/${areaName.replace(/ /g, '_')},_New_Jersey`
+      "sameAs": `https://en.wikipedia.org/wiki/${areaName.replace(/ /g, '_')},_${areaServedRegion}`
     },
     ...(geoCoordinates && {
       "geo": {

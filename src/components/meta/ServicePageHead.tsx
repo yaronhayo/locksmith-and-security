@@ -23,6 +23,10 @@ interface ServicePageHeadProps {
   publishedDate?: string;
   noindex?: boolean;
   relatedServices?: string[];
+  serviceDescription?: string;
+  serviceOfferings?: string[];
+  servicePrice?: string;
+  servicePriceCurrency?: string;
 }
 
 const ServicePageHead: React.FC<ServicePageHeadProps> = ({
@@ -35,9 +39,13 @@ const ServicePageHead: React.FC<ServicePageHeadProps> = ({
   ogImage = "/lovable-uploads/1bbeb1e6-5581-4e09-9600-7d1859bb17c5.png",
   faqs = [],
   modifiedDate = new Date().toISOString(),
-  publishedDate,
+  publishedDate = new Date(new Date().setFullYear(new Date().getFullYear() - 1)).toISOString(),
   noindex = false,
-  relatedServices = []
+  relatedServices = [],
+  serviceDescription,
+  serviceOfferings = [],
+  servicePrice = "49.00",
+  servicePriceCurrency = "USD"
 }) => {
   const settings = useSettings();
   const baseUrl = "https://247locksmithandsecurity.com";
@@ -47,11 +55,18 @@ const ServicePageHead: React.FC<ServicePageHeadProps> = ({
     {
       type: 'service',
       data: createServiceSchema({
-        title,
-        description,
+        title: serviceName,
+        description: serviceDescription || description,
         baseUrl,
         settings: settings.data || {},
-        canonicalUrl
+        canonicalUrl,
+        category: serviceCategory,
+        dateModified: modifiedDate,
+        datePublished: publishedDate,
+        offerings: serviceOfferings.length > 0 ? serviceOfferings : [serviceName],
+        relatedServices,
+        price: servicePrice,
+        priceCurrency: servicePriceCurrency
       })
     }
   ];
@@ -64,10 +79,16 @@ const ServicePageHead: React.FC<ServicePageHeadProps> = ({
     });
   }
 
+  // Optimize title for SEO (50-60 characters is ideal)
+  const optimizedTitle = title.length > 60 ? title.substring(0, 57) + "..." : title;
+  
+  // Optimize description for SEO (150-155 characters is ideal)
+  const optimizedDescription = description.length > 155 ? description.substring(0, 152) + "..." : description;
+
   return (
     <SEOHead
-      title={title}
-      description={description}
+      title={optimizedTitle}
+      description={optimizedDescription}
       keywords={mainKeywords}
       canonicalUrl={canonicalUrl}
       schemas={schemas}

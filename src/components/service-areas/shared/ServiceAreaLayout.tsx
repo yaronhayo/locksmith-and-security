@@ -7,7 +7,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import PageLoading from "@/components/layouts/PageLoading";
 import ServiceAreaContent from "./ServiceAreaContent";
 import { useServiceAreaData } from "./hooks/useServiceAreaData";
-import SEOHead from "@/components/meta/SEOHead";
+import ServiceAreaHead from "@/components/meta/ServiceAreaHead";
 
 interface ServiceAreaLayoutProps {
   areaSlug: string;
@@ -34,28 +34,42 @@ const ServiceAreaLayout = memo(({ areaSlug }: ServiceAreaLayoutProps) => {
 
   // Create optimized meta title and description
   const pageTitle = `Locksmith in ${location.name}, NJ | 24/7 Emergency Service`;
-  const pageDescription = `Locked out in ${location.name}? Our local locksmiths arrive in 20-30 minutes for home, business & auto emergencies. Licensed & insured service, fair pricing.`;
+  const pageDescription = `Professional locksmith services in ${location.name}, NJ. Available 24/7 for residential, commercial & auto emergencies. Licensed & insured, fast response times.`;
   
-  // Enhanced service area schema attributes
-  const localSEOAttributes = {
-    geoRegion: "US-NJ",
-    geoPlaceName: location.name,
-    geoPosition: `${location.lat};${location.lng}`,
-    icbm: `${location.lat}, ${location.lng}`
-  };
+  // Enhanced keywords specific to this service area
+  const areaKeywords = `locksmith ${location.name}, 24/7 locksmith ${location.name} NJ, emergency locksmith ${location.name}, residential locksmith ${location.name}, commercial locksmith ${location.name}, automotive locksmith ${location.name}, lock repair ${location.name}, lock installation ${location.name}, security solutions ${location.name}`;
 
-  // Keywords specific to this service area
-  const areaKeywords = `locksmith ${location.name}, 24/7 locksmith ${location.name} NJ, emergency locksmith ${location.name}, residential locksmith ${location.name}, commercial locksmith ${location.name}, automotive locksmith ${location.name}, lock repair ${location.name}, lock installation ${location.name}`;
+  // Get FAQs from the schema for SEO
+  const faqs = faqSchema ? faqSchema.data.mainEntity.map((item: any) => ({
+    question: item.name,
+    answer: item.acceptedAnswer.text
+  })) : [];
+
+  // Get common locksmith services for schema
+  const commonServices = [
+    `Emergency Lockout Service in ${location.name}`,
+    `Residential Lock Installation in ${location.name}`,
+    `Commercial Security Solutions in ${location.name}`,
+    `Car Key Replacement in ${location.name}`,
+    `High-Security Lock Installation in ${location.name}`,
+    `Lock Repair in ${location.name}`
+  ];
 
   return (
     <>
-      <SEOHead 
+      <ServiceAreaHead 
+        areaName={location.name}
         title={pageTitle}
         description={pageDescription}
-        canonicalUrl={`/service-areas/${areaSlug}`}
-        schemas={schemas}
         keywords={areaKeywords}
-        {...localSEOAttributes}
+        canonicalUrl={`/service-areas/${areaSlug}`}
+        geoCoordinates={{
+          latitude: location.lat,
+          longitude: location.lng
+        }}
+        services={commonServices}
+        faqs={faqs}
+        modifiedDate={new Date().toISOString()}
       />
       
       <PageLayout

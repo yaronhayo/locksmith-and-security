@@ -2,6 +2,7 @@
 import React from "react";
 import { MessageSquare } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
 
 interface MessageFieldProps {
   message: string;
@@ -14,9 +15,9 @@ const MessageField = ({ message, isSubmitting, handleChange }: MessageFieldProps
   
   return (
     <div className="space-y-2">
-      <label htmlFor={messageId} className="block text-sm font-medium text-gray-700 mb-1">
+      <Label htmlFor={messageId} className="text-sm font-medium text-gray-700">
         Message
-      </label>
+      </Label>
       <div className="relative">
         <div className="absolute left-3 top-3 pointer-events-none">
           <MessageSquare className="h-4 w-4 text-gray-400" aria-hidden="true" />
