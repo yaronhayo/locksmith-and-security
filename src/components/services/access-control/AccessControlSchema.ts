@@ -2,7 +2,7 @@
 import { createFAQSchema } from "@/components/meta/schema/FAQSchema";
 
 // FAQ data for the access control page
-const accessControlFaqs = [
+export const accessControlFaqs = [
   {
     question: "What is an access control system?",
     answer: "An access control system is a security solution that manages and restricts entry to a building, room, or area. It allows property owners to control who can enter specific spaces through electronic or digital authentication methods like key cards, PIN codes, or biometrics."
@@ -38,12 +38,12 @@ const accessControlFaqs = [
 ];
 
 // Create the FAQ schema using the FAQSchema component
-const accessControlFaqSchema = createFAQSchema({
+export const accessControlFaqSchema = createFAQSchema({
   questions: accessControlFaqs
 });
 
 // Service schema for Access Control systems
-const accessControlServiceSchema = {
+export const accessControlServiceSchema = {
   "@context": "https://schema.org",
   "@type": "Service",
   "name": "Access Control System Installation & Maintenance",
@@ -76,5 +76,3 @@ const accessControlServiceSchema = {
     }
   }
 };
-
-export { accessControlFaqs, accessControlFaqSchema, accessControlServiceSchema };

@@ -105,41 +105,43 @@ export const createServiceAreaSchemas = (
   });
 
   // Enhanced FAQ schema with more location-specific questions and answers
+  const faqQuestions = [
+    {
+      question: `What locksmith services do you offer in ${location.name}, NJ?`,
+      answer: `We provide comprehensive locksmith services throughout ${location.name}, including residential locksmith services (lock installation, rekeying, repair), commercial locksmith services (master key systems, access control), and automotive locksmith services (car key replacement, programming, ignition repair). Our professional technicians are licensed, bonded, and insured.`
+    },
+    {
+      question: `How quickly can a locksmith arrive in ${location.name}, NJ?`,
+      answer: `As a local locksmith service with technicians based in and around ${location.name}, we typically arrive within 15-30 minutes for emergency situations. We prioritize emergency lockouts and aim to provide the fastest possible response throughout ${location.name}, NJ and surrounding areas.`
+    },
+    {
+      question: `Are your locksmiths in ${location.name} licensed and insured?`,
+      answer: `Yes, all our technicians serving ${location.name} are fully licensed, bonded, and insured professionals. We maintain all necessary certifications and stay up-to-date with the latest security technologies and techniques to provide the highest quality service.`
+    },
+    {
+      question: `What types of locks do you service in ${location.name}, NJ?`,
+      answer: `We service all types of locks in ${location.name}, including traditional deadbolts, smart locks, high-security locks, keyless entry systems, mortise locks, and padlocks. Our technicians are experienced with all major brands including Schlage, Kwikset, Yale, Baldwin, and more.`
+    },
+    {
+      question: `Do you offer emergency lockout services in ${location.name} 24/7?`,
+      answer: `Yes, we provide genuine 24/7 emergency lockout services throughout ${location.name}. Whether you're locked out of your home, business, or vehicle at any hour, our emergency technicians are on call to help you regain access quickly and safely, even on holidays.`
+    },
+    {
+      question: `Can you cut and program transponder keys and key fobs in ${location.name}?`,
+      answer: `Yes, we have the advanced equipment necessary to cut and program all types of transponder keys and key fobs for virtually all vehicle makes and models in ${location.name}. Our automotive locksmith specialists are extensively trained in modern vehicle key technology.`
+    },
+    {
+      question: `What are your service rates for locksmith services in ${location.name}?`,
+      answer: `Our rates for ${location.name} locksmith services are competitive and transparent. We provide upfront pricing before beginning any work. The exact cost depends on the specific service needed, time of day, and complexity of the job. Call us for a free quote specific to your needs.`
+    },
+    {
+      question: `Do you offer emergency lock repair services in ${location.name}?`,
+      answer: `Yes, we provide emergency lock repair services throughout ${location.name}. If your lock is damaged, malfunctioning, or compromised after a break-in attempt, our technicians can quickly respond to secure your property and restore your peace of mind.`
+    }
+  ];
+  
   const faqSchema = createFAQSchema({
-    questions: [
-      {
-        question: `What locksmith services do you offer in ${location.name}, NJ?`,
-        answer: `We provide comprehensive locksmith services throughout ${location.name}, including residential locksmith services (lock installation, rekeying, repair), commercial locksmith services (master key systems, access control), and automotive locksmith services (car key replacement, programming, ignition repair). Our professional technicians are licensed, bonded, and insured.`
-      },
-      {
-        question: `How quickly can a locksmith arrive in ${location.name}, NJ?`,
-        answer: `As a local locksmith service with technicians based in and around ${location.name}, we typically arrive within 15-30 minutes for emergency situations. We prioritize emergency lockouts and aim to provide the fastest possible response throughout ${location.name}, NJ and surrounding areas.`
-      },
-      {
-        question: `Are your locksmiths in ${location.name} licensed and insured?`,
-        answer: `Yes, all our technicians serving ${location.name} are fully licensed, bonded, and insured professionals. We maintain all necessary certifications and stay up-to-date with the latest security technologies and techniques to provide the highest quality service.`
-      },
-      {
-        question: `What types of locks do you service in ${location.name}, NJ?`,
-        answer: `We service all types of locks in ${location.name}, including traditional deadbolts, smart locks, high-security locks, keyless entry systems, mortise locks, and padlocks. Our technicians are experienced with all major brands including Schlage, Kwikset, Yale, Baldwin, and more.`
-      },
-      {
-        question: `Do you offer emergency lockout services in ${location.name} 24/7?`,
-        answer: `Yes, we provide genuine 24/7 emergency lockout services throughout ${location.name}. Whether you're locked out of your home, business, or vehicle at any hour, our emergency technicians are on call to help you regain access quickly and safely, even on holidays.`
-      },
-      {
-        question: `Can you cut and program transponder keys and key fobs in ${location.name}?`,
-        answer: `Yes, we have the advanced equipment necessary to cut and program all types of transponder keys and key fobs for virtually all vehicle makes and models in ${location.name}. Our automotive locksmith specialists are extensively trained in modern vehicle key technology.`
-      },
-      {
-        question: `What are your service rates for locksmith services in ${location.name}?`,
-        answer: `Our rates for ${location.name} locksmith services are competitive and transparent. We provide upfront pricing before beginning any work. The exact cost depends on the specific service needed, time of day, and complexity of the job. Call us for a free quote specific to your needs.`
-      },
-      {
-        question: `Do you offer emergency lock repair services in ${location.name}?`,
-        answer: `Yes, we provide emergency lock repair services throughout ${location.name}. If your lock is damaged, malfunctioning, or compromised after a break-in attempt, our technicians can quickly respond to secure your property and restore your peace of mind.`
-      }
-    ]
+    questions: faqQuestions
   });
 
   return [breadcrumbSchema, serviceSchema, locationSchema, faqSchema].filter(Boolean);

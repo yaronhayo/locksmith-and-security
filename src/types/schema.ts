@@ -1,7 +1,9 @@
 
 export interface FAQQuestion {
+  "@type": string;
   name: string;
   acceptedAnswer: {
+    "@type": string;
     text: string;
   };
 }
