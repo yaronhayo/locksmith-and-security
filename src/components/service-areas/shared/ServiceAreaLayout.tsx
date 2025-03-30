@@ -39,7 +39,7 @@ const ServiceAreaLayout = memo(({ areaSlug }: ServiceAreaLayoutProps) => {
   // Enhanced keywords specific to this service area
   const areaKeywords = `locksmith ${location.name}, 24/7 locksmith ${location.name} NJ, emergency locksmith ${location.name}, residential locksmith ${location.name}, commercial locksmith ${location.name}, automotive locksmith ${location.name}, lock repair ${location.name}, lock installation ${location.name}, security solutions ${location.name}`;
 
-  // Get FAQs from the schema for SEO - with proper type checking
+  // Get FAQs from the schema for SEO with proper type checking
   const faqs = faqSchema?.data && 
     'mainEntity' in faqSchema.data ? 
     faqSchema.data.mainEntity.map((item: any) => ({
