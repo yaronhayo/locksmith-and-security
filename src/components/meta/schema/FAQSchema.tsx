@@ -22,8 +22,12 @@ export const createFAQSchema = ({ questions }: FAQSchemaProps) => {
     }))
   };
   
+  // Return in the correct nested format to match expected schema structure
   return {
     type: 'FAQPage',
-    data: faqData
+    data: {
+      type: 'FAQPage',
+      data: faqData
+    }
   };
 };

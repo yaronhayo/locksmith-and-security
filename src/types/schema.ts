@@ -9,8 +9,11 @@ export interface FAQQuestion {
 export interface FAQSchema {
   type: string;
   data: {
-    "@context": string;
-    "@type": string;
-    mainEntity: FAQQuestion[];
+    type: string;
+    data: {
+      "@context": string;
+      "@type": string;
+      mainEntity: FAQQuestion[];
+    };
   };
 }
