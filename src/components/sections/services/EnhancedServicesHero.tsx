@@ -13,6 +13,7 @@ interface EnhancedServicesHeroProps {
   serviceLabel: string;
   keywords?: string[];
   locationName?: string;
+  image?: string; // Add the image prop
 }
 
 const EnhancedServicesHero: React.FC<EnhancedServicesHeroProps> = ({
@@ -21,7 +22,8 @@ const EnhancedServicesHero: React.FC<EnhancedServicesHeroProps> = ({
   serviceName,
   serviceLabel,
   keywords = [],
-  locationName
+  locationName,
+  image // Add the image prop
 }) => {
   const phoneNumber = getPhoneNumber();
   
@@ -98,9 +100,13 @@ const EnhancedServicesHero: React.FC<EnhancedServicesHeroProps> = ({
               <div className="aspect-[4/3] relative bg-gray-100 rounded-md overflow-hidden mb-4">
                 {/* Image will be inserted dynamically based on service type */}
                 <div className="absolute inset-0 flex items-center justify-center bg-gray-200">
-                  <span className="text-gray-500 text-sm">
-                    {serviceName} Service Illustration
-                  </span>
+                  {image ? (
+                    <img src={image} alt={`${serviceName} service`} className="w-full h-full object-cover" />
+                  ) : (
+                    <span className="text-gray-500 text-sm">
+                      {serviceName} Service Illustration
+                    </span>
+                  )}
                 </div>
               </div>
               

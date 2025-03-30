@@ -55,7 +55,20 @@ const ServiceAreaHead: React.FC<ServiceAreaHeadProps> = ({
         areaName,
         areaDescription: description,
         baseUrl,
-        settings: settings.data || {},
+        settings: settings.data || { 
+          company_name: "Locksmith & Security LLC", 
+          company_phone: "(201) 748-2070", 
+          company_address: "5800 Kennedy Blvd", 
+          company_city: "North Bergen", 
+          company_state: "NJ", 
+          company_zip: "07047", 
+          company_lat: "40.7795", 
+          company_lng: "-74.0324", 
+          base_url: "https://247locksmithandsecurity.com", 
+          default_meta_title: "Professional Locksmith Services", 
+          default_meta_description: "Expert locksmith services for residential, commercial and automotive needs.", 
+          GOOGLE_MAPS_API_KEY: "" 
+        },
         canonicalUrl,
         services,
         geoCoordinates,
@@ -68,10 +81,7 @@ const ServiceAreaHead: React.FC<ServiceAreaHeadProps> = ({
   
   // Add FAQ schema if FAQs exist
   if (faqs && faqs.length > 0) {
-    schemas.push({
-      type: 'faq',
-      data: createFAQSchema({ questions: faqs }).data
-    });
+    schemas.push(createFAQSchema({ questions: faqs }));
   }
 
   // Construct geoRegion from state
