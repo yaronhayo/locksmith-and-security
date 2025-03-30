@@ -89,8 +89,7 @@ const ServicePageHead: React.FC<ServicePageHeadProps> = ({
   
   // Add FAQ schema if FAQs exist
   if (faqs && faqs.length > 0) {
-    const faqSchema = createFAQSchema({ questions: faqs });
-    schemas.push(faqSchema);
+    schemas.push(createFAQSchema({ questions: faqs }));
   }
 
   // Optimize title for SEO (50-60 characters is ideal)

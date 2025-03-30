@@ -84,8 +84,7 @@ const ServiceAreaHead: React.FC<ServiceAreaHeadProps> = ({
   
   // Add FAQ schema if FAQs exist
   if (faqs && faqs.length > 0) {
-    const faqSchema = createFAQSchema({ questions: faqs });
-    schemas.push(faqSchema);
+    schemas.push(createFAQSchema({ questions: faqs }));
   }
 
   // Construct geoRegion from state
