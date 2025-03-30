@@ -1,6 +1,6 @@
 
 import { Route, Routes } from 'react-router-dom';
-import { Fragment } from 'react';
+import { Fragment, Suspense } from 'react';
 import { RouteConfig } from '@/types/routes';
 
 interface RouteRendererProps {
@@ -14,7 +14,11 @@ const RouteRenderer = ({ routes }: RouteRendererProps) => {
         <Route
           key={path}
           path={path}
-          element={element}
+          element={
+            <Suspense fallback={<div className="p-4">Loading...</div>}>
+              {element}
+            </Suspense>
+          }
         />
       ))}
     </Fragment>

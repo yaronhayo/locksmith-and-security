@@ -151,10 +151,12 @@ export type Database = {
           email: string | null
           error_message: string | null
           formatted_address: string | null
+          gate_code: string | null
           id: number
           message: string | null
           name: string
           notes: string | null
+          page_metrics: Json | null
           phone: string
           place_id: string | null
           recaptcha_token: string | null
@@ -166,6 +168,7 @@ export type Database = {
             | Database["public"]["CompositeTypes"]["traffic_source_type"]
             | null
           type: string
+          unit_number: string | null
           updated_at: string | null
           vehicle_info: Json | null
           visitor_info: Json | null
@@ -176,10 +179,12 @@ export type Database = {
           email?: string | null
           error_message?: string | null
           formatted_address?: string | null
+          gate_code?: string | null
           id?: number
           message?: string | null
           name: string
           notes?: string | null
+          page_metrics?: Json | null
           phone: string
           place_id?: string | null
           recaptcha_token?: string | null
@@ -191,6 +196,7 @@ export type Database = {
             | Database["public"]["CompositeTypes"]["traffic_source_type"]
             | null
           type: string
+          unit_number?: string | null
           updated_at?: string | null
           vehicle_info?: Json | null
           visitor_info?: Json | null
@@ -201,10 +207,12 @@ export type Database = {
           email?: string | null
           error_message?: string | null
           formatted_address?: string | null
+          gate_code?: string | null
           id?: number
           message?: string | null
           name?: string
           notes?: string | null
+          page_metrics?: Json | null
           phone?: string
           place_id?: string | null
           recaptcha_token?: string | null
@@ -216,6 +224,7 @@ export type Database = {
             | Database["public"]["CompositeTypes"]["traffic_source_type"]
             | null
           type?: string
+          unit_number?: string | null
           updated_at?: string | null
           vehicle_info?: Json | null
           visitor_info?: Json | null

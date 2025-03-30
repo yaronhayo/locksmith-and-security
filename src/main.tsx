@@ -1,3 +1,4 @@
+
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App.tsx'
@@ -9,6 +10,42 @@ import { initPolyfills } from './utils/polyfills.ts'
 
 // Initialize polyfills first
 initPolyfills();
+
+// Check for DOCTYPE to prevent Quirks Mode
+const detectQuirksMode = () => {
+  if (document.compatMode === 'BackCompat') {
+    console.warn('Page is running in Quirks Mode! This may cause layout and rendering issues.');
+  }
+};
+
+// Detect and handle iframes in quirks mode
+const handleThirdPartyIframes = () => {
+  try {
+    // Monitor for iframes that might be loaded in quirks mode
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.addedNodes.length) {
+          mutation.addedNodes.forEach((node) => {
+            if (node.nodeName === 'IFRAME') {
+              // Add proper attributes to help with standards mode
+              node.setAttribute('loading', 'lazy');
+              node.setAttribute('frameBorder', '0');
+              if (!node.hasAttribute('title')) {
+                node.setAttribute('title', 'Third-party content');
+              }
+            }
+          });
+        }
+      });
+    });
+    
+    observer.observe(document.body, { childList: true, subtree: true });
+    
+    return () => observer.disconnect();
+  } catch (error) {
+    console.error('Error setting up iframe observer:', error);
+  }
+};
 
 // Preload critical fonts and resources
 const preloadCriticalResources = () => {
@@ -34,7 +71,8 @@ const preloadCriticalResources = () => {
     'fonts.googleapis.com',
     'fonts.gstatic.com',
     'mtbgayqzjrxjjmsjikcg.supabase.co',
-    'maps.googleapis.com'
+    'maps.googleapis.com',
+    'static.cloudflareinsights.com'
   ];
   
   domains.forEach(domain => {
@@ -69,8 +107,10 @@ const saveUtmParams = () => {
 };
 
 // Execute performance optimizations immediately
+detectQuirksMode();
 preloadCriticalResources();
 saveUtmParams();
+handleThirdPartyIframes();
 
 // Initialize web vitals monitoring to gather performance metrics
 initWebVitals();
