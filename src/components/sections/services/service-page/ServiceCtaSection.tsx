@@ -26,7 +26,7 @@ const ServiceCtaSection: React.FC<ServiceCtaSectionProps> = ({ serviceName }) =>
         >
           <a href={phoneHref} className="flex items-center justify-center">
             <Phone className="mr-2 h-5 w-5" />
-            <DynamicPhoneNumber asLink={false} />
+            <DynamicPhoneNumber />
           </a>
         </Button>
         <Button 

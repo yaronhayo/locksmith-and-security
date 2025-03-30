@@ -14,13 +14,13 @@ interface ServiceFieldProps {
 const ServiceField = ({ service, error, isSubmitting, handleChange }: ServiceFieldProps) => {
   return (
     <div>
-      <label htmlFor="service-dropdown" className="block text-sm font-medium text-gray-700 mb-1">Service Needed</label>
+      <label htmlFor="service" className="block text-sm font-medium text-gray-700 mb-1">Service Needed</label>
       <div className="relative">
         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
           <Wrench className="h-4 w-4 text-gray-400" />
         </div>
         <select
-          id="service-dropdown"
+          id="service"
           name="service"
           value={service}
           onChange={handleChange}

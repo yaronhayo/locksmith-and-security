@@ -29,7 +29,7 @@ const MobileMenuActions = ({ isMenuOpen }: MobileMenuActionsProps) => {
         className="w-full max-w-[calc(100%-2rem)] mx-auto inline-flex items-center justify-center gap-2 py-3 px-4 bg-white/10 rounded-md text-white text-lg font-bold hover:bg-white/20 transition-all duration-300"
       >
         <Phone className="w-5 h-5 animate-phone-ring" />
-        <DynamicPhoneNumber asLink={false} />
+        <DynamicPhoneNumber />
       </a>
     </div>
   );

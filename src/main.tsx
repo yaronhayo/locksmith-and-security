@@ -1,79 +1,105 @@
+import React from 'react'
+import ReactDOM from 'react-dom/client'
+import App from './App.tsx'
+import './index.css'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { initSessionTracking } from './utils/sessionTracker.ts'
+import initWebVitals from './utils/webVitalsMonitoring.ts'
+import { initPolyfills } from './utils/polyfills.ts'
 
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import App from './App';
-import './index.css';
-import './utils/mapLoader'; // Import the map loader to ensure global initialization is set up
+// Initialize polyfills first
+initPolyfills();
 
-// Create root and render app with error handling
-const rootElement = document.getElementById('root');
-
-if (!rootElement) {
-  console.error('Root element not found. Make sure there is a <div id="root"></div> in your HTML');
-} else {
-  ReactDOM.createRoot(rootElement).render(
-    <React.StrictMode>
-      <App />
-    </React.StrictMode>
-  );
-}
-
-// Register service worker for production
-if ('serviceWorker' in navigator && import.meta.env.PROD) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/sw.js')
-      .then(registration => {
-        console.log('SW registered: ', registration);
-      })
-      .catch(registrationError => {
-        console.log('SW registration failed: ', registrationError);
-      });
-  });
-}
-
-// Add console diagnostics for module loading issues
-if (import.meta.env.PROD) {
-  console.log('Production build loaded successfully');
+// Preload critical fonts and resources
+const preloadCriticalResources = () => {
+  // Preload logo (critical for LCP)
+  const logoPreload = document.createElement('link');
+  logoPreload.rel = 'preload';
+  logoPreload.as = 'image';
+  logoPreload.href = 'https://mtbgayqzjrxjjmsjikcg.supabase.co/storage/v1/object/public/uploads//Locksmithandsecuritylogo.jpg';
+  logoPreload.fetchPriority = 'high';
+  document.head.appendChild(logoPreload);
   
-  // Add diagnostics for module loading
-  window.addEventListener('error', (event) => {
-    if (event.message && (
-      event.message.includes('Failed to load module script') || 
-      event.message.includes('SyntaxError') ||
-      event.message.includes('ChunkLoadError')
-    )) {
-      console.error('Module loading error detected:', event.message);
-      console.error('Error details:', event);
-    }
+  // Preload critical font
+  const fontPreload = document.createElement('link');
+  fontPreload.rel = 'preload';
+  fontPreload.as = 'font';
+  fontPreload.href = 'https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&display=swap';
+  fontPreload.type = 'font/woff2';
+  fontPreload.crossOrigin = 'anonymous';
+  document.head.appendChild(fontPreload);
+  
+  // DNS prefetch for external domains
+  const domains = [
+    'fonts.googleapis.com',
+    'fonts.gstatic.com',
+    'mtbgayqzjrxjjmsjikcg.supabase.co',
+    'maps.googleapis.com'
+  ];
+  
+  domains.forEach(domain => {
+    const link = document.createElement('link');
+    link.rel = 'dns-prefetch';
+    link.href = `https://${domain}`;
+    document.head.appendChild(link);
+    
+    // Also add preconnect for critical domains
+    const preconnect = document.createElement('link');
+    preconnect.rel = 'preconnect';
+    preconnect.href = `https://${domain}`;
+    preconnect.crossOrigin = 'anonymous';
+    document.head.appendChild(preconnect);
   });
-}
+};
 
-// Fix for third-party iframes in Quirks Mode
-// This doesn't actually fix the third-party iframes, but helps detect them
-document.addEventListener('DOMContentLoaded', () => {
-  try {
-    const iframes = document.querySelectorAll('iframe');
-    iframes.forEach(iframe => {
-      if (iframe.src && (iframe.src.includes('doubleclick.net') || iframe.src.includes('googleadservices.com'))) {
-        console.log('Third-party iframe detected:', iframe.src);
-      }
-    });
-  } catch (error) {
-    console.error('Error checking iframes:', error);
-  }
-});
-
-// Helper to force load Cloudflare Insights if needed
-const loadCloudflareInsights = () => {
-  if (!window.hasOwnProperty('_cf_chl_opt')) {
-    const script = document.createElement('script');
-    script.src = 'https://static.cloudflareinsights.com/beacon.min.js';
-    script.defer = true;
-    document.head.appendChild(script);
+// Save UTM parameters to localStorage for tracking throughout the session
+const saveUtmParams = () => {
+  if (typeof window !== 'undefined') {
+    const urlParams = new URLSearchParams(window.location.search);
+    const utmSource = urlParams.get('utm_source');
+    const utmMedium = urlParams.get('utm_medium');
+    const utmCampaign = urlParams.get('utm_campaign');
+    const utmTerm = urlParams.get('utm_term');
+    
+    if (utmSource) localStorage.setItem('utm_source', utmSource);
+    if (utmMedium) localStorage.setItem('utm_medium', utmMedium);
+    if (utmCampaign) localStorage.setItem('utm_campaign', utmCampaign);
+    if (utmTerm) localStorage.setItem('utm_term', utmTerm);
   }
 };
 
-// Only load Cloudflare Insights in production
-if (import.meta.env.PROD) {
-  window.addEventListener('load', loadCloudflareInsights);
+// Execute performance optimizations immediately
+preloadCriticalResources();
+saveUtmParams();
+
+// Initialize web vitals monitoring to gather performance metrics
+initWebVitals();
+
+// Initialize session tracking once DOM is ready
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initSessionTracking);
+} else {
+  initSessionTracking();
 }
+
+// Configure React Query for optimal performance
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 1000 * 60 * 5, // 5 minutes
+      retry: 1,
+      refetchOnWindowFocus: false, // Disable refetching on window focus for better performance
+      refetchOnMount: false, // Only fetch when needed
+      gcTime: 1000 * 60 * 30, // Cache for 30 minutes (previously cacheTime)
+    },
+  },
+})
+
+// Use createRoot for better hydration performance
+ReactDOM.createRoot(document.getElementById('root')!).render(
+  <React.StrictMode>
+    <QueryClientProvider client={queryClient}>
+      <App />
+    </QueryClientProvider>
+  </React.StrictMode>,
+)

@@ -54,7 +54,7 @@ export const useBookingSubmission = ({
 
   const handleSubmit = useCallback(async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("Form submission initiated");
+    console.log("Booking form submission started");
 
     if (!recaptchaToken) {
       toast({
@@ -65,13 +65,13 @@ export const useBookingSubmission = ({
       return;
     }
 
-    // Ensure the address is set in the form data
+    setIsSubmitting(true);
     const formData = new FormData(e.currentTarget);
     
-    // Explicitly add address to the form data to ensure it's included
-    console.log("Setting address in form data:", address);
+    // Ensure address is included
     formData.set('address', address);
     
+    // Include conditional fields if shown
     if (showAllKeysLostField) {
       formData.set('all_keys_lost', allKeysLost);
     }
@@ -80,16 +80,22 @@ export const useBookingSubmission = ({
       formData.set('has_unused_key', hasUnusedKey);
     }
     
+    // Validate the form data
     const validationResult = validateForm(formData, showVehicleInfo);
     if (!validationResult.isValid) {
       setErrors(validationResult.errors);
       console.log("Form validation failed:", validationResult.errors);
+      toast({
+        title: "Form Validation Failed",
+        description: "Please check the form for errors",
+        variant: "destructive",
+      });
+      setIsSubmitting(false);
       return;
     }
 
     setErrors({});
-    setIsSubmitting(true);
-    console.log("Form validation passed, proceeding with submission");
+    console.log("Form validation passed, submitting...");
 
     try {
       // Prepare the submission data
@@ -97,42 +103,39 @@ export const useBookingSubmission = ({
       const phone = formData.get("phone") as string;
       const service = formData.get("service") as string;
       const timeframe = formData.get("timeframe") as string;
-      const notes = formData.get("notes") as string;
-      const unitNumber = formData.get("unit_number") as string;
-      const gateCode = formData.get("gate_code") as string;
-      const otherService = formData.get("other_service") as string;
+      const notes = formData.get("notes") as string || null;
+      const unitNumber = formData.get("unit_number") as string || null;
+      const gateCode = formData.get("gate_code") as string || null;
+      const otherService = formData.get("other_service") as string || null;
+
+      // Format address with unit number if provided
+      const formattedAddress = unitNumber 
+        ? `${address} Unit ${unitNumber}`
+        : address;
 
       // Prepare vehicle information if needed
       let vehicleInfo = null;
       if (showVehicleInfo) {
-        // Get vehicle data with fallbacks to empty strings so they're correctly read as empty
-        const vehicleYear = formData.get("vehicle_year") as string || "";
-        const vehicleMake = formData.get("vehicle_make") as string || "";
-        const vehicleModel = formData.get("vehicle_model") as string || "";
-        
         vehicleInfo = {
-          year: vehicleYear,
-          make: vehicleMake,
-          model: vehicleModel,
+          year: formData.get("vehicle_year") as string,
+          make: formData.get("vehicle_make") as string,
+          model: formData.get("vehicle_model") as string,
           all_keys_lost: allKeysLost === "yes",
           has_unused_key: hasUnusedKey === "yes"
         };
-        
-        // Log the vehicle info to verify it's being populated correctly
-        console.log("Vehicle information being sent:", vehicleInfo);
       }
 
-      // Prepare the submission data with explicit type literal
+      // Prepare the submission data
       const submissionData = {
         type: "booking" as const,
         name,
         phone,
-        address: address,
-        unit_number: unitNumber || null,
-        gate_code: gateCode || null,
+        address: formattedAddress,
+        unit_number: unitNumber,
+        gate_code: gateCode,
         service: service === "Other" ? otherService : service,
         timeframe,
-        notes: notes || null,
+        notes: notes,
         status: "pending" as const,
         visitor_info: collectVisitorInfo(),
         source_url: location.pathname,
@@ -140,9 +143,12 @@ export const useBookingSubmission = ({
         vehicle_info: vehicleInfo
       };
 
-      console.log("Submitting form data:", submissionData);
-      await submitFormData(submissionData);
-      console.log("Form submission successful");
+      console.log("Submitting booking data:", JSON.stringify(submissionData, null, 2));
+      
+      // Submit the actual data to Supabase
+      const result = await submitFormData(submissionData);
+      
+      console.log("Booking submitted successfully, result:", result);
       
       // Store flag for thank-you page
       sessionStorage.setItem('fromFormSubmission', 'true');
@@ -150,7 +156,6 @@ export const useBookingSubmission = ({
       toast({
         title: "Booking Received!",
         description: "We'll contact you shortly to confirm your appointment.",
-        variant: "default",
       });
 
       if (typeof window.gtag === 'function') {
@@ -161,8 +166,12 @@ export const useBookingSubmission = ({
         });
       }
 
-      // Use window.location for a hard redirect to avoid dynamic import issues
-      window.location.href = '/thank-you';
+      // Redirect to thank-you page with timeout to ensure state updates complete
+      console.log("Redirecting to thank-you page");
+      setTimeout(() => {
+        navigate('/thank-you');
+      }, 500);
+      
     } catch (error: any) {
       console.error('Booking form submission error:', error);
       toast({
@@ -185,7 +194,8 @@ export const useBookingSubmission = ({
     setErrors, 
     toast, 
     collectVisitorInfo, 
-    location.pathname
+    location.pathname, 
+    navigate
   ]);
 
   return {

@@ -9,22 +9,20 @@ import { Helmet } from 'react-helmet';
 import { LockReplacementContent } from '@/components/services/lock-replacement/LockReplacementContent';
 import { lockReplacementFaqs, lockReplacementServiceSchema, lockReplacementFaqSchema } from '@/components/services/lock-replacement/LockReplacementSchema';
 import { relatedResidentialServices } from '@/components/services/lock-replacement/relatedServices';
+import SEOHead from '@/components/meta/SEOHead';
 
 const LockReplacement = () => {
   return (
     <main className="flex-grow">
-      <Helmet>
-        <title>Home Lock Replacement | Security Grade Upgrades | Expert Installation</title>
-        <meta name="description" content="Upgrade your home security with professional lock installation. We offer deadbolts, smart locks, keyless entry & high-security options with same-day service." />
-        <meta name="keywords" content="lock replacement, change locks, new locks, deadbolt installation, smart lock installation, home security upgrade, residential locksmith" />
-        <link rel="canonical" href="https://247locksmithandsecurity.com/services/residential-locksmith/lock-replacement" />
-      </Helmet>
-      
-      <SchemaScripts 
+      <SEOHead
+        title="Home Lock Replacement | Security Grade Upgrades | Expert Installation"
+        description="Upgrade your home security with professional lock installation. We offer deadbolts, smart locks, keyless entry & high-security options with same-day service."
+        keywords="lock replacement, change locks, new locks, deadbolt installation, smart lock installation, home security upgrade, residential locksmith"
+        canonicalUrl="https://247locksmithandsecurity.com/services/residential-locksmith/lock-replacement"
         schemas={[
           { type: 'service', data: lockReplacementServiceSchema },
           { type: 'faq', data: lockReplacementFaqSchema }
-        ]} 
+        ]}
       />
       
       <EnhancedServicesHero 

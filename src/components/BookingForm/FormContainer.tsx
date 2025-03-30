@@ -6,8 +6,6 @@ import { useBookingSubmission } from "./hooks/useBookingSubmission";
 
 interface FormContainerProps {
   children: React.ReactNode;
-  isSubmitting: boolean;
-  setIsSubmitting: (isSubmitting: boolean) => void;
   errors: Record<string, string>;
   setErrors: (errors: Record<string, string>) => void;
   showVehicleInfo: boolean;
@@ -21,8 +19,6 @@ interface FormContainerProps {
 
 const FormContainer = ({
   children,
-  isSubmitting,
-  setIsSubmitting,
   errors,
   setErrors,
   showVehicleInfo,
@@ -33,7 +29,8 @@ const FormContainer = ({
   showAllKeysLostField,
   showUnusedKeyField
 }: FormContainerProps) => {
-  const { handleSubmit } = useBookingSubmission({
+  // Use the booking submission hook
+  const { isSubmitting, handleSubmit } = useBookingSubmission({
     validateForm,
     setErrors,
     showVehicleInfo,
@@ -55,7 +52,11 @@ const FormContainer = ({
       <div className="space-y-2.5">
         {children}
       </div>
-      <SubmitButton isSubmitting={isSubmitting} />
+      <SubmitButton 
+        isSubmitting={isSubmitting} 
+        text="Request Service"
+        loadingText="Processing..."
+      />
     </form>
   );
 };

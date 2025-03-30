@@ -1,5 +1,6 @@
 
-import React from 'react';
+import React, { useState } from 'react';
+import { trackImageLoad } from '@/utils/performanceMonitoring';
 
 interface ImageOptimizedProps extends React.ImgHTMLAttributes<HTMLImageElement> {
   src: string;
@@ -19,35 +20,46 @@ const ImageOptimized = ({
   priority = false,
   ...props
 }: ImageOptimizedProps) => {
-  // Create a props object with the correct camelCase for TypeScript
-  const imgProps = {
-    src,
-    alt,
-    className,
-    width,
-    height,
-    loading: priority ? "eager" as const : "lazy" as const,
-    fetchPriority: priority ? "high" as const : "auto" as const,
-    decoding: "async" as const,
-    onError: (e: React.SyntheticEvent<HTMLImageElement>) => {
-      const img = e.target as HTMLImageElement;
-      img.src = '/placeholder.svg';
-    },
-    ...props
-  };
-
-  // Convert the props to a format the DOM expects (lowercase attributes)
-  const domProps: React.ImgHTMLAttributes<HTMLImageElement> = {
-    ...imgProps
+  const [isLoaded, setIsLoaded] = useState(false);
+  
+  const handleLoad = (e: React.SyntheticEvent<HTMLImageElement>) => {
+    setIsLoaded(true);
+    if (props.onLoad) {
+      props.onLoad(e);
+    }
   };
   
-  // Add the lowercase fetchpriority attribute for DOM rendering
-  (domProps as any).fetchpriority = imgProps.fetchPriority;
+  const handleError = (e: React.SyntheticEvent<HTMLImageElement>) => {
+    const img = e.target as HTMLImageElement;
+    img.src = '/placeholder.svg';
+    if (props.onError) {
+      props.onError(e);
+    }
+  };
   
-  // Remove the camelCase property to avoid duplicate attributes
-  delete (domProps as any).fetchPriority;
-
-  return <img {...domProps} />;
+  // Use native lazy loading unless priority is true
+  const loadingValue = priority ? "eager" : "lazy";
+  const fetchPriorityValue = priority ? "high" : "auto";
+  
+  // Add width and height to prevent layout shifts
+  const imgWidth = width || (typeof height === 'number' ? 'auto' : undefined);
+  const imgHeight = height || (typeof width === 'number' ? 'auto' : undefined);
+  
+  return (
+    <img
+      src={src}
+      alt={alt}
+      className={`${className} ${isLoaded ? 'opacity-100' : 'opacity-0'} transition-opacity duration-300`}
+      width={imgWidth}
+      height={imgHeight}
+      loading={loadingValue}
+      fetchPriority={fetchPriorityValue}
+      decoding="async"
+      onLoad={handleLoad}
+      onError={handleError}
+      {...props}
+    />
+  );
 };
 
 export default ImageOptimized;

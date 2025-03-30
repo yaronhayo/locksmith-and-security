@@ -1,3 +1,4 @@
+
 import HeroSection from "@/components/sections/HeroSection";
 import HomeLayout from "@/components/layouts/HomeLayout";
 import HomeContent from "@/components/sections/home/HomeContent";
@@ -7,15 +8,16 @@ import { SchemaScripts } from "@/components/meta/SchemaScripts";
 import { BasicMetaTags } from "@/components/meta/BasicMetaTags";
 import { OpenGraphTags } from "@/components/meta/OpenGraphTags";
 import { TwitterTags } from "@/components/meta/TwitterTags";
+import SEOHead from "@/components/meta/SEOHead";
 
 const Index = () => {
   useEffect(() => {
     console.log("Home page viewed");
   }, []);
 
-  const pageTitle = "Expert Locksmith Solutions | Trusted Security Professionals";
-  const pageDescription = "Transform your security with professional locksmith expertise. From advanced home security to modern business solutions, we deliver peace of mind with guaranteed results.";
-  const keywords = "professional locksmith, residential locksmith, commercial locksmith, auto locksmith, car lockout, lockout service, key replacement, security solutions";
+  const pageTitle = "Emergency Locksmith Services | North Bergen, NJ";
+  const pageDescription = "24/7 locksmith services in North Bergen. Fast response for residential, commercial, and auto lockouts. Licensed & insured professionals.";
+  const keywords = "locksmith north bergen, emergency locksmith, 24/7 locksmith, car lockout, house lockout, business lockout, key replacement";
   const canonicalUrl = "https://247locksmithandsecurity.com/";
   const imageUrl = "/lovable-uploads/1bbeb1e6-5581-4e09-9600-7d1859bb17c5.png";
   const baseUrl = "https://247locksmithandsecurity.com";
@@ -71,45 +73,24 @@ const Index = () => {
 
   return (
     <>
-      <BasicMetaTags 
+      <SEOHead 
         title={pageTitle}
         description={pageDescription}
         keywords={keywords}
-        noindex={false}
-        nofollow={false}
         canonicalUrl={canonicalUrl}
-        modifiedDate={new Date().toISOString()}
-      />
-      
-      <OpenGraphTags 
-        title={pageTitle}
-        description={pageDescription}
-        image={imageUrl}
-        url={canonicalUrl}
-        modifiedDate={new Date().toISOString()}
-        baseUrl={baseUrl}
-        type="website"
-      />
-      
-      <TwitterTags 
-        title={pageTitle}
-        description={pageDescription}
-        image={imageUrl}
-        baseUrl={baseUrl}
-        cardType="summary_large_image"
-      />
-      
-      <Helmet>
-        <meta name="msvalidate.01" content="YOUR_BING_VERIFICATION_CODE" />
-        <link rel="sitemap" type="application/xml" href={`${baseUrl}/sitemap.xml`} />
-        <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
-      </Helmet>
-      
-      <SchemaScripts 
         schemas={[
           { type: 'website', data: websiteSchema },
           { type: 'organization', data: organizationSchema }
-        ]} 
+        ]}
+        ogImage={imageUrl}
+        noindex={false}
+        nofollow={false}
+        ogType="website"
+        twitterCardType="summary_large_image"
+        geoRegion="US-NJ"
+        geoPlaceName="North Bergen"
+        geoPosition="40.7795;-74.0324"
+        icbm="40.7795, -74.0324"
       />
       
       <HomeLayout>

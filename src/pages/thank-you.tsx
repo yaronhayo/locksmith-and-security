@@ -9,21 +9,14 @@ import PageLayout from "@/components/layouts/PageLayout";
 const ThankYouPage = () => {
   const navigate = useNavigate();
 
-  // Check for form submission flag
+  // Prevent accessing this page directly by URL
   useEffect(() => {
     const fromForm = sessionStorage.getItem('fromFormSubmission');
-    
     if (!fromForm) {
-      console.log("User attempted to access thank-you page directly, redirecting to home");
-      navigate('/', { replace: true });
-      return;
+      navigate('/');
     }
-    
-    // Clear the flag after checking to prevent stale state
+    // Clear the flag after checking
     sessionStorage.removeItem('fromFormSubmission');
-    
-    // Log successful access
-    console.log("Thank you page accessed via proper form submission");
   }, [navigate]);
 
   return (
@@ -46,7 +39,7 @@ const ThankYouPage = () => {
             transition={{ delay: 0.2, type: "spring" }}
             className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto"
           >
-            <Check className="h-10 w-10 text-green-600" />
+            <Check className="w-10 h-10 text-green-600" />
           </motion.div>
 
           <h1 className="text-3xl font-bold text-gray-900">Thank You!</h1>

@@ -1,6 +1,6 @@
 
 import { memo, useState, useEffect } from 'react';
-import { trackImageLoad } from '@/utils/performanceMonitoring';
+import { trackImageLoad2 } from '@/utils/performanceMonitoring';
 import { Skeleton } from '@/components/ui/skeleton';
 import { cn } from '@/lib/utils';
 import { Helmet } from 'react-helmet';
@@ -70,6 +70,12 @@ const ResponsiveImage = ({
   const [imgSrcSet, setImgSrcSet] = useState<string | undefined>(
     lazyLoad && !priority ? undefined : srcSet || getImageSrcSet(src)
   );
+  const [imgElement, setImgElement] = useState<HTMLImageElement | null>(null);
+  
+  // Register ref callback to get access to the image element
+  const imgRef = (element: HTMLImageElement | null) => {
+    setImgElement(element);
+  };
   
   useEffect(() => {
     if (lazyLoad && !priority) {
@@ -80,7 +86,7 @@ const ResponsiveImage = ({
         img.srcset = srcSet || getImageSrcSet(src);
       }
       
-      const { onLoad, onError } = trackImageLoad(src, img);
+      const { onLoad, onError } = trackImageLoad2(src, img);
       
       img.onload = () => {
         setImgSrc(src);
@@ -107,21 +113,27 @@ const ResponsiveImage = ({
     }
   }, [src, srcSet, fallbackSrc, lazyLoad, priority, externalOnLoadHandler, externalOnErrorHandler]);
 
-  const handleImageLoad = () => {
+  const handleImageLoad = (e: React.SyntheticEvent<HTMLImageElement>) => {
     setIsLoading(false);
-    if (externalOnLoadHandler) externalOnLoadHandler({} as React.SyntheticEvent<HTMLImageElement>);
+    // Report performance data
+    trackImageLoad2(src, e.currentTarget).onLoad();
+    if (externalOnLoadHandler) externalOnLoadHandler(e);
   };
 
-  const handleImageError = () => {
+  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement>) => {
     setImgSrc(fallbackSrc);
     setImgSrcSet(undefined);
     setIsLoading(false);
-    if (externalOnErrorHandler) externalOnErrorHandler({} as React.SyntheticEvent<HTMLImageElement>);
+    // Report error
+    trackImageLoad2(src, e.currentTarget).onError(e);
+    if (externalOnErrorHandler) externalOnErrorHandler(e);
   };
 
+  // Extract filename from path for a fallback alt text if needed
   const getFilenameFromPath = (path: string): string => {
     if (!path) return 'Image';
     const filename = path.split('/').pop() || 'Image';
+    // Convert filename to readable format
     return filename
       .replace(/[-_]/g, ' ')  // Replace dashes and underscores with spaces
       .replace(/\.[^/.]+$/, '') // Remove file extension
@@ -129,8 +141,10 @@ const ResponsiveImage = ({
       .replace(/^\w/, c => c.toUpperCase()); // Capitalize first letter
   };
 
+  // Ensure alt text is never empty - use a descriptive fallback if needed
   const safeAlt = alt || getFilenameFromPath(src);
 
+  // Generate structured data for image if requested
   const imageStructuredData = structuredData ? {
     "@context": "https://schema.org/",
     "@type": "ImageObject",
@@ -138,34 +152,6 @@ const ResponsiveImage = ({
     "description": safeAlt,
     "caption": caption || safeAlt
   } : null;
-
-  const imgProps = {
-    src: imgSrc,
-    srcSet: imgSrcSet,
-    sizes,
-    alt: safeAlt,
-    loading: (priority ? "eager" : (lazyLoad ? "lazy" : "eager")) as "eager" | "lazy",
-    fetchPriority: priority ? "high" as const : "auto" as const,
-    onLoad: handleImageLoad,
-    onError: handleImageError,
-    className: cn(
-      "w-full h-full object-cover transition-opacity duration-300",
-      isLoading ? "opacity-0" : "opacity-100",
-      className
-    ),
-    ...props
-  };
-
-  // Create a DOM-compatible props object
-  const domProps: React.ImgHTMLAttributes<HTMLImageElement> = {
-    ...imgProps
-  };
-  
-  // Add lowercase fetchpriority for DOM rendering
-  (domProps as any).fetchpriority = imgProps.fetchPriority;
-  
-  // Remove camelCase fetchPriority to avoid duplicates
-  delete (domProps as any).fetchPriority;
 
   return (
     <>
@@ -185,7 +171,23 @@ const ResponsiveImage = ({
             )} 
           />
         )}
-        <img {...domProps} />
+        <img
+          ref={imgRef}
+          src={imgSrc}
+          srcSet={imgSrcSet}
+          sizes={sizes}
+          alt={safeAlt}
+          loading={priority ? "eager" : (lazyLoad ? "lazy" : "eager")}
+          fetchPriority={priority ? "high" : "auto"}
+          onLoad={handleImageLoad}
+          onError={handleImageError}
+          className={cn(
+            "w-full h-full object-cover transition-opacity duration-300",
+            isLoading ? "opacity-0" : "opacity-100",
+            className
+          )}
+          {...props}
+        />
         {caption && (
           <figcaption className="text-sm text-gray-600 mt-2">{caption}</figcaption>
         )}

@@ -63,7 +63,6 @@ const PersonalInfoFields = ({ isSubmitting }: PersonalInfoFieldsProps) => {
           className={nameError ? 'border-red-500' : ''}
           aria-invalid={!!nameError}
           aria-describedby={nameError ? `${nameId}-error` : undefined}
-          autoComplete="name"
         />
         {nameError && (
           <Alert variant="destructive" className="mt-1 py-2">
@@ -89,7 +88,6 @@ const PersonalInfoFields = ({ isSubmitting }: PersonalInfoFieldsProps) => {
           className={phoneError ? 'border-red-500' : ''}
           aria-invalid={!!phoneError}
           aria-describedby={phoneError ? `${phoneId}-error` : undefined}
-          autoComplete="tel"
         />
         {phoneError && (
           <Alert variant="destructive" className="mt-1 py-2">

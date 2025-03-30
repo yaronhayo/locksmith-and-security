@@ -1,6 +1,6 @@
 
 import { Link } from "react-router-dom";
-import { memo, useState } from "react";
+import { memo, useState, useEffect } from "react";
 import LoadingSpinner from "@/components/LoadingSpinner";
 
 const Logo = () => {
@@ -8,6 +8,23 @@ const Logo = () => {
   const [hasError, setHasError] = useState(false);
   
   const logoUrl = "https://mtbgayqzjrxjjmsjikcg.supabase.co/storage/v1/object/public/uploads//Locksmithandsecuritylogo.jpg";
+  
+  // Preload the logo image for better LCP
+  useEffect(() => {
+    const img = new Image();
+    img.src = logoUrl;
+    img.onload = () => setIsLoading(false);
+    img.onerror = () => {
+      console.error('Logo failed to load');
+      setIsLoading(false);
+      setHasError(true);
+    };
+    
+    return () => {
+      img.onload = null;
+      img.onerror = null;
+    };
+  }, []);
   
   return (
     <Link to="/" className="flex items-center no-underline" aria-label="Go to homepage">
@@ -31,13 +48,13 @@ const Logo = () => {
             width={200}
             height={48}
             loading="eager"
+            fetchPriority="high"
+            decoding="async"
             onLoad={() => setIsLoading(false)}
             onError={(e) => {
               console.error('Logo failed to load:', e);
               setIsLoading(false);
               setHasError(true);
-              const imgElement = e.target as HTMLImageElement;
-              console.log('Failed URL:', imgElement.src);
             }}
           />
         )}

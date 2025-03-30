@@ -1,3 +1,4 @@
+
 import { createContext, useContext, ReactNode, useState, useEffect } from "react";
 import { useGoogleMapsApiKey, useRecaptchaKey } from "@/hooks/useApiKeys";
 import { Alert, AlertDescription } from "@/components/ui/alert";
@@ -49,7 +50,7 @@ export const ScriptsProvider = ({ children }: ScriptsProviderProps) => {
     isLoading: isLoadingRecaptchaKey
   } = useRecaptchaKey();
 
-  // Load Google Maps script with async attribute and correct loading pattern
+  // Load Google Maps script
   useEffect(() => {
     if (isLoadingMapsKey || !mapsApiKey || mapsKeyError) return;
     if (googleMapsLoaded) return;
@@ -61,22 +62,20 @@ export const ScriptsProvider = ({ children }: ScriptsProviderProps) => {
       return;
     }
 
-    console.log("Loading Google Maps script with correct loading pattern...");
+    console.log("Loading Google Maps script...");
     const scriptId = 'google-maps-script';
     let script = document.getElementById(scriptId) as HTMLScriptElement;
 
     if (!script) {
       script = document.createElement('script');
       script.id = scriptId;
-      // Use the recommended pattern with callback=initMap and specify the places library
-      script.src = `https://maps.googleapis.com/maps/api/js?key=${mapsApiKey}&libraries=places&callback=initMap&loading=async&v=weekly`;
+      script.src = `https://maps.googleapis.com/maps/api/js?key=${mapsApiKey}&libraries=places`;
       script.async = true;
       script.defer = true;
     }
 
-    // Define global callback for Maps API
-    window.initMap = () => {
-      console.log("Google Maps script initialized via callback");
+    const handleLoad = () => {
+      console.log("Google Maps script loaded successfully");
       setGoogleMapsLoaded(true);
       setMapsError(null);
       document.dispatchEvent(new Event('google-maps-loaded'));
@@ -88,10 +87,13 @@ export const ScriptsProvider = ({ children }: ScriptsProviderProps) => {
       script.remove();
     };
 
+    script.addEventListener('load', handleLoad);
     script.addEventListener('error', handleError);
+
     document.head.appendChild(script);
 
     return () => {
+      script.removeEventListener('load', handleLoad);
       script.removeEventListener('error', handleError);
     };
   }, [mapsApiKey, isLoadingMapsKey, mapsKeyError, googleMapsLoaded]);
@@ -101,18 +103,11 @@ export const ScriptsProvider = ({ children }: ScriptsProviderProps) => {
     if (isLoadingRecaptchaKey || !recaptchaKey || recaptchaKeyError) return;
     if (recaptchaLoaded) return;
 
-    // Check if script is already loaded or in the process of loading
-    if (document.getElementById('recaptcha-script')) {
-      // Script tag exists, check if API is available
-      if (window.grecaptcha && window.grecaptcha.render) {
-        console.log("reCAPTCHA already loaded and initialized");
-        setRecaptchaLoaded(true);
-        return;
-      }
-      
-      // Script tag exists but API might not be ready yet, wait for it
-      console.log("reCAPTCHA script tag exists but API not ready yet");
-      // We'll continue with the loading process and let the load event handle it
+    // Check if script is already loaded
+    if (window.grecaptcha) {
+      console.log("reCAPTCHA already loaded");
+      setRecaptchaLoaded(true);
+      return;
     }
 
     console.log("Loading reCAPTCHA script...");
@@ -122,34 +117,16 @@ export const ScriptsProvider = ({ children }: ScriptsProviderProps) => {
     if (!script) {
       script = document.createElement('script');
       script.id = scriptId;
-      // Explicitly use the explicit render mode
-      script.src = `https://www.google.com/recaptcha/api.js?onload=onRecaptchaLoaded&render=explicit`;
+      script.src = `https://www.google.com/recaptcha/api.js?render=explicit`;
       script.async = true;
       script.defer = true;
     }
 
-    // Define global callback for reCAPTCHA
-    window.onRecaptchaLoaded = () => {
-      console.log("reCAPTCHA script loaded successfully via callback");
+    const handleLoad = () => {
+      console.log("reCAPTCHA script loaded successfully");
       setRecaptchaLoaded(true);
       setRecaptchaError(null);
       document.dispatchEvent(new Event('recaptcha-loaded'));
-    };
-
-    const handleLoad = () => {
-      console.log("reCAPTCHA script onload event fired");
-      // The onload callback should be triggered separately
-      // Wait a bit for grecaptcha to be fully initialized
-      setTimeout(() => {
-        if (window.grecaptcha && window.grecaptcha.render) {
-          console.log("reCAPTCHA fully initialized on script load");
-          setRecaptchaLoaded(true);
-          setRecaptchaError(null);
-          document.dispatchEvent(new Event('recaptcha-loaded'));
-        } else {
-          console.log("reCAPTCHA not fully initialized yet, waiting for callback");
-        }
-      }, 500);
     };
 
     const handleError = () => {

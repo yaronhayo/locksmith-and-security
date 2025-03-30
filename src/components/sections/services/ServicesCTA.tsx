@@ -54,7 +54,7 @@ const ServicesCTA = () => {
             >
               <a href={phoneHref} className="flex items-center">
                 <Phone className="mr-2 h-5 w-5" />
-                Call <DynamicPhoneNumber asLink={false} />
+                Call <DynamicPhoneNumber />
               </a>
             </Button>
             <Button 

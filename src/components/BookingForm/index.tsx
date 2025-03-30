@@ -17,8 +17,6 @@ const BookingForm = () => {
   const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
   const [address, setAddress] = useState("");
   const {
-    isSubmitting,
-    setIsSubmitting,
     selectedService,
     allKeysLost,
     hasUnusedKey,
@@ -34,8 +32,6 @@ const BookingForm = () => {
 
   return (
     <FormContainer
-      isSubmitting={isSubmitting}
-      setIsSubmitting={setIsSubmitting}
       errors={errors}
       setErrors={setErrors}
       showVehicleInfo={showVehicleInfo}
@@ -46,24 +42,24 @@ const BookingForm = () => {
       showAllKeysLostField={showAllKeysLostField}
       showUnusedKeyField={showUnusedKeyField}
     >
-      <PersonalInfoFields errors={errors} isSubmitting={isSubmitting} />
+      <PersonalInfoFields errors={errors} isSubmitting={false} />
       
       <AddressFields 
         address={address}
         onChange={setAddress}
         errors={errors}
-        isSubmitting={isSubmitting}
+        isSubmitting={false}
       />
       
       <ServiceSelection 
         error={errors.service}
-        isSubmitting={isSubmitting}
+        isSubmitting={false}
         onServiceChange={handleServiceChange}
       />
 
       {showAllKeysLostField && (
         <AllKeysLostField
-          isSubmitting={isSubmitting}
+          isSubmitting={false}
           onChange={handleAllKeysLostChange}
           value={allKeysLost}
         />
@@ -71,28 +67,25 @@ const BookingForm = () => {
 
       {showUnusedKeyField && (
         <UnusedKeyField
-          isSubmitting={isSubmitting}
+          isSubmitting={false}
           onChange={handleUnusedKeyChange}
           value={hasUnusedKey}
         />
       )}
 
       {showVehicleInfo && (
-        <VehicleFields errors={errors} isSubmitting={isSubmitting} />
+        <VehicleFields errors={errors} isSubmitting={false} />
       )}
 
-      <TimeframeSelection isSubmitting={isSubmitting} />
+      <TimeframeSelection isSubmitting={false} />
 
       {selectedService === "Other" && (
-        <OtherServiceField isSubmitting={isSubmitting} />
+        <OtherServiceField isSubmitting={false} />
       )}
 
-      <AdditionalNotes isSubmitting={isSubmitting} />
+      <AdditionalNotes isSubmitting={false} />
       
-      <RecaptchaField 
-        onChange={setRecaptchaToken} 
-        error={errors.recaptcha}
-      />
+      <RecaptchaField onChange={setRecaptchaToken} />
     </FormContainer>
   );
 };

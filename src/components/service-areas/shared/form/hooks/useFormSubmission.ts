@@ -25,6 +25,7 @@ export const useFormSubmission = (
   
   const handleSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
+    console.log("Service area form submission started");
     
     if (!recaptchaToken) {
       setRecaptchaError("Please complete the reCAPTCHA verification");
@@ -33,12 +34,14 @@ export const useFormSubmission = (
     
     const isValid = validateForm();
     if (!isValid) {
+      console.log("Form validation failed:", errors);
       return;
     }
     
     setIsSubmitting(true);
     
     try {
+      console.log("Preparing service area form data");
       // Prepare submission data
       const submissionData = {
         type: "contact" as const,
@@ -46,8 +49,6 @@ export const useFormSubmission = (
         email: formState.email,
         phone: formState.phone,
         address: window.location.pathname.split('/').pop() || '',
-        unit_number: null, // Add unit_number field
-        gate_code: null, // Add gate_code field
         message: formState.message,
         service: formState.service,
         status: "pending" as const,
@@ -63,16 +64,25 @@ export const useFormSubmission = (
         source_url: window.location.pathname
       };
       
+      console.log("Submitting service area form data:", JSON.stringify(submissionData, null, 2));
+      
       // Submit to Supabase and send email
-      await submitFormData(submissionData);
+      const result = await submitFormData(submissionData);
+      
+      console.log("Service area form submitted successfully, result:", result);
       
       setIsSubmitted(true);
       
       // Set session storage flag for thank-you page
       sessionStorage.setItem('fromFormSubmission', 'true');
       
-      // Redirect to thank-you page
-      navigate('/thank-you');
+      toast.success("Your message has been sent! We'll be in touch soon.");
+      
+      // Force redirection to thank-you page with timeout to ensure state updates complete
+      console.log("Redirecting to thank-you page");
+      setTimeout(() => {
+        navigate('/thank-you');
+      }, 500);
       
     } catch (error: any) {
       console.error("Form submission error:", error);
@@ -82,7 +92,7 @@ export const useFormSubmission = (
     } finally {
       setIsSubmitting(false);
     }
-  }, [formState, recaptchaToken, validateForm, setRecaptchaError, navigate]);
+  }, [formState, recaptchaToken, validateForm, setRecaptchaError, navigate, errors]);
 
   return {
     isSubmitting,

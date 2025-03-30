@@ -3,7 +3,6 @@ import { useState } from "react";
 import { carKeyServices, allKeysLostServices, unusedKeyServices } from "../constants";
 
 export const useBookingFormState = () => {
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const [selectedService, setSelectedService] = useState("");
   const [allKeysLost, setAllKeysLost] = useState("no");
   const [hasUnusedKey, setHasUnusedKey] = useState("no");
@@ -13,7 +12,7 @@ export const useBookingFormState = () => {
     setSelectedService(value);
     
     // Clear vehicle info errors when changing service
-    const { vehicle_year, vehicle_make, vehicle_model, ...remainingErrors } = errors;
+    const { vehicleYear, vehicleMake, vehicleModel, ...remainingErrors } = errors;
     setErrors(remainingErrors);
   };
 
@@ -30,8 +29,6 @@ export const useBookingFormState = () => {
   const showUnusedKeyField = unusedKeyServices.includes(selectedService);
 
   return {
-    isSubmitting,
-    setIsSubmitting,
     selectedService,
     allKeysLost,
     hasUnusedKey,

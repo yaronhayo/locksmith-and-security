@@ -25,10 +25,10 @@ export const useContactForm = () => {
     if (!form.current) return false;
 
     const formData = new FormData(form.current);
-    const name = String(formData.get('user_name'));
-    const email = String(formData.get('user_email'));
-    const phone = String(formData.get('user_phone'));
-    const message = String(formData.get('message'));
+    const name = String(formData.get('user_name') || '');
+    const email = String(formData.get('user_email') || '');
+    const phone = String(formData.get('user_phone') || '');
+    const message = String(formData.get('message') || '');
 
     const newErrors: Record<string, string> = {};
     
@@ -55,6 +55,7 @@ export const useContactForm = () => {
 
   const handleSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
+    console.log("Contact form submission started");
     
     if (!recaptchaToken) {
       toast({
@@ -79,18 +80,13 @@ export const useContactForm = () => {
 
     try {
       const formData = new FormData(form.current);
-      const unitNumber = formData.get('unit_number') as string || null;
-      const gateCode = formData.get('gate_code') as string || null;
-      
       const submissionData = {
         type: "contact" as const,
-        name: String(formData.get('user_name')),
-        email: String(formData.get('user_email')),
-        phone: String(formData.get('user_phone')),
+        name: String(formData.get('user_name') || ''),
+        email: String(formData.get('user_email') || ''),
+        phone: String(formData.get('user_phone') || ''),
         address: address,
-        unit_number: unitNumber,
-        gate_code: gateCode,
-        message: String(formData.get('message')),
+        message: String(formData.get('message') || ''),
         status: "pending" as const,
         recaptcha_token: recaptchaToken,
         visitor_info: {
@@ -104,7 +100,9 @@ export const useContactForm = () => {
         source_url: window.location.pathname
       };
 
-      await submitFormData(submissionData);
+      console.log("Submitting contact form data:", JSON.stringify(submissionData, null, 2));
+      const result = await submitFormData(submissionData);
+      console.log("Contact form submitted successfully, result:", result);
 
       // Set session storage for thank-you page redirect protection
       sessionStorage.setItem('fromFormSubmission', 'true');
@@ -116,7 +114,11 @@ export const useContactForm = () => {
         variant: "default",
       });
       
-      navigate('/thank-you');
+      console.log("Redirecting to thank-you page");
+      // Force redirection with timeout to ensure state updates complete
+      setTimeout(() => {
+        navigate('/thank-you');
+      }, 500);
 
     } catch (error: any) {
       console.error('Contact form submission error:', error);

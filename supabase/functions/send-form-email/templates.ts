@@ -30,7 +30,7 @@ export const getBookingTemplate = (formData: FormData): string => {
     <div style="${commonStyles}">
       <div style="${headerStyle}">
         <h1 style="margin: 0; font-size: 24px;">New Service Booking Request</h1>
-        <p style="margin: 10px 0 0; opacity: 0.9;">Received on ${currentTimeEastern} ET</p>
+        <p style="margin: 10px 0 0; opacity: 0.9;">Received on ${currentTimeEastern} EST</p>
       </div>
       <div style="padding: 30px; background-color: white; border-radius: 0 0 8px 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
         <table style="width: 100%; border-collapse: collapse;">
@@ -51,18 +51,6 @@ export const getBookingTemplate = (formData: FormData): string => {
             <td style="padding: 8px 0;"><strong>Address:</strong></td>
             <td style="padding: 8px 0;">${formData.address}</td>
           </tr>
-          ${formData.unit_number ? `
-          <tr>
-            <td style="padding: 8px 0;"><strong>Unit Number:</strong></td>
-            <td style="padding: 8px 0;">${formData.unit_number}</td>
-          </tr>
-          ` : ''}
-          ${formData.gate_code ? `
-          <tr>
-            <td style="padding: 8px 0;"><strong>Gate Code:</strong></td>
-            <td style="padding: 8px 0;">${formData.gate_code}</td>
-          </tr>
-          ` : ''}
           <tr>
             <td colspan="2">
               <h2 style="${sectionHeaderStyle}">Service Details</h2>
@@ -82,24 +70,18 @@ export const getBookingTemplate = (formData: FormData): string => {
                 <h2 style="${sectionHeaderStyle}">Vehicle Information</h2>
               </td>
             </tr>
-            ${formData.vehicle_info.year ? `
             <tr>
               <td style="padding: 8px 0;"><strong>Year:</strong></td>
               <td style="padding: 8px 0;">${formData.vehicle_info.year}</td>
             </tr>
-            ` : ''}
-            ${formData.vehicle_info.make ? `
             <tr>
               <td style="padding: 8px 0;"><strong>Make:</strong></td>
               <td style="padding: 8px 0;">${formData.vehicle_info.make}</td>
             </tr>
-            ` : ''}
-            ${formData.vehicle_info.model ? `
             <tr>
               <td style="padding: 8px 0;"><strong>Model:</strong></td>
               <td style="padding: 8px 0;">${formData.vehicle_info.model}</td>
             </tr>
-            ` : ''}
             ${formData.vehicle_info.all_keys_lost !== undefined ? `
               <tr>
                 <td style="padding: 8px 0;"><strong>All Keys Lost:</strong></td>
@@ -148,7 +130,7 @@ export const getContactTemplate = (formData: FormData): string => {
     <div style="${commonStyles}">
       <div style="${headerStyle}">
         <h1 style="margin: 0; font-size: 24px;">New Contact Form Submission</h1>
-        <p style="margin: 10px 0 0; opacity: 0.9;">Received on ${currentTimeEastern} ET</p>
+        <p style="margin: 10px 0 0; opacity: 0.9;">Received on ${currentTimeEastern} EST</p>
       </div>
       <div style="padding: 30px; background-color: white; border-radius: 0 0 8px 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
         <table style="width: 100%; border-collapse: collapse;">

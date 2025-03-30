@@ -1,8 +1,8 @@
-
 import { createFAQSchema } from "@/components/meta/schema/FAQSchema";
 import { createLocationSchema } from "@/components/meta/schema/LocationSchema";
 import { createBreadcrumbSchema } from "@/components/meta/schema/BreadcrumbSchema";
-import { Location, Settings } from "@/types/service-area";
+import { Location } from "@/types/service-area";
+import { SiteSettings as Settings } from "@/hooks/useSettings";
 
 export const createServiceAreaSchemas = (
   location: Location | undefined,
@@ -34,8 +34,10 @@ export const createServiceAreaSchemas = (
         "description": `Professional 24/7 locksmith services in ${location.name}, NJ. We provide residential, commercial, and automotive locksmith solutions with fast emergency response.`,
         "address": {
           "@type": "PostalAddress",
+          "streetAddress": settings?.company_address || "123 Main Street",
           "addressLocality": location.name,
           "addressRegion": "NJ",
+          "postalCode": settings?.company_zip || "07047",
           "addressCountry": "US"
         },
         "geo": {
@@ -46,21 +48,46 @@ export const createServiceAreaSchemas = (
         "priceRange": "$$",
         "telephone": settings?.company_phone || "+12017482070",
         "url": `https://247locksmithandsecurity.com/service-areas/${areaSlug}`,
+        "areaServed": {
+          "@type": "City",
+          "name": location.name,
+          "sameAs": `https://en.wikipedia.org/wiki/${location.name.replace(/ /g, '_')},_New_Jersey`
+        },
         "sameAs": [
           "https://www.facebook.com/247locksmithandsecurity/",
-          "https://www.yelp.com/biz/locksmith-and-security-north-bergen"
-        ]
-      },
-      "areaServed": {
-        "@type": "City",
-        "name": location.name,
-        "sameAs": `https://en.wikipedia.org/wiki/${location.name.replace(/ /g, '_')},_New_Jersey`
+          "https://www.yelp.com/biz/locksmith-and-security-north-bergen",
+          "https://www.google.com/maps?cid=12345678901234567890" // Replace with actual Google Business Profile
+        ],
+        "openingHoursSpecification": {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": [
+            "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"
+          ],
+          "opens": "00:00",
+          "closes": "23:59"
+        }
       },
       "availableChannel": {
         "@type": "ServiceChannel",
         "serviceUrl": `https://247locksmithandsecurity.com/service-areas/${areaSlug}`,
         "servicePhone": settings?.company_phone || "+12017482070",
         "serviceSmsNumber": settings?.company_phone || "+12017482070"
+      },
+      "hoursAvailable": {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": [
+          "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"
+        ],
+        "opens": "00:00",
+        "closes": "23:59"
+      },
+      "offers": {
+        "@type": "Offer",
+        "availability": "https://schema.org/InStock",
+        "price": "49.00",
+        "priceCurrency": "USD",
+        "priceValidUntil": new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString().split('T')[0],
+        "url": `https://247locksmithandsecurity.com/service-areas/${areaSlug}`
       }
     }
   };

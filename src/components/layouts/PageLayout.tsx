@@ -1,3 +1,4 @@
+
 import React from "react";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
@@ -36,6 +37,9 @@ interface PageLayoutProps {
   geoPlaceName?: string;
   geoPosition?: string;
   icbm?: string;
+  publishedDate?: string;
+  modifiedDate?: string;
+  author?: string;
 }
 
 const PageLayout = ({
@@ -59,6 +63,9 @@ const PageLayout = ({
   geoPlaceName,
   geoPosition,
   icbm,
+  publishedDate,
+  modifiedDate,
+  author,
 }: PageLayoutProps) => {
   if (isLoading) {
     return <PageLoading />;
@@ -74,19 +81,30 @@ const PageLayout = ({
     allSchemas.push(breadcrumbSchema);
   }
   
+  // Always add these core schemas
   const localBusinessSchema = createLocalBusinessSchema();
   allSchemas.push(localBusinessSchema);
   
   const websiteSchema = createWebSiteSchema();
   allSchemas.push(websiteSchema);
 
+  // Calculate actual canonical URL
+  const currentPath = typeof window !== 'undefined' ? window.location.pathname : '';
+  const actualCanonicalUrl = canonicalUrl || currentPath || '/';
+
+  // Optimize title length (under 75 characters)
+  const optimizedTitle = title.length > 75 ? `${title.substring(0, 72)}...` : title;
+  
+  // Optimize description length (under 160 characters)
+  const optimizedDescription = description.length > 160 ? `${description.substring(0, 157)}...` : description;
+
   return (
     <ErrorBoundary FallbackComponent={ErrorFallback}>
       <MetaTags
-        title={title}
-        description={description}
+        title={optimizedTitle}
+        description={optimizedDescription}
         schemas={allSchemas}
-        canonicalUrl={canonicalUrl}
+        canonicalUrl={actualCanonicalUrl}
         ogImage={ogImage}
         keywords={keywords}
         noindex={noindex}
@@ -96,12 +114,15 @@ const PageLayout = ({
         geoPlaceName={geoPlaceName}
         geoPosition={geoPosition}
         icbm={icbm}
+        modifiedDate={modifiedDate}
+        publishedDate={publishedDate}
+        author={author}
       />
       
       {(heroTitle || heroDescription) && (
         <PageHero 
-          title={heroTitle || title}
-          description={heroDescription || description}
+          title={heroTitle || optimizedTitle}
+          description={heroDescription || optimizedDescription}
         />
       )}
       

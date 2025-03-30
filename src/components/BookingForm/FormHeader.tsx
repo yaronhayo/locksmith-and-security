@@ -1,4 +1,3 @@
-
 interface FormHeaderProps {
   isSubmitting: boolean;
 }

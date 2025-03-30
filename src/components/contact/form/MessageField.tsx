@@ -11,7 +11,6 @@ interface MessageFieldProps {
 }
 
 const MessageField = ({ isSubmitting, error }: MessageFieldProps) => {
-  const messageId = "contact-message";
   const [value, setValue] = useState("");
   const [localError, setLocalError] = useState<string | null>(null);
   const [isDirty, setIsDirty] = useState(false);
@@ -38,11 +37,11 @@ const MessageField = ({ isSubmitting, error }: MessageFieldProps) => {
 
   return (
     <div>
-      <Label htmlFor={messageId} className="block text-sm font-medium mb-2">
+      <Label htmlFor="message" className="block text-sm font-medium mb-2">
         Message
       </Label>
       <Textarea
-        id={messageId}
+        id="message"
         name="message"
         value={value}
         onChange={handleChange}
