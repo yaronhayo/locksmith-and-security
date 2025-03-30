@@ -48,7 +48,7 @@ const Logo = () => {
             width={200}
             height={48}
             loading="eager"
-            fetchpriority="high"
+            fetchPriority="high"
             decoding="async"
             onLoad={() => setIsLoading(false)}
             onError={(e) => {
