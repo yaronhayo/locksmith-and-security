@@ -19,6 +19,11 @@ const ServiceAreaFAQ = ({ locationName, faqSchema }: ServiceAreaFAQProps) => {
     return null;
   }
 
+  // Additional check to confirm this is an FAQ schema
+  if (faqSchema.type !== 'FAQPage' || faqSchema.data["@type"] !== "FAQPage") {
+    return null;
+  }
+
   return (
     <section className="py-16 bg-gradient-to-b from-gray-50 to-white rounded-xl" id="faq">
       <div className="container mx-auto px-4">
