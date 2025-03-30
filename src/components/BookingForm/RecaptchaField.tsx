@@ -8,17 +8,20 @@ interface RecaptchaFieldProps {
   onChange: (token: string | null) => void;
   error?: string;
   className?: string;
+  id?: string;
 }
 
-const RecaptchaField = ({ onChange, error, className = "" }: RecaptchaFieldProps) => {
+const RecaptchaField = ({ onChange, error, className = "", id = "recaptcha-field" }: RecaptchaFieldProps) => {
+  const errorId = `${id}-error`;
+  
   return (
-    <div className={`w-full overflow-x-auto ${className}`}>
+    <div className={`w-full overflow-x-auto ${className}`} id={id}>
       <Recaptcha onChange={onChange} />
       
       {error && (
         <Alert variant="destructive" className="mt-2 py-2">
           <AlertCircle className="h-4 w-4" />
-          <AlertDescription>{error}</AlertDescription>
+          <AlertDescription id={errorId}>{error}</AlertDescription>
         </Alert>
       )}
       

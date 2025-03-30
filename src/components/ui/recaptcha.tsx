@@ -17,6 +17,20 @@ const Recaptcha: React.FC<RecaptchaProps> = ({ onChange }) => {
   const isLoading = isLoadingRecaptcha || isLoadingKey;
   const error = recaptchaError || (keyError ? keyError.message : null);
 
+  // Cleanup function to reset the widget when component unmounts
+  useEffect(() => {
+    return () => {
+      if (recaptchaId !== null && window.grecaptcha) {
+        try {
+          window.grecaptcha.reset(recaptchaId);
+          renderAttempted.current = false;
+        } catch (e) {
+          console.error("Failed to reset reCAPTCHA on cleanup:", e);
+        }
+      }
+    };
+  }, [recaptchaId]);
+
   // Render the reCAPTCHA widget when everything is loaded
   useEffect(() => {
     // Only attempt to render if everything is loaded and we have a site key
@@ -24,7 +38,6 @@ const Recaptcha: React.FC<RecaptchaProps> = ({ onChange }) => {
     
     // Prevent duplicate rendering attempts
     if (renderAttempted.current) return;
-    renderAttempted.current = true;
     
     try {
       console.log("Rendering reCAPTCHA widget...");
@@ -41,22 +54,15 @@ const Recaptcha: React.FC<RecaptchaProps> = ({ onChange }) => {
         'expired-callback': () => onChange(null),
       });
       setRecaptchaId(id);
+      renderAttempted.current = true;
       console.log("reCAPTCHA widget rendered successfully");
     } catch (error) {
-      console.error("Error rendering reCAPTCHA:", error);
-    }
-
-    // Clean up on unmount
-    return () => {
-      if (recaptchaId !== null && window.grecaptcha) {
-        try {
-          // There's no direct "destroy" method, but we can reset it
-          window.grecaptcha.reset(recaptchaId);
-        } catch (e) {
-          console.error("Failed to reset reCAPTCHA on cleanup:", e);
-        }
+      if (error instanceof Error && error.message.includes('already been rendered')) {
+        console.log("reCAPTCHA has already been rendered, skipping");
+      } else {
+        console.error("Error rendering reCAPTCHA:", error);
       }
-    };
+    }
   }, [recaptchaLoaded, siteKey, onChange]);
 
   if (isLoading) {

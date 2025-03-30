@@ -18,6 +18,8 @@ const AddressAutocomplete = ({
   className,
   disabled,
   placeholder,
+  id,
+  name,
   ...props
 }: AddressAutocompleteProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
@@ -109,6 +111,10 @@ const AddressAutocomplete = ({
   };
 
   const displayError = error || mapsError;
+  
+  // Ensure we always have an id for accessibility
+  const inputId = id || "address-autocomplete";
+  const inputName = name || "address";
 
   return (
     <div className="relative w-full space-y-2">
@@ -127,6 +133,8 @@ const AddressAutocomplete = ({
           placeholder={placeholder}
           aria-invalid={displayError ? "true" : "false"}
           aria-describedby={displayError ? "address-error" : undefined}
+          id={inputId}
+          name={inputName}
           {...props}
         />
         {isLoadingMaps && (

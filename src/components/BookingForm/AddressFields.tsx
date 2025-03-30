@@ -16,7 +16,7 @@ const AddressFields = ({ address, onChange, errors, isSubmitting }: AddressField
   return (
     <>
       <div className="form-group">
-        <Label htmlFor="address" className="block text-sm font-medium text-gray-700 mb-1">
+        <Label htmlFor="service_address" className="block text-sm font-medium text-gray-700 mb-1">
           Service Address
         </Label>
         <GoogleMapsProvider>
@@ -26,7 +26,7 @@ const AddressFields = ({ address, onChange, errors, isSubmitting }: AddressField
             placeholder="Enter your service address"
             disabled={isSubmitting}
             required
-            id="address"
+            id="service_address"
             name="address"
           />
         </GoogleMapsProvider>

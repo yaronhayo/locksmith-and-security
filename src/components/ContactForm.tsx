@@ -16,6 +16,7 @@ const ContactForm = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
   const [address, setAddress] = useState("");
+  const formId = "contact-form";
 
   const getVisitorInfo = () => {
     return {
@@ -96,12 +97,13 @@ const ContactForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
+    <form id={formId} onSubmit={handleSubmit} className="space-y-6">
       <div className="space-y-4">
         <div>
           <Input
             type="text"
             name="name"
+            id="contact-name"
             placeholder="Your Name"
             required
             disabled={isSubmitting}
@@ -111,6 +113,7 @@ const ContactForm = () => {
           <Input
             type="email"
             name="email"
+            id="contact-email"
             placeholder="Your Email"
             required
             disabled={isSubmitting}
@@ -120,6 +123,7 @@ const ContactForm = () => {
           <Input
             type="tel"
             name="phone"
+            id="contact-phone"
             placeholder="Your Phone"
             required
             disabled={isSubmitting}
@@ -128,6 +132,7 @@ const ContactForm = () => {
         <div>
           <AddressAutocomplete
             name="address"
+            id="contact-address"
             value={address}
             onChange={setAddress}
             placeholder="Service Address"
@@ -138,6 +143,7 @@ const ContactForm = () => {
         <div>
           <Textarea
             name="message"
+            id="contact-message"
             placeholder="Your Message"
             required
             disabled={isSubmitting}
@@ -152,6 +158,7 @@ const ContactForm = () => {
         type="submit" 
         className="w-full" 
         disabled={isSubmitting}
+        id="contact-submit"
       >
         {isSubmitting ? "Sending..." : "Send Message"}
       </Button>

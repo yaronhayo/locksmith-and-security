@@ -34,6 +34,11 @@ const handleThirdPartyIframes = () => {
               if (!node.hasAttribute('title')) {
                 node.setAttribute('title', 'Third-party content');
               }
+              
+              // Add sandbox attribute to improve security
+              if (!node.hasAttribute('sandbox')) {
+                node.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-forms');
+              }
             }
           });
         }
