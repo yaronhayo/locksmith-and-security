@@ -41,3 +41,33 @@ if (import.meta.env.PROD) {
     }
   });
 }
+
+// Fix for third-party iframes in Quirks Mode
+// This doesn't actually fix the third-party iframes, but helps detect them
+document.addEventListener('DOMContentLoaded', () => {
+  try {
+    const iframes = document.querySelectorAll('iframe');
+    iframes.forEach(iframe => {
+      if (iframe.src && (iframe.src.includes('doubleclick.net') || iframe.src.includes('googleadservices.com'))) {
+        console.log('Third-party iframe detected:', iframe.src);
+      }
+    });
+  } catch (error) {
+    console.error('Error checking iframes:', error);
+  }
+});
+
+// Helper to force load Cloudflare Insights if needed
+const loadCloudflareInsights = () => {
+  if (!window.hasOwnProperty('_cf_chl_opt')) {
+    const script = document.createElement('script');
+    script.src = 'https://static.cloudflareinsights.com/beacon.min.js';
+    script.defer = true;
+    document.head.appendChild(script);
+  }
+};
+
+// Only load Cloudflare Insights in production
+if (import.meta.env.PROD) {
+  window.addEventListener('load', loadCloudflareInsights);
+}

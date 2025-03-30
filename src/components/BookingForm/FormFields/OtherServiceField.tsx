@@ -9,9 +9,9 @@ interface OtherServiceFieldProps {
 const OtherServiceField = ({ isSubmitting }: OtherServiceFieldProps) => {
   return (
     <div className="space-y-2">
-      <Label htmlFor="otherService">Please specify the service needed</Label>
+      <Label htmlFor="otherServiceField">Please specify the service needed</Label>
       <Input
-        id="otherService"
+        id="otherServiceField"
         name="otherService"
         type="text"
         required
@@ -19,6 +19,7 @@ const OtherServiceField = ({ isSubmitting }: OtherServiceFieldProps) => {
         disabled={isSubmitting}
         autoComplete="off"
         aria-label="Other service description"
+        aria-required="true"
       />
     </div>
   );
