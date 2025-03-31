@@ -44,7 +44,8 @@ const ServiceAreaLayout = memo(({ areaSlug }: ServiceAreaLayoutProps) => {
     faqSchema.type === 'FAQPage' && 
     faqSchema.data && 
     faqSchema.data["@type"] === "FAQPage" && 
-    faqSchema.data.mainEntity ? 
+    'mainEntity' in faqSchema.data && 
+    Array.isArray(faqSchema.data.mainEntity) ? 
       faqSchema.data.mainEntity.map((item: any) => ({
         question: item.name,
         answer: item.acceptedAnswer.text

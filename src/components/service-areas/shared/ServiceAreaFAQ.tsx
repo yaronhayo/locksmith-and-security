@@ -14,13 +14,14 @@ interface ServiceAreaFAQProps {
 }
 
 const ServiceAreaFAQ = ({ locationName, faqSchema }: ServiceAreaFAQProps) => {
-  // Check if the schema has the expected structure and data
-  if (!faqSchema?.data?.mainEntity || !Array.isArray(faqSchema.data.mainEntity) || faqSchema.data.mainEntity.length === 0) {
-    return null;
-  }
-
-  // Additional check to confirm this is an FAQ schema
-  if (faqSchema.type !== 'FAQPage' || faqSchema.data["@type"] !== "FAQPage") {
+  // Check if the schema has the expected structure and data with proper type checking
+  if (!faqSchema?.data || 
+      !faqSchema.type || 
+      faqSchema.type !== 'FAQPage' || 
+      faqSchema.data["@type"] !== "FAQPage" || 
+      !('mainEntity' in faqSchema.data) || 
+      !Array.isArray(faqSchema.data.mainEntity) || 
+      faqSchema.data.mainEntity.length === 0) {
     return null;
   }
 
