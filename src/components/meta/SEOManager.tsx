@@ -67,7 +67,7 @@ const SEOManager: React.FC<SEOManagerProps> = ({
   faqs = [],
   breadcrumbs = [],
   locationName,
-  locationCoordinates,
+  geoCoordinates,
   author,
   alternateLanguages,
   nextPrevLinks
@@ -133,12 +133,12 @@ const SEOManager: React.FC<SEOManagerProps> = ({
       />
       
       {/* Schema specific to location pages */}
-      {pageType === 'service-area' && locationName && locationCoordinates && (
+      {pageType === 'service-area' && locationName && geoCoordinates && (
         <Helmet>
           <meta name="geo.region" content={`US-NJ`} />
           <meta name="geo.placename" content={locationName} />
-          <meta name="geo.position" content={`${locationCoordinates.latitude};${locationCoordinates.longitude}`} />
-          <meta name="ICBM" content={`${locationCoordinates.latitude}, ${locationCoordinates.longitude}`} />
+          <meta name="geo.position" content={`${geoCoordinates.latitude};${geoCoordinates.longitude}`} />
+          <meta name="ICBM" content={`${geoCoordinates.latitude}, ${geoCoordinates.longitude}`} />
         </Helmet>
       )}
       
