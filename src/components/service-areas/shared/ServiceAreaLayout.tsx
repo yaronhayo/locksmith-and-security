@@ -1,4 +1,3 @@
-
 import { memo } from "react";
 import PageLayout from "@/components/layouts/PageLayout";
 import Breadcrumbs from "@/components/Breadcrumbs";
@@ -71,7 +70,7 @@ const ServiceAreaLayout = memo(({ areaSlug }: ServiceAreaLayoutProps) => {
   return (
     <>
       <SEOManager
-        pageType="serviceArea"
+        pageType="service-area"
         title={pageTitle}
         description={pageDescription}
         canonicalUrl={`/service-areas/${areaSlug}`}

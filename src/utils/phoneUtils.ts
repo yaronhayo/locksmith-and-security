@@ -16,3 +16,17 @@ export const getPhoneNumber = (): string => {
 export const formatPhoneForTel = (phoneNumber: string): string => {
   return phoneNumber.replace(/\D/g, '');
 };
+
+/**
+ * Hook to get both formatted phone number and tel: link format
+ * @returns Object containing phoneNumber (display format) and phoneHref (tel: format)
+ */
+export const usePhoneNumber = () => {
+  const phoneNumber = getPhoneNumber();
+  const phoneHref = `tel:${formatPhoneForTel(phoneNumber)}`;
+  
+  return {
+    phoneNumber,
+    phoneHref
+  };
+};
