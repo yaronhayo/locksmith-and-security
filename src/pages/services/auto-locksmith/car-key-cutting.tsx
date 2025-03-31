@@ -39,6 +39,7 @@ const CarKeyCutting = () => {
         description="Expert car key cutting by certified automotive locksmiths"
         serviceName="Car Key Cutting"
         serviceCategory="Auto Locksmith"
+        canonicalUrl="/services/auto-locksmith/car-key-cutting"
         mainContent={<CarKeyContent />}
         faqs={carKeyFaqs}
         relatedServices={relatedAutomotiveServices}

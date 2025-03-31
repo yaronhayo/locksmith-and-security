@@ -39,6 +39,7 @@ const AccessControl = () => {
         description="Expert installation and maintenance of advanced access control systems"
         serviceName="Access Control"
         serviceCategory="Commercial Locksmith"
+        canonicalUrl="/services/commercial-locksmith/access-control"
         mainContent={<AccessControlContent />}
         faqs={accessControlFaqs}
         relatedServices={relatedCommercialServices}

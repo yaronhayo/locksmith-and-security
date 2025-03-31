@@ -39,6 +39,7 @@ const KeyFobProgramming = () => {
         description="Expert key fob programming services by certified automotive locksmiths"
         serviceName="Key Fob Programming"
         serviceCategory="Auto Locksmith"
+        canonicalUrl="/services/auto-locksmith/key-fob-programming"
         mainContent={<KeyFobProgrammingContent />}
         faqs={keyFobProgrammingFaqs}
         relatedServices={relatedAutomotiveServices}

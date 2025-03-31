@@ -37,6 +37,7 @@ const LockRekey = () => {
         description="Change who has access to your home without replacing your locks"
         serviceName="Lock Rekey"
         serviceCategory="Residential Locksmith"
+        canonicalUrl="/services/residential-locksmith/lock-rekey"
         mainContent={<LockRekeyContent />}
         relatedServices={relatedResidentialServices}
         faqs={lockRekeyFaqs}

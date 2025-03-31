@@ -39,6 +39,7 @@ const IgnitionLockCylinder = () => {
         description="Expert ignition repair services by certified automotive locksmiths"
         serviceName="Ignition Lock Cylinder"
         serviceCategory="Auto Locksmith"
+        canonicalUrl="/services/auto-locksmith/ignition-lock-cylinder"
         mainContent={<IgnitionLockCylinderContent />}
         faqs={ignitionLockCylinderFaqs}
         relatedServices={relatedAutomotiveServices}

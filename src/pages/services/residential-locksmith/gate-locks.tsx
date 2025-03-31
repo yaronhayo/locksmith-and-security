@@ -30,6 +30,7 @@ const GateLocks = () => {
         description="Professional installation and repair of secure gate locks for residential properties. Our certified technicians provide expert solutions for all types of gates."
         serviceName="Gate Lock"
         serviceCategory="Residential"
+        canonicalUrl="/services/residential-locksmith/gate-locks"
         mainContent={<GateLocksContent />}
         faqs={gateLocksFaqs}
         relatedServices={gateLocksRelatedServices}

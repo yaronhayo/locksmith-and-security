@@ -39,6 +39,7 @@ const BusinessLockout = () => {
         description="Expert business lockout services by certified commercial locksmiths"
         serviceName="Business Lockout"
         serviceCategory="Emergency Locksmith"
+        canonicalUrl="/services/emergency-locksmith/business-lockout"
         mainContent={<BusinessLockoutContent />}
         relatedServices={relatedEmergencyServices}
         faqs={businessLockoutFaqs}

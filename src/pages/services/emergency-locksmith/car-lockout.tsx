@@ -84,7 +84,7 @@ const CarLockout = () => {
       
       <EnhancedServicesHero 
         title="Car Lockout Service"
-        description="Professional automotive locksmith services for when you're locked out of your vehicle. Our certified technicians provide fast, reliable, and damage-free entry methods."
+        description="Professional automotive locksmith services when you're locked out of your vehicle. Our certified technicians provide fast, reliable, and damage-free entry methods."
         serviceName="Car Lockout"
         serviceLabel="Emergency Auto Locksmith"
       />
@@ -94,6 +94,7 @@ const CarLockout = () => {
         description="Expert car lockout services by certified automotive locksmiths"
         serviceName="Car Lockout"
         serviceCategory="Emergency Locksmith"
+        canonicalUrl="/services/emergency-locksmith/car-lockout"
         mainContent={<CarLockoutContent />}
         relatedServices={relatedEmergencyServices}
         faqs={carLockoutFaqs}
