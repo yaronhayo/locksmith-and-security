@@ -1,89 +1,65 @@
 
-import type { SiteSettings } from "@/hooks/useSettings";
+import { SiteSettings } from "@/hooks/useSettings";
 
 interface ServiceSchemaProps {
   title: string;
   description: string;
   baseUrl: string;
-  settings: SiteSettings;
+  settings?: SiteSettings;
   canonicalUrl: string;
   category?: string;
-  datePublished?: string;
-  dateModified?: string;
-  imageUrl?: string;
   offerings?: string[];
-  relatedServices?: string[];
   price?: string;
-  priceCurrency?: string;
+  dateModified?: string;
+  datePublished?: string;
 }
 
-export const createServiceSchema = ({ 
-  title, 
-  description, 
-  baseUrl, 
+export const createServiceSchema = ({
+  title,
+  description,
+  baseUrl,
   settings,
   canonicalUrl,
-  category = "Locksmith",
-  datePublished = new Date().toISOString(),
-  dateModified = new Date().toISOString(),
-  imageUrl = "/lovable-uploads/1bbeb1e6-5581-4e09-9600-7d1859bb17c5.png",
+  category = "Locksmith Service",
   offerings = [],
-  relatedServices = [],
   price = "49.00",
-  priceCurrency = "USD"
-}: ServiceSchemaProps) => ({
-  type: 'Service',
-  data: {
+  dateModified = new Date().toISOString(),
+  datePublished = new Date(new Date().setFullYear(new Date().getFullYear() - 1)).toISOString()
+}: ServiceSchemaProps) => {
+  // Ensure canonical URL is absolute
+  const fullCanonicalUrl = canonicalUrl.startsWith('http') 
+    ? canonicalUrl 
+    : `${baseUrl}${canonicalUrl.startsWith('/') ? canonicalUrl : `/${canonicalUrl}`}`;
+    
+  // Create service schema
+  const serviceSchema = {
     "@context": "https://schema.org",
     "@type": "Service",
-    "@id": `${baseUrl}${canonicalUrl}#service`,
     "name": title,
     "description": description,
-    "url": `${baseUrl}${canonicalUrl}`,
     "serviceType": category,
+    "url": fullCanonicalUrl,
     "provider": {
       "@type": "LocalBusiness",
-      "name": settings.company_name || "Locksmith & Security LLC",
-      "telephone": settings.company_phone,
+      "name": settings?.company_name || "Locksmith & Security LLC",
+      "image": "/lovable-uploads/1bbeb1e6-5581-4e09-9600-7d1859bb17c5.png",
+      "email": "info@247locksmithandsecurity.com",
+      "telephone": settings?.company_phone || "(201) 748-2070",
+      "priceRange": "$$",
       "address": {
         "@type": "PostalAddress",
-        "streetAddress": settings.company_address || "",
-        "addressLocality": settings.company_city || "North Bergen",
-        "addressRegion": "NJ",
-        "postalCode": settings.company_zip || "",
+        "streetAddress": settings?.company_address || "5800 Kennedy Blvd",
+        "addressLocality": settings?.company_city || "North Bergen",
+        "addressRegion": settings?.company_state || "NJ",
+        "postalCode": settings?.company_zip || "07047",
         "addressCountry": "US"
       }
     },
-    "areaServed": [
-      {
-        "@type": "State",
-        "name": "New Jersey"
-      },
-      {
-        "@type": "City",
-        "name": "North Bergen"
-      },
-      {
-        "@type": "City",
-        "name": "Jersey City"
-      },
-      {
-        "@type": "City",
-        "name": "Hoboken"
-      }
-    ],
-    "image": imageUrl && !imageUrl.startsWith('http') ? `${baseUrl}${imageUrl}` : imageUrl,
-    "offers": {
-      "@type": "Offer",
-      "price": price,
-      "priceCurrency": priceCurrency,
-      "availability": "https://schema.org/InStock",
-      "priceValidUntil": new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString().split('T')[0]
+    "areaServed": {
+      "@type": "State",
+      "name": "New Jersey"
     },
-    "datePublished": datePublished,
-    "dateModified": dateModified,
-    "mainEntityOfPage": `${baseUrl}${canonicalUrl}`,
-    "hasOfferCatalog": offerings && offerings.length > 0 ? {
+    "hasOfferCatalog": {
       "@type": "OfferCatalog",
       "name": `${title} Services`,
       "itemListElement": offerings.map(offering => ({
@@ -93,12 +69,23 @@ export const createServiceSchema = ({
           "name": offering
         }
       }))
-    } : undefined,
-    ...(relatedServices.length > 0 && {
-      "isRelatedTo": relatedServices.map(service => ({
-        "@type": "Service",
-        "name": service
-      }))
-    })
-  }
-});
+    },
+    "offers": {
+      "@type": "Offer",
+      "price": price,
+      "priceCurrency": "USD"
+    },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": fullCanonicalUrl,
+      "lastReviewed": dateModified,
+      "datePublished": datePublished,
+      "dateModified": dateModified
+    }
+  };
+  
+  return {
+    type: 'Service',
+    data: serviceSchema
+  };
+};

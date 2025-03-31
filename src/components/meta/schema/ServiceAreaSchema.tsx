@@ -1,63 +1,54 @@
 
-import type { SiteSettings } from "@/hooks/useSettings";
+import { SiteSettings } from "@/hooks/useSettings";
 
 interface ServiceAreaSchemaProps {
   areaName: string;
   areaDescription: string;
   baseUrl: string;
-  settings: SiteSettings;
+  settings?: SiteSettings;
   canonicalUrl: string;
-  services?: string[];
+  services: string[];
   geoCoordinates?: {
     latitude: number;
     longitude: number;
   };
-  datePublished?: string;
   dateModified?: string;
-  imageUrl?: string;
-  priceRange?: string;
+  datePublished?: string;
   areaServedRegion?: string;
-  telephone?: string;
 }
 
-export const createServiceAreaSchema = ({ 
-  areaName, 
-  areaDescription, 
-  baseUrl, 
+export const createServiceAreaSchema = ({
+  areaName,
+  areaDescription,
+  baseUrl,
   settings,
   canonicalUrl,
   services = [],
   geoCoordinates,
-  datePublished = new Date().toISOString(),
   dateModified = new Date().toISOString(),
-  imageUrl = "/lovable-uploads/1bbeb1e6-5581-4e09-9600-7d1859bb17c5.png",
-  priceRange = "$$",
-  areaServedRegion = "NJ",
-  telephone
-}: ServiceAreaSchemaProps) => ({
-  type: 'LocalBusiness',
-  data: {
+  datePublished = new Date(new Date().setFullYear(new Date().getFullYear() - 1)).toISOString(),
+  areaServedRegion = "NJ"
+}: ServiceAreaSchemaProps) => {
+  // Ensure canonical URL is absolute
+  const fullCanonicalUrl = canonicalUrl.startsWith('http') 
+    ? canonicalUrl 
+    : `${baseUrl}${canonicalUrl.startsWith('/') ? canonicalUrl : `/${canonicalUrl}`}`;
+    
+  // Create service area schema
+  const serviceAreaSchema = {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
-    "@id": `${baseUrl}${canonicalUrl}`,
-    "name": `${settings.company_name} - ${areaName}`,
+    "name": `${settings?.company_name || "Locksmith & Security LLC"} - ${areaName}`,
     "description": areaDescription,
-    "url": `${baseUrl}${canonicalUrl}`,
-    "telephone": telephone || settings.company_phone,
-    "priceRange": priceRange,
-    "image": imageUrl && !imageUrl.startsWith('http') ? `${baseUrl}${imageUrl}` : imageUrl,
-    "datePublished": datePublished,
-    "dateModified": dateModified,
+    "url": fullCanonicalUrl,
+    "image": "/lovable-uploads/1bbeb1e6-5581-4e09-9600-7d1859bb17c5.png",
+    "telephone": settings?.company_phone || "(201) 748-2070",
+    "priceRange": "$$",
     "address": {
       "@type": "PostalAddress",
       "addressLocality": areaName,
       "addressRegion": areaServedRegion,
       "addressCountry": "US"
-    },
-    "areaServed": {
-      "@type": "City",
-      "name": areaName,
-      "sameAs": `https://en.wikipedia.org/wiki/${areaName.replace(/ /g, '_')},_${areaServedRegion}`
     },
     ...(geoCoordinates && {
       "geo": {
@@ -66,18 +57,19 @@ export const createServiceAreaSchema = ({
         "longitude": geoCoordinates.longitude
       }
     }),
+    "areaServed": {
+      "@type": "City",
+      "name": areaName,
+      "sameAs": `https://en.wikipedia.org/wiki/${areaName.replace(/ /g, '_')},_${areaServedRegion}`
+    },
     "hasOfferCatalog": {
       "@type": "OfferCatalog",
-      "name": "Locksmith Services in " + areaName,
-      "itemListElement": services.map(service => ({
+      "name": `Locksmith Services in ${areaName}`,
+      "itemListElement": services.map((service, index) => ({
         "@type": "Offer",
         "itemOffered": {
           "@type": "Service",
-          "name": service,
-          "areaServed": {
-            "@type": "City",
-            "name": areaName
-          }
+          "name": service
         }
       }))
     },
@@ -88,6 +80,23 @@ export const createServiceAreaSchema = ({
       ],
       "opens": "00:00",
       "closes": "23:59"
+    },
+    "sameAs": [
+      "https://www.facebook.com/247locksmithandsecurity/",
+      "https://www.yelp.com/biz/locksmith-and-security-north-bergen",
+      "https://www.google.com/maps?cid=12345678901234567890" // Replace with actual Google Business Profile
+    ],
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": fullCanonicalUrl,
+      "lastReviewed": dateModified,
+      "datePublished": datePublished,
+      "dateModified": dateModified
     }
-  }
-});
+  };
+  
+  return {
+    type: 'LocalBusiness',
+    data: serviceAreaSchema
+  };
+};

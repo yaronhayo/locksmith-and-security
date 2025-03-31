@@ -1,30 +1,27 @@
 
-interface Question {
-  question: string;
-  answer: string;
-}
-
 interface FAQSchemaProps {
-  questions: Question[];
+  questions: Array<{
+    question: string;
+    answer: string;
+  }>;
 }
 
 export const createFAQSchema = ({ questions }: FAQSchemaProps) => {
-  const faqData = {
+  const faqSchema = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
-    "mainEntity": questions.map(faq => ({
+    "mainEntity": questions.map(q => ({
       "@type": "Question",
-      "name": faq.question,
+      "name": q.question,
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": faq.answer
+        "text": q.answer
       }
     }))
   };
   
-  // Return the schema in the format expected by our components
   return {
     type: 'FAQPage',
-    data: faqData
+    data: faqSchema
   };
 };
