@@ -39,7 +39,6 @@ const HouseLockout = () => {
         description="Expert residential lockout services by certified home locksmiths"
         serviceName="House Lockout"
         serviceCategory="Emergency Locksmith"
-        canonicalUrl="/services/emergency-locksmith/house-lockout"
         mainContent={<HouseLockoutContent />}
         relatedServices={relatedEmergencyServices}
         faqs={houseLockoutFaqs}

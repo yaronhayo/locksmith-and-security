@@ -1,5 +1,5 @@
 
-import { createFAQSchema } from "@/components/meta/schema/FAQSchema";
+import { createFAQSchema } from "@/schemas/faqSchema";
 
 export const carKeyFaqs = [
   {
@@ -36,9 +36,7 @@ export const carKeyFaqs = [
   }
 ];
 
-export const carKeyFaqSchema = createFAQSchema({
-  questions: carKeyFaqs
-});
+export const carKeyFaqSchema = createFAQSchema(carKeyFaqs);
 
 export const carKeyServiceSchema = {
   "@context": "https://schema.org",

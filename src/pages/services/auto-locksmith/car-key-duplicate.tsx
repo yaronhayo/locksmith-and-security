@@ -39,7 +39,6 @@ const CarKeyDuplicate = () => {
         description="Expert key duplication services for all vehicle types including transponder and smart keys"
         serviceName="Car Key Duplication"
         serviceCategory="Auto Locksmith"
-        canonicalUrl="/services/auto-locksmith/car-key-duplicate"
         mainContent={<CarKeyDuplicateContent />}
         relatedServices={relatedAutomotiveServices}
         faqs={carKeyDuplicateFaqs}

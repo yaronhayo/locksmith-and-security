@@ -3,7 +3,7 @@ import { useLocation, Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { ChevronRight, Home } from "lucide-react";
 import { useMemo } from "react";
-import { createBreadcrumbSchema } from "@/components/meta/schema/BreadcrumbSchema";
+import { BreadcrumbSchema } from "@/components/meta/schema/BreadcrumbSchema";
 
 interface BreadcrumbsProps {
   className?: string;
@@ -94,17 +94,7 @@ const Breadcrumbs = ({ className, baseUrl = "https://247locksmithandsecurity.com
 
   return (
     <>
-      {includeSchema && 
-        <script 
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(createBreadcrumbSchema({ 
-              breadcrumbs: schemaBreadcrumbs,
-              baseUrl
-            }).data)
-          }}
-        />
-      }
+      {includeSchema && <BreadcrumbSchema breadcrumbs={schemaBreadcrumbs} baseUrl={baseUrl} />}
       
       <nav className={cn("flex items-center space-x-1 text-sm", className)} aria-label="Breadcrumb">
         <Link to="/" className="flex items-center text-gray-500 hover:text-primary transition-colors">

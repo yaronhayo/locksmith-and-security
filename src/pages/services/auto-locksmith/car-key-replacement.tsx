@@ -60,7 +60,6 @@ const CarKeyReplacement = () => {
         description="Expert solution for lost, broken or spare car keys"
         serviceName="Car Key Replacement"
         serviceCategory="Auto Locksmith"
-        canonicalUrl="/services/auto-locksmith/car-key-replacement"
         mainContent={<CarKeyReplacementContent />}
         relatedServices={relatedAutoServices}
         faqs={carKeyReplacementFaqs}

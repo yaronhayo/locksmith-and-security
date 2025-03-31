@@ -37,7 +37,6 @@ const LockReplacement = () => {
         description="Expert lock replacement solutions for enhanced home security"
         serviceName="Lock Replacement"
         serviceCategory="Residential Locksmith"
-        canonicalUrl="/services/residential-locksmith/lock-replacement"
         mainContent={<LockReplacementContent />}
         relatedServices={relatedResidentialServices}
         faqs={lockReplacementFaqs}

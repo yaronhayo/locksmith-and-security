@@ -2,125 +2,196 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml"
         xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
         xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
         http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
 
-  <!-- Service Categories -->
-  <url>
-    <loc>https://247locksmithandsecurity.com/services</loc>
-    <lastmod>2024-03-19T00:00:00+00:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  
+  <!-- Service Category Pages -->
   <url>
     <loc>https://247locksmithandsecurity.com/services/emergency-locksmith</loc>
-    <lastmod>2024-03-19T00:00:00+00:00</lastmod>
+    <lastmod>2024-05-02T00:00:00+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
     <image:image>
-      <image:loc>https://247locksmithandsecurity.com/images/services/emergency-locksmith.jpg</image:loc>
+      <image:loc>https://247locksmithandsecurity.com/lovable-uploads/emergency-locksmith-service.jpg</image:loc>
       <image:title>Emergency Locksmith Services</image:title>
-      <image:caption>24/7 emergency locksmith services for any situation</image:caption>
     </image:image>
   </url>
-  
   <url>
     <loc>https://247locksmithandsecurity.com/services/residential-locksmith</loc>
-    <lastmod>2024-03-19T00:00:00+00:00</lastmod>
+    <lastmod>2024-05-02T00:00:00+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
     <image:image>
-      <image:loc>https://247locksmithandsecurity.com/images/services/residential-locksmith.jpg</image:loc>
+      <image:loc>https://247locksmithandsecurity.com/lovable-uploads/residential-locksmith-service.jpg</image:loc>
       <image:title>Residential Locksmith Services</image:title>
-      <image:caption>Professional locksmith services for your home</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://247locksmithandsecurity.com/services/commercial-locksmith</loc>
+    <lastmod>2024-05-02T00:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://247locksmithandsecurity.com/lovable-uploads/commercial-locksmith-service.jpg</image:loc>
+      <image:title>Commercial Locksmith Services</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://247locksmithandsecurity.com/services/auto-locksmith</loc>
+    <lastmod>2024-05-02T00:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://247locksmithandsecurity.com/lovable-uploads/auto-locksmith-service.jpg</image:loc>
+      <image:title>Auto Locksmith Services</image:title>
     </image:image>
   </url>
 
-  <!-- Residential Services -->
-  <url>
-    <loc>https://247locksmithandsecurity.com/services/residential-locksmith/lock-replacement</loc>
-    <lastmod>2024-03-19T00:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-    <image:image>
-      <image:loc>https://247locksmithandsecurity.com/images/services/lock-replacement.jpg</image:loc>
-      <image:title>Lock Replacement Service</image:title>
-      <image:caption>Professional lock replacement services</image:caption>
-    </image:image>
-  </url>
-  
-  <url>
-    <loc>https://247locksmithandsecurity.com/services/residential-locksmith/lock-rekey</loc>
-    <lastmod>2024-03-19T00:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-    <image:image>
-      <image:loc>https://247locksmithandsecurity.com/images/services/lock-rekey.jpg</image:loc>
-      <image:title>Lock Rekey Service</image:title>
-      <image:caption>Professional lock rekeying services</image:caption>
-    </image:image>
-  </url>
-  
-  <url>
-    <loc>https://247locksmithandsecurity.com/services/residential-locksmith/lock-repair</loc>
-    <lastmod>2024-03-19T00:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-    <image:image>
-      <image:loc>https://247locksmithandsecurity.com/images/services/lock-repair.jpg</image:loc>
-      <image:title>Lock Repair Service</image:title>
-      <image:caption>Professional lock repair services</image:caption>
-    </image:image>
-  </url>
-  
-  <url>
-    <loc>https://247locksmithandsecurity.com/services/residential-locksmith/gate-locks</loc>
-    <lastmod>2024-03-19T00:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-    <image:image>
-      <image:loc>https://247locksmithandsecurity.com/images/services/gate-locks.jpg</image:loc>
-      <image:title>Gate Lock Service</image:title>
-      <image:caption>Professional gate lock installation and repair</image:caption>
-    </image:image>
-  </url>
-
-  <!-- Emergency Services -->
+  <!-- Emergency Locksmith Services -->
   <url>
     <loc>https://247locksmithandsecurity.com/services/emergency-locksmith/car-lockout</loc>
-    <lastmod>2024-03-19T00:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
+    <lastmod>2024-05-02T00:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0.8</priority>
     <image:image>
-      <image:loc>https://247locksmithandsecurity.com/images/services/car-lockout.jpg</image:loc>
+      <image:loc>https://247locksmithandsecurity.com/lovable-uploads/car-lockout-service.jpg</image:loc>
       <image:title>Car Lockout Service</image:title>
-      <image:caption>Professional car lockout assistance</image:caption>
     </image:image>
   </url>
-  
   <url>
     <loc>https://247locksmithandsecurity.com/services/emergency-locksmith/house-lockout</loc>
-    <lastmod>2024-03-19T00:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
+    <lastmod>2024-05-02T00:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0.8</priority>
     <image:image>
-      <image:loc>https://247locksmithandsecurity.com/images/services/house-lockout.jpg</image:loc>
+      <image:loc>https://247locksmithandsecurity.com/lovable-uploads/house-lockout-service.jpg</image:loc>
       <image:title>House Lockout Service</image:title>
-      <image:caption>Professional house lockout assistance</image:caption>
     </image:image>
   </url>
-  
   <url>
     <loc>https://247locksmithandsecurity.com/services/emergency-locksmith/business-lockout</loc>
-    <lastmod>2024-03-19T00:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <lastmod>2024-05-02T00:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
     <image:image>
-      <image:loc>https://247locksmithandsecurity.com/images/services/business-lockout.jpg</image:loc>
+      <image:loc>https://247locksmithandsecurity.com/lovable-uploads/business-lockout-service.jpg</image:loc>
       <image:title>Business Lockout Service</image:title>
-      <image:caption>Professional business lockout assistance</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://247locksmithandsecurity.com/services/emergency-locksmith/storage-unit-lockout</loc>
+    <lastmod>2024-05-02T00:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://247locksmithandsecurity.com/lovable-uploads/storage-unit-lockout-service.jpg</image:loc>
+      <image:title>Storage Unit Lockout Service</image:title>
+    </image:image>
+  </url>
+
+  <!-- Auto Locksmith Services -->
+  <url>
+    <loc>https://247locksmithandsecurity.com/services/auto-locksmith/car-key-replacement</loc>
+    <lastmod>2024-05-02T00:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://247locksmithandsecurity.com/lovable-uploads/car-key-replacement-service.jpg</image:loc>
+      <image:title>Car Key Replacement Service</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://247locksmithandsecurity.com/services/auto-locksmith/car-key-duplicate</loc>
+    <lastmod>2024-05-02T00:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://247locksmithandsecurity.com/lovable-uploads/car-key-duplicate-service.jpg</image:loc>
+      <image:title>Car Key Duplication Service</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://247locksmithandsecurity.com/services/auto-locksmith/car-key-cutting</loc>
+    <lastmod>2024-05-02T00:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://247locksmithandsecurity.com/lovable-uploads/car-key-cutting-service.jpg</image:loc>
+      <image:title>Car Key Cutting Service</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://247locksmithandsecurity.com/services/auto-locksmith/key-fob-programming</loc>
+    <lastmod>2024-05-02T00:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://247locksmithandsecurity.com/lovable-uploads/key-fob-programming-service.jpg</image:loc>
+      <image:title>Key Fob Programming Service</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://247locksmithandsecurity.com/services/auto-locksmith/ignition-lock-cylinder</loc>
+    <lastmod>2024-05-02T00:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://247locksmithandsecurity.com/lovable-uploads/ignition-lock-cylinder-service.jpg</image:loc>
+      <image:title>Ignition Lock Cylinder Service</image:title>
+    </image:image>
+  </url>
+
+  <!-- Commercial Locksmith Services -->
+  <url>
+    <loc>https://247locksmithandsecurity.com/services/commercial-locksmith/access-control</loc>
+    <lastmod>2024-05-02T00:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://247locksmithandsecurity.com/lovable-uploads/access-control-service.jpg</image:loc>
+      <image:title>Access Control Systems</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://247locksmithandsecurity.com/services/commercial-locksmith/lock-rekey</loc>
+    <lastmod>2024-05-02T00:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://247locksmithandsecurity.com/lovable-uploads/commercial-lock-rekey-service.jpg</image:loc>
+      <image:title>Commercial Lock Rekey Service</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://247locksmithandsecurity.com/services/commercial-locksmith/lock-replacement</loc>
+    <lastmod>2024-05-02T00:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://247locksmithandsecurity.com/lovable-uploads/commercial-lock-replacement-service.jpg</image:loc>
+      <image:title>Commercial Lock Replacement Service</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://247locksmithandsecurity.com/services/commercial-locksmith/master-key</loc>
+    <lastmod>2024-05-02T00:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://247locksmithandsecurity.com/lovable-uploads/master-key-system-service.jpg</image:loc>
+      <image:title>Master Key System Service</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://247locksmithandsecurity.com/services/commercial-locksmith/emergency-exit-device</loc>
+    <lastmod>2024-05-02T00:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://247locksmithandsecurity.com/lovable-uploads/emergency-exit-device-service.jpg</image:loc>
+      <image:title>Emergency Exit Device Service</image:title>
     </image:image>
   </url>
 </urlset>

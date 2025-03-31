@@ -38,7 +38,6 @@ const EmergencyExitDevice = () => {
         description="Expert panic bar and push bar services to ensure safety compliance and proper emergency egress"
         serviceName="Emergency Exit Device"
         serviceCategory="Commercial Locksmith"
-        canonicalUrl="/services/commercial-locksmith/emergency-exit-device"
         mainContent={<EmergencyExitDeviceContent />}
         relatedServices={emergencyExitDeviceRelatedServices}
         faqs={emergencyExitDeviceFaqs}

@@ -1,103 +1,87 @@
 
-import { SiteSettings } from "@/hooks/useSettings";
+import React from "react";
+import { getPhoneNumber } from "@/utils/phoneUtils";
 
-interface LocalBusinessSchemaProps {
+export interface LocalBusinessSchemaProps {
   name?: string;
-  description?: string;
-  url?: string;
   telephone?: string;
-  image?: string;
-  address?: {
-    street?: string;
-    city?: string;
-    state?: string;
-    zip?: string;
-    country?: string;
-  };
-  geo?: {
-    latitude?: string;
-    longitude?: string;
-  };
   priceRange?: string;
-  openingHours?: string[];
+  streetAddress?: string;
+  addressLocality?: string;
+  addressRegion?: string;
+  postalCode?: string;
+  addressCountry?: string;
+  image?: string;
   sameAs?: string[];
-  settings?: SiteSettings;
+  description?: string;
+  openingHours?: string[];
+  geo?: {
+    latitude: number;
+    longitude: number;
+  };
 }
 
-export const createLocalBusinessSchema = ({
-  name = "Locksmith & Security LLC",
-  description = "Professional 24/7 locksmith services for residential, commercial, and automotive needs.",
-  url = "https://247locksmithandsecurity.com",
-  telephone = "(201) 748-2070",
-  image = "/lovable-uploads/1bbeb1e6-5581-4e09-9600-7d1859bb17c5.png",
-  address = {
-    street: "5800 Kennedy Blvd",
-    city: "North Bergen",
-    state: "NJ",
-    zip: "07047",
-    country: "US"
-  },
-  geo = {
-    latitude: "40.7795",
-    longitude: "-74.0324"
-  },
-  priceRange = "$$",
-  openingHours = ["Mo-Su 00:00-23:59"],
-  sameAs = [
-    "https://www.facebook.com/locksmithandsecurity/",
-    "https://www.yelp.com/biz/locksmith-and-security-north-bergen"
+const defaultProps: LocalBusinessSchemaProps = {
+  name: "247 Locksmith & Security",
+  telephone: getPhoneNumber(),
+  priceRange: "$$",
+  streetAddress: "104 Harrison St",
+  addressLocality: "Hoboken",
+  addressRegion: "NJ",
+  postalCode: "07030",
+  addressCountry: "US",
+  image: "/lovable-uploads/1bbeb1e6-5581-4e09-9600-7d1859bb17c5.png",
+  sameAs: [
+    "https://www.facebook.com/247locksmithandsecurity",
+    "https://twitter.com/247locksmith",
+    "https://www.instagram.com/247locksmithandsecurity"
   ],
-  settings
-}: LocalBusinessSchemaProps = {}) => {
-  
-  // Use settings if provided
-  const businessName = settings?.company_name || name;
-  const businessPhone = settings?.company_phone || telephone;
-  const businessStreet = settings?.company_address || address.street;
-  const businessCity = settings?.company_city || address.city;
-  const businessState = settings?.company_state || address.state;
-  const businessZip = settings?.company_zip || address.zip;
-  const businessLatitude = settings?.company_lat || geo.latitude;
-  const businessLongitude = settings?.company_lng || geo.longitude;
-  
-  const localBusinessSchema = {
-    "@context": "https://schema.org",
-    "@type": "LocalBusiness",
-    "@id": `${url}/#localbusiness`,
-    "name": businessName,
-    "description": description,
-    "url": url,
-    "telephone": businessPhone,
-    "image": image.startsWith('http') ? image : `${url}${image.startsWith('/') ? image : `/${image}`}`,
-    "priceRange": priceRange,
-    "address": {
-      "@type": "PostalAddress",
-      "streetAddress": businessStreet,
-      "addressLocality": businessCity,
-      "addressRegion": businessState,
-      "postalCode": businessZip,
-      "addressCountry": address.country
-    },
-    "geo": {
-      "@type": "GeoCoordinates",
-      "latitude": businessLatitude,
-      "longitude": businessLongitude
-    },
-    "openingHoursSpecification": openingHours.map(hours => ({
-      "@type": "OpeningHoursSpecification",
-      "dayOfWeek": hours.split(' ')[0],
-      "opens": hours.split(' ')[1].split('-')[0],
-      "closes": hours.split(' ')[1].split('-')[1]
-    })),
-    "sameAs": sameAs,
-    "servesCuisine": "Locksmith Services",
-    "paymentAccepted": "Cash, Credit Card",
-    "additionalType": "http://www.productontology.org/id/Locksmith",
-    "keywords": "locksmith, emergency locksmith, 24/7 locksmith, residential locksmith, commercial locksmith, auto locksmith"
-  };
+  description: "Professional locksmith services for residential, commercial, and automotive needs. 24/7 emergency service available.",
+  openingHours: [
+    "Monday,Tuesday,Wednesday,Thursday,Friday,Saturday,Sunday 00:00-23:59"
+  ]
+};
+
+export const createLocalBusinessSchema = (props: LocalBusinessSchemaProps = {}) => {
+  const mergedProps = { ...defaultProps, ...props };
   
   return {
     type: 'LocalBusiness',
-    data: localBusinessSchema
+    data: {
+      "@context": "https://schema.org",
+      "@type": "LocalBusiness",
+      "@id": "https://247locksmithandsecurity.com/#localbusiness",
+      "name": mergedProps.name,
+      "telephone": mergedProps.telephone || getPhoneNumber(),
+      "priceRange": mergedProps.priceRange,
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": mergedProps.streetAddress,
+        "addressLocality": mergedProps.addressLocality,
+        "addressRegion": mergedProps.addressRegion,
+        "postalCode": mergedProps.postalCode,
+        "addressCountry": mergedProps.addressCountry
+      },
+      ...(mergedProps.image && { "image": mergedProps.image }),
+      ...(mergedProps.sameAs && { "sameAs": mergedProps.sameAs }),
+      ...(mergedProps.description && { "description": mergedProps.description }),
+      ...(mergedProps.openingHours && { "openingHoursSpecification": mergedProps.openingHours.map(hours => {
+        const [days, time] = hours.split(" ");
+        const [opens, closes] = time.split("-");
+        return {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": days.split(","),
+          "opens": `${opens.slice(0, 2)}:${opens.slice(2)}`,
+          "closes": `${closes.slice(0, 2)}:${closes.slice(2)}`
+        };
+      })}),
+      ...(mergedProps.geo && {
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": mergedProps.geo.latitude,
+          "longitude": mergedProps.geo.longitude
+        }
+      })
+    }
   };
 };

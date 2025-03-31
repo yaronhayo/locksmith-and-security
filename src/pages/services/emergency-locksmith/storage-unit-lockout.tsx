@@ -39,7 +39,6 @@ const StorageUnitLockout = () => {
         description="Expert storage unit lockout services by certified locksmiths"
         serviceName="Storage Unit Lockout"
         serviceCategory="Emergency Locksmith"
-        canonicalUrl="/services/emergency-locksmith/storage-unit-lockout"
         mainContent={<StorageUnitLockoutContent />}
         relatedServices={relatedEmergencyServices}
         faqs={storageUnitLockoutFaqs}

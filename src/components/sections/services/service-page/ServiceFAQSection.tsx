@@ -1,5 +1,6 @@
 
 import React from 'react';
+import FAQAccordion from "@/components/sections/FAQAccordion";
 
 interface FAQItem {
   question: string;
@@ -11,23 +12,14 @@ interface ServiceFAQSectionProps {
 }
 
 const ServiceFAQSection: React.FC<ServiceFAQSectionProps> = ({ faqs }) => {
-  if (!faqs || faqs.length === 0) {
-    return null;
-  }
-  
   return (
-    <section className="my-12">
-      <h2 className="text-2xl font-bold mb-6">Frequently Asked Questions</h2>
-      
-      <div className="space-y-6">
-        {faqs.map((faq, index) => (
-          <div key={index} className="service-faq-item">
-            <h3 className="service-faq-question">{faq.question}</h3>
-            <div className="text-gray-700">{faq.answer}</div>
-          </div>
-        ))}
-      </div>
-    </section>
+    <div className="mt-16">
+      <h2 className="text-2xl lg:text-3xl font-bold text-primary mb-6 border-l-4 border-secondary pl-4">
+        Frequently Asked Questions
+      </h2>
+      <p className="text-gray-600 mb-6">Find answers to common questions about our services. If you don't see your question answered below, please feel free to contact us.</p>
+      <FAQAccordion faqs={faqs} />
+    </div>
   );
 };
 

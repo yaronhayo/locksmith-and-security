@@ -7,7 +7,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import PageLoading from "@/components/layouts/PageLoading";
 import ServiceAreaContent from "./ServiceAreaContent";
 import { useServiceAreaData } from "./hooks/useServiceAreaData";
-import SEOManager from "@/components/meta/SEOManager";
+import SEOHead from "@/components/meta/SEOHead";
 
 interface ServiceAreaLayoutProps {
   areaSlug: string;
@@ -34,87 +34,57 @@ const ServiceAreaLayout = memo(({ areaSlug }: ServiceAreaLayoutProps) => {
 
   // Create optimized meta title and description
   const pageTitle = `Locksmith in ${location.name}, NJ | 24/7 Emergency Service`;
-  const pageDescription = `Professional locksmith services in ${location.name}, NJ. Available 24/7 for residential, commercial & auto emergencies. Licensed & insured, fast response times.`;
+  const pageDescription = `Locked out in ${location.name}? Our local locksmiths arrive in 20-30 minutes for home, business & auto emergencies. Licensed & insured service, fair pricing.`;
   
-  // Enhanced keywords specific to this service area
-  const areaKeywords = `locksmith ${location.name}, 24/7 locksmith ${location.name} NJ, emergency locksmith ${location.name}, residential locksmith ${location.name}, commercial locksmith ${location.name}, automotive locksmith ${location.name}, lock repair ${location.name}, lock installation ${location.name}, security solutions ${location.name}`;
+  // Enhanced service area schema attributes
+  const localSEOAttributes = {
+    geoRegion: "US-NJ",
+    geoPlaceName: location.name,
+    geoPosition: `${location.lat};${location.lng}`,
+    icbm: `${location.lat}, ${location.lng}`
+  };
 
-  // Get FAQs from the schema for SEO with proper type checking
-  const faqs = faqSchema && 
-    faqSchema.type === 'FAQPage' && 
-    faqSchema.data && 
-    faqSchema.data["@type"] === "FAQPage" && 
-    'mainEntity' in faqSchema.data && 
-    Array.isArray(faqSchema.data.mainEntity) ? 
-      faqSchema.data.mainEntity.map((item: any) => ({
-        question: item.name,
-        answer: item.acceptedAnswer.text
-      })) : [];
-
-  // Get common locksmith services for schema
-  const commonServices = [
-    `Emergency Lockout Service in ${location.name}`,
-    `Residential Lock Installation in ${location.name}`,
-    `Commercial Security Solutions in ${location.name}`,
-    `Car Key Replacement in ${location.name}`,
-    `High-Security Lock Installation in ${location.name}`,
-    `Lock Repair in ${location.name}`
-  ];
-
-  // Create breadcrumbs for this service area
-  const areaBreadcrumbs = [
-    { name: "Home", item: "/" },
-    { name: "Service Areas", item: "/service-areas" },
-    { name: `${location.name}`, item: `/service-areas/${areaSlug}` }
-  ];
+  // Keywords specific to this service area
+  const areaKeywords = `locksmith ${location.name}, 24/7 locksmith ${location.name} NJ, emergency locksmith ${location.name}, residential locksmith ${location.name}, commercial locksmith ${location.name}, automotive locksmith ${location.name}, lock repair ${location.name}, lock installation ${location.name}`;
 
   return (
     <>
-      <SEOManager
-        pageType="service-area"
+      <SEOHead 
         title={pageTitle}
         description={pageDescription}
         canonicalUrl={`/service-areas/${areaSlug}`}
+        schemas={schemas}
         keywords={areaKeywords}
-        areaName={location.name}
-        areaDescription={location.description}
-        geoCoordinates={{
-          latitude: location.lat,
-          longitude: location.lng
-        }}
-        areaServices={commonServices}
-        faqs={faqs}
-        breadcrumbs={areaBreadcrumbs}
-        modifiedDate={new Date().toISOString()}
+        {...localSEOAttributes}
+      />
+      
+      <PageLayout
+        title={pageTitle}
+        description={pageDescription}
+        heroTitle={`Professional Locksmith Services in ${location.name}, NJ`}
+        heroDescription={`24/7 expert locksmith services for residential, commercial, and automotive needs in ${location.name}. Licensed, insured, and locally trusted.`}
       >
-        <PageLayout
-          title={pageTitle}
-          description={pageDescription}
-          heroTitle={`Professional Locksmith Services in ${location.name}, NJ`}
-          heroDescription={`24/7 expert locksmith services for residential, commercial, and automotive needs in ${location.name}. Licensed, insured, and locally trusted.`}
-        >
-          <div className="container mx-auto px-4 py-4 sm:py-6 md:py-8 overflow-visible">
-            <Breadcrumbs />
-            
-            <Card className="mt-4 sm:mt-6 md:mt-8 border-secondary/20 shadow-md overflow-visible">
-              <div className="bg-gradient-to-r from-secondary/10 to-secondary/5 p-3 sm:p-4 md:p-6 lg:p-8 overflow-visible">
-                <CardContent className="p-0 max-w-full overflow-visible">
-                  <ServiceAreaContent 
-                    locationName={location.name}
-                    locationDescription={location.description}
-                    locationSlug={areaSlug}
-                    locationCoordinates={{lat: location.lat, lng: location.lng}}
-                    displayedReviews={displayedReviews}
-                    isLoading={reviewsLoading}
-                    totalReviews={totalReviews}
-                    faqSchema={faqSchema as FAQSchema}
-                  />
-                </CardContent>
-              </div>
-            </Card>
-          </div>
-        </PageLayout>
-      </SEOManager>
+        <div className="container mx-auto px-4 py-4 sm:py-6 md:py-8 overflow-visible">
+          <Breadcrumbs />
+          
+          <Card className="mt-4 sm:mt-6 md:mt-8 border-secondary/20 shadow-md overflow-visible">
+            <div className="bg-gradient-to-r from-secondary/10 to-secondary/5 p-3 sm:p-4 md:p-6 lg:p-8 overflow-visible">
+              <CardContent className="p-0 max-w-full overflow-visible">
+                <ServiceAreaContent 
+                  locationName={location.name}
+                  locationDescription={location.description}
+                  locationSlug={areaSlug}
+                  locationCoordinates={{lat: location.lat, lng: location.lng}}
+                  displayedReviews={displayedReviews}
+                  isLoading={reviewsLoading}
+                  totalReviews={totalReviews}
+                  faqSchema={faqSchema as FAQSchema}
+                />
+              </CardContent>
+            </div>
+          </Card>
+        </div>
+      </PageLayout>
     </>
   );
 });

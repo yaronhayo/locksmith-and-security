@@ -1,31 +1,47 @@
 
-import { BreadcrumbItem } from "@/types/schema";
+import { Helmet } from "react-helmet";
+
+interface BreadcrumbItem {
+  name: string;
+  item: string;
+}
 
 interface BreadcrumbSchemaProps {
   breadcrumbs: BreadcrumbItem[];
   baseUrl?: string;
 }
 
-export const createBreadcrumbSchema = ({
-  breadcrumbs,
-  baseUrl = "https://247locksmithandsecurity.com"
-}: BreadcrumbSchemaProps) => {
-  
+export const BreadcrumbSchema = ({ breadcrumbs, baseUrl = "https://247locksmithandsecurity.com" }: BreadcrumbSchemaProps) => {
   const breadcrumbSchema = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
-    "itemListElement": breadcrumbs.map((crumb, index) => ({
+    "itemListElement": breadcrumbs.map((item, index) => ({
       "@type": "ListItem",
       "position": index + 1,
-      "name": crumb.name,
-      "item": crumb.item.startsWith('http') 
-        ? crumb.item 
-        : `${baseUrl}${crumb.item.startsWith('/') ? crumb.item : `/${crumb.item}`}`
+      "name": item.name,
+      "item": item.item.startsWith('http') ? item.item : `${baseUrl}${item.item}`
     }))
   };
-  
-  return {
-    type: 'BreadcrumbList',
-    data: breadcrumbSchema
-  };
+
+  return (
+    <Helmet>
+      <script type="application/ld+json">
+        {JSON.stringify(breadcrumbSchema)}
+      </script>
+    </Helmet>
+  );
 };
+
+export const createBreadcrumbSchema = ({ breadcrumbs, baseUrl = "https://247locksmithandsecurity.com" }: BreadcrumbSchemaProps) => ({
+  type: 'BreadcrumbList',
+  data: {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": breadcrumbs.map((item, index) => ({
+      "@type": "ListItem",
+      "position": index + 1,
+      "name": item.name,
+      "item": item.item.startsWith('http') ? item.item : `${baseUrl}${item.item}`
+    }))
+  }
+});

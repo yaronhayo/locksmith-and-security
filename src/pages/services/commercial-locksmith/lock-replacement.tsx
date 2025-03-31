@@ -39,7 +39,6 @@ const CommercialLockReplacement = () => {
         description="Expert commercial lock replacement solutions for enhanced business security"
         serviceName="Commercial Lock Replacement"
         serviceCategory="Commercial Locksmith"
-        canonicalUrl="/services/commercial-locksmith/lock-replacement"
         mainContent={<CommercialLockReplacementContent />}
         relatedServices={relatedCommercialServices}
         faqs={commercialLockReplacementFaqs}

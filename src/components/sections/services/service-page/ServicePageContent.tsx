@@ -8,7 +8,6 @@ import ServiceFAQSection from './ServiceFAQSection';
 import ServiceCtaSection from './ServiceCtaSection';
 import ServiceSidebar from './ServiceSidebar';
 import { ServicePageSharedStyles } from './ServicePageStyles';
-import ServicePageSEO from '@/components/services/ServicePageSEO';
 
 interface FAQItem {
   question: string;
@@ -26,12 +25,9 @@ interface ServicePageContentProps {
   description: string;
   serviceName: string;
   serviceCategory: string;
-  canonicalUrl: string;
   mainContent: React.ReactNode;
   faqs?: FAQItem[];
   relatedServices?: RelatedService[];
-  serviceOfferings?: string[];
-  servicePrice?: string;
 }
 
 const ServicePageContent: React.FC<ServicePageContentProps> = ({
@@ -39,65 +35,50 @@ const ServicePageContent: React.FC<ServicePageContentProps> = ({
   description,
   serviceName,
   serviceCategory,
-  canonicalUrl,
   mainContent,
   faqs = [],
-  relatedServices = [],
-  serviceOfferings = [],
-  servicePrice = "49.00"
+  relatedServices = []
 }) => {
   return (
-    <ServicePageSEO
-      title={title}
-      description={description}
-      serviceName={serviceName}
-      serviceCategory={serviceCategory}
-      canonicalUrl={canonicalUrl}
-      faqs={faqs}
-      relatedServices={relatedServices}
-      serviceOfferings={serviceOfferings}
-      servicePrice={servicePrice}
-    >
-      <div className="py-16 bg-white">
-        <div className="container mx-auto px-4">
-          <div className="grid lg:grid-cols-3 gap-10">
-            {/* Main content area - 2/3 width on desktop */}
-            <div className="lg:col-span-2">
-              <div className="prose prose-lg max-w-none">
-                <ServicePageHeader 
-                  title={title} 
-                  description={description} 
-                />
-                
-                <ServiceTrustBadges />
-                
-                <ServiceMainContent 
-                  serviceName={serviceName}
-                  serviceCategory={serviceCategory}
-                  mainContent={mainContent}
-                />
-                
-                <ServiceProcessSection serviceName={serviceName} />
-                
-                {faqs.length > 0 && (
-                  <ServiceFAQSection faqs={faqs} />
-                )}
-                
-                <ServiceCtaSection serviceName={serviceName} />
-              </div>
+    <div className="py-16 bg-white">
+      <div className="container mx-auto px-4">
+        <div className="grid lg:grid-cols-3 gap-10">
+          {/* Main content area - 2/3 width on desktop */}
+          <div className="lg:col-span-2">
+            <div className="prose prose-lg max-w-none">
+              <ServicePageHeader 
+                title={title} 
+                description={description} 
+              />
+              
+              <ServiceTrustBadges />
+              
+              <ServiceMainContent 
+                serviceName={serviceName}
+                serviceCategory={serviceCategory}
+                mainContent={mainContent}
+              />
+              
+              <ServiceProcessSection serviceName={serviceName} />
+              
+              {faqs.length > 0 && (
+                <ServiceFAQSection faqs={faqs} />
+              )}
+              
+              <ServiceCtaSection serviceName={serviceName} />
             </div>
-            
-            {/* Sidebar - 1/3 width on desktop */}
-            <ServiceSidebar 
-              serviceName={serviceName} 
-              relatedServices={relatedServices} 
-            />
           </div>
+          
+          {/* Sidebar - 1/3 width on desktop */}
+          <ServiceSidebar 
+            serviceName={serviceName} 
+            relatedServices={relatedServices} 
+          />
         </div>
-
-        <ServicePageSharedStyles />
       </div>
-    </ServicePageSEO>
+
+      <ServicePageSharedStyles />
+    </div>
   );
 };
 

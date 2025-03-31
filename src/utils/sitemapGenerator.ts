@@ -1,69 +1,105 @@
 
-import { generateCompleteSitemap, generateSitemapIndex, formatSitemapDate } from './sitemapUtils';
+/**
+ * Utility to generate the sitemap.xml file during build
+ */
 
-// Define common sitemap properties
-const baseUrl = "https://247locksmithandsecurity.com";
-const currentDate = formatSitemapDate();
+// Define interfaces for route types
+interface SitemapRoute {
+  path: string;
+  priority: number;
+  changefreq: 'daily' | 'weekly' | 'monthly' | 'yearly';
+  lastmod?: string;
+}
 
-// Generate service area sitemap entries
-export const generateServiceAreaSitemap = (serviceAreas: {slug: string, name: string}[]) => {
-  const entries = serviceAreas.map(area => ({
-    url: `/service-areas/${area.slug}`,
-    lastmod: currentDate,
-    changefreq: 'monthly' as const,
-    priority: 0.8,
-    images: [{
-      url: `/images/locations/${area.slug}.jpg`,
-      title: `${area.name} Locksmith Services`,
-      caption: `Professional locksmith services in ${area.name}, NJ`
-    }]
-  }));
+// Define static routes for the sitemap to avoid import issues
+const mainRoutes: SitemapRoute[] = [
+  { path: '/', priority: 1.0, changefreq: 'daily' },
+  { path: '/about', priority: 0.8, changefreq: 'monthly' },
+  { path: '/contact', priority: 0.9, changefreq: 'weekly' },
+  { path: '/reviews', priority: 0.8, changefreq: 'daily' },
+  { path: '/faq', priority: 0.7, changefreq: 'weekly' },
+  { path: '/book-online', priority: 1.0, changefreq: 'daily' },
+  { path: '/privacy-policy', priority: 0.3, changefreq: 'monthly' },
+  { path: '/terms-conditions', priority: 0.3, changefreq: 'monthly' },
+  { path: '/sitemap', priority: 0.3, changefreq: 'weekly' },
+];
 
-  return generateCompleteSitemap(entries, baseUrl);
-};
+const serviceRoutes: SitemapRoute[] = [
+  // Service category pages
+  { path: '/services/emergency-locksmith', priority: 0.9, changefreq: 'weekly' },
+  { path: '/services/residential-locksmith', priority: 0.9, changefreq: 'weekly' },
+  { path: '/services/commercial-locksmith', priority: 0.9, changefreq: 'weekly' },
+  { path: '/services/auto-locksmith', priority: 0.9, changefreq: 'weekly' },
+  
+  // Emergency locksmith services
+  { path: '/services/emergency-locksmith/car-lockout', priority: 0.8, changefreq: 'weekly' },
+  { path: '/services/emergency-locksmith/house-lockout', priority: 0.8, changefreq: 'weekly' },
+  { path: '/services/emergency-locksmith/business-lockout', priority: 0.8, changefreq: 'weekly' },
+  { path: '/services/emergency-locksmith/storage-unit-lockout', priority: 0.8, changefreq: 'weekly' },
+  
+  // Residential locksmith services
+  { path: '/services/residential-locksmith/lock-replacement', priority: 0.8, changefreq: 'weekly' },
+  { path: '/services/residential-locksmith/lock-rekey', priority: 0.8, changefreq: 'weekly' },
+  { path: '/services/residential-locksmith/lock-repair', priority: 0.8, changefreq: 'weekly' },
+  { path: '/services/residential-locksmith/gate-locks', priority: 0.8, changefreq: 'weekly' },
+  
+  // Commercial locksmith services
+  { path: '/services/commercial-locksmith/lock-replacement', priority: 0.8, changefreq: 'weekly' },
+  { path: '/services/commercial-locksmith/lock-rekey', priority: 0.8, changefreq: 'weekly' },
+  { path: '/services/commercial-locksmith/emergency-exit-device', priority: 0.8, changefreq: 'weekly' },
+  { path: '/services/commercial-locksmith/master-key', priority: 0.8, changefreq: 'weekly' },
+  { path: '/services/commercial-locksmith/access-control', priority: 0.8, changefreq: 'weekly' },
+  
+  // Auto locksmith services
+  { path: '/services/auto-locksmith/car-key-replacement', priority: 0.8, changefreq: 'weekly' },
+  { path: '/services/auto-locksmith/key-fob-programming', priority: 0.8, changefreq: 'weekly' },
+  { path: '/services/auto-locksmith/car-key-duplicate', priority: 0.8, changefreq: 'weekly' },
+  { path: '/services/auto-locksmith/car-key-cutting', priority: 0.8, changefreq: 'weekly' },
+  { path: '/services/auto-locksmith/ignition-lock-cylinder', priority: 0.8, changefreq: 'weekly' },
+];
 
-// Generate services sitemap entries
-export const generateServicesSitemap = (services: {slug: string, category: string, name: string}[]) => {
-  const entries = services.map(service => ({
-    url: `/services/${service.category}/${service.slug}`,
-    lastmod: currentDate,
-    changefreq: 'monthly' as const,
-    priority: 0.8,
-    images: [{
-      url: `/images/services/${service.slug}.jpg`,
-      title: `${service.name} Service`,
-      caption: `Professional ${service.name} locksmith service`
-    }]
-  }));
+const serviceAreaRoutes: SitemapRoute[] = [
+  { path: '/service-areas', priority: 0.9, changefreq: 'weekly' },
+  { path: '/service-areas/north-bergen', priority: 0.8, changefreq: 'weekly' },
+  { path: '/service-areas/union-city', priority: 0.8, changefreq: 'weekly' },
+  { path: '/service-areas/west-new-york', priority: 0.8, changefreq: 'weekly' },
+  { path: '/service-areas/weehawken', priority: 0.8, changefreq: 'weekly' },
+  { path: '/service-areas/jersey-city', priority: 0.8, changefreq: 'weekly' },
+  { path: '/service-areas/hoboken', priority: 0.8, changefreq: 'weekly' },
+  { path: '/service-areas/secaucus', priority: 0.8, changefreq: 'weekly' },
+  { path: '/service-areas/guttenberg', priority: 0.8, changefreq: 'weekly' },
+];
 
-  return generateCompleteSitemap(entries, baseUrl);
-};
+/**
+ * Generate the sitemap XML content
+ */
+export function generateSitemapXml(baseUrl: string = 'https://247locksmithandsecurity.com'): string {
+  // Get today's date for lastmod fields that don't have a specific date
+  const today = new Date().toISOString().split('T')[0];
+  
+  // Start XML sitemap with appropriate headers
+  let xml = '<?xml version="1.0" encoding="UTF-8"?>\n';
+  xml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"\n';
+  xml += '        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"\n';
+  xml += '        xmlns:xhtml="http://www.w3.org/1999/xhtml"\n';
+  xml += '        xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9\n';
+  xml += '        http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">\n\n';
 
-// Generate main sitemap entries for core pages
-export const generateMainSitemap = () => {
-  const entries = [
-    { url: '/', lastmod: currentDate, changefreq: 'weekly' as const, priority: 1.0 },
-    { url: '/about', lastmod: currentDate, changefreq: 'monthly' as const, priority: 0.7 },
-    { url: '/contact', lastmod: currentDate, changefreq: 'monthly' as const, priority: 0.8 },
-    { url: '/services', lastmod: currentDate, changefreq: 'weekly' as const, priority: 0.9 },
-    { url: '/service-areas', lastmod: currentDate, changefreq: 'weekly' as const, priority: 0.9 },
-    { url: '/faq', lastmod: currentDate, changefreq: 'monthly' as const, priority: 0.6 },
-    { url: '/reviews', lastmod: currentDate, changefreq: 'monthly' as const, priority: 0.6 },
-    { url: '/book-online', lastmod: currentDate, changefreq: 'monthly' as const, priority: 0.8 },
-    { url: '/privacy-policy', lastmod: currentDate, changefreq: 'yearly' as const, priority: 0.3 },
-    { url: '/terms-conditions', lastmod: currentDate, changefreq: 'yearly' as const, priority: 0.3 },
-  ];
+  // Combined routes from all sections
+  const allRoutes = [...mainRoutes, ...serviceRoutes, ...serviceAreaRoutes];
 
-  return generateCompleteSitemap(entries, baseUrl);
-};
+  // Generate URL entries for each route
+  allRoutes.forEach(route => {
+    xml += '  <url>\n';
+    xml += `    <loc>${baseUrl}${route.path}</loc>\n`;
+    xml += `    <lastmod>${route.lastmod || today}</lastmod>\n`;
+    xml += `    <changefreq>${route.changefreq}</changefreq>\n`;
+    xml += `    <priority>${route.priority.toFixed(1)}</priority>\n`;
+    xml += '  </url>\n';
+  });
 
-// Generate sitemap index file
-export const generateSitemapIndexFile = () => {
-  const sitemaps = [
-    { url: '/sitemap.xml', lastmod: currentDate },
-    { url: '/sitemap-services.xml', lastmod: currentDate },
-    { url: '/sitemap-locations.xml', lastmod: currentDate },
-  ];
+  // Close the XML sitemap
+  xml += '</urlset>';
 
-  return generateSitemapIndex(sitemaps, baseUrl);
-};
+  return xml;
+}

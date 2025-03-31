@@ -29,7 +29,6 @@ const MasterKeyContent = () => {
       description="Professional master key system implementation for effective access control in your business"
       serviceName="Master Key System"
       serviceCategory="Commercial Locksmith"
-      canonicalUrl="/services/commercial-locksmith/master-key"
       mainContent={mainContent}
       faqs={faqs}
       relatedServices={relatedServices}

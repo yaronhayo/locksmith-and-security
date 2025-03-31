@@ -7,56 +7,28 @@ interface ServiceProcessSectionProps {
 
 const ServiceProcessSection: React.FC<ServiceProcessSectionProps> = ({ serviceName }) => {
   return (
-    <section className="my-12">
-      <h2 className="text-2xl font-bold mb-6">Our Service Process</h2>
-      
-      <div className="space-y-6">
-        <div className="service-process-step">
-          <div className="service-process-step-number">1</div>
-          <h3 className="font-semibold text-lg mb-2">Contact Us</h3>
-          <p className="text-gray-600">
-            Call our 24/7 service line or book online. Our friendly staff will gather your information
-            and schedule an appointment at your convenience.
-          </p>
+    <div className="mb-10">
+      <h2 className="text-2xl lg:text-3xl font-bold text-primary mb-6 border-l-4 border-secondary pl-4">
+        Our {serviceName} Process
+      </h2>
+      <div className="grid gap-8 md:grid-cols-3 my-8">
+        <div className="relative pl-8 border-l-2 border-secondary/30">
+          <div className="absolute top-0 left-[-9px] w-4 h-4 rounded-full bg-secondary" />
+          <h4 className="text-lg font-semibold text-primary mb-2">1. Contact Us</h4>
+          <p className="text-gray-600">Call our emergency number or book online. Provide your location and details about your situation.</p>
         </div>
-        
-        <div className="service-process-step">
-          <div className="service-process-step-number">2</div>
-          <h3 className="font-semibold text-lg mb-2">Professional Assessment</h3>
-          <p className="text-gray-600">
-            Our licensed locksmith will arrive promptly, assess your specific {serviceName.toLowerCase()} needs,
-            and explain the recommended solutions.
-          </p>
+        <div className="relative pl-8 border-l-2 border-secondary/30">
+          <div className="absolute top-0 left-[-9px] w-4 h-4 rounded-full bg-secondary" />
+          <h4 className="text-lg font-semibold text-primary mb-2">2. Quick Response</h4>
+          <p className="text-gray-600">Our technician arrives promptly with all necessary equipment to handle your {serviceName.toLowerCase()}.</p>
         </div>
-        
-        <div className="service-process-step">
-          <div className="service-process-step-number">3</div>
-          <h3 className="font-semibold text-lg mb-2">Transparent Quote</h3>
-          <p className="text-gray-600">
-            We provide a clear, upfront price quote before any work begins,
-            ensuring there are no surprises or hidden fees.
-          </p>
-        </div>
-        
-        <div className="service-process-step">
-          <div className="service-process-step-number">4</div>
-          <h3 className="font-semibold text-lg mb-2">Expert Service</h3>
-          <p className="text-gray-600">
-            Our technician will complete the {serviceName.toLowerCase()} service efficiently,
-            using high-quality parts and professional techniques.
-          </p>
-        </div>
-        
-        <div className="service-process-step">
-          <div className="service-process-step-number">5</div>
-          <h3 className="font-semibold text-lg mb-2">Quality Check</h3>
-          <p className="text-gray-600">
-            We'll test everything to ensure proper function and explain how to use
-            and maintain your locks or keys going forward.
-          </p>
+        <div className="relative pl-8 border-l-2 border-secondary/30">
+          <div className="absolute top-0 left-[-9px] w-4 h-4 rounded-full bg-secondary" />
+          <h4 className="text-lg font-semibold text-primary mb-2">3. Professional Solution</h4>
+          <p className="text-gray-600">We resolve your issue quickly and efficiently, with upfront pricing and professional workmanship.</p>
         </div>
       </div>
-    </section>
+    </div>
   );
 };
 

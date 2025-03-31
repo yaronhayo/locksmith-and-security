@@ -2,8 +2,13 @@
 import HeroSection from "@/components/sections/HeroSection";
 import HomeLayout from "@/components/layouts/HomeLayout";
 import HomeContent from "@/components/sections/home/HomeContent";
+import { Helmet } from "react-helmet";
 import { useEffect } from "react";
-import SEOManager from "@/components/meta/SEOManager";
+import { SchemaScripts } from "@/components/meta/SchemaScripts";
+import { BasicMetaTags } from "@/components/meta/BasicMetaTags";
+import { OpenGraphTags } from "@/components/meta/OpenGraphTags";
+import { TwitterTags } from "@/components/meta/TwitterTags";
+import SEOHead from "@/components/meta/SEOHead";
 
 const Index = () => {
   useEffect(() => {
@@ -12,51 +17,87 @@ const Index = () => {
 
   const pageTitle = "Emergency Locksmith Services | North Bergen, NJ";
   const pageDescription = "24/7 locksmith services in North Bergen. Fast response for residential, commercial, and auto lockouts. Licensed & insured professionals.";
-  const keywords = "locksmith north bergen, emergency locksmith, 24/7 locksmith, car lockout, house lockout, business lockout, key replacement, lock repair, security solutions";
-  
-  const homeBreadcrumbs = [
-    { name: "Home", item: "/" }
-  ];
+  const keywords = "locksmith north bergen, emergency locksmith, 24/7 locksmith, car lockout, house lockout, business lockout, key replacement";
+  const canonicalUrl = "https://247locksmithandsecurity.com/";
+  const imageUrl = "/lovable-uploads/1bbeb1e6-5581-4e09-9600-7d1859bb17c5.png";
+  const baseUrl = "https://247locksmithandsecurity.com";
 
-  const homeFaqs = [
-    {
-      question: "What locksmith services do you offer?",
-      answer: "We offer a comprehensive range of locksmith services including residential, commercial, and automotive locksmith solutions. This includes emergency lockouts, lock installation and repair, key cutting and duplication, master key systems, high-security locks, and more."
-    },
-    {
-      question: "Are your locksmiths licensed and insured?",
-      answer: "Yes, all our technicians are fully licensed, bonded, and insured professionals. We maintain all necessary certifications and stay up-to-date with the latest security technologies to provide the highest quality service."
-    },
-    {
-      question: "Do you provide 24/7 emergency service?",
-      answer: "Yes, we provide genuine 24/7 emergency locksmith services throughout North Bergen and surrounding areas. Whether you're locked out of your home, business, or vehicle at any hour, our emergency technicians are on call to help you regain access quickly and safely."
-    },
-    {
-      question: "How quickly can you respond to an emergency?",
-      answer: "Our average response time is 15-30 minutes for emergency situations in North Bergen and nearby areas. We prioritize emergency lockouts and aim to provide the fastest possible response to get you back into your property or vehicle."
-    },
-    {
-      question: "Do you service all types of locks?",
-      answer: "Yes, we service all types of locks including traditional deadbolts, smart locks, high-security locks, keyless entry systems, mortise locks, and padlocks. Our technicians are experienced with all major brands including Schlage, Kwikset, Yale, Baldwin, and more."
+  const websiteSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Locksmith & Security LLC",
+    "url": "https://247locksmithandsecurity.com/",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "https://247locksmithandsecurity.com/search?q={search_term_string}",
+      "query-input": "required name=search_term_string"
     }
-  ];
+  };
+
+  const organizationSchema = {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "name": "Locksmith & Security LLC",
+    "image": "/lovable-uploads/1bbeb1e6-5581-4e09-9600-7d1859bb17c5.png",
+    "url": "https://247locksmithandsecurity.com",
+    "telephone": "+12017482070",
+    "priceRange": "$$", 
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "7116 Bergenline Ave",
+      "addressLocality": "North Bergen",
+      "addressRegion": "NJ",
+      "postalCode": "07047",
+      "addressCountry": "US"
+    },
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": "40.7795",
+      "longitude": "-74.0324"
+    },
+    "openingHoursSpecification": {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": [
+        "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"
+      ],
+      "opens": "00:00",
+      "closes": "23:59"
+    },
+    "sameAs": [
+      "https://www.facebook.com/247locksmithandsecurity/",
+      "https://twitter.com/LocksmithSecurity",
+      "https://www.instagram.com/247locksmithandsecurity/",
+      "https://www.yelp.com/biz/locksmith-and-security-north-bergen"
+    ]
+  };
 
   return (
-    <SEOManager
-      pageType="home"
-      title={pageTitle}
-      description={pageDescription}
-      canonicalUrl="/"
-      keywords={keywords}
-      breadcrumbs={homeBreadcrumbs}
-      faqs={homeFaqs}
-      modifiedDate={new Date().toISOString()}
-    >
+    <>
+      <SEOHead 
+        title={pageTitle}
+        description={pageDescription}
+        keywords={keywords}
+        canonicalUrl={canonicalUrl}
+        schemas={[
+          { type: 'website', data: websiteSchema },
+          { type: 'organization', data: organizationSchema }
+        ]}
+        ogImage={imageUrl}
+        noindex={false}
+        nofollow={false}
+        ogType="website"
+        twitterCardType="summary_large_image"
+        geoRegion="US-NJ"
+        geoPlaceName="North Bergen"
+        geoPosition="40.7795;-74.0324"
+        icbm="40.7795, -74.0324"
+      />
+      
       <HomeLayout>
         <HeroSection />
         <HomeContent />
       </HomeLayout>
-    </SEOManager>
+    </>
   );
 };
 

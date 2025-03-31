@@ -38,7 +38,6 @@ const CommercialLockRekey = () => {
         description="Change your locks' internal pins to work with new keys while keeping your existing hardware"
         serviceName="Commercial Lock Rekey"
         serviceCategory="Commercial Locksmith"
-        canonicalUrl="/services/commercial-locksmith/lock-rekey"
         mainContent={<CommercialLockRekeyContent />}
         relatedServices={commercialLockRekeyRelatedServices}
         faqs={commercialLockRekeyFaqs}

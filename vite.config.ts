@@ -12,8 +12,8 @@ const generateSitemap = () => {
     closeBundle: async () => {
       try {
         // Dynamically import the sitemap generator
-        const { generateMainSitemap } = await import('./src/utils/sitemapGenerator');
-        const sitemap = generateMainSitemap();
+        const { generateSitemapXml } = await import('./src/utils/sitemapGenerator');
+        const sitemap = generateSitemapXml();
         
         // Ensure the dist directory exists
         if (!fs.existsSync('./dist')) {

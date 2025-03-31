@@ -1,4 +1,16 @@
 
-// This file re-exports the types from schema.d.ts
-// to maintain compatibility with existing imports
-export * from './schema.d.ts';
+export interface FAQQuestion {
+  name: string;
+  acceptedAnswer: {
+    text: string;
+  };
+}
+
+export interface FAQSchema {
+  type: string;
+  data: {
+    "@context": string;
+    "@type": string;
+    mainEntity: FAQQuestion[];
+  };
+}

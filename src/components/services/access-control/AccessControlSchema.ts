@@ -1,81 +1,146 @@
 
-import { createFAQSchema } from "@/components/meta/schema/FAQSchema";
+import { FAQSchema } from "@/types/schema";
+import { createLocalBusinessSchema } from "@/components/meta/schema/LocalBusinessSchema";
 
-// FAQ data for the access control page
-export const accessControlFaqs = [
-  {
-    question: "What is an access control system?",
-    answer: "An access control system is a security solution that manages and restricts entry to a building, room, or area. It allows property owners to control who can enter specific spaces through electronic or digital authentication methods like key cards, PIN codes, or biometrics."
-  },
-  {
-    question: "How does a keyless entry system work?",
-    answer: "Keyless entry systems use electronic or digital credentials instead of traditional keys. Users can gain access through PIN codes, key cards, key fobs, smartphone apps, or biometric identification (fingerprints, facial recognition). When valid credentials are presented, the system's electronic lock releases, granting access."
-  },
-  {
-    question: "What are the benefits of installing an access control system?",
-    answer: "Access control systems offer numerous benefits including: enhanced security through controlled access and entry logs, elimination of key management issues, instant access revocation for former employees, customizable access levels for different users, integration with other security systems, and detailed audit trails of who entered where and when."
-  },
-  {
-    question: "Can access control systems be installed in residential properties?",
-    answer: "Yes, access control systems are increasingly popular for residential properties. They're particularly useful for single-family homes, apartment buildings, gated communities, and vacation rentals. Modern residential systems offer features like remote access control via smartphone apps, temporary codes for visitors, and integration with home automation systems."
-  },
-  {
-    question: "What types of businesses benefit most from access control systems?",
-    answer: "While businesses of all sizes can benefit from access control, they're particularly valuable for: offices with sensitive information, retail stores with inventory areas, healthcare facilities, educational institutions, government buildings, data centers, financial institutions, multi-tenant buildings, warehouses, and manufacturing facilities."
-  },
-  {
-    question: "How much does an access control system cost?",
-    answer: "Access control system costs vary widely based on factors like system complexity, number of entry points, credential type, and additional features. Simple single-door systems might start around $1,000-$1,500 installed, while comprehensive multi-door systems with advanced features can range from $2,500-$10,000+ depending on requirements. We provide free consultations and quotes based on your specific needs."
-  },
-  {
-    question: "Can existing locks be converted to electronic access control?",
-    answer: "In many cases, yes. Existing door hardware can often be retrofitted with electronic components that enable access control functionality. Options include electric strikes, electromagnetic locks, and smart lock cylinders that work with existing hardware. Our technicians can evaluate your current setup and recommend the most efficient conversion approach."
-  },
-  {
-    question: "What happens during a power outage with electronic access control?",
-    answer: "Most quality access control systems have backup power solutions and fail-safe/fail-secure mechanisms. Battery backups maintain functionality during power outages, and systems can be configured to either default to unlocked (fail-safe, common for fire exits) or remain locked (fail-secure, for high-security areas) when power is lost, depending on security needs and building codes."
-  }
-];
-
-// Create the FAQ schema using the FAQSchema component
-export const accessControlFaqSchema = createFAQSchema({
-  questions: accessControlFaqs
-});
-
-// Service schema for Access Control systems
-export const accessControlServiceSchema = {
+export const accessControlSchema = {
   "@context": "https://schema.org",
   "@type": "Service",
-  "name": "Access Control System Installation & Maintenance",
-  "serviceType": "Security System Installation",
+  "@id": "https://247locksmithandsecurity.com/services/commercial-locksmith/access-control#service",
+  "name": "Access Control Systems",
+  "description": "Professional access control system design, installation and maintenance for enhanced business security",
   "provider": {
     "@type": "LocalBusiness",
-    "name": "Locksmith & Security LLC",
-    "address": {
-      "@type": "PostalAddress",
-      "addressLocality": "North Bergen",
-      "addressRegion": "NJ",
-      "postalCode": "07047"
+    "@id": "https://247locksmithandsecurity.com/#localbusiness"
+  },
+  "areaServed": [
+    {
+      "@type": "State",
+      "name": "New Jersey"
     },
-    "telephone": "(201) 748-2070"
-  },
-  "areaServed": {
-    "@type": "State",
-    "name": "New Jersey"
-  },
-  "description": "Professional access control system installation, maintenance and repair for businesses and residential properties. We offer keyless entry systems, card readers, biometric access solutions and more.",
+    {
+      "@type": "City",
+      "name": "Hoboken",
+      "sameAs": "https://en.wikipedia.org/wiki/Hoboken,_New_Jersey"
+    },
+    {
+      "@type": "City",
+      "name": "Jersey City",
+      "sameAs": "https://en.wikipedia.org/wiki/Jersey_City,_New_Jersey"
+    },
+    {
+      "@type": "City",
+      "name": "North Bergen",
+      "sameAs": "https://en.wikipedia.org/wiki/North_Bergen,_New_Jersey"
+    }
+  ],
+  "serviceType": "Access Control System Installation",
   "offers": {
     "@type": "Offer",
-    "price": "1000.00",
+    "price": "199.00",
     "priceCurrency": "USD",
     "priceSpecification": {
       "@type": "UnitPriceSpecification",
       "priceType": "https://schema.org/MinimumPrice",
-      "price": "1000.00",
+      "price": "199.00",
       "priceCurrency": "USD"
     }
+  },
+  "hasOfferCatalog": {
+    "@type": "OfferCatalog",
+    "name": "Access Control Services",
+    "itemListElement": [
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Card Reader Installation"
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Biometric Access Systems"
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Keypad Entry Systems"
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Access Control Maintenance"
+        }
+      }
+    ]
+  },
+  "mainEntityOfPage": "https://247locksmithandsecurity.com/services/commercial-locksmith/access-control"
+};
+
+// FAQ data for the component display
+export const accessControlFaqs = [
+  {
+    question: "What types of access control systems do you offer?",
+    answer: "We offer a wide range of access control systems including card/fob readers, keypad entry systems, biometric solutions (fingerprint, retina, and facial recognition), and mobile credential systems that use smartphones as access devices. Our team will help you determine the best solution based on your security requirements and budget."
+  },
+  {
+    question: "Can access control systems be integrated with existing security systems?",
+    answer: "Yes, most modern access control systems can integrate with existing security infrastructure like video surveillance, alarm systems, and building management systems. We specialize in creating cohesive security solutions that work together to protect your business while maximizing your existing investments."
+  },
+  {
+    question: "How long does it take to install an access control system?",
+    answer: "Installation time varies depending on the complexity of the system and number of access points. A basic system for a small business might take 1-2 days, while enterprise solutions for larger facilities may take several weeks. During our initial consultation, we'll provide a detailed timeline specific to your project."
+  },
+  {
+    question: "What happens if an employee leaves the company or loses their access credential?",
+    answer: "One of the primary benefits of electronic access control is the ability to immediately revoke access privileges. If an employee leaves or loses their credential, we can quickly deactivate it in the system, eliminating security risks. There's no need to rekey locks or worry about unauthorized access from lost keys."
+  },
+  {
+    question: "Do you provide maintenance and support for access control systems?",
+    answer: "Yes, we offer comprehensive maintenance plans and technical support for all our access control installations. Our service packages include regular system checks, software updates, troubleshooting, and emergency response services to ensure your system remains operational and secure at all times."
+  },
+  {
+    question: "Can an access control system track when employees enter and exit the building?",
+    answer: "Yes, all of our access control systems include detailed reporting capabilities that track entry and exit events. These systems create logs showing who accessed which doors and when, providing valuable information for security monitoring, time tracking, and accountability purposes."
+  },
+  {
+    question: "Are access control systems cost-effective for small businesses?",
+    answer: "Yes, we offer scalable access control solutions designed specifically for small businesses. These systems provide essential security features at an affordable price point, with the ability to expand as your business grows. The investment typically pays for itself through improved security, reduced key management costs, and operational efficiencies."
+  },
+  {
+    question: "How secure are electronic access control systems compared to traditional locks?",
+    answer: "Electronic access control systems offer significantly higher security than traditional locks. They eliminate risks associated with lost keys, allow for immediate credential revocation, provide detailed access logs, support time-restricted access, and can integrate with other security systems for comprehensive protection."
+  }
+];
+
+// Convert the FAQ data to schema format
+const faqItems = accessControlFaqs.map(faq => ({
+  "@type": "Question",
+  "name": faq.question,
+  "acceptedAnswer": {
+    "@type": "Answer",
+    "text": faq.answer
+  }
+}));
+
+// Create the FAQ schema
+export const accessControlFAQSchema: FAQSchema = {
+  type: "FAQPage",
+  data: {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": faqItems
   }
 };
 
-// Export for use in the access control page
-export const accessControlSchema = accessControlServiceSchema;
+// Export the local business schema for this specific service
+export const accessControlLocalBusinessSchema = createLocalBusinessSchema({
+  name: "247 Locksmith & Security - Access Control Systems",
+  description: "Professional access control system installation, maintenance and support for businesses in New Jersey. Enhance your business security with modern access control solutions.",
+  priceRange: "$$$"
+});

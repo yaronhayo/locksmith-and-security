@@ -1,18 +1,14 @@
 
-import { SchemaData } from "@/types/schema";
+export const createFAQSchema = (questions: Array<{ question: string; answer: string }>) => ({
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": questions.map(q => ({
+    "@type": "Question",
+    "name": q.question,
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": q.answer
+    }
+  }))
+});
 
-export const createFAQSchema = (faqs: Array<{ question: string; answer: string }>) => ({
-  type: 'FAQPage',
-  data: {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "mainEntity": faqs.map(faq => ({
-      "@type": "Question",
-      "name": faq.question,
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": faq.answer
-      }
-    }))
-  }
-}) as SchemaData;

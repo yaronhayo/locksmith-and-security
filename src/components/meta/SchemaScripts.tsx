@@ -1,23 +1,33 @@
 
-import React from 'react';
-import { SchemaData } from '@/types/schema';
+import { Helmet } from "react-helmet";
+import React from "react";
 
-interface SchemaScriptsProps {
-  schemas: SchemaData[];
+interface Schema {
+  type: string;
+  data: object;
 }
 
-export const SchemaScripts: React.FC<SchemaScriptsProps> = ({ schemas }) => {
+interface SchemaScriptsProps {
+  schemas: Schema[];
+}
+
+export const SchemaScripts = ({ schemas }: SchemaScriptsProps) => {
+  // Deduplicate schemas by type to prevent duplicate schema markup
+  const uniqueSchemas = schemas.reduce((acc: Schema[], schema) => {
+    const existingSchemaIndex = acc.findIndex(s => s.type === schema.type);
+    if (existingSchemaIndex === -1) {
+      acc.push(schema);
+    }
+    return acc;
+  }, []);
+
   return (
-    <>
-      {schemas.map((schema, index) => (
-        <script 
-          key={`schema-${schema.type}-${index}`}
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ 
-            __html: JSON.stringify(schema.data)
-          }}
-        />
+    <Helmet>
+      {uniqueSchemas.map((schema, index) => (
+        <script key={`${schema.type}-${index}`} type="application/ld+json">
+          {JSON.stringify(schema.data)}
+        </script>
       ))}
-    </>
+    </Helmet>
   );
 };

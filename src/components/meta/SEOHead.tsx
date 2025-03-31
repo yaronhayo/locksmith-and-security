@@ -61,7 +61,7 @@ const SEOHead: React.FC<SEOHeadProps> = ({
   // Truncate title for optimal display (50-60 characters)
   const optimizedTitle = title.length > 60 ? `${title.substring(0, 57)}...` : title;
   
-  // Truncate description for optimal display (150-158 characters)
+  // Truncate description for optimal display (120-158 characters)
   const optimizedDescription = description.length > 158 ? `${description.substring(0, 155)}...` : description;
   
   // Ensure canonical URL has the proper base
@@ -107,8 +107,8 @@ const SEOHead: React.FC<SEOHeadProps> = ({
         <meta name="robots" content={`${noindex ? 'noindex' : 'index'},${nofollow ? 'nofollow' : 'follow'},max-image-preview:large,max-snippet:-1,max-video-preview:-1`} />
         
         {/* Structured data attributes */}
-        {publishedDate && <meta property="article:published_time" content={publishedDate} />}
-        {modifiedDate && <meta property="article:modified_time" content={modifiedDate} />}
+        {publishedDate && <meta name="article:published_time" content={publishedDate} />}
+        {modifiedDate && <meta name="article:modified_time" content={modifiedDate} />}
         
         {/* Location-specific meta tags for service areas */}
         {geoRegion && <meta name="geo.region" content={geoRegion} />}

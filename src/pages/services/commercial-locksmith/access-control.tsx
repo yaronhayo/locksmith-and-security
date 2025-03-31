@@ -4,7 +4,7 @@ import EnhancedServicesHero from '@/components/sections/services/EnhancedService
 import ServicePageContent from '@/components/sections/services/service-page';
 import { SchemaScripts } from '@/components/meta/SchemaScripts';
 import { Helmet } from 'react-helmet';
-import { accessControlServiceSchema, accessControlFaqSchema, accessControlFaqs } from '@/components/services/access-control/AccessControlSchema';
+import { accessControlSchema, accessControlFAQSchema, accessControlFaqs } from '@/components/services/access-control/AccessControlSchema';
 import AccessControlContent from '@/components/services/access-control/AccessControlContent';
 import ServicesProof from '@/components/sections/services/ServicesProof';
 import { commercialReviews } from '@/data/reviews/commercialReviews';
@@ -22,8 +22,8 @@ const AccessControl = () => {
       
       <SchemaScripts 
         schemas={[
-          { type: 'service', data: accessControlServiceSchema },
-          { type: 'faq', data: accessControlFaqSchema.data }
+          { type: 'service', data: accessControlSchema },
+          { type: 'faq', data: accessControlFAQSchema }
         ]} 
       />
       
@@ -39,7 +39,6 @@ const AccessControl = () => {
         description="Expert installation and maintenance of advanced access control systems"
         serviceName="Access Control"
         serviceCategory="Commercial Locksmith"
-        canonicalUrl="/services/commercial-locksmith/access-control"
         mainContent={<AccessControlContent />}
         faqs={accessControlFaqs}
         relatedServices={relatedCommercialServices}
