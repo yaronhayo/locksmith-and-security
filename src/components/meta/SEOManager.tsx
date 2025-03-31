@@ -31,11 +31,14 @@ interface SEOManagerProps {
   servicePriceCurrency?: string;
   faqs?: FAQItem[];
   breadcrumbs?: BreadcrumbItem[];
+  areaName?: string;
+  areaDescription?: string;
   locationName?: string;
-  locationCoordinates?: {
+  geoCoordinates?: {
     latitude: number;
     longitude: number;
   };
+  areaServices?: string[];
   author?: string;
   alternateLanguages?: {locale: string, url: string}[];
   nextPrevLinks?: {prev?: string, next?: string};

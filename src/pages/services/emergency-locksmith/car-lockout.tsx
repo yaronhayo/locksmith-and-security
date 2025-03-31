@@ -42,7 +42,9 @@ export const metadata: Metadata = {
     description: "Need car lockout service? Our expert locksmiths provide 24/7 emergency assistance. Fast, reliable, and professional service to get you back on the road.",
     images: ['/website-uploads/carkey.jpg'], // Replace with your actual image URL
   },
-  canonical: '/services/emergency-locksmith/car-lockout',
+  alternates: {
+    canonical: '/services/emergency-locksmith/car-lockout',
+  },
 };
 
 const CarLockoutServicePage: React.FC = () => {
