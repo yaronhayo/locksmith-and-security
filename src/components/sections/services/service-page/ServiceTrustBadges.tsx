@@ -1,24 +1,24 @@
 
 import React from 'react';
-import { Clock, ShieldCheck, Award } from "lucide-react";
 
 const ServiceTrustBadges: React.FC = () => {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-10">
-      <div className="bg-secondary/5 p-4 rounded-lg border border-secondary/20 flex flex-col items-center text-center">
-        <Clock className="h-8 w-8 text-secondary mb-2" />
-        <h3 className="text-base font-semibold text-gray-800 mb-1">Fast Response</h3>
-        <p className="text-sm text-gray-600">Available 24/7 for emergency assistance</p>
+    <div className="flex flex-wrap justify-center gap-6 my-8 py-4 border-y border-gray-100">
+      <div className="flex items-center gap-2">
+        <img src="/images/badges/licensed-badge.svg" alt="Licensed" className="w-8 h-8" />
+        <span className="text-sm font-medium">Licensed</span>
       </div>
-      <div className="bg-secondary/5 p-4 rounded-lg border border-secondary/20 flex flex-col items-center text-center">
-        <ShieldCheck className="h-8 w-8 text-secondary mb-2" />
-        <h3 className="text-base font-semibold text-gray-800 mb-1">Licensed Experts</h3>
-        <p className="text-sm text-gray-600">Fully insured professional technicians</p>
+      <div className="flex items-center gap-2">
+        <img src="/images/badges/insured-badge.svg" alt="Insured" className="w-8 h-8" />
+        <span className="text-sm font-medium">Insured</span>
       </div>
-      <div className="bg-secondary/5 p-4 rounded-lg border border-secondary/20 flex flex-col items-center text-center">
-        <Award className="h-8 w-8 text-secondary mb-2" />
-        <h3 className="text-base font-semibold text-gray-800 mb-1">Satisfaction Guaranteed</h3>
-        <p className="text-sm text-gray-600">Quality workmanship you can trust</p>
+      <div className="flex items-center gap-2">
+        <img src="/images/badges/satisfaction-badge.svg" alt="Satisfaction Guaranteed" className="w-8 h-8" />
+        <span className="text-sm font-medium">Satisfaction Guaranteed</span>
+      </div>
+      <div className="flex items-center gap-2">
+        <img src="/images/badges/fast-badge.svg" alt="Fast Response" className="w-8 h-8" />
+        <span className="text-sm font-medium">Fast Response</span>
       </div>
     </div>
   );

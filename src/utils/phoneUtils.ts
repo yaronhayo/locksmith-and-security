@@ -1,50 +1,18 @@
 
-import { useState, useEffect } from 'react';
-
-// Phone numbers configuration
-const PHONE_NUMBERS = {
-  default: '(201) 748-2070',
-  googleAds: '(551) 209-2928'
-};
-
-// Get the appropriate phone number based on traffic source
+/**
+ * Get the phone number for the locksmith service
+ * @returns The formatted phone number
+ */
 export const getPhoneNumber = (): string => {
-  // Check for Google Ads PPC traffic
-  if (typeof window !== 'undefined') {
-    // Check URL parameters first
-    const urlParams = new URLSearchParams(window.location.search);
-    const isGoogleAdsUrl = urlParams.get('utm_source') === 'google' && 
-                          urlParams.get('utm_medium') === 'cpc';
-    
-    // Then check localStorage (persisted from previous pages)
-    const utmSource = localStorage.getItem('utm_source');
-    const utmMedium = localStorage.getItem('utm_medium');
-    const isGoogleAdsStorage = utmSource === 'google' && utmMedium === 'cpc';
-    
-    // Return Google Ads number if either condition is true
-    if (isGoogleAdsUrl || isGoogleAdsStorage) {
-      return PHONE_NUMBERS.googleAds;
-    }
-  }
-  
-  return PHONE_NUMBERS.default;
+  // In a real app, this might come from an environment variable or API
+  return "(201) 748-2070";
 };
 
-// Format phone number as href
-export const formatPhoneHref = (phoneNumber: string): string => {
-  return `tel:${phoneNumber.replace(/\D/g, '')}`;
-};
-
-// React hook to use the dynamic phone number
-export const usePhoneNumber = () => {
-  const [phoneNumber, setPhoneNumber] = useState(PHONE_NUMBERS.default);
-  
-  useEffect(() => {
-    setPhoneNumber(getPhoneNumber());
-  }, []);
-  
-  return {
-    phoneNumber,
-    phoneHref: formatPhoneHref(phoneNumber)
-  };
+/**
+ * Format a phone number for tel: links (removing non-numeric characters)
+ * @param phoneNumber The phone number to format
+ * @returns Formatted phone number for tel: links
+ */
+export const formatPhoneForTel = (phoneNumber: string): string => {
+  return phoneNumber.replace(/\D/g, '');
 };

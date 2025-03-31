@@ -1,86 +1,99 @@
 
+import { SiteSettings } from "@/hooks/useSettings";
+
 interface LocalBusinessSchemaProps {
   name?: string;
+  description?: string;
+  url?: string;
   telephone?: string;
-  streetAddress?: string;
-  addressLocality?: string;
-  addressRegion?: string;
-  postalCode?: string;
-  images?: string[];
+  image?: string;
+  address?: {
+    street?: string;
+    city?: string;
+    state?: string;
+    zip?: string;
+    country?: string;
+  };
   geo?: {
-    latitude: number;
-    longitude: number;
+    latitude?: string;
+    longitude?: string;
   };
   priceRange?: string;
-  email?: string;
+  openingHours?: string[];
   sameAs?: string[];
+  settings?: SiteSettings;
 }
 
 export const createLocalBusinessSchema = ({
   name = "Locksmith & Security LLC",
+  description = "Professional 24/7 locksmith services for residential, commercial, and automotive needs.",
+  url = "https://247locksmithandsecurity.com",
   telephone = "(201) 748-2070",
-  streetAddress = "5800 Kennedy Blvd",
-  addressLocality = "North Bergen",
-  addressRegion = "NJ",
-  postalCode = "07047",
-  images = ["/lovable-uploads/1bbeb1e6-5581-4e09-9600-7d1859bb17c5.png"],
-  geo = { latitude: 40.7795, longitude: -74.0324 },
+  image = "/lovable-uploads/1bbeb1e6-5581-4e09-9600-7d1859bb17c5.png",
+  address = {
+    street: "5800 Kennedy Blvd",
+    city: "North Bergen",
+    state: "NJ",
+    zip: "07047",
+    country: "US"
+  },
+  geo = {
+    latitude: "40.7795",
+    longitude: "-74.0324"
+  },
   priceRange = "$$",
-  email = "info@247locksmithandsecurity.com",
+  openingHours = ["Mo-Su 00:00-23:59"],
   sameAs = [
-    "https://www.facebook.com/247locksmithandsecurity/",
+    "https://www.facebook.com/locksmithandsecurity/",
     "https://www.yelp.com/biz/locksmith-and-security-north-bergen"
-  ]
+  ],
+  settings
 }: LocalBusinessSchemaProps = {}) => {
+  
+  // Use settings if provided
+  const businessName = settings?.company_name || name;
+  const businessPhone = settings?.company_phone || telephone;
+  const businessStreet = settings?.company_address || address.street;
+  const businessCity = settings?.company_city || address.city;
+  const businessState = settings?.company_state || address.state;
+  const businessZip = settings?.company_zip || address.zip;
+  const businessLatitude = settings?.company_lat || geo.latitude;
+  const businessLongitude = settings?.company_lng || geo.longitude;
+  
   const localBusinessSchema = {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
-    "name": name,
-    "image": images[0],
-    "telephone": telephone,
-    "email": email,
+    "@id": `${url}/#localbusiness`,
+    "name": businessName,
+    "description": description,
+    "url": url,
+    "telephone": businessPhone,
+    "image": image.startsWith('http') ? image : `${url}${image.startsWith('/') ? image : `/${image}`}`,
     "priceRange": priceRange,
     "address": {
       "@type": "PostalAddress",
-      "streetAddress": streetAddress,
-      "addressLocality": addressLocality,
-      "addressRegion": addressRegion,
-      "postalCode": postalCode,
-      "addressCountry": "US"
+      "streetAddress": businessStreet,
+      "addressLocality": businessCity,
+      "addressRegion": businessState,
+      "postalCode": businessZip,
+      "addressCountry": address.country
     },
     "geo": {
       "@type": "GeoCoordinates",
-      "latitude": geo.latitude,
-      "longitude": geo.longitude
+      "latitude": businessLatitude,
+      "longitude": businessLongitude
     },
-    "openingHoursSpecification": {
+    "openingHoursSpecification": openingHours.map(hours => ({
       "@type": "OpeningHoursSpecification",
-      "dayOfWeek": [
-        "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"
-      ],
-      "opens": "00:00",
-      "closes": "23:59"
-    },
-    "url": "https://247locksmithandsecurity.com",
+      "dayOfWeek": hours.split(' ')[0],
+      "opens": hours.split(' ')[1].split('-')[0],
+      "closes": hours.split(' ')[1].split('-')[1]
+    })),
     "sameAs": sameAs,
-    "hasMap": `https://www.google.com/maps?cid=12345678901234567890`,
-    "areaServed": [
-      {
-        "@type": "City",
-        "name": "North Bergen",
-        "sameAs": "https://en.wikipedia.org/wiki/North_Bergen,_New_Jersey"
-      },
-      {
-        "@type": "City",
-        "name": "Jersey City",
-        "sameAs": "https://en.wikipedia.org/wiki/Jersey_City,_New_Jersey"
-      },
-      {
-        "@type": "City",
-        "name": "Hoboken",
-        "sameAs": "https://en.wikipedia.org/wiki/Hoboken,_New_Jersey"
-      }
-    ]
+    "servesCuisine": "Locksmith Services",
+    "paymentAccepted": "Cash, Credit Card",
+    "additionalType": "http://www.productontology.org/id/Locksmith",
+    "keywords": "locksmith, emergency locksmith, 24/7 locksmith, residential locksmith, commercial locksmith, auto locksmith"
   };
   
   return {

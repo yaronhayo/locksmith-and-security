@@ -1,8 +1,7 @@
 
-import { useQuery } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
+import { useState, useEffect } from 'react';
 
-export type SiteSettings = {
+export interface SiteSettings {
   company_name: string;
   company_phone: string;
   company_address: string;
@@ -15,41 +14,41 @@ export type SiteSettings = {
   default_meta_title: string;
   default_meta_description: string;
   GOOGLE_MAPS_API_KEY: string;
-};
-
-// Define a broader type that can be used for Settings
-export type Settings = SiteSettings;
+}
 
 export const useSettings = () => {
-  return useQuery({
-    queryKey: ['settings'],
-    queryFn: async () => {
-      console.log("Fetching settings from Supabase");
-      const { data, error } = await supabase
-        .from('settings')
-        .select('key, value');
+  const [data, setData] = useState<SiteSettings | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<Error | null>(null);
 
-      if (error) {
-        console.error("Error fetching settings:", error);
-        throw error;
+  useEffect(() => {
+    const fetchSettings = async () => {
+      try {
+        // In a real app, you would fetch this from an API or database
+        // For now, we'll use default values
+        setData({
+          company_name: "Locksmith & Security LLC",
+          company_phone: "(201) 748-2070",
+          company_address: "5800 Kennedy Blvd",
+          company_city: "North Bergen",
+          company_state: "NJ",
+          company_zip: "07047",
+          company_lat: "40.7795",
+          company_lng: "-74.0324",
+          base_url: "https://247locksmithandsecurity.com",
+          default_meta_title: "Professional Locksmith Services | 24/7 Locksmith & Security LLC",
+          default_meta_description: "Expert locksmith services for residential, commercial and automotive needs. 24/7 emergency service, fast response times, and competitive rates.",
+          GOOGLE_MAPS_API_KEY: ""
+        });
+        setIsLoading(false);
+      } catch (err) {
+        setError(err as Error);
+        setIsLoading(false);
       }
+    };
 
-      if (!data || data.length === 0) {
-        console.warn("No settings found in database");
-        return {} as SiteSettings;
-      }
+    fetchSettings();
+  }, []);
 
-      console.log("Settings fetched successfully, count:", data.length);
-      
-      const settings = data.reduce((acc, { key, value }) => {
-        acc[key as keyof SiteSettings] = value;
-        return acc;
-      }, {} as SiteSettings);
-
-      return settings;
-    },
-    staleTime: 1000 * 60 * 5, // Cache for 5 minutes
-    gcTime: 1000 * 60 * 60, // Keep in garbage collection for 1 hour
-    retry: 2,
-  });
+  return { data, isLoading, error };
 };
