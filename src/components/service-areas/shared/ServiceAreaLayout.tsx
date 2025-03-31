@@ -7,7 +7,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import PageLoading from "@/components/layouts/PageLoading";
 import ServiceAreaContent from "./ServiceAreaContent";
 import { useServiceAreaData } from "./hooks/useServiceAreaData";
-import ServiceAreaHead from "@/components/meta/ServiceAreaHead";
+import SEOManager from "@/components/meta/SEOManager";
 
 interface ServiceAreaLayoutProps {
   areaSlug: string;
@@ -61,50 +61,60 @@ const ServiceAreaLayout = memo(({ areaSlug }: ServiceAreaLayoutProps) => {
     `Lock Repair in ${location.name}`
   ];
 
+  // Create breadcrumbs for this service area
+  const areaBreadcrumbs = [
+    { name: "Home", item: "/" },
+    { name: "Service Areas", item: "/service-areas" },
+    { name: `${location.name}`, item: `/service-areas/${areaSlug}` }
+  ];
+
   return (
     <>
-      <ServiceAreaHead 
-        areaName={location.name}
+      <SEOManager
+        pageType="serviceArea"
         title={pageTitle}
         description={pageDescription}
-        keywords={areaKeywords}
         canonicalUrl={`/service-areas/${areaSlug}`}
+        keywords={areaKeywords}
+        areaName={location.name}
+        areaDescription={location.description}
         geoCoordinates={{
           latitude: location.lat,
           longitude: location.lng
         }}
-        services={commonServices}
+        areaServices={commonServices}
         faqs={faqs}
+        breadcrumbs={areaBreadcrumbs}
         modifiedDate={new Date().toISOString()}
-      />
-      
-      <PageLayout
-        title={pageTitle}
-        description={pageDescription}
-        heroTitle={`Professional Locksmith Services in ${location.name}, NJ`}
-        heroDescription={`24/7 expert locksmith services for residential, commercial, and automotive needs in ${location.name}. Licensed, insured, and locally trusted.`}
       >
-        <div className="container mx-auto px-4 py-4 sm:py-6 md:py-8 overflow-visible">
-          <Breadcrumbs />
-          
-          <Card className="mt-4 sm:mt-6 md:mt-8 border-secondary/20 shadow-md overflow-visible">
-            <div className="bg-gradient-to-r from-secondary/10 to-secondary/5 p-3 sm:p-4 md:p-6 lg:p-8 overflow-visible">
-              <CardContent className="p-0 max-w-full overflow-visible">
-                <ServiceAreaContent 
-                  locationName={location.name}
-                  locationDescription={location.description}
-                  locationSlug={areaSlug}
-                  locationCoordinates={{lat: location.lat, lng: location.lng}}
-                  displayedReviews={displayedReviews}
-                  isLoading={reviewsLoading}
-                  totalReviews={totalReviews}
-                  faqSchema={faqSchema as FAQSchema}
-                />
-              </CardContent>
-            </div>
-          </Card>
-        </div>
-      </PageLayout>
+        <PageLayout
+          title={pageTitle}
+          description={pageDescription}
+          heroTitle={`Professional Locksmith Services in ${location.name}, NJ`}
+          heroDescription={`24/7 expert locksmith services for residential, commercial, and automotive needs in ${location.name}. Licensed, insured, and locally trusted.`}
+        >
+          <div className="container mx-auto px-4 py-4 sm:py-6 md:py-8 overflow-visible">
+            <Breadcrumbs />
+            
+            <Card className="mt-4 sm:mt-6 md:mt-8 border-secondary/20 shadow-md overflow-visible">
+              <div className="bg-gradient-to-r from-secondary/10 to-secondary/5 p-3 sm:p-4 md:p-6 lg:p-8 overflow-visible">
+                <CardContent className="p-0 max-w-full overflow-visible">
+                  <ServiceAreaContent 
+                    locationName={location.name}
+                    locationDescription={location.description}
+                    locationSlug={areaSlug}
+                    locationCoordinates={{lat: location.lat, lng: location.lng}}
+                    displayedReviews={displayedReviews}
+                    isLoading={reviewsLoading}
+                    totalReviews={totalReviews}
+                    faqSchema={faqSchema as FAQSchema}
+                  />
+                </CardContent>
+              </div>
+            </Card>
+          </div>
+        </PageLayout>
+      </SEOManager>
     </>
   );
 });
