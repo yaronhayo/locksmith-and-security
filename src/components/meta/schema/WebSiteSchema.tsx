@@ -1,39 +1,26 @@
 
-interface WebSiteSchemaProps {
-  name?: string;
-  description?: string;
-  url?: string;
-  publisherName?: string;
-  publisherLogo?: string;
-  inLanguage?: string;
-  keywords?: string;
-}
+import { WebSiteSchemaProps } from "@/types/schema";
 
 export const createWebSiteSchema = ({
   name = "Locksmith & Security LLC",
-  description = "Professional 24/7 locksmith services for residential, commercial, and automotive needs.",
   url = "https://247locksmithandsecurity.com",
-  publisherName = "Locksmith & Security LLC",
-  publisherLogo = "/lovable-uploads/1bbeb1e6-5581-4e09-9600-7d1859bb17c5.png",
-  inLanguage = "en-US",
-  keywords = "locksmith, emergency locksmith, 24/7 locksmith, residential locksmith, commercial locksmith, auto locksmith"
+  description = "Professional locksmith services offering residential, commercial, and automotive solutions.",
+  publisher = "Locksmith & Security LLC",
+  potentialAction = []
 }: WebSiteSchemaProps = {}) => {
   
-  const websiteSchema = {
+  const webSiteSchema = {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    "@id": `${url}/#website`,
     "name": name,
-    "description": description,
     "url": url,
-    "inLanguage": inLanguage,
-    "keywords": keywords,
+    "description": description,
     "publisher": {
       "@type": "Organization",
-      "name": publisherName,
+      "name": publisher,
       "logo": {
         "@type": "ImageObject",
-        "url": publisherLogo.startsWith('http') ? publisherLogo : `${url}${publisherLogo.startsWith('/') ? publisherLogo : `/${publisherLogo}`}`,
+        "url": `${url}/lovable-uploads/1bbeb1e6-5581-4e09-9600-7d1859bb17c5.png`,
         "width": 600,
         "height": 60
       }
@@ -46,12 +33,13 @@ export const createWebSiteSchema = ({
           "urlTemplate": `${url}/search?q={search_term_string}`
         },
         "query-input": "required name=search_term_string"
-      }
+      },
+      ...potentialAction
     ]
   };
   
   return {
     type: 'WebSite',
-    data: websiteSchema
+    data: webSiteSchema
   };
 };

@@ -1,148 +1,90 @@
 
 import React from "react";
-import { Link, useLocation } from "react-router-dom";
-import { useMemo } from "react";
-import { Home } from "lucide-react";
-import { createBreadcrumbSchema } from "../meta/schema/BreadcrumbSchema";
-import {
-  Breadcrumb,
-  BreadcrumbList,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
+import { useLocation } from "react-router-dom";
+import { ChevronRight } from "lucide-react";
+import { Link } from "react-router-dom";
+import { createBreadcrumbSchema } from "@/components/meta/schema/BreadcrumbSchema";
+import { SchemaScripts } from "@/components/meta/SchemaScripts";
 
 interface EnhancedBreadcrumbsProps {
   baseUrl?: string;
+  customPaths?: { [key: string]: string };
   includeSchema?: boolean;
-  customPaths?: Record<string, string>;
+  className?: string;
 }
 
-const defaultPathNameMap: Record<string, string> = {
-  "services": "Services",
-  "residential-locksmith": "Residential",
-  "commercial-locksmith": "Commercial",
-  "auto-locksmith": "Automotive",
-  "emergency-locksmith": "Emergency",
-  "about": "About Us",
-  "contact": "Contact",
-  "book-online": "Book Online",
-  "reviews": "Reviews",
-  "service-areas": "Service Areas",
-  "north-bergen": "North Bergen",
-  "jersey-city": "Jersey City",
-  "hoboken": "Hoboken",
-  "weehawken": "Weehawken",
-  "west-new-york": "West New York",
-  "secaucus": "Secaucus",
-  "union-city": "Union City",
-  "guttenberg": "Guttenberg",
-  "lock-replacement": "Lock Replacement",
-  "lock-rekey": "Lock Rekeying",
-  "house-lockout": "House Lockout",
-  "car-lockout": "Car Lockout",
-  "business-lockout": "Business Lockout",
-  "storage-unit-lockout": "Storage Lockout",
-  "lock-repair": "Lock Repair",
-  "gate-locks": "Gate Locks",
-  "access-control": "Access Control",
-  "emergency-exit-device": "Exit Devices",
-  "master-key": "Master Key Systems",
-  "car-key-replacement": "Car Key Replacement",
-  "car-key-duplicate": "Car Key Duplication",
-  "car-key-cutting": "Car Key Cutting",
-  "key-fob-programming": "Key Fob Programming",
-  "ignition-lock-cylinder": "Ignition Repair",
-  "faq": "FAQ",
-  "privacy-policy": "Privacy Policy",
-  "terms-conditions": "Terms & Conditions",
-  "thank-you": "Thank You",
-  "404": "Page Not Found",
-  "sitemap": "Sitemap"
-};
-
-const EnhancedBreadcrumbs = ({ 
-  baseUrl = "https://247locksmithandsecurity.com", 
+const EnhancedBreadcrumbs: React.FC<EnhancedBreadcrumbsProps> = ({
+  baseUrl = "https://247locksmithandsecurity.com",
+  customPaths = {},
   includeSchema = true,
-  customPaths = {}
-}: EnhancedBreadcrumbsProps) => {
+  className = ""
+}) => {
+  // Use the current location path
   const location = useLocation();
-  const pathNameMap = { ...defaultPathNameMap, ...customPaths };
-  
-  const breadcrumbs = useMemo(() => {
-    const pathSegments = location.pathname.split('/').filter(Boolean);
+  const pathnames = location.pathname.split("/").filter((x) => x);
+
+  // Generate Home link
+  const breadcrumbs = [
+    { name: "Home", item: "/" }
+  ];
+
+  // Generate the breadcrumbs based on the current URL path
+  let currentPath = "";
+  pathnames.forEach((path, index) => {
+    currentPath += `/${path}`;
     
-    return pathSegments.map((segment, index) => {
-      const path = `/${pathSegments.slice(0, index + 1).join('/')}`;
-      
-      const name = pathNameMap[segment] || 
-        segment.split('-').map(word => 
-          word.charAt(0).toUpperCase() + word.slice(1)
-        ).join(' ');
-      
-      return { name, path };
+    // Get display name from custom paths or generate from path
+    const displayName = customPaths[path] || path
+      .replace(/-/g, " ")
+      .split(" ")
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" ");
+    
+    breadcrumbs.push({
+      name: displayName,
+      item: currentPath
     });
-  }, [location.pathname, pathNameMap]);
-  
-  // Generate schema breadcrumbs with home page
-  const schemaBreadcrumbs = useMemo(() => {
-    const homeBreadcrumb = { name: "Home", item: "/" };
-    
-    return [
-      homeBreadcrumb,
-      ...breadcrumbs.map(crumb => ({ name: crumb.name, item: crumb.path }))
-    ];
-  }, [breadcrumbs]);
+  });
 
-  // If we're on the home page, don't show breadcrumbs
-  if (breadcrumbs.length === 0) {
-    return null;
-  }
-
-  const breadcrumbSchema = includeSchema ? createBreadcrumbSchema({ 
-    breadcrumbs: schemaBreadcrumbs,
-    baseUrl
-  }) : null;
+  // Generate schema
+  const breadcrumbSchema = includeSchema
+    ? createBreadcrumbSchema({ breadcrumbs, baseUrl })
+    : null;
 
   return (
     <>
-      {includeSchema && breadcrumbSchema && (
-        <script 
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(breadcrumbSchema.data)
-          }}
-        />
-      )}
-      
-      <Breadcrumb className="py-4">
-        <BreadcrumbList>
-          <BreadcrumbItem>
-            <BreadcrumbLink asChild>
-              <Link to="/">
-                <Home className="h-4 w-4" />
-                <span className="sr-only">Home</span>
-              </Link>
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          
+      <nav className={`text-sm md:text-base py-2 my-2 ${className}`} aria-label="Breadcrumb">
+        <ol className="flex flex-wrap items-center space-x-1">
           {breadcrumbs.map((crumb, index) => (
             <React.Fragment key={index}>
-              <BreadcrumbSeparator />
-              <BreadcrumbItem>
+              {index > 0 && (
+                <li className="flex items-center">
+                  <ChevronRight className="h-4 w-4 text-gray-500" />
+                </li>
+              )}
+              <li className="flex items-center">
                 {index === breadcrumbs.length - 1 ? (
-                  <BreadcrumbPage>{crumb.name}</BreadcrumbPage>
+                  <span className="text-blue-700 font-medium" aria-current="page">
+                    {crumb.name}
+                  </span>
                 ) : (
-                  <BreadcrumbLink asChild>
-                    <Link to={crumb.path}>{crumb.name}</Link>
-                  </BreadcrumbLink>
+                  <Link
+                    to={crumb.item}
+                    className="text-gray-600 hover:text-blue-600 hover:underline"
+                  >
+                    {crumb.name}
+                  </Link>
                 )}
-              </BreadcrumbItem>
+              </li>
             </React.Fragment>
           ))}
-        </BreadcrumbList>
-      </Breadcrumb>
+        </ol>
+      </nav>
+      
+      {/* Add schema if needed */}
+      {includeSchema && breadcrumbSchema && (
+        <SchemaScripts schemas={[breadcrumbSchema]} />
+      )}
     </>
   );
 };

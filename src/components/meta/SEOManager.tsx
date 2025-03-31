@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Helmet } from 'react-helmet';
 import SEOHead from './SEOHead';
@@ -130,14 +129,14 @@ const SEOManager: React.FC<SEOManagerProps> = ({
       createServiceSchema({
         title: serviceName,
         description: serviceDescription || description,
-        serviceName,
-        serviceCategory,
+        baseUrl,
         canonicalUrl,
+        category: serviceCategory,
+        offerings: serviceOfferings,
         price: servicePrice,
-        serviceOfferings: serviceOfferings,
         dateModified: modifiedDate,
         datePublished: publishedDate,
-        baseUrl
+        // Make sure we're using the correct property names that match ServiceSchemaProps
       })
     );
   }
