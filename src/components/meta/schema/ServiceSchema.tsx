@@ -10,8 +10,10 @@ interface ServiceSchemaProps {
   category?: string;
   offerings?: string[];
   price?: string;
+  priceCurrency?: string;
   dateModified?: string;
   datePublished?: string;
+  relatedServices?: string[];
 }
 
 export const createServiceSchema = ({
@@ -23,8 +25,10 @@ export const createServiceSchema = ({
   category = "Locksmith Service",
   offerings = [],
   price = "49.00",
+  priceCurrency = "USD",
   dateModified = new Date().toISOString(),
-  datePublished = new Date(new Date().setFullYear(new Date().getFullYear() - 1)).toISOString()
+  datePublished = new Date(new Date().setFullYear(new Date().getFullYear() - 1)).toISOString(),
+  relatedServices = []
 }: ServiceSchemaProps) => {
   // Ensure canonical URL is absolute
   const fullCanonicalUrl = canonicalUrl.startsWith('http') 
@@ -73,7 +77,7 @@ export const createServiceSchema = ({
     "offers": {
       "@type": "Offer",
       "price": price,
-      "priceCurrency": "USD"
+      "priceCurrency": priceCurrency || "USD"
     },
     "mainEntityOfPage": {
       "@type": "WebPage",
