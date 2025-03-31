@@ -1,45 +1,40 @@
 
-import { getPhoneNumber } from "@/utils/phoneUtils";
-
 interface LocationSchemaProps {
   name: string;
   description: string;
   latitude: number;
   longitude: number;
   areaServed: string;
-  companyName: string;
-  address: string;
-  phone: string;
+  companyName?: string;
+  address?: string;
+  phone?: string;
+  imageUrl?: string;
+  priceRange?: string;
+  openingHours?: string;
 }
 
-export const createLocationSchema = ({ 
-  name, 
-  description, 
-  latitude, 
-  longitude, 
+export const createLocationSchema = ({
+  name,
+  description,
+  latitude,
+  longitude,
   areaServed,
-  companyName,
-  address,
-  phone
-}: LocationSchemaProps) => ({
-  type: 'Place',
-  data: {
+  companyName = "Locksmith & Security LLC",
+  address = "5800 Kennedy Blvd, North Bergen, NJ 07047",
+  phone = "(201) 748-2070",
+  imageUrl = "/lovable-uploads/1bbeb1e6-5581-4e09-9600-7d1859bb17c5.png",
+  priceRange = "$$",
+  openingHours = "Mo-Su 00:00-23:59"
+}: LocationSchemaProps) => {
+  const locationSchema = {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
-    "name": `${companyName} - ${name}`,
+    "name": `${companyName} - ${name} Locksmith Services`,
+    "image": imageUrl,
+    "telephone": phone,
     "description": description,
-    "image": "/lovable-uploads/1bbeb1e6-5581-4e09-9600-7d1859bb17c5.png",
-    "telephone": phone || getPhoneNumber(),
-    "@id": `https://247locksmithandsecurity.com/service-areas/${name.toLowerCase().replace(/ /g, '-')}`,
-    "url": `https://247locksmithandsecurity.com/service-areas/${name.toLowerCase().replace(/ /g, '-')}`,
-    "areaServed": {
-      "@type": "City",
-      "name": areaServed,
-      "sameAs": `https://en.wikipedia.org/wiki/${areaServed.replace(/ /g, '_')},_New_Jersey`
-    },
     "address": {
       "@type": "PostalAddress",
-      "streetAddress": address,
       "addressLocality": name,
       "addressRegion": "NJ",
       "addressCountry": "US"
@@ -57,19 +52,21 @@ export const createLocationSchema = ({
         "Wednesday",
         "Thursday",
         "Friday",
-        "Saturday",
+        "Saturday", 
         "Sunday"
       ],
       "opens": "00:00",
       "closes": "23:59"
     },
-    "priceRange": "$$",
-    "hasMap": `https://www.google.com/maps?q=${latitude},${longitude}`,
-    "serviceType": [
-      "Emergency Locksmith",
-      "Residential Locksmith",
-      "Commercial Locksmith",
-      "Automotive Locksmith"
-    ]
-  }
-});
+    "priceRange": priceRange,
+    "areaServed": {
+      "@type": "City",
+      "name": areaServed
+    }
+  };
+  
+  return {
+    type: 'LocalBusiness',
+    data: locationSchema
+  };
+};
