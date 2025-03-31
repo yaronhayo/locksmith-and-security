@@ -6,12 +6,17 @@ import { createServicePageSchema } from './schema/ServicePageSchema';
 import { createFAQSchema } from './schema/FAQSchema';
 import { createBreadcrumbSchema } from './schema/BreadcrumbSchema';
 import { createServiceSchema } from './schema/ServiceSchema';
+import { createBlogPostSchema } from './schema/BlogPostSchema';
+import { createWebSiteSchema } from './schema/WebSiteSchema';
+import { createLocalBusinessSchema } from './schema/LocalBusinessSchema';
 import { BreadcrumbItem, FAQItem, SchemaData } from '@/types/schema';
 import EnhancedBreadcrumbs from '../navigation/EnhancedBreadcrumbs';
+import { useSEOTracking } from '@/hooks/useSEOTracking';
+import { useSettings } from '@/hooks/useSettings';
 
 interface SEOManagerProps {
   children: React.ReactNode;
-  pageType: 'home' | 'service' | 'service-area' | 'blog' | 'about' | 'contact' | 'faq' | 'reviews' | 'default';
+  pageType: 'home' | 'service' | 'service-area' | 'blog' | 'blog-post' | 'about' | 'contact' | 'faq' | 'reviews' | 'default';
   title: string;
   description: string;
   canonicalUrl: string;
@@ -42,6 +47,9 @@ interface SEOManagerProps {
   author?: string;
   alternateLanguages?: {locale: string, url: string}[];
   nextPrevLinks?: {prev?: string, next?: string};
+  blogCategories?: string[];
+  blogTags?: string[];
+  trackSEO?: boolean;
 }
 
 const SEOManager: React.FC<SEOManagerProps> = ({ 
@@ -68,15 +76,42 @@ const SEOManager: React.FC<SEOManagerProps> = ({
   breadcrumbs = [],
   locationName,
   geoCoordinates,
+  areaServices = [],
   author,
   alternateLanguages,
-  nextPrevLinks
+  nextPrevLinks,
+  blogCategories = [],
+  blogTags = [],
+  trackSEO = true
 }) => {
   // Base URL for absolute references
   const baseUrl = "https://247locksmithandsecurity.com";
   
+  // Use settings
+  const settings = useSettings();
+  
+  // Track SEO performance if enabled
+  if (trackSEO) {
+    useSEOTracking({
+      page: canonicalUrl,
+      title: title,
+      url: `${baseUrl}${canonicalUrl.startsWith('/') ? canonicalUrl : `/${canonicalUrl}`}`,
+      scrollTracking: true
+    });
+  }
+  
   // Generate schemas based on page type
   const schemas: SchemaData[] = [];
+  
+  // Add website schema by default
+  schemas.push(createWebSiteSchema());
+  
+  // Add local business schema for applicable pages
+  if (['home', 'about', 'contact', 'service', 'service-area'].includes(pageType)) {
+    schemas.push(createLocalBusinessSchema({
+      settings: settings.data
+    }));
+  }
   
   // Add breadcrumb schema if breadcrumbs are provided
   if (breadcrumbs && breadcrumbs.length > 0) {
@@ -92,7 +127,7 @@ const SEOManager: React.FC<SEOManagerProps> = ({
   if (pageType === 'service' && serviceName && serviceCategory) {
     // For detailed service pages
     schemas.push(
-      createServicePageSchema({
+      createServiceSchema({
         title: serviceName,
         description: serviceDescription || description,
         serviceName,
@@ -101,7 +136,25 @@ const SEOManager: React.FC<SEOManagerProps> = ({
         price: servicePrice,
         serviceOfferings: serviceOfferings,
         dateModified: modifiedDate,
-        datePublished: publishedDate
+        datePublished: publishedDate,
+        baseUrl
+      })
+    );
+  }
+  
+  // Add blog post schema for blog posts
+  if (pageType === 'blog-post' && publishedDate) {
+    schemas.push(
+      createBlogPostSchema({
+        title: title,
+        description: description,
+        url: `${baseUrl}${canonicalUrl.startsWith('/') ? canonicalUrl : `/${canonicalUrl}`}`,
+        imageUrl: ogImage,
+        datePublished: publishedDate,
+        dateModified: modifiedDate,
+        authorName: author,
+        categories: blogCategories,
+        tags: blogTags
       })
     );
   }
