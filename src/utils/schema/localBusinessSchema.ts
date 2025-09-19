@@ -2,7 +2,7 @@
 export const createLocalBusinessSchema = (name: string, city: string, state: string = 'NJ') => ({
   "@type": "LocalBusiness",
   "name": `${name} - ${city}`,
-  "image": "/website-uploads/950b5c4c-f0b8-4d22-beb0-66a7d7554476.png",
+  "image": "/lovable-uploads/950b5c4c-f0b8-4d22-beb0-66a7d7554476.png",
   "telephone": "+12017482070",
   "email": "info@247locksmithandsecurity.com",
   "areaServed": {
@@ -58,7 +58,7 @@ export const createServiceSchema = (
   "provider": {
     "@type": "LocalBusiness",
     "name": "Locksmith & Security LLC",
-    "image": "/website-uploads/950b5c4c-f0b8-4d22-beb0-66a7d7554476.png"
+    "image": "/lovable-uploads/950b5c4c-f0b8-4d22-beb0-66a7d7554476.png"
   },
   "areaServed": {
     "@type": "City",

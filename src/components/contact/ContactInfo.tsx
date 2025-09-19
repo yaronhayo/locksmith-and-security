@@ -64,7 +64,7 @@ const ContactInfo = () => {
 
       <div className="h-[300px] w-full">
         <img
-          src="/website-uploads/5769d20e-e251-4e5f-a743-870d5c267bd1.png"
+          src="/lovable-uploads/5769d20e-e251-4e5f-a743-870d5c267bd1.png"
           alt="Professional mobile locksmith workspace with key programming equipment and tools"
           className="rounded-lg shadow-lg w-full h-full object-cover"
         />
